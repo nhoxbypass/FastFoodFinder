@@ -14,7 +14,7 @@ import android.view.MenuItem;
 import android.widget.EditText;
 
 import com.example.mypc.fastfoodfinder.R;
-import com.example.mypc.fastfoodfinder.ui.main.MainPagerAdapter;
+import com.example.mypc.fastfoodfinder.adapter.MainPagerAdapter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
         mPagerAdapter = new MainPagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mPagerAdapter);
+        mViewPager.setOffscreenPageLimit(2);
         mTabLayout.setupWithViewPager(mViewPager);
     }
 

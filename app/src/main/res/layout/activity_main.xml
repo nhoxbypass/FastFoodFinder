@@ -23,6 +23,7 @@
             android:layout_height="wrap_content"
             app:tabTextColor="@color/colorPrimaryDark"
             app:tabSelectedTextColor="@color/colorWhite"
+            app:tabIndicatorColor="@color/colorWhite"
             android:fitsSystemWindows="true"
             android:id="@+id/tab_layout"/>
     </android.support.design.widget.AppBarLayout>
