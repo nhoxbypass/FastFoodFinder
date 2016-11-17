@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/googleRed"
+    tools:context=".activity.SplashActivity">
+    <ImageView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_centerInParent="true"
+        android:src="@drawable/store_24_hour"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/footer"
+        android:layout_marginBottom="8dp"
+        android:textSize="16dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:textColor="@color/colorWhite"
+        android:text="Fastfood Finder 2016"/>
+    <ProgressBar
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:backgroundTint="@color/googleYellow"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/footer"/>
+</RelativeLayout>

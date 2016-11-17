@@ -30,12 +30,14 @@ public class StoreViewModel {
     private double mStoreDistance;
     private String mStoreAddress;
     private int mDrawableLogo;
+    private LatLng mPosition;
 
-    public StoreViewModel(@DrawableRes int drawableLogo, String storeName, double storeDistance, String storeAddress) {
+    public StoreViewModel(@DrawableRes int drawableLogo, String storeName, double storeDistance, String storeAddress, LatLng position) {
         mDrawableLogo = drawableLogo;
         mStoreName = storeName;
         mStoreDistance = storeDistance;
         mStoreAddress = storeAddress;
+        mPosition = position;
     }
 
     public StoreViewModel(Store store, LatLng currCameraPosition)
@@ -44,6 +46,7 @@ public class StoreViewModel {
         mStoreName = "Circle K";
         mStoreAddress = store.getTitle();
         mDrawableLogo = R.drawable.logo_circle_k_50;
+        mPosition = store.getPosition();
 
         //
         Location start = new Location("pointA");
@@ -55,5 +58,9 @@ public class StoreViewModel {
 
         mStoreDistance = (start.distanceTo(end)/1000.0);
 
+    }
+
+    public LatLng getmPosition() {
+        return mPosition;
     }
 }

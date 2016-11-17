@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:title="Cá nhân">
+        <menu>
+            <item
+                android:title="Hồ sơ"
+                android:id="@+id/menu_action_profile"/>
+            <item
+                android:title="Sự kiện nổi bật"
+                android:id="@+id/menu_action_trend"/>
+            <item
+                android:title="Khoảnh khắc của tôi"
+                android:id="@+id/menu_action_moment"/>
+            <item
+                android:title="Danh sách"
+                android:id="@+id/menu_action_list"/>
+            <item
+                android:title="Kết nối"
+                android:id="@+id/menu_action_connect"/>
+        </menu>
+    </item>
+
+    <item
+        android:title="Tổng quát">
+        <menu>
+            <item
+                android:title="Cài đặt"
+                android:id="@+id/menu_action_setting"/>
+            <item
+                android:title="Trợ giúp"
+                android:id="@+id/menu_action_help"/>
+            <item
+                android:title="Về tác giả"
+                android:id="@+id/menu_action_about"/>
+        </menu>
+
+    </item>
+</menu>

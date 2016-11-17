@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".activity.LoginActivity">
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/background"
+        android:fitsSystemWindows="true"
+        android:scaleType="centerCrop"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:background="#3A424242"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_centerInParent="true"
+            android:id="@+id/app_description"
+            android:textSize="14sp"
+            android:textColor="@color/colorWhite"
+            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam vulputate malesuada odio eu posuere."/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="160dp"
+            android:layout_centerHorizontal="true"
+            android:text="Fast food Finder"
+            android:layout_above="@id/app_description"
+            android:textStyle="bold"
+            android:textColor="@color/colorWhite"
+            android:textSize="36sp"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_skip"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="8dp"
+            android:background="@android:color/transparent"
+            android:text="SKIP"
+            android:textColor="@color/colorWhite"
+            android:layout_gravity="bottom"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:id="@+id/btn_sign_in"
+            android:layout_above="@id/btn_skip"
+            android:text="SIGN IN"
+            android:background="#9B424242"
+            android:textColor="@color/colorWhite"
+            android:layout_gravity="bottom"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:id="@+id/btn_join_now"
+            android:layout_above="@id/btn_sign_in"
+            android:background="@color/googleBlue"
+            android:text="JOIN NOW"
+            android:textColor="@color/colorWhite"
+            android:layout_gravity="bottom"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

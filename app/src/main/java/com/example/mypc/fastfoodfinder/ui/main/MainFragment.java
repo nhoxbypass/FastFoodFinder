@@ -3,6 +3,7 @@ package com.example.mypc.fastfoodfinder.ui.main;
 
 import android.location.Location;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
@@ -16,6 +17,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AnticipateInterpolator;
+import android.view.animation.BounceInterpolator;
+import android.view.animation.CycleInterpolator;
 
 import com.example.mypc.fastfoodfinder.R;
 import com.example.mypc.fastfoodfinder.adapter.ListStoreAdapter;
@@ -25,6 +30,7 @@ import com.example.mypc.fastfoodfinder.model.Step;
 import com.example.mypc.fastfoodfinder.model.Store;
 import com.example.mypc.fastfoodfinder.model.StoreViewModel;
 import com.example.mypc.fastfoodfinder.rest.MapsDirectionApi;
+import com.example.mypc.fastfoodfinder.utils.MarkerUtils;
 import com.example.mypc.fastfoodfinder.utils.PermissionUtils;
 import com.example.mypc.fastfoodfinder.utils.RetrofitUtils;
 import com.google.android.gms.common.ConnectionResult;
@@ -181,7 +187,19 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
         if (mGoogleMap == null)
         {
             initMaps();
+            initBottomSheet();
+
         }
+    }
+
+    private void initBottomSheet() {
+        mAdapter.setOnStoreListListener(new ListStoreAdapter.StoreListListener() {
+            @Override
+            public void onItemClick(StoreViewModel store) {
+                LatLng storeLocation = store.getmPosition();
+                getDirection(storeLocation);
+            }
+        });
     }
 
     List<StoreViewModel> getStoreInsideScreen(GoogleMap googleMap)
@@ -211,6 +229,40 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
         mLocationRequest.setInterval(INTERVAL);
         mLocationRequest.setFastestInterval(FASTEST_INTERVAL);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+    }
+
+    private void dropPinEffect(final Marker marker) {
+        // Handler allows us to repeat a code block after a specified delay
+        final android.os.Handler handler = new android.os.Handler();
+        final long start = SystemClock.uptimeMillis();
+        final long duration = 10000;
+
+        // Use the bounce interpolator
+        final android.view.animation.Interpolator interpolator =
+                new BounceInterpolator();
+
+        // Animate marker with a bounce updating its position every 15ms
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                long elapsed = SystemClock.uptimeMillis() - start;
+                // Calculate t for bounce based on elapsed time
+                float t = Math.max(
+                        1 - interpolator.getInterpolation((float) elapsed
+                                / duration), 0);
+
+                // Set the anchor
+                marker.setAnchor(0.5f, 1.0f + 14 * t);
+                //marker.setIcon(BitmapDescriptorFactory.fromBitmap(MarkerUtils.resizeMarkerIcon(getResources(),"marker", (int)interpolator.getInterpolation((float) elapsed / duration)*50, (int)interpolator.getInterpolation((float) elapsed / duration)*50)));
+
+                if (t > 0.0) {
+                    // Post this event again 15ms from now.
+                    handler.postDelayed(this, 15);
+                } else { // done elapsing, show window
+                    marker.showInfoWindow();
+                }
+            }
+        });
     }
 
     @SuppressWarnings("MissingPermission")
@@ -279,10 +331,12 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
                 });
 
                 // create marker current location
-                MarkerOptions marker = new MarkerOptions().position(
+                MarkerOptions markerOptions = new MarkerOptions().position(
                         mGoogleMap.getCameraPosition().target).title("My MapCoordination").draggable(true);
                 // adding marker
-                mGoogleMap.addMarker(marker);
+                Marker marker = mGoogleMap.addMarker(markerOptions);
+
+                dropPinEffect(marker);
 
                 Gson gson = new Gson();
                 try {
@@ -367,8 +421,8 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
     {
         PolylineOptions options = new PolylineOptions()
                 .clickable(true)
-                .color(ContextCompat.getColor(getContext(), R.color.googleRed))
-                .width(8)
+                .color(ContextCompat.getColor(getContext(), R.color.googleBlue))
+                .width(12)
                 .geodesic(true)
                 .zIndex(5f)
                 .add(steps.get(0).getStartMapCoordination().getLocation());
@@ -385,6 +439,7 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
         if (googleMap != null) {
             // Attach marker click listener to the map here
 
+            /*
             googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
 
                 public boolean onMarkerClick(Marker marker) {
@@ -398,6 +453,8 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
                 }
 
             });
+
+            */
 
 
         }

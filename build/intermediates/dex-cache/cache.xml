@@ -39,6 +39,15 @@
     </item>
     <item
         is-multidex="false"
+        jar="G:\Coding\android\FastFoodFinder\app\build\intermediates\exploded-aar\com.android.support\cardview-v7\25.0.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="24.0.3"
+        sha1="8a372c4191f80489770a231f7be4820b204b886a">
+        <dex dex="G:\Coding\android\FastFoodFinder\app\build\intermediates\pre-dexed\debug\com.android.support-cardview-v7-25.0.0_7ad893c7d93a18e82fe0d24655cacaa399fba3a2.jar" />
+    </item>
+    <item
+        is-multidex="false"
         jar="C:\Users\nhoxb\.gradle\caches\modules-2\files-2.1\com.squareup.retrofit2\converter-gson\2.1.0\aa557d71ead91cbf26e0c316a0f593d168303309\converter-gson-2.1.0.jar"
         jumboMode="false"
         optimize="true"
@@ -84,15 +93,6 @@
     </item>
     <item
         is-multidex="false"
-        jar="C:\Users\nhoxb\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\24.2.1\support-annotations-24.2.1.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="24.0.3"
-        sha1="8de3aafecbdf98a61db6427f008f2d515bcd2544">
-        <dex dex="G:\Coding\android\FastFoodFinder\app\build\intermediates\pre-dexed\debug\support-annotations-24.2.1_62e61889b63ee8f572c6d629a91d942e13e198d0.jar" />
-    </item>
-    <item
-        is-multidex="false"
         jar="G:\Coding\android\FastFoodFinder\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\24.2.1\jars\classes.jar"
         jumboMode="false"
         optimize="true"
@@ -117,6 +117,15 @@
         revision="24.0.3"
         sha1="122ec9237acd8a57d974b9d529987f1ee6ca5aea">
         <dex dex="G:\Coding\android\FastFoodFinder\app\build\intermediates\pre-dexed\debug\com.google.android.gms-play-services-maps-9.8.0_98be66eeb41e5269bebe63090772f4dcd8b2e775.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\nhoxb\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\25.0.0\support-annotations-25.0.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="24.0.3"
+        sha1="a22d2cc94da87b254451fa8ed28afc30b4653773">
+        <dex dex="G:\Coding\android\FastFoodFinder\app\build\intermediates\pre-dexed\debug\support-annotations-25.0.0_ca59ef35a07364c6650a60d63ec1e54ab0f2c476.jar" />
     </item>
     <item
         is-multidex="false"

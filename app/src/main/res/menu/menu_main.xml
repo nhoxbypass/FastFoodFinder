@@ -4,6 +4,7 @@
     <item
         android:title="Search"
         app:actionViewClass="android.support.v7.widget.SearchView"
+        android:orderInCategory="100"
         android:icon="@drawable/ic_search"
         app:showAsAction="always|collapseActionView"
         android:id="@+id/action_search"
