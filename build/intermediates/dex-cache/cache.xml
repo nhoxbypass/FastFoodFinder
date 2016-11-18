@@ -66,6 +66,15 @@
     </item>
     <item
         is-multidex="false"
+        jar="G:\Coding\android\FastFoodFinder\app\build\intermediates\exploded-aar\de.hdodenhof\circleimageview\2.1.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="24.0.3"
+        sha1="a2af9c72ccaa4c5c049b500ca6ea664a4ce1f7d4">
+        <dex dex="G:\Coding\android\FastFoodFinder\app\build\intermediates\pre-dexed\debug\de.hdodenhof-circleimageview-2.1.0_cc5c2b3726e6392b5e9b68745466769f992781f9.jar" />
+    </item>
+    <item
+        is-multidex="false"
         jar="C:\Users\nhoxb\.gradle\caches\modules-2\files-2.1\com.jakewharton\butterknife-annotations\8.4.0\ea392375cf9ff59234a82e7928a204215ccc98cd\butterknife-annotations-8.4.0.jar"
         jumboMode="false"
         optimize="true"

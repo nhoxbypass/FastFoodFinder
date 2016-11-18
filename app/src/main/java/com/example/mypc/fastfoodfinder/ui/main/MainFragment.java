@@ -1,6 +1,14 @@
 package com.example.mypc.fastfoodfinder.ui.main;
 
 
+import android.animation.ObjectAnimator;
+import android.animation.TimeInterpolator;
+import android.animation.ValueAnimator;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -11,6 +19,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -235,7 +244,7 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
         // Handler allows us to repeat a code block after a specified delay
         final android.os.Handler handler = new android.os.Handler();
         final long start = SystemClock.uptimeMillis();
-        final long duration = 10000;
+        final long duration = 3000;
 
         // Use the bounce interpolator
         final android.view.animation.Interpolator interpolator =
@@ -292,6 +301,33 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
             if (lastLocation != null)
             {
                 currLocation = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
+                final Marker marker = mGoogleMap.addMarker(new MarkerOptions().position(currLocation).title("Marker"));
+                final Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.logo_circle_k_50);
+                final Bitmap target = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+
+
+                final Canvas canvas = new Canvas(target);
+
+                ValueAnimator animator = ValueAnimator.ofFloat(0, 1);
+                animator.setDuration(500);
+                animator.setStartDelay(1000);
+                animator.setInterpolator(new BounceInterpolator());
+                final Rect originalRect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+                final RectF scaledRect = new RectF();
+
+                animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                    int w = 0, h = 0;
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator animation) {
+                        float scale = (float) animation.getAnimatedValue();
+                        scaledRect.set(0, 0, originalRect.right * scale, originalRect.bottom * scale);
+                        canvas.drawBitmap(bitmap, originalRect, scaledRect, null);
+                        marker.setIcon(BitmapDescriptorFactory.fromBitmap(MarkerUtils.resizeMarkerIcon(bitmap, w, h)));
+                        w+=5;
+                        h += 5;
+                    }
+                });
+                animator.start();
             }
             else
                 currLocation = mGoogleMap.getCameraPosition().target;
@@ -330,13 +366,7 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
                     }
                 });
 
-                // create marker current location
-                MarkerOptions markerOptions = new MarkerOptions().position(
-                        mGoogleMap.getCameraPosition().target).title("My MapCoordination").draggable(true);
-                // adding marker
-                Marker marker = mGoogleMap.addMarker(markerOptions);
 
-                dropPinEffect(marker);
 
                 Gson gson = new Gson();
                 try {

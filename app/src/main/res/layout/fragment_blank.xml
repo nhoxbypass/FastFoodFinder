@@ -14,12 +14,98 @@
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/action_container"
         app:cardElevation="8dp"
         android:background="@color/colorWhite">
-        <ImageView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/img"/>
+            android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/circlek"
+                android:layout_margin="16dp"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:clickable="true"
+                android:background="?attr/selectableItemBackground"
+                android:src="@drawable/circle_k_white"
+                app:civ_fill_color="@color/googleRed"
+                app:civ_border_color="@color/googleRed"/>
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/familymart"
+                android:layout_margin="16dp"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:clickable="true"
+                android:background="?attr/selectableItemBackground"
+                android:src="@drawable/familymart"
+                app:civ_fill_color="@color/googleRed"
+                app:civ_border_color="@color/googleRed"/>
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/ministop"
+                android:layout_margin="16dp"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:clickable="true"
+                android:background="?attr/selectableItemBackground"
+                android:src="@drawable/ministop"
+                app:civ_fill_color="@color/googleRed"
+                app:civ_border_color="@color/googleRed"/>
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/load_more"
+                android:layout_margin="16dp"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:clickable="true"
+                android:background="?attr/selectableItemBackground"
+                android:src="@drawable/chevron_down"
+                app:civ_fill_color="@color/googleRed"
+                app:civ_border_color="@color/googleRed"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/container"
+            android:orientation="horizontal"
+            android:visibility="gone">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/t1"
+                android:layout_margin="16dp"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:src="@drawable/circle_k_white"
+                app:civ_fill_color="@color/googleRed"
+                app:civ_border_color="@color/googleRed"/>
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/t2"
+                android:layout_margin="16dp"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:src="@drawable/familymart"
+                app:civ_fill_color="@color/googleRed"
+                app:civ_border_color="@color/googleRed"/>
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/t3"
+                android:layout_margin="16dp"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:src="@drawable/ministop"
+                app:civ_fill_color="@color/googleRed"
+                app:civ_border_color="@color/googleRed"/>
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/t4"
+                android:layout_margin="16dp"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:src="@drawable/chevron_down"
+                app:civ_fill_color="@color/googleRed"
+                app:civ_border_color="@color/googleRed"/>
+        </LinearLayout>
+        </LinearLayout>
     </android.support.v7.widget.CardView>
     <TextView
         android:layout_width="match_parent"
