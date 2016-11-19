@@ -19,4 +19,19 @@
     <style name="AppTheme.NoActionBar.TranslucentStatusBar" parent="AppTheme.NoActionBar">
     </style>
 
+    <style name="TextAction">
+        <item name="android:background">?selectableItemBackground</item>
+        <item name="android:clickable">true</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="TextInfo">
+        <item name="android:drawablePadding">4dp</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
+        <item name="android:clickable">true</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:padding">8dp</item>
+    </style>
+    
 </resources>
