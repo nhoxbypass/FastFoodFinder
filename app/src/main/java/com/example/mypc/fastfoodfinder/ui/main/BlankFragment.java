@@ -1,7 +1,6 @@
 package com.example.mypc.fastfoodfinder.ui.main;
 
 
-import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,10 +9,14 @@ import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 
 import com.example.mypc.fastfoodfinder.R;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 /**
@@ -21,11 +24,17 @@ import com.example.mypc.fastfoodfinder.R;
  */
 public class BlankFragment extends Fragment {
 
+    @BindView(R.id.btn_search_circle_k) CircleImageView quickSearchCircleK;
+    @BindView(R.id.btn_search_family_mart) CircleImageView quickSearchFamilyMart;
+    @BindView(R.id.btn_search_mini_stop) CircleImageView quickSearchMiniStop;
+    @BindView(R.id.btn_load_more) CircleImageView quickSearchLoadMore;
+    @BindView(R.id.btn_search_bsmart) CircleImageView quickSearchBsMart;
+    @BindView(R.id.btn_search_shop_n_go) CircleImageView quickSearchShopNGo;
 
-    ViewGroup viewRoot;
-    ViewGroup viewGroup;
+    @BindView(R.id.cv_action_container) ViewGroup cardViewQuickSearch;
+    @BindView(R.id.ll_load_more_container) ViewGroup searchMoreLayout;
     boolean visible;
-    ImageView loadMoreButton;
+    String searchText;
 
     public BlankFragment() {
         // Required empty public constructor
@@ -51,25 +60,59 @@ public class BlankFragment extends Fragment {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_blank, container, false);
 
-        viewRoot = (ViewGroup) root.findViewById(R.id.action_container);
-        loadMoreButton = (ImageView) root.findViewById(R.id.load_more);
-        viewGroup = (ViewGroup)root.findViewById(R.id.container);
+        ButterKnife.bind(this, root);
 
-        loadMoreButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    TransitionManager.beginDelayedTransition(viewRoot);
-                    visible = !visible;
-                    viewGroup.setVisibility(visible ? View.VISIBLE : View.GONE);
-                }
-
-            }
-        });
-
-
+        setupQuickSearchBar();
 
         return root;
     }
 
+    private void setupQuickSearchBar()
+    {
+        quickSearchCircleK.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                searchText = "Circle K";
+            }
+        });
+
+        quickSearchFamilyMart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                searchText = "Family Mart";
+            }
+        });
+
+        quickSearchMiniStop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                searchText = "Mini Stop";
+            }
+        });
+
+        quickSearchBsMart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                searchText = "BsMart";
+            }
+        });
+
+        quickSearchShopNGo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                searchText = "Shop and Go";
+            }
+        });
+
+        quickSearchLoadMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    TransitionManager.beginDelayedTransition(cardViewQuickSearch);
+                    visible = !visible;
+                    searchMoreLayout.setVisibility(visible ? View.VISIBLE : View.GONE);
+                }
+            }
+        });
+    }
 }

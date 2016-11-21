@@ -53,8 +53,8 @@ public class StoreViewModel {
         start.setLatitude(currCameraPosition.latitude);
         start.setLongitude(currCameraPosition.longitude);
         Location end = new Location("pointB");
-        end.setLatitude(store.getLatitude());
-        end.setLongitude(store.getLongitude());
+        end.setLatitude(Double.parseDouble(store.getLat()));
+        end.setLongitude(Double.parseDouble(store.getLng()));
 
         mStoreDistance = (start.distanceTo(end)/1000.0);
 

@@ -14,7 +14,7 @@
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/action_container"
+        android:id="@+id/cv_action_container"
         app:cardElevation="8dp"
         android:background="@color/colorWhite">
         <LinearLayout
@@ -26,42 +26,42 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/circlek"
+                android:id="@+id/btn_search_circle_k"
                 android:layout_margin="16dp"
                 android:layout_width="56dp"
                 android:layout_height="56dp"
                 android:clickable="true"
-                android:background="?attr/selectableItemBackground"
+                android:background="?selectableItemBackgroundBorderless"
                 android:src="@drawable/circle_k_white"
                 app:civ_fill_color="@color/googleRed"
                 app:civ_border_color="@color/googleRed"/>
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/familymart"
+                android:id="@+id/btn_search_family_mart"
                 android:layout_margin="16dp"
                 android:layout_width="56dp"
                 android:layout_height="56dp"
                 android:clickable="true"
-                android:background="?attr/selectableItemBackground"
+                android:background="?selectableItemBackgroundBorderless"
                 android:src="@drawable/familymart"
                 app:civ_fill_color="@color/googleRed"
                 app:civ_border_color="@color/googleRed"/>
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/ministop"
+                android:id="@+id/btn_search_mini_stop"
                 android:layout_margin="16dp"
                 android:layout_width="56dp"
                 android:layout_height="56dp"
                 android:clickable="true"
-                android:background="?attr/selectableItemBackground"
+                android:background="?selectableItemBackgroundBorderless"
                 android:src="@drawable/ministop"
                 app:civ_fill_color="@color/googleRed"
                 app:civ_border_color="@color/googleRed"/>
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/load_more"
+                android:id="@+id/btn_load_more"
                 android:layout_margin="16dp"
                 android:layout_width="56dp"
                 android:layout_height="56dp"
                 android:clickable="true"
-                android:background="?attr/selectableItemBackground"
+                android:background="?selectableItemBackgroundBorderless"
                 android:src="@drawable/chevron_down"
                 app:civ_fill_color="@color/googleRed"
                 app:civ_border_color="@color/googleRed"/>
@@ -69,11 +69,11 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/container"
+            android:id="@+id/ll_load_more_container"
             android:orientation="horizontal"
             android:visibility="gone">
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/t1"
+                android:id="@+id/btn_search_shop_n_go"
                 android:layout_margin="16dp"
                 android:layout_width="56dp"
                 android:layout_height="56dp"
@@ -81,7 +81,7 @@
                 app:civ_fill_color="@color/googleRed"
                 app:civ_border_color="@color/googleRed"/>
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/t2"
+                android:id="@+id/btn_search_bsmart"
                 android:layout_margin="16dp"
                 android:layout_width="56dp"
                 android:layout_height="56dp"
@@ -89,7 +89,7 @@
                 app:civ_fill_color="@color/googleRed"
                 app:civ_border_color="@color/googleRed"/>
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/t3"
+                android:id="@+id/btn_search_unknown1"
                 android:layout_margin="16dp"
                 android:layout_width="56dp"
                 android:layout_height="56dp"
@@ -97,7 +97,7 @@
                 app:civ_fill_color="@color/googleRed"
                 app:civ_border_color="@color/googleRed"/>
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/t4"
+                android:id="@+id/btm_search_unknown2"
                 android:layout_margin="16dp"
                 android:layout_width="56dp"
                 android:layout_height="56dp"

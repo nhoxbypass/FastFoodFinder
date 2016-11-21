@@ -37,6 +37,7 @@ import com.example.mypc.fastfoodfinder.model.MapsDirection;
 import com.example.mypc.fastfoodfinder.model.Route;
 import com.example.mypc.fastfoodfinder.model.Step;
 import com.example.mypc.fastfoodfinder.model.Store;
+import com.example.mypc.fastfoodfinder.model.StoreDataSource;
 import com.example.mypc.fastfoodfinder.model.StoreViewModel;
 import com.example.mypc.fastfoodfinder.rest.MapsDirectionApi;
 import com.example.mypc.fastfoodfinder.utils.MarkerUtils;
@@ -366,8 +367,10 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
                     }
                 });
 
+                StoreDataSource storeDataSource = new StoreDataSource();
+                mStoreList = storeDataSource.getAllObjects();
 
-
+                /*
                 Gson gson = new Gson();
                 try {
                     JsonObject root = gson.fromJson(openJSONFromResource(), JsonObject.class);
@@ -375,6 +378,7 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                */
 
 
                 mGoogleMap.setBuildingsEnabled(true);
@@ -414,7 +418,7 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
         for (int i = 0; i < list.size(); i++)
         {
             Store store = list.get(i);
-            Marker marker = googleMap.addMarker(new MarkerOptions().position(new LatLng(store.getLatitude(), store.getLongitude()))
+            Marker marker = googleMap.addMarker(new MarkerOptions().position(store.getPosition())
                     .title("Circle K")
                     .snippet(store.getTitle())
                     .icon(markerIcon));
