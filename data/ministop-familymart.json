@@ -1,0 +1,767 @@
+{
+  makers_add:[
+    {
+      "title":"MINISTOP - Nguy?n Ðình Chi?u",
+      "address":"225 Nguy?n Ðình Chi?u, Qu?n 3, H? Chí Minh",
+      "lat":10.770411,
+      "lng":106.682449
+    }
+    ,
+    {
+      "title":"MINISTOP - Lam Son",
+      "address":"25A Lam Son, Qu?n Tân Bình, H? Chí Minh",
+      "lat":10.809878,
+      "lng":106.666781
+    }
+    ,
+    {
+      "title":"MINISTOP - D2",
+      "address":"48A D2, Qu?n Bình Th?nh, H? Chí Minh",
+      "lat": 10.805274,
+      "lng":106.715773
+    }
+    ,
+    {
+      "title":"MINISTOP - Nguy?n H?ng Ðào",
+      "address":"191 Nguy?n H?ng Ðào, Qu?n Tân Bình, H? Chí Minh",
+      "lat":10.796459,
+      "lng":106.643273
+    }
+    ,
+    {
+      "title":"MINISTOP - B?ch Ð?ng",
+      "address":"165 B?ch Ð?ng, Qu?n Tân Bình, H? Chí Minh",
+      "lat":10.815674,
+      "lng":106.675103
+    }
+    ,
+    {
+      "title":"MINISTOP - Tân Son Nhì",
+      "address":"215B Tân Son Nhì, Qu?n Tân Phú, H? Chí Minh",
+      "lat":10.797398,
+      "lng":106.631
+    }
+    ,
+    {
+      "title":"MINISTOP - Tr?n Thi?n Chánh",
+      "address":"77 Tr?n Thi?n Chánh, Qu?n 10, H? Chí Minh",
+      "lat":10.77157,
+      "lng":106.670685
+    }
+    ,
+    {
+      "title":"MINISTOP - Tr?n Doãn Khanh",
+      "address":"2 Tr?n Doãn Khanh, Qu?n 1, H? Chí Minh",
+      "lat":10.788722,
+      "lng":106.697771
+    }
+    ,
+    {
+      "title":"MINISTOP - Nguy?n Thu?ng Hi?n",
+      "address":"245 Nguy?n Thu?ng Hi?n, Qu?n Bình Th?nh, H? Chí Minh",
+      "lat":10.807572,
+      "lng":106.683889
+    }
+    ,
+    {
+      "title":"MINISTOP - Cu xá Ðô Thành",
+      "address":"129 - 131 Ðu?ng S? 3, Cu xá Ðô Thành, Qu?n 3, H? Chí Minh",
+      "lat":10.772294,
+      "lng":106.68134
+    }
+    ,
+    {
+      "title":"MINISTOP - L?c Long Quân",
+      "address":"312 L?c Long Quân, Qu?n 11, H? Chí Minh",
+      "lat":10.759937,
+      "lng":106.641938
+    }
+    ,
+    {
+      "title":"MINISTOP - H?ng Hà",
+      "address":"58B H?ng Hà, Qu?n Tân Bình, H? Chí Minh",
+      "lat":10.813118,
+      "lng":106.668368
+    }
+    ,
+    {
+      "title":"MINISTOP - Hoà Hung",
+      "address":"101 Hoà Hung, phu?ng 12, Qu?n 10, H? Chí Minh",
+      "lat":10.779543,
+      "lng":106.67524
+    }
+    ,
+    {
+      "title":"MINISTOP - Hoàng Hoa Thám",
+      "address":"10A Hoàng Hoa Thám, phu?ng 7, Qu?n Bình Th?nh, H? Chí Minh",
+      "lat":10.804787,
+      "lng":106.69185
+    }
+    ,
+    {
+      "title":"MINISTOP - Quách Van Tu?n",
+      "address":"14 Quách Van Tu?n, phu?ng 12, Qu?n Tân Bình, H? Chí Minh",
+      "lat":10.799627,
+      "lng":106.652337 
+    }
+    ,
+    {
+      "title":"MINISTOP - Nguy?n Van Ð?u",
+      "address":"183 Nguy?n Van Ð?u, phu?ng 11, Qu?n Bình Th?nh, H? Chí Minh",
+      "lat":10.810798,
+      "lng":106.690324
+    }
+    ,
+    {
+      "title":"MINISTOP - Ph?m Vi?t Chánh",
+      "address":"19-21-23 Ph?m Vi?t Chánh, phu?ng Nguy?n Cu Trinh, Qu?n 1, H? Chí Minh",
+      "lat":10.767537,
+      "lng":106.684941
+    }
+    ,
+    {
+      "title":"MINISTOP - Ð?ng Van Ng?",
+      "address":"14A Bis Ð?ng Van Ng?, phu?ng 10, Qu?n Phú Nhu?n, H? Chí Minh",
+      "lat":10.796817,
+      "lng":106.669652
+    }
+    ,
+    {
+      "title":"MINISTOP - Ði?n Biên Ph?",
+      "address":"475A Ði?n Biên Ph?, phu?ng 25, Qu?n Bình Th?nh, H? Chí Minh",
+      "lat":10.801147,
+      "lng":106.710624
+    }
+    ,
+    {
+      "title":"MINISTOP - H?u Giang",
+      "address":"45 H?u Giang, Phu?ng 4, Qu?n Tân Bình, H? Chí Minh",
+      "lat":10.80786,
+      "lng":106.662492
+    }
+    ,
+    {
+      "title":"MINISTOP - Lê L?i",
+      "address":"38 Lê L?i, phu?ng B?n Nghé, Qu?n 1, H? Chí Minh",
+      "lat":10.774241,
+      "lng":106.70045
+    }
+    ,
+    {
+      "title":"MINISTOP - Nguy?n Thái Bình",
+      "address":"194 Nguy?n Thái Bình, Phu?ng 12, Qu?n Tân Bình, H? Chí Minh",
+      "lat":10.796785,
+      "lng":106.653472
+    }
+    ,
+    {
+      "title":"MINISTOP - Ph?m Vi?t Chánh",
+      "address":"37 - 39 Ph?m Vi?t Chánh, Phu?ng 19, Qu?n Bình Th?nh, H? Chí Minh",
+      "lat":10.790368,
+      "lng":106.709535
+    }
+    ,
+    {
+      "title":"MINISTOP - M?c Th? Bu?i",
+      "address":"16 M?c Th? Bu?i, Phu?ng B?n Nghé, Qu?n 1, H? Chí Minh",
+      "lat":10.775942,
+      "lng":106.705152
+    }
+    ,
+    {
+      "title":"MINISTOP - Truong Công Ð?nh",
+      "address":"88 Truong Công Ð?nh, Phu?ng 14, Qu?n Tân Bình, H? Chí Minh",
+      "lat":10.796482,
+      "lng":106.640921
+    }
+    ,
+    {
+      "title":"MINISTOP - B22 B?ch Ð?ng",
+      "address":"B22 B?ch Ð?ng, phu?ng 2, Qu?n Tân Bình, H? Chí Minh",
+      "lat":10.814997,
+      "lng":106.668061 
+    }
+    ,
+    {
+      "title":"MINISTOP - Vu Huy T?n",
+      "address":"15K Vu Huy T?n, Phu?ng 3, Qu?n Bình Th?nh, H? Chí Minh",
+      "lat":10.795767,
+      "lng":106.69539
+    }
+    ,
+    {
+      "title":"MINISTOP - Ngô T?t T?",
+      "address":"69 Ngô T?t T?, Phu?ng 21, Qu?n Bình Th?nh, H? Chí Minh",
+      "lat":10.792793,
+      "lng":106.711792
+    }
+    ,
+    {
+      "title":"MINISTOP - C?ng Qu?nh",
+      "address":"124 C?ng Qu?nh, Phu?ng Ph?m Ngu Lão, Qu?n 1H? Chí Minh",
+      "lat":10.765394,
+      "lng":106.690228
+    }
+    ,
+    {
+      "title":"MINISTOP - Ðào Duy T?",
+      "address":"17 Ðào Duy T?, Phu?ng 5, Qu?n 10, H? Chí Minh",
+      "lat":10.760577,
+      "lng":106.668087
+    }
+    ,
+    {
+      "title":"MINISTOP - Tân Son Nhì",
+      "address":"384-386 Tân Son Nhì, phu?ng Tân Son Nhì, Qu?n Tân Phú, H? Chí Minh",
+      "lat":10.793955,
+      "lng":106.628809
+    }
+    ,
+    {
+      "title":"MINISTOP - Nguy?n Thi?n Thu?t",
+      "address":"19-21 Nguy?n Thi?n Thu?t, Phu?ng 2, Qu?n 3, H? Chí Minh",
+      "lat":10.766366,
+      "lng":106.681698
+    }
+    ,
+    {
+      "title":"MINISTOP - Tr?n Quý Cáp",
+      "address":"43 Tr?n Quý Cáp, P.12, Qu?n Bình Th?nh, Qu?n Bình Th?nh, H? Chí Minh",
+      "lat":10.815615, 
+      "lng":106.695478
+    }
+    ,
+    {
+      "title":"MINISTOP - B?c H?i",
+      "address":"212 - 214 B?c H?i, phu?ng 6, Qu?n Tân Bình, H? Chí Minh",
+      "lat":10.784308,
+      "lng":106.661979
+    }
+    ,
+    {
+      "title":"MINISTOP - Vinh H?i",
+      "address":"69 Vinh H?i, Phu?ng 4, Qu?n 4, Qu?n 4, H? Chí Minh",
+      "lat":10.756294,
+      "lng":106.703841
+    }
+    ,
+    {
+      "title":"MINISTOP - Vu Tùng",
+      "address":"88D - 88E Vu Tùng phu?ng 2, Qu?n Bình Th?nh, H? Chí Minh",
+      "lat":10.801821,
+      "lng":106.700894
+    }
+    ,
+    {
+      "title":"MINISTOP - Su V?n H?nh",
+      "address":"435 Su V?n H?nh phu?ng 12, Qu?n 10, H? Chí Minh",
+      "lat":10.772663,
+      "lng":106.669025
+    }
+    ,
+    {
+      "title":"MINISTOP - D1",
+      "address":"127 Ðu?ng D1, Phu?ng 25, Qu?n Bình Th?nh, Qu?n Bình Th?nh, H? Chí Minh",
+      "lat":10.800766,
+      "lng":106.718396
+    }
+    ,
+    {
+      "title":"MINISTOP - Tr?n Qu?c To?n",
+      "address":"47 Tr?n Qu?c To?n, Phu?ng 8, Qu?n 3, Qu?n 3, H? Chí Minh",
+      "lat":10.78809,
+      "lng":106.688799
+    }
+    ,
+    {
+      "title":"MINISTOP - Tr?n Ðình Xu",
+      "address":"114 Tr?n Ðình Xu, Phu?ng Nguy?n Cu Trinh, Qu?n 1, H? Chí Minh",
+      "lat":10.762161,
+      "lng":106.689194
+    }
+    ,
+    {
+      "title":"MINISTOP - Ðu?ng S? 5",
+      "address":"60, Ðu?ng s? 5, Phu?ng 8, Qu?n 11, H? Chí Minh",
+      "lat":10.761611,
+      "lng":106.648441
+    }
+    ,
+    {
+      "title":"MINISTOP - Nguy?n Du",
+      "address":"15 Nguy?n Du, Phu?ng 7, Qu?n Gò V?p, H? Chí Minh",
+      "lat":10.826486,
+      "lng":106.685188
+    }
+    ,
+    {
+      "title":"MINISTOP - Xóm Chi?u",
+      "address":"181/11/1 + 181/13 Xóm Chi?u, phu?ng 16, Qu?n 4, H? Chí Minh",
+      "lat":10.755345,
+      "lng":106.709634
+    }
+    ,
+    {
+      "title":"MINISTOP - Lê Quang Ð?nh",
+      "address":"484 Lê Quang Ð?nh, Phu?ng 11, Qu?n Bình Th?nh,H? Chí Minh",
+      "lat":10.815534,
+      "lng":106.688762
+    }
+    ,
+    {
+      "title":"MINISTOP - Tôn Th?t Thuy?t",
+      "address":"209/15A Tôn Th?t Thuy?t, Phu?ng 3, Qu?n 4, H? Chí Minh",
+      "lat":10.753932,
+      "lng":106.698951
+    }
+    ,
+    {
+      "title":"MINISTOP - Nguy?n Bi?u",
+      "address":"207 Nguy?n Bi?u, Phu?ng 2, Qu?n 5, Qu?n 5, H? Chí Minh",
+      "lat":10.757199,
+      "lng":106.683146
+    }
+    ,
+    {
+      "title":"MINISTOP - Nam K? Kh?i Nghia",
+      "address":"75bis Nam K? Kh?i Nghia, Qu?n 1, H? Chí Minh",
+      "lat":10.772374,
+      "lng":106.700426
+    }
+    ,
+    {
+      "title":"MINISTOP - Vu?n Lài",
+      "address":"162 Vu?n Lài, Phu?ng Tân Thành, Qu?n Tân Phú, H? Chí Minh",
+      "lat":10.788186,
+      "lng":106.62948
+    }
+    ,
+    {
+      "title":"MINISTOP - Tân Qúy",
+      "address":"239A Tân Quí, Phu?ng Tân Qúy, Qu?n Tân Phú, H? Chí Minh",
+      "lat":10.792387,
+      "lng":106.621389
+    }
+    ,
+    {
+      "title":"MINISTOP - Ð?i h?c Qu?c gia",
+      "address":"Qu?c l? 1A, Kí túc xá khu A, Khu ph? 6, Phu?ng Linh Trung, Qu?n Th? Ð?c, H? Chí Minh",
+      "lat":10.878231,
+      "lng":106.80621
+    }
+    ,
+    {
+      "title":"MINISTOP - D2",
+      "address":"89 D2, Phu?ng 25, Qu?n Bình Th?nh, H? Chí Minh",
+      "lat":10.804414,
+      "lng":106.716053
+    }
+    ,
+    {
+      "title":"MINISTOP - Ð?ng Ðen",
+      "address":"169 Ð?ng Ðen, Qu?n Tân Bình, H? Chí Minh",
+      "lat":10.789621,
+      "lng":106.643142
+    }
+    ,
+    {
+      "title":"MINISTOP - Thang Long",
+      "address":"33 Thang Long, Phu?ng 04, Qu?n Tân Bình, H? Chí Minh",
+      "lat":10.802329,
+      "lng":106.660393
+    }
+    ,
+    {
+      "title":"MINISTOP - Ph?m Van Hai",
+      "address":"204 Ph?m Van Hai, Phu?ng 5, Qu?n Tân Bình, H? Chí Minh",
+      "lat":10.79211,
+      "lng":106.661891
+    }
+    ,
+    {
+      "title":"MINISTOP - Tr?n Kh?c Chân",
+      "address":"79 Tr?n Kh?c Chân, Phu?ng Tân Ð?nh, Qu?n 1, H? Chí Minh",
+      "lat":10.794448,
+      "lng":106.690858
+    }
+    ,
+    {
+      "title":"MINISTOP - Tr?nh Ðình Tr?ng",
+      "address":"132/1B Tr?nh Ðình Tr?ng, Phu?ng Phú Trung, Qu?n Tân Phú, H? Chí Minh",
+      "lat":10.775006,
+      "lng":106.643829
+    }
+    ,
+    {
+      "title":"MINISTOP - Vu?n Lài",
+      "address":"56 Vu?n Lài, Qu?n Tân Phú, H? Chí Minh",
+      "lat":10.787918,
+      "lng":106.633581
+    }
+    ,
+    {
+      "title":"MINISTOP - Nguy?n Tr?ng Tuy?n",
+      "address":"351A Nguyen Trong Tuyen, Qu?n Tân Bình, H? Chí Minh",
+      "lat":10.798209,
+      "lng":106.66745
+    }
+    ,
+    {
+      "title":"MINISTOP - Hoa Lan",
+      "address":"54 Hoa Lan, Qu?n Phú Nhu?n, H? Chí Minh",
+      "lat": 10.797135,
+      "lng":106.689938 
+    }
+    ,
+    {
+      "title":"MINISTOP - Duong Ðình Ngh?",
+      "address":"17K-17H Duong Ðình Ngh?, Qu?n 11, H? Chí Minh",
+      "lat":10.760504,
+      "lng":106.650164
+    }
+    ,
+    {
+      "title":"MINISTOP - Bùi Th? Xuân",
+      "address":"46-48 Ngô Th? Thu Minh, Qu?n Tân Bình, H? Chí Minh",
+      "lat":10.795704,
+      "lng":106.663225
+    }
+    ,
+    {
+      "title":"MINISTOP - Nguy?n Ki?m",
+      "address":"371 Nguy?n Ki?m, Phu?ng 3, Qu?n Gò V?p, H? Chí Minh",
+      "lat":10.816244,
+      "lng":106.678092
+    }
+    ,
+    {
+      "title":"MINISTOP - Cách M?ng Tháng Tám",
+      "address":"598-600 Cách M?ng Tháng Tám, Phu?ng 11, Qu?n 3, H? Chí Minh",
+      "lat":10.791789,
+      "lng":106.655419
+    }
+    ,
+    {
+      "title":"C?a hàng Saigon Sky Garden",
+      "address":"20 Lê Thánh Tôn, P. B?n Nghé, Q.1, H? Chí Minh",
+      "lat":10.781252,
+      "lng":106.704724
+    }
+    ,
+    {
+      "title":"C?a hàng ZENPLAZA",
+      "address":"H?m B1, ZENPLAZA, 54-56 Nguy?n Trãi, P. B?n Thành, Q.1, H? Chí Minh",
+      "lat":10.770787,
+      "lng":106.692021
+    }
+    ,
+    {
+      "title":"C?a hàng 126 Lý T? Tr?ng",
+      "address":"126 Lý T? Tr?ng., P. B?n Thành, Q.1, H? Chí Minh",
+      "lat":10.773922,
+      "lng":106.696701
+    }
+    ,
+    {
+      "title":"C?a hàng 134 Pasteur",
+      "address":"134 Pasteur, P. B?n Nghé, Q.1, H? Chí Minh",
+      "lat":10.774981,
+      "lng":106.700919
+    }
+    ,
+    {
+      "title":"C?a hàng 58 Pasteur",
+      "address":"58 Pasteur, P. B?n Nghé, Q.1, H? Chí Minh",
+      "lat": 10.771577,
+      "lng":106.702389
+    }
+   
+    {
+      "title":"C?a hàng 16 Qu?c Huong",
+      "address":"	16 Qu?c Huong, P. Th?o Ði?n, Q.2, H? Chí Minh",
+      "lat": 10.803613,
+      "lng":106.732071
+    }
+    ,
+    {
+      "title":"C?a hàng 138 Lý Chính Th?ng",
+      "address":"138 Lý Chính Th?ng, P.7, Q.3, H? Chí Minh",
+      "lat":10.787451,
+      "lng":106.68471
+    }
+    ,
+    {
+      "title":"C?a hàng 242G Nguy?n Ðình Chi?u",
+      "address":"242G – 244 Nguy?n Ðình Chi?u, P.6, Q.3, H? Chí Minh",
+      "lat":10.777483,
+      "lng":106.689096
+    }
+    ,
+    {
+      "title":"C?a hàng 598-600 Cách M?ng Tháng 8",
+      "address":"598-600 Cách M?ng Tháng 8, P.11, Q.3, H? Chí Minh",
+      "lat":16.01402,
+      "lng":108.196846
+    }
+    ,
+    {
+      "title":"C?a hàng 199C Cách M?ng Tháng 8",
+      "address":"199C Cách M?ng Tháng 8, P.4, Q.3, H? Chí Minh",
+      "lat":10.785405,
+      "lng":106.670769
+    }
+    ,
+    {
+      "title":"C?a hàng 454 Lê Van S?",
+      "address":"	454 Lê Van S?, P.14, Q.3, H? Chí Minh",
+      "lat":10.789123,
+      "lng":106.675901
+    }
+    ,
+    {
+      "title":"C?a hàng 60B Võ Van T?n",
+      "address":"	60B Võ Van T?n, P.6, Q.3, H? Chí Minh",
+      "lat":10.776735,
+      "lng":106.690266
+    }
+    ,
+    {
+      "title":"C?a hàng 23 Lê Quý Ðôn",
+      "address":"23 Lê Quý Ðôn, P.6, Q.3, H? Chí Minh",
+      "lat": 10.78182,
+      "lng":106.690205
+    }
+    ,
+    {
+      "title":"C?a hàng 78 – 80 Lý Chính Th?ng",
+      "address":"78 – 80 Lý Chính Th?ng, P.6, Q.3, H? Chí Minh",
+      "lat":10.790788,
+      "lng":106.684492
+    }
+    ,
+    {
+      "title":"C?a hàng 77 Tr?n Bình Tr?ng",
+      "address":"77 Tr?n Bình Tr?ng, P.1, Q.5, H? Chí Minh",
+      "lat":10.754439,
+      "lng":106.681757
+    }
+    ,
+    {
+      "title":"C?a hàng cao ?c T?n Ðà",
+      "address":"Cao ?c T?n Ðà, 86 T?n Ðà., P.11, Q.5, H? Chí Minh",
+      "lat":10.753201,
+      "lng":106.664507
+    }
+    ,
+    {
+      "title":"C?a hàng 202E Su V?n H?nh",
+      "address":"202E Su V?n H?nh, P.9, Q.5, H? Chí Minh",
+      "lat":10.76121,
+      "lng":106.67324
+    }
+    ,
+    {
+      "title":"C?a hàng 37C Thu?n Ki?u",
+      "address":"37C Thu?n Ki?u, P.12, Q.5, H? Chí Minh",
+      "lat":10.756626,
+      "lng":106.658109
+    }
+    ,
+    {
+      "title":"C?a hàng Hùng Vuong Square",
+      "address":"100 Hùng Vuong, P.9, Q.5, H? Chí Minh",
+      "lat":10.758944,
+      "lng":106.670405
+    }
+    ,
+    {
+      "title":"C?a hàng Riverside Residence",
+      "address":"Block E, Riverside Residence, 180 Nguy?n Luong B?ng, P. Tân Phú, PMH, Q.7, H? Chí Minh",
+      "lat":10.727178,
+      "lng":106.722644
+    }
+    ,
+    {
+      "title":"C?a hàng PetroLand Tower",
+      "address":"PetroLand Tower, 12 Tân Trào, P. Tân Phú, PMH, Q.7, H? Chí Minh",
+      "lat":10.729073,
+      "lng":106.723543
+    }
+    ,
+    {
+      "title":"C?a hàng Garden Plaza",
+      "address":"23 Lý Long Tu?ng, Garden Plaza 2, P. Tân Phong, PMH, Q.7, H? Chí Minh",
+      "lat":10.723629,
+      "lng":106.712391
+    }
+    ,
+    {
+      "title":"C?a hàng 7A/162 Thành Thái",
+      "address":"7A/162 Thành Thái, P.14, Q.10, H? Chí Minh",
+      "lat":10.772026,
+      "lng":106.661383
+    }
+    ,
+    {
+      "title":"C?a hàng 299 Nguy?n Tri Phuong",
+      "address":"299 Nguy?n Tri Phuong, P.5, Q.10, H? Chí Minh",
+      "lat":10.761449,
+      "lng":106.66833
+    }
+    ,
+    {
+      "title":"C?a hàng 145 Vinh Vi?n",
+      "address":"145 Vinh Vi?n, P.4, Q.10, H? Chí Minh",
+      "lat":10.764357,
+      "lng":106.670811
+    }
+    ,
+    {
+      "title":"C?a hàng 106 Tr?n Nhân Tôn",
+      "address":"106 Tr?n Nhân Tôn, P.2, Q.10, H? Chí Minh",
+      "lat":10.764056,
+      "lng":106.674572  
+    }
+    ,
+    {
+      "title":"C?a hàng 188E Phan Van Tr?",
+      "address":"188E Phan Van Tr?, P.12, Q. Bình Th?nh, H? Chí Minh",
+      "lat":10.813762,
+      "lng":106.695372
+    }
+    ,
+    {
+      "title":"C?a hàng 162 D2",
+      "address":"162 D2, P.25, Q. Bình Th?nh, H? Chí Minh",  
+      "lat":10.806547,
+      "lng":106.716077
+    }
+    ,
+    {
+      "title":"C?a hàng Bùi H?u Nghia",
+      "address":"297D Bùi H?u Nghia,P.1, Q. Bình Th?nh, H? Chí Minh",
+      "lat":10.799232,
+      "lng":106.699331
+    }
+    ,
+    {
+      "title":"C?a hàng Xô Vi?t Ngh? Tinh",
+      "address":"206 Xô Vi?t Ngh? Tinh, P.21, Q. Bình Th?nh, H? Chí Minh",
+      "lat":10.798246,
+      "lng":106.711151
+    }
+    ,
+    {
+      "title":"C?a hàng 74 D1",
+      "address":"	74 D1, P.25, Q. Bình Th?nh, H? Chí Minh",
+      "lat":10.80219,
+      "lng":106.718954
+    }
+    ,
+    {
+      "title":"C?a hàng 39 D2",
+      "address":"39 D1, P.25, Q. Bình Th?nh, H? Chí Minh",
+      "lat":10.802135,
+      "lng":106.719109
+    }
+    ,
+    {
+      "title":"C?a hàng 14B9 Ngô T?t T?",
+      "address":"14B9 Ngô T?t T?, P.9, Q. Bình Th?nh, H? Chí Minh",
+      "lat":10.792142,
+      "lng":106.711634
+    }
+    ,
+    {
+      "title":"C?a hàng 312 Ði?n Biên Ph?",
+      "address":"312 Ði?n Biên Ph?, P.17, Q. Bình Th?nh, H? Chí Minh",
+      "lat":10.799478,
+      "lng":106.707406
+    }
+    ,
+    {
+      "title":"C?a hàng 9 Thanh Ða",
+      "address":"9 Thanh Ða, P.27, Q. Bình Th?nh, H? Chí Minh",
+      "lat": 10.815865,
+      "lng":106.717023
+    }
+    ,
+    {
+      "title":"C?a hàng Centre Point",
+      "address":"Phòng 1, Tòa nhà Centre Point, 106 Nguy?n Van Tr?i, P.8, Q. Phú Nhu?n, H? Chí Minh",
+      "lat":10.797104,
+      "lng":106.67331
+    }
+    ,
+    {
+      "title":"C?a hàng 129 Hu?nh Van Bánh",
+      "address":"129 Hu?nh Van Bánh, P.12, Q. Phú Nhu?n, H? Chí Minh",
+      "lat":10.790937,
+      "lng":106.674105
+    }
+    ,
+    {
+      "title":"C?a hàng 89 Ð?ng Van Ng?",
+      "address":"	89 Ð?ng Van Ng?, P.14, Q. Phú Nhu?n, H? Chí Minh",
+      "lat":10.792689,
+      "lng":106.668405
+    }
+    ,
+    {
+      "title":"C?a hàng KTX ÐH Qu?c Gia",
+      "address":"T?ng tr?t, kh?i A3-1, khu B, KTX ÐH Qu?c Gia, Q. Th? Ð?c, H? Chí Minh",
+      "lat":10.883428,
+      "lng":106.782497
+    }
+    ,
+    {
+      "title":"C?a hàng 362 Võ Van Ngân",
+      "address":"362 Võ Van Ngân,P. Bình Th?, Q. Th? Ð?c, H? Chí Minh",
+      "lat":10.849481,
+      "lng":106.771618
+    }
+    ,
+    {
+      "title":"C?a hàng 289 Võ Van Ngân",
+      "address":"	289 Võ Van Ngân, P. Linh Chi?u, Q. Th? Ð?c, H? Chí Minh",
+      "lat":10.849711,
+      "lng":106.769824
+    }
+    ,
+    {
+      "title":"C?a hàng Ð?i H?c Ngân Hàng.",
+      "address":"56 Hoàng Di?u, P. Linh Chi?u, Q. Th? Ð?c, H? Chí Minh",
+      "lat":10.857588,
+      "lng":106.76355
+    }
+    ,
+    {
+      "title":"C?a hàng 331A Nguy?n Thái Bình",
+      "address":"331A Nguy?n Thái Bình, P.12, Q. Tân Bình, H? Chí Minh",
+      "lat": 10.796419,
+      "lng":106.652619
+    }
+    ,
+    {
+      "title":"C?a hàng 400 Lê Van S?",
+      "address":"	C?a hàng 400 Lê Van S?, P.2, Q. Tân Bình, H? Chí Minh",
+      "lat":10.798659,
+      "lng":106.662741
+    }
+    ,
+    {
+      "title":"C?a hàng 60 Thái Th? Nh?n",
+      "address":"60 Thái Th? Nh?n, P.10, Q. Tân Bình, H? Chí Minh",
+      "lat":10.784621,
+      "lng":106.644134
+    }
+    ,
+    {
+      "title":"C?a hàng Hikari",
+      "address":"Lô A11, A12, A16 Ðu?ng Lý Thái T? (TP m?i Bình Duong), P.Hòa Phú, Tp. Th? D?u M?t, T?nh Bình Duong, H? Chí Minh",
+      "lat":11.0565667,
+      "lng":106.6698701
+    }
+    
+    ]
+}

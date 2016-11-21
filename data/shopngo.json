@@ -1,0 +1,658 @@
+{
+	"markers_add": [
+		{
+			"title": "Shop & Go",
+			"address": "1 Lê Quý Đôn, P.6, Quận 3",
+			"lat": "10.792148",
+			"lng": "106.679734"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "10 Nguyễn Văn Nghi, P.5, Quận Gò Vấp",
+			"lat": "10.825085",
+			"lng": "106.685037"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "10 Trần Quang Diệu, Quận 3",
+			"lat": "10.785843",
+			"lng": "106.678351"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "1009 Phạm Thế Hiển, P.5, Quận 8",
+			"lat": "10.743675",
+			"lng": "106.671428"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "101 Minh Phụng, Phường 9, Quận 6",
+			"lat": "10.750721",
+			"lng": "106.642283"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "102 Lê Tuấn Mậu, Quận 6",
+			"lat": "10.749034",
+			"lng": "106.625651"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "103 Quang Trung, P.4, Quận Gò Vấp",
+			"lat": "10.827674",
+			"lng": "106.678977"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "105C Bến Vân Đồn, P.9, Quận 4",
+			"lat": "10.75258",
+			"lng": "106.688525"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "1128 Ba Tháng Hai, P.12, Quận 11",
+			"lat": "10.757405",
+			"lng": "106.648022"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "114 Phan Xích Long, P.2, Quận Phú Nhuận",
+			"lat": "10.801568",
+			"lng": "106.683007"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "1209 Huỳnh Tấn Phát, P.Phú Thuận, Quận 7",
+			"lat": "10.753946",
+			"lng": "106.726525"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "125 Hoàng Diệu, P.12, Quận 4",
+			"lat": "10.765217",
+			"lng": "106.706776"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "137 Nguyễn Trãi, P.2, Quận 5",
+			"lat": "10.759257",
+			"lng": "106.683584"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "148B Lý Chính Thắng, P.7, Quận 3",
+			"lat": "10.790861",
+			"lng": "106.687153"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "14A Tân Hóa, P.1, Quận 11",
+			"lat": "10.755877",
+			"lng": "106.637374"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "152B Trần Hưng Đạo, P.Nguyễn Cư Trinh, Quận 1",
+			"lat": "10.764007",
+			"lng": "106.691477"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "158 Trần Quang Khải, P.Tân Định, Quận 1",
+			"lat": "10.791837",
+			"lng": "106.690283"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "15B Nơ Trang Long, P.7, Quận Bình Thạnh",
+			"lat": "10.813429",
+			"lng": "106.700948"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "161 Grand View Nguyễn Đức Cảnh, P.Tân Phong, Quận 7",
+			"lat": "10.734034",
+			"lng": "106.721579"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "161 Nguyễn Thái Học, P.Phạm Ngũ Lão, Quận 1",
+			"lat": "10.768074",
+			"lng": "106.695046"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "162S Trường Chinh, P.12, Quận Tân Bình",
+			"lat": "10.803184",
+			"lng": "106.636318"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "163 Xô Viết Nghệ Tĩnh , P.17, Quận Bình Thạnh",
+			"lat": "10.81622",
+			"lng": "106.719311"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "170F Nơ Trang Long, P.12, Quận Bình Thạnh",
+			"lat": "10.804672",
+			"lng": "106.695135"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "172 Quốc Lộ 13, P.Hiệp Bình Chánh, Quận Thủ Đức",
+			"lat": "10.847033",
+			"lng": "106.731164"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "177 Hoàng Văn Thụ, P.8, Quận Phú Nhuận",
+			"lat": "10.7994",
+			"lng": "106.679636"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "183A Ngô Quyền, P.6, Quận 10",
+			"lat": "10.759528",
+			"lng": "106.665652"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "186 Nguyễn Văn Đậu, Phường 7, Quận Bình Thạnh",
+			"lat": "10.810767",
+			"lng": "106.690452"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "190 Đồng Đen, P.14, Quận Tân Bình",
+			"lat": "10.796616",
+			"lng": "106.645616"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "193 Phan Văn Trị, Phường 14, Quận Bình Thạnh",
+			"lat": "10.810317",
+			"lng": "106.695772"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "199 Nguyễn Tri Phương, P.9, Quận 5",
+			"lat": "10.755334",
+			"lng": "106.669226"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "199-201 Trần Vân Kiểu, P.10, Quận 6",
+			"lat": "10.740812",
+			"lng": "106.644561"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "1C Trương Quốc Dung, P.8, Quận Phú Nhuận",
+			"lat": "10.798932",
+			"lng": "106.672758"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "201 Trần Hưng Đạo, P.10, Quận 5",
+			"lat": "10.752883",
+			"lng": "106.671881"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "201 Điện Biên Phủ, P.25, Quận Bình Thạnh",
+			"lat": "10.80149",
+			"lng": "106.713297"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "213C-D Nguyễn Văn Cừ, P.13, Quận 5",
+			"lat": "10.75469",
+			"lng": "106.686283"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "21A Bùi Thị Xuân, P.Bến Thành, Quận 1",
+			"lat": "10.771553",
+			"lng": "106.690268"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "220 Bình Long, P.Phú Thạnh, Quận Tân Phú",
+			"lat": "10.782298",
+			"lng": "106.619712"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "230 Bà Hạt, P.9, Quận 10",
+			"lat": "10.765582",
+			"lng": "106.66886"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "24 Nguyễn Oanh, P.7, Quận Gò Vấp",
+			"lat": "10.835401",
+			"lng": "106.675593"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "243 Hai Bà Trưng, P.6, Quận 3",
+			"lat": "10.78712",
+			"lng": "106.692582"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "244 Phan Xích Long, P.2, Quận Phú Nhuận",
+			"lat": "10.801568",
+			"lng": "106.683007"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "247A Tôn Đản, P.15, Quận 4",
+			"lat": "10.761498",
+			"lng": "106.707862"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "254 Nguyễn Công Trứ, P.Nguyễn Thái Bình, Quận 1",
+			"lat": "10.767661",
+			"lng": "106.699936"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "256C Cách Mạng Tháng Tám, P.10, Quận 3",
+			"lat": "10.779368",
+			"lng": "106.679282"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "259 Đề Thám, P.Phạm Ngũ Lão, Quận 1",
+			"lat": "10.768242",
+			"lng": "106.693346"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "260 Nguyễn Thiện Thuật, P.3, Quận 3",
+			"lat": "10.766202",
+			"lng": "106.681944"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "286 Điện Biên Phủ, P.17, Quận Bình Thạnh",
+			"lat": "10.801589",
+			"lng": "106.712358"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "291 Hoàng Diệu, P.6, Quận 4",
+			"lat": "10.765566",
+			"lng": "106.707911"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "294 Nguyễn Thái Sơn, P.4, Quận Gò Vấp",
+			"lat": "10.827906",
+			"lng": "106.691066"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "2A4 Nguyễn Thị Minh Khai, P.Đa Kao, Quận 1",
+			"lat": "10.775659",
+			"lng": "106.700424"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "3 Đường 17A, KCD Tên Lửa, Quận Bình Tân",
+			"lat": "10.746626",
+			"lng": "106.612287"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "32 An Dương Vương, P.9, Quận 5",
+			"lat": "10.757215",
+			"lng": "106.673479"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "32C Ngô Quyền, Quận 5",
+			"lat": "10.758284",
+			"lng": "106.664207"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "33 Bis Trần Quang Khải, P.Tân Định, Quận 1",
+			"lat": "10.794204",
+			"lng": "106.69371"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "33 Thạch Lam, P.Hiệp Tân, Quận Tân Phú",
+			"lat": "10.776296",
+			"lng": "106.632166"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "339 Phạm Thế Hiển, P.3, Quận 8",
+			"lat": "10.743676",
+			"lng": "106.67143"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "35 Nguyễn Chánh Sắt, P.13, Quận Tân Bình",
+			"lat": "10.805748",
+			"lng": "106.646191"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "356 Tân Sơn Nhì, P.Tân Sơn Nhì, Quận Tân Phú",
+			"lat": "10.794015",
+			"lng": "106.628846"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "370 Nguyễn Chí Thanh, P.15, Quận 10",
+			"lat": "10.759537",
+			"lng": "106.666033"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "372 Lê Đức Thọ, P.6, Quận Gò Vấp",
+			"lat": "10.841629",
+			"lng": "106.677047"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "389 Đinh Bộ Lĩnh, P.26, Quận Bình Thạnh",
+			"lat": "10.811907",
+			"lng": "106.709338"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "399 Nguyễn Trọng Tuyển, P.2, Quận Tân Bình",
+			"lat": "10.798596",
+			"lng": "106.663105"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "40 D2, P.25, Quận Bình Thạnh",
+			"lat": "10.803117",
+			"lng": "106.715769"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "413 Hoàng Văn Thụ, P.2, Quận Tân Bình",
+			"lat": "10.799275",
+			"lng": "106.660035"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "44 Cao Thắng, P.5, Quận 3",
+			"lat": "10.768633",
+			"lng": "106.683748"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "44 Trương Quốc Dung, P.10, Quận Phú Nhuận",
+			"lat": "10.798896",
+			"lng": "106.672749"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "44/17 Nguyễn Thông, P.9, Quận 3",
+			"lat": "10.779563",
+			"lng": "106.681947"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "440 Hai Bà Trưng, P.Tân Định, Quận 1",
+			"lat": "10.791647",
+			"lng": "106.687393"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "45 Xô Viết Nghệ Tĩnh, P.19, Quận Bình Thạnh",
+			"lat": "10.809396",
+			"lng": "106.712149"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "46 Hòa Bình, P.15, Quận 11",
+			"lat": "10.767032",
+			"lng": "106.64185"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "471 Sư Vạn Hạnh, P.12, Quận 10",
+			"lat": "10.770102",
+			"lng": "106.670499"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "475 Điện Biên Phủ, P.25, Quận Bình Thạnh",
+			"lat": "10.801604",
+			"lng": "106.712159"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "482 Trần Hưng Đạo, P.14, Quận 5",
+			"lat": "10.752877",
+			"lng": "106.671801"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "519 Hoàng Văn Thụ, P.4, Quận Tân Bình",
+			"lat": "10.795963",
+			"lng": "106.656583"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "53 Võ Văn Ngân, P.Linh Chiều, Quận Thủ Đức",
+			"lat": "10.851528",
+			"lng": "106.758"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "539 Tùng Thiện Vương, P.12, Quận 8",
+			"lat": "10.748984",
+			"lng": "106.666664"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "54 Nguyễn Du, P.Bến Nghé, Quận 1",
+			"lat": "10.781862",
+			"lng": "106.701531"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "55 Hậu Giang, P.2, Quận 6",
+			"lat": "10.748603",
+			"lng": "106.636149"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "57 Ngô Tất Tố, P.21, Quận Bình Thạnh",
+			"lat": "10.792158",
+			"lng": "106.709403"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "58 Võ Thị Sáu, P.Tân Định, Quận 1",
+			"lat": "10.789658",
+			"lng": "106.693522"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "59 Bùi Hữu Nghĩa, P.5, Quận 5",
+			"lat": "10.750861",
+			"lng": "106.675317"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "6 Cách Mạng Tháng Tám, P.Bến Thành, Quận 1",
+			"lat": "10.771754",
+			"lng": "106.693249"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "612 Lê Văn Lương, P.Tân Phong, Quận 7",
+			"lat": "10.71377",
+			"lng": "106.701035"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "617 Thống Nhất, P.16, Quận Gò Vấp",
+			"lat": "10.836014",
+			"lng": "106.664681"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "62 Phạm Viết Chánh, P.19, Quận Bình Thạnh",
+			"lat": "10.79036",
+			"lng": "106.709142"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "64 Lữ Gia, P.15, Quận 11",
+			"lat": "10.770932",
+			"lng": "106.654233"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "64 Nguyên Hồng, Bình Thạnh",
+			"lat": "10.818038",
+			"lng": "106.693083"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "65 Đào Duy Từ, P.5, Quận 10",
+			"lat": "10.759899",
+			"lng": "106.667003"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "66 Nguyễn Cửu Vân, P.17, Quận Bình Thạnh",
+			"lat": "10.795026",
+			"lng": "106.708626"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "67 Bùi Đình Túy, P.24, Quận Bình Thạnh",
+			"lat": "10.808461",
+			"lng": "106.708193"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "67 Hồ Xuân Hương, P.6, Quận 3",
+			"lat": "10.776739",
+			"lng": "106.68742"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "67/26 Đinh Tiên Hoàng, P.2, Quận Bình Thạnh",
+			"lat": "10.795892",
+			"lng": "106.694484"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "7 Nguyễn Duy Dương, P.8, Quận 5",
+			"lat": "10.755726",
+			"lng": "106.672013"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "7 Nguyễn Văn Bảo, P.4, Quận Gò Vấp",
+			"lat": "10.82096",
+			"lng": "106.687304"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "718 Trần Hưng Đạo, P.2, Quận 5",
+			"lat": "10.754576",
+			"lng": "106.677669"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "75Bis Tôn Thất Thuyết, Quận 4",
+			"lat": "10.753605",
+			"lng": "106.716869"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "76 Đinh Tiên Hoàng, P.Đa Kao, Quận 1",
+			"lat": "10.79015",
+			"lng": "106.698077"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "778 Nguyễn Trãi, P.11, Quận 5",
+			"lat": "10.759064",
+			"lng": "106.683319"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "79 Hồng Lạc, Phường 10, Quận Tân Bình",
+			"lat": "10.787493",
+			"lng": "106.645004"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "79 Nguyễn Thượng Hiền, P.5, Quận 3",
+			"lat": "10.776293",
+			"lng": "106.682664"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "79 Xuân Hồng, P.12, Quận Tân Bình",
+			"lat": "10.794643",
+			"lng": "106.652667"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "8A/3D2 Thái Văng Lung, P.Bến Nghé, Quận 1",
+			"lat": "10.779236",
+			"lng": "106.704855"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "94 Nguyễn Thị Tần, P.2, Quận 8",
+			"lat": "10.748482",
+			"lng": "106.684872"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "98 Nguyễn Biểu, P.1, Quận 5",
+			"lat": "10.755543",
+			"lng": "106.684029"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "Lô T2-4 Đường D1, Khu Công Nghệ Cao, Quận 9",
+			"lat": "10.808814",
+			"lng": "106.778344"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "N26 Đường số 37, Khu dân cư Tân Quy Đông, Phường Tân Phong, Quận 7, TPHCM",
+			"lat": "10.737794",
+			"lng": "106.711648"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "S25-1 Sky Garden Nguyễn Văn Linh, P.Tân Phong, Quận 7",
+			"lat": "10.729371",
+			"lng": "106.708358"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "SC3-1 Mỹ Khánh 4 Nguyễn Đức Cảnh, P.Tân Phong, Quận 7",
+			"lat": "10.722846",
+			"lng": "106.709789"
+		},
+		{
+			"title": "Shop & Go",
+			"address": "SD4-1 Cảnh Viên 1, Phú Mỹ Hưng, Quận 7",
+			"lat": "10.734034",
+			"lng": "106.721579"
+		}
+	]
+}
