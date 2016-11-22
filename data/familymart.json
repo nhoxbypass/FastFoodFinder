@@ -1,0 +1,326 @@
+{
+  "markers_add":[
+    {
+      "title":"Cửa hàng Saigon Sky Garden",
+      "address":"20 Lê Thánh Tôn, P. Bến Nghé, Q.1, Hồ Chí Minh",
+      "lat":"10.781252",
+      "lng":"106.704724"
+    }
+    ,
+    {
+      "title":"Cửa hàng ZENPLAZA",
+      "address":"Hầm B1, ZENPLAZA, 54-56 Nguyễn Trãi, P. Bến Thành, Q.1, Hồ Chí Minh",
+      "lat":"10.770787",
+      "lng":"106.692021"
+    }
+    ,
+    {
+      "title":"Cửa hàng 126 Lý Tự Trọng",
+      "address":"126 Lý Tự Trọng., P. Bến Thành, Q.1, Hồ Chí Minh",
+      "lat":"10.773922",
+      "lng":"106.696701"
+    }
+    ,
+    {
+      "title":"Cửa hàng 134 Pasteur",
+      "address":"134 Pasteur, P. Bến Nghé, Q.1, Hồ Chí Minh",
+      "lat":"10.774981",
+      "lng":"106.700919"
+    }
+    ,
+    {
+      "title":"Cửa hàng 58 Pasteur",
+      "address":"58 Pasteur, P. Bến Nghé, Q.1, Hồ Chí Minh",
+      "lat": "10.771577",
+      "lng":"106.702389"
+    }
+   ,
+    {
+      "title":"Cửa hàng 16 Quốc Hương",
+      "address":"16 Quốc Hương, P. Thảo Điền, Q.2, Hồ Chí Minh",
+      "lat": "10.803613",
+      "lng":"106.732071"
+    }
+    ,
+    {
+      "title":"Cửa hàng 138 Lý Chính Thắng",
+      "address":"138 Lý Chính Thắng, P.7, Q.3, Hồ Chí Minh",
+      "lat":"10.787451",
+      "lng":"106.68471"
+    }
+    ,
+    {
+      "title":"Cửa hàng 242G Nguyễn Đình Chiểu",
+      "address":"242G – 244 Nguyễn Đình Chiểu, P.6, Q.3, Hồ Chí Minh",
+      "lat":"10.777483",
+      "lng":"106.689096"
+    }
+    ,
+    {
+      "title":"Cửa hàng 598-600 Cách Mạng Tháng 8",
+      "address":"598-600 Cách Mạng Tháng 8, P.11, Q.3, Hồ Chí Minh",
+      "lat":"16.01402",
+      "lng":"108.196846"
+    }
+    ,
+    {
+      "title":"Cửa hàng 199C Cách Mạng Tháng 8",
+      "address":"199C Cách Mạng Tháng 8, P.4, Q.3, Hồ Chí Minh",
+      "lat":"10.785405",
+      "lng":"106.670769"
+    }
+    ,
+    {
+      "title":"Cửa hàng 454 Lê Văn Sỹ",
+      "address":"454 Lê Văn Sỹ, P.14, Q.3, Hồ Chí Minh",
+      "lat":"10.789123",
+      "lng":"106.675901"
+    }
+    ,
+    {
+      "title":"Cửa hàng 60B Võ Văn Tần",
+      "address":"60B Võ Văn Tần, P.6, Q.3, Hồ Chí Minh",
+      "lat":"10.776735",
+      "lng":"106.690266"
+    }
+    ,
+    {
+      "title":"Cửa hàng 23 Lê Quý Đôn",
+      "address":"23 Lê Quý Đôn, P.6, Q.3, Hồ Chí Minh",
+      "lat": "10.78182",
+      "lng":"106.690205"
+    }
+    ,
+    {
+      "title":"Cửa hàng 78 – 80 Lý Chính Thắng",
+      "address":"78 – 80 Lý Chính Thắng, P.6, Q.3, Hồ Chí Minh",
+      "lat":"10.790788",
+      "lng":"106.684492"
+    }
+    ,
+    {
+      "title":"Cửa hàng 77 Trần Bình Trọng",
+      "address":"77 Trần Bình Trọng, P.1, Q.5, Hồ Chí Minh",
+      "lat":"10.754439",
+      "lng":"106.681757"
+    }
+    ,
+    {
+      "title":"Cửa hàng cao ốc Tản Đà",
+      "address":"Cao ốc Tản Đà, 86 Tản Đà., P.11, Q.5, Hồ Chí Minh",
+      "lat":"10.753201",
+      "lng":"106.664507"
+    }
+    ,
+    {
+      "title":"Cửa hàng 202E Sư Vạn Hạnh",
+      "address":"202E Sư Vạn Hạnh, P.9, Q.5, Hồ Chí Minh",
+      "lat":"10.76121",
+      "lng":"106.67324"
+    }
+    ,
+    {
+      "title":"Cửa hàng 37C Thuận Kiều",
+      "address":"37C Thuận Kiều, P.12, Q.5, Hồ Chí Minh",
+      "lat":"10.756626",
+      "lng":"106.658109"
+    }
+    ,
+    {
+      "title":"Cửa hàng Hùng Vương Square",
+      "address":"100 Hùng Vương, P.9, Q.5, Hồ Chí Minh",
+      "lat":"10.758944",
+      "lng":"106.670405"
+    }
+    ,
+    {
+      "title":"Cửa hàng Riverside Residence",
+      "address":"Block E, Riverside Residence, 180 Nguyễn Lương Bằng, P. Tân Phú, PMH, Q.7, Hồ Chí Minh",
+      "lat":"10.727178",
+      "lng":"106.722644"
+    }
+    ,
+    {
+      "title":"Cửa hàng PetroLand Tower",
+      "address":"PetroLand Tower, 12 Tân Trào, P. Tân Phú, PMH, Q.7, Hồ Chí Minh",
+      "lat":"10.729073",
+      "lng":"106.723543"
+    }
+    ,
+    {
+      "title":"Cửa hàng Garden Plaza",
+      "address":"23 Lý Long Tường, Garden Plaza 2, P. Tân Phong, PMH, Q.7, Hồ Chí Minh",
+      "lat":"10.723629",
+      "lng":"106.712391"
+    }
+    ,
+    {
+      "title":"Cửa hàng 7A/162 Thành Thái",
+      "address":"7A/162 Thành Thái, P.14, Q.10, Hồ Chí Minh",
+      "lat":"10.772026",
+      "lng":"106.661383"
+    }
+    ,
+    {
+      "title":"Cửa hàng 299 Nguyễn Tri Phương",
+      "address":"299 Nguyễn Tri Phương, P.5, Q.10, Hồ Chí Minh",
+      "lat":"10.761449",
+      "lng":"106.66833"
+    }
+    ,
+    {
+      "title":"Cửa hàng 145 Vĩnh Viễn",
+      "address":"145 Vĩnh Viễn, P.4, Q.10, Hồ Chí Minh",
+      "lat":"10.764357",
+      "lng":"106.670811"
+    }
+    ,
+    {
+      "title":"Cửa hàng 106 Trần Nhân Tôn",
+      "address":"106 Trần Nhân Tôn, P.2, Q.10, Hồ Chí Minh",
+      "lat":"10.764056",
+      "lng":"106.674572"  
+    }
+    ,
+    {
+      "title":"Cửa hàng 188E Phan Văn Trị",
+      "address":"188E Phan Văn Trị, P.12, Q. Bình Thạnh, Hồ Chí Minh",
+      "lat":"10.813762",
+      "lng":"106.695372"
+    }
+    ,
+    {
+      "title":"Cửa hàng 162 D2",
+      "address":"162 D2, P.25, Q. Bình Thạnh, Hồ Chí Minh",  
+      "lat":"10.806547",
+      "lng":"106.716077"
+    }
+    ,
+    {
+      "title":"Cửa hàng Bùi Hữu Nghĩa",
+      "address":"297D Bùi Hữu Nghĩa,P.1, Q. Bình Thạnh, Hồ Chí Minh",
+      "lat":"10.799232",
+      "lng":"106.699331"
+    }
+    ,
+    {
+      "title":"Cửa hàng Xô Viết Nghệ Tĩnh",
+      "address":"206 Xô Viết Nghệ Tĩnh, P.21, Q. Bình Thạnh, Hồ Chí Minh",
+      "lat":"10.798246",
+      "lng":"106.711151"
+    }
+    ,
+    {
+      "title":"Cửa hàng 74 D1",
+      "address":"74 D1, P.25, Q. Bình Thạnh, Hồ Chí Minh",
+      "lat":"10.80219",
+      "lng":"106.718954"
+    }
+    ,
+    {
+      "title":"Cửa hàng 39 D2",
+      "address":"39 D1, P.25, Q. Bình Thạnh, Hồ Chí Minh",
+      "lat":"10.802135",
+      "lng":"106.719109"
+    }
+    ,
+    {
+      "title":"Cửa hàng 14B9 Ngô Tất Tố",
+      "address":"14B9 Ngô Tất Tố, P.9, Q. Bình Thạnh, Hồ Chí Minh",
+      "lat":"10.792142",
+      "lng":"106.711634"
+    }
+    ,
+    {
+      "title":"Cửa hàng 312 Điện Biên Phủ",
+      "address":"312 Điện Biên Phủ, P.17, Q. Bình Thạnh, Hồ Chí Minh",
+      "lat":"10.799478",
+      "lng":"106.707406"
+    }
+    ,
+    {
+      "title":"Cửa hàng 9 Thanh Đa",
+      "address":"9 Thanh Đa, P.27, Q. Bình Thạnh, Hồ Chí Minh",
+      "lat": "10.815865",
+      "lng":"106.717023"
+    }
+    ,
+    {
+      "title":"Cửa hàng Centre Point",
+      "address":"Phòng 1, Tòa nhà Centre Point, 106 Nguyễn Văn Trỗi, P.8, Q. Phú Nhuận, Hồ Chí Minh",
+      "lat":"10.797104",
+      "lng":"106.67331"
+    }
+    ,
+    {
+      "title":"Cửa hàng 129 Huỳnh Văn Bánh",
+      "address":"129 Huỳnh Văn Bánh, P.12, Q. Phú Nhuận, Hồ Chí Minh",
+      "lat":"10.790937",
+      "lng":"106.674105"
+    }
+    ,
+    {
+      "title":"Cửa hàng 89 Đặng Văn Ngữ",
+      "address":"89 Đặng Văn Ngữ, P.14, Q. Phú Nhuận, Hồ Chí Minh",
+      "lat":"10.792689",
+      "lng":"106.668405"
+    }
+    ,
+    {
+      "title":"Cửa hàng KTX ĐH Quốc Gia",
+      "address":"Tầng trệt, khối A3-1, khu B, KTX ĐH Quốc Gia, Q. Thủ Đức, Hồ Chí Minh",
+      "lat":"10.883428",
+      "lng":"106.782497"
+    }
+    ,
+    {
+      "title":"Cửa hàng 362 Võ Văn Ngân",
+      "address":"362 Võ Văn Ngân,P. Bình Thọ, Q. Thủ Đức, Hồ Chí Minh",
+      "lat":"10.849481",
+      "lng":"106.771618"
+    }
+    ,
+    {
+      "title":"Cửa hàng 289 Võ Văn Ngân",
+      "address":"289 Võ Văn Ngân, P. Linh Chiểu, Q. Thủ Đức, Hồ Chí Minh",
+      "lat":"10.849711",
+      "lng":"106.769824"
+    }
+    ,
+    {
+      "title":"Cửa hàng Đại Học Ngân Hàng.",
+      "address":"56 Hoàng Diệu, P. Linh Chiểu, Q. Thủ Đức, Hồ Chí Minh",
+      "lat":"10.857588",
+      "lng":"106.76355"
+    }
+    ,
+    {
+      "title":"Cửa hàng 331A Nguyễn Thái Bình",
+      "address":"331A Nguyễn Thái Bình, P.12, Q. Tân Bình, Hồ Chí Minh",
+      "lat": "10.796419",
+      "lng":"106.652619"
+    }
+    ,
+    {
+      "title":"Cửa hàng 400 Lê Văn Sỹ",
+      "address":"Cửa hàng 400 Lê Văn Sỹ, P.2, Q. Tân Bình, Hồ Chí Minh",
+      "lat":"10.798659",
+      "lng":"106.662741"
+    }
+    ,
+    {
+      "title":"Cửa hàng 60 Thái Thị Nhạn",
+      "address":"60 Thái Thị Nhạn, P.10, Q. Tân Bình, Hồ Chí Minh",
+      "lat":"10.784621",
+      "lng":"106.644134"
+    }
+    ,
+    {
+      "title":"Cửa hàng Hikari",
+      "address":"Lô A11, A12, A16 Đường Lý Thái Tổ (TP mới Bình Dương), P.Hòa Phú, Tp. Thủ Dầu Một, Tỉnh Bình Dương, Hồ Chí Minh",
+      "lat":"11.0565667",
+      "lng":"106.6698701"
+    }
+    
+    ]
+}
