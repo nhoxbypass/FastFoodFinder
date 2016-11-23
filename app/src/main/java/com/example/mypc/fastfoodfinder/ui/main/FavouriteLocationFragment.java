@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 
 import com.example.mypc.fastfoodfinder.helper.DividerItemDecoration;
 import com.example.mypc.fastfoodfinder.R;
-import com.example.mypc.fastfoodfinder.adapter.RecentlyLocationAdapter;
+import com.example.mypc.fastfoodfinder.adapter.FavouriteLocationAdapter;
 import com.example.mypc.fastfoodfinder.helper.OnStartDragListener;
 import com.example.mypc.fastfoodfinder.helper.SimpleItemTouchHelperCallback;
 import com.example.mypc.fastfoodfinder.model.Article;
@@ -20,20 +20,19 @@ import com.example.mypc.fastfoodfinder.model.Article;
 import java.util.ArrayList;
 
 /**
- * Created by MyPC on 11/20/2016.
+ * Created by MyPC on 11/16/2016.
  */
-public class RecentlyLocationFragment extends Fragment implements OnStartDragListener {
+public class FavouriteLocationFragment extends Fragment implements OnStartDragListener {
     private RecyclerView rvDes;
-    private RecentlyLocationAdapter adapter;
+    private FavouriteLocationAdapter adapter;
     LinearLayoutManager linearLayoutManager;
     private ItemTouchHelper mItemTouchHelper;
-
-    public RecentlyLocationFragment() {
+    public FavouriteLocationFragment() {
     }
-
-    public static RecentlyLocationFragment newInstance(){
+;
+    public static FavouriteLocationFragment newInstance(){
         Bundle args = new Bundle();
-        RecentlyLocationFragment fragment = new RecentlyLocationFragment();
+        FavouriteLocationFragment fragment = new FavouriteLocationFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -41,14 +40,14 @@ public class RecentlyLocationFragment extends Fragment implements OnStartDragLis
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_recently_location,container,false);
-        rvDes = (RecyclerView) rootView.findViewById(R.id.rvCurrentDes);
+        View rootView = inflater.inflate(R.layout.fragment_favourited_location,container,false);
+        rvDes = (RecyclerView) rootView.findViewById(R.id.rvFavouriteDes);
         return rootView;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState){
-        adapter = new RecentlyLocationAdapter(this);
+        adapter = new FavouriteLocationAdapter(this);
         linearLayoutManager = new LinearLayoutManager(getContext()) ;
         rvDes.setLayoutManager(linearLayoutManager);
         rvDes.setAdapter(adapter);
@@ -58,11 +57,13 @@ public class RecentlyLocationFragment extends Fragment implements OnStartDragLis
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
         mItemTouchHelper = new ItemTouchHelper(callback);
         mItemTouchHelper.attachToRecyclerView(rvDes);
+        //client = TwitterApplication.getRestClient();
         Load();
     }
 
 
     private void Load(){
+
         ArrayList<Article> articles = new ArrayList<>();
         articles.add(new Article("Circle K Nguyen van cu","1A"));
         articles.add(new Article("Nha","ho thi ky"));

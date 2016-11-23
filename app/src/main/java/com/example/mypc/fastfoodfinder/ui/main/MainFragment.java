@@ -391,24 +391,6 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
         });
     }
 
-    String openJSONFromResource() throws IOException {
-        InputStream is = getResources().openRawResource(R.raw.circle_k);
-        Writer writer = new StringWriter();
-        char[] buffer = new char[1024];
-        try {
-            Reader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
-            int n;
-            while ((n = reader.read(buffer)) != -1) {
-                writer.write(buffer, 0, n);
-            }
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }  finally {
-            is.close();
-        }
-
-        return writer.toString();
-    }
 
     void addMarkersToMap(List<Store> list, GoogleMap googleMap)
     {

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp">
+
+    <ImageView
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_clock"
+        android:layout_gravity="center_vertical"/>
+    <RelativeLayout
+        android:layout_width="190dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Circle K Nguyen Van Cu"
+            android:id="@+id/tvCurDestination"
+            android:textStyle="bold"
+            android:textSize="16sp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvCurDestination"
+            android:id="@+id/tvCurAddress"
+            android:layout_marginTop="5dp"
+            android:textSize="12sp"
+            android:text="225, Nguyen Van Cu, Quan 5, HCM"/>
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2 Km"
+        android:layout_marginLeft="20dp"
+        />
+    <ImageView
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginLeft="20dp"
+        android:src="@drawable/ic_goto"
+        android:layout_gravity="center_vertical"
+        />
+
+</LinearLayout>
