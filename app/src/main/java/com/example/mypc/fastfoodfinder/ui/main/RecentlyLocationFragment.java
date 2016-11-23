@@ -2,6 +2,7 @@ package com.example.mypc.fastfoodfinder.ui.main;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +10,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import com.example.mypc.fastfoodfinder.helper.DividerItemDecoration;
 import com.example.mypc.fastfoodfinder.R;
@@ -27,6 +29,9 @@ public class RecentlyLocationFragment extends Fragment implements OnStartDragLis
     private RecentlyLocationAdapter adapter;
     LinearLayoutManager linearLayoutManager;
     private ItemTouchHelper mItemTouchHelper;
+    private FloatingActionButton fbChange;
+    public static boolean isfbChangeClicked = false;
+    FrameLayout frameLayout;
 
     public RecentlyLocationFragment() {
     }
@@ -43,12 +48,14 @@ public class RecentlyLocationFragment extends Fragment implements OnStartDragLis
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_recently_location,container,false);
         rvDes = (RecyclerView) rootView.findViewById(R.id.rvCurrentDes);
+        fbChange = (FloatingActionButton) rootView.findViewById(R.id.fbRecentlyChange);
+        frameLayout = (FrameLayout) rootView.findViewById(R.id.flRecParent);
         return rootView;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState){
-        adapter = new RecentlyLocationAdapter(this);
+        adapter = new RecentlyLocationAdapter(this, frameLayout);
         linearLayoutManager = new LinearLayoutManager(getContext()) ;
         rvDes.setLayoutManager(linearLayoutManager);
         rvDes.setAdapter(adapter);
@@ -58,6 +65,21 @@ public class RecentlyLocationFragment extends Fragment implements OnStartDragLis
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
         mItemTouchHelper = new ItemTouchHelper(callback);
         mItemTouchHelper.attachToRecyclerView(rvDes);
+        fbChange.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isfbChangeClicked)
+                {
+                    isfbChangeClicked = false;
+                    fbChange.setImageResource(R.drawable.ic_swap_vert_black_24dp);
+                }
+
+                else {
+                    isfbChangeClicked = true;
+                    fbChange.setImageResource(R.drawable.ic_swap_vert_black_24dp2);
+                }
+            }
+        });
         Load();
     }
 
@@ -73,6 +95,7 @@ public class RecentlyLocationFragment extends Fragment implements OnStartDragLis
     }
     @Override
     public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
+        if (isfbChangeClicked)
         mItemTouchHelper.startDrag(viewHolder);
     }
 }
