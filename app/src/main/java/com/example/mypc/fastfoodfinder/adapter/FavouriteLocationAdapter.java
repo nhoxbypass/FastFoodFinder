@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.example.mypc.fastfoodfinder.model.Article;
@@ -17,6 +18,7 @@ import com.example.mypc.fastfoodfinder.R;
 import com.example.mypc.fastfoodfinder.helper.ItemTouchHelperAdapter;
 import com.example.mypc.fastfoodfinder.helper.ItemTouchHelperViewHolder;
 import com.example.mypc.fastfoodfinder.helper.OnStartDragListener;
+import com.example.mypc.fastfoodfinder.ui.main.FavouriteLocationFragment;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,9 +33,11 @@ public class FavouriteLocationAdapter extends RecyclerView.Adapter<FavouriteLoca
     private OnItemClickListener mOnItemClickListener;
     private final OnStartDragListener mDragStartListener;
 
-    public FavouriteLocationAdapter(OnStartDragListener onStartDragListener){
+    View mView;
+    public FavouriteLocationAdapter(OnStartDragListener onStartDragListener, FrameLayout view){
         mDes = new ArrayList<>();
         mDragStartListener = onStartDragListener;
+        mView = view;
     }
 
     @Override
@@ -43,20 +47,44 @@ public class FavouriteLocationAdapter extends RecyclerView.Adapter<FavouriteLoca
         return new FavouriteDesViewHolder(itemView);
     }
 
+    private interface MyOnClickListener{
+
+    }
     @Override
-    public boolean onItemMove(int fromPosition, int toPosition) {
+    public boolean onItemMove(final int fromPosition, final int toPosition) {
         Collections.swap(mDes, fromPosition, toPosition);
         notifyItemMoved(fromPosition, toPosition);
+        Snackbar.make(mView, "Do you want to Undo?", Snackbar.LENGTH_LONG)
+                .setAction("UNDO", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Collections.swap(mDes,toPosition, fromPosition);
+                        notifyItemMoved(toPosition,fromPosition);
+                    }
+                })
+                .setDuration(30000)
+                .show();
         return true;
     }
 
     @Override
-    public void onItemDismiss(int position) {
+    public void onItemDismiss(final int position) {
+        final Article article = mDes.get(position);
         mDes.remove(position);
         notifyDataSetChanged();
         notifyItemRemoved(position);
-
+        Snackbar.make(mView, "Do you want to Undo?", Snackbar.LENGTH_LONG)
+                .setAction("UNDO", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mDes.add(position, article);
+                        notifyItemInserted(position);
+                    }
+                })
+                .setDuration(30000)
+                .show();
     }
+
 
     public interface OnItemClickListener{
         void onClick(Article des);
