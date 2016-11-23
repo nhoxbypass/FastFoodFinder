@@ -2,9 +2,6 @@ package com.example.mypc.fastfoodfinder.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
-import android.os.Handler;
-import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -34,13 +31,10 @@ public class SplashActivity extends AppCompatActivity {
 
     /** Duration of wait **/
     private final int SPLASH_DISPLAY_LENGTH = 1500;
-    private final String KEY_LOGIN = "login_displayed";
     SharedPreferences mSharedPreferences;
-    boolean isDisplayedLogin = false;
 
     public static final String KEY_FIRST_RUN = "firstRun";
     public boolean isFirstRun = false;
-    public boolean isDone = false;
 
     // Firebase instance variables
     private FirebaseAuth mFirebaseAuth;
@@ -54,12 +48,11 @@ public class SplashActivity extends AppCompatActivity {
 
         Realm.init(SplashActivity.this);
         mSharedPreferences = getSharedPreferences("com.example.mypc.fastfoodfinder", MODE_PRIVATE);
-        isDisplayedLogin = mSharedPreferences.getBoolean(KEY_LOGIN,false);
         isFirstRun = mSharedPreferences.getBoolean(KEY_FIRST_RUN, true);
 
         //Else
         if (isFirstRun) {
-            mReadDataOnce(new OnGetDataListener() {
+            readDataFromFirebase(new OnGetDataListener() {
                 @Override
                 public void onStart() {
 
@@ -67,33 +60,24 @@ public class SplashActivity extends AppCompatActivity {
 
                 @Override
                 public void onSuccess(DataSnapshot data) {
-                    if (!isDisplayedLogin) {
-                        SharedPreferences.Editor editor = mSharedPreferences.edit();
-                        editor.putBoolean(KEY_LOGIN, true);
-                        editor.apply();
-
-                        startMyActivity(LoginActivity.class);
+                    startMyActivity(LoginActivity.class);
+                    mSharedPreferences.edit().putBoolean(KEY_FIRST_RUN, false).apply();
+                    if (mFirebaseAuth != null) {
+                        mFirebaseAuth.signOut();
+                        Toast.makeText(SplashActivity.this, "Update database successfully", Toast.LENGTH_SHORT).show();
                     }
                 }
 
                 @Override
                 public void onFailed(DatabaseError databaseError) {
-
+                    Toast.makeText(SplashActivity.this, "Update database failed: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                    finish();
                 }
             });
         }
         else
         {
-            if (!isDisplayedLogin) {
-                SharedPreferences.Editor editor = mSharedPreferences.edit();
-                editor.putBoolean(KEY_LOGIN, true);
-                editor.apply();
-
-                startMyActivity(LoginActivity.class);
-            }
-            else {
-                startMyActivity(MainActivity.class);
-            }
+            startMyActivity(MainActivity.class);
         }
     }
 
@@ -110,7 +94,7 @@ public class SplashActivity extends AppCompatActivity {
         public void onFailed(DatabaseError databaseError);
     }
 
-    public void mReadDataOnce(final OnGetDataListener listener) {
+    public void readDataFromFirebase(final OnGetDataListener listener) {
         listener.onStart();
         // Do first run stuff here then set 'firstrun' as false
         // using the following line to edit/commit prefs
@@ -161,7 +145,5 @@ public class SplashActivity extends AppCompatActivity {
         } else {
             Log.d("MAPP", "signInAnonymously outside");
         }
-
-        mSharedPreferences.edit().putBoolean(KEY_FIRST_RUN, false).apply();
     }
 }

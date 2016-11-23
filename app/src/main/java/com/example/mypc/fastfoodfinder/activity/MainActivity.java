@@ -2,6 +2,7 @@ package com.example.mypc.fastfoodfinder.activity;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -30,9 +32,12 @@ import android.widget.Toast;
 import com.example.mypc.fastfoodfinder.R;
 import com.example.mypc.fastfoodfinder.adapter.MainPagerAdapter;
 import com.example.mypc.fastfoodfinder.ui.main.BlankFragment;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -47,11 +52,16 @@ public class MainActivity extends AppCompatActivity {
     View mHeaderLayout;
     @BindView(R.id.appbar_main) View mAppbarMainLayout;
     LinearLayout mNavHeaderContainer;
-    ImageView mNavHeaderAvatar;
+    CircleImageView mNavHeaderAvatar;
     TextView mNavHeaderName;
     TextView mNavHeaderScreenName;
+    Button mNavHeaderSignIn;
     SearchView mSearchView;
     MainPagerAdapter mPagerAdapter;
+
+    // Firebase instance variables
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseUser mFirebaseUser;
 
 
 
@@ -75,9 +85,28 @@ public class MainActivity extends AppCompatActivity {
         mDrawerToggle = setupDrawerToggle();
         mHeaderLayout = mNavigationView.getHeaderView(0);
         mNavHeaderContainer = (LinearLayout) mHeaderLayout.findViewById(R.id.nav_header_container);
-        mNavHeaderAvatar = (ImageView) mHeaderLayout.findViewById(R.id.nav_header_avatar);
-        mNavHeaderName = (TextView) mHeaderLayout.findViewById(R.id.nav_header_name);
-        mNavHeaderScreenName = (TextView)mHeaderLayout.findViewById(R.id.nav_header_screenname);
+        mNavHeaderAvatar = (CircleImageView) mHeaderLayout.findViewById(R.id.iv_nav_header_avatar);
+        mNavHeaderName = (TextView) mHeaderLayout.findViewById(R.id.tv_nav_header_name);
+        mNavHeaderScreenName = (TextView)mHeaderLayout.findViewById(R.id.tv_nav_header_screenname);
+        mNavHeaderSignIn = (Button) mHeaderLayout.findViewById(R.id.btn_nav_header_signin);
+
+        // Initialize Firebase Auth
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+        if (mFirebaseUser == null) {
+            mNavHeaderName.setVisibility(View.GONE);
+            mNavHeaderScreenName.setVisibility(View.GONE);
+            mNavHeaderSignIn.setVisibility(View.VISIBLE);
+        }
+
+        mNavHeaderSignIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
 
 

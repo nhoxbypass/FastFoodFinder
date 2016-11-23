@@ -7,12 +7,12 @@
     android:padding="16dp"
     android:id="@+id/nav_header_container"
     android:background="@color/googleBlue">
-    <ImageView
-        android:id="@+id/nav_header_avatar"
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/iv_nav_header_avatar"
         android:layout_marginTop="24dp"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:src="@drawable/logo_circle_k"
+        android:src="@drawable/ic_account"
         android:scaleType="centerCrop" />
     <TextView
         android:layout_width="wrap_content"
@@ -21,13 +21,23 @@
         android:textSize="16sp"
         android:textColor="@android:color/white"
         android:text="Đoàn Hiếu Tâm"
-        android:id="@+id/nav_header_name"/>
+        android:id="@+id/tv_nav_header_name"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="14sp"
         android:textColor="@android:color/white"
         android:text="\@xataora_tn25"
-        android:id="@+id/nav_header_screenname"/>
+        android:id="@+id/tv_nav_header_screenname"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_nav_header_signin"
+        android:layout_marginTop="8dp"
+        android:background="@android:color/transparent"
+        android:textColor="@color/colorWhite"
+        android:text="Sign In"
+        android:visibility="gone"
+        />
 
 </LinearLayout>

@@ -52,23 +52,30 @@
             android:text="SKIP"
             android:textColor="@color/colorWhite"
             android:layout_gravity="bottom"/>
-        <Button
+        <com.facebook.login.widget.LoginButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
             android:layout_marginBottom="8dp"
-            android:id="@+id/btn_sign_in"
+            android:id="@+id/btn_facebook_signin"
+            android:textSize="16sp"
             android:layout_above="@id/btn_skip"
-            android:text="SIGN IN"
-            android:background="#9B424242"
             android:textColor="@color/colorWhite"
             android:layout_gravity="bottom"/>
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/btn_google_signin"
+            android:layout_above="@id/btn_facebook_signin"
+            android:layout_marginBottom="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <Button
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_marginBottom="8dp"
             android:id="@+id/btn_join_now"
-            android:layout_above="@id/btn_sign_in"
+            android:layout_above="@id/btn_google_signin"
             android:background="@color/googleBlue"
             android:text="JOIN NOW"
             android:textColor="@color/colorWhite"

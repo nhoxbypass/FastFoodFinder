@@ -26,6 +26,16 @@
         <item name="android:textSize">14sp</item>
     </style>
 
+    <style name="LoginTheme" parent="FirebaseUI">
+        <item name="colorPrimary">@color/material_green_500</item>
+        <item name="colorPrimaryDark">@color/material_green_700</item>
+        <item name="colorAccent">@color/material_purple_a700</item>
+        <item name="colorControlNormal">@color/material_green_500</item>
+        <item name="colorControlActivated">@color/material_lime_a700</item>
+        <item name="colorControlHighlight">@color/material_green_a200</item>
+        <item name="android:windowBackground">@drawable/background</item>
+    </style>
+
     <style name="TextInfo">
         <item name="android:drawablePadding">4dp</item>
         <item name="android:background">?attr/selectableItemBackground</item>

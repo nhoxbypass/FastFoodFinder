@@ -5,7 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.example.mypc.fastfoodfinder.ui.main.FavouriteLocationFragment;
+import com.example.mypc.fastfoodfinder.ui.main.FavouritedLocationFragment;
 import com.example.mypc.fastfoodfinder.ui.main.MainFragment;
 import com.example.mypc.fastfoodfinder.ui.main.RecentlyLocationFragment;
 
@@ -32,7 +32,7 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
             case 1:
                 return RecentlyLocationFragment.newInstance();
             case 2:
-                return FavouriteLocationFragment.newInstance();
+                return FavouritedLocationFragment.newInstance();
 
         }
 
