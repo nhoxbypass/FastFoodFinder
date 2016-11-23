@@ -2,6 +2,7 @@ package com.example.mypc.fastfoodfinder.ui.main;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +10,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import com.example.mypc.fastfoodfinder.helper.DividerItemDecoration;
 import com.example.mypc.fastfoodfinder.R;
@@ -18,21 +20,25 @@ import com.example.mypc.fastfoodfinder.helper.SimpleItemTouchHelperCallback;
 import com.example.mypc.fastfoodfinder.model.Article;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by MyPC on 11/16/2016.
  */
-public class FavouritedLocationFragment extends Fragment implements OnStartDragListener {
+public class FavouriteLocationFragment extends Fragment implements OnStartDragListener {
     private RecyclerView rvDes;
     private FavouriteLocationAdapter adapter;
     LinearLayoutManager linearLayoutManager;
     private ItemTouchHelper mItemTouchHelper;
-    public FavouritedLocationFragment() {
+    private FloatingActionButton fbChangePosition;
+    static boolean isfbChangeClicked = false;
+    FrameLayout flLayout;
+    public FavouriteLocationFragment() {
     }
 ;
-    public static FavouritedLocationFragment newInstance(){
+    public static FavouriteLocationFragment newInstance(){
         Bundle args = new Bundle();
-        FavouritedLocationFragment fragment = new FavouritedLocationFragment();
+        FavouriteLocationFragment fragment = new FavouriteLocationFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -42,12 +48,14 @@ public class FavouritedLocationFragment extends Fragment implements OnStartDragL
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_favourited_location,container,false);
         rvDes = (RecyclerView) rootView.findViewById(R.id.rvFavouriteDes);
+        flLayout = (FrameLayout) rootView.findViewById(R.id.flFavParent);
+        fbChangePosition = (FloatingActionButton) rootView.findViewById(R.id.fbFavoriteChange);
         return rootView;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState){
-        adapter = new FavouriteLocationAdapter(this);
+        adapter = new FavouriteLocationAdapter(this, flLayout);
         linearLayoutManager = new LinearLayoutManager(getContext()) ;
         rvDes.setLayoutManager(linearLayoutManager);
         rvDes.setAdapter(adapter);
@@ -58,6 +66,22 @@ public class FavouritedLocationFragment extends Fragment implements OnStartDragL
         mItemTouchHelper = new ItemTouchHelper(callback);
         mItemTouchHelper.attachToRecyclerView(rvDes);
         //client = TwitterApplication.getRestClient();
+        fbChangePosition.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isfbChangeClicked)
+                {
+                    isfbChangeClicked = false;
+                    fbChangePosition.setImageResource(R.drawable.ic_swap_vert_black_24dp);
+                }
+
+                else {
+                    isfbChangeClicked = true;
+                    fbChangePosition.setImageResource(R.drawable.ic_swap_vert_black_24dp2);
+                }
+            }
+        });
+
         Load();
     }
 
@@ -74,6 +98,8 @@ public class FavouritedLocationFragment extends Fragment implements OnStartDragL
     }
     @Override
     public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
+        if (isfbChangeClicked)
         mItemTouchHelper.startDrag(viewHolder);
+
     }
 }
