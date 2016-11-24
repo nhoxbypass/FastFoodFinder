@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".activity.SettingActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/SettingsCategoryText"
+            android:text="Share app" />
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardElevation="4dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_share"
+                style="@style/SettingsOptionsText"
+                android:text="Share app with friends"
+                android:id="@+id/tv_setting_share_app"/>
+        </android.support.v7.widget.CardView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/SettingsCategoryText"
+            android:text="General" />
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardElevation="4dp">
+            <android.support.v7.widget.SwitchCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="6dp"
+                android:id="@+id/sw_metric"
+                android:layout_gravity="right|end|top"
+                android:gravity="center_vertical"/>
+            <android.support.v7.widget.SwitchCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
+                android:id="@+id/sw_languages"
+                android:layout_gravity="right|end|bottom"
+                android:gravity="center_vertical"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_metric"
+                    style="@style/SettingsOptionsText"
+                    android:text="Use metric units"
+                    android:id="@+id/tv_setting_change_metric"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_translate"
+                    style="@style/SettingsOptionsText"
+                    android:text="English"
+                    android:id="@+id/tv_setting_english"/>
+            </LinearLayout>
+
+
+        </android.support.v7.widget.CardView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/SettingsCategoryText"
+            android:text="Profile" />
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardElevation="4dp">
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:orientation="vertical">
+               <TextView
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:drawableLeft="@drawable/ic_profile"
+                   style="@style/SettingsOptionsText"
+                   android:text="Edit your profile"
+                   android:id="@+id/tv_setting_edit_profile"/>
+               <TextView
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:drawableLeft="@drawable/ic_security"
+                   style="@style/SettingsOptionsText"
+                   android:text="Change your password"
+                   android:id="@+id/tv_setting_change_password"/>
+               <TextView
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:drawableLeft="@drawable/ic_security"
+                   style="@style/SettingsOptionsText"
+                   android:text="Change your email"
+                   android:id="@+id/tv_setting_change_email"/>
+           </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/SettingsCategoryText"
+            android:text="Notifications" />
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardElevation="4dp">
+            <android.support.v7.widget.SwitchCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="6dp"
+                android:id="@+id/sw_notification"
+                android:layout_gravity="right|end|top"
+                android:gravity="center_vertical"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_profile"
+                    style="@style/SettingsOptionsText"
+                    android:text="Set notifications"
+                    android:id="@+id/tv_setting_notification"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_security"
+                    style="@style/SettingsOptionsText"
+                    android:text="Email"
+                    android:id="@+id/tv_setting_notification_email"/>
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/SettingsCategoryText"
+            android:text="Support" />
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardElevation="4dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_about"
+                    style="@style/SettingsOptionsText"
+                    android:text="About Fastfood Finder"
+                    android:id="@+id/tv_setting_about_app"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_about"
+                    style="@style/SettingsOptionsText"
+                    android:text="Rate App"
+                    android:id="@+id/tv_setting_rate_app"/>
+                <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_about"
+                style="@style/SettingsOptionsText"
+                android:text="Send Feedback"
+                android:id="@+id/tv_setting_feedback"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_about"
+                    style="@style/SettingsOptionsText"
+                    android:text="Privacy Policy"
+                    android:id="@+id/tv_setting_privacy_policy"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_term_of_use"
+                    style="@style/SettingsOptionsText"
+                    android:text="Terms of Use"
+                    android:id="@+id/tv_setting_term_of_use"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/logout"
+                    style="@style/SettingsOptionsText"
+                    android:text="Sign Out"
+                    android:id="@+id/tv_setting_sign_out"/>
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
+</ScrollView>

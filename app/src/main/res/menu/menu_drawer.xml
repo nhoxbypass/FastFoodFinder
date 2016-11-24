@@ -4,11 +4,11 @@
         android:title="Cá nhân">
         <menu>
             <item
+                android:title="Bản đồ"
+                android:id="@+id/menu_action_map"/>
+            <item
                 android:title="Hồ sơ"
                 android:id="@+id/menu_action_profile"/>
-            <item
-                android:title="Sự kiện nổi bật"
-                android:id="@+id/menu_action_trend"/>
             <item
                 android:title="Khoảnh khắc của tôi"
                 android:id="@+id/menu_action_moment"/>
@@ -28,7 +28,7 @@
                 android:title="Cài đặt"
                 android:id="@+id/menu_action_setting"/>
             <item
-                android:title="Trợ giúp"
+                android:title="Trợ giúp và phản hồi"
                 android:id="@+id/menu_action_help"/>
             <item
                 android:title="Về tác giả"

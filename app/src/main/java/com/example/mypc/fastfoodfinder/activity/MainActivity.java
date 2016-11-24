@@ -6,14 +6,15 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -24,14 +25,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.example.mypc.fastfoodfinder.ui.main.MainMapFragment;
+import com.example.mypc.fastfoodfinder.ui.profile.ProfileFragment;
 import com.example.mypc.fastfoodfinder.R;
-import com.example.mypc.fastfoodfinder.adapter.MainPagerAdapter;
-import com.example.mypc.fastfoodfinder.ui.main.BlankFragment;
+import com.example.mypc.fastfoodfinder.ui.main.SearchFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -42,27 +44,22 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class MainActivity extends AppCompatActivity {
 
     public static String PACKAGE_NAME;
-    Toolbar mToolbar;
-    TabLayout mTabLayout;
-    ViewPager mViewPager;
+
     @BindView(R.id.nav_view) NavigationView mNavigationView;
     @BindView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
-
+    @BindView(R.id.toolbar) Toolbar mToolbar;
     View mHeaderLayout;
-    @BindView(R.id.appbar_main) View mAppbarMainLayout;
+    SearchView mSearchView;
     LinearLayout mNavHeaderContainer;
     CircleImageView mNavHeaderAvatar;
     TextView mNavHeaderName;
     TextView mNavHeaderScreenName;
     Button mNavHeaderSignIn;
-    SearchView mSearchView;
-    MainPagerAdapter mPagerAdapter;
 
     // Firebase instance variables
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
-
 
 
     @Override
@@ -72,15 +69,10 @@ public class MainActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
+        setSupportActionBar(mToolbar);
+
         PACKAGE_NAME = getApplicationContext().getPackageName();
 
-
-        //Toolbar
-        mToolbar = (Toolbar) mAppbarMainLayout.findViewById(R.id.toolbar);
-        mTabLayout = (TabLayout) mAppbarMainLayout.findViewById(R.id.tab_layout);
-        mViewPager = (ViewPager) mAppbarMainLayout.findViewById(R.id.view_pager);
-
-        setSupportActionBar(mToolbar);
 
         mDrawerToggle = setupDrawerToggle();
         mHeaderLayout = mNavigationView.getHeaderView(0);
@@ -90,6 +82,11 @@ public class MainActivity extends AppCompatActivity {
         mNavHeaderScreenName = (TextView)mHeaderLayout.findViewById(R.id.tv_nav_header_screenname);
         mNavHeaderSignIn = (Button) mHeaderLayout.findViewById(R.id.btn_nav_header_signin);
 
+
+        mNavigationView.getMenu().getItem(0).setChecked(true);
+        //FragmentManager fragmentManager = getSupportFragmentManager();
+        //fragmentManager.beginTransaction().replace(R.id.fl_fragment_placeholder, MainMapFragment.newInstance()).commit();
+
         // Initialize Firebase Auth
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
@@ -97,6 +94,12 @@ public class MainActivity extends AppCompatActivity {
             mNavHeaderName.setVisibility(View.GONE);
             mNavHeaderScreenName.setVisibility(View.GONE);
             mNavHeaderSignIn.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            Glide.with(MainActivity.this)
+                    .load(mFirebaseUser.getPhotoUrl())
+                    .into(mNavHeaderAvatar);
         }
 
         mNavHeaderSignIn.setOnClickListener(new View.OnClickListener() {
@@ -108,12 +111,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                selectDrawerItem(item);
+                return true;
+            }
+        });
 
 
-        mPagerAdapter = new MainPagerAdapter(getSupportFragmentManager());
-        mViewPager.setAdapter(mPagerAdapter);
-        mViewPager.setOffscreenPageLimit(2);
-        mTabLayout.setupWithViewPager(mViewPager);
+
+
 
         // Tie DrawerLayout events to the ActionBarToggle
         mDrawerLayout.addDrawerListener(mDrawerToggle);
@@ -124,6 +132,44 @@ public class MainActivity extends AppCompatActivity {
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         mDrawerToggle.syncState();
+    }
+
+
+    public void selectDrawerItem(MenuItem menuItem) {
+        // Create a new fragment and specify the fragment to show based on nav item clicked
+        Fragment fragment = null;
+        Class fragmentClass;
+        switch(menuItem.getItemId()) {
+            case R.id.menu_action_profile:
+                fragmentClass = ProfileFragment.class;
+                break;
+            case R.id.menu_action_map:
+                fragmentClass = MainMapFragment.class;
+                break;
+            case R.id.menu_action_setting:
+                Intent intent = new Intent(MainActivity.this, SettingActivity.class);
+                startActivity(intent);
+                return;
+            default:
+                fragmentClass = MainMapFragment.class;
+        }
+
+        try {
+            fragment = (Fragment) fragmentClass.newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Insert the fragment by replacing any existing fragment
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.fl_fragment_placeholder, fragment).commit();
+        fragmentManager.executePendingTransactions();
+        // Highlight the selected item has been done by NavigationView
+        menuItem.setChecked(true);
+        // Set action bar title
+        setTitle(menuItem.getTitle());
+        // Close the navigation drawer
+        mDrawerLayout.closeDrawers();
     }
 
 
@@ -160,9 +206,11 @@ public class MainActivity extends AppCompatActivity {
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                 ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
 
-                BlankFragment newFragment = BlankFragment.newInstance();
+                SearchFragment newFragment = SearchFragment.newInstance();
 
-                ft.replace(R.id.fragment, newFragment, "blankFragment");
+                View view = findViewById(R.id.fragment_search_placeholder);
+                view.setVisibility(View.VISIBLE);
+                ft.replace(R.id.fragment_search_placeholder, newFragment, "blankFragment");
 
 // Start the animated transition.
                 ft.commit();
@@ -175,7 +223,7 @@ public class MainActivity extends AppCompatActivity {
 
                 Toast.makeText(MainActivity.this, "On close", Toast.LENGTH_SHORT).show();
                 getSupportFragmentManager().beginTransaction().
-                        remove(getSupportFragmentManager().findFragmentById(R.id.fragment))
+                        remove(getSupportFragmentManager().findFragmentById(R.id.fragment_search_placeholder))
                         .commit();
                 return true;
             }

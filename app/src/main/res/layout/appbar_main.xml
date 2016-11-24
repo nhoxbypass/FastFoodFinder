@@ -5,29 +5,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     android:id="@+id/main_content"
     tools:context=".activity.MainActivity">
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
         tools:title="Appbar"
         app:titleTextColor="@color/colorWhite"
         android:id="@+id/appbar_layout">
-        <android.support.v7.widget.Toolbar
-            android:layout_width="match_parent"
-            android:layout_height="64dp"
-            android:minHeight="?attr/actionBarSize"
-            app:titleTextColor="@color/colorWhite"
-            tools:title="Toolbar"
-            android:background="@color/googleRed"
-            android:id="@+id/toolbar"/>
         <android.support.design.widget.TabLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:tabTextColor="@color/colorPrimaryDark"
             app:tabSelectedTextColor="@color/colorWhite"
-            app:tabIndicatorColor="@color/colorWhite"
             android:fitsSystemWindows="true"
+            app:tabIndicatorColor="@color/colorWhite"
             android:id="@+id/tab_layout"/>
     </android.support.design.widget.AppBarLayout>
     <android.support.v4.view.ViewPager
@@ -36,12 +30,4 @@
         android:id="@+id/view_pager"
         android:layout_below="@id/appbar_layout"
         />
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
-        android:translationZ="8dp"
-        app:layout_anchor="@id/appbar_layout"
-        app:layout_anchorGravity="fill"
-        android:id="@+id/fragment"/>
 </android.support.design.widget.CoordinatorLayout>

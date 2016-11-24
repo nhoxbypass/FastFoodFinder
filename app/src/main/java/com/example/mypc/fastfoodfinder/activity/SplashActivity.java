@@ -123,8 +123,7 @@ public class SplashActivity extends AppCompatActivity {
                                             storeList.add(store);
                                         }
 
-                                        StoreDataSource storeDataSource = new StoreDataSource();
-                                        storeDataSource.store(storeList);
+                                        saveStoresLocation(storeList);
                                         listener.onSuccess(dataSnapshot);
                                     }
 
@@ -145,5 +144,10 @@ public class SplashActivity extends AppCompatActivity {
         } else {
             Log.d("MAPP", "signInAnonymously outside");
         }
+    }
+
+    private void saveStoresLocation(List<Store> storeList) {
+        StoreDataSource storeDataSource = new StoreDataSource();
+        storeDataSource.store(storeList);
     }
 }

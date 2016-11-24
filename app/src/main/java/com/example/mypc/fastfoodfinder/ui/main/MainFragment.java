@@ -4,6 +4,7 @@ package com.example.mypc.fastfoodfinder.ui.main;
 import android.animation.ObjectAnimator;
 import android.animation.TimeInterpolator;
 import android.animation.ValueAnimator;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -19,6 +20,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -30,6 +32,7 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AnticipateInterpolator;
 import android.view.animation.BounceInterpolator;
 import android.view.animation.CycleInterpolator;
+import android.widget.LinearLayout;
 
 import com.example.mypc.fastfoodfinder.R;
 import com.example.mypc.fastfoodfinder.adapter.ListStoreAdapter;
@@ -76,6 +79,7 @@ import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
@@ -92,10 +96,14 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
     private static final long INTERVAL = 1000 * 10;
     private static final long FASTEST_INTERVAL = 1000 * 5;
 
+
+    private static final Hashtable<String, BitmapDescriptor> CACHE = new Hashtable<String, BitmapDescriptor>();
+
     private GoogleMap mGoogleMap;
     SupportMapFragment mFragment;
     RecyclerView mRecyclerView;
     CoordinatorLayout mCoordinatorLayout;
+    LinearLayout mBottomSheet;
     ListStoreAdapter mAdapter;
     BottomSheetBehavior mBottomSheetBehavior;
     MapsDirectionApi mMapDirectionApi;
@@ -141,7 +149,8 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
                     .zoomGesturesEnabled(true)
                     .tiltGesturesEnabled(true);
             mFragment = SupportMapFragment.newInstance(options);
-            fragmentManager.beginTransaction().replace(R.id.map,mFragment).commit();
+            fragmentManager.beginTransaction().replace(R.id.map,mFragment).commitNow();
+            fragmentManager.executePendingTransactions();
         }
     }
 
@@ -175,7 +184,8 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
         View rootView = inflater.inflate(R.layout.fragment_main,container, false);
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.rv_bottom_sheet);
         mCoordinatorLayout = (CoordinatorLayout) rootView.findViewById(R.id.maps_container);
-        mBottomSheetBehavior = BottomSheetBehavior.from(mRecyclerView);
+        mBottomSheet = (LinearLayout) rootView.findViewById(R.id.ll_bottom_sheet);
+        mBottomSheetBehavior = BottomSheetBehavior.from(mBottomSheet);
         return rootView;
     }
 
@@ -403,13 +413,21 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
             Marker marker = googleMap.addMarker(new MarkerOptions().position(store.getPosition())
                     .title("Circle K")
                     .snippet(store.getTitle())
-                    .icon(markerIcon));
-
+            .icon(getStoreIcon(getContext(),"circle_k")));
         }
     }
 
 
-
+    public static BitmapDescriptor getStoreIcon(Context context, String name) {
+        synchronized (CACHE){
+            if (!CACHE.containsKey(name)) {
+                BitmapDescriptor markerIcon =
+                        BitmapDescriptorFactory.fromResource(R.drawable.logo_circle_k_50);
+                CACHE.put(name, markerIcon);
+            }
+            return CACHE.get(name);
+        }
+    }
 
     void getDirection(LatLng storeLocation)
     {

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-        package="com.example.mypc.fastfoodfinder">
+    package="com.example.mypc.fastfoodfinder">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -15,7 +15,7 @@
         android:theme="@style/AppTheme.NoActionBar">
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id"/>
+            android:value="@string/facebook_app_id" />
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -23,12 +23,13 @@
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="@string/google_maps_api_key" />
 
-        <activity android:name=".activity.MainActivity">
-        </activity>
+        <activity android:name=".activity.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar.TranslucentStatus"></activity>
         <activity
             android:name=".activity.LoginActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".activity.SplashActivity">
+            android:theme="@style/AppTheme.NoActionBar.TranslucentStatus" />
+        <activity android:name=".activity.SplashActivity"
+            android:theme="@style/AppTheme.NoActionBar.TranslucentStatus">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -38,7 +39,8 @@
         <activity
             android:name=".activity.StoreDetailActivity"
             android:parentActivityName=".activity.MainActivity"
-            android:theme="@style/AppTheme.TransparentStatusBar" />
+            android:theme="@style/AppTheme.NoActionBar.TranslucentStatus" />
+        <activity android:name=".activity.SettingActivity"></activity>
     </application>
 
 </manifest>

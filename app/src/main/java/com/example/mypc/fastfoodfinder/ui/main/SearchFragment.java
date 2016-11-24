@@ -9,20 +9,18 @@ import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.example.mypc.fastfoodfinder.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class BlankFragment extends Fragment {
+public class SearchFragment extends Fragment {
 
     @BindView(R.id.btn_search_circle_k) CircleImageView quickSearchCircleK;
     @BindView(R.id.btn_search_family_mart) CircleImageView quickSearchFamilyMart;
@@ -36,15 +34,15 @@ public class BlankFragment extends Fragment {
     boolean visible;
     String searchText;
 
-    public BlankFragment() {
+    public SearchFragment() {
         // Required empty public constructor
     }
 
-    public static BlankFragment newInstance() {
+    public static SearchFragment newInstance() {
         
         Bundle args = new Bundle();
         
-        BlankFragment fragment = new BlankFragment();
+        SearchFragment fragment = new SearchFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -58,7 +56,7 @@ public class BlankFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View root = inflater.inflate(R.layout.fragment_blank, container, false);
+        View root = inflater.inflate(R.layout.fragment_search, container, false);
 
         ButterKnife.bind(this, root);
 
