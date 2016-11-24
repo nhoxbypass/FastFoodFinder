@@ -20,12 +20,11 @@ import com.example.mypc.fastfoodfinder.helper.SimpleItemTouchHelperCallback;
 import com.example.mypc.fastfoodfinder.model.Article;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 /**
  * Created by MyPC on 11/16/2016.
  */
-public class FavouriteLocationFragment extends Fragment implements OnStartDragListener {
+public class FavouritedLocationFragment extends Fragment implements OnStartDragListener {
     private RecyclerView rvDes;
     private FavouriteLocationAdapter adapter;
     LinearLayoutManager linearLayoutManager;
@@ -33,12 +32,12 @@ public class FavouriteLocationFragment extends Fragment implements OnStartDragLi
     private FloatingActionButton fbChangePosition;
     static boolean isfbChangeClicked = false;
     FrameLayout flLayout;
-    public FavouriteLocationFragment() {
+    public FavouritedLocationFragment() {
     }
 ;
-    public static FavouriteLocationFragment newInstance(){
+    public static FavouritedLocationFragment newInstance(){
         Bundle args = new Bundle();
-        FavouriteLocationFragment fragment = new FavouriteLocationFragment();
+        FavouritedLocationFragment fragment = new FavouritedLocationFragment();
         fragment.setArguments(args);
         return fragment;
     }

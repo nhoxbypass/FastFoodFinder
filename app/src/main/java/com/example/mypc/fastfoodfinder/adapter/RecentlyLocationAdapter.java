@@ -18,7 +18,6 @@ import com.example.mypc.fastfoodfinder.R;
 import com.example.mypc.fastfoodfinder.helper.ItemTouchHelperAdapter;
 import com.example.mypc.fastfoodfinder.helper.ItemTouchHelperViewHolder;
 import com.example.mypc.fastfoodfinder.helper.OnStartDragListener;
-import com.example.mypc.fastfoodfinder.ui.main.FavouriteLocationFragment;
 
 import java.util.ArrayList;
 import java.util.Collections;
