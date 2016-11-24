@@ -241,11 +241,6 @@ public class MainActivity extends AppCompatActivity {
             case android.R.id.home:
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 return true;
-
-            /** code test **/
-            case R.id.action_test:
-                //startActivity(StoreDetailActivity.getIntent(this));
-                return true;
         }
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;

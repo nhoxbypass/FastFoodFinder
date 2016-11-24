@@ -9,9 +9,4 @@
         app:showAsAction="always|collapseActionView"
         android:id="@+id/action_search"
         />
-
-    <!-- code test -->
-    <item
-        android:id="@+id/action_test"
-        android:title="detail" />
 </menu>
