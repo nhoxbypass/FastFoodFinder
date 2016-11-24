@@ -244,7 +244,7 @@ public class MainActivity extends AppCompatActivity {
 
             /** code test **/
             case R.id.action_test:
-                startActivity(StoreDetailActivity.getIntent(this));
+                //startActivity(StoreDetailActivity.getIntent(this));
                 return true;
         }
         if (mDrawerToggle.onOptionsItemSelected(item)) {

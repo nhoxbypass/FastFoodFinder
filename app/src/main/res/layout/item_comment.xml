@@ -15,7 +15,7 @@
         android:src="@drawable/avatar" />
 
     <LinearLayout
-        android:id="@+id/comment_content"
+        android:id="@+id/content_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="6dp"
@@ -45,10 +45,12 @@
         </RelativeLayout>
 
         <TextView
-            android:id="@+id/message"
+            android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:autoLink="all"
+            android:ellipsize="end"
+            android:lines="3"
             android:linksClickable="true"
             android:text="@string/ipsum" />
 
@@ -61,7 +63,7 @@
             app:cardCornerRadius="5dp">
 
             <ImageView
-                android:id="@+id/photo"
+                android:id="@+id/media"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:scaleType="centerCrop"
@@ -73,7 +75,7 @@
     <View
         android:layout_width="fill_parent"
         android:layout_height="0.25dp"
-        android:layout_below="@id/comment_content"
+        android:layout_below="@id/content_container"
         android:layout_marginTop="8dp"
         android:background="#E6E6E6" />
 </RelativeLayout>

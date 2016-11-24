@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:layout_marginTop="16dp"
     android:background="@color/colorWhite">
 
@@ -14,13 +14,15 @@
     <RelativeLayout
         android:id="@+id/info_content"
         android:layout_width="match_parent"
-        android:layout_height="130dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/gradient"
-        android:padding="16dp">
+        android:minHeight="130dp"
+        android:padding="10dp">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingTop="5dp"
             android:src="@drawable/ic_info" />
 
         <TextView
@@ -28,6 +30,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="32dp"
+            android:ellipsize="end"
+            android:lines="1"
             android:text="Circle K"
             android:textSize="18dp" />
 

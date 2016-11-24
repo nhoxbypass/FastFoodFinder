@@ -4,10 +4,12 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.PropertyName;
 
+import java.io.Serializable;
+
 /**
  * Created by nhoxb on 11/10/2016.
  */
-public class Store{
+public class Store implements Serializable {
 
     public Store() {
     }

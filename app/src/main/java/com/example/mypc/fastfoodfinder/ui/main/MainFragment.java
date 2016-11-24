@@ -1,8 +1,6 @@
 package com.example.mypc.fastfoodfinder.ui.main;
 
 
-import android.animation.ObjectAnimator;
-import android.animation.TimeInterpolator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -20,21 +18,17 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.AnticipateInterpolator;
 import android.view.animation.BounceInterpolator;
-import android.view.animation.CycleInterpolator;
 import android.widget.LinearLayout;
 
 import com.example.mypc.fastfoodfinder.R;
+import com.example.mypc.fastfoodfinder.activity.StoreDetailActivity;
 import com.example.mypc.fastfoodfinder.adapter.ListStoreAdapter;
 import com.example.mypc.fastfoodfinder.model.MapsDirection;
 import com.example.mypc.fastfoodfinder.model.Route;
@@ -65,18 +59,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -413,7 +396,8 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
             Marker marker = googleMap.addMarker(new MarkerOptions().position(store.getPosition())
                     .title("Circle K")
                     .snippet(store.getTitle())
-            .icon(getStoreIcon(getContext(),"circle_k")));
+                    .icon(getStoreIcon(getContext(),"circle_k")));
+                    marker.setTag(store);
         }
     }
 
@@ -472,25 +456,17 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
     protected void setMarkersListener(GoogleMap googleMap) {
         if (googleMap != null) {
             // Attach marker click listener to the map here
-
-            /*
             googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-
                 public boolean onMarkerClick(Marker marker) {
-
                     // Handle marker click here
                     //marker.showInfoWindow();
-                    LatLng storeLocation = marker.getPosition();
-                    getDirection(storeLocation);
-
+                    //LatLng storeLocation = marker.getPosition();
+                    //getDirection(storeLocation);
+                    Store store = (Store) marker.getTag();
+                    startActivity(StoreDetailActivity.getIntent(getContext(), store));
                     return false;
                 }
-
             });
-
-            */
-
-
         }
     }
 

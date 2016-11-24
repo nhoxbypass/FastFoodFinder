@@ -6,11 +6,15 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.example.mypc.fastfoodfinder.R;
+import com.example.mypc.fastfoodfinder.adapter.StoreDetailAdapter;
+import com.example.mypc.fastfoodfinder.model.Store;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -29,6 +33,8 @@ import static com.example.mypc.fastfoodfinder.R.id.map;
 
 public class StoreDetailActivity extends AppCompatActivity {
 
+    private static final String STORE = "store";
+
     @BindView(R.id.collapsing_toolbar)
     CollapsingToolbarLayout collapsingToolbar;
 
@@ -36,13 +42,18 @@ public class StoreDetailActivity extends AppCompatActivity {
     Toolbar toolbar;
 
     @BindView(R.id.backdrop)
-    ImageView backdrop;
+    ImageView ivBackdrop;
+
+    @BindView(R.id.content)
+    RecyclerView rvContent;
 
     private SupportMapFragment mMapFragment;
     private GoogleMap mGoogleMap;
+    private StoreDetailAdapter mStoreDetailAdapter;
 
-    public static Intent getIntent(Context context) {
+    public static Intent getIntent(Context context, Store store) {
         Intent intent = new Intent(context, StoreDetailActivity.class);
+        intent.putExtra(STORE, store);
         return intent;
     }
 
@@ -51,6 +62,11 @@ public class StoreDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_store_detail);
         ButterKnife.bind(this);
+
+        Store store = (Store) getIntent().getSerializableExtra(STORE);
+        mStoreDetailAdapter = new StoreDetailAdapter(store);
+        rvContent.setAdapter(mStoreDetailAdapter);
+        rvContent.setLayoutManager(new LinearLayoutManager(this));
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -61,9 +77,9 @@ public class StoreDetailActivity extends AppCompatActivity {
         Glide.with(this)
                 .load(R.drawable.circle_k_cover)
                 .centerCrop()
-                .into(backdrop);
+                .into(ivBackdrop);
 
-        setUpMapIfNeeded();
+        //setUpMapIfNeeded();
     }
 
     private void setUpMapIfNeeded() {
