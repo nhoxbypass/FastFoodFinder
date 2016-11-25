@@ -1,4 +1,4 @@
-package com.example.mypc.fastfoodfinder.model;
+package com.example.mypc.fastfoodfinder.model.Routing;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.annotations.SerializedName;

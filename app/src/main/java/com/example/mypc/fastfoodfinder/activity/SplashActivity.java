@@ -9,8 +9,8 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.mypc.fastfoodfinder.R;
-import com.example.mypc.fastfoodfinder.model.Store;
-import com.example.mypc.fastfoodfinder.model.StoreDataSource;
+import com.example.mypc.fastfoodfinder.model.Store.Store;
+import com.example.mypc.fastfoodfinder.model.Store.StoreDataSource;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -60,12 +60,12 @@ public class SplashActivity extends AppCompatActivity {
 
                 @Override
                 public void onSuccess(DataSnapshot data) {
-                    startMyActivity(LoginActivity.class);
                     mSharedPreferences.edit().putBoolean(KEY_FIRST_RUN, false).apply();
                     if (mFirebaseAuth != null) {
                         mFirebaseAuth.signOut();
                         Toast.makeText(SplashActivity.this, "Update database successfully", Toast.LENGTH_SHORT).show();
                     }
+                    startMyActivity(LoginActivity.class);
                 }
 
                 @Override

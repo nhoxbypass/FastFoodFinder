@@ -30,12 +30,12 @@ import android.widget.LinearLayout;
 import com.example.mypc.fastfoodfinder.R;
 import com.example.mypc.fastfoodfinder.activity.StoreDetailActivity;
 import com.example.mypc.fastfoodfinder.adapter.ListStoreAdapter;
-import com.example.mypc.fastfoodfinder.model.MapsDirection;
-import com.example.mypc.fastfoodfinder.model.Route;
-import com.example.mypc.fastfoodfinder.model.Step;
-import com.example.mypc.fastfoodfinder.model.Store;
-import com.example.mypc.fastfoodfinder.model.StoreDataSource;
-import com.example.mypc.fastfoodfinder.model.StoreViewModel;
+import com.example.mypc.fastfoodfinder.model.Routing.MapsDirection;
+import com.example.mypc.fastfoodfinder.model.Routing.Route;
+import com.example.mypc.fastfoodfinder.model.Routing.Step;
+import com.example.mypc.fastfoodfinder.model.Store.Store;
+import com.example.mypc.fastfoodfinder.model.Store.StoreDataSource;
+import com.example.mypc.fastfoodfinder.model.Store.StoreViewModel;
 import com.example.mypc.fastfoodfinder.rest.MapsDirectionApi;
 import com.example.mypc.fastfoodfinder.utils.MarkerUtils;
 import com.example.mypc.fastfoodfinder.utils.PermissionUtils;
@@ -362,16 +362,6 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
 
                 StoreDataSource storeDataSource = new StoreDataSource();
                 mStoreList = storeDataSource.getAllObjects();
-
-                /*
-                Gson gson = new Gson();
-                try {
-                    JsonObject root = gson.fromJson(openJSONFromResource(), JsonObject.class);
-                    mStoreList = gson.fromJson(root.getAsJsonArray("markers_add"), new TypeToken<ArrayList<Store>>(){}.getType());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                */
 
 
                 mGoogleMap.setBuildingsEnabled(true);

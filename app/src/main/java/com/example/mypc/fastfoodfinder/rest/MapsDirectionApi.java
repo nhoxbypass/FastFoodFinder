@@ -1,6 +1,6 @@
 package com.example.mypc.fastfoodfinder.rest;
 
-import com.example.mypc.fastfoodfinder.model.MapsDirection;
+import com.example.mypc.fastfoodfinder.model.Routing.MapsDirection;
 
 import java.util.Map;
 

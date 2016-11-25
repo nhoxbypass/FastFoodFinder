@@ -1,4 +1,4 @@
-package com.example.mypc.fastfoodfinder.model;
+package com.example.mypc.fastfoodfinder.model.Routing;
 
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;

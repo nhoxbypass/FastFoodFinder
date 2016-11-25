@@ -1,4 +1,4 @@
-package com.example.mypc.fastfoodfinder.model;
+package com.example.mypc.fastfoodfinder.model.Store;
 
 import android.location.Location;
 import android.support.annotation.DrawableRes;

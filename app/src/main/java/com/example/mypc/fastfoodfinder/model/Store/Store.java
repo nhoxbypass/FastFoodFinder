@@ -1,4 +1,4 @@
-package com.example.mypc.fastfoodfinder.model;
+package com.example.mypc.fastfoodfinder.model.Store;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.Exclude;

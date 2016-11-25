@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.mypc.fastfoodfinder.R;
+import com.example.mypc.fastfoodfinder.model.User.User;
+import com.example.mypc.fastfoodfinder.utils.Constant;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -32,6 +34,8 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Arrays;
 
@@ -46,8 +50,10 @@ public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.btn_facebook_signin) LoginButton fbSignInButton;
     @BindView(R.id.btn_google_signin) SignInButton googleSignInButton;
 
+    GoogleApiClient mGoogleApiClient;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private DatabaseReference mFirebaseDatabaseReference;
 
     CallbackManager mCallBackManager;
 
@@ -62,6 +68,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
         // Initialize Firebase Auth
+        mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference().child(Constant.CHILD_USERS);
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -77,6 +84,21 @@ public class LoginActivity extends AppCompatActivity {
                 // ...
             }
         };
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        mGoogleApiClient = new GoogleApiClient.Builder(LoginActivity.this)
+                .enableAutoManage(LoginActivity.this, new GoogleApiClient.OnConnectionFailedListener() {
+                    @Override
+                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+                        Log.e("MAPP", "google connect failed");
+                    }
+                })
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+
         mCallBackManager = CallbackManager.Factory.create();
         fbSignInButton.setReadPermissions("email", "public_profile");
 
@@ -123,20 +145,6 @@ public class LoginActivity extends AppCompatActivity {
         googleSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                        .requestIdToken(getString(R.string.default_web_client_id))
-                        .requestEmail()
-                        .build();
-                GoogleApiClient mGoogleApiClient = new GoogleApiClient.Builder(LoginActivity.this)
-                        .enableAutoManage(LoginActivity.this, new GoogleApiClient.OnConnectionFailedListener() {
-                            @Override
-                            public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                                Log.e("MAPP", "google connect failed");
-                            }
-                        })
-                        .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                        .build();
-
                 signIntWithGoogle(mGoogleApiClient);
             }
         });
@@ -162,6 +170,20 @@ public class LoginActivity extends AppCompatActivity {
             // Pass the activity result back to the Facebook SDK
             mCallBackManager.onActivityResult(requestCode, resultCode, data);
         }
+    }
+
+    private void saveUserData(FirebaseUser firebaseUser, DatabaseReference databaseRef)
+    {
+        String photoUrl = "http://cdn.builtlean.com/wp-content/uploads/2015/11/noavatar.png";
+
+        if (firebaseUser.getPhotoUrl() != null)
+        {
+            photoUrl = firebaseUser.getPhotoUrl().toString();
+        }
+
+        User user = new User(firebaseUser.getDisplayName(),firebaseUser.getEmail(),photoUrl,firebaseUser.getUid());
+
+        user.saveUserData(databaseRef);
     }
 
     private void startMyActivity(Class<?> activity)
@@ -192,6 +214,7 @@ public class LoginActivity extends AppCompatActivity {
                         else
                         {
                             Toast.makeText(LoginActivity.this, "Sign In Successfully!", Toast.LENGTH_SHORT).show();
+                            saveUserData(task.getResult().getUser(), mFirebaseDatabaseReference);
                             startMyActivity(MainActivity.class);
                         }
                         // ...

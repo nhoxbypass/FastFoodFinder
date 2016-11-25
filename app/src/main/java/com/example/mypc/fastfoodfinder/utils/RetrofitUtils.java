@@ -17,7 +17,7 @@ public class RetrofitUtils {
     public static Retrofit get(String apiKey)
     {
         return new Retrofit.Builder()
-                .baseUrl(Constant.BASE_URL)
+                .baseUrl(Constant.MAP_BASE_URL)
                 .client(getClient(apiKey))
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();

@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.mypc.fastfoodfinder.R;
-import com.example.mypc.fastfoodfinder.model.StoreViewModel;
+import com.example.mypc.fastfoodfinder.model.Store.StoreViewModel;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;

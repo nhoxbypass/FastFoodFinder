@@ -1,4 +1,4 @@
-package com.example.mypc.fastfoodfinder.model;
+package com.example.mypc.fastfoodfinder.model.Store;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,5 +44,10 @@ public class StoreDataSource {
         realm.close();
 
         return storeList;
+    }
+
+    public List<Store> getStoreInBounds(String lat, String lng)
+    {
+
     }
 }

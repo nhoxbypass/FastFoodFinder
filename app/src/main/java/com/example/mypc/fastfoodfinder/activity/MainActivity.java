@@ -40,6 +40,7 @@ import com.google.firebase.auth.FirebaseUser;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
+import io.realm.Realm;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -66,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        Realm.init(MainActivity.this);
         ButterKnife.bind(this);
 
         setSupportActionBar(mToolbar);
@@ -84,8 +85,9 @@ public class MainActivity extends AppCompatActivity {
 
 
         mNavigationView.getMenu().getItem(0).setChecked(true);
-        //FragmentManager fragmentManager = getSupportFragmentManager();
-        //fragmentManager.beginTransaction().replace(R.id.fl_fragment_placeholder, MainMapFragment.newInstance()).commit();
+        mNavigationView.setCheckedItem(R.id.menu_action_map);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.fl_fragment_placeholder, MainMapFragment.newInstance()).commit();
 
         // Initialize Firebase Auth
         mFirebaseAuth = FirebaseAuth.getInstance();

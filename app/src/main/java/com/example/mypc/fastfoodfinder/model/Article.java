@@ -19,7 +19,7 @@ public class Article implements Serializable {
     }
 
     public Article (String d, String a){
-        des =d;
+        des = d;
         address = a;
     }
 }
