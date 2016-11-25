@@ -15,15 +15,14 @@
         android:id="@+id/info_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/gradient"
+        android:background="@drawable/shape_gradient"
         android:minHeight="130dp"
         android:padding="10dp">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="5dp"
-            android:src="@drawable/ic_info" />
+            android:src="@drawable/ic_about" />
 
         <TextView
             android:id="@+id/store_name"
@@ -76,21 +75,33 @@
         android:layout_below="@id/line"
         android:orientation="horizontal">
 
-        <TextView
-            style="@style/TextInfo"
+        <FrameLayout
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:drawableLeft="@drawable/ic_call"
-            android:text="Call" />
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
 
-        <TextView
-            style="@style/TextInfo"
+            <TextView
+                style="@style/TextInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:drawableLeft="@drawable/ic_call"
+                android:text="Call" />
+        </FrameLayout>
+
+        <FrameLayout
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:drawableLeft="@drawable/ic_compass"
-            android:text="Directions" />
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <TextView
+                style="@style/TextInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:drawableLeft="@drawable/ic_compass"
+                android:text="Directions" />
+        </FrameLayout>
 
     </LinearLayout>
 

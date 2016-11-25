@@ -31,7 +31,7 @@
                 android:fitsSystemWindows="true"
                 android:scaleType="centerCrop"
                 app:layout_collapseMode="parallax"
-                tool:src="@drawable/circle_k_cover" />
+                tool:src="@drawable/sample_circle_k_cover" />
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"

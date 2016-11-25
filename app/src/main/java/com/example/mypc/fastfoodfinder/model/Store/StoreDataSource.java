@@ -48,6 +48,7 @@ public class StoreDataSource {
 
     public List<Store> getStoreInBounds(String lat, String lng)
     {
-
+        //TODO return để khỏi báo lỗi
+        return new ArrayList<>();
     }
 }

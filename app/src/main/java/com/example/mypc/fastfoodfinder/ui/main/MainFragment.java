@@ -28,7 +28,6 @@ import android.view.animation.BounceInterpolator;
 import android.widget.LinearLayout;
 
 import com.example.mypc.fastfoodfinder.R;
-import com.example.mypc.fastfoodfinder.activity.StoreDetailActivity;
 import com.example.mypc.fastfoodfinder.adapter.ListStoreAdapter;
 import com.example.mypc.fastfoodfinder.model.Routing.MapsDirection;
 import com.example.mypc.fastfoodfinder.model.Routing.Route;
@@ -37,6 +36,7 @@ import com.example.mypc.fastfoodfinder.model.Store.Store;
 import com.example.mypc.fastfoodfinder.model.Store.StoreDataSource;
 import com.example.mypc.fastfoodfinder.model.Store.StoreViewModel;
 import com.example.mypc.fastfoodfinder.rest.MapsDirectionApi;
+import com.example.mypc.fastfoodfinder.ui.store.StoreInfoDialogFragment;
 import com.example.mypc.fastfoodfinder.utils.MarkerUtils;
 import com.example.mypc.fastfoodfinder.utils.PermissionUtils;
 import com.example.mypc.fastfoodfinder.utils.RetrofitUtils;
@@ -453,7 +453,8 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
                     //LatLng storeLocation = marker.getPosition();
                     //getDirection(storeLocation);
                     Store store = (Store) marker.getTag();
-                    startActivity(StoreDetailActivity.getIntent(getContext(), store));
+                    //startActivity(StoreDetailActivity.getIntent(getContext(), store));
+                    showDialogStoreInfo(store);
                     return false;
                 }
             });
@@ -518,4 +519,10 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
         super.onLowMemory();
     }
     */
+
+    private void showDialogStoreInfo(Store store) {
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        StoreInfoDialogFragment dialog = StoreInfoDialogFragment.newInstance(store);
+        dialog.show(fm, "dialog-info");
+    }
 }
