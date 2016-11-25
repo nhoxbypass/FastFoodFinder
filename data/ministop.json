@@ -1,5 +1,5 @@
 {
-  makers_add:[
+  "makers_add":[
     {
       "title":"MINISTOP - Nguyễn Đình Chiểu",
       "address":"225 Nguyễn Đình Chiểu, Quận 3, Hồ Chí Minh",
@@ -261,7 +261,7 @@
       "address":"43 Trần Quý Cáp, P.12, Quận Bình Thạnh, Quận Bình Thạnh, Hồ Chí Minh",
       "lat":"10.8061939", 
       "lng":"106.7073598",
-      "tel":"Nothing"
+      "tel":""
     }
     ,
     {
@@ -301,7 +301,7 @@
       "address":"127 Đường D1, Phường 25, Quận Bình Thạnh, Quận Bình Thạnh, Hồ Chí Minh",
       "lat":"10.8060647",
       "lng":"106.7068341",
-      "tel":"Nothing"
+      "tel":""
     }
     ,
     {
@@ -309,7 +309,7 @@
       "address":"47 Trần Quốc Toản, Phường 8, Quận 3, Quận 3, Hồ Chí Minh",
       "lat":"10.78809",
       "lng":"106.688799",
-      "tel":"Nothing"
+      "tel":""
     }
     ,
     {
@@ -365,7 +365,7 @@
       "address":"207 Nguyễn Biểu, Phường 2, Quận 5, Quận 5, Hồ Chí Minh",
       "lat":"10.754788",
       "lng":"106.683615",
-      "tel":"Nothing"
+      "tel":""
     }
     ,
     {
