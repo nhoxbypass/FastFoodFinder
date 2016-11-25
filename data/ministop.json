@@ -1,444 +1,515 @@
 {
-  "markers_add":[
+  makers_add:[
     {
       "title":"MINISTOP - Nguyễn Đình Chiểu",
       "address":"225 Nguyễn Đình Chiểu, Quận 3, Hồ Chí Minh",
-      "lat":"10.770411",
-      "lng":"106.682449"
+      "lat":"10.7738922",
+      "lng":"106.6858194",
+      "tel":"39 29 28 08"
     }
     ,
     {
       "title":"MINISTOP - Lam Sơn",
       "address":"25A Lam Sơn, Quận Tân Bình, Hồ Chí Minh",
-      "lat":"10.809878",
-      "lng":"106.666781"
+      "lat":"10.810578",
+      "lng":"106.666977",
+      "tel":"35 47 04 49"
     }
     ,
     {
       "title":"MINISTOP - D2",
       "address":"48A D2, Quận Bình Thạnh, Hồ Chí Minh",
-      "lat": "10.805274",
-      "lng":"106.715773"
+      "lat": "10.805201",
+      "lng":"106.715980",
+      "tel":"35 12 59 51"
     }
     ,
     {
       "title":"MINISTOP - Nguyễn Hồng Đào",
       "address":"191 Nguyễn Hồng Đào, Quận Tân Bình, Hồ Chí Minh",
-      "lat":"10.796459",
-      "lng":"106.643273"
+      "lat":"10.7913056",
+      "lng":"106.6413978",
+      "tel":"38 49 47 82"
     }
     ,
     {
       "title":"MINISTOP - Bạch Đằng",
       "address":"165 Bạch Đằng, Quận Tân Bình, Hồ Chí Minh",
-      "lat":"10.815674",
-      "lng":"106.675103"
+      "lat":"10.8157169",
+      "lng":"106.6747436",
+      "tel":"35 47 12 13"
     }
     ,
     {
       "title":"MINISTOP - Tân Sơn Nhì",
       "address":"215B Tân Sơn Nhì, Quận Tân Phú, Hồ Chí Minh",
-      "lat":"10.797398",
-      "lng":"106.631"
+      "lat":"10.798304",
+      "lng":"106.631673",
+      "tel":"38 42 60 13"
     }
     ,
     {
       "title":"MINISTOP - Trần Thiện Chánh",
       "address":"77 Trần Thiện Chánh, Quận 10, Hồ Chí Minh",
-      "lat":"10.77157",
-      "lng":"106.670685"
+      "lat":"10.7715702",
+      "lng":"106.6706854",
+      "tel":"38 68 45 43"
     }
     ,
     {
       "title":"MINISTOP - Trần Doãn Khanh",
       "address":"2 Trần Doãn Khanh, Quận 1, Hồ Chí Minh",
       "lat":"10.788722",
-      "lng":"106.697771"
+      "lng":"106.697771",
+      "tel":"39 10 12 33"
     }
     ,
     {
       "title":"MINISTOP - Nguyễn Thượng Hiền",
       "address":"245 Nguyễn Thượng Hiền, Quận Bình Thạnh, Hồ Chí Minh",
-      "lat":"10.807572",
-      "lng":"106.683889"
+      "lat":"10.805731",
+      "lng":"106.685758",
+      "tel":"35 15 07 83"
     }
     ,
     {
       "title":"MINISTOP - Cư xá Đô Thành",
       "address":"129 - 131 Đường Số 3, Cư xá Đô Thành, Quận 3, Hồ Chí Minh",
-      "lat":"10.772294",
-      "lng":"106.68134"
+      "lat":"10.7721459",
+      "lng":"106.6810264",
+      "tel":"38 34 17 49"
     }
     ,
     {
       "title":"MINISTOP - Lạc Long Quân",
       "address":"312 Lạc Long Quân, Quận 11, Hồ Chí Minh",
-      "lat":"10.759937",
-      "lng":"106.641938"
+      "lat":"10.7675706",
+      "lng":"106.6436203",
+      "tel":"54 06 91 24"
     }
     ,
     {
       "title":"MINISTOP - Hồng Hà",
       "address":"58B Hồng Hà, Quận Tân Bình, Hồ Chí Minh",
       "lat":"10.813118",
-      "lng":"106.668368"
+      "lng":"106.668368",
+      "tel":"38 48 70 63"
     }
     ,
     {
       "title":"MINISTOP - Hoà Hưng",
       "address":"101 Hoà Hưng, phường 12, Quận 10, Hồ Chí Minh",
-      "lat":"10.779543",
-      "lng":"106.67524"
+      "lat":"10.7795255",
+      "lng":"106.6751941",
+      "tel":"39 79 89 78"
     }
     ,
     {
       "title":"MINISTOP - Hoàng Hoa Thám",
       "address":"10A Hoàng Hoa Thám, phường 7, Quận Bình Thạnh, Hồ Chí Minh",
-      "lat":"10.804787",
-      "lng":"106.69185"
+      "lat":"10.8047869",
+      "lng":"106.69185",
+      "tel":"35 101 677"
     }
     ,
     {
       "title":"MINISTOP - Quách Văn Tuấn",
       "address":"14 Quách Văn Tuấn, phường 12, Quận Tân Bình, Hồ Chí Minh",
-      "lat":"10.799627",
-      "lng":"106.652337" 
+      "lat":"10.8002427",
+      "lng":"106.6525359",
+      "tel":"38 110 002"
     }
     ,
     {
       "title":"MINISTOP - Nguyễn Văn Đậu",
       "address":"183 Nguyễn Văn Đậu, phường 11, Quận Bình Thạnh, Hồ Chí Minh",
-      "lat":"10.810798",
-      "lng":"106.690324"
+      "lat":"10.8119305",
+      "lng":"106.6921377",
+      "tel":"35 158 233"
     }
     ,
     {
       "title":"MINISTOP - Phạm Viết Chánh",
       "address":"19-21-23 Phạm Viết Chánh, phường Nguyễn Cư Trinh, Quận 1, Hồ Chí Minh",
-      "lat":"10.767537",
-      "lng":"106.684941"
+      "lat":"10.767221",
+      "lng":"106.684265",
+      "tel":"39 250 003"
     }
     ,
     {
       "title":"MINISTOP - Đặng Văn Ngữ",
       "address":"14A Bis Đặng Văn Ngữ, phường 10, Quận Phú Nhuận, Hồ Chí Minh",
-      "lat":"10.796817",
-      "lng":"106.669652"
+      "lat":"10.7963811",
+      "lng":"106.6697426",
+      "tel":"39 918 162"
     }
     ,
     {
       "title":"MINISTOP - Điện Biên Phủ",
       "address":"475A Điện Biên Phủ, phường 25, Quận Bình Thạnh, Hồ Chí Minh",
-      "lat":"10.801147",
-      "lng":"106.710624"
+      "lat":"10.801028",
+      "lng":"106.7142773",
+      "tel":"35 106 067"
     }
     ,
     {
       "title":"MINISTOP - Hậu Giang",
       "address":"45 Hậu Giang, Phường 4, Quận Tân Bình, Hồ Chí Minh",
       "lat":"10.80786",
-      "lng":"106.662492"
+      "lng":"106.662492",
+      "tel":"38 111 006"
     }
     ,
     {
       "title":"MINISTOP - Lê Lợi",
       "address":"38 Lê Lợi, phường Bến Nghé, Quận 1, Hồ Chí Minh",
-      "lat":"10.774241",
-      "lng":"106.70045"
+      "lat":"10.774119",
+      "lng":"106.700554",
+      "tel":"38 220 246"
     }
     ,
     {
       "title":"MINISTOP - Nguyễn Thái Bình",
       "address":"194 Nguyễn Thái Bình, Phường 12, Quận Tân Bình, Hồ Chí Minh",
-      "lat":"10.796785",
-      "lng":"106.653472"
+      "lat":"10.796670",
+      "lng":"106.653458",
+      "tel":"38 111 335"
     }
     ,
     {
       "title":"MINISTOP - Phạm Viết Chánh",
       "address":"37 - 39 Phạm Viết Chánh, Phường 19, Quận Bình Thạnh, Hồ Chí Minh",
-      "lat":"10.790368",
-      "lng":"106.709535"
+      "lat":"10.790283",
+      "lng":"106.709504",
+      "tel":"39 250 003"
     }
     ,
     {
       "title":"MINISTOP - Mạc Thị Bưởi",
       "address":"16 Mạc Thị Bưởi, Phường Bến Nghé, Quận 1, Hồ Chí Minh",
-      "lat":"10.775942",
-      "lng":"106.705152"
+      "lat":"10.775953",
+      "lng":"106.7051369",
+      "tel":"35 210 627"
     }
     ,
     {
       "title":"MINISTOP - Trương Công Định",
       "address":"88 Trương Công Định, Phường 14, Quận Tân Bình, Hồ Chí Minh",
-      "lat":"10.796482",
-      "lng":"106.640921"
+      "lat":"10.7964819",
+      "lng":"106.640921",
+      "tel":"38 490 929"
     }
     ,
     {
       "title":"MINISTOP - B22 Bạch Đằng",
       "address":"B22 Bạch Đằng, phường 2, Quận Tân Bình, Hồ Chí Minh",
-      "lat":"10.814997",
-      "lng":"106.668061" 
+      "lat":"10.814843",
+      "lng":"106.667768",
+      "tel":"38 486 579"
     }
     ,
     {
       "title":"MINISTOP - Vũ Huy Tấn",
       "address":"15K Vũ Huy Tấn, Phường 3, Quận Bình Thạnh, Hồ Chí Minh",
-      "lat":"10.795767",
-      "lng":"106.69539"
+      "lat":"10.795778",
+      "lng":"106.694243",
+      "tel":"35 100 388"
     }
     ,
     {
       "title":"MINISTOP - Ngô Tất Tố",
       "address":"69 Ngô Tất Tố, Phường 21, Quận Bình Thạnh, Hồ Chí Minh",
-      "lat":"10.792793",
-      "lng":"106.711792"
+      "lat":"10.792972",
+      "lng":"106.710929",
+      "tel":"35 140 979"
     }
     ,
     {
       "title":"MINISTOP - Cống Quỳnh",
       "address":"124 Cống Quỳnh, Phường Phạm Ngũ Lão, Quận 1Hồ Chí Minh",
       "lat":"10.765394",
-      "lng":"106.690228"
+      "lng":"106.690228",
+      "tel":"38 389 800"
     }
     ,
     {
       "title":"MINISTOP - Đào Duy Từ",
       "address":"17 Đào Duy Từ, Phường 5, Quận 10, Hồ Chí Minh",
-      "lat":"10.760577",
-      "lng":"106.668087"
+      "lat":"10.7605769",
+      "lng":"106.668087",
+      "tel":"38 579 993"
     }
     ,
     {
       "title":"MINISTOP - Tân Sơn Nhì",
       "address":"384-386 Tân Sơn Nhì, phường Tân Sơn Nhì, Quận Tân Phú, Hồ Chí Minh",
-      "lat":"10.793955",
-      "lng":"106.628809"
+      "lat":"10.7985378",
+      "lng":"106.6317837",
+      "tel":"38 126 686"
     }
     ,
     {
       "title":"MINISTOP - Nguyễn Thiện Thuật",
       "address":"19-21 Nguyễn Thiện Thuật, Phường 2, Quận 3, Hồ Chí Minh",
-      "lat":"10.766366",
-      "lng":"106.681698"
+      "lat":"10.7663663",
+      "lng":"106.6816978",
+      "tel":"38 300 178"
     }
     ,
     {
       "title":"MINISTOP - Trần Quý Cáp",
       "address":"43 Trần Quý Cáp, P.12, Quận Bình Thạnh, Quận Bình Thạnh, Hồ Chí Minh",
-      "lat":"10.815615", 
-      "lng":"106.695478"
+      "lat":"10.8061939", 
+      "lng":"106.7073598",
+      "tel":"Nothing"
     }
     ,
     {
       "title":"MINISTOP - Bắc Hải",
       "address":"212 - 214 Bắc Hải, phường 6, Quận Tân Bình, Hồ Chí Minh",
       "lat":"10.784308",
-      "lng":"106.661979"
+      "lng":"106.661979",
+      "tel":"3970 0393"
     }
     ,
     {
       "title":"MINISTOP - Vĩnh Hội",
       "address":"69 Vĩnh Hội, Phường 4, Quận 4, Quận 4, Hồ Chí Minh",
-      "lat":"10.756294",
-      "lng":"106.703841"
+      "lat":"10.755974",
+      "lng":"106.702249",
+      "tel":"3826 2882"
     }
     ,
     {
       "title":"MINISTOP - Vũ Tùng",
       "address":"88D - 88E Vũ Tùng phường 2, Quận Bình Thạnh, Hồ Chí Minh",
       "lat":"10.801821",
-      "lng":"106.700894"
+      "lng":"106.700894",
+      "tel":"3551 1828"
     }
     ,
     {
       "title":"MINISTOP - Sư Vạn Hạnh",
       "address":"435 Sư Vạn Hạnh phường 12, Quận 10, Hồ Chí Minh",
-      "lat":"10.772663",
-      "lng":"106.669025"
+      "lat":"10.7726629",
+      "lng":"106.6690254",
+      "tel":"3862 1136"
     }
     ,
     {
       "title":"MINISTOP - D1",
       "address":"127 Đường D1, Phường 25, Quận Bình Thạnh, Quận Bình Thạnh, Hồ Chí Minh",
-      "lat":"10.800766",
-      "lng":"106.718396"
+      "lat":"10.8060647",
+      "lng":"106.7068341",
+      "tel":"Nothing"
     }
     ,
     {
       "title":"MINISTOP - Trần Quốc Toản",
       "address":"47 Trần Quốc Toản, Phường 8, Quận 3, Quận 3, Hồ Chí Minh",
       "lat":"10.78809",
-      "lng":"106.688799"
+      "lng":"106.688799",
+      "tel":"Nothing"
     }
     ,
     {
       "title":"MINISTOP - Trần Đình Xu",
       "address":"114 Trần Đình Xu, Phường Nguyễn Cư Trinh, Quận 1, Hồ Chí Minh",
       "lat":"10.762161",
-      "lng":"106.689194"
+      "lng":"106.689194",
+      "tel":"38 364 339"
     }
     ,
     {
       "title":"MINISTOP - Đường Số 5",
       "address":"60, Đường số 5, Phường 8, Quận 11, Hồ Chí Minh",
-      "lat":"10.761611",
-      "lng":"106.648441"
+      "lat":"10.761077",
+      "lng":"106.649531",
+      "tel":"39 620886"
     }
     ,
     {
       "title":"MINISTOP - Nguyễn Du",
       "address":"15 Nguyễn Du, Phường 7, Quận Gò Vấp, Hồ Chí Minh",
-      "lat":"10.826486",
-      "lng":"106.685188"
+      "lat":"10.8253009",
+      "lng":"106.6856263",
+      "tel":"38 941 268"
     }
     ,
     {
       "title":"MINISTOP - Xóm Chiếu",
       "address":"181/11/1 + 181/13 Xóm Chiếu, phường 16, Quận 4, Hồ Chí Minh",
       "lat":"10.755345",
-      "lng":"106.709634"
+      "lng":"106.709634",
+      "tel":"38 25 93 96"
     }
     ,
     {
       "title":"MINISTOP - Lê Quang Định",
       "address":"484 Lê Quang Định, Phường 11, Quận Bình Thạnh,Hồ Chí Minh",
-      "lat":"10.815534",
-      "lng":"106.688762"
+      "lat":"10.8155636",
+      "lng":"106.6887543",
+      "tel":"35 15 51 36"
     }
     ,
     {
       "title":"MINISTOP - Tôn Thất Thuyết",
       "address":"209/15A Tôn Thất Thuyết, Phường 3, Quận 4, Hồ Chí Minh",
       "lat":"10.753932",
-      "lng":"106.698951"
+      "lng":"106.6989509",
+      "tel":"38 26 82 88"
     }
     ,
     {
       "title":"MINISTOP - Nguyễn Biểu",
       "address":"207 Nguyễn Biểu, Phường 2, Quận 5, Quận 5, Hồ Chí Minh",
-      "lat":"10.757199",
-      "lng":"106.683146"
+      "lat":"10.754788",
+      "lng":"106.683615",
+      "tel":"Nothing"
     }
     ,
     {
       "title":"MINISTOP - Nam Kỳ Khởi Nghĩa",
       "address":"75bis Nam Kỳ Khởi Nghĩa, Quận 1, Hồ Chí Minh",
-      "lat":"10.772374",
-      "lng":"106.700426"
+      "lat":"10.790188",
+      "lng":"106.682689",
+      "tel":"Nothing"
     }
     ,
     {
       "title":"MINISTOP - Vườn Lài",
       "address":"162 Vườn Lài, Phường Tân Thành, Quận Tân Phú, Hồ Chí Minh",
-      "lat":"10.788186",
-      "lng":"106.62948"
+      "lat":"10.7881856",
+      "lng":"106.6294798",
+      "tel":"38 10 85 68"
     }
     ,
     {
       "title":"MINISTOP - Tân Qúy",
       "address":"239A Tân Quí, Phường Tân Qúy, Quận Tân Phú, Hồ Chí Minh",
-      "lat":"10.792387",
-      "lng":"106.621389"
+      "lat":"10.7977916",
+      "lng":"106.6197624",
+      "tel":"35 59 07 99"
     }
     ,
     {
       "title":"MINISTOP - Đại học Quốc gia",
       "address":"Quốc lộ 1A, Kí túc xá khu A, Khu phố 6, Phưởng Linh Trung, Quận Thủ Đức, Hồ Chí Minh",
-      "lat":"10.878231",
-      "lng":"106.80621"
+      "lat":"10.8637312",
+      "lng":"106.7794935",
+      "tel":"36 20 10 65"
     }
     ,
     {
       "title":"MINISTOP - D2",
       "address":"89 D2, Phường 25, Quận Bình Thạnh, Hồ Chí Minh",
       "lat":"10.804414",
-      "lng":"106.716053"
+      "lng":"106.716053",
+      "tel":"35 12 97 51"
     }
     ,
     {
       "title":"MINISTOP - Đồng Đen",
       "address":"169 Đồng Đen, Quận Tân Bình, Hồ Chí Minh",
-      "lat":"10.789621",
-      "lng":"106.643142"
+      "lat":"10.7896212",
+      "lng":"106.6431419",
+      "tel":"38 69 11 13"
     }
     ,
     {
       "title":"MINISTOP - Thăng Long",
       "address":"33 Thăng Long, Phường 04, Quận Tân Bình, Hồ Chí Minh",
-      "lat":"10.802329",
-      "lng":"106.660393"
+      "lat":"10.8014659",
+      "lng":"106.6525974",
+      "tel":"39 48 48 78"
     }
     ,
     {
       "title":"MINISTOP - Phạm Văn Hai",
       "address":"204 Phạm Văn Hai, Phường 5, Quận Tân Bình, Hồ Chí Minh",
-      "lat":"10.79211",
-      "lng":"106.661891"
+      "lat":"10.7905064",
+      "lng":"106.6615747",
+      "tel":"38 460 899"
     }
     ,
     {
       "title":"MINISTOP - Trần Khắc Chân",
       "address":"79 Trần Khắc Chân, Phường Tân Định, Quận 1, Hồ Chí Minh",
-      "lat":"10.794448",
-      "lng":"106.690858"
+      "lat":"10.7944479",
+      "lng":"106.690858",
+      "tel":"35 268 939"
     }
     ,
     {
       "title":"MINISTOP - Trịnh Đình Trọng",
       "address":"132/1B Trịnh Đình Trọng, Phường Phú Trung, Quận Tân Phú, Hồ Chí Minh",
       "lat":"10.775006",
-      "lng":"106.643829"
+      "lng":"106.643829",
+      "tel":"38 618 399"
     }
     ,
     {
       "title":"MINISTOP - Vườn Lài",
       "address":"56 Vườn Lài, Quận Tân Phú, Hồ Chí Minh",
       "lat":"10.787918",
-      "lng":"106.633581"
+      "lng":"106.633581",
+      "tel":"38 102 988"
     }
     ,
     {
       "title":"MINISTOP - Nguyễn Trọng Tuyển",
       "address":"351A Nguyen Trong Tuyen, Quận Tân Bình, Hồ Chí Minh",
       "lat":"10.798209",
-      "lng":"106.66745"
+      "lng":"106.66745",
+      "tel":"38 420 122"
     }
     ,
     {
       "title":"MINISTOP - Hoa Lan",
       "address":"54 Hoa Lan, Quận Phú Nhuận, Hồ Chí Minh",
-      "lat": "10.797135",
-      "lng":"106.689938" 
+      "lat": "10.7991944",
+      "lng":"106.6802639",
+      "tel":"35 170 989"
     }
     ,
     {
       "title":"MINISTOP - Dương Đình Nghệ",
       "address":"17K-17H Dương Đình Nghệ, Quận 11, Hồ Chí Minh",
-      "lat":"10.760504",
-      "lng":"106.650164"
+      "lat":"10.760486",
+      "lng":"106.6503089",
+      "tel":"39 620 292"
     }
     ,
     {
       "title":"MINISTOP - Bùi Thị Xuân",
       "address":"46-48 Ngô Thị Thu Minh, Quận Tân Bình, Hồ Chí Minh",
-      "lat":"10.795704",
-      "lng":"106.663225"
+      "lat":"10.7957042",
+      "lng":"106.6632249",
+      "tel":"39 972 027"
     }
     ,
     {
       "title":"MINISTOP - Nguyễn Kiệm",
       "address":"371 Nguyễn Kiệm, Phường 3, Quận Gò Vấp, Hồ Chí Minh",
-      "lat":"10.816244",
-      "lng":"106.678092"
+      "lat":"10.8131003",
+      "lng":"106.6786842",
+      "tel":"36 200 272"
     }
     ,
     {
       "title":"MINISTOP - Cách Mạng Tháng Tám",
       "address":"598-600 Cách Mạng Tháng Tám, Phường 11, Quận 3, Hồ Chí Minh",
-      "lat":"10.791789",
-      "lng":"106.655419"
+      "lat":"10.7867683",
+      "lng":"106.665278",
+      "tel":"39 905 679"
+    }
+    ,
+    {
+      "title":"MINISTOP - Hoa Sứ",
+      "address":"61 Hoa Sứ, Phường 7, Quận Phú Nhuận, Hồ Chí Minh",
+      "lat":"10.7993427",
+      "lng":"106.6889497",
+      "tel":"35 10 02 86"
     }
     ]
 }
