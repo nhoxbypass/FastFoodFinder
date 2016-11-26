@@ -69,40 +69,10 @@
         android:layout_below="@id/info_content"
         android:background="#b6b6b6" />
 
-    <LinearLayout
+    <include
+        layout="@layout/item_call_direction"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/line"
-        android:orientation="horizontal">
-
-        <FrameLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <TextView
-                style="@style/TextInfo"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_horizontal"
-                android:drawableLeft="@drawable/ic_call"
-                android:text="Call" />
-        </FrameLayout>
-
-        <FrameLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <TextView
-                style="@style/TextInfo"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_horizontal"
-                android:drawableLeft="@drawable/ic_compass"
-                android:text="Directions" />
-        </FrameLayout>
-
-    </LinearLayout>
+        android:layout_below="@id/line" />
 
 </RelativeLayout>

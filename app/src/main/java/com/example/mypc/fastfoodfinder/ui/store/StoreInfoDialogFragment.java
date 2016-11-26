@@ -32,8 +32,12 @@ public class StoreInfoDialogFragment extends DialogFragment {
         return fragment;
     }
 
+    @BindView(R.id.store_name)
+    TextView tvStoreName;
     @BindView(R.id.view_detail)
     TextView tvViewDetail;
+    @BindView(R.id.store_address)
+    TextView tvStoreAddress;
 
     public StoreInfoDialogFragment() {
 
@@ -52,6 +56,8 @@ public class StoreInfoDialogFragment extends DialogFragment {
 
         final Store store = (Store) getArguments().getSerializable(StoreDetailActivity.STORE);
 
+        tvStoreName.setText(store.getTitle());
+        tvStoreAddress.setText(store.getTitle()); //TODO dùng address
         tvViewDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
