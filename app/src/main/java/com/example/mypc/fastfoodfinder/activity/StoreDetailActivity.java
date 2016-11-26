@@ -33,7 +33,7 @@ import static com.example.mypc.fastfoodfinder.R.id.map;
 
 public class StoreDetailActivity extends AppCompatActivity {
 
-    private static final String STORE = "store";
+    public static final String STORE = "store";
 
     @BindView(R.id.collapsing_toolbar)
     CollapsingToolbarLayout collapsingToolbar;
@@ -75,7 +75,7 @@ public class StoreDetailActivity extends AppCompatActivity {
         collapsingToolbar.setTitle(storeName);
 
         Glide.with(this)
-                .load(R.drawable.circle_k_cover)
+                .load(R.drawable.sample_circle_k_cover)
                 .centerCrop()
                 .into(ivBackdrop);
 

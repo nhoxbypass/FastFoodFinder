@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <FrameLayout
+        android:id="@+id/call"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true">
+
+        <TextView
+            style="@style/TextInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:clickable="false"
+            android:drawableLeft="@drawable/ic_call"
+            android:text="Call" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/direction"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true">
+
+        <TextView
+            style="@style/TextInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:clickable="false"
+            android:drawableLeft="@drawable/ic_compass"
+            android:text="Directions" />
+    </FrameLayout>
+
+</LinearLayout>

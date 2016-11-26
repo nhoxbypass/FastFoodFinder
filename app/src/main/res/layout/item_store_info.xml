@@ -15,15 +15,14 @@
         android:id="@+id/info_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/gradient"
+        android:background="@drawable/shape_gradient"
         android:minHeight="130dp"
         android:padding="10dp">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="5dp"
-            android:src="@drawable/ic_info" />
+            android:src="@drawable/ic_about" />
 
         <TextView
             android:id="@+id/store_name"
@@ -70,28 +69,10 @@
         android:layout_below="@id/info_content"
         android:background="#b6b6b6" />
 
-    <LinearLayout
+    <include
+        layout="@layout/item_call_direction"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/line"
-        android:orientation="horizontal">
-
-        <TextView
-            style="@style/TextInfo"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:drawableLeft="@drawable/ic_call"
-            android:text="Call" />
-
-        <TextView
-            style="@style/TextInfo"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:drawableLeft="@drawable/ic_compass"
-            android:text="Directions" />
-
-    </LinearLayout>
+        android:layout_below="@id/line" />
 
 </RelativeLayout>

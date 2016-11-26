@@ -36,7 +36,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:drawableTop="@drawable/ic_rating"
+            android:drawableTop="@drawable/ic_heart_circle"
             android:text="Rate it" />
 
         <TextView
@@ -45,7 +45,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:drawableTop="@drawable/ic_edit"
+            android:drawableTop="@drawable/ic_pencil"
             android:text="Comment" />
 
     </LinearLayout>
