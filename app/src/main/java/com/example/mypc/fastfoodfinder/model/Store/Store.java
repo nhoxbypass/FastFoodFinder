@@ -11,10 +11,17 @@ import java.io.Serializable;
  */
 public class Store implements Serializable {
 
+    //Type
+    //0: circle_k
+    //1: ministop
+    //2: family mart
+    //3: bsmart
+    //4: shop n go
+
     public Store() {
     }
 
-    public Store(String title, String lat, String lng, String type)
+    public Store(String title, String lat, String lng, int type)
     {
         this.title = title;
         this.lat = lat;
@@ -50,7 +57,7 @@ public class Store implements Serializable {
         return lng;
     }
 
-    public String getType() {
+    public int getType() {
         return type;
     }
 
@@ -69,7 +76,7 @@ public class Store implements Serializable {
         this.lng = lng;
     }
 
-    public void setType(String type) {
+    public void setType(int type) {
         this.type = type;
     }
 
@@ -80,5 +87,5 @@ public class Store implements Serializable {
     @PropertyName("lng")
     private String lng;
     @Exclude
-    String type;
+    int type;
 }

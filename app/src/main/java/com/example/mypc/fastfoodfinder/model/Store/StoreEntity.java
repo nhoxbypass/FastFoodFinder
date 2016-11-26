@@ -38,12 +38,12 @@ public class StoreEntity extends RealmObject {
         return new LatLng(latitude, longitude);
     }
 
-    public String getType() {
+    public int getType() {
         return type;
     }
 
     private String title;
     private double latitude;
     private double longitude;
-    String type;
+    int type;
 }

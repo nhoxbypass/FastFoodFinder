@@ -21,7 +21,7 @@ import butterknife.ButterKnife;
 /**
  * Created by nhoxb on 11/9/2016.
  */
-public class ListStoreAdapter extends RecyclerView.Adapter<ListStoreAdapter.StoreViewHolder> {
+public class NearByStoreAdapter extends RecyclerView.Adapter<NearByStoreAdapter.StoreViewHolder> {
 
     private List<StoreViewModel> mListStore;
     private StoreListListener mLisener;
@@ -31,7 +31,7 @@ public class ListStoreAdapter extends RecyclerView.Adapter<ListStoreAdapter.Stor
         mLisener = listener;
     }
 
-    public ListStoreAdapter() {
+    public NearByStoreAdapter() {
         mListStore = new ArrayList<>();
     }
 

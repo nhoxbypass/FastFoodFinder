@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
 /**
@@ -46,8 +47,26 @@ public class StoreDataSource {
         return storeList;
     }
 
-    public List<Store> getStoreInBounds(String lat, String lng)
+    public static List<Store> getStoreInBounds(double minLat, double minLng, double maxLat, double maxLng)
     {
+        Realm realm = Realm.getDefaultInstance();
+        List<Store> storeList = new ArrayList<>();
+        // Build the query looking at all users:
+        RealmQuery<StoreEntity> query = realm.where(StoreEntity.class);
 
+        // Add query conditions:
+        query.between("latitude",minLat,maxLat);
+        query.between("longitude", minLng, maxLng);
+
+        // Execute the query:
+        RealmResults<StoreEntity> result = query.findAll();
+
+        for (int i = 0; i < result.size(); i++)
+        {
+            Store store = new Store(result.get(i));
+            storeList.add(store);
+        }
+
+        return storeList;
     }
 }

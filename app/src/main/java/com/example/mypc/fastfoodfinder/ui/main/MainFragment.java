@@ -5,12 +5,9 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Rect;
-import android.graphics.RectF;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
@@ -29,7 +26,7 @@ import android.widget.LinearLayout;
 
 import com.example.mypc.fastfoodfinder.R;
 import com.example.mypc.fastfoodfinder.activity.StoreDetailActivity;
-import com.example.mypc.fastfoodfinder.adapter.ListStoreAdapter;
+import com.example.mypc.fastfoodfinder.adapter.NearByStoreAdapter;
 import com.example.mypc.fastfoodfinder.model.Routing.MapsDirection;
 import com.example.mypc.fastfoodfinder.model.Routing.Route;
 import com.example.mypc.fastfoodfinder.model.Routing.Step;
@@ -37,7 +34,8 @@ import com.example.mypc.fastfoodfinder.model.Store.Store;
 import com.example.mypc.fastfoodfinder.model.Store.StoreDataSource;
 import com.example.mypc.fastfoodfinder.model.Store.StoreViewModel;
 import com.example.mypc.fastfoodfinder.rest.MapsDirectionApi;
-import com.example.mypc.fastfoodfinder.utils.MarkerUtils;
+import com.example.mypc.fastfoodfinder.utils.Constant;
+import com.example.mypc.fastfoodfinder.utils.MapUtils;
 import com.example.mypc.fastfoodfinder.utils.PermissionUtils;
 import com.example.mypc.fastfoodfinder.utils.RetrofitUtils;
 import com.google.android.gms.common.ConnectionResult;
@@ -65,7 +63,10 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -74,28 +75,29 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MainFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks{
+public class MainFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks {
 
     private static final long INTERVAL = 1000 * 10;
     private static final long FASTEST_INTERVAL = 1000 * 5;
 
 
-    private static final Hashtable<String, BitmapDescriptor> CACHE = new Hashtable<String, BitmapDescriptor>();
-
-    private GoogleMap mGoogleMap;
-    SupportMapFragment mFragment;
-    RecyclerView mRecyclerView;
-    CoordinatorLayout mCoordinatorLayout;
-    LinearLayout mBottomSheet;
-    ListStoreAdapter mAdapter;
+    private static final Hashtable<Integer, BitmapDescriptor> CACHE = new Hashtable<Integer, BitmapDescriptor>();
     BottomSheetBehavior mBottomSheetBehavior;
     MapsDirectionApi mMapDirectionApi;
-    GoogleApiClient googleApiClient;
+    LocationRequest mLocationRequest;
+    @BindView(R.id.rv_bottom_sheet) RecyclerView mNearStoreRecyclerView;
+    @BindView(R.id.maps_container) CoordinatorLayout mCoordinatorLayoutContainer;
+    @BindView(R.id.ll_bottom_sheet) LinearLayout mBottomSheetContainer;
     LatLng currLocation;
     Polyline currDirection;
     List<Store> mStoreList;
-    List<StoreViewModel> mNearlyStores;
-    LocationRequest mLocationRequest;
+    Map<Integer,Marker> mMarkerMap;
+    Map<Integer,StoreViewModel> mNearlyStoreMap;
+    Bitmap currMarkerBitmap;
+    private GoogleMap mGoogleMap;
+    private SupportMapFragment mMapFragment;
+    private NearByStoreAdapter mAdapter;
+    private GoogleApiClient googleApiClient;
 
 
     public MainFragment() {
@@ -111,30 +113,12 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
         return fragment;
     }
 
+
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        FragmentManager fragmentManager = getChildFragmentManager();
-        mFragment = (SupportMapFragment) fragmentManager.findFragmentById(R.id.maps_container);
-        if (mFragment == null)
-        {
-            CameraPosition cameraPosition = CameraPosition.builder()
-                    .target(new LatLng(10.7473821, 106.6805755))
-                    .zoom(15)
-                    .tilt(30)
-                    .build();
-            GoogleMapOptions options = new GoogleMapOptions();
-            options.mapType(GoogleMap.MAP_TYPE_NORMAL)
-                    .camera(cameraPosition)
-                    .compassEnabled(true)
-                    .rotateGesturesEnabled(true)
-                    .zoomGesturesEnabled(true)
-                    .tiltGesturesEnabled(true);
-            mFragment = SupportMapFragment.newInstance(options);
-            fragmentManager.beginTransaction().replace(R.id.map,mFragment).commitNow();
-            fragmentManager.executePendingTransactions();
-        }
+        inflateSupportMapFragment(mMapFragment);
     }
 
     @Override
@@ -142,20 +126,7 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
         super.onCreate(savedInstanceState);
         PermissionUtils.requestLocaiton(getActivity());
 
-        mStoreList = new ArrayList<Store>();
-        mNearlyStores = new ArrayList<StoreViewModel>();
-        mAdapter = new ListStoreAdapter();
-
-        googleApiClient = new GoogleApiClient.Builder(getContext())
-                .addConnectionCallbacks(MainFragment.this)
-                .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
-                    @Override
-                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                        Log.e("MAPP", "Failed to get current location");
-                    }
-                })
-                .addApi(LocationServices.API)
-                .build();
+        initializeVariables();
 
         createLocationRequest();
     }
@@ -164,109 +135,30 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_main,container, false);
-        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.rv_bottom_sheet);
-        mCoordinatorLayout = (CoordinatorLayout) rootView.findViewById(R.id.maps_container);
-        mBottomSheet = (LinearLayout) rootView.findViewById(R.id.ll_bottom_sheet);
-        mBottomSheetBehavior = BottomSheetBehavior.from(mBottomSheet);
+        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        ButterKnife.bind(this, rootView);
+        mBottomSheetBehavior = BottomSheetBehavior.from(mBottomSheetContainer);
         return rootView;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        // Create your items
-
-        mAdapter.setStores(mNearlyStores);
-        mRecyclerView.setAdapter(mAdapter);
-
+        mNearStoreRecyclerView.setAdapter(mAdapter);
         // Set the layout manager
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mNearStoreRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (mGoogleMap == null)
-        {
-            initMaps();
+        if (mGoogleMap == null) {
+            initializeMap();
             initBottomSheet();
-
         }
     }
 
-    private void initBottomSheet() {
-        mAdapter.setOnStoreListListener(new ListStoreAdapter.StoreListListener() {
-            @Override
-            public void onItemClick(StoreViewModel store) {
-                LatLng storeLocation = store.getmPosition();
-                getDirection(storeLocation);
-            }
-        });
-    }
 
-    List<StoreViewModel> getStoreInsideScreen(GoogleMap googleMap)
-    {
-        mNearlyStores = new ArrayList<>();
-        LatLngBounds bounds = googleMap.getProjection().getVisibleRegion().latLngBounds;
-        LatLng cameraPosition = googleMap.getCameraPosition().target;
-        for (int i = 0; i < mStoreList.size(); i++)
-        {
-            if (bounds.contains(mStoreList.get(i).getPosition()))
-            {
-                //Inside
-                mNearlyStores.add(new StoreViewModel(mStoreList.get(i), cameraPosition));
-            }
-            else
-            {
-                //Do nothing
-            }
-        }
-        return mNearlyStores;
-    }
-
-
-
-    protected void createLocationRequest() {
-        mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(INTERVAL);
-        mLocationRequest.setFastestInterval(FASTEST_INTERVAL);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-    }
-
-    private void dropPinEffect(final Marker marker) {
-        // Handler allows us to repeat a code block after a specified delay
-        final android.os.Handler handler = new android.os.Handler();
-        final long start = SystemClock.uptimeMillis();
-        final long duration = 3000;
-
-        // Use the bounce interpolator
-        final android.view.animation.Interpolator interpolator =
-                new BounceInterpolator();
-
-        // Animate marker with a bounce updating its position every 15ms
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                long elapsed = SystemClock.uptimeMillis() - start;
-                // Calculate t for bounce based on elapsed time
-                float t = Math.max(
-                        1 - interpolator.getInterpolation((float) elapsed
-                                / duration), 0);
-
-                // Set the anchor
-                marker.setAnchor(0.5f, 1.0f + 14 * t);
-                //marker.setIcon(BitmapDescriptorFactory.fromBitmap(MarkerUtils.resizeMarkerIcon(getResources(),"marker", (int)interpolator.getInterpolation((float) elapsed / duration)*50, (int)interpolator.getInterpolation((float) elapsed / duration)*50)));
-
-                if (t > 0.0) {
-                    // Post this event again 15ms from now.
-                    handler.postDelayed(this, 15);
-                } else { // done elapsing, show window
-                    marker.showInfoWindow();
-                }
-            }
-        });
-    }
 
     @SuppressWarnings("MissingPermission")
     @Override
@@ -282,57 +174,28 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
                     Log.d("MAPP", "Firing onLocationChanged..............................................");
                     currLocation = new LatLng(location.getLatitude(), location.getLongitude());
                     // Creating a LatLng object for the current location
-                    LatLng latLng =  currLocation;
+                    LatLng latLng = currLocation;
                     // Showing the current location in Google Map
-                    mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                    //mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
 
                     // Zoom in the Google Map
-                    mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+                    //mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(16));
                 }
             });
 
             Location lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
-            if (lastLocation != null)
-            {
+            if (lastLocation != null) {
                 currLocation = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
-                final Marker marker = mGoogleMap.addMarker(new MarkerOptions().position(currLocation).title("Marker"));
-                final Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.logo_circle_k_50);
-                final Bitmap target = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
-
-
-                final Canvas canvas = new Canvas(target);
-
-                ValueAnimator animator = ValueAnimator.ofFloat(0, 1);
-                animator.setDuration(500);
-                animator.setStartDelay(1000);
-                animator.setInterpolator(new BounceInterpolator());
-                final Rect originalRect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-                final RectF scaledRect = new RectF();
-
-                animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                    int w = 0, h = 0;
-                    @Override
-                    public void onAnimationUpdate(ValueAnimator animation) {
-                        float scale = (float) animation.getAnimatedValue();
-                        scaledRect.set(0, 0, originalRect.right * scale, originalRect.bottom * scale);
-                        canvas.drawBitmap(bitmap, originalRect, scaledRect, null);
-                        marker.setIcon(BitmapDescriptorFactory.fromBitmap(MarkerUtils.resizeMarkerIcon(bitmap, w, h)));
-                        w+=5;
-                        h += 5;
-                    }
-                });
-                animator.start();
-            }
-            else
+            } else
                 currLocation = mGoogleMap.getCameraPosition().target;
 
             // Creating a LatLng object for the current location
-            LatLng latLng =  currLocation;
+            LatLng latLng = currLocation;
             // Showing the current location in Google Map
             mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
 
             // Zoom in the Google Map
-            mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+            mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(16));
         } else {
             PermissionUtils.requestLocaiton(getActivity());
         }
@@ -343,72 +206,129 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
 
     }
 
-    private void initMaps()
-    {
-        mFragment.getMapAsync(new OnMapReadyCallback() {
+    @Override
+    public void onStart() {
+        super.onStart();
+        googleApiClient.connect();
+    }
+
+
+    @Override
+    public void onStop() {
+        googleApiClient.disconnect();
+        super.onStop();
+    }
+
+
+
+    public void inflateSupportMapFragment(SupportMapFragment mapFragment) {
+        FragmentManager fragmentManager = getChildFragmentManager();
+        mMapFragment = (SupportMapFragment) fragmentManager.findFragmentById(R.id.maps_container);
+        if (mMapFragment == null) {
+            CameraPosition cameraPosition = CameraPosition.builder()
+                    .target(new LatLng(10.7473821, 106.6805755))
+                    .zoom(16)
+                    .build();
+            GoogleMapOptions options = new GoogleMapOptions();
+            options.mapType(GoogleMap.MAP_TYPE_NORMAL)
+                    .camera(cameraPosition)
+                    .compassEnabled(true)
+                    .rotateGesturesEnabled(true)
+                    .zoomGesturesEnabled(true)
+                    .tiltGesturesEnabled(true);
+            mMapFragment = SupportMapFragment.newInstance(options);
+            fragmentManager.beginTransaction().replace(R.id.map_placeholder, mMapFragment).commit();
+            fragmentManager.executePendingTransactions();
+        }
+    }
+
+
+    public void initializeVariables() {
+        mStoreList = new ArrayList<>();
+        mNearlyStoreMap = new HashMap<>();
+        mMarkerMap = new HashMap<>();
+        mAdapter = new NearByStoreAdapter();
+
+        StoreDataSource storeDataSource = new StoreDataSource();
+        mStoreList = storeDataSource.getAllObjects();
+
+        currMarkerBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.logo_circle_k_50);
+
+        googleApiClient = new GoogleApiClient.Builder(getContext())
+                .addConnectionCallbacks(MainFragment.this)
+                .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
+                    @Override
+                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+                        Log.e("MAPP", "Failed to get current location");
+                    }
+                })
+                .addApi(LocationServices.API)
+                .build();
+    }
+
+    private void initBottomSheet() {
+        mAdapter.setOnStoreListListener(new NearByStoreAdapter.StoreListListener() {
+            @Override
+            public void onItemClick(StoreViewModel store) {
+                LatLng storeLocation = store.getmPosition();
+                getDirection(storeLocation);
+            }
+        });
+    }
+
+
+
+    private void initializeMap() {
+        mMapFragment.getMapAsync(new OnMapReadyCallback() {
 
             @SuppressWarnings("MissingPermission")
             @Override
             public void onMapReady(GoogleMap googleMap) {
+
                 mGoogleMap = googleMap;
-
-                mGoogleMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
-                    @Override
-                    public void onCameraMove() {
-                        getStoreInsideScreen(mGoogleMap);
-                        mAdapter.setStores(mNearlyStores);
-                    }
-                });
-
-                StoreDataSource storeDataSource = new StoreDataSource();
-                mStoreList = storeDataSource.getAllObjects();
-
-
                 mGoogleMap.setBuildingsEnabled(true);
                 if (PermissionUtils.checkLocation(getContext())) {
                     mGoogleMap.setMyLocationEnabled(true);
                 } else {
                     PermissionUtils.requestLocaiton(getActivity());
                 }
+
+                //Animate marker when camera move
+                mGoogleMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
+                    @Override
+                    public void onCameraMove() {
+                        Random random = new Random();
+                        if (random.nextBoolean()) {
+                            AnimateMarkerTask task = new AnimateMarkerTask();
+                            task.execute(mStoreList);
+                        }
+                    }
+                });
             }
         });
     }
 
 
-    void addMarkersToMap(List<Store> list, GoogleMap googleMap)
-    {
-        // Set the color of the marker to green
-        BitmapDescriptor markerIcon =
-                BitmapDescriptorFactory.fromResource(R.drawable.logo_circle_k_50);
-        for (int i = 0; i < list.size(); i++)
-        {
-            Store store = list.get(i);
+    void addMarkersToMap(List<Store> storeList, GoogleMap googleMap) {
+        // Set icons of the marker to green
+        for (int i = 0; i < storeList.size(); i++) {
+            Store store = storeList.get(i);
             Marker marker = googleMap.addMarker(new MarkerOptions().position(store.getPosition())
                     .title("Circle K")
                     .snippet(store.getTitle())
-                    .icon(getStoreIcon(getContext(),"circle_k")));
-                    marker.setTag(store);
+                    .icon(getStoreIcon(getContext(), store.getType())));
+            marker.setTag(store);
+            mMarkerMap.put(i,marker);
+            //animateMarker(currMarkerBitmap,marker);
         }
     }
 
-
-    public static BitmapDescriptor getStoreIcon(Context context, String name) {
-        synchronized (CACHE){
-            if (!CACHE.containsKey(name)) {
-                BitmapDescriptor markerIcon =
-                        BitmapDescriptorFactory.fromResource(R.drawable.logo_circle_k_50);
-                CACHE.put(name, markerIcon);
-            }
-            return CACHE.get(name);
-        }
-    }
-
-    void getDirection(LatLng storeLocation)
-    {
+    void getDirection(LatLng storeLocation) {
         Map<String, String> queries = new HashMap<String, String>();
-        Log.v("MAPP", currLocation.toString());
-        queries.put("origin", getLatLngString(currLocation));
-        queries.put("destination", getLatLngString(storeLocation));
+
+        queries.put("origin", MapUtils.getLatLngString(currLocation));
+        queries.put("destination", MapUtils.getLatLngString(storeLocation));
+
         mMapDirectionApi = RetrofitUtils.get(getString(R.string.google_maps_browser_key)).create(MapsDirectionApi.class);
 
         mMapDirectionApi.getDirection(queries).enqueue(new Callback<MapsDirection>() {
@@ -425,8 +345,7 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
         });
     }
 
-    void drawPolylines(List<Step> steps, GoogleMap googleMap)
-    {
+    void drawPolylines(List<Step> steps, GoogleMap googleMap) {
         PolylineOptions options = new PolylineOptions()
                 .clickable(true)
                 .color(ContextCompat.getColor(getContext(), R.color.googleBlue))
@@ -434,17 +353,20 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
                 .geodesic(true)
                 .zIndex(5f)
                 .add(steps.get(0).getStartMapCoordination().getLocation());
+
         for (int i = 0; i < steps.size(); i++) {
             options.add(steps.get(i).getEndMapCoordination().getLocation());
         }
+
         if (currDirection != null)
             currDirection.remove();
         currDirection = googleMap.addPolyline(options);
     }
 
-    // The Map is verified. It is now safe to manipulate the map.
-    protected void setMarkersListener(GoogleMap googleMap) {
+
+    private void setMarkersListener(GoogleMap googleMap) {
         if (googleMap != null) {
+            // The Map is verified. It is now safe to manipulate the map.
             // Attach marker click listener to the map here
             googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 public boolean onMarkerClick(Marker marker) {
@@ -460,62 +382,106 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
         }
     }
 
-    String getLatLngString(LatLng latLng)
-    {
-        if (latLng != null)
-            return String.valueOf(latLng.latitude) + "," + String.valueOf(latLng.longitude);
-        else
+
+
+    private void createLocationRequest() {
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(INTERVAL);
+        mLocationRequest.setFastestInterval(FASTEST_INTERVAL);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+    }
+
+
+    void animateMarker(final Bitmap bitmap, final Marker marker) {
+        ValueAnimator animator = ValueAnimator.ofFloat(0.1f, 1);
+        animator.setDuration(1000);
+        animator.setStartDelay(500);
+        animator.setInterpolator(new BounceInterpolator());
+
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float scale = (float) animation.getAnimatedValue();
+                try {
+                    marker.setIcon(BitmapDescriptorFactory.fromBitmap(MapUtils.resizeMarkerIcon(bitmap, Math.round(scale * 75), Math.round(scale * 75))));
+                } catch (IllegalArgumentException ex) {
+                    Log.e("MAPP", ex.getMessage());
+                }
+            }
+        });
+        animator.start();
+    }
+
+    public static BitmapDescriptor getStoreIcon(Context context, Integer type) {
+        synchronized (CACHE) {
+            if (!CACHE.containsKey(type)) {
+                int id = R.drawable.logo_circle_k_50;
+                switch (type) {
+                    case Constant.TYPE_CIRCLE_K:
+                        id = R.drawable.logo_circle_k_50;
+                        break;
+                    case Constant.TYPE_MINI_STOP:
+                        id = R.drawable.logo_ministop;
+                        break;
+                    case Constant.TYPE_FAMILY_MART:
+                        id = R.drawable.logo_family_mart_50;
+                        break;
+                    case Constant.TYPE_BSMART:
+                        id = R.drawable.logo_bsmart_50;
+                        break;
+                    case Constant.TYPE_SHOP_N_GO:
+                        id = R.drawable.logo_shop_n_go_50;
+                        break;
+                }
+                BitmapDescriptor markerIcon =
+                        BitmapDescriptorFactory.fromResource(id);
+                CACHE.put(type, markerIcon);
+            }
+            return CACHE.get(type);
+        }
+    }
+
+    class AnimateMarkerTask extends AsyncTask<List<Store>, Void, Void> {
+        LatLngBounds bounds = mGoogleMap.getProjection().getVisibleRegion().latLngBounds;
+        LatLng cameraPosition;
+        Map<Integer,StoreViewModel> nearByStores;
+        List<Integer> newStoreNearBy;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            bounds = mGoogleMap.getProjection().getVisibleRegion().latLngBounds;
+            cameraPosition = mGoogleMap.getCameraPosition().target;
+            nearByStores = new HashMap<>();
+            newStoreNearBy = new ArrayList<>();
+        }
+
+        @Override
+        protected Void doInBackground(List<Store>...storeList) {
+            for (int i = 0; i < storeList[0].size(); i++) {
+                if (bounds.contains(storeList[0].get(i).getPosition())) {
+                    nearByStores.put(i, new StoreViewModel(storeList[0].get(i), cameraPosition));
+                    if (!mNearlyStoreMap.containsKey(i))
+                    {
+                        //New store
+                        newStoreNearBy.add(i);
+                    }
+                }
+            }
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            mNearlyStoreMap.clear();
+            mNearlyStoreMap.putAll(nearByStores);
+            mAdapter.setStores(new ArrayList<StoreViewModel>(mNearlyStoreMap.values()));
+
+            //Animate marker
+            for (int i = 0; i < newStoreNearBy.size(); i++) {
+                animateMarker(currMarkerBitmap, mMarkerMap.get(newStoreNearBy.get(i)));
+            }
+        }
     }
-
-
-
-
-    /*
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        mMapView.onSaveInstanceState(outState);
-    }
-    */
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        googleApiClient.connect();
-    }
-
-    /*
-    @Override
-    public void onResume() {
-        super.onResume();
-        mMapView.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        mMapView.onPause();
-    }
-    */
-
-    @Override
-    public void onStop() {
-        googleApiClient.disconnect();
-        super.onStop();
-    }
-
-    /*
-    @Override
-    public void onDestroy() {
-        mMapView.onDestroy();
-        super.onDestroy();
-    }
-
-    @Override
-    public void onLowMemory() {
-        mMapView.onLowMemory();
-        super.onLowMemory();
-    }
-    */
 }

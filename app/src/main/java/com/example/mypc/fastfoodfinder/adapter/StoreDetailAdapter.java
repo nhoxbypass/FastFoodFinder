@@ -16,7 +16,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.example.mypc.fastfoodfinder.R;
 import com.example.mypc.fastfoodfinder.model.Comment;
-import com.example.mypc.fastfoodfinder.model.Store;
+import com.example.mypc.fastfoodfinder.model.Store.Store;
 import com.example.mypc.fastfoodfinder.utils.DataUtils;
 
 import java.util.List;

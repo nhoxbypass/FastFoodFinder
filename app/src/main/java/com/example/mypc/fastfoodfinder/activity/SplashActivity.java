@@ -2,6 +2,7 @@ package com.example.mypc.fastfoodfinder.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 import com.example.mypc.fastfoodfinder.R;
 import com.example.mypc.fastfoodfinder.model.Store.Store;
 import com.example.mypc.fastfoodfinder.model.Store.StoreDataSource;
+import com.example.mypc.fastfoodfinder.utils.Constant;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -47,6 +49,8 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
         Realm.init(SplashActivity.this);
+        // Initialize Firebase Auth
+        mFirebaseAuth = FirebaseAuth.getInstance();
         mSharedPreferences = getSharedPreferences("com.example.mypc.fastfoodfinder", MODE_PRIVATE);
         isFirstRun = mSharedPreferences.getBoolean(KEY_FIRST_RUN, true);
 
@@ -98,8 +102,7 @@ public class SplashActivity extends AppCompatActivity {
         listener.onStart();
         // Do first run stuff here then set 'firstrun' as false
         // using the following line to edit/commit prefs
-        // Initialize Firebase Auth
-        mFirebaseAuth = FirebaseAuth.getInstance();
+
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
         if (mFirebaseUser == null) {
             // Not signed in
@@ -111,16 +114,21 @@ public class SplashActivity extends AppCompatActivity {
                                 // Firebase instance variables
                                 // Get a reference to our posts
                                 final FirebaseDatabase database = FirebaseDatabase.getInstance();
-                                DatabaseReference ref = database.getReference("markers_add");
+                                DatabaseReference ref = database.getReference(Constant.CHILD_STORES_LOCATION);
 
                                 // Attach a listener to read the data at our posts reference
                                 ref.addValueEventListener(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
                                         List<Store> storeList = new ArrayList<Store>();
+
                                         for (DataSnapshot child : dataSnapshot.getChildren()) {
-                                            Store store = child.getValue(Store.class);
-                                            storeList.add(store);
+
+                                            for (DataSnapshot storeLocation : child.child(Constant.CHILD_MARKERS_ADD).getChildren()) {
+                                                Store store = storeLocation.getValue(Store.class);
+                                                store.setType(getStoreType(child.getKey()));
+                                                storeList.add(store);
+                                            }
                                         }
 
                                         saveStoresLocation(storeList);
@@ -143,6 +151,25 @@ public class SplashActivity extends AppCompatActivity {
 
         } else {
             Log.d("MAPP", "signInAnonymously outside");
+        }
+    }
+
+    private int getStoreType(String key) {
+        switch (key)
+        {
+            case "circle_k":
+                return Constant.TYPE_CIRCLE_K;
+            case "mini_stop":
+                return Constant.TYPE_MINI_STOP;
+            case "family_mart":
+                return Constant.TYPE_FAMILY_MART;
+            case "bsmart":
+                return Constant.TYPE_BSMART;
+            case "shop_n_go":
+                return Constant.TYPE_SHOP_N_GO;
+
+            default:
+                return Constant.TYPE_CIRCLE_K;
         }
     }
 
