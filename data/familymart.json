@@ -1,11 +1,11 @@
 {
-  "makers_add":[
+  "markers_add":[
     {
       "title":"FamilyMart - 123 Nguyễn Đình Chiểu",
       "address":"123 Nguyễn Đình Chiểu, Phường 6, Quận 3, TP. HCM",
       "lat":"10.7775462",
       "lng":"106.6892408999999",
-      "tel":""
+      "tel":"3835 3193"
     }
     ,
     {
@@ -13,7 +13,7 @@
       "address":"801B Tạ Quang Bửu, Phường 5, Quận 8, TP. HCM",
       "lat":"10.736488",
       "lng":"106.670374",
-      "tel":""
+      "tel":"3835 3193"
     }
     ,
     {
@@ -21,7 +21,7 @@
       "address":"534 Nguyễn Văn Công, Phường 3, Quận Gò Vấp, TP. HCM",
       "lat":"10.819417",
       "lng":"106.674821",
-      "tel":""
+      "tel":"3835 3193"
     }
     ,
     {
@@ -45,7 +45,7 @@
       "address":"Tôn Dật Tiên, Quận 7, TP. HCM",
       "lat":"10.723322",
       "lng":"106.71498",
-      "tel":""
+      "tel":"3835 3193"
     }
     ,
     {
@@ -53,7 +53,7 @@
       "address":"206 Xô Viết Nghệ Tĩnh, P. 21, Quận Bình Thạnh, TP. HCM",
       "lat":"10.7983588653641",
       "lng":"106.7110841721296",
-      "tel":""
+      "tel":"3835 3193"
     }
     ,
     {
@@ -77,7 +77,7 @@
       "address":"BB18 Trường Sơn, P. 15, Quận 10, TP. HCM",
       "lat":"10.7822363",
       "lng":"106.6645404999999",
-      "tel":""
+      "tel":"3835 3193"
     },
     {
       "title":"FamilyMart - 80 Lý Chính Thắng",
@@ -91,7 +91,7 @@
       "address":"299 Nguyễn Tri Phương, Quận 10, TP. HCM",
       "lat":"10.761642",
       "lng":"106.668432",
-      "tel":""
+      "tel":"3835 3193"
     },
     {
       "title":"FamilyMart - Huỳnh Văn Bánh ",
@@ -133,7 +133,7 @@
       "address":"270 Nguyễn Duy Trinh, P. Bình Trưng Đông, Quận 2, TP. HCM",
       "lat":"10.7884330746888",
       "lng":"106.7710486426949",
-      "tel":""
+      "tel":"3835 3193"
     },
     {
       "title":"Family Mart - Cống Quỳnh",
@@ -161,7 +161,7 @@
       "address":"410 - 414 Nguyễn Đình Chiểu, P. 4, Quận 3, TP. HCM",
       "lat":"10.7734492343977",
       "lng":"106.6852122233482",
-      "tel":""
+      "tel":"3835 3193"
     },
     {
       "title":"FamilyMart - Cô Bắc",
@@ -198,35 +198,35 @@
       "address":"91 Phạm Văn Hai, Quận Tân Bình, TP. HCM",
       "lat":"10.7944359",
       "lng":"106.6633749999999",
-      "tel":""
+      "tel":"3835 3193"
     },
     {
       "title":"Family Mart - Mạc Thiên Tích",
       "address":"Mạc Thiên Tích, Quận 5, TP. HCM",
       "lat":"10.755225",
       "lng":"106.666893",
-      "tel":""
+      "tel":"3835 3193"
     },
     {
       "title":"Family Mart - Nguyễn Bỉnh Khiêm",
       "address":"33A Nguyễn Bỉnh Khiêm, P. Đa Kao, Quận 1, TP. HCM",
       "lat":"10.789413",
       "lng":"106.702464",
-      "tel":""
+      "tel":"3835 3193"
     },
     {
       "title":"FamilyMart - Lê Quý Đôn",
       "address":"23 Lê Quý Đôn, P. 6, Quận 3, TP. HCM",
       "lat":"10.781293",
       "lng":"106.690797",
-      "tel":""
+      "tel":"3835 3193"
     },
     {
       "title":"Family Mart - 89 Đặng Văn Ngữ",
       "address":"89 Đặng Văn Ngữ, P. 14 , Quận Phú Nhuận, TP. HCM",
       "lat":"10.7928335",
       "lng":"106.6682768",
-      "tel":""
+      "tel":"3835 3193"
     },
     {
       "title":"FamilyMart - Đề Thám",
@@ -240,14 +240,14 @@
       "address":"15 Hoàng Minh Giám, P. 9, Quận Phú Nhuận, TP. HCM",
       "lat":"10.808007",
       "lng":"106.673451",
-      "tel":""
+      "tel":"3835 3193"
     },
     {
       "title":"Family Mart - Trần Nhân Tôn",
       "address":"2E Trần Nhân Tôn, P. 2, Quận 5, TP. HCM",
       "lat":"10.761746",
       "lng":"106.675067",
-      "tel":""
+      "tel":"3835 3193"
     },
     {
       "title":"Family Mart - Điện Biên Phủ",
@@ -296,14 +296,14 @@
       "address":"400 Lê Văn Sỹ, Quận Tân Bình, TP. HCM",
       "lat":"10.7985639999999",
       "lng":"106.6625529999999",
-      "tel":""
+      "tel":"3835 3193"
     },
     {
       "title":"Family Mart - Đặng Văn Ngữ",
       "address":"88 Đặng Văn Ngữ, Quận Phú Nhuận, TP. HCM",
       "lat":"10.7944795",
       "lng":"106.6693058",
-      "tel":""
+      "tel":"3835 3193"
     },
     {
       "title":"Family Mart - Ngô Tất Tố",
@@ -317,14 +317,14 @@
       "address":"811 Tạ Quang Bửu, P. 5, Quận 8, TP. HCM",
       "lat":"10.7362387409247",
       "lng":"106.6692879796028",
-      "tel":""
+      "tel":"3835 3193"
     },
     {
       "title":"FamilyMart - Nguyễn Công Trứ",
       "address":"106 Nguyễn Công Trứ, P. Nguyễn Thái Bình , Quận 1, TP. HCM",
       "lat":"10.7693884",
       "lng":"106.7023676",
-      "tel":""
+      "tel":"3835 3193"
     }
     
      
@@ -334,7 +334,7 @@
       "address":"56 Hoàng Diệu 2, Quận Thủ Đức, TP. HCM",
       "lat":"10.8575878",
       "lng":"106.7635500999999",
-      "tel":""
+      "tel":"3835 3193"
     },
     {
       "title":"Family Mart - Sư Vạn Hạnh",
@@ -369,7 +369,7 @@
       "address":"90 Nguyễn Văn Thủ, Quận 1, TP. HCM",
       "lat":"10.788872",
       "lng":"106.697926",
-      "tel":""
+      "tel":"3835 3193"
     },
     {
       "title":"Family Mart - Xô Viết Nghệ Tĩnh",
@@ -383,7 +383,7 @@
       "address":"9 Thanh Đa, P. 27, Quận Bình Thạnh, TP. HCM",
       "lat":"10.815865",
       "lng":"106.7170229999999",
-      "tel":""
+      "tel":"3835 3193"
     },
     {
       "title":"Family Mart - Nguyễn Biểu",
@@ -411,7 +411,7 @@
       "address":"331A Nguyễn Thái Bình, Quận Tân Bình, TP. HCM",
       "lat":"10.79658",
       "lng":"106.652602",
-      "tel":""
+      "tel":"3835 3193"
     },
     {
       "title":"FamilyMart - Bùi Hữu Nghĩa",
@@ -425,7 +425,7 @@
       "address":"59 Đỗ Quang Đẩu, P. Phạm Ngũ Lão, Quận 1, TP. HCM",
       "lat":"10.767182",
       "lng":"106.690676",
-      "tel":""
+      "tel":"3835 3193"
     },
     {
       "title":"Family Mart - Nguyễn Thị Minh Khai",
@@ -511,7 +511,7 @@
       "address":"58 Pasteur, Quận 1, TP. HCM",
       "lat":"10.771407",
       "lng":"106.702154",
-      "tel":""
+      "tel":"3835 3193"
     },
     {
       "title":"Family Mart - Phạm Văn Chiêu",
@@ -525,14 +525,14 @@
       "address":"111 Ngô Quyền, Quận 5, TP. HCM",
       "lat":"10.758536",
       "lng":"106.665567",
-      "tel":""
+      "tel":"3835 3193"
     },
     {
       "title":"Family Mart - Quốc Hương",
       "address":"40 Quốc Hương, Quận 2, TP. HCM",
       "lat":"10.8052607490199",
       "lng":"106.731406264007",
-      "tel":""
+      "tel":"3835 3193"
     },
     {
       "title":"FamilyMart - Ngô Tất Tố",
@@ -546,7 +546,7 @@
       "address":"158 Hai Bà Trưng, Quận 1, TP. HCM",
       "lat":"10.785013",
       "lng":"106.6958119999999",
-      "tel":""
+      "tel":"3835 3193"
     },
     {
       "title":"FamilyMart - Điện Biên Phủ",
@@ -567,7 +567,7 @@
       "address":"128 Lê Thị Riêng, Quận 1, TP. HCM",
       "lat":"10.771098",
       "lng":"106.690293",
-      "tel":""
+      "tel":"3835 3193"
     },
     {
       "title":"FamilyMart - Lê Thánh Tôn",
@@ -639,21 +639,21 @@
       "address":"40 Lô M Hoàng Quốc Việt, KDC Phú Mỹ, KP. 1, Quận 7, TP. HCM",
       "lat":"10.713838",
       "lng":"106.740419",
-      "tel":""
+      "tel":"3835 3193"
     },
     {
       "title":"FamilyMart -  Nguyễn Đình Chiểu",
       "address":"138B Nguyễn Đình Chiểu, P. 6, Quận 3, TP. HCM",
       "lat":"10.7922046",
       "lng":"106.7030942999999",
-      "tel":""
+      "tel":"3835 3193"
     },
     {
       "title":"Family Mart - Saigon Pearl",
       "address":"92 Nguyễn Hữu Cảnh, Phường 22, Quận Bình Thạnh, TP. HCM",
       "lat":"10.790687",
       "lng":"106.718677",
-      "tel":""
+      "tel":"3835 3193"
     }
     ]
 }
