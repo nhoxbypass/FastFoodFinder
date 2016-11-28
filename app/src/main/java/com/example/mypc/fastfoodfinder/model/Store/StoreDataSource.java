@@ -11,7 +11,7 @@ import io.realm.RealmResults;
  * Created by nhoxb on 11/20/2016.
  */
 public class StoreDataSource {
-    public void store(final List<Store> storeList)
+    public static void store(final List<Store> storeList)
     {
         Realm realm = Realm.getDefaultInstance();
         realm.executeTransaction(new Realm.Transaction() {
@@ -31,7 +31,7 @@ public class StoreDataSource {
         realm.close();
     }
 
-    public List<Store> getAllObjects()
+    public static List<Store> getAllObjects()
     {
         Realm realm = Realm.getDefaultInstance();
         List<Store> storeList = new ArrayList<>();
@@ -66,6 +66,31 @@ public class StoreDataSource {
             Store store = new Store(result.get(i));
             storeList.add(store);
         }
+
+        realm.close();
+
+        return storeList;
+    }
+
+    public static List<Store> getStore(int type)
+    {
+        Realm realm = Realm.getDefaultInstance();
+
+        List<Store> storeList = new ArrayList<>();
+
+        RealmQuery<StoreEntity> query = realm.where(StoreEntity.class);
+
+        query.equalTo("type",type);
+
+        RealmResults<StoreEntity> results = query.findAll();
+
+        for (int i = 0; i < results.size(); i++)
+        {
+            Store store = new Store(results.get(i));
+            storeList.add(store);
+        }
+
+        realm.close();
 
         return storeList;
     }
