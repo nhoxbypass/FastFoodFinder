@@ -52,6 +52,12 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         mListener = listener;
     }
 
+    public int addComment(Comment comment) {
+        mComments.add(0, comment);
+        notifyItemInserted(3);
+        return 3;
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
@@ -76,8 +82,8 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 ((InfoViewHolder) holder).bind(mStore);
                 break;
             case TITLE:
-                String title = position == 2 ? String.valueOf(R.string.tips_from_people_who_has_been_here) : "";
-                ((TitleViewHolder) holder).bind(title);
+                String title = ((TitleViewHolder) holder).context.getResources().getString(R.string.tips_from_people_who_has_been_here);
+                ((TitleViewHolder) holder).bind(position == 2 ? title : "");
                 break;
             default:
                 ((CommentViewHolder) holder).bind(mComments.get(position - 3));
@@ -146,9 +152,12 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         @BindView(R.id.content)
         TextView content;
 
+        public final Context context;
+
         public TitleViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            context = itemView.getContext();
         }
 
         public void bind(String title) {

@@ -18,7 +18,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mypc.fastfoodfinder.R;
+import com.example.mypc.fastfoodfinder.model.Comment;
 import com.example.mypc.fastfoodfinder.ui.store.NoticeDialog;
+import com.example.mypc.fastfoodfinder.utils.DataUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -100,7 +102,13 @@ public class CommentActivity extends AppCompatActivity implements NoticeDialog.N
                             Toast.LENGTH_SHORT).show();
                     return;
                 }
-                // cập nhật lại list comment ở store detail
+                Comment comment = DataUtils.getComments().get(0);
+                comment.setContent(etComment.getText().toString());
+                comment.setMediaUrl("");
+
+                Intent data = new Intent();
+                data.putExtra(StoreDetailActivity.COMMENT, comment);
+                setResult(RESULT_OK, data);
                 finish();
             }
         });
