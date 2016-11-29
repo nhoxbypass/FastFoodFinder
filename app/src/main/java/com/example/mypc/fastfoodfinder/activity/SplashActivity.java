@@ -174,7 +174,6 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void saveStoresLocation(List<Store> storeList) {
-        StoreDataSource storeDataSource = new StoreDataSource();
-        storeDataSource.store(storeList);
+        StoreDataSource.store(storeList);
     }
 }

@@ -4,6 +4,7 @@ import android.location.Location;
 import android.support.annotation.DrawableRes;
 
 import com.example.mypc.fastfoodfinder.R;
+import com.example.mypc.fastfoodfinder.utils.MapUtils;
 import com.google.android.gms.maps.model.LatLng;
 
 /**
@@ -43,9 +44,9 @@ public class StoreViewModel {
     public StoreViewModel(Store store, LatLng currCameraPosition)
     {
         //Must refactor
-        mStoreName = "Circle K";
+        mStoreName = store.getTitle();
         mStoreAddress = store.getTitle();
-        mDrawableLogo = R.drawable.logo_circle_k_50;
+        mDrawableLogo = MapUtils.getLogoDrawableId(store.getType());
         mPosition = store.getPosition();
 
         //
@@ -60,7 +61,7 @@ public class StoreViewModel {
 
     }
 
-    public LatLng getmPosition() {
+    public LatLng getPosition() {
         return mPosition;
     }
 }

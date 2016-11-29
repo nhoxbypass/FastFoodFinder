@@ -23,6 +23,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -30,12 +31,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.mypc.fastfoodfinder.ui.main.MainMapFragment;
-import com.example.mypc.fastfoodfinder.ui.profile.ProfileFragment;
 import com.example.mypc.fastfoodfinder.R;
+import com.example.mypc.fastfoodfinder.helper.SearchResult;
+import com.example.mypc.fastfoodfinder.ui.main.MainMapFragment;
 import com.example.mypc.fastfoodfinder.ui.main.SearchFragment;
+import com.example.mypc.fastfoodfinder.ui.profile.ProfileFragment;
+import com.example.mypc.fastfoodfinder.utils.Constant;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -48,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.nav_view) NavigationView mNavigationView;
     @BindView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
-    private ActionBarDrawerToggle mDrawerToggle;
     @BindView(R.id.toolbar) Toolbar mToolbar;
     View mHeaderLayout;
     SearchView mSearchView;
@@ -56,8 +62,9 @@ public class MainActivity extends AppCompatActivity {
     CircleImageView mNavHeaderAvatar;
     TextView mNavHeaderName;
     TextView mNavHeaderScreenName;
+    EditText mSearchInput;
     Button mNavHeaderSignIn;
-
+    private ActionBarDrawerToggle mDrawerToggle;
     // Firebase instance variables
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
@@ -74,16 +81,9 @@ public class MainActivity extends AppCompatActivity {
 
         PACKAGE_NAME = getApplicationContext().getPackageName();
 
+        setupAllViews();
 
-        mDrawerToggle = setupDrawerToggle();
-        mHeaderLayout = mNavigationView.getHeaderView(0);
-        mNavHeaderContainer = (LinearLayout) mHeaderLayout.findViewById(R.id.nav_header_container);
-        mNavHeaderAvatar = (CircleImageView) mHeaderLayout.findViewById(R.id.iv_nav_header_avatar);
-        mNavHeaderName = (TextView) mHeaderLayout.findViewById(R.id.tv_nav_header_name);
-        mNavHeaderScreenName = (TextView)mHeaderLayout.findViewById(R.id.tv_nav_header_screenname);
-        mNavHeaderSignIn = (Button) mHeaderLayout.findViewById(R.id.btn_nav_header_signin);
-
-
+        //Inflate Map fragment
         mNavigationView.getMenu().getItem(0).setChecked(true);
         mNavigationView.setCheckedItem(R.id.menu_action_map);
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -96,37 +96,11 @@ public class MainActivity extends AppCompatActivity {
             mNavHeaderName.setVisibility(View.GONE);
             mNavHeaderScreenName.setVisibility(View.GONE);
             mNavHeaderSignIn.setVisibility(View.VISIBLE);
-        }
-        else
-        {
+        } else {
             Glide.with(MainActivity.this)
                     .load(mFirebaseUser.getPhotoUrl())
                     .into(mNavHeaderAvatar);
         }
-
-        mNavHeaderSignIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-
-        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                selectDrawerItem(item);
-                return true;
-            }
-        });
-
-
-
-
-
-        // Tie DrawerLayout events to the ActionBarToggle
-        mDrawerLayout.addDrawerListener(mDrawerToggle);
     }
 
 
@@ -136,51 +110,22 @@ public class MainActivity extends AppCompatActivity {
         mDrawerToggle.syncState();
     }
 
-
-    public void selectDrawerItem(MenuItem menuItem) {
-        // Create a new fragment and specify the fragment to show based on nav item clicked
-        Fragment fragment = null;
-        Class fragmentClass;
-        switch(menuItem.getItemId()) {
-            case R.id.menu_action_profile:
-                fragmentClass = ProfileFragment.class;
-                break;
-            case R.id.menu_action_map:
-                fragmentClass = MainMapFragment.class;
-                break;
-            case R.id.menu_action_setting:
-                Intent intent = new Intent(MainActivity.this, SettingActivity.class);
-                startActivity(intent);
-                return;
-            default:
-                fragmentClass = MainMapFragment.class;
-        }
-
-        try {
-            fragment = (Fragment) fragmentClass.newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        // Insert the fragment by replacing any existing fragment
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.fl_fragment_placeholder, fragment).commit();
-        fragmentManager.executePendingTransactions();
-        // Highlight the selected item has been done by NavigationView
-        menuItem.setChecked(true);
-        // Set action bar title
-        setTitle(menuItem.getTitle());
-        // Close the navigation drawer
-        mDrawerLayout.closeDrawers();
-    }
-
-
-    private ActionBarDrawerToggle setupDrawerToggle() {
-        return new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar ,R.string.drawer_open, R.string.drawer_close);
+    @Override
+    protected void onPause() {
+        super.onPause();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        EventBus.getDefault().register(this);
+    }
+
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        //Inflate SearchView
         getMenuInflater().inflate(R.menu.menu_main, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
 
@@ -195,35 +140,31 @@ public class MainActivity extends AppCompatActivity {
 
             mSearchView.setQueryHint("Nhập tên cửa hàng...");
             mSearchView.setBackgroundColor(Color.parseColor("#E53935"));
-            EditText searchFeild = (EditText) mSearchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
-            searchFeild.setHintTextColor(ContextCompat.getColor(MainActivity.this, R.color.colorHintText));
-            searchFeild.setTextColor(Color.WHITE);
+            mSearchInput = (EditText) mSearchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+            mSearchInput.setHintTextColor(ContextCompat.getColor(MainActivity.this, R.color.colorHintText));
+            mSearchInput.setTextColor(Color.WHITE);
         }
 
-
+        //Set event expand search view
         MenuItemCompat.OnActionExpandListener expandListener = new MenuItemCompat.OnActionExpandListener() {
             @Override
             public boolean onMenuItemActionExpand(MenuItem menuItem) {
-                Toast.makeText(MainActivity.this, "On click", Toast.LENGTH_SHORT).show();
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                 ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
 
-                SearchFragment newFragment = SearchFragment.newInstance();
+                SearchFragment searchFragment = SearchFragment.newInstance();
 
-                View view = findViewById(R.id.fragment_search_placeholder);
-                view.setVisibility(View.VISIBLE);
-                ft.replace(R.id.fragment_search_placeholder, newFragment, "blankFragment");
+                View fragment_placeholder = findViewById(R.id.fragment_search_placeholder);
+                fragment_placeholder.setVisibility(View.VISIBLE);
+                ft.replace(R.id.fragment_search_placeholder, searchFragment, "blankFragment");
 
-// Start the animated transition.
+                // Start the animated transition.
                 ft.commit();
-
                 return true;
             }
 
             @Override
             public boolean onMenuItemActionCollapse(MenuItem menuItem) {
-
-                Toast.makeText(MainActivity.this, "On close", Toast.LENGTH_SHORT).show();
                 getSupportFragmentManager().beginTransaction().
                         remove(getSupportFragmentManager().findFragmentById(R.id.fragment_search_placeholder))
                         .commit();
@@ -258,5 +199,103 @@ public class MainActivity extends AppCompatActivity {
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onSearchResult(SearchResult searchResult) {
+        int resultCode = searchResult.getResultCode();
+        switch (resultCode)
+        {
+            case Constant.SEARCH_QUICK:
+                mSearchView.setQuery(searchResult.getSearchString(),false);
+                mSearchView.setIconified(false);
+                // Check if no view has focus:
+                View view = this.getCurrentFocus();
+                if (view != null) {
+                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                    view.clearFocus();
+                }
+                break;
+            case Constant.SEARCH_STORE:
+                break;
 
+            default:
+                Toast.makeText(MainActivity.this, "Search error!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+    private void setupAllViews()
+    {
+        mDrawerToggle = setupDrawerToggle();
+
+        mHeaderLayout = mNavigationView.getHeaderView(0);
+        mNavHeaderContainer = (LinearLayout) mHeaderLayout.findViewById(R.id.nav_header_container);
+        mNavHeaderAvatar = (CircleImageView) mHeaderLayout.findViewById(R.id.iv_nav_header_avatar);
+        mNavHeaderName = (TextView) mHeaderLayout.findViewById(R.id.tv_nav_header_name);
+        mNavHeaderScreenName = (TextView) mHeaderLayout.findViewById(R.id.tv_nav_header_screenname);
+        mNavHeaderSignIn = (Button) mHeaderLayout.findViewById(R.id.btn_nav_header_signin);
+
+        // Tie DrawerLayout events to the ActionBarToggle
+        mDrawerLayout.addDrawerListener(mDrawerToggle);
+
+        mNavHeaderSignIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                selectDrawerItem(item);
+                return true;
+            }
+        });
+    }
+
+
+    private void selectDrawerItem(MenuItem menuItem) {
+        // Create a new fragment and specify the fragment to show based on nav item clicked
+        Fragment fragment = null;
+        Class fragmentClass;
+        switch (menuItem.getItemId()) {
+            case R.id.menu_action_profile:
+                fragmentClass = ProfileFragment.class;
+                break;
+            case R.id.menu_action_map:
+                fragmentClass = MainMapFragment.class;
+                break;
+            case R.id.menu_action_setting:
+                Intent intent = new Intent(MainActivity.this, SettingActivity.class);
+                startActivity(intent);
+                return;
+            default:
+                fragmentClass = MainMapFragment.class;
+        }
+
+        try {
+            fragment = (Fragment) fragmentClass.newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Insert the fragment by replacing any existing fragment
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.fl_fragment_placeholder, fragment).commit();
+        fragmentManager.executePendingTransactions();
+        // Highlight the selected item has been done by NavigationView
+        menuItem.setChecked(true);
+        // Set action bar title
+        setTitle(menuItem.getTitle());
+        // Close the navigation drawer
+        mDrawerLayout.closeDrawers();
+    }
+
+
+    private ActionBarDrawerToggle setupDrawerToggle() {
+        return new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.drawer_open, R.string.drawer_close);
+    }
 }

@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 
+import com.example.mypc.fastfoodfinder.R;
 import com.example.mypc.fastfoodfinder.activity.MainActivity;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -34,5 +35,29 @@ public class MapUtils {
             return String.valueOf(latLng.latitude) + "," + String.valueOf(latLng.longitude);
         else
             return null;
+    }
+
+    public static int getLogoDrawableId(int type)
+    {
+        int id = R.drawable.logo_circle_k_50;
+        switch (type) {
+            case Constant.TYPE_CIRCLE_K:
+                id = R.drawable.logo_circle_k_50;
+                break;
+            case Constant.TYPE_MINI_STOP:
+                id = R.drawable.logo_ministop;
+                break;
+            case Constant.TYPE_FAMILY_MART:
+                id = R.drawable.logo_family_mart_50;
+                break;
+            case Constant.TYPE_BSMART:
+                id = R.drawable.logo_bsmart_50;
+                break;
+            case Constant.TYPE_SHOP_N_GO:
+                id = R.drawable.logo_shop_n_go_50;
+                break;
+        }
+
+        return id;
     }
 }

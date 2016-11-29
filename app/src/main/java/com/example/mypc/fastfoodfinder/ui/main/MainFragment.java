@@ -23,10 +23,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.BounceInterpolator;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.example.mypc.fastfoodfinder.R;
-import com.example.mypc.fastfoodfinder.activity.StoreDetailActivity;
 import com.example.mypc.fastfoodfinder.adapter.NearByStoreAdapter;
+import com.example.mypc.fastfoodfinder.helper.SearchResult;
 import com.example.mypc.fastfoodfinder.model.Routing.MapsDirection;
 import com.example.mypc.fastfoodfinder.model.Routing.Route;
 import com.example.mypc.fastfoodfinder.model.Routing.Step;
@@ -49,7 +50,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
@@ -58,6 +58,10 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -68,6 +72,7 @@ import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.realm.Realm;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -82,7 +87,7 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
     private static final long FASTEST_INTERVAL = 1000 * 5;
 
 
-    private static final Hashtable<Integer, BitmapDescriptor> CACHE = new Hashtable<Integer, BitmapDescriptor>();
+    private static final Hashtable<Integer, Bitmap> CACHE = new Hashtable<Integer, Bitmap>();
     BottomSheetBehavior mBottomSheetBehavior;
     MapsDirectionApi mMapDirectionApi;
     LocationRequest mLocationRequest;
@@ -125,6 +130,7 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Realm.init(getContext());
         PermissionUtils.requestLocaiton(getActivity());
 
         initializeVariables();
@@ -153,13 +159,18 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
     @Override
     public void onResume() {
         super.onResume();
+        EventBus.getDefault().register(this);
         if (mGoogleMap == null) {
             initializeMap();
             initBottomSheet();
         }
     }
 
-
+    @Override
+    public void onPause() {
+        super.onPause();
+        EventBus.getDefault().unregister(this);
+    }
 
     @SuppressWarnings("MissingPermission")
     @Override
@@ -220,7 +231,24 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
         super.onStop();
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onSearchResult(SearchResult searchResult) {
+        int resultCode = searchResult.getResultCode();
+        switch (resultCode)
+        {
+            case Constant.SEARCH_QUICK:
+                mStoreList.clear();
+                mGoogleMap.clear();
+                mStoreList = StoreDataSource.getStore(searchResult.getStoreType());
+                addMarkersToMap(mStoreList, mGoogleMap);
+                break;
+            case Constant.SEARCH_STORE:
+                break;
 
+            default:
+                Toast.makeText(getContext(), "Search error!", Toast.LENGTH_SHORT).show();
+        }
+    }
 
     public void inflateSupportMapFragment(SupportMapFragment mapFragment) {
         FragmentManager fragmentManager = getChildFragmentManager();
@@ -250,8 +278,8 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
         mMarkerMap = new HashMap<>();
         mAdapter = new NearByStoreAdapter();
 
-        StoreDataSource storeDataSource = new StoreDataSource();
-        mStoreList = storeDataSource.getAllObjects();
+
+        mStoreList = StoreDataSource.getAllObjects();
 
         currMarkerBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.logo_circle_k_50);
 
@@ -271,13 +299,11 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
         mAdapter.setOnStoreListListener(new NearByStoreAdapter.StoreListListener() {
             @Override
             public void onItemClick(StoreViewModel store) {
-                LatLng storeLocation = store.getmPosition();
+                LatLng storeLocation = store.getPosition();
                 getDirection(storeLocation);
             }
         });
     }
-
-
 
     private void initializeMap() {
         mMapFragment.getMapAsync(new OnMapReadyCallback() {
@@ -317,7 +343,7 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
             Marker marker = googleMap.addMarker(new MarkerOptions().position(store.getPosition())
                     .title("Circle K")
                     .snippet(store.getTitle())
-                    .icon(getStoreIcon(getContext(), store.getType())));
+                    .icon(BitmapDescriptorFactory.fromBitmap(getStoreIcon(getContext(), store.getType()))));
             marker.setTag(store);
             mMarkerMap.put(i,marker);
             //animateMarker(currMarkerBitmap,marker);
@@ -419,30 +445,13 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
         dialog.show(fm, "dialog-info");
     }
 
-    public static BitmapDescriptor getStoreIcon(Context context, Integer type) {
+    public Bitmap getStoreIcon(Context context, Integer type) {
         synchronized (CACHE) {
             if (!CACHE.containsKey(type)) {
-                int id = R.drawable.logo_circle_k_50;
-                switch (type) {
-                    case Constant.TYPE_CIRCLE_K:
-                        id = R.drawable.logo_circle_k_50;
-                        break;
-                    case Constant.TYPE_MINI_STOP:
-                        id = R.drawable.logo_ministop;
-                        break;
-                    case Constant.TYPE_FAMILY_MART:
-                        id = R.drawable.logo_family_mart_50;
-                        break;
-                    case Constant.TYPE_BSMART:
-                        id = R.drawable.logo_bsmart_50;
-                        break;
-                    case Constant.TYPE_SHOP_N_GO:
-                        id = R.drawable.logo_shop_n_go_50;
-                        break;
-                }
-                BitmapDescriptor markerIcon =
-                        BitmapDescriptorFactory.fromResource(id);
-                CACHE.put(type, markerIcon);
+                int id = MapUtils.getLogoDrawableId(type);
+                Bitmap bitmap = BitmapFactory.decodeResource(getResources(),id);
+
+                CACHE.put(type, bitmap);
             }
             return CACHE.get(type);
         }
@@ -487,7 +496,8 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
 
             //Animate marker
             for (int i = 0; i < newStoreNearBy.size(); i++) {
-                animateMarker(currMarkerBitmap, mMarkerMap.get(newStoreNearBy.get(i)));
+                Bitmap bitmap = getStoreIcon(getContext(),mStoreList.get(newStoreNearBy.get(i)).getType());
+                animateMarker(bitmap, mMarkerMap.get(newStoreNearBy.get(i)));
             }
         }
     }

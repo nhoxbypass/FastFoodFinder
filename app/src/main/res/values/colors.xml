@@ -2,6 +2,7 @@
 <resources>
     <color name="colorPrimary">#db3236</color>
     <color name="colorPrimaryDark">#CC0000</color>
+    <color name="colorYouTubeDark">#5B0E0C</color>
     <color name="colorPrimaryLight">#506A9D</color>
     <color name="colorAccent">#FF4081</color>
     <color name="colorHintText">#B71C1C</color>
@@ -11,7 +12,7 @@
     <color name="googleYellow">#f4c20d</color>
     <color name="colorGrey">#9E9E9E</color>
     <color name="colorWhite">#FFFFFF</color>
-    <color name="colorSelectedItem">#FFCDD2</color>
+    <color name="colorTabText">#1F1F1F</color>
     <color name="material_green_50">#E8F5E9</color>
     <color name="material_green_500">#4CAF50</color>
     <color name="material_green_700">#388E3C</color>
