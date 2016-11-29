@@ -142,14 +142,8 @@ public class SplashActivity extends AppCompatActivity {
                                     }
                                 });
                             } else {
-<<<<<<< HEAD
                                 Log.w("MAPP", "Sign In to Get data ", task.getException());
-                                Toast.makeText(SplashActivity.this, "Authentication failed.",
-=======
-                                Log.w("MAPP", "signInAnonymously", task.getException());
-                                Toast.makeText(SplashActivity.this, R.string.authentication_failed,
->>>>>>> origin/master
-                                        Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SplashActivity.this, R.string.authentication_failed, Toast.LENGTH_SHORT).show();
                             }
                         }
                     });

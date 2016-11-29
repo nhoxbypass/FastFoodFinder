@@ -124,16 +124,11 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-<<<<<<< HEAD
             android:layout_marginTop="16dp"
             android:layout_marginLeft="8dp"
             android:layout_marginBottom="8dp"
             android:layout_marginRight="8dp"
-            android:text="Recently"
-=======
-            android:layout_margin="8dp"
             android:text="@string/recently"
->>>>>>> origin/master
             android:textColor="@color/colorGrey" />
 
         <android.support.v7.widget.CardView
@@ -174,16 +169,11 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-<<<<<<< HEAD
             android:layout_marginTop="16dp"
             android:layout_marginLeft="8dp"
             android:layout_marginBottom="8dp"
             android:layout_marginRight="8dp"
-            android:text="Suggestions for this afternoon"
-=======
-            android:layout_margin="8dp"
             android:text="@string/suggestions_for_this_afternoon"
->>>>>>> origin/master
             android:textColor="@color/colorGrey" />
 
         <android.support.v7.widget.CardView
@@ -216,16 +206,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-<<<<<<< HEAD
             android:layout_marginTop="16dp"
             android:layout_marginLeft="8dp"
             android:layout_marginBottom="8dp"
             android:layout_marginRight="8dp"
-            android:text="Suggestion"
-=======
-            android:layout_margin="8dp"
             android:text="@string/suggestion"
->>>>>>> origin/master
             android:textColor="@color/colorGrey" />
 
         <android.support.v7.widget.CardView
