@@ -32,6 +32,7 @@ public class ProfileFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_profile,container,false);
         ivCoverImage = (ImageView) rootView.findViewById(R.id.ivCoverImage);
         btnUpdateCoverImage = (Button) rootView.findViewById(R.id.btnUpdateCoverImage);
+        setHasOptionsMenu(true);
         return rootView;
     }
 
@@ -67,8 +68,10 @@ public class ProfileFragment extends Fragment {
     }
 
     @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-        menu.clear();
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        MenuItem item = menu.findItem(R.id.action_search);
+        item.setVisible(false);
     }
+
 }
