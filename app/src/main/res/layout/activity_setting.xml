@@ -13,7 +13,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/SettingsCategoryText"
-            android:text="Share app" />
+            android:text="@string/share_app" />
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/ic_share"
                 style="@style/SettingsOptionsText"
-                android:text="Share app with friends"
+                android:text="@string/share_app_with_friends"
                 android:id="@+id/tv_setting_share_app"/>
         </android.support.v7.widget.CardView>
 
@@ -31,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/SettingsCategoryText"
-            android:text="General" />
+            android:text="@string/general" />
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -61,14 +61,14 @@
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_metric"
                     style="@style/SettingsOptionsText"
-                    android:text="Use metric units"
+                    android:text="@string/use_metric_units"
                     android:id="@+id/tv_setting_change_metric"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_translate"
                     style="@style/SettingsOptionsText"
-                    android:text="English"
+                    android:text="@string/vietnamese"
                     android:id="@+id/tv_setting_english"/>
             </LinearLayout>
 
@@ -79,7 +79,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/SettingsCategoryText"
-            android:text="Profile" />
+            android:text="@string/profile" />
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -93,21 +93,21 @@
                    android:layout_height="wrap_content"
                    android:drawableLeft="@drawable/ic_profile"
                    style="@style/SettingsOptionsText"
-                   android:text="Edit your profile"
+                   android:text="@string/edit_your_profile"
                    android:id="@+id/tv_setting_edit_profile"/>
                <TextView
                    android:layout_width="match_parent"
                    android:layout_height="wrap_content"
                    android:drawableLeft="@drawable/ic_security"
                    style="@style/SettingsOptionsText"
-                   android:text="Change your password"
+                   android:text="@string/change_your_password"
                    android:id="@+id/tv_setting_change_password"/>
                <TextView
                    android:layout_width="match_parent"
                    android:layout_height="wrap_content"
                    android:drawableLeft="@drawable/ic_security"
                    style="@style/SettingsOptionsText"
-                   android:text="Change your email"
+                   android:text="@string/change_your_email"
                    android:id="@+id/tv_setting_change_email"/>
            </LinearLayout>
         </android.support.v7.widget.CardView>
@@ -116,7 +116,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/SettingsCategoryText"
-            android:text="Notifications" />
+            android:text="@string/notifications" />
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -138,7 +138,7 @@
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_profile"
                     style="@style/SettingsOptionsText"
-                    android:text="Set notifications"
+                    android:text="@string/set_notifications"
                     android:id="@+id/tv_setting_notification"/>
                 <TextView
                     android:layout_width="match_parent"
@@ -154,7 +154,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/SettingsCategoryText"
-            android:text="Support" />
+            android:text="@string/support" />
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -168,42 +168,42 @@
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_about"
                     style="@style/SettingsOptionsText"
-                    android:text="About Fastfood Finder"
+                    android:text="@string/about_fastfood_finder"
                     android:id="@+id/tv_setting_about_app"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_about"
                     style="@style/SettingsOptionsText"
-                    android:text="Rate App"
+                    android:text="@string/rate_app"
                     android:id="@+id/tv_setting_rate_app"/>
                 <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/ic_about"
                 style="@style/SettingsOptionsText"
-                android:text="Send Feedback"
+                android:text="@string/send_feedback"
                 android:id="@+id/tv_setting_feedback"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_about"
                     style="@style/SettingsOptionsText"
-                    android:text="Privacy Policy"
+                    android:text="@string/privacy_policy"
                     android:id="@+id/tv_setting_privacy_policy"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_term_of_use"
                     style="@style/SettingsOptionsText"
-                    android:text="Terms of Use"
+                    android:text="@string/terms_of_use"
                     android:id="@+id/tv_setting_term_of_use"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/logout"
                     style="@style/SettingsOptionsText"
-                    android:text="Sign Out"
+                    android:text="@string/sign_out"
                     android:id="@+id/tv_setting_sign_out"/>
             </LinearLayout>
         </android.support.v7.widget.CardView>

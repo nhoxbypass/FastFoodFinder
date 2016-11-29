@@ -16,6 +16,6 @@
         android:layout_marginLeft="6dp"
         android:textColor="@color/googleRed"
         android:layout_gravity="center_vertical"
-        tools:text="MAP"
+        tools:text="@string/map"
         android:id="@+id/tv_tablayout"/>
 </LinearLayout>

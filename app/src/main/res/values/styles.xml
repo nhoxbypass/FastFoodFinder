@@ -10,7 +10,6 @@
 
     <style name="AppTheme.NoActionBar.TranslucentStatus" parent="AppTheme.NoActionBar">
     </style>
-
     <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>

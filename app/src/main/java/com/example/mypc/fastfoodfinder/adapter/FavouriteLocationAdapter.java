@@ -53,8 +53,8 @@ public class FavouriteLocationAdapter extends RecyclerView.Adapter<FavouriteLoca
     public boolean onItemMove(final int fromPosition, final int toPosition) {
         Collections.swap(mDes, fromPosition, toPosition);
         notifyItemMoved(fromPosition, toPosition);
-        Snackbar.make(mView, "Do you want to Undo?", Snackbar.LENGTH_LONG)
-                .setAction("UNDO", new View.OnClickListener() {
+        Snackbar.make(mView, R.string.do_you_want_undo, Snackbar.LENGTH_LONG)
+                .setAction(R.string.undo, new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Collections.swap(mDes,toPosition, fromPosition);
@@ -72,8 +72,8 @@ public class FavouriteLocationAdapter extends RecyclerView.Adapter<FavouriteLoca
         mDes.remove(position);
         notifyDataSetChanged();
         notifyItemRemoved(position);
-        Snackbar.make(mView, "Do you want to Undo?", Snackbar.LENGTH_LONG)
-                .setAction("UNDO", new View.OnClickListener() {
+        Snackbar.make(mView, R.string.do_you_want_undo, Snackbar.LENGTH_LONG)
+                .setAction(R.string.undo, new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         mDes.add(position, article);
@@ -167,13 +167,13 @@ public class FavouriteLocationAdapter extends RecyclerView.Adapter<FavouriteLoca
                public boolean onLongClick(View view) {
                    final int position = getAdapterPosition();
                    new AlertDialog.Builder(itemView.getContext())
-                           .setTitle("Delete Favourite Destination")
-                           .setMessage("Are you sure you want to delete this destiantion?")
+                           .setTitle(R.string.delete_favourite_location)
+                           .setMessage(R.string.are_you_sure)
                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                public void onClick(DialogInterface dialog, int which) {
                                    mDes.remove(position);
                                    notifyDataSetChanged();
-                                   Snackbar.make(itemView,"UNDO", Snackbar.LENGTH_INDEFINITE).show();                               }
+                                   Snackbar.make(itemView,R.string.undo, Snackbar.LENGTH_INDEFINITE).show();                               }
                            })
                            .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                                public void onClick(DialogInterface dialog, int which) {

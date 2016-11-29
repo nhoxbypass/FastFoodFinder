@@ -67,7 +67,7 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 ((InfoViewHolder) holder).bind(mStore);
                 break;
             case TITLE:
-                String title = position == 2 ? "Tips from people who has been here" : "";
+                String title = position == 2 ? String.valueOf(R.string.tips_from_people_who_has_been_here) : "";
                 ((TitleViewHolder) holder).bind(title);
                 break;
             default:

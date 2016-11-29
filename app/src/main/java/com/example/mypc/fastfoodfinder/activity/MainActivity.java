@@ -139,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
         if (mSearchView != null) {
             mSearchView.setSearchableInfo(searchManager.getSearchableInfo(MainActivity.this.getComponentName()));
 
-            mSearchView.setQueryHint("Nhập tên cửa hàng...");
+            mSearchView.setQueryHint(String.valueOf(R.string.type_name_store));
             mSearchView.setBackgroundColor(Color.parseColor("#E53935"));
             mSearchInput = (EditText) mSearchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
             mSearchInput.setHintTextColor(ContextCompat.getColor(MainActivity.this, R.color.colorHintText));
@@ -248,7 +248,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             default:
-                Toast.makeText(MainActivity.this, "Search error!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, R.string.search_error, Toast.LENGTH_SHORT).show();
         }
     }
 

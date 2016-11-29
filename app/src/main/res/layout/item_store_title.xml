@@ -9,5 +9,5 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:padding="10dp"
-        android:text="Tips from people who has been here..." />
+        android:text="@string/tips_from_people_who_has_been_here" />
 </LinearLayout>
