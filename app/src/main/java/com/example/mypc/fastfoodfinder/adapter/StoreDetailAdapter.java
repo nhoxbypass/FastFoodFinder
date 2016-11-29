@@ -109,8 +109,14 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
     }
 
-    public class HeaderViewHolder extends RecyclerView.ViewHolder {
+    public class HeaderViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
+        @BindView(R.id.save_this)
+        TextView save;
+        @BindView(R.id.check_in)
+        TextView check;
+        @BindView(R.id.rate_it)
+        TextView rate;
         @BindView(R.id.comment)
         TextView comment;
 
@@ -120,12 +126,20 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
 
         public void bind(Store mStore) {
+            save.setOnClickListener(this);
+            check.setOnClickListener(this);
+            rate.setOnClickListener(this);
             comment.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     mListener.onShowComment();
                 }
             });
+        }
+
+        @Override
+        public void onClick(View v) {
+            v.setSelected(!v.isSelected());
         }
     }
 
