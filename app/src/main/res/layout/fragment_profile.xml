@@ -1,285 +1,350 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-
-    tools:context=".ProfileFragment">
+    tools:context=".activity.MainActivity">
 
     <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:scaleType="centerCrop"
         android:id="@+id/ivCoverImage"
-        android:src="@drawable/mot"/>
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/sample_background" />
+
 
     <Button
-        android:layout_width="100dp"
-        android:layout_height="30dp"
-        android:textSize="8sp"
-        android:visibility="gone"
         android:id="@+id/btnUpdateCoverImage"
-        android:text="Update cover image"/>
-    <TextView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Trần Thị Nhã"
-        android:textColor="@android:color/white"
-        android:layout_marginTop="115dp"
-        android:textStyle="bold"
-        android:textSize="18sp"
-        android:layout_marginLeft="100dp"/>
+        android:layout_height="32dp"
+        android:alpha="0.75"
+        android:drawableLeft="@drawable/ic_camera"
+        android:drawablePadding="4dp"
+        android:layout_marginTop="128dp"
+        android:layout_alignParentRight="true"
+        android:text="Update cover image"
+        android:textSize="8sp"
+        android:visibility="visible" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="\@tranthinha160296"
-        android:textColor="@android:color/white"
-        android:layout_marginTop="130dp"
-        android:textSize="14sp"
-        android:layout_marginLeft="100dp"/>
     <de.hdodenhof.circleimageview.CircleImageView
         android:layout_width="90dp"
         android:layout_height="90dp"
-        android:layout_marginTop="85dp"
+        android:id="@+id/iv_profile_avatar"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="88dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/hai"
-        android:layout_marginLeft="5dp"
-        />
+        android:src="@drawable/sample_avatar" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="My list"
-        android:layout_marginLeft="5dp"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_marginTop="180dp"/>
+        android:layout_toRightOf="@id/iv_profile_avatar"
+        android:layout_toEndOf="@id/iv_profile_avatar"
+        android:layout_marginTop="112dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:text="Trần Thị Nhã"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="3 lists"
-        android:layout_marginTop="205dp"
-        android:layout_marginLeft="5dp"/>
-    <android.support.v7.widget.CardView
-        android:layout_width="150dp"
+        android:layout_toRightOf="@id/iv_profile_avatar"
+        android:layout_toEndOf="@id/iv_profile_avatar"
+        android:layout_marginTop="136dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:text="\@tranthinha160296"
+        android:textColor="@android:color/white"
+        android:textSize="14sp" />
+
+
+    <ScrollView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="230dp">
-       <ImageView
-           android:layout_width="@dimen/small_image_width"
-           android:layout_marginLeft="2dp"
-           android:layout_marginRight="2dp"
-           android:layout_marginTop="2dp"
-           android:layout_height="40dp"
-           android:scaleType="centerCrop"
-           android:src="@drawable/an1"/>
-        <ImageView
-            android:layout_width="@dimen/small_image_width"
-            android:layout_marginLeft="76dp"
-            android:layout_marginRight="2dp"
-            android:layout_marginTop="2dp"
-            android:layout_height="40dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/an2"/>
-        <ImageView
-            android:layout_width="@dimen/small_image_width"
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
-            android:layout_marginTop="44dp"
-            android:layout_height="40dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/an3"/>
-        <ImageView
-            android:layout_width="@dimen/small_image_width"
-            android:layout_marginLeft="76dp"
-            android:layout_marginRight="2dp"
-            android:layout_marginTop="44dp"
-            android:layout_height="40dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/hinhmau"/>
+        android:layout_below="@id/iv_profile_avatar">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp"
+                android:text="Your places"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="22dp"
-            android:src="@drawable/save"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="My Save Places"
-            android:textColor="#304FFE"
-            android:textStyle="bold"
-            android:textSize="@dimen/medium_textsize"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="90dp"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="110dp"
-            android:text="3 Places"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="32dp"
+                android:text="3 lists" />
 
-    </android.support.v7.widget.CardView>
+            <android.support.v7.widget.CardView
+                android:layout_width="160dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/cv_saved_places"
+                app:cardElevation="6dp"
+                style="@style/RippleEffect"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="56dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="40dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/sample_food_1" />
 
-    <android.support.v7.widget.CardView
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="195dp"
-        android:layout_marginTop="230dp">
-        <ImageView
-            android:layout_width="@dimen/small_image_width"
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
-            android:layout_marginTop="2dp"
-            android:layout_height="40dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/an1"/>
-        <ImageView
-            android:layout_width="@dimen/small_image_width"
-            android:layout_marginLeft="76dp"
-            android:layout_marginRight="2dp"
-            android:layout_marginTop="2dp"
-            android:layout_height="40dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/an2"/>
-        <ImageView
-            android:layout_width="@dimen/small_image_width"
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
-            android:layout_marginTop="44dp"
-            android:layout_height="40dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/hinhmau"/>
-        <ImageView
-            android:layout_width="@dimen/small_image_width"
-            android:layout_marginLeft="76dp"
-            android:layout_marginRight="2dp"
-            android:layout_marginTop="44dp"
-            android:layout_height="40dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/hinhmau"/>
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="40dp"
+                            android:layout_marginLeft="2dp"
+                            android:layout_marginStart="2dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/sample_food_2" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp">
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="40dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/sample_food_3" />
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="22dp"
-            android:src="@drawable/favorite"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="My Favorite Places"
-            android:textColor="#304FFE"
-            android:textStyle="bold"
-            android:textSize="@dimen/medium_textsize"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="90dp"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="110dp"
-            android:text="2 Places"/>
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="40dp"
+                            android:layout_marginLeft="2dp"
+                            android:layout_marginStart="2dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/hinhmau" />
+                    </LinearLayout>
+                </LinearLayout>
 
-    </android.support.v7.widget.CardView>
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="22dp"
+                    android:src="@drawable/ic_save" />
 
-    <android.support.v7.widget.CardView
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="370dp">
-        <ImageView
-            android:layout_width="@dimen/small_image_width"
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
-            android:layout_marginTop="2dp"
-            android:layout_height="40dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/an1"/>
-        <ImageView
-            android:layout_width="@dimen/small_image_width"
-            android:layout_marginLeft="76dp"
-            android:layout_marginRight="2dp"
-            android:layout_marginTop="2dp"
-            android:layout_height="40dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/an2"/>
-        <ImageView
-            android:layout_width="@dimen/small_image_width"
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
-            android:layout_marginTop="44dp"
-            android:layout_height="40dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/hinhmau"/>
-        <ImageView
-            android:layout_width="@dimen/small_image_width"
-            android:layout_marginLeft="76dp"
-            android:layout_marginRight="2dp"
-            android:layout_marginTop="44dp"
-            android:layout_height="40dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/hinhmau"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="88dp"
+                    android:text="My Save Places"
+                    android:textColor="#304FFE"
+                    android:textSize="@dimen/medium_textsize"
+                    android:textStyle="bold" />
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="22dp"
-            android:src="@drawable/cheked"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="My Checked in Places"
-            android:textColor="#304FFE"
-            android:textStyle="bold"
-            android:textSize="@dimen/medium_textsize"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="90dp"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="110dp"
-            android:text="2 Places"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="104dp"
+                    android:text="3 Places" />
 
-    </android.support.v7.widget.CardView>
+            </android.support.v7.widget.CardView>
 
-    <android.support.v7.widget.CardView
-        android:layout_width="150dp"
-        android:layout_height="128dp"
-        android:layout_marginLeft="195dp"
-        android:layout_marginTop="370dp"
-        app:cardBackgroundColor="#EEEEEE"
-        >
+            <android.support.v7.widget.CardView
+                android:layout_width="160dp"
+                android:layout_height="wrap_content"
+                app:cardElevation="6dp"
+                android:id="@+id/cv_favourite_places"
+                android:layout_toEndOf="@id/cv_saved_places"
+                android:layout_toRightOf="@id/cv_saved_places"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="56dp"
+                style="@style/RippleEffect"
+                >
+
+                <ImageView
+                    android:layout_width="@dimen/small_image_width"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_marginTop="2dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/sample_food_1" />
+
+                <ImageView
+                    android:layout_width="@dimen/small_image_width"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="76dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_marginTop="2dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/sample_food_2" />
+
+                <ImageView
+                    android:layout_width="@dimen/small_image_width"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_marginTop="44dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/hinhmau" />
+
+                <ImageView
+                    android:layout_width="@dimen/small_image_width"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="76dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_marginTop="44dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/hinhmau" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="22dp"
+                    android:src="@drawable/ic_favourite" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="88dp"
+                    android:text="My Favorite Places"
+                    android:textColor="#304FFE"
+                    android:textSize="@dimen/medium_textsize"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="104dp"
+                    android:text="2 Places" />
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="160dp"
+                android:layout_height="wrap_content"
+                app:cardElevation="6dp"
+                android:id="@+id/cv_checkin_places"
+                style="@style/RippleEffect"
+                android:layout_below="@id/cv_saved_places"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp">
+
+                <ImageView
+                    android:layout_width="@dimen/small_image_width"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_marginTop="2dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/sample_food_1" />
+
+                <ImageView
+                    android:layout_width="@dimen/small_image_width"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="76dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_marginTop="2dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/sample_food_2" />
+
+                <ImageView
+                    android:layout_width="@dimen/small_image_width"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_marginTop="44dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/hinhmau" />
+
+                <ImageView
+                    android:layout_width="@dimen/small_image_width"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="76dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_marginTop="44dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/hinhmau" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="22dp"
+                    android:src="@drawable/ic_checkin" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="88dp"
+                    android:text="My Checked in Places"
+                    android:textColor="#304FFE"
+                    android:textSize="@dimen/medium_textsize"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="110dp"
+                    android:text="2 Places" />
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="160dp"
+                android:layout_height="128dp"
+                style="@style/RippleEffect"
+                android:layout_below="@id/cv_favourite_places"
+                android:layout_toRightOf="@id/cv_checkin_places"
+                android:layout_toEndOf="@id/cv_checkin_places"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                app:cardBackgroundColor="#EEEEEE">
 
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="30dp"
-            android:src="@drawable/addnew"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Create a new list"
-            android:textColor="#304FFE"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="80dp"
-            android:layout_marginBottom="20dp"
-            />
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="30dp"
+                    android:src="@drawable/ic_add_list" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="80dp"
+                    android:text="Create a new list"
+                    android:textColor="#304FFE"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
 
-    </android.support.v7.widget.CardView>
+            </android.support.v7.widget.CardView>
+        </RelativeLayout>
+    </ScrollView>
 </RelativeLayout>

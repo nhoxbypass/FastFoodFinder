@@ -33,6 +33,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.mypc.fastfoodfinder.R;
 import com.example.mypc.fastfoodfinder.helper.SearchResult;
+import com.example.mypc.fastfoodfinder.model.Store.StoreDataSource;
 import com.example.mypc.fastfoodfinder.ui.main.MainMapFragment;
 import com.example.mypc.fastfoodfinder.ui.main.SearchFragment;
 import com.example.mypc.fastfoodfinder.ui.profile.ProfileFragment;
@@ -165,6 +166,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public boolean onMenuItemActionCollapse(MenuItem menuItem) {
+                EventBus.getDefault().post(new SearchResult(SearchResult.SEARCH_COLLAPSE));
                 getSupportFragmentManager().beginTransaction().
                         remove(getSupportFragmentManager().findFragmentById(R.id.fragment_search_placeholder))
                         .commit();
@@ -204,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
         int resultCode = searchResult.getResultCode();
         switch (resultCode)
         {
-            case Constant.SEARCH_QUICK:
+            case SearchResult.SEARCH_QUICK:
                 mSearchView.setQuery(searchResult.getSearchString(),false);
                 mSearchView.setIconified(false);
                 // Check if no view has focus:
@@ -213,9 +215,13 @@ public class MainActivity extends AppCompatActivity {
                     InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                     view.clearFocus();
+                    mSearchInput.clearFocus();
                 }
                 break;
-            case Constant.SEARCH_STORE:
+            case SearchResult.SEARCH_STORE:
+                break;
+
+            case SearchResult.SEARCH_COLLAPSE:
                 break;
 
             default:

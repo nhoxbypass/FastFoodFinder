@@ -75,44 +75,44 @@ public class DialogUpdateCoverImage extends android.support.v4.app.DialogFragmen
         ivOne.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ivChosenImage.setImageResource(R.drawable.mot);
-                IdChosenImage = R.drawable.mot;
+                ivChosenImage.setImageResource(R.drawable.sample_background);
+                IdChosenImage = R.drawable.sample_background;
             }
         });
         ivTwo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ivChosenImage.setImageResource(R.drawable.hai);
-                IdChosenImage = R.drawable.hai;
+                ivChosenImage.setImageResource(R.drawable.sample_avatar);
+                IdChosenImage = R.drawable.sample_avatar;
 
             }
         });
         ivThree.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ivChosenImage.setImageResource(R.drawable.ba);
-                IdChosenImage = R.drawable.ba;
+                ivChosenImage.setImageResource(R.drawable.sample_background_3);
+                IdChosenImage = R.drawable.sample_background_3;
             }
         });
         ivFour.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ivChosenImage.setImageResource(R.drawable.bon);
-                IdChosenImage = R.drawable.bon;
+                ivChosenImage.setImageResource(R.drawable.sample_background_4);
+                IdChosenImage = R.drawable.sample_background_4;
             }
         });
         ivFive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ivChosenImage.setImageResource(R.drawable.nam);
-                IdChosenImage = R.drawable.nam;
+                ivChosenImage.setImageResource(R.drawable.sample_background_5);
+                IdChosenImage = R.drawable.sample_background_5;
             }
         });
         ivSix.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ivChosenImage.setImageResource(R.drawable.sau);
-                IdChosenImage = R.drawable.sau;
+                ivChosenImage.setImageResource(R.drawable.sample_background_6);
+                IdChosenImage = R.drawable.sample_background_6;
             }
         });
 

@@ -83,30 +83,12 @@ public class MainMapFragment extends Fragment {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 int tabItemColor = Color.WHITE;
-                /*
-                View itemView = tab.getCustomView();
-                TextView textView = (TextView) itemView.findViewById(R.id.tv_tablayout);
-                ImageView imageView = (ImageView) itemView.findViewById(R.id.iv_tablayout);
-
-                textView.setTextColor(tabItemColor);
-                imageView.getDrawable().setColorFilter(tabItemColor, PorterDuff.Mode.SRC_IN);
-                */
                 tab.getIcon().setColorFilter(tabItemColor, PorterDuff.Mode.SRC_IN);
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
                 int tabItemColor = ContextCompat.getColor(getContext(),R.color.colorYouTubeDark);
-
-                /*
-                View itemView = tab.getCustomView();
-                TextView textView = (TextView) itemView.findViewById(R.id.tv_tablayout);
-                ImageView imageView = (ImageView) itemView.findViewById(R.id.iv_tablayout);
-
-                textView.setTextColor(tabItemColor);
-                imageView.getDrawable().setColorFilter(tabItemColor, PorterDuff.Mode.SRC_IN);
-                */
-
                 tab.getIcon().setColorFilter(tabItemColor, PorterDuff.Mode.SRC_IN);
             }
 

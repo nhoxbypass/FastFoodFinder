@@ -62,7 +62,7 @@ public class User {
     private String uid;
     private String photoUrl;
 
-    //TODO: Save user data to Firebase. Can extense to save other attribute like address, avatar image link
+    //TODO: Save user data to Firebase. Can extense to ic_save other attribute like address, avatar image link
     public void saveUserData(final DatabaseReference mFirebaseDatabaseReference)
     {
         mFirebaseDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {

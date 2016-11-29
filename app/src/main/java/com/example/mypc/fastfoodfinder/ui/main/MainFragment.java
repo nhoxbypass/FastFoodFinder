@@ -236,13 +236,22 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
         int resultCode = searchResult.getResultCode();
         switch (resultCode)
         {
-            case Constant.SEARCH_QUICK:
+            case SearchResult.SEARCH_QUICK:
                 mStoreList.clear();
                 mGoogleMap.clear();
                 mStoreList = StoreDataSource.getStore(searchResult.getStoreType());
                 addMarkersToMap(mStoreList, mGoogleMap);
+                AnimateMarkerTask task = new AnimateMarkerTask();
+                task.execute(mStoreList);
                 break;
-            case Constant.SEARCH_STORE:
+            case SearchResult.SEARCH_STORE:
+                break;
+
+            case SearchResult.SEARCH_COLLAPSE:
+                mStoreList.clear();
+                mGoogleMap.clear();
+                mStoreList = StoreDataSource.getAllObjects();
+                addMarkersToMap(mStoreList, mGoogleMap);
                 break;
 
             default:

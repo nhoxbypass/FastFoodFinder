@@ -77,7 +77,7 @@ public class SearchFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 searchText = "Circle K";
-                EventBus.getDefault().post(new SearchResult(Constant.SEARCH_QUICK, searchText, Constant.TYPE_CIRCLE_K));
+                EventBus.getDefault().post(new SearchResult(SearchResult.SEARCH_QUICK, searchText, Constant.TYPE_CIRCLE_K));
                 searchContainer.setVisibility(View.GONE);
             }
         });
@@ -86,7 +86,7 @@ public class SearchFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 searchText = "Family Mart";
-                EventBus.getDefault().post(new SearchResult(Constant.SEARCH_QUICK, searchText, Constant.TYPE_FAMILY_MART));
+                EventBus.getDefault().post(new SearchResult(SearchResult.SEARCH_QUICK, searchText, Constant.TYPE_FAMILY_MART));
                 searchContainer.setVisibility(View.GONE);
             }
         });
@@ -95,7 +95,7 @@ public class SearchFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 searchText = "Mini Stop";
-                EventBus.getDefault().post(new SearchResult(Constant.SEARCH_QUICK, searchText, Constant.TYPE_MINI_STOP));
+                EventBus.getDefault().post(new SearchResult(SearchResult.SEARCH_QUICK, searchText, Constant.TYPE_MINI_STOP));
                 searchContainer.setVisibility(View.GONE);
             }
         });
@@ -104,7 +104,7 @@ public class SearchFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 searchText = "BsMart";
-                EventBus.getDefault().post(new SearchResult(Constant.SEARCH_QUICK, searchText, Constant.TYPE_BSMART));
+                EventBus.getDefault().post(new SearchResult(SearchResult.SEARCH_QUICK, searchText, Constant.TYPE_BSMART));
                 searchContainer.setVisibility(View.GONE);
             }
         });
@@ -113,7 +113,7 @@ public class SearchFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 searchText = "Shop and Go";
-                EventBus.getDefault().post(new SearchResult(Constant.SEARCH_QUICK, searchText, Constant.TYPE_SHOP_N_GO));
+                EventBus.getDefault().post(new SearchResult(SearchResult.SEARCH_QUICK, searchText, Constant.TYPE_SHOP_N_GO));
                 searchContainer.setVisibility(View.GONE);
             }
         });

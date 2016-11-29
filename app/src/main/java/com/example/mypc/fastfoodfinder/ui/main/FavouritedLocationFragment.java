@@ -71,12 +71,12 @@ public class FavouritedLocationFragment extends Fragment implements OnStartDragL
                if (isfbChangeClicked)
                 {
                     isfbChangeClicked = false;
-                    fbChangePosition.setImageResource(R.drawable.ic_swap_vert_black_24dp);
+                    fbChangePosition.setImageResource(R.drawable.ic_swap_black);
                 }
 
                 else {
                     isfbChangeClicked = true;
-                    fbChangePosition.setImageResource(R.drawable.ic_swap_vert_black_24dp2);
+                    fbChangePosition.setImageResource(R.drawable.ic_swap);
                 }
             }
         });
@@ -90,7 +90,7 @@ public class FavouritedLocationFragment extends Fragment implements OnStartDragL
         ArrayList<Article> articles = new ArrayList<>();
         articles.add(new Article("Circle K Nguyen van cu","1A"));
         articles.add(new Article("Nha","ho thi ky"));
-        articles.add(new Article("tam","quan 8"));
+        articles.add(new Article("sample_background_8","quan 8"));
         articles.add(new Article("some place","I don't know"));
         articles.add(new Article("hihi","haha"));
         adapter.setDesS(articles);

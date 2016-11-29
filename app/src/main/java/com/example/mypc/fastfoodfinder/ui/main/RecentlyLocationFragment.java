@@ -71,7 +71,7 @@ public class RecentlyLocationFragment extends Fragment implements OnStartDragLis
         ArrayList<Article> articles = new ArrayList<>();
         articles.add(new Article("Circle K Nguyen van cu","1A"));
         articles.add(new Article("Nha","ho thi ky"));
-        articles.add(new Article("tam","quan 8"));
+        articles.add(new Article("sample_background_8","quan 8"));
         articles.add(new Article("some place","I don't know"));
         articles.add(new Article("hihi","haha"));
         adapter.setDesS(articles);
