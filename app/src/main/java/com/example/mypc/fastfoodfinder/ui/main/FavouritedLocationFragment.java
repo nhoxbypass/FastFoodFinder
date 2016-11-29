@@ -71,12 +71,12 @@ public class FavouritedLocationFragment extends Fragment implements OnStartDragL
                 if (isfbChangeClicked)
                 {
                     isfbChangeClicked = false;
-                    fbChangePosition.setImageResource(R.drawable.ic_swap_vert_black_24dp);
+                    fbChangePosition.setImageResource(R.drawable.ic_swipe);
                 }
 
                 else {
                     isfbChangeClicked = true;
-                    fbChangePosition.setImageResource(R.drawable.ic_swap_vert_black_24dp2);
+                    fbChangePosition.setImageResource(R.drawable.ic_swap_blue);
                 }
             }
         });

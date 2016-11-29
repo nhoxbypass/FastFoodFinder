@@ -29,7 +29,6 @@ public class RecentlyLocationFragment extends Fragment implements OnStartDragLis
     private RecentlyLocationAdapter adapter;
     LinearLayoutManager linearLayoutManager;
     private ItemTouchHelper mItemTouchHelper;
-    private FloatingActionButton fbChange;
     public static boolean isfbChangeClicked = false;
     FrameLayout frameLayout;
 
@@ -48,7 +47,6 @@ public class RecentlyLocationFragment extends Fragment implements OnStartDragLis
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_recently_location,container,false);
         rvDes = (RecyclerView) rootView.findViewById(R.id.rvCurrentDes);
-        fbChange = (FloatingActionButton) rootView.findViewById(R.id.fbRecentlyChange);
         frameLayout = (FrameLayout) rootView.findViewById(R.id.flRecParent);
         return rootView;
     }
@@ -65,21 +63,6 @@ public class RecentlyLocationFragment extends Fragment implements OnStartDragLis
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
         mItemTouchHelper = new ItemTouchHelper(callback);
         mItemTouchHelper.attachToRecyclerView(rvDes);
-        fbChange.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (isfbChangeClicked)
-                {
-                    isfbChangeClicked = false;
-                    fbChange.setImageResource(R.drawable.ic_swap_vert_black_24dp);
-                }
-
-                else {
-                    isfbChangeClicked = true;
-                    fbChange.setImageResource(R.drawable.ic_swap_vert_black_24dp2);
-                }
-            }
-        });
         Load();
     }
 

@@ -2,22 +2,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/flRecParent"
-    tools:context="com.example.mypc.fastfoodfinder.ui.main.RecentlyLocationFragment">
+    tools:context="com.example.mypc.fastfoodfinder.ui.main.FavouritedLocationFragment">
 
     <android.support.v7.widget.RecyclerView
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="50dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clipToPadding="false"
         android:id="@+id/rvCurrentDes">
     </android.support.v7.widget.RecyclerView>
-    <android.support.design.widget.FloatingActionButton
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_gravity="bottom"
-        android:layout_marginLeft="300dp"
-        android:layout_marginBottom="10dp"
-        android:id="@+id/fbRecentlyChange"
-        android:src="@drawable/ic_swap_vert_black_24dp"
-        />
 </FrameLayout>

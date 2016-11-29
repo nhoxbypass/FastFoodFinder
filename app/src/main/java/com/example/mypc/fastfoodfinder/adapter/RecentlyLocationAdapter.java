@@ -48,21 +48,7 @@ public class RecentlyLocationAdapter extends RecyclerView.Adapter<RecentlyLocati
 
     @Override
     public boolean onItemMove(final int fromPosition, final int toPosition) {
-
-            Collections.swap(mDes, fromPosition, toPosition);
-            notifyItemMoved(fromPosition, toPosition);
-        Snackbar.make(mView, "Do you want to Undo?", Snackbar.LENGTH_LONG)
-                .setAction("UNDO", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Collections.swap(mDes,toPosition, fromPosition);
-                        notifyItemMoved(toPosition,fromPosition);
-                    }
-                })
-                .setDuration(30000)
-                .show();
-
-        return true;
+        return false;
     }
 
     @Override
