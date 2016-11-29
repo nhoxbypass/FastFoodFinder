@@ -68,15 +68,15 @@ public class FavouritedLocationFragment extends Fragment implements OnStartDragL
         fbChangePosition.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (isfbChangeClicked)
+               if (isfbChangeClicked)
                 {
                     isfbChangeClicked = false;
-                    fbChangePosition.setImageResource(R.drawable.ic_swipe);
+                    fbChangePosition.setImageResource(R.drawable.ic_swap_vert_black_24dp);
                 }
 
                 else {
                     isfbChangeClicked = true;
-                    fbChangePosition.setImageResource(R.drawable.ic_swap_blue);
+                    fbChangePosition.setImageResource(R.drawable.ic_swap_vert_black_24dp2);
                 }
             }
         });
