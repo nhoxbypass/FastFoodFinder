@@ -106,7 +106,7 @@ public class SplashActivity extends AppCompatActivity {
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
         if (mFirebaseUser == null) {
             // Not signed in
-            mFirebaseAuth.signInAnonymously()
+            mFirebaseAuth.signInWithEmailAndPassword("store_downloader@fastfoodfinder.com","123456789")
                     .addOnCompleteListener(SplashActivity.this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
@@ -142,7 +142,7 @@ public class SplashActivity extends AppCompatActivity {
                                     }
                                 });
                             } else {
-                                Log.w("MAPP", "signInAnonymously", task.getException());
+                                Log.w("MAPP", "Sign In to Get data ", task.getException());
                                 Toast.makeText(SplashActivity.this, "Authentication failed.",
                                         Toast.LENGTH_SHORT).show();
                             }
@@ -150,7 +150,7 @@ public class SplashActivity extends AppCompatActivity {
                     });
 
         } else {
-            Log.d("MAPP", "signInAnonymously outside");
+            Log.d("MAPP", "Sign In w Email and Password outside");
         }
     }
 

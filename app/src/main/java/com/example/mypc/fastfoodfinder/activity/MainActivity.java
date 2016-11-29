@@ -33,11 +33,9 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.mypc.fastfoodfinder.R;
 import com.example.mypc.fastfoodfinder.helper.SearchResult;
-import com.example.mypc.fastfoodfinder.model.Store.StoreDataSource;
 import com.example.mypc.fastfoodfinder.ui.main.MainMapFragment;
 import com.example.mypc.fastfoodfinder.ui.main.SearchFragment;
 import com.example.mypc.fastfoodfinder.ui.profile.ProfileFragment;
-import com.example.mypc.fastfoodfinder.utils.Constant;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -101,6 +99,8 @@ public class MainActivity extends AppCompatActivity {
             Glide.with(MainActivity.this)
                     .load(mFirebaseUser.getPhotoUrl())
                     .into(mNavHeaderAvatar);
+            mNavHeaderName.setText(mFirebaseUser.getDisplayName());
+            mNavHeaderScreenName.setText(mFirebaseUser.getEmail());
         }
     }
 
@@ -146,6 +146,20 @@ public class MainActivity extends AppCompatActivity {
             mSearchInput.setTextColor(Color.WHITE);
         }
 
+        //Set on search query submit
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                EventBus.getDefault().post(new SearchResult(SearchResult.SEARCH_STORE_OK,query));
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
         //Set event expand search view
         MenuItemCompat.OnActionExpandListener expandListener = new MenuItemCompat.OnActionExpandListener() {
             @Override
@@ -167,9 +181,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onMenuItemActionCollapse(MenuItem menuItem) {
                 EventBus.getDefault().post(new SearchResult(SearchResult.SEARCH_COLLAPSE));
-                getSupportFragmentManager().beginTransaction().
-                        remove(getSupportFragmentManager().findFragmentById(R.id.fragment_search_placeholder))
-                        .commit();
+
+                Fragment fragment =  getSupportFragmentManager().findFragmentById(R.id.fragment_search_placeholder);
+
+                if (fragment != null)
+                {
+                    getSupportFragmentManager().beginTransaction().
+                            remove(fragment)
+                            .commit();
+                }
                 return true;
             }
         };
@@ -206,7 +226,7 @@ public class MainActivity extends AppCompatActivity {
         int resultCode = searchResult.getResultCode();
         switch (resultCode)
         {
-            case SearchResult.SEARCH_QUICK:
+            case SearchResult.SEARCH_QUICK_OK:
                 mSearchView.setQuery(searchResult.getSearchString(),false);
                 mSearchView.setIconified(false);
                 // Check if no view has focus:
@@ -218,7 +238,10 @@ public class MainActivity extends AppCompatActivity {
                     mSearchInput.clearFocus();
                 }
                 break;
-            case SearchResult.SEARCH_STORE:
+            case SearchResult.SEARCH_STORE_OK:
+                getSupportFragmentManager().beginTransaction().
+                        remove(getSupportFragmentManager().findFragmentById(R.id.fragment_search_placeholder))
+                        .commit();
                 break;
 
             case SearchResult.SEARCH_COLLAPSE:

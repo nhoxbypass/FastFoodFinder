@@ -36,7 +36,6 @@ import com.example.mypc.fastfoodfinder.model.Store.StoreDataSource;
 import com.example.mypc.fastfoodfinder.model.Store.StoreViewModel;
 import com.example.mypc.fastfoodfinder.rest.MapsDirectionApi;
 import com.example.mypc.fastfoodfinder.ui.store.StoreInfoDialogFragment;
-import com.example.mypc.fastfoodfinder.utils.Constant;
 import com.example.mypc.fastfoodfinder.utils.MapUtils;
 import com.example.mypc.fastfoodfinder.utils.PermissionUtils;
 import com.example.mypc.fastfoodfinder.utils.RetrofitUtils;
@@ -236,21 +235,36 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
         int resultCode = searchResult.getResultCode();
         switch (resultCode)
         {
-            case SearchResult.SEARCH_QUICK:
+            case SearchResult.SEARCH_QUICK_OK:
                 mStoreList.clear();
                 mGoogleMap.clear();
+
                 mStoreList = StoreDataSource.getStore(searchResult.getStoreType());
+                if (mStoreList == null || mStoreList.size() <= 0)
+                    Toast.makeText(getContext(),"Failed to get stores data!",Toast.LENGTH_SHORT).show();
+
                 addMarkersToMap(mStoreList, mGoogleMap);
                 AnimateMarkerTask task = new AnimateMarkerTask();
                 task.execute(mStoreList);
                 break;
-            case SearchResult.SEARCH_STORE:
+            case SearchResult.SEARCH_STORE_OK:
+                mStoreList.clear();
+                mGoogleMap.clear();
+                mStoreList = StoreDataSource.getStore(searchResult.getSearchString());
+                if (mStoreList == null || mStoreList.size() <= 0)
+                    Toast.makeText(getContext(),"Failed to get stores data!",Toast.LENGTH_SHORT).show();
+
+                addMarkersToMap(mStoreList, mGoogleMap);
+                AnimateMarkerTask storeTask = new AnimateMarkerTask();
+                storeTask.execute(mStoreList);
                 break;
 
             case SearchResult.SEARCH_COLLAPSE:
                 mStoreList.clear();
                 mGoogleMap.clear();
                 mStoreList = StoreDataSource.getAllObjects();
+                if (mStoreList == null || mStoreList.size() <= 0)
+                    Toast.makeText(getContext(),"Failed to get stores data!",Toast.LENGTH_SHORT).show();
                 addMarkersToMap(mStoreList, mGoogleMap);
                 break;
 
@@ -289,6 +303,8 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
 
 
         mStoreList = StoreDataSource.getAllObjects();
+        if (mStoreList == null || mStoreList.size() <= 0)
+            Toast.makeText(getContext(),"Failed to get stores data!",Toast.LENGTH_SHORT).show();
 
         currMarkerBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.logo_circle_k_50);
 
@@ -303,6 +319,8 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
                 .addApi(LocationServices.API)
                 .build();
     }
+
+
 
     private void initBottomSheet() {
         mAdapter.setOnStoreListListener(new NearByStoreAdapter.StoreListListener() {

@@ -21,11 +21,12 @@ public class Store implements Serializable {
     public Store() {
     }
 
-    public Store(String title, String lat, String lng, int type)
+    public Store(String title, String lat, String lng, String tel ,int type)
     {
         this.title = title;
         this.lat = lat;
         this.lng = lng;
+        this.tel = tel;
         this.type = type;
     }
 
@@ -35,6 +36,7 @@ public class Store implements Serializable {
         title = entity.getTitle();
         lat = String.valueOf(entity.getLatitude());
         lng = String.valueOf(entity.getLongitude());
+        tel = entity.getTelephone();
         type = entity.getType();
     }
 
@@ -80,12 +82,23 @@ public class Store implements Serializable {
         this.type = type;
     }
 
+    public String getTel() {
+        return tel;
+    }
+
+    @PropertyName("tel")
+    public void setTel(String tel) {
+        this.tel = tel;
+    }
+
     @PropertyName("title")
     private String title;
     @PropertyName("lat")
     private String lat;
     @PropertyName("lng")
     private String lng;
+    @PropertyName("tel")
+    private String tel;
     @Exclude
     int type;
 }

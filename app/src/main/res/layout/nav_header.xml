@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:padding="16dp"
     android:id="@+id/nav_header_container"
-    android:background="@color/googleBlue">
+    android:background="@drawable/sample_cover">
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/iv_nav_header_avatar"
         android:layout_marginTop="24dp"
