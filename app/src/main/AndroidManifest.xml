@@ -41,6 +41,7 @@
             android:parentActivityName=".activity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar.TranslucentStatus" />
         <activity android:name=".activity.SettingActivity"></activity>
+        <activity android:name=".activity.CommentActivity" />
     </application>
 
 </manifest>

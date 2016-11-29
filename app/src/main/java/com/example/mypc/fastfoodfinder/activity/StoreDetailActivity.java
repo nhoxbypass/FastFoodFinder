@@ -31,9 +31,10 @@ import static com.example.mypc.fastfoodfinder.R.id.map;
  * Created by taq on 18/11/2016.
  */
 
-public class StoreDetailActivity extends AppCompatActivity {
+public class StoreDetailActivity extends AppCompatActivity implements StoreDetailAdapter.ShowCommentListener {
 
     public static final String STORE = "store";
+    public static final int REQUEST_COMMENT = 113;
 
     @BindView(R.id.collapsing_toolbar)
     CollapsingToolbarLayout collapsingToolbar;
@@ -65,6 +66,7 @@ public class StoreDetailActivity extends AppCompatActivity {
 
         Store store = (Store) getIntent().getSerializableExtra(STORE);
         mStoreDetailAdapter = new StoreDetailAdapter(store);
+        mStoreDetailAdapter.setListener(this);
         rvContent.setAdapter(mStoreDetailAdapter);
         rvContent.setLayoutManager(new LinearLayoutManager(this));
 
@@ -93,5 +95,17 @@ public class StoreDetailActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        if (resultCode == RESULT_OK && requestCode == REQUEST_COMMENT) {
+//            Toast.makeText(this, "return data", Toast.LENGTH_SHORT).show();
+//        }
+//    }
+
+    @Override
+    public void onShowComment() {
+        startActivity(CommentActivity.getIntent(this));
     }
 }

@@ -13,7 +13,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.example.mypc.fastfoodfinder.R;
-import com.example.mypc.fastfoodfinder.ui.profile.DialogUpdateCoverImage;
 
 public class ProfileFragment extends Fragment {
 

@@ -37,10 +37,19 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     private Store mStore;
     private List<Comment> mComments;
+    private ShowCommentListener mListener;
+
+    public interface ShowCommentListener {
+        void onShowComment();
+    }
 
     public StoreDetailAdapter(Store store) {
         mStore = store;
         mComments = DataUtils.getComments();
+    }
+
+    public void setListener(ShowCommentListener listener) {
+        mListener = listener;
     }
 
     @Override
@@ -96,13 +105,21 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     public class HeaderViewHolder extends RecyclerView.ViewHolder {
 
+        @BindView(R.id.comment)
+        TextView comment;
+
         public HeaderViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
 
         public void bind(Store mStore) {
-
+            comment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mListener.onShowComment();
+                }
+            });
         }
     }
 
