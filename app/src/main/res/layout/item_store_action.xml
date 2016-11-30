@@ -18,7 +18,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:drawableTop="@drawable/ic_bookmark"
+            android:drawableTop="@drawable/state_bookmark_click"
             android:text="@string/save_this" />
 
         <TextView
@@ -27,7 +27,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:drawableTop="@drawable/ic_checked"
+            android:drawableTop="@drawable/state_checkin_click"
             android:text="@string/checked_in" />
 
         <TextView
@@ -36,7 +36,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:drawableTop="@drawable/ic_heart_circle"
+            android:drawableTop="@drawable/state_rate_click"
             android:text="@string/rate_it" />
 
         <TextView

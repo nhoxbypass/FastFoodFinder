@@ -44,8 +44,12 @@
             android:theme="@style/AppTheme.NoActionBar.TranslucentStatus" />
         <activity
             android:name=".activity.SettingActivity"
-            android:configChanges="locale"></activity>
-        <activity android:name=".activity.MapRoutingActivity"></activity>
+            android:configChanges="locale">
+        </activity>
+        <activity android:name=".activity.MapRoutingActivity">
+        </activity>
+        <activity android:name=".activity.CommentActivity">
+        </activity>
     </application>
 
 </manifest>

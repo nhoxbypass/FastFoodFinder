@@ -37,10 +37,25 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     private Store mStore;
     private List<Comment> mComments;
+    private ShowCommentListener mListener;
+
+    public interface ShowCommentListener {
+        void onShowComment();
+    }
 
     public StoreDetailAdapter(Store store) {
         mStore = store;
         mComments = DataUtils.getComments();
+    }
+
+    public void setListener(ShowCommentListener listener) {
+        mListener = listener;
+    }
+
+    public int addComment(Comment comment) {
+        mComments.add(0, comment);
+        notifyItemInserted(3);
+        return 3;
     }
 
     @Override
@@ -67,8 +82,8 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 ((InfoViewHolder) holder).bind(mStore);
                 break;
             case TITLE:
-                String title = position == 2 ? String.valueOf(R.string.tips_from_people_who_has_been_here) : "";
-                ((TitleViewHolder) holder).bind(title);
+                String title = ((TitleViewHolder) holder).context.getResources().getString(R.string.tips_from_people_who_has_been_here);
+                ((TitleViewHolder) holder).bind(position == 2 ? title : "");
                 break;
             default:
                 ((CommentViewHolder) holder).bind(mComments.get(position - 3));
@@ -94,7 +109,16 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
     }
 
-    public class HeaderViewHolder extends RecyclerView.ViewHolder {
+    public class HeaderViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+        @BindView(R.id.save_this)
+        TextView save;
+        @BindView(R.id.check_in)
+        TextView check;
+        @BindView(R.id.rate_it)
+        TextView rate;
+        @BindView(R.id.comment)
+        TextView comment;
 
         public HeaderViewHolder(View itemView) {
             super(itemView);
@@ -102,7 +126,20 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
 
         public void bind(Store mStore) {
+            save.setOnClickListener(this);
+            check.setOnClickListener(this);
+            rate.setOnClickListener(this);
+            comment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mListener.onShowComment();
+                }
+            });
+        }
 
+        @Override
+        public void onClick(View v) {
+            v.setSelected(!v.isSelected());
         }
     }
 
@@ -129,9 +166,12 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         @BindView(R.id.content)
         TextView content;
 
+        public final Context context;
+
         public TitleViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            context = itemView.getContext();
         }
 
         public void bind(String title) {

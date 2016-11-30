@@ -43,4 +43,28 @@ public class Comment implements Serializable {
     public int getRating() {
         return rating;
     }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
+
+    public void setMediaUrl(String mediaUrl) {
+        this.mediaUrl = mediaUrl;
+    }
 }

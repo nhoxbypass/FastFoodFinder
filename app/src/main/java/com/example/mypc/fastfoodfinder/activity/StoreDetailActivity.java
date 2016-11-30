@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +15,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.example.mypc.fastfoodfinder.R;
 import com.example.mypc.fastfoodfinder.adapter.StoreDetailAdapter;
+import com.example.mypc.fastfoodfinder.model.Comment;
 import com.example.mypc.fastfoodfinder.model.Store.Store;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -31,9 +33,14 @@ import static com.example.mypc.fastfoodfinder.R.id.map;
  * Created by taq on 18/11/2016.
  */
 
-public class StoreDetailActivity extends AppCompatActivity {
+public class StoreDetailActivity extends AppCompatActivity implements StoreDetailAdapter.ShowCommentListener {
 
     public static final String STORE = "store";
+    public static final int REQUEST_COMMENT = 113;
+    public static final String COMMENT = "comment";
+
+    @BindView(R.id.appbar)
+    AppBarLayout appbar;
 
     @BindView(R.id.collapsing_toolbar)
     CollapsingToolbarLayout collapsingToolbar;
@@ -65,14 +72,14 @@ public class StoreDetailActivity extends AppCompatActivity {
 
         Store store = (Store) getIntent().getSerializableExtra(STORE);
         mStoreDetailAdapter = new StoreDetailAdapter(store);
+        mStoreDetailAdapter.setListener(this);
         rvContent.setAdapter(mStoreDetailAdapter);
         rvContent.setLayoutManager(new LinearLayoutManager(this));
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        String storeName = "Vin Mart";
-        collapsingToolbar.setTitle(storeName);
+        collapsingToolbar.setTitle(store.getTitle());
 
         Glide.with(this)
                 .load(R.drawable.sample_circle_k_cover)
@@ -93,5 +100,22 @@ public class StoreDetailActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK && requestCode == REQUEST_COMMENT) {
+            Comment comment = (Comment) data.getSerializableExtra(COMMENT);
+            if (comment != null) {
+                mStoreDetailAdapter.addComment(comment);
+                appbar.setExpanded(false);
+                rvContent.scrollToPosition(3);
+            }
+        }
+    }
+
+    @Override
+    public void onShowComment() {
+        startActivityForResult(CommentActivity.getIntent(this), REQUEST_COMMENT);
     }
 }
