@@ -31,14 +31,17 @@ public class SettingActivity extends AppCompatActivity {
     TextView tvSettingLanguage;
     private FirebaseAuth mAuth;
 
-    boolean isVietnamese = true;
+    static boolean isVietnamese = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
-        ButterKnife.bind(this);
 
+        ButterKnife.bind(this);
+        if (!isVietnamese){
+            swLanguage.setChecked(true);
+        }
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
         if (mAuth == null || mAuth.getCurrentUser() == null || mAuth.getCurrentUser().isAnonymous())
