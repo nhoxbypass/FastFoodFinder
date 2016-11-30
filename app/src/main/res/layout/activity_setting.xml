@@ -68,7 +68,7 @@
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_translate"
                     style="@style/SettingsOptionsText"
-                    android:text="@string/english"
+                    android:text="@string/vietnamese"
                     android:id="@+id/tv_setting_english"/>
             </LinearLayout>
 

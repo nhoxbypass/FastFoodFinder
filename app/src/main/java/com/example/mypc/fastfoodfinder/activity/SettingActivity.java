@@ -31,7 +31,7 @@ public class SettingActivity extends AppCompatActivity {
     TextView tvSettingLanguage;
     private FirebaseAuth mAuth;
 
-    boolean isEngLish = false;
+    boolean isVietnamese = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,16 +61,16 @@ public class SettingActivity extends AppCompatActivity {
         swLanguage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (isEngLish)
+                if (isVietnamese)
                 {
-                    swLanguage.setChecked(false);
-                    isEngLish = false;
+                    swLanguage.setChecked(true);
+                    isVietnamese = false;
                     loadLanguage("vi");
                 }
                 else {
                     loadLanguage("en");
-                    swLanguage.setChecked(true);
-                    isEngLish = true;
+                    swLanguage.setChecked(false);
+                    isVietnamese = true;
                 }
             }
         });
@@ -79,13 +79,16 @@ public class SettingActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 swLanguage.setChecked(true);
-                if (isEngLish)
+                if (isVietnamese)
                 {
+                    swLanguage.setChecked(true);
+                    isVietnamese = false;
                     loadLanguage("vi");
-                    isEngLish = false;
                 }
                 else {
                     loadLanguage("en");
+                    swLanguage.setChecked(false);
+                    isVietnamese = true;
                 }
             }
         });
