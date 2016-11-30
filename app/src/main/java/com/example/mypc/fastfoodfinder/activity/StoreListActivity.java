@@ -38,7 +38,7 @@ public class StoreListActivity extends AppCompatActivity {
         rvStoreList.setAdapter(adapter);
         RecyclerView.ItemDecoration decoration = new DividerItemDecoration(getApplicationContext(), DividerItemDecoration.VERTICAL_LIST);
         rvStoreList.addItemDecoration(decoration);
-
+        Load(); 
     }
 
 
