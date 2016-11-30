@@ -31,6 +31,8 @@ public class SettingActivity extends AppCompatActivity {
     TextView tvSettingLanguage;
     private FirebaseAuth mAuth;
 
+    boolean isEngLish = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,12 +58,33 @@ public class SettingActivity extends AppCompatActivity {
             }
         });
 
+        swLanguage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                swLanguage.setChecked(true);
+                if (isEngLish)
+                {
+                    loadLanguage("vi");
+                    isEngLish = false;
+                }
+                else {
+                    loadLanguage("en");
+                }
+            }
+        });
 
         tvSettingLanguage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 swLanguage.setChecked(true);
-                loadLanguage("vi");
+                if (isEngLish)
+                {
+                    loadLanguage("vi");
+                    isEngLish = false;
+                }
+                else {
+                    loadLanguage("en");
+                }
             }
         });
     }
