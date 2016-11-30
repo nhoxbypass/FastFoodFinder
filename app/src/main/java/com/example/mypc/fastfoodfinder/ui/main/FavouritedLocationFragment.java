@@ -30,7 +30,7 @@ public class FavouritedLocationFragment extends Fragment implements OnStartDragL
     LinearLayoutManager linearLayoutManager;
     private ItemTouchHelper mItemTouchHelper;
     private FloatingActionButton fbChangePosition;
-    static boolean isfbChangeClicked = false;
+    static boolean isFABChangeClicked = false;
     FrameLayout flLayout;
     public FavouritedLocationFragment() {
     }
@@ -68,14 +68,14 @@ public class FavouritedLocationFragment extends Fragment implements OnStartDragL
         fbChangePosition.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               if (isfbChangeClicked)
+               if (isFABChangeClicked)
                 {
-                    isfbChangeClicked = false;
+                    isFABChangeClicked = false;
                     fbChangePosition.setImageResource(R.drawable.ic_swap_black);
                 }
 
                 else {
-                    isfbChangeClicked = true;
+                    isFABChangeClicked = true;
                     fbChangePosition.setImageResource(R.drawable.ic_swap);
                 }
             }
@@ -88,16 +88,15 @@ public class FavouritedLocationFragment extends Fragment implements OnStartDragL
     private void Load(){
 
         ArrayList<Article> articles = new ArrayList<>();
-        articles.add(new Article("Circle K Nguyen van cu","1A"));
-        articles.add(new Article("Nha","ho thi ky"));
-        articles.add(new Article("sample_background_8","quan 8"));
-        articles.add(new Article("some place","I don't know"));
-        articles.add(new Article("hihi","haha"));
+        articles.add(new Article("Circle K Tu nhien","227 Nguyen Van Cu. D5"));
+        articles.add(new Article("Family mart Vung Tau","32 Tran Phu, Vung Tau"));
+        articles.add(new Article("Circle K DH Su Pham","An Duong Vuong, D5"));
+        articles.add(new Article("Circle K DH Bach Khoa","H1, DH Bach Khoa TpHcm"));
         adapter.setDesS(articles);
     }
     @Override
     public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
-        if (isfbChangeClicked)
+        if (isFABChangeClicked)
         mItemTouchHelper.startDrag(viewHolder);
 
     }

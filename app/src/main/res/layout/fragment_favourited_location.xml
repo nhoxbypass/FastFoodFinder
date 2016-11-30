@@ -15,11 +15,12 @@
         >
     </android.support.v7.widget.RecyclerView>
      <android.support.design.widget.FloatingActionButton
-       android:layout_width="50dp"
-       android:layout_height="50dp"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
        android:layout_gravity="bottom"
        android:layout_marginLeft="290dp"
        android:layout_marginBottom="20dp"
+         app:backgroundTint="@color/googleBlue"
        android:id="@+id/fbFavoriteChange"
        android:src="@drawable/ic_swap_black"
        />

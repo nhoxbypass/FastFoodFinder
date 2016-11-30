@@ -1,40 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/choose_a_image"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
         />
     <android.support.v7.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="15dp">
+        app:cardElevation="6dp"
+        app:cardUseCompatPadding="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="4dp">
         <ImageView
             android:layout_width="90dp"
             android:layout_height="60dp"
             android:scaleType="centerCrop"
-            android:layout_marginLeft="5dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="4dp"
             android:id="@+id/ivOne"
             android:src="@drawable/sample_background"/>
         <ImageView
             android:layout_width="90dp"
             android:layout_height="60dp"
+            android:layout_marginTop="4dp"
             android:scaleType="centerCrop"
-            android:layout_marginLeft="105dp"
+            android:layout_marginLeft="104dp"
             android:id="@+id/ivTwo"
             android:src="@drawable/sample_avatar"
             />
         <ImageView
             android:layout_width="90dp"
             android:layout_height="60dp"
+            android:layout_marginTop="4dp"
             android:scaleType="centerCrop"
-            android:layout_marginLeft="205dp"
+            android:layout_marginLeft="200dp"
             android:src="@drawable/sample_background_3"
             android:id="@+id/ivThree"
             />
@@ -43,16 +51,18 @@
             android:layout_width="90dp"
             android:layout_height="60dp"
             android:scaleType="centerCrop"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="70dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="68dp"
+            android:layout_marginBottom="4dp"
             android:id="@+id/ivFour"
             android:src="@drawable/sample_background_4"/>
         <ImageView
             android:layout_width="90dp"
             android:layout_height="60dp"
             android:scaleType="centerCrop"
-            android:layout_marginLeft="105dp"
-            android:layout_marginTop="70dp"
+            android:layout_marginLeft="104dp"
+            android:layout_marginTop="68dp"
+            android:layout_marginBottom="4dp"
             android:id="@+id/ivFive"
             android:src="@drawable/sample_background_5"
             />
@@ -60,55 +70,62 @@
             android:layout_width="90dp"
             android:layout_height="60dp"
             android:scaleType="centerCrop"
-            android:layout_marginLeft="205dp"
-            android:layout_marginTop="70dp"
+            android:layout_marginLeft="200dp"
+            android:layout_marginTop="68dp"
+            android:layout_marginBottom="4dp"
             android:src="@drawable/sample_background_6"
             android:id="@+id/ivSix"
             />
-
     </android.support.v7.widget.CardView>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
         android:text="@string/choose_from_your_device"/>
     <Button
-        android:layout_width="90dp"
+        android:layout_width="wrap_content"
         android:layout_height="40dp"
-        android:layout_marginLeft="20dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginTop="10dp"
+        android:drawableLeft="@drawable/ic_camera"
+        android:drawablePadding="8dp"
         android:text="BROWSER"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
         android:text="@string/image_you_choose"/>
     <ImageView
         android:layout_width="200dp"
         android:layout_height="80dp"
         android:scaleType="centerCrop"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
         android:id="@+id/ivChosenImage"
         android:src="@drawable/sample_background"/>
-    <LinearLayout
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
-        android:orientation="horizontal">
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp">
         <Button
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            style="?attr/borderlessButtonStyle"
+            android:textColor="@color/googleBlue"
+            android:id="@+id/btnCancel"
+            android:text="CANCEL"/>
+        <Button
+            android:layout_width="wrap_content"
+            style="?attr/borderlessButtonStyle"
+            android:layout_toLeftOf="@id/btnCancel"
+            android:textColor="@color/googleBlue"
             android:layout_height="wrap_content"
             android:id="@+id/btnDone"
             android:text="DONE"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="120dp"
-            android:id="@+id/btnCancel"
-            android:text="CANCEL"/>
-    </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>

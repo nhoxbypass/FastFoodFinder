@@ -69,11 +69,11 @@ public class RecentlyLocationFragment extends Fragment implements OnStartDragLis
 
     private void Load(){
         ArrayList<Article> articles = new ArrayList<>();
-        articles.add(new Article("Circle K Nguyen van cu","1A"));
-        articles.add(new Article("Nha","ho thi ky"));
-        articles.add(new Article("sample_background_8","quan 8"));
-        articles.add(new Article("some place","I don't know"));
-        articles.add(new Article("hihi","haha"));
+        articles.add(new Article("Circle K Tu Nhien","227 Ng Van Cu, Quan 5"));
+        articles.add(new Article("Hu tieu Nhan Quan","123 Au Duong Lan, Q.8"));
+        articles.add(new Article("Family mart Ho Con rua","Quan 3"));
+        articles.add(new Article("Mini Stop Cau Chu Y","135 Nguyen Bieu, D5"));
+        articles.add(new Article("Shop and Go Pham The Hien","1108 Pham The Hien, Quan 8"));
         adapter.setDesS(articles);
     }
     @Override

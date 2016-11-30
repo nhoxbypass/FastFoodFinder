@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.mypc.fastfoodfinder.R;
 import com.example.mypc.fastfoodfinder.dialog.DialogCreateNewList;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -35,6 +36,11 @@ public class ProfileFragment extends Fragment {
     ImageView ivAvatarProfile;
     TextView tvName, tvEmail;
     String mPhotoUrl, mName, mEmail;
+
+    // Firebase instance variables
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseUser mFirebaseUser;
+
 
     public static ProfileFragment newInstance(){
         Bundle extras = new Bundle();
@@ -75,11 +81,20 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-         /*Glide.with(ivAvatarProfile.getContext())
-                .load(mPhotoUrl)
-                .into(ivAvatarProfile);
-        tvName.setText(mName);
-        tvEmail.setText(mEmail);*/
+
+        // Initialize Firebase Auth
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+        if (mFirebaseUser == null) {
+            tvName.setText("Unregistered User");
+            tvEmail.setText("anonymous@fastfoodfinder.com");
+        } else {
+            Glide.with(getContext())
+                    .load(mFirebaseUser.getPhotoUrl())
+                    .into(ivAvatarProfile);
+            tvName.setText(mFirebaseUser.getDisplayName());
+            tvEmail.setText(mFirebaseUser.getEmail())   ;
+        }
 
         ivCoverImage.setOnClickListener(new View.OnClickListener() {
             @Override
