@@ -74,6 +74,7 @@ public class DialogCreateNewList extends DialogFragment {
                 }
                 else {
                     mListener.OnButtonClick(edtName.getText().toString(), edtDescription.getText().toString());
+                    dismiss();
                 }
             }
         });
@@ -92,6 +93,6 @@ public class DialogCreateNewList extends DialogFragment {
     @Override
     public void onStart() {
         super.onStart();
-        getDialog().getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
     }
 }

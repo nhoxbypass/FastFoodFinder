@@ -4,7 +4,8 @@
     style="@style/RippleEffect"
     app:cardBackgroundColor="#EEEEEE"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardElevation="6dp">
 
 
     <de.hdodenhof.circleimageview.CircleImageView
@@ -12,6 +13,7 @@
         android:layout_height="40dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="30dp"
+        android:id="@+id/ivCreate"
         android:src="@drawable/ic_add_list"
         />
 
