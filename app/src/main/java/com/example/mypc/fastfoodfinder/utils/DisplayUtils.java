@@ -2,7 +2,9 @@ package com.example.mypc.fastfoodfinder.utils;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Build;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
@@ -36,5 +38,12 @@ public class DisplayUtils {
         tmpOut.copyTo(outputBitmap);
 
         return outputBitmap;
+    }
+
+    public static Intent getCallIntent(String tel) {
+        tel = tel.replaceAll("\\s", "");
+        Intent callIntent = new Intent(Intent.ACTION_CALL);
+        callIntent.setData(Uri.parse("tel:" + tel));
+        return callIntent;
     }
 }

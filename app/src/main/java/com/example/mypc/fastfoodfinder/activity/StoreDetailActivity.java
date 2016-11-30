@@ -11,12 +11,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.mypc.fastfoodfinder.R;
 import com.example.mypc.fastfoodfinder.adapter.StoreDetailAdapter;
 import com.example.mypc.fastfoodfinder.model.Comment;
 import com.example.mypc.fastfoodfinder.model.Store.Store;
+import com.example.mypc.fastfoodfinder.utils.DisplayUtils;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -33,7 +35,7 @@ import static com.example.mypc.fastfoodfinder.R.id.map;
  * Created by taq on 18/11/2016.
  */
 
-public class StoreDetailActivity extends AppCompatActivity implements StoreDetailAdapter.ShowCommentListener {
+public class StoreDetailActivity extends AppCompatActivity implements StoreDetailAdapter.StoreActionListener {
 
     public static final String STORE = "store";
     public static final int REQUEST_COMMENT = 113;
@@ -117,5 +119,20 @@ public class StoreDetailActivity extends AppCompatActivity implements StoreDetai
     @Override
     public void onShowComment() {
         startActivityForResult(CommentActivity.getIntent(this), REQUEST_COMMENT);
+    }
+
+    @Override
+    public void onCall(String tel) {
+        if (tel != null && !tel.equals("")) {
+            startActivity(DisplayUtils.getCallIntent(tel));
+        } else {
+            Toast.makeText(this, "The store doesn't have number phone!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onDirect() {
+        Toast.makeText(this, "direction", Toast.LENGTH_SHORT).show();
+        //TODO gọi hàm chỉ đường
     }
 }

@@ -40,7 +40,9 @@ public class NoticeDialog extends DialogFragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 NoticeDialogListener listener = (NoticeDialogListener) getActivity();
-                listener.onClickOk();
+                if (listener != null) {
+                    listener.onClickOk();
+                }
             }
         });
         alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
