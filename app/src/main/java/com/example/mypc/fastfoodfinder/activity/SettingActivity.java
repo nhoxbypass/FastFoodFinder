@@ -61,13 +61,15 @@ public class SettingActivity extends AppCompatActivity {
         swLanguage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                swLanguage.setChecked(true);
                 if (isEngLish)
                 {
+                    swLanguage.setChecked(false);
+                    isEngLish = false;
                     loadLanguage("vi");
                 }
                 else {
                     loadLanguage("en");
+                    swLanguage.setChecked(true);
                     isEngLish = true;
                 }
             }
