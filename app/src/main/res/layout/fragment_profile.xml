@@ -330,6 +330,19 @@
 
             </android.support.v7.widget.CardView>
 
+            <android.support.v7.widget.CardView
+                android:layout_width="160dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/viewPoint"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="16dp"
+                app:cardBackgroundColor="#EEEEEE"
+                android:layout_marginLeft="16dp"
+                android:layout_below="@id/cv_favourite_places"
+                android:layout_toRightOf="@id/cv_checkin_places"
+                android:layout_toEndOf="@id/cv_checkin_places"
+                ></android.support.v7.widget.CardView>
+
 
             <android.support.v7.widget.CardView
                 android:layout_width="160dp"
@@ -341,7 +354,8 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
-                app:cardBackgroundColor="#EEEEEE">
+                app:cardBackgroundColor="#EEEEEE"
+                android:id="@+id/cvCreateNew">
 
 
                 <de.hdodenhof.circleimageview.CircleImageView
@@ -349,7 +363,8 @@
                     android:layout_height="40dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="30dp"
-                    android:src="@drawable/ic_add_list" />
+                    android:src="@drawable/ic_add_list"
+                    android:id="@+id/ivCreate"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -361,6 +376,20 @@
                     android:textColor="#304FFE"
                     android:textSize="@dimen/medium_textsize"
                     android:textStyle="bold" />
+
+
+            </android.support.v7.widget.CardView>
+            <android.support.v7.widget.CardView
+                android:layout_width="160dp"
+                android:layout_height="wrap_content"
+                style="@style/RippleEffect"
+                android:layout_below="@id/cv_checkin_places"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                app:cardBackgroundColor="#EEEEEE"
+                android:id="@+id/viewPoint2"
+                >
 
 
             </android.support.v7.widget.CardView>
