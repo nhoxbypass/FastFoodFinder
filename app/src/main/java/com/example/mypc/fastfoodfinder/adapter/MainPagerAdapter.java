@@ -21,7 +21,7 @@ import com.example.mypc.fastfoodfinder.utils.Constant;
 public class MainPagerAdapter extends FragmentPagerAdapter {
 
     final int PAGE_COUNT = 3;
-    private String pageTitles[] = new String[] { "Bản đồ", "Gần đây", "Yêu thích" };
+    private String pageTitles[] = new String[] { String.valueOf(R.string.map), String.valueOf(R.string.recently), String.valueOf(R.string.favourite)};
     private int[] imageResId = { R.drawable.ic_map, R.drawable.ic_history, R.drawable.ic_stars };
 
     private Context mContext;

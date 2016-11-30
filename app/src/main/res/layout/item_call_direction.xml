@@ -19,7 +19,7 @@
             android:layout_gravity="center_horizontal"
             android:clickable="false"
             android:drawableLeft="@drawable/ic_call"
-            android:text="Call" />
+            android:text="@string/call" />
     </FrameLayout>
 
     <FrameLayout
@@ -37,7 +37,7 @@
             android:layout_gravity="center_horizontal"
             android:clickable="false"
             android:drawableLeft="@drawable/ic_compass"
-            android:text="Directions" />
+            android:text="@string/directions" />
     </FrameLayout>
 
 </LinearLayout>

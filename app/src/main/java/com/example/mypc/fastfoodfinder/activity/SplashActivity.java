@@ -67,14 +67,14 @@ public class SplashActivity extends AppCompatActivity {
                     mSharedPreferences.edit().putBoolean(KEY_FIRST_RUN, false).apply();
                     if (mFirebaseAuth != null) {
                         mFirebaseAuth.signOut();
-                        Toast.makeText(SplashActivity.this, "Update database successfully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SplashActivity.this, R.string.update_database_successfull, Toast.LENGTH_SHORT).show();
                     }
                     startMyActivity(LoginActivity.class);
                 }
 
                 @Override
                 public void onFailed(DatabaseError databaseError) {
-                    Toast.makeText(SplashActivity.this, "Update database failed: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SplashActivity.this, R.string.update_database_failed + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
                     finish();
                 }
             });
@@ -143,7 +143,7 @@ public class SplashActivity extends AppCompatActivity {
                                 });
                             } else {
                                 Log.w("MAPP", "signInAnonymously", task.getException());
-                                Toast.makeText(SplashActivity.this, "Authentication failed.",
+                                Toast.makeText(SplashActivity.this, R.string.authentication_failed,
                                         Toast.LENGTH_SHORT).show();
                             }
                         }

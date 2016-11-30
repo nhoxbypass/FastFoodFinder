@@ -255,7 +255,7 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
                 break;
 
             default:
-                Toast.makeText(getContext(), "Search error!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), R.string.search_error, Toast.LENGTH_SHORT).show();
         }
     }
 

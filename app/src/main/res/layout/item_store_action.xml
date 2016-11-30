@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:drawableTop="@drawable/ic_bookmark"
-            android:text="Save this" />
+            android:text="@string/save_this" />
 
         <TextView
             style="@style/TextAction"
@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:drawableTop="@drawable/ic_checked"
-            android:text="Checked in" />
+            android:text="@string/checked_in" />
 
         <TextView
             style="@style/TextAction"
@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:drawableTop="@drawable/ic_heart_circle"
-            android:text="Rate it" />
+            android:text="@string/rate_it" />
 
         <TextView
             style="@style/TextAction"
@@ -46,7 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:drawableTop="@drawable/ic_pencil"
-            android:text="Comment" />
+            android:text="@string/comment" />
 
     </LinearLayout>
 

@@ -46,7 +46,7 @@
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="8dp"
             android:background="@android:color/transparent"
-            android:text="SKIP"
+            android:text="@string/skip"
             android:textColor="@color/colorWhite"
             android:layout_gravity="bottom"/>
         <com.facebook.login.widget.LoginButton
@@ -74,7 +74,7 @@
             android:id="@+id/btn_join_now"
             android:layout_above="@id/btn_google_signin"
             android:background="@color/googleBlue"
-            android:text="JOIN NOW"
+            android:text="@string/join_now"
             android:textColor="@color/colorWhite"
             android:layout_gravity="bottom"/>
 
