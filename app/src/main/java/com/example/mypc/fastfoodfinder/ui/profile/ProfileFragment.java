@@ -1,8 +1,10 @@
 package com.example.mypc.fastfoodfinder.ui.profile;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -11,14 +13,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.mypc.fastfoodfinder.R;
+import com.example.mypc.fastfoodfinder.dialog.DialogCreateNewList;
+import com.example.mypc.fastfoodfinder.dialog.DialogUpdateCoverImage;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+
 
 public class ProfileFragment extends Fragment {
 
     ImageView ivCoverImage;
     Button btnUpdateCoverImage;
     DialogUpdateCoverImage mDialog;
+    DialogCreateNewList mDialogCreate;
+    CircleImageView civCreate;
 
     public static ProfileFragment newInstance(){
         Bundle args = new Bundle();
@@ -39,6 +49,7 @@ public class ProfileFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_profile,container,false);
         ivCoverImage = (ImageView) rootView.findViewById(R.id.ivCoverImage);
         btnUpdateCoverImage = (Button) rootView.findViewById(R.id.btnUpdateCoverImage);
+        civCreate = (CircleImageView) rootView.findViewById(R.id.ivCreate);
         return rootView;
     }
 
@@ -59,6 +70,37 @@ public class ProfileFragment extends Fragment {
                 btnUpdateCoverImage.setVisibility(View.GONE);
             }
         });
+
+        civCreate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+                mDialogCreate = DialogCreateNewList.newInstance();
+                mDialogCreate.show(getFragmentManager(),"");
+                mDialogCreate.setOnButtonClickListener(new DialogCreateNewList.OnCreateListListener() {
+                    @Override
+                    public void OnButtonClick(String name, String description) {
+                        LayoutInflater newCardView = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                        CardView cardView = (CardView) newCardView.inflate(R.layout.cardview_new_list,null);
+                        TextView tvName = (TextView) cardView.findViewById(R.id.tvNameList);
+                        TextView tvDescription = (TextView) cardView.findViewById(R.id.tvDescription);
+                        tvName.setText(name);
+                        tvDescription.setText("0 Places "+description);
+                        ViewGroup insertPoint = (ViewGroup) view.findViewById(R.id.viewPoint);
+                        insertPoint.addView(cardView,0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+
+                        CardView cardView1 = (CardView) view.findViewById(R.id.cvCreateNew);
+                        cardView1.setVisibility(View.GONE);
+                        LayoutInflater newCardView2 = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                        CardView cardView2 = (CardView) newCardView2.inflate(R.layout.cardview_create_new_list,null);
+                        tvDescription.setText("0 Places "+description);
+                        ViewGroup insertPoint2 = (ViewGroup) view.findViewById(R.id.viewPoint2);
+                        insertPoint2.addView(cardView2,0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                    }
+
+                });
+            }
+        });
     }
 
     public void showDialog(DialogUpdateCoverImage dialog){
@@ -71,6 +113,8 @@ public class ProfileFragment extends Fragment {
                     ivCoverImage.setImageResource(Id);
             }
         });
+
+
     }
 
     @Override
