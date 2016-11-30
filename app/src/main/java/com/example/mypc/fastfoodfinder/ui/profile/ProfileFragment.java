@@ -16,8 +16,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.mypc.fastfoodfinder.R;
 import com.example.mypc.fastfoodfinder.dialog.DialogCreateNewList;
+import com.google.firebase.auth.FirebaseUser;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -30,12 +32,17 @@ public class ProfileFragment extends Fragment {
     DialogCreateNewList mDialogCreate;
     CircleImageView civCreate;
     CardView viewpoint, viewpoint2, cvCreate;
-
+    ImageView ivAvatarProfile;
+    TextView tvName, tvEmail;
+    String mPhotoUrl, mName, mEmail;
 
     public static ProfileFragment newInstance(){
-        Bundle args = new Bundle();
+        Bundle extras = new Bundle();
+       /* extras.putString("name",user.getDisplayName());
+        extras.putString("email",user.getEmail());
+        extras.putString("url",user.getPhotoUrl().toString());*/
         ProfileFragment fragment = new ProfileFragment();
-        fragment.setArguments(args);
+        fragment.setArguments(extras);
         return fragment;
     }
 
@@ -43,6 +50,9 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+       /* mPhotoUrl = savedInstanceState.getString("url");
+        mName = savedInstanceState.getString("name");
+        mEmail = savedInstanceState.getString("email");*/
         setHasOptionsMenu(true);
     }
 
@@ -56,12 +66,21 @@ public class ProfileFragment extends Fragment {
         viewpoint = (CardView) rootView.findViewById(R.id.viewPoint);
         viewpoint2 = (CardView) rootView.findViewById(R.id.viewPoint2);
         cvCreate = (CardView) rootView.findViewById(R.id.cvCreateNew);
+        ivAvatarProfile = (ImageView) rootView.findViewById(R.id.iv_profile_avatar);
+        tvName = (TextView) rootView.findViewById(R.id.tvName);
+        tvEmail = (TextView) rootView.findViewById(R.id.tvEmail);
         return rootView;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+         /*Glide.with(ivAvatarProfile.getContext())
+                .load(mPhotoUrl)
+                .into(ivAvatarProfile);
+        tvName.setText(mName);
+        tvEmail.setText(mEmail);*/
+
         ivCoverImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

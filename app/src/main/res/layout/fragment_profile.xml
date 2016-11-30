@@ -47,7 +47,8 @@
         android:text="Trần Thị Nhã"
         android:textColor="@android:color/white"
         android:textSize="20sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:id="@+id/tvName"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -59,6 +60,7 @@
         android:layout_marginStart="8dp"
         android:text="\@tranthinha160296"
         android:textColor="@android:color/white"
+        android:id="@+id/tvEmail"
         android:textSize="14sp" />
 
 

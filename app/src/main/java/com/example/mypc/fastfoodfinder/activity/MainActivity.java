@@ -293,6 +293,7 @@ public class MainActivity extends AppCompatActivity {
         switch (menuItem.getItemId()) {
             case R.id.menu_action_profile:
                 fragmentClass = ProfileFragment.class;
+                fragment = ProfileFragment.newInstance();
                 break;
             case R.id.menu_action_map:
                 fragmentClass = MainMapFragment.class;

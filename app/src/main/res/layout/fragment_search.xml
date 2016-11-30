@@ -233,7 +233,8 @@
                     android:drawablePadding="8dp"
                     android:gravity="center_vertical"
                     android:text="@string/top_picks"
-                    android:textColor="@android:color/black" />
+                    android:textColor="@android:color/black"
+                    android:id="@+id/tvTop"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -243,7 +244,8 @@
                     android:drawablePadding="8dp"
                     android:gravity="center_vertical"
                     android:text="@string/nearest"
-                    android:textColor="@android:color/black" />
+                    android:textColor="@android:color/black"
+                    android:id="@+id/tvNearest"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -253,7 +255,8 @@
                     android:drawablePadding="8dp"
                     android:gravity="center_vertical"
                     android:text="@string/trending"
-                    android:textColor="@android:color/black" />
+                    android:textColor="@android:color/black"
+                    android:id="@+id/tvTrending"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -263,7 +266,9 @@
                     android:drawablePadding="8dp"
                     android:gravity="center_vertical"
                     android:text="@string/convenience_store"
-                    android:textColor="@android:color/black" />
+                    android:id="@+id/tvConvenienceStore"
+                    android:textColor="@android:color/black"
+                    />
             </LinearLayout>
         </android.support.v7.widget.CardView>
 

@@ -1,6 +1,7 @@
 package com.example.mypc.fastfoodfinder.ui.main;
 
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,8 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
 import com.example.mypc.fastfoodfinder.R;
+import com.example.mypc.fastfoodfinder.activity.StoreListActivity;
 import com.example.mypc.fastfoodfinder.helper.SearchResult;
 import com.example.mypc.fastfoodfinder.utils.Constant;
 
@@ -37,6 +40,10 @@ public class SearchFragment extends Fragment {
     @BindView(R.id.cv_action_container) ViewGroup cardViewQuickSearch;
     @BindView(R.id.ll_load_more_container) ViewGroup searchMoreLayout;
     @BindView(R.id.sv_search_container) ScrollView searchContainer;
+    @BindView(R.id.tvTop) TextView tvTop;
+    @BindView(R.id.tvNearest) TextView tvNearest;
+    @BindView(R.id.tvTrending) TextView tvTrending;
+    @BindView(R.id.tvConvenienceStore) TextView tvConvenienceStore;
     boolean visible;
     String searchText;
 
@@ -126,6 +133,36 @@ public class SearchFragment extends Fragment {
                     visible = !visible;
                     searchMoreLayout.setVisibility(visible ? View.VISIBLE : View.GONE);
                 }
+            }
+        });
+
+        tvTop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), StoreListActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        tvNearest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), StoreListActivity.class);
+                startActivity(intent);
+            }
+        });
+        tvTrending.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), StoreListActivity.class);
+                startActivity(intent);
+            }
+        });
+        tvConvenienceStore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), StoreListActivity.class);
+                startActivity(intent);
             }
         });
     }
