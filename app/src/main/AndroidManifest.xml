@@ -23,12 +23,14 @@
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="@string/google_maps_api_key" />
 
-        <activity android:name=".activity.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar.TranslucentStatus"></activity>
+        <activity
+            android:name=".activity.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar.TranslucentStatus" />
         <activity
             android:name=".activity.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar.TranslucentStatus" />
-        <activity android:name=".activity.SplashActivity"
+        <activity
+            android:name=".activity.SplashActivity"
             android:theme="@style/AppTheme.NoActionBar.TranslucentStatus">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -40,7 +42,10 @@
             android:name=".activity.StoreDetailActivity"
             android:parentActivityName=".activity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar.TranslucentStatus" />
-        <activity android:name=".activity.SettingActivity"></activity>
+        <activity
+            android:name=".activity.SettingActivity"
+            android:configChanges="locale"></activity>
+        <activity android:name=".activity.MapRoutingActivity"></activity>
     </application>
 
 </manifest>

@@ -34,10 +34,21 @@ public class Store implements Serializable {
     public Store(StoreEntity entity)
     {
         title = entity.getTitle();
+        address = entity.getAddress();
         lat = String.valueOf(entity.getLatitude());
         lng = String.valueOf(entity.getLongitude());
         tel = entity.getTelephone();
         type = entity.getType();
+    }
+
+    public Store(StoreViewModel viewModel)
+    {
+        title = viewModel.getStoreName();
+        lat = String.valueOf(viewModel.getPosition().latitude);
+        lng = String.valueOf(viewModel.getPosition().longitude);
+        tel = "3835 3193";
+        type = viewModel.getType();
+        address = viewModel.getStoreAddress();
     }
 
 
@@ -93,6 +104,17 @@ public class Store implements Serializable {
 
     @PropertyName("title")
     private String title;
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    @PropertyName("address")
+    private String address;
     @PropertyName("lat")
     private String lat;
     @PropertyName("lng")

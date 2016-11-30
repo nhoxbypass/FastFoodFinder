@@ -27,27 +27,41 @@ public class StoreViewModel {
         return mDrawableLogo;
     }
 
+    public int getType() {
+        return mType;
+    }
+
+    public void setType(int mType) {
+        this.mType = mType;
+    }
+
     private String mStoreName;
     private double mStoreDistance;
     private String mStoreAddress;
     private int mDrawableLogo;
     private LatLng mPosition;
 
-    public StoreViewModel(@DrawableRes int drawableLogo, String storeName, double storeDistance, String storeAddress, LatLng position) {
+
+
+    private int mType;
+
+    public StoreViewModel(@DrawableRes int drawableLogo, String storeName, double storeDistance, String storeAddress, LatLng position, int type) {
         mDrawableLogo = drawableLogo;
         mStoreName = storeName;
         mStoreDistance = storeDistance;
         mStoreAddress = storeAddress;
         mPosition = position;
+        mType = type;
     }
 
     public StoreViewModel(Store store, LatLng currCameraPosition)
     {
         //Must refactor
         mStoreName = store.getTitle();
-        mStoreAddress = store.getTitle();
+        mStoreAddress = store.getAddress();
         mDrawableLogo = MapUtils.getLogoDrawableId(store.getType());
         mPosition = store.getPosition();
+        mType = store.getType();
 
         //
         Location start = new Location("pointA");

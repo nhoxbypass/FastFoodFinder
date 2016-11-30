@@ -139,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
         if (mSearchView != null) {
             mSearchView.setSearchableInfo(searchManager.getSearchableInfo(MainActivity.this.getComponentName()));
 
-            mSearchView.setQueryHint(String.valueOf(R.string.type_name_store));
+            mSearchView.setQueryHint(getString(R.string.type_name_store));
             mSearchView.setBackgroundColor(Color.parseColor("#E53935"));
             mSearchInput = (EditText) mSearchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
             mSearchInput.setHintTextColor(ContextCompat.getColor(MainActivity.this, R.color.colorHintText));

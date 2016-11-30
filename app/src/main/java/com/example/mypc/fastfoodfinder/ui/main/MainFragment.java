@@ -3,6 +3,7 @@ package com.example.mypc.fastfoodfinder.ui.main;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
@@ -26,6 +27,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.mypc.fastfoodfinder.R;
+import com.example.mypc.fastfoodfinder.activity.MapRoutingActivity;
 import com.example.mypc.fastfoodfinder.adapter.NearByStoreAdapter;
 import com.example.mypc.fastfoodfinder.helper.SearchResult;
 import com.example.mypc.fastfoodfinder.model.Routing.MapsDirection;
@@ -49,6 +51,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
@@ -84,6 +87,8 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
 
     private static final long INTERVAL = 1000 * 10;
     private static final long FASTEST_INTERVAL = 1000 * 5;
+    public static final String KEY_ROUTE_LIST = "route_list";
+    public static final String KEY_DES_STORE = "des_store";
 
 
     private static final Hashtable<Integer, Bitmap> CACHE = new Hashtable<Integer, Bitmap>();
@@ -94,7 +99,6 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
     @BindView(R.id.maps_container) CoordinatorLayout mCoordinatorLayoutContainer;
     @BindView(R.id.ll_bottom_sheet) LinearLayout mBottomSheetContainer;
     LatLng currLocation;
-    Polyline currDirection;
     List<Store> mStoreList;
     Map<Integer,Marker> mMarkerMap;
     Map<Integer,StoreViewModel> mNearlyStoreMap;
@@ -174,7 +178,6 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
     @SuppressWarnings("MissingPermission")
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-
         addMarkersToMap(mStoreList, mGoogleMap);
         setMarkersListener(mGoogleMap);
 
@@ -326,8 +329,7 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
         mAdapter.setOnStoreListListener(new NearByStoreAdapter.StoreListListener() {
             @Override
             public void onItemClick(StoreViewModel store) {
-                LatLng storeLocation = store.getPosition();
-                getDirection(storeLocation);
+                getDirection(new Store(store));
             }
         });
     }
@@ -345,6 +347,7 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
                     mGoogleMap.setMyLocationEnabled(true);
                 } else {
                     PermissionUtils.requestLocaiton(getActivity());
+                    mGoogleMap.setMyLocationEnabled(true);
                 }
 
                 //Animate marker when camera move
@@ -368,8 +371,8 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
         for (int i = 0; i < storeList.size(); i++) {
             Store store = storeList.get(i);
             Marker marker = googleMap.addMarker(new MarkerOptions().position(store.getPosition())
-                    .title("Circle K")
-                    .snippet(store.getTitle())
+                    .title(store.getTitle())
+                    .snippet(store.getAddress())
                     .icon(BitmapDescriptorFactory.fromBitmap(getStoreIcon(getContext(), store.getType()))));
             marker.setTag(store);
             mMarkerMap.put(i,marker);
@@ -377,7 +380,8 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
         }
     }
 
-    void getDirection(LatLng storeLocation) {
+    void getDirection(final Store store) {
+        LatLng storeLocation = store.getPosition();
         Map<String, String> queries = new HashMap<String, String>();
 
         queries.put("origin", MapUtils.getLatLngString(currLocation));
@@ -388,8 +392,13 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
         mMapDirectionApi.getDirection(queries).enqueue(new Callback<MapsDirection>() {
             @Override
             public void onResponse(Call<MapsDirection> call, Response<MapsDirection> response) {
-                List<Route> routeList = response.body().getRouteList();
-                drawPolylines(routeList.get(0).getLegList().get(0).getStepList(), mGoogleMap);
+                Intent intent = new Intent(getContext(), MapRoutingActivity.class);
+                Bundle extras = new Bundle();
+                extras.putParcelable(KEY_ROUTE_LIST, response.body());
+                extras.putSerializable(KEY_DES_STORE, store);
+                intent.putExtras(extras);
+                startActivity(intent);
+
             }
 
             @Override
@@ -399,23 +408,6 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
         });
     }
 
-    void drawPolylines(List<Step> steps, GoogleMap googleMap) {
-        PolylineOptions options = new PolylineOptions()
-                .clickable(true)
-                .color(ContextCompat.getColor(getContext(), R.color.googleBlue))
-                .width(12)
-                .geodesic(true)
-                .zIndex(5f)
-                .add(steps.get(0).getStartMapCoordination().getLocation());
-
-        for (int i = 0; i < steps.size(); i++) {
-            options.add(steps.get(i).getEndMapCoordination().getLocation());
-        }
-
-        if (currDirection != null)
-            currDirection.remove();
-        currDirection = googleMap.addPolyline(options);
-    }
 
 
     private void setMarkersListener(GoogleMap googleMap) {

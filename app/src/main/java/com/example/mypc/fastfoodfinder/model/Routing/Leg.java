@@ -1,31 +1,59 @@
 package com.example.mypc.fastfoodfinder.model.Routing;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.google.gson.annotations.SerializedName;
+
+import org.json.JSONObject;
 
 import java.util.List;
 
 /**
  * Created by nhoxb on 11/11/2016.
  */
-public class Leg {
+public class Leg implements Parcelable{
+
+    protected Leg(Parcel in) {
+        JsonParser parser = new JsonParser();
+        distance = parser.parse(in.readString()).getAsJsonObject();
+        duration = parser.parse(in.readString()).getAsJsonObject();
+        startAddress = in.readString();
+        endAddress = in.readString();
+        stepList = in.createTypedArrayList(Step.CREATOR);
+    }
+
+    public static final Creator<Leg> CREATOR = new Creator<Leg>() {
+        @Override
+        public Leg createFromParcel(Parcel in) {
+            return new Leg(in);
+        }
+
+        @Override
+        public Leg[] newArray(int size) {
+            return new Leg[size];
+        }
+    };
 
     public String getDistance() {
-        return distance.getAsJsonObject("text").getAsString();
+        return distance.getAsJsonPrimitive("text").getAsString();
     }
 
     public long getDistanceValue()
     {
-        return distance.getAsJsonObject("value").getAsLong();
+        return distance.getAsJsonPrimitive("value").getAsLong();
     }
 
     public String getDuration() {
-        return duration.getAsJsonObject("text").getAsString();
+        return duration.getAsJsonPrimitive("text").getAsString();
     }
 
     public long getDurationValue()
     {
-        return duration.getAsJsonObject("value").getAsLong();
+        return duration.getAsJsonPrimitive("value").getAsLong();
     }
 
     public String getStartAddress() {
@@ -50,4 +78,18 @@ public class Leg {
     String endAddress;
     @SerializedName("steps")
     List<Step> stepList;
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(distance.toString());
+        parcel.writeString(duration.toString());
+        parcel.writeString(startAddress);
+        parcel.writeString(endAddress);
+        parcel.writeTypedList(stepList);
+    }
 }

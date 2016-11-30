@@ -1,28 +1,54 @@
 package com.example.mypc.fastfoodfinder.model.Routing;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by nhoxb on 11/11/2016.
  */
-public class Step {
+public class Step implements Parcelable{
+    protected Step(Parcel in) {
+        JsonParser parser = new JsonParser();
+        distance = parser.parse(in.readString()).getAsJsonObject();
+        duration = parser.parse(in.readString()).getAsJsonObject();
+        startMapCoordination = in.readParcelable(MapCoordination.class.getClassLoader());
+        endMapCoordination = in.readParcelable(MapCoordination.class.getClassLoader());
+        instruction = in.readString();
+        travelMode = in.readString();
+    }
+
+    public static final Creator<Step> CREATOR = new Creator<Step>() {
+        @Override
+        public Step createFromParcel(Parcel in) {
+            return new Step(in);
+        }
+
+        @Override
+        public Step[] newArray(int size) {
+            return new Step[size];
+        }
+    };
+
     public String getDistance() {
-        return distance.getAsJsonObject("text").getAsString();
+        return distance.getAsJsonPrimitive("text").getAsString();
     }
 
     public long getDistanceValue()
     {
-        return distance.getAsJsonObject("value").getAsLong();
+        return distance.getAsJsonPrimitive("value").getAsLong();
     }
 
     public String getDuration() {
-        return duration.getAsJsonObject("text").getAsString();
+        return duration.getAsJsonPrimitive("text").getAsString();
     }
 
     public long getDurationValue()
     {
-        return duration.getAsJsonObject("value").getAsLong();
+        return duration.getAsJsonPrimitive("value").getAsLong();
     }
 
     public MapCoordination getStartMapCoordination() {
@@ -53,4 +79,19 @@ public class Step {
     String instruction;
     @SerializedName("travel_mode")
     String travelMode;
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(distance.toString());
+        parcel.writeString(duration.toString());
+        parcel.writeParcelable(startMapCoordination, i);
+        parcel.writeParcelable(endMapCoordination, i);
+        parcel.writeString(instruction);
+        parcel.writeString(travelMode);
+    }
 }

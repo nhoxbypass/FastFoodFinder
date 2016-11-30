@@ -16,6 +16,7 @@ public class StoreEntity extends RealmObject {
     public void map(Store store)
     {
         title = store.getTitle();
+        address = store.getAddress();
         latitude = Double.parseDouble(store.getLat());
         longitude = Double.parseDouble(store.getLng());
         telephone = store.getTel();
@@ -52,6 +53,16 @@ public class StoreEntity extends RealmObject {
     }
 
     private String title;
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    private String address;
     private double latitude;
     private double longitude;
     private String telephone;
