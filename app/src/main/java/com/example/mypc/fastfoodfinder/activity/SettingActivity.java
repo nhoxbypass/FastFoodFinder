@@ -31,7 +31,7 @@ public class SettingActivity extends AppCompatActivity {
     TextView tvSettingLanguage;
     private FirebaseAuth mAuth;
 
-    boolean isEngLish = true;
+    boolean isEngLish = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,10 +65,10 @@ public class SettingActivity extends AppCompatActivity {
                 if (isEngLish)
                 {
                     loadLanguage("vi");
-                    isEngLish = false;
                 }
                 else {
                     loadLanguage("en");
+                    isEngLish = true;
                 }
             }
         });
