@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.mypc.fastfoodfinder.R;
 import com.example.mypc.fastfoodfinder.dialog.DialogCreateNewList;
@@ -28,6 +29,8 @@ public class ProfileFragment extends Fragment {
     DialogUpdateCoverImage mDialog;
     DialogCreateNewList mDialogCreate;
     CircleImageView civCreate;
+    CardView viewpoint, viewpoint2, cvCreate;
+
 
     public static ProfileFragment newInstance(){
         Bundle args = new Bundle();
@@ -49,6 +52,9 @@ public class ProfileFragment extends Fragment {
         ivCoverImage = (ImageView) rootView.findViewById(R.id.ivCoverImage);
         btnUpdateCoverImage = (Button) rootView.findViewById(R.id.btnUpdateCoverImage);
         civCreate = (CircleImageView) rootView.findViewById(R.id.ivCreate);
+        viewpoint = (CardView) rootView.findViewById(R.id.viewPoint);
+        viewpoint2 = (CardView) rootView.findViewById(R.id.viewPoint2);
+        cvCreate = (CardView) rootView.findViewById(R.id.cvCreateNew);
         return rootView;
     }
 
@@ -83,18 +89,17 @@ public class ProfileFragment extends Fragment {
                         TextView tvName = (TextView) cardView.findViewById(R.id.tvNameList);
                         TextView tvDescription = (TextView) cardView.findViewById(R.id.tvDescription);
                         tvName.setText(name);
-                        tvDescription.setText("0 Places "+description);
-                        ViewGroup insertPoint = (ViewGroup) view.findViewById(R.id.viewPoint);
+                        if (description.length()>0)
+                        tvDescription.setText(description+ "\n0 Places ");
+
+                        ViewGroup insertPoint = (ViewGroup) viewpoint;
                         insertPoint.addView(cardView,0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-
-
-                        CardView cardView1 = (CardView) view.findViewById(R.id.cvCreateNew);
-                        cardView1.setVisibility(View.GONE);
+                        cvCreate.setVisibility(View.GONE);
                         LayoutInflater newCardView2 = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         CardView cardView2 = (CardView) newCardView2.inflate(R.layout.cardview_create_new_list,null);
-                        tvDescription.setText("0 Places "+description);
-                        ViewGroup insertPoint2 = (ViewGroup) view.findViewById(R.id.viewPoint2);
+                        ViewGroup insertPoint2 = (ViewGroup) viewpoint2;
                         insertPoint2.addView(cardView2,0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                        Toast.makeText(getContext(),"top1 = "+ String.valueOf(viewpoint2.getTop())+ "bottom1 = "+ String.valueOf(viewpoint2.getBottom()),Toast.LENGTH_SHORT).show();
                     }
 
                 });
