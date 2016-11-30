@@ -14,10 +14,12 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.mypc.fastfoodfinder.R;
 import com.example.mypc.fastfoodfinder.activity.StoreDetailActivity;
 import com.example.mypc.fastfoodfinder.model.Store.Store;
+import com.example.mypc.fastfoodfinder.utils.DisplayUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,6 +44,10 @@ public class StoreInfoDialogFragment extends DialogFragment {
     TextView tvViewDetail;
     @BindView(R.id.store_address)
     TextView tvStoreAddress;
+    @BindView(R.id.call_direction)
+    View vCallDirection;
+
+    public CallDirectionViewHolder cdvh;
 
     public StoreInfoDialogFragment() {
 
@@ -57,15 +63,34 @@ public class StoreInfoDialogFragment extends DialogFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
+        cdvh = new CallDirectionViewHolder(vCallDirection);
 
         final Store store = (Store) getArguments().getSerializable(StoreDetailActivity.STORE);
 
         tvStoreName.setText(store.getTitle());
-        tvStoreAddress.setText(store.getTitle()); //TODO dùng address
+        tvStoreAddress.setText(store.getTitle());
         tvViewDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getActivity().startActivity(StoreDetailActivity.getIntent(getContext(), store));
+            }
+        });
+
+        cdvh.btnCall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (store.getTel() != null && !store.getTel().equals("")) {
+                    startActivity(DisplayUtils.getCallIntent(store.getTel()));
+                } else {
+                    Toast.makeText(getActivity(), "The store doesn't have number phone!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        cdvh.btnDirection.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "direction", Toast.LENGTH_SHORT).show();
+                //TODO gọi hàm chỉ đường
             }
         });
     }

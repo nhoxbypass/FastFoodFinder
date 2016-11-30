@@ -100,7 +100,6 @@ public class ProfileFragment extends Fragment {
                         CardView cardView2 = (CardView) newCardView2.inflate(R.layout.cardview_create_new_list,null);
                         ViewGroup insertPoint2 = (ViewGroup) viewpoint2;
                         insertPoint2.addView(cardView2,0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-                        Toast.makeText(getContext(),"top1 = "+ String.valueOf(viewpoint2.getTop())+ "bottom1 = "+ String.valueOf(viewpoint2.getBottom()),Toast.LENGTH_SHORT).show();
                     }
 
                 });

@@ -70,6 +70,7 @@
         android:background="#b6b6b6" />
 
     <include
+        android:id="@+id/call_direction"
         layout="@layout/item_call_direction"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,6 +18,7 @@ import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.example.mypc.fastfoodfinder.R;
 import com.example.mypc.fastfoodfinder.model.Comment;
 import com.example.mypc.fastfoodfinder.model.Store.Store;
+import com.example.mypc.fastfoodfinder.ui.store.CallDirectionViewHolder;
 import com.example.mypc.fastfoodfinder.utils.DataUtils;
 
 import java.util.List;
@@ -37,10 +39,12 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     private Store mStore;
     private List<Comment> mComments;
-    private ShowCommentListener mListener;
+    private StoreActionListener mListener;
 
-    public interface ShowCommentListener {
+    public interface StoreActionListener {
         void onShowComment();
+        void onCall(String tel);
+        void onDirect();
     }
 
     public StoreDetailAdapter(Store store) {
@@ -48,7 +52,7 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         mComments = DataUtils.getComments();
     }
 
-    public void setListener(ShowCommentListener listener) {
+    public void setListener(StoreActionListener listener) {
         mListener = listener;
     }
 
@@ -119,13 +123,15 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         TextView rate;
         @BindView(R.id.comment)
         TextView comment;
+        @BindView(R.id.call)
+        Button btnCall;
 
         public HeaderViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
 
-        public void bind(Store mStore) {
+        public void bind(final Store mStore) {
             save.setOnClickListener(this);
             check.setOnClickListener(this);
             rate.setOnClickListener(this);
@@ -133,6 +139,12 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 @Override
                 public void onClick(View v) {
                     mListener.onShowComment();
+                }
+            });
+            btnCall.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mListener.onCall(mStore.getTel());
                 }
             });
         }
@@ -149,15 +161,33 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         TextView tvName;
         @BindView(R.id.store_address)
         TextView tvAddress;
+        @BindView(R.id.call_direction)
+        View vCallDirection;
+
+        public CallDirectionViewHolder cdvh;
 
         public InfoViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            cdvh = new CallDirectionViewHolder(vCallDirection);
         }
 
-        public void bind(Store mStore) {
+        public void bind(final Store mStore) {
             tvName.setText(mStore.getTitle());
-            tvAddress.setText(mStore.getTitle()); //TODO sử dụng address
+            tvAddress.setText(mStore.getTitle());
+
+            cdvh.btnCall.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mListener.onCall(mStore.getTel());
+                }
+            });
+            cdvh.btnDirection.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mListener.onDirect();
+                }
+            });
         }
     }
 
