@@ -44,12 +44,12 @@ public class StoreListActivity extends AppCompatActivity {
 
     void Load(){
         ArrayList<Store> stores = new ArrayList<>();
-        stores.add(new Store("FamilyMart - 123 Nguyễn Đình Chiểu","10.7775462","106.6892408999999","3835 3193",0));
-        stores.add(new Store("Family Mart - Tạ Quang Bửu", "10.736488", "106.670374", "3835 3193",0));
-        stores.add(new Store("Family Mart - Nguyễn Văn Công", "10.819417", "106.674821", "3835 3193",0));
-        stores.add(new Store("FamilyMart - Hậu Giang","10.7457782220847","106.6261117905378", "3755 0439",0));
-        stores.add(new Store("FamilyMart - Nguyễn Lương Bằng","10.727042", "106.722703", "5417 3390",0));
-        stores.add(new Store("FamilyMart - Tôn Dật Tiến","10.723322", "106.71498", "3835 3193",0));
+        stores.add(new Store("FamilyMart - 123 Nguyễn Đình Chiểu","10.7775462","106.6892408999999","3835 3193",Constant.TYPE_FAMILY_MART));
+        stores.add(new Store("Family Mart - Tạ Quang Bửu", "10.736488", "106.670374", "3835 3193",Constant.TYPE_FAMILY_MART));
+        stores.add(new Store("Family Mart - Nguyễn Văn Công", "10.819417", "106.674821", "3835 3193",Constant.TYPE_FAMILY_MART));
+        stores.add(new Store("FamilyMart - Hậu Giang","10.7457782220847","106.6261117905378", "3755 0439",Constant.TYPE_FAMILY_MART));
+        stores.add(new Store("FamilyMart - Nguyễn Lương Bằng","10.727042", "106.722703", "5417 3390",Constant.TYPE_FAMILY_MART));
+        stores.add(new Store("FamilyMart - Tôn Dật Tiến","10.723322", "106.71498", "3835 3193",Constant.TYPE_FAMILY_MART));
         adapter.setDesS(stores);
     }
 }
