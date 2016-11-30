@@ -80,5 +80,12 @@
     <string name="profile">Hồ sơ cá nhân</string>
     <string name="notifications">Thông báo</string>
     <string name="your_places">Danh sách địa điểm của bạn</string>
+    <string name="persional">Cá nhân</string>
+    <string name="list">Danh sách</string>
+    <string name="connection">Kết nối</string>
+    <string name="setting">Cài đặt</string>
+    <string name="help_and_feedback">Trợ giúp và phản hồi</string>
+    <string name="about_author">Về tác giả</string>
+    <string name="my_moment">Khoảnh khắc của tôi</string>
 
 </resources>

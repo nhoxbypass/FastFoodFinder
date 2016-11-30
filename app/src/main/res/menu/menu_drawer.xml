@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:title="Cá nhân">
+        android:title="@string/persional">
         <menu>
             <item
-                android:title="Bản đồ"
+                android:title="@string/map"
                 android:id="@+id/menu_action_map"/>
             <item
-                android:title="Hồ sơ"
+                android:title="@string/profile"
                 android:id="@+id/menu_action_profile"/>
             <item
-                android:title="Khoảnh khắc của tôi"
+                android:title="@string/my_moment"
                 android:id="@+id/menu_action_moment"/>
             <item
-                android:title="Danh sách"
+                android:title="@string/list"
                 android:id="@+id/menu_action_list"/>
             <item
-                android:title="Kết nối"
+                android:title="@string/connection"
                 android:id="@+id/menu_action_connect"/>
         </menu>
     </item>
 
     <item
-        android:title="Tổng quát">
+        android:title="@string/general">
         <menu>
             <item
-                android:title="Cài đặt"
+                android:title="@string/setting"
                 android:id="@+id/menu_action_setting"/>
             <item
-                android:title="Trợ giúp và phản hồi"
+                android:title="@string/help_and_feedback"
                 android:id="@+id/menu_action_help"/>
             <item
-                android:title="Về tác giả"
+                android:title="@string/about_author"
                 android:id="@+id/menu_action_about"/>
         </menu>
 

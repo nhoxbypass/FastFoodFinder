@@ -82,4 +82,11 @@
 <string name="favourite">Favourite</string>
 <string name="_recently">Recently</string>
 <string name="tip_from_people">Tips from people who has been here</string>
+    <string name="persional">Persional</string>
+    <string name="list">List</string>
+    <string name="connection">Connection</string>
+    <string name="setting">Setting</string>
+    <string name="help_and_feedback">Help and Feedback</string>
+    <string name="about_author">About Author</string>
+    <string name="my_moment">My moment</string>
 </resources>

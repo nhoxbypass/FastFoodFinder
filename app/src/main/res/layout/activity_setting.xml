@@ -138,7 +138,7 @@
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_profile"
                     style="@style/SettingsOptionsText"
-                    android:text="Set notifications"
+                    android:text="@string/set_notifications"
                     android:id="@+id/tv_setting_notification"/>
                 <TextView
                     android:layout_width="match_parent"
