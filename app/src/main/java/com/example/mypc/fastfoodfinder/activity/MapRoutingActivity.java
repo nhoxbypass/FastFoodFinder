@@ -2,18 +2,26 @@ package com.example.mypc.fastfoodfinder.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mypc.fastfoodfinder.R;
+import com.example.mypc.fastfoodfinder.adapter.RoutingAdapter;
 import com.example.mypc.fastfoodfinder.model.Routing.MapsDirection;
 import com.example.mypc.fastfoodfinder.model.Routing.Step;
 import com.example.mypc.fastfoodfinder.model.Store.Store;
 import com.example.mypc.fastfoodfinder.ui.main.MainFragment;
+import com.example.mypc.fastfoodfinder.utils.DisplayUtils;
 import com.example.mypc.fastfoodfinder.utils.MapUtils;
 import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.maps.CameraUpdate;
@@ -45,12 +53,21 @@ public class MapRoutingActivity extends AppCompatActivity {
     TextView travelDistance;
     @BindView(R.id.tv_routing_overview)
     TextView travelOverview;
+    @BindView(R.id.rv_bottom_sheet)
+    RecyclerView mRecyclerView;
+    @BindView(R.id.ll_bottom_sheet) LinearLayout mBottomSheetContainer;
+
+
+    BottomSheetBehavior mBottomSheetBehavior;
+
     private GoogleMap mGoogleMap;
     private SupportMapFragment mMapFragment;
+
     MapsDirection mMapsDirection;
     Polyline currDirection;
     LatLng currLocation;
     Store mCurrStore;
+    RoutingAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +82,10 @@ public class MapRoutingActivity extends AppCompatActivity {
         if (getSupportActionBar() != null){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setTitle(mCurrStore.getTitle());
         }
+
+        mBottomSheetBehavior = BottomSheetBehavior.from(mBottomSheetContainer);
 
         Bundle extras = getIntent().getExtras();
         mMapsDirection = extras.getParcelable(MainFragment.KEY_ROUTE_LIST);
@@ -75,9 +95,13 @@ public class MapRoutingActivity extends AppCompatActivity {
             Toast.makeText(MapRoutingActivity.this, "Failed to open Routing screen!", Toast.LENGTH_SHORT).show();
             finish();
         }
-        
-        mToolbar.setTitle(mCurrStore.getTitle());
 
+        mAdapter = new RoutingAdapter(mMapsDirection.getRouteList().get(0).getLegList().get(0).getStepList());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(MapRoutingActivity.this);
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setAdapter(mAdapter);
+
+        currLocation = mMapsDirection.getRouteList().get(0).getLegList().get(0).getStepList().get(0).getStartMapCoordination().getLocation();
 
 
         setUpMapIfNeeded();
@@ -115,7 +139,13 @@ public class MapRoutingActivity extends AppCompatActivity {
             // ... use map here
             mGoogleMap = googleMap;
 
-            currLocation = mMapsDirection.getRouteList().get(0).getLegList().get(0).getStepList().get(0).getStartMapCoordination().getLocation();
+            mAdapter.setOnNavigationItemClickListener(new RoutingAdapter.OnNavigationItemClickListener() {
+                @Override
+                public void onClick(LatLng latLng) {
+                    mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,19));
+                    mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                }
+            });
 
             mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currLocation,16));
 
@@ -169,8 +199,10 @@ public class MapRoutingActivity extends AppCompatActivity {
 
         LatLngBounds bounds = builder.build();
 
-        int width = getResources().getDisplayMetrics().widthPixels;
-        int height = getResources().getDisplayMetrics().heightPixels;
+        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+
+        int width = displayMetrics.widthPixels;
+        int height = displayMetrics.heightPixels - DisplayUtils.convertDpToPx(displayMetrics, 160);
         int padding = 24; // offset from edges of the map in pixels
         CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds,width, height ,padding);
 

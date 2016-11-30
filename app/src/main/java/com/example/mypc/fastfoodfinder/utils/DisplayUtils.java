@@ -8,6 +8,8 @@ import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
+import android.util.DisplayMetrics;
+import android.util.TypedValue;
 
 /**
  * Created by taq on 27/11/2016.
@@ -36,5 +38,12 @@ public class DisplayUtils {
         tmpOut.copyTo(outputBitmap);
 
         return outputBitmap;
+    }
+
+
+    public static int convertDpToPx(DisplayMetrics displayMetrics, int dp)
+    {
+        int px = Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+        return px;
     }
 }
