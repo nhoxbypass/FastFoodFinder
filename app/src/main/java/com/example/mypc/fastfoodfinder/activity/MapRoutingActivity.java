@@ -78,12 +78,7 @@ public class MapRoutingActivity extends AppCompatActivity {
 
         setSupportActionBar(mToolbar);
 
-        // add back arrow to toolbar
-        if (getSupportActionBar() != null){
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-            getSupportActionBar().setTitle(mCurrStore.getTitle());
-        }
+
 
         mBottomSheetBehavior = BottomSheetBehavior.from(mBottomSheetContainer);
 
@@ -94,6 +89,13 @@ public class MapRoutingActivity extends AppCompatActivity {
         if (mMapsDirection == null || mCurrStore == null || mMapsDirection.getRouteList().size() <= 0) {
             Toast.makeText(MapRoutingActivity.this, "Failed to open Routing screen!", Toast.LENGTH_SHORT).show();
             finish();
+        }
+
+        // add back arrow to toolbar
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setTitle(mCurrStore.getTitle());
         }
 
         mAdapter = new RoutingAdapter(mMapsDirection.getRouteList().get(0).getLegList().get(0).getStepList());
@@ -142,7 +144,7 @@ public class MapRoutingActivity extends AppCompatActivity {
             mAdapter.setOnNavigationItemClickListener(new RoutingAdapter.OnNavigationItemClickListener() {
                 @Override
                 public void onClick(LatLng latLng) {
-                    mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,19));
+                    mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,18));
                     mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                 }
             });

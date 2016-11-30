@@ -46,7 +46,7 @@ public class DisplayUtils {
         int px = Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
         return px;
     }
-    
+
     public static Intent getCallIntent(String tel) {
         tel = tel.replaceAll("\\s", "");
         Intent callIntent = new Intent(Intent.ACTION_CALL);
