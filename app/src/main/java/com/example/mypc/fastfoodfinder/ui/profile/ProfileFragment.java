@@ -17,7 +17,6 @@ import android.widget.TextView;
 
 import com.example.mypc.fastfoodfinder.R;
 import com.example.mypc.fastfoodfinder.dialog.DialogCreateNewList;
-import com.example.mypc.fastfoodfinder.dialog.DialogUpdateCoverImage;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
