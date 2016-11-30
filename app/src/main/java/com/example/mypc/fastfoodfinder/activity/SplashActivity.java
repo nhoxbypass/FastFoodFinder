@@ -150,6 +150,9 @@ public class SplashActivity extends AppCompatActivity {
 
         } else {
             Log.d("MAPP", "Sign In w Email and Password outside");
+            mFirebaseAuth.signOut();
+            startActivity(getIntent());
+            finish();
         }
     }
 

@@ -43,7 +43,7 @@
         android:id="@+id/ll_bottom_sheet"
         android:background="@color/colorWhite"
         app:layout_behavior="@string/bottom_sheet_behavior"
-        android:paddingTop="24dp"
+        android:paddingTop="20dp"
         app:behavior_peekHeight="80dp">
         <LinearLayout
             android:layout_width="match_parent"

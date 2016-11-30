@@ -10,6 +10,7 @@ import com.example.mypc.fastfoodfinder.R;
 import com.example.mypc.fastfoodfinder.adapter.StoreListAdapter;
 import com.example.mypc.fastfoodfinder.helper.DividerItemDecoration;
 import com.example.mypc.fastfoodfinder.model.Store.Store;
+import com.example.mypc.fastfoodfinder.utils.Constant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +45,7 @@ public class StoreListActivity extends AppCompatActivity {
 
     void Load(){
         ArrayList<Store> stores = new ArrayList<>();
-        stores.add(new Store("FamilyMart - 123 Nguyễn Đình Chiểu","10.7775462","106.6892408999999","3835 3193",Constant.TYPE_FAMILY_MART));
+        stores.add(new Store("FamilyMart - 123 Nguyễn Đình Chiểu","10.7775462","106.6892408999999","3835 3193", Constant.TYPE_FAMILY_MART));
         stores.add(new Store("Family Mart - Tạ Quang Bửu", "10.736488", "106.670374", "3835 3193",Constant.TYPE_FAMILY_MART));
         stores.add(new Store("Family Mart - Nguyễn Văn Công", "10.819417", "106.674821", "3835 3193",Constant.TYPE_FAMILY_MART));
         stores.add(new Store("FamilyMart - Hậu Giang","10.7457782220847","106.6261117905378", "3755 0439",Constant.TYPE_FAMILY_MART));
