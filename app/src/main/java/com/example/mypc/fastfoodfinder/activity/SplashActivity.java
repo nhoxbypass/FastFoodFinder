@@ -2,10 +2,10 @@ package com.example.mypc.fastfoodfinder.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.provider.ContactsContract;
+import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -31,13 +31,10 @@ import io.realm.Realm;
 
 public class SplashActivity extends AppCompatActivity {
 
-    /** Duration of wait **/
-    private final int SPLASH_DISPLAY_LENGTH = 1500;
-    SharedPreferences mSharedPreferences;
-
     public static final String KEY_FIRST_RUN = "firstRun";
+    private final int SPLASH_DISPLAY_LENGTH = 1500; //Duration of wait
     public boolean isFirstRun = false;
-
+    private SharedPreferences mSharedPreferences;
     // Firebase instance variables
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
@@ -49,17 +46,19 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
         Realm.init(SplashActivity.this);
+
         // Initialize Firebase Auth
         mFirebaseAuth = FirebaseAuth.getInstance();
         mSharedPreferences = getSharedPreferences("com.example.mypc.fastfoodfinder", MODE_PRIVATE);
         isFirstRun = mSharedPreferences.getBoolean(KEY_FIRST_RUN, true);
 
-        //Else
+        //Check if is first run
         if (isFirstRun) {
+            //First run
+            //Download data from Firebase and store in Realm
             readDataFromFirebase(new OnGetDataListener() {
                 @Override
                 public void onStart() {
-
                 }
 
                 @Override
@@ -75,27 +74,25 @@ public class SplashActivity extends AppCompatActivity {
                 @Override
                 public void onFailed(DatabaseError databaseError) {
                     Toast.makeText(SplashActivity.this, R.string.update_database_failed + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
-                    finish();
+                    mFirebaseAuth.signOut();
+                    restartActivity();
                 }
             });
-        }
-        else
-        {
-            startMyActivity(MainActivity.class);
+        } else {
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    startMyActivity(MainActivity.class);
+                }
+            }, SPLASH_DISPLAY_LENGTH);
         }
     }
 
-    private void startMyActivity(Class<?> activity)
-    {
+    private void startMyActivity(Class<?> activity) {
         Intent intent = new Intent(SplashActivity.this, activity);
         startActivity(intent);
         finish();
-    }
-
-    public interface OnGetDataListener {
-        public void onStart();
-        public void onSuccess(DataSnapshot data);
-        public void onFailed(DatabaseError databaseError);
     }
 
     public void readDataFromFirebase(final OnGetDataListener listener) {
@@ -106,7 +103,7 @@ public class SplashActivity extends AppCompatActivity {
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
         if (mFirebaseUser == null) {
             // Not signed in
-            mFirebaseAuth.signInWithEmailAndPassword("store_downloader@fastfoodfinder.com","123456789")
+            mFirebaseAuth.signInWithEmailAndPassword("store_downloader@fastfoodfinder.com", "123456789")
                     .addOnCompleteListener(SplashActivity.this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
@@ -120,18 +117,7 @@ public class SplashActivity extends AppCompatActivity {
                                 ref.addValueEventListener(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
-                                        List<Store> storeList = new ArrayList<Store>();
-
-                                        for (DataSnapshot child : dataSnapshot.getChildren()) {
-
-                                            for (DataSnapshot storeLocation : child.child(Constant.CHILD_MARKERS_ADD).getChildren()) {
-                                                Store store = storeLocation.getValue(Store.class);
-                                                store.setType(getStoreType(child.getKey()));
-                                                storeList.add(store);
-                                            }
-                                        }
-
-                                        saveStoresLocation(storeList);
+                                        parseDataFromFirebase(dataSnapshot);
                                         listener.onSuccess(dataSnapshot);
                                     }
 
@@ -144,21 +130,41 @@ public class SplashActivity extends AppCompatActivity {
                             } else {
                                 Log.w("MAPP", "Sign In to Get data ", task.getException());
                                 Toast.makeText(SplashActivity.this, R.string.authentication_failed, Toast.LENGTH_SHORT).show();
+                                restartActivity();
                             }
                         }
                     });
 
         } else {
-            Log.d("MAPP", "Sign In w Email and Password outside");
+            Log.d("MAPP", "Already sign in but didn't get data");
+            Toast.makeText(SplashActivity.this, R.string.update_database_failed, Toast.LENGTH_SHORT).show();
             mFirebaseAuth.signOut();
-            startActivity(getIntent());
-            finish();
+            restartActivity();
         }
     }
 
+    private void parseDataFromFirebase(DataSnapshot dataSnapshot) {
+        List<Store> storeList = new ArrayList<Store>();
+
+        for (DataSnapshot child : dataSnapshot.getChildren()) {
+
+            for (DataSnapshot storeLocation : child.child(Constant.CHILD_MARKERS_ADD).getChildren()) {
+                Store store = storeLocation.getValue(Store.class);
+                store.setType(getStoreType(child.getKey()));
+                storeList.add(store);
+            }
+        }
+
+        saveStoresLocation(storeList);
+    }
+
+    private void restartActivity() {
+        startActivity(getIntent());
+        finish();
+    }
+
     private int getStoreType(String key) {
-        switch (key)
-        {
+        switch (key) {
             case "circle_k":
                 return Constant.TYPE_CIRCLE_K;
             case "mini_stop":
@@ -177,5 +183,13 @@ public class SplashActivity extends AppCompatActivity {
 
     private void saveStoresLocation(List<Store> storeList) {
         StoreDataSource.store(storeList);
+    }
+
+    public interface OnGetDataListener {
+        public void onStart();
+
+        public void onSuccess(DataSnapshot data);
+
+        public void onFailed(DatabaseError databaseError);
     }
 }

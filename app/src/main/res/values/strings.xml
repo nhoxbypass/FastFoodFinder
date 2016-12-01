@@ -75,7 +75,7 @@
     <string name="type_name_store">Type name of store...</string>
     <string name="update_database_successfull">Update database successfully</string>
     <string name="update_database_failed">"Update database failed: "</string>
-    <string name="do_you_want_undo">Do you want to Undo?</string>
+    <string name="do_you_want_undo">Undo?</string>
     <string name="undo">UNDO</string>
     <string name="delete_favourite_location">Delete Favourite Destination</string>
     <string name="are_you_sure">Are you sure you want to delete this destiantion?</string>

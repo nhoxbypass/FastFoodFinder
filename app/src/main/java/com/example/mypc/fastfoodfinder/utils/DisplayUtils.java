@@ -50,7 +50,7 @@ public class DisplayUtils {
     public static Intent getCallIntent(String tel) {
         tel = tel.replaceAll("\\s", "");
         Intent callIntent = new Intent(Intent.ACTION_CALL);
-        callIntent.setData(Uri.parse("tel:" + tel));
+        callIntent.setData(Uri.parse("tel:08" + tel));
         return callIntent;
     }
 }

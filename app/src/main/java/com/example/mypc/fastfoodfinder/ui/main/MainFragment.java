@@ -15,7 +15,6 @@ import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -31,8 +30,6 @@ import com.example.mypc.fastfoodfinder.activity.MapRoutingActivity;
 import com.example.mypc.fastfoodfinder.adapter.NearByStoreAdapter;
 import com.example.mypc.fastfoodfinder.helper.SearchResult;
 import com.example.mypc.fastfoodfinder.model.Routing.MapsDirection;
-import com.example.mypc.fastfoodfinder.model.Routing.Route;
-import com.example.mypc.fastfoodfinder.model.Routing.Step;
 import com.example.mypc.fastfoodfinder.model.Store.Store;
 import com.example.mypc.fastfoodfinder.model.Store.StoreDataSource;
 import com.example.mypc.fastfoodfinder.model.Store.StoreViewModel;
@@ -51,15 +48,12 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polyline;
-import com.google.android.gms.maps.model.PolylineOptions;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -461,6 +455,12 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
     private void showDialogStoreInfo(Store store) {
         FragmentManager fm = getActivity().getSupportFragmentManager();
         StoreInfoDialogFragment dialog = StoreInfoDialogFragment.newInstance(store);
+        dialog.setDialogListen(new DirectionCallListener() {
+            @Override
+            public void onDirection(Store store) {
+                getDirection(store);
+            }
+        });
         dialog.show(fm, "dialog-info");
     }
 
@@ -519,5 +519,10 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
                 animateMarker(bitmap, mMarkerMap.get(newStoreNearBy.get(i)));
             }
         }
+    }
+
+    public interface DirectionCallListener
+    {
+        public void onDirection(Store store);
     }
 }

@@ -1,6 +1,5 @@
 package com.example.mypc.fastfoodfinder.activity;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.content.ContextCompat;
@@ -10,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,21 +21,21 @@ import com.example.mypc.fastfoodfinder.model.Store.Store;
 import com.example.mypc.fastfoodfinder.ui.main.MainFragment;
 import com.example.mypc.fastfoodfinder.utils.DisplayUtils;
 import com.example.mypc.fastfoodfinder.utils.MapUtils;
-import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.maps.android.PolyUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -48,26 +46,28 @@ public class MapRoutingActivity extends AppCompatActivity {
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.tv_routing_time)
-    TextView travelTime;
+    TextView txtTravelTime;
     @BindView(R.id.tv_routing_distance)
-    TextView travelDistance;
+    TextView txtTravelDistance;
     @BindView(R.id.tv_routing_overview)
-    TextView travelOverview;
+    TextView txtTravelOverview;
     @BindView(R.id.rv_bottom_sheet)
-    RecyclerView mRecyclerView;
-    @BindView(R.id.ll_bottom_sheet) LinearLayout mBottomSheetContainer;
+    RecyclerView recyclerView;
+    @BindView(R.id.ll_bottom_sheet)
+    LinearLayout mBottomSheetContainer;
 
-
-    BottomSheetBehavior mBottomSheetBehavior;
+    private BottomSheetBehavior mBottomSheetBehavior;
 
     private GoogleMap mGoogleMap;
     private SupportMapFragment mMapFragment;
 
-    MapsDirection mMapsDirection;
-    Polyline currDirection;
-    LatLng currLocation;
-    Store mCurrStore;
-    RoutingAdapter mAdapter;
+    private MapsDirection mMapsDirection;
+    private Polyline mCurrDirection;
+    private LatLng mCurrLocation;
+    private Store mCurrStore;
+    private RoutingAdapter mRoutingAdapter;
+    private List<Step> mStepList;
+    private List<LatLng> mGeoPointList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,37 +76,47 @@ public class MapRoutingActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        setSupportActionBar(mToolbar);
-
-
+        mStepList = new ArrayList<>();
+        mGeoPointList = new ArrayList<>();
 
         mBottomSheetBehavior = BottomSheetBehavior.from(mBottomSheetContainer);
 
+        getExtrasBundle();
+
+        setupToolbar(mToolbar);
+
+        mStepList = mMapsDirection.getRouteList().get(0).getLegList().get(0).getStepList();
+        mCurrLocation = mStepList.get(0).getStartMapCoordination().getLocation();
+        mGeoPointList = PolyUtil.decode(mMapsDirection.getRouteList().get(0).getEncodedPolylineString());
+
+        mRoutingAdapter = new RoutingAdapter(mStepList);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(MapRoutingActivity.this);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(mRoutingAdapter);
+
+        setUpMapIfNeeded();
+    }
+
+    private void getExtrasBundle() {
         Bundle extras = getIntent().getExtras();
         mMapsDirection = extras.getParcelable(MainFragment.KEY_ROUTE_LIST);
         mCurrStore = (Store) extras.getSerializable(MainFragment.KEY_DES_STORE);
-        
+
         if (mMapsDirection == null || mCurrStore == null || mMapsDirection.getRouteList().size() <= 0) {
             Toast.makeText(MapRoutingActivity.this, "Failed to open Routing screen!", Toast.LENGTH_SHORT).show();
             finish();
         }
+    }
+
+    private void setupToolbar(Toolbar toolbar) {
+        setSupportActionBar(toolbar);
 
         // add back arrow to toolbar
-        if (getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setTitle(mCurrStore.getTitle());
         }
-
-        mAdapter = new RoutingAdapter(mMapsDirection.getRouteList().get(0).getLegList().get(0).getStepList());
-        LinearLayoutManager layoutManager = new LinearLayoutManager(MapRoutingActivity.this);
-        mRecyclerView.setLayoutManager(layoutManager);
-        mRecyclerView.setAdapter(mAdapter);
-
-        currLocation = mMapsDirection.getRouteList().get(0).getLegList().get(0).getStepList().get(0).getStartMapCoordination().getLocation();
-
-
-        setUpMapIfNeeded();
     }
 
     @Override
@@ -140,45 +150,40 @@ public class MapRoutingActivity extends AppCompatActivity {
         if (googleMap != null) {
             // ... use map here
             mGoogleMap = googleMap;
+            mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mCurrLocation, 16));
 
-            mAdapter.setOnNavigationItemClickListener(new RoutingAdapter.OnNavigationItemClickListener() {
-                @Override
-                public void onClick(LatLng latLng) {
-                    mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,18));
-                    mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                }
-            });
-
-            mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currLocation,16));
-
-            Marker currMarker = googleMap.addMarker(new MarkerOptions().position(currLocation)
+            Marker currMarker = googleMap.addMarker(new MarkerOptions().position(mCurrLocation)
                     .title("Your location")
                     .snippet("Your current location, please follow the line")
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.bluedot)));
-
-
-
-            drawPolylines(mMapsDirection.getRouteList().get(0).getLegList().get(0).getStepList(), mGoogleMap);
-
 
             Marker storeMarker = googleMap.addMarker(new MarkerOptions().position(mCurrStore.getPosition())
                     .title(mCurrStore.getTitle())
                     .snippet(mCurrStore.getAddress())
                     .icon(BitmapDescriptorFactory.fromResource(MapUtils.getLogoDrawableId(mCurrStore.getType()))));
 
+            drawPolylines(mGeoPointList, mGoogleMap);
 
 
+            txtTravelTime.setText(mMapsDirection.getRouteList().get(0).getLegList().get(0).getDuration());
+            txtTravelDistance.setText(mMapsDirection.getRouteList().get(0).getLegList().get(0).getDistance());
+            txtTravelOverview.setText("Via " + mMapsDirection.getRouteList().get(0).getSummary());
 
 
-            travelTime.setText(mMapsDirection.getRouteList().get(0).getLegList().get(0).getDuration());
-            travelDistance.setText(mMapsDirection.getRouteList().get(0).getLegList().get(0).getDistance());
-            travelOverview.setText("Via " + mMapsDirection.getRouteList().get(0).getSummary());
+            mRoutingAdapter.setOnNavigationItemClickListener(new RoutingAdapter.OnNavigationItemClickListener() {
+                @Override
+                public void onClick(LatLng latLng) {
+                    mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18));
+                    mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                }
+            });
         }
     }
 
-    void drawPolylines(List<Step> steps, GoogleMap googleMap) {
+    void drawPolylines(List<LatLng> geoPointList, GoogleMap googleMap) {
+        //Add position to viewBounds
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        builder.include(currLocation);
+        builder.include(mCurrLocation);
 
         PolylineOptions options = new PolylineOptions()
                 .clickable(true)
@@ -187,26 +192,32 @@ public class MapRoutingActivity extends AppCompatActivity {
                 .geodesic(true)
                 .zIndex(5f);
 
-        for (int i = 0; i < steps.size(); i++) {
-            Step step = steps.get(i);
-            options.add(step.getStartMapCoordination().getLocation());
-            options.add(step.getEndMapCoordination().getLocation());
-            builder.include(step.getEndMapCoordination().getLocation());
+        for (int i = 0; i < geoPointList.size(); i++) {
+            LatLng geoPoint = geoPointList.get(i);
+            options.add(geoPoint);
+            options.add(geoPoint);
+            builder.include(geoPoint);
         }
 
-        if (currDirection != null)
-            currDirection.remove();
-        currDirection = googleMap.addPolyline(options);
+        if (mCurrDirection != null)
+            mCurrDirection.remove();
 
+        mCurrDirection = googleMap.addPolyline(options);
 
+        //Build the viewbounds contain all markers
         LatLngBounds bounds = builder.build();
 
+        zoomToShowAllMarker(bounds, googleMap);
+
+    }
+
+    private void zoomToShowAllMarker(LatLngBounds bounds, GoogleMap googleMap) {
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
 
         int width = displayMetrics.widthPixels;
         int height = displayMetrics.heightPixels - DisplayUtils.convertDpToPx(displayMetrics, 160);
         int padding = 24; // offset from edges of the map in pixels
-        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds,width, height ,padding);
+        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding);
 
         googleMap.animateCamera(cu);
     }

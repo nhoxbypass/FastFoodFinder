@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.example.mypc.fastfoodfinder.R;
 import com.example.mypc.fastfoodfinder.activity.StoreDetailActivity;
 import com.example.mypc.fastfoodfinder.model.Store.Store;
+import com.example.mypc.fastfoodfinder.ui.main.MainFragment;
 import com.example.mypc.fastfoodfinder.utils.DisplayUtils;
 
 import butterknife.BindView;
@@ -47,10 +48,18 @@ public class StoreInfoDialogFragment extends DialogFragment {
     @BindView(R.id.call_direction)
     View vCallDirection;
 
+    MainFragment.DirectionCallListener mListener;
+
+
     public CallDirectionViewHolder cdvh;
 
     public StoreInfoDialogFragment() {
 
+    }
+
+    public void setDialogListen(MainFragment.DirectionCallListener listener)
+    {
+        mListener = listener;
     }
 
     @Nullable
@@ -89,8 +98,9 @@ public class StoreInfoDialogFragment extends DialogFragment {
         cdvh.btnDirection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "direction", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), "direction", Toast.LENGTH_SHORT).show();
                 //TODO gọi hàm chỉ đường
+                mListener.onDirection(store);
             }
         });
     }

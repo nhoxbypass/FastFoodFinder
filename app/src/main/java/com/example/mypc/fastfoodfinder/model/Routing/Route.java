@@ -3,6 +3,8 @@ package com.example.mypc.fastfoodfinder.model.Routing;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -11,9 +13,13 @@ import java.util.List;
  * Created by nhoxb on 11/11/2016.
  */
 public class Route implements Parcelable {
+
+
     protected Route(Parcel in) {
         legList = in.createTypedArrayList(Leg.CREATOR);
         summary = in.readString();
+        JsonParser parser = new JsonParser();
+        encodedPolyline = parser.parse(in.readString()).getAsJsonObject();
     }
 
     public static final Creator<Route> CREATOR = new Creator<Route>() {
@@ -41,6 +47,22 @@ public class Route implements Parcelable {
     @SerializedName("summary")
     String summary;
 
+    public JsonObject getEncodedPolyline() {
+        return encodedPolyline;
+    }
+
+    public void setEncodedPolyline(JsonObject encodedPolyline) {
+        this.encodedPolyline = encodedPolyline;
+    }
+
+    public String getEncodedPolylineString()
+    {
+        return encodedPolyline.getAsJsonPrimitive("points").getAsString();
+    }
+
+    @SerializedName("overview_polyline")
+    JsonObject encodedPolyline;
+
     @Override
     public int describeContents() {
         return 0;
@@ -50,5 +72,6 @@ public class Route implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeTypedList(legList);
         parcel.writeString(summary);
+        parcel.writeString(encodedPolyline.toString());
     }
 }

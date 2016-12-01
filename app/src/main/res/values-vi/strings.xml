@@ -69,8 +69,8 @@
 <string name="type_name_store">Nhập tên cửa hàng...</string>
 <string name="update_database_successfull">Cập nhật dữ liệu thành công</string>
 <string name="update_database_failed">"Cập nhật dữ liệu thất bại: "</string>
-<string name="do_you_want_undo">Bạn có muốn trở lại không?</string>
-<string name="undo">Trở lại</string>
+<string name="do_you_want_undo">Phục hồi?</string>
+<string name="undo">Phục hồi</string>
 <string name="delete_favourite_location">Xóa Địa điểm</string>
 <string name="are_you_sure">Bạn có thật sự muốn xóa?</string>
 <string name="favourite">Yêu thích</string>

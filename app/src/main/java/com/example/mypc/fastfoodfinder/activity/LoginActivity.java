@@ -1,9 +1,9 @@
 package com.example.mypc.fastfoodfinder.activity;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -37,26 +37,26 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.Arrays;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class LoginActivity extends AppCompatActivity {
 
     private static final int RC_SIGN_IN = 1;
-    @BindView(R.id.btn_skip) Button skipButton;
-    @BindView(R.id.btn_join_now) Button joinNowButton;
-    @BindView(R.id.btn_facebook_signin) LoginButton fbSignInButton;
-    @BindView(R.id.btn_google_signin) SignInButton googleSignInButton;
+    @BindView(R.id.btn_skip)
+    Button skipButton;
+    @BindView(R.id.btn_join_now)
+    Button joinNowButton;
+    @BindView(R.id.btn_facebook_signin)
+    LoginButton fbSignInButton;
+    @BindView(R.id.btn_google_signin)
+    SignInButton googleSignInButton;
 
-    GoogleApiClient mGoogleApiClient;
+    private GoogleApiClient mGoogleApiClient;
+    private CallbackManager mCallBackManager;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private DatabaseReference mFirebaseDatabaseReference;
-
-    CallbackManager mCallBackManager;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,46 +81,12 @@ public class LoginActivity extends AppCompatActivity {
                     // User is signed out
                     Log.d("MAPP", "onAuthStateChanged:signed_out");
                 }
-                // ...
             }
         };
 
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-        mGoogleApiClient = new GoogleApiClient.Builder(LoginActivity.this)
-                .enableAutoManage(LoginActivity.this, new GoogleApiClient.OnConnectionFailedListener() {
-                    @Override
-                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                        Log.e("MAPP", "google connect failed");
-                    }
-                })
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
+        setupGoogleSignIn(mGoogleApiClient);
 
-        mCallBackManager = CallbackManager.Factory.create();
-        fbSignInButton.setReadPermissions("email", "public_profile");
-
-        fbSignInButton.registerCallback(mCallBackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                Log.d("MAPP", "facebook:onSuccess: " + loginResult);
-                handleFacebookAccessToken(loginResult.getAccessToken());
-            }
-
-            @Override
-            public void onCancel() {
-                Log.d("MAPP", "facebook:onCancel");
-                // ...
-            }
-
-            @Override
-            public void onError(FacebookException error) {
-                Log.d("MAPP", "facebook:onError", error);
-                // ...
-            }
-        });
+        setupFacebookSignIn(mCallBackManager);
 
         skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -150,6 +116,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -164,95 +131,10 @@ public class LoginActivity extends AppCompatActivity {
             } else {
                 Log.e("MAPP", "Login failed with google");
             }
-        }
-        else
-        {
+        } else {
             // Pass the activity result back to the Facebook SDK
             mCallBackManager.onActivityResult(requestCode, resultCode, data);
         }
-    }
-
-    private void saveUserData(FirebaseUser firebaseUser, DatabaseReference databaseRef)
-    {
-        String photoUrl = "http://cdn.builtlean.com/wp-content/uploads/2015/11/noavatar.png";
-
-        if (firebaseUser.getPhotoUrl() != null)
-        {
-            photoUrl = firebaseUser.getPhotoUrl().toString();
-        }
-
-        User user = new User(firebaseUser.getDisplayName(),firebaseUser.getEmail(),photoUrl,firebaseUser.getUid());
-
-        user.saveUserData(databaseRef);
-    }
-
-    private void startMyActivity(Class<?> activity)
-    {
-        Intent intent = new Intent(LoginActivity.this, activity);
-        startActivity(intent);
-        finish();
-    }
-
-    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-        Log.d("MAPP", "firebaseAuthWithGoogle:" + acct.getId());
-
-        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d("MAPP", "signInWithCredential:onComplete:" + task.isSuccessful());
-
-                        // If sign in fails, display a message to the user. If sign in succeeds
-                        // the auth state listener will be notified and logic to handle the
-                        // signed in user can be handled in the listener.
-                        if (!task.isSuccessful()) {
-                            Log.w("MAPP", "signInWithCredential", task.getException());
-                            Toast.makeText(LoginActivity.this, R.string.authentication_failed,
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                        else
-                        {
-                            Toast.makeText(LoginActivity.this, R.string.sign_in_successfully, Toast.LENGTH_SHORT).show();
-                            saveUserData(task.getResult().getUser(), mFirebaseDatabaseReference);
-                            startMyActivity(MainActivity.class);
-                        }
-                        // ...
-                    }
-                });
-    }
-
-    private void signIntWithGoogle(GoogleApiClient mGoogleApiClient) {
-        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-        startActivityForResult(signInIntent, RC_SIGN_IN);
-    }
-
-    private void handleFacebookAccessToken(AccessToken token) {
-        Log.d("MAPP", "handleFacebookAccessToken:" + token);
-
-        AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d("MAPP", "signInWithCredential:onComplete:" + task.isSuccessful());
-
-                        // If sign in fails, display a message to the user. If sign in succeeds
-                        // the auth state listener will be notified and logic to handle the
-                        // signed in user can be handled in the listener.
-                        if (!task.isSuccessful()) {
-                            Log.w("MAPP", "signInWithCredential", task.getException());
-                            Toast.makeText(LoginActivity.this, R.string.authentication_failed,
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                        else
-                        {
-                            Toast.makeText(LoginActivity.this, R.string.sign_in_successfully, Toast.LENGTH_SHORT).show();
-                        }
-
-                        // ...
-                    }
-                });
     }
 
 
@@ -268,5 +150,116 @@ public class LoginActivity extends AppCompatActivity {
         if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
         }
+    }
+
+    private void setupFacebookSignIn(CallbackManager callbackManager) {
+        callbackManager = CallbackManager.Factory.create();
+        fbSignInButton.setReadPermissions("email", "public_profile");
+
+        fbSignInButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                Log.d("MAPP", "facebook:onSuccess: " + loginResult);
+                handleFacebookAccessToken(loginResult.getAccessToken());
+            }
+
+            @Override
+            public void onCancel() {
+                Log.d("MAPP", "facebook:onCancel");
+                // ...
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                Log.d("MAPP", "facebook:onError", error);
+                // ...
+            }
+        });
+    }
+
+    private void setupGoogleSignIn(GoogleApiClient client) {
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+        client = new GoogleApiClient.Builder(LoginActivity.this)
+                .enableAutoManage(LoginActivity.this, new GoogleApiClient.OnConnectionFailedListener() {
+                    @Override
+                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+                        Log.e("MAPP", "google connect failed");
+                    }
+                })
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+    }
+
+
+    private void saveUserData(FirebaseUser firebaseUser, DatabaseReference databaseRef) {
+        String photoUrl = "http://cdn.builtlean.com/wp-content/uploads/2015/11/noavatar.png";
+
+        if (firebaseUser.getPhotoUrl() != null) {
+            photoUrl = firebaseUser.getPhotoUrl().toString();
+        }
+
+        User user = new User(firebaseUser.getDisplayName(), firebaseUser.getEmail(), photoUrl, firebaseUser.getUid());
+        user.saveUserData(databaseRef);
+    }
+
+    private void startMyActivity(Class<?> activity) {
+        Intent intent = new Intent(LoginActivity.this, activity);
+        startActivity(intent);
+        finish();
+    }
+
+    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        Log.d("MAPP", "signInWithCredential:onComplete:" + task.isSuccessful());
+
+                        // If sign in fails, display a message to the user. If sign in succeeds
+                        // the auth state listener will be notified and logic to handle the
+                        // signed in user can be handled in the listener.
+                        if (!task.isSuccessful()) {
+                            Log.w("MAPP", "signInWithCredential", task.getException());
+                            Toast.makeText(LoginActivity.this, R.string.authentication_failed,
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(LoginActivity.this, R.string.sign_in_successfully, Toast.LENGTH_SHORT).show();
+                            saveUserData(task.getResult().getUser(), mFirebaseDatabaseReference);
+                            startMyActivity(MainActivity.class);
+                        }
+                    }
+                });
+    }
+
+    private void signIntWithGoogle(GoogleApiClient mGoogleApiClient) {
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+    private void handleFacebookAccessToken(AccessToken token) {
+        AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        Log.d("MAPP", "signInWithCredential:onComplete:" + task.isSuccessful());
+
+                        // If sign in fails, display a message to the user. If sign in succeeds
+                        // the auth state listener will be notified and logic to handle the
+                        // signed in user can be handled in the listener.
+                        if (!task.isSuccessful()) {
+                            Log.w("MAPP", "signInWithCredential", task.getException());
+                            Toast.makeText(LoginActivity.this, R.string.authentication_failed,
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(LoginActivity.this, R.string.sign_in_successfully, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 }

@@ -52,9 +52,12 @@ public class MainActivity extends AppCompatActivity {
 
     public static String PACKAGE_NAME;
 
-    @BindView(R.id.nav_view) NavigationView mNavigationView;
-    @BindView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
-    @BindView(R.id.toolbar) Toolbar mToolbar;
+    @BindView(R.id.nav_view)
+    NavigationView mNavigationView;
+    @BindView(R.id.drawer_layout)
+    DrawerLayout mDrawerLayout;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
     View mHeaderLayout;
     SearchView mSearchView;
     LinearLayout mNavHeaderContainer;
@@ -81,29 +84,14 @@ public class MainActivity extends AppCompatActivity {
         PACKAGE_NAME = getApplicationContext().getPackageName();
 
         setupAllViews();
+        initFirebaseAuth(mFirebaseAuth, mFirebaseUser);
 
         //Inflate Map fragment
         mNavigationView.getMenu().getItem(0).setChecked(true);
         mNavigationView.setCheckedItem(R.id.menu_action_map);
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.fl_fragment_placeholder, MainMapFragment.newInstance()).commit();
-
-        // Initialize Firebase Auth
-        mFirebaseAuth = FirebaseAuth.getInstance();
-        mFirebaseUser = mFirebaseAuth.getCurrentUser();
-        if (mFirebaseUser == null) {
-            mNavHeaderName.setVisibility(View.GONE);
-            mNavHeaderScreenName.setVisibility(View.GONE);
-            mNavHeaderSignIn.setVisibility(View.VISIBLE);
-        } else {
-            Glide.with(MainActivity.this)
-                    .load(mFirebaseUser.getPhotoUrl())
-                    .into(mNavHeaderAvatar);
-            mNavHeaderName.setText(mFirebaseUser.getDisplayName());
-            mNavHeaderScreenName.setText(mFirebaseUser.getEmail());
-        }
     }
-
 
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
@@ -127,78 +115,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         //Inflate SearchView
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-
-        SearchManager searchManager =
-                (SearchManager) MainActivity.this.getSystemService(Context.SEARCH_SERVICE);
-
-        if (searchItem != null) {
-            mSearchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-        }
-        if (mSearchView != null) {
-            mSearchView.setSearchableInfo(searchManager.getSearchableInfo(MainActivity.this.getComponentName()));
-
-            mSearchView.setQueryHint(getString(R.string.type_name_store));
-            mSearchView.setBackgroundColor(Color.parseColor("#E53935"));
-            mSearchInput = (EditText) mSearchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
-            mSearchInput.setHintTextColor(ContextCompat.getColor(MainActivity.this, R.color.colorHintText));
-            mSearchInput.setTextColor(Color.WHITE);
-        }
-
-        //Set on search query submit
-        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                EventBus.getDefault().post(new SearchResult(SearchResult.SEARCH_STORE_OK,query));
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-        });
-
-        //Set event expand search view
-        MenuItemCompat.OnActionExpandListener expandListener = new MenuItemCompat.OnActionExpandListener() {
-            @Override
-            public boolean onMenuItemActionExpand(MenuItem menuItem) {
-                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-
-                SearchFragment searchFragment = SearchFragment.newInstance();
-
-                View fragment_placeholder = findViewById(R.id.fragment_search_placeholder);
-                fragment_placeholder.setVisibility(View.VISIBLE);
-                ft.replace(R.id.fragment_search_placeholder, searchFragment, "blankFragment");
-
-                // Start the animated transition.
-                ft.commit();
-                return true;
-            }
-
-            @Override
-            public boolean onMenuItemActionCollapse(MenuItem menuItem) {
-                EventBus.getDefault().post(new SearchResult(SearchResult.SEARCH_COLLAPSE));
-
-                Fragment fragment =  getSupportFragmentManager().findFragmentById(R.id.fragment_search_placeholder);
-
-                if (fragment != null)
-                {
-                    getSupportFragmentManager().beginTransaction().
-                            remove(fragment)
-                            .commit();
-                }
-                return true;
-            }
-        };
-
-
-        MenuItemCompat.setOnActionExpandListener(searchItem, expandListener);
-
+        mSearchView = initSearchView(menu);
         return super.onCreateOptionsMenu(menu);
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -224,24 +144,21 @@ public class MainActivity extends AppCompatActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onSearchResult(SearchResult searchResult) {
         int resultCode = searchResult.getResultCode();
-        switch (resultCode)
-        {
+        switch (resultCode) {
             case SearchResult.SEARCH_QUICK_OK:
-                mSearchView.setQuery(searchResult.getSearchString(),false);
+                mSearchView.setQuery(searchResult.getSearchString(), false);
                 mSearchView.setIconified(false);
                 // Check if no view has focus:
                 View view = this.getCurrentFocus();
                 if (view != null) {
-                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                     view.clearFocus();
                     mSearchInput.clearFocus();
                 }
                 break;
             case SearchResult.SEARCH_STORE_OK:
-                getSupportFragmentManager().beginTransaction().
-                        remove(getSupportFragmentManager().findFragmentById(R.id.fragment_search_placeholder))
-                        .commit();
+                removeSearchFragment();
                 break;
 
             case SearchResult.SEARCH_COLLAPSE:
@@ -253,8 +170,111 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void setupAllViews()
-    {
+    private void initFirebaseAuth(FirebaseAuth auth, FirebaseUser user) {
+        // Initialize Firebase Auth
+        auth = FirebaseAuth.getInstance();
+        user = auth.getCurrentUser();
+        if (user == null) {
+            mNavHeaderName.setVisibility(View.GONE);
+            mNavHeaderScreenName.setVisibility(View.GONE);
+            mNavHeaderSignIn.setVisibility(View.VISIBLE);
+        } else {
+            Glide.with(MainActivity.this)
+                    .load(user.getPhotoUrl())
+                    .into(mNavHeaderAvatar);
+            mNavHeaderName.setText(user.getDisplayName());
+            mNavHeaderScreenName.setText(user.getEmail());
+        }
+    }
+
+
+    public SearchView initSearchView(Menu menu) {
+        SearchView searchView = null;
+
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+
+        SearchManager searchManager =
+                (SearchManager) MainActivity.this.getSystemService(Context.SEARCH_SERVICE);
+
+        if (searchItem != null) {
+            searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        }
+        if (searchView != null) {
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(MainActivity.this.getComponentName()));
+
+            searchView.setQueryHint(getString(R.string.type_name_store));
+            searchView.setBackgroundColor(Color.parseColor("#E53935"));
+            mSearchInput = (EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+            mSearchInput.setHintTextColor(ContextCompat.getColor(MainActivity.this, R.color.colorHintText));
+            mSearchInput.setTextColor(Color.WHITE);
+        }
+
+
+        //Set on search query submit
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                EventBus.getDefault().post(new SearchResult(SearchResult.SEARCH_STORE_OK, query));
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
+        //Set event expand search view
+        MenuItemCompat.setOnActionExpandListener(searchItem, new MenuItemCompat.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem menuItem) {
+                showSearchFragment();
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem menuItem) {
+                EventBus.getDefault().post(new SearchResult(SearchResult.SEARCH_COLLAPSE));
+                removeSearchFragment();
+                return true;
+            }
+        });
+
+        return searchView;
+    }
+
+
+    private void showSearchFragment() {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+
+        SearchFragment searchFragment = SearchFragment.newInstance();
+
+        View fragment_placeholder = findViewById(R.id.fragment_search_placeholder);
+        fragment_placeholder.setVisibility(View.VISIBLE);
+        ft.replace(R.id.fragment_search_placeholder, searchFragment, "blankFragment");
+
+        // Start the animated transition.
+        ft.commit();
+    }
+
+
+    private void removeSearchFragment() {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_search_placeholder);
+
+        if (fragment != null) {
+            ft.remove(fragment);
+        }
+
+        ft.commit();
+    }
+
+
+    private void setupAllViews() {
         mDrawerToggle = setupDrawerToggle();
 
         mHeaderLayout = mNavigationView.getHeaderView(0);
