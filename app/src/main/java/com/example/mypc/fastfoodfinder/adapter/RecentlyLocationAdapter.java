@@ -13,37 +13,39 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.example.mypc.fastfoodfinder.model.Article;
 import com.example.mypc.fastfoodfinder.R;
 import com.example.mypc.fastfoodfinder.helper.ItemTouchHelperAdapter;
 import com.example.mypc.fastfoodfinder.helper.ItemTouchHelperViewHolder;
 import com.example.mypc.fastfoodfinder.helper.OnStartDragListener;
+import com.example.mypc.fastfoodfinder.model.Store.Store;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by MyPC on 11/16/2016.
  */
-public class RecentlyLocationAdapter extends RecyclerView.Adapter<RecentlyLocationAdapter.CurrentDesViewHolder>
+public class RecentlyLocationAdapter extends RecyclerView.Adapter<RecentlyLocationAdapter.RecentlyStoreViewHolder>
         implements ItemTouchHelperAdapter {
-    List<Article> mDes;
-    private OnItemClickListener mOnItemClickListener;
     private final OnStartDragListener mDragStartListener;
-    View mView;
+    List<Store> mStoreList;
+    View mContainerView;
+    private OnItemClickListener mOnItemClickListener;
 
-    public RecentlyLocationAdapter(OnStartDragListener onStartDragListener, FrameLayout flLayout){
-        mDes = new ArrayList<>();
-        mView = flLayout;
+    public RecentlyLocationAdapter(OnStartDragListener onStartDragListener, FrameLayout frameLayout) {
+        mStoreList = new ArrayList<>();
+        mContainerView = frameLayout;
         mDragStartListener = onStartDragListener;
     }
 
     @Override
-    public CurrentDesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecentlyStoreViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_current_location,parent,false);
-        return new CurrentDesViewHolder(itemView);
+                .inflate(R.layout.item_recently_location, parent, false);
+        return new RecentlyStoreViewHolder(itemView);
     }
 
     @Override
@@ -53,15 +55,15 @@ public class RecentlyLocationAdapter extends RecyclerView.Adapter<RecentlyLocati
 
     @Override
     public void onItemDismiss(final int position) {
-        final Article article = mDes.get(position);
-        mDes.remove(position);
+        final Store store = mStoreList.get(position);
+        mStoreList.remove(position);
         //notifyDataSetChanged();
         notifyItemRemoved(position);
-        Snackbar.make(mView,R.string.do_you_want_undo, Snackbar.LENGTH_LONG)
+        Snackbar.make(mContainerView, R.string.do_you_want_undo, Snackbar.LENGTH_LONG)
                 .setAction(R.string.undo, new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        mDes.add(position, article);
+                        mStoreList.add(position, store);
                         notifyItemInserted(position);
                     }
                 })
@@ -70,42 +72,38 @@ public class RecentlyLocationAdapter extends RecyclerView.Adapter<RecentlyLocati
 
     }
 
-    public interface OnItemClickListener{
-        void onClick(Article des);
-    }
-
-    public void setOnItemClickListener(OnItemClickListener listener){
+    public void setOnItemClickListener(OnItemClickListener listener) {
         mOnItemClickListener = listener;
     }
 
-    public void addDes(List<Article> destinations){
-        mDes.addAll(destinations);
-        notifyItemRangeInserted(mDes.size(),destinations.size());
+    public void addStores(List<Store> destinations) {
+        int pos = mStoreList.size();
+        mStoreList.addAll(destinations);
+        notifyItemRangeInserted(pos, destinations.size());
     }
 
-    public void addDes(Article destination){
-        mDes.add(destination);
-        notifyItemRangeInserted(mDes.size(),1);
+    public void addStore(Store destination) {
+        mStoreList.add(destination);
+        notifyItemRangeInserted(mStoreList.size(), 1);
     }
 
-    public void setDesS(List<Article> destinations){
-        mDes.clear();
-        mDes.addAll(destinations);
+    public void setStores(List<Store> destinations) {
+        mStoreList.clear();
+        mStoreList.addAll(destinations);
         notifyDataSetChanged();
     }
 
     @Override
-    public void onBindViewHolder(final CurrentDesViewHolder holder, int position) {
+    public void onBindViewHolder(final RecentlyStoreViewHolder holder, int position) {
 
-        Article destination = mDes.get(position);
-        holder.tvDes.setText(destination.getDes());
-        holder.tvAddress.setText(destination.getAddress());
+        Store store = mStoreList.get(position);
+        holder.setData(store);
         // Start a drag whenever the handle view it touched
         holder.itemView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
-                        mDragStartListener.onStartDrag(holder);
+                    mDragStartListener.onStartDrag(holder);
 
                 }
                 return false;
@@ -115,35 +113,32 @@ public class RecentlyLocationAdapter extends RecyclerView.Adapter<RecentlyLocati
 
     @Override
     public int getItemCount() {
-        return mDes.size();
+        return mStoreList.size();
     }
 
-    class CurrentDesViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder {
-        TextView tvDes;
-        TextView tvAddress;
+    public interface OnItemClickListener {
+        void onClick(Store store);
+    }
 
-        @Override
-        public void onItemSelected() {
-            itemView.setBackgroundColor(Color.LTGRAY);
-        }
+    class RecentlyStoreViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder {
+        @BindView(R.id.tv_item_title)
+        TextView txtTitle;
+        @BindView(R.id.tv_item_address)
+        TextView txtAddress;
 
-        @Override
-        public void onItemClear() {
-            itemView.setBackgroundColor(0);
-        }
-
-        public CurrentDesViewHolder(final View itemView) {
+        public RecentlyStoreViewHolder(final View itemView) {
             super(itemView);
-            tvDes = (TextView) itemView.findViewById(R.id.tvCurDestination);
-            tvAddress = (TextView) itemView.findViewById(R.id.tvCurAddress);
+
+            ButterKnife.bind(this, itemView);
+
             itemView.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View view) {
                     int position = getAdapterPosition();
-                    Article destination = mDes.get(position);
-                    if (mOnItemClickListener!= null){
-                        mOnItemClickListener.onClick(destination);
+                    Store store = mStoreList.get(position);
+                    if (mOnItemClickListener != null) {
+                        mOnItemClickListener.onClick(store);
                     }
                 }
             });
@@ -157,9 +152,10 @@ public class RecentlyLocationAdapter extends RecyclerView.Adapter<RecentlyLocati
                             .setMessage(R.string.are_you_sure)
                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
-                                    mDes.remove(position);
+                                    mStoreList.remove(position);
                                     notifyDataSetChanged();
-                                    Snackbar.make(itemView,R.string.undo, Snackbar.LENGTH_INDEFINITE).show();                               }
+                                    Snackbar.make(itemView, R.string.undo, Snackbar.LENGTH_INDEFINITE).show();
+                                }
                             })
                             .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
@@ -171,7 +167,21 @@ public class RecentlyLocationAdapter extends RecyclerView.Adapter<RecentlyLocati
                     return true;
                 }
             });
+        }
 
+        @Override
+        public void onItemSelected() {
+            itemView.setBackgroundColor(Color.LTGRAY);
+        }
+
+        @Override
+        public void onItemClear() {
+            itemView.setBackgroundColor(0);
+        }
+
+        public void setData(Store store) {
+            txtTitle.setText(store.getTitle());
+            txtAddress.setText(store.getAddress());
         }
     }
 

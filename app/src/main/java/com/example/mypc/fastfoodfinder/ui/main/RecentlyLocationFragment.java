@@ -2,7 +2,6 @@ package com.example.mypc.fastfoodfinder.ui.main;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,30 +11,34 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import com.example.mypc.fastfoodfinder.helper.DividerItemDecoration;
 import com.example.mypc.fastfoodfinder.R;
 import com.example.mypc.fastfoodfinder.adapter.RecentlyLocationAdapter;
+import com.example.mypc.fastfoodfinder.helper.DividerItemDecoration;
 import com.example.mypc.fastfoodfinder.helper.OnStartDragListener;
 import com.example.mypc.fastfoodfinder.helper.SimpleItemTouchHelperCallback;
-import com.example.mypc.fastfoodfinder.model.Article;
+import com.example.mypc.fastfoodfinder.model.Store.Store;
+import com.example.mypc.fastfoodfinder.utils.Constant;
 
 import java.util.ArrayList;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by MyPC on 11/20/2016.
  */
 public class RecentlyLocationFragment extends Fragment implements OnStartDragListener {
-    private RecyclerView rvDes;
-    private RecentlyLocationAdapter adapter;
-    LinearLayoutManager linearLayoutManager;
+    private static boolean isFABChangeClicked = false;
+    @BindView(R.id.rv_recently_stores) RecyclerView recyclerView;
+    @BindView(R.id.fl_container) FrameLayout frameLayout;
+    private RecentlyLocationAdapter mRecentlyAdapter;
+    private LinearLayoutManager mLayoutManager;
     private ItemTouchHelper mItemTouchHelper;
-    public static boolean isfbChangeClicked = false;
-    FrameLayout frameLayout;
 
     public RecentlyLocationFragment() {
     }
 
-    public static RecentlyLocationFragment newInstance(){
+    public static RecentlyLocationFragment newInstance() {
         Bundle args = new Bundle();
         RecentlyLocationFragment fragment = new RecentlyLocationFragment();
         fragment.setArguments(args);
@@ -45,40 +48,43 @@ public class RecentlyLocationFragment extends Fragment implements OnStartDragLis
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_recently_location,container,false);
-        rvDes = (RecyclerView) rootView.findViewById(R.id.rvCurrentDes);
-        frameLayout = (FrameLayout) rootView.findViewById(R.id.flRecParent);
+        View rootView = inflater.inflate(R.layout.fragment_recently_location, container, false);
+        ButterKnife.bind(this, rootView);
         return rootView;
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState){
-        adapter = new RecentlyLocationAdapter(this, frameLayout);
-        linearLayoutManager = new LinearLayoutManager(getContext()) ;
-        rvDes.setLayoutManager(linearLayoutManager);
-        rvDes.setAdapter(adapter);
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        setupRecyclerView(recyclerView);
+        loadData();
+    }
+
+    private void setupRecyclerView(RecyclerView rv) {
+        mRecentlyAdapter = new RecentlyLocationAdapter(this, frameLayout);
+        mLayoutManager = new LinearLayoutManager(getContext());
+        rv.setLayoutManager(mLayoutManager);
+        rv.setAdapter(mRecentlyAdapter);
         RecyclerView.ItemDecoration decoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST);
 
-        rvDes.addItemDecoration(decoration);
-        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
+        rv.addItemDecoration(decoration);
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(mRecentlyAdapter);
         mItemTouchHelper = new ItemTouchHelper(callback);
-        mItemTouchHelper.attachToRecyclerView(rvDes);
-        Load();
+        mItemTouchHelper.attachToRecyclerView(rv);
     }
 
 
-    private void Load(){
-        ArrayList<Article> articles = new ArrayList<>();
-        articles.add(new Article("Circle K Tu Nhien","227 Ng Van Cu, Quan 5"));
-        articles.add(new Article("Hu tieu Nhan Quan","123 Au Duong Lan, Q.8"));
-        articles.add(new Article("Family mart Ho Con rua","Quan 3"));
-        articles.add(new Article("Mini Stop Cau Chu Y","135 Nguyen Bieu, D5"));
-        articles.add(new Article("Shop and Go Pham The Hien","1108 Pham The Hien, Quan 8"));
-        adapter.setDesS(articles);
+    private void loadData() {
+        ArrayList<Store> stores = new ArrayList<>();
+        stores.add(new Store("Circle K Le Thi Rieng", "148 Le Thi Rieng, Ben Thanh Ward, District 1, Ho Chi Minh, Vietnam", "10.770379", "106.68912279999995", "3925 6620", Constant.TYPE_CIRCLE_K));
+        stores.add(new Store("Shop & Go - Phan Đình Phùng", "180 Phan Đình Phùng, P. 2, Quận Phú Nhuận, TP. HCM", "10.7955070000000", "106.6825610000000", "38 353 193", Constant.TYPE_SHOP_N_GO));
+        stores.add(new Store("Circle K Ly Tu Trong", "238 Ly Tu Trong, Ben Thanh Ward, District 1, Ho Chi Minh, Vietnam", "10.7721924", "106.69433409999999", "3822 7403", Constant.TYPE_CIRCLE_K));
+        stores.add(new Store("Familymart - Đường D2", "39 Đường D2, P. 25, Quận Bình Thạnh, TP. HCM", "10.80252", "106.715622", "35 126 283", Constant.TYPE_FAMILY_MART));
+        mRecentlyAdapter.setStores(stores);
     }
+
     @Override
     public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
-        if (isfbChangeClicked)
-        mItemTouchHelper.startDrag(viewHolder);
+        if (isFABChangeClicked)
+            mItemTouchHelper.startDrag(viewHolder);
     }
 }

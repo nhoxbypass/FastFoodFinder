@@ -18,21 +18,32 @@ public class Store implements Serializable {
     //3: bsmart
     //4: shop n go
 
+    @Exclude
+    int type;
+    @PropertyName("title")
+    private String title;
+    @PropertyName("address")
+    private String address;
+    @PropertyName("lat")
+    private String lat;
+    @PropertyName("lng")
+    private String lng;
+    @PropertyName("tel")
+    private String tel;
+
     public Store() {
     }
 
-    public Store(String title, String lat, String lng, String tel ,int type)
-    {
+    public Store(String title, String address, String lat, String lng, String tel, int type) {
         this.title = title;
+        this.address = address;
         this.lat = lat;
         this.lng = lng;
         this.tel = tel;
         this.type = type;
     }
 
-
-    public Store(StoreEntity entity)
-    {
+    public Store(StoreEntity entity) {
         title = entity.getTitle();
         address = entity.getAddress();
         lat = String.valueOf(entity.getLatitude());
@@ -41,8 +52,7 @@ public class Store implements Serializable {
         type = entity.getType();
     }
 
-    public Store(StoreViewModel viewModel)
-    {
+    public Store(StoreViewModel viewModel) {
         title = viewModel.getStoreName();
         lat = String.valueOf(viewModel.getPosition().latitude);
         lng = String.valueOf(viewModel.getPosition().longitude);
@@ -51,27 +61,12 @@ public class Store implements Serializable {
         address = viewModel.getStoreAddress();
     }
 
-
-    public LatLng getPosition()
-    {
+    public LatLng getPosition() {
         return new LatLng(Double.parseDouble(lat), Double.parseDouble(lng));
     }
 
-
     public String getTitle() {
         return title;
-    }
-
-    public String getLat() {
-        return lat;
-    }
-
-    public String getLng() {
-        return lng;
-    }
-
-    public int getType() {
-        return type;
     }
 
     @PropertyName("title")
@@ -79,14 +74,26 @@ public class Store implements Serializable {
         this.title = title;
     }
 
+    public String getLat() {
+        return lat;
+    }
+
     @PropertyName("lat")
     public void setLat(String lat) {
         this.lat = lat;
     }
 
+    public String getLng() {
+        return lng;
+    }
+
     @PropertyName("lng")
     public void setLng(String lng) {
         this.lng = lng;
+    }
+
+    public int getType() {
+        return type;
     }
 
     public void setType(int type) {
@@ -102,9 +109,6 @@ public class Store implements Serializable {
         this.tel = tel;
     }
 
-    @PropertyName("title")
-    private String title;
-
     public String getAddress() {
         return address;
     }
@@ -112,15 +116,4 @@ public class Store implements Serializable {
     public void setAddress(String address) {
         this.address = address;
     }
-
-    @PropertyName("address")
-    private String address;
-    @PropertyName("lat")
-    private String lat;
-    @PropertyName("lng")
-    private String lng;
-    @PropertyName("tel")
-    private String tel;
-    @Exclude
-    int type;
 }

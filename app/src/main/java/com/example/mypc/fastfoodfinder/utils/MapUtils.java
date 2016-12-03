@@ -4,6 +4,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.util.Log;
 
 import com.example.mypc.fastfoodfinder.R;
@@ -59,5 +60,18 @@ public class MapUtils {
         }
 
         return id;
+    }
+
+    public static double calcDistance(LatLng startPosition, LatLng endPosition)
+    {
+        //
+        Location start = new Location("pointA");
+        start.setLatitude(startPosition.latitude);
+        start.setLongitude(startPosition.longitude);
+        Location end = new Location("pointB");
+        end.setLatitude(endPosition.latitude);
+        end.setLongitude(endPosition.longitude);
+
+        return (start.distanceTo(end)/1000.0);
     }
 }

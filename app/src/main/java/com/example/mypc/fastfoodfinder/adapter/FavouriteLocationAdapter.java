@@ -13,52 +13,52 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.example.mypc.fastfoodfinder.model.Article;
 import com.example.mypc.fastfoodfinder.R;
 import com.example.mypc.fastfoodfinder.helper.ItemTouchHelperAdapter;
 import com.example.mypc.fastfoodfinder.helper.ItemTouchHelperViewHolder;
 import com.example.mypc.fastfoodfinder.helper.OnStartDragListener;
+import com.example.mypc.fastfoodfinder.model.Store.Store;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by MyPC on 11/16/2016.
  */
-public class FavouriteLocationAdapter extends RecyclerView.Adapter<FavouriteLocationAdapter.FavouriteDesViewHolder>
+public class FavouriteLocationAdapter extends RecyclerView.Adapter<FavouriteLocationAdapter.FavouriteStoreViewHolder>
         implements ItemTouchHelperAdapter {
-    List<Article> mDes;
-    private OnItemClickListener mOnItemClickListener;
     private final OnStartDragListener mDragStartListener;
+    View mContainerView;
+    private List<Store> mStoreList;
+    private OnItemClickListener mOnItemClickListener;
 
-    View mView;
-    public FavouriteLocationAdapter(OnStartDragListener onStartDragListener, FrameLayout view){
-        mDes = new ArrayList<>();
+    public FavouriteLocationAdapter(OnStartDragListener onStartDragListener, FrameLayout view) {
+        mStoreList = new ArrayList<>();
         mDragStartListener = onStartDragListener;
-        mView = view;
+        mContainerView = view;
     }
 
     @Override
-    public FavouriteDesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public FavouriteStoreViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_favourite_location,parent,false);
-        return new FavouriteDesViewHolder(itemView);
+                .inflate(R.layout.item_favourite_location, parent, false);
+        return new FavouriteStoreViewHolder(itemView);
     }
 
-    private interface MyOnClickListener{
-
-    }
     @Override
     public boolean onItemMove(final int fromPosition, final int toPosition) {
-        Collections.swap(mDes, fromPosition, toPosition);
+        Collections.swap(mStoreList, fromPosition, toPosition);
         notifyItemMoved(fromPosition, toPosition);
-        Snackbar.make(mView, R.string.do_you_want_undo, Snackbar.LENGTH_LONG)
+        Snackbar.make(mContainerView, R.string.do_you_want_undo, Snackbar.LENGTH_LONG)
                 .setAction(R.string.undo, new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Collections.swap(mDes,toPosition, fromPosition);
-                        notifyItemMoved(toPosition,fromPosition);
+                        Collections.swap(mStoreList, toPosition, fromPosition);
+                        notifyItemMoved(toPosition, fromPosition);
                     }
                 })
                 .setDuration(30000)
@@ -68,15 +68,15 @@ public class FavouriteLocationAdapter extends RecyclerView.Adapter<FavouriteLoca
 
     @Override
     public void onItemDismiss(final int position) {
-        final Article article = mDes.get(position);
-        mDes.remove(position);
+        final Store store = mStoreList.get(position);
+        mStoreList.remove(position);
         notifyDataSetChanged();
         notifyItemRemoved(position);
-        Snackbar.make(mView, R.string.do_you_want_undo, Snackbar.LENGTH_LONG)
+        Snackbar.make(mContainerView, R.string.do_you_want_undo, Snackbar.LENGTH_LONG)
                 .setAction(R.string.undo, new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        mDes.add(position, article);
+                        mStoreList.add(position, store);
                         notifyItemInserted(position);
                     }
                 })
@@ -84,37 +84,31 @@ public class FavouriteLocationAdapter extends RecyclerView.Adapter<FavouriteLoca
                 .show();
     }
 
-
-    public interface OnItemClickListener{
-        void onClick(Article des);
-    }
-
-    public void setOnItemClickListener(OnItemClickListener listener){
+    public void setOnItemClickListener(OnItemClickListener listener) {
         mOnItemClickListener = listener;
     }
 
-    public void addDes(List<Article> destinations){
-        mDes.addAll(destinations);
-        notifyItemRangeInserted(mDes.size(),destinations.size());
+    public void addStores(List<Store> destinations) {
+        int pos = mStoreList.size();
+        mStoreList.addAll(destinations);
+        notifyItemRangeInserted(pos, destinations.size());
     }
 
-    public void addDes(Article destination){
-        mDes.add(destination);
-        notifyItemRangeInserted(mDes.size(),1);
+    public void addStore(Store destination) {
+        mStoreList.add(destination);
+        notifyItemRangeInserted(mStoreList.size(), 1);
     }
 
-    public void setDesS(List<Article> destinations){
-        mDes.clear();
-        mDes.addAll(destinations);
+    public void setStores(List<Store> destinations) {
+        mStoreList.clear();
+        mStoreList.addAll(destinations);
         notifyDataSetChanged();
     }
 
     @Override
-    public void onBindViewHolder(final FavouriteDesViewHolder holder, int position) {
-
-        Article destination = mDes.get(position);
-        holder.tvDes.setText(destination.getDes());
-        holder.tvAddress.setText(destination.getAddress());
+    public void onBindViewHolder(final FavouriteStoreViewHolder holder, int position) {
+        Store store = mStoreList.get(position);
+        holder.setData(store);
         // Start a drag whenever the handle view it touched
         holder.itemView.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -129,12 +123,68 @@ public class FavouriteLocationAdapter extends RecyclerView.Adapter<FavouriteLoca
 
     @Override
     public int getItemCount() {
-        return mDes.size();
+        return mStoreList.size();
     }
 
-    class FavouriteDesViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder {
-        TextView tvDes;
-        TextView tvAddress;
+    private interface FavouritedListListener {
+        public void onClick(Store store);
+
+        public void onItemDismiss();
+    }
+
+    public interface OnItemClickListener {
+        void onClick(Store des);
+    }
+
+    class FavouriteStoreViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder {
+        @BindView(R.id.tv_item_title)
+        TextView txtTitle;
+        @BindView(R.id.tv_item_address)
+        TextView txtAddress;
+
+        public FavouriteStoreViewHolder(final View itemView) {
+            super(itemView);
+
+            ButterKnife.bind(this, itemView);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View view) {
+                    int position = getAdapterPosition();
+                    Store store = mStoreList.get(position);
+                    if (mOnItemClickListener != null) {
+                        mOnItemClickListener.onClick(store);
+                    }
+                }
+            });
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    final int position = getAdapterPosition();
+                    new AlertDialog.Builder(itemView.getContext())
+                            .setTitle(R.string.delete_favourite_location)
+                            .setMessage(R.string.are_you_sure)
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    mStoreList.remove(position);
+                                    notifyDataSetChanged();
+                                    Snackbar.make(itemView, R.string.undo, Snackbar.LENGTH_INDEFINITE).show();
+                                }
+                            })
+                            .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    //do nothing
+                                }
+                            })
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .show();
+                    return true;
+                }
+            });
+
+        }
 
         @Override
         public void onItemSelected() {
@@ -146,47 +196,10 @@ public class FavouriteLocationAdapter extends RecyclerView.Adapter<FavouriteLoca
             itemView.setBackgroundColor(0);
         }
 
-       public FavouriteDesViewHolder(final View itemView) {
-           super(itemView);
-           tvDes = (TextView) itemView.findViewById(R.id.tvDestination);
-           tvAddress = (TextView) itemView.findViewById(R.id.tvAddress);
-           itemView.setOnClickListener(new View.OnClickListener() {
-
-               @Override
-               public void onClick(View view) {
-                   int position = getAdapterPosition();
-                   Article destination = mDes.get(position);
-                   if (mOnItemClickListener!= null){
-                       mOnItemClickListener.onClick(destination);
-                   }
-               }
-           });
-
-           itemView.setOnLongClickListener(new View.OnLongClickListener() {
-               @Override
-               public boolean onLongClick(View view) {
-                   final int position = getAdapterPosition();
-                   new AlertDialog.Builder(itemView.getContext())
-                           .setTitle(R.string.delete_favourite_location)
-                           .setMessage(R.string.are_you_sure)
-                           .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                               public void onClick(DialogInterface dialog, int which) {
-                                   mDes.remove(position);
-                                   notifyDataSetChanged();
-                                   Snackbar.make(itemView,R.string.undo, Snackbar.LENGTH_INDEFINITE).show();                               }
-                           })
-                           .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                               public void onClick(DialogInterface dialog, int which) {
-                                   //do nothing
-                               }
-                           })
-                           .setIcon(android.R.drawable.ic_dialog_alert)
-                           .show();
-                   return true;
-               }
-           });
-
-       }
-   }
+        public void setData(Store store) {
+            txtTitle.setText(store.getTitle());
+            txtAddress.setText(store.getAddress());
+        }
+    }
 
 }

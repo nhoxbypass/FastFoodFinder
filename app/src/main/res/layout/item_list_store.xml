@@ -1,54 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_margin="8dp">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:orientation="horizontal">
 
     <ImageView
+        android:id="@+id/ivStoreImage"
         android:layout_width="0dp"
+        android:layout_height="88dp"
         android:layout_weight="2"
         android:scaleType="centerCrop"
-        android:src="@drawable/logo_bsmart_50"
-        android:id="@+id/ivStoreImage"
-        android:layout_height="88dp" />
+        android:src="@drawable/logo_bsmart_50" />
+
     <LinearLayout
         android:layout_width="0dp"
-        android:layout_weight="6"
-        android:orientation="vertical"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="8dp"
-        android:layout_height="wrap_content">
+        android:layout_weight="6"
+        android:orientation="vertical">
+
         <TextView
+            android:id="@+id/tv_item_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Coffe"
-            android:id="@+id/tvStoreName"
-            android:textStyle="bold"
             android:textColor="#3F51B5"
-            android:textSize="24sp"/>
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="cofe"
-            android:layout_marginTop="4dp"
-            android:id="@+id/tvStoreAddress"/>
-        <TextView
+            android:id="@+id/tv_item_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="tel: 01689040391"
-            android:id="@+id/tvTel"
-            />
+            android:text="cofe" />
+
+        <TextView
+            android:id="@+id/tv_item_tel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="tel: 01689040391" />
     </LinearLayout>
 
     <Button
+        android:id="@+id/btnRate"
         android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_marginTop="8dp"
-        android:layout_marginRight="8dp"
         android:layout_height="36dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_weight="1"
         android:background="#FF5252"
         android:text="7.5"
-        android:textColor="@android:color/white"
-        android:id="@+id/btnRate"/>
+        android:textColor="@android:color/white" />
 </LinearLayout>

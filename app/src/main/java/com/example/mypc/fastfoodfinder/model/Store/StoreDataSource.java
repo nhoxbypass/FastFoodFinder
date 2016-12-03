@@ -1,7 +1,6 @@
 package com.example.mypc.fastfoodfinder.model.Store;
 
 import com.example.mypc.fastfoodfinder.utils.Constant;
-import com.example.mypc.fastfoodfinder.utils.MapUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,8 +13,7 @@ import io.realm.RealmResults;
  * Created by nhoxb on 11/20/2016.
  */
 public class StoreDataSource {
-    public static void store(final List<Store> storeList)
-    {
+    public static void store(final List<Store> storeList) {
         Realm realm = Realm.getDefaultInstance();
         realm.executeTransaction(new Realm.Transaction() {
             @Override
@@ -24,8 +22,7 @@ public class StoreDataSource {
                         .findAll()
                         .deleteAllFromRealm();
 
-                for (int i = 0; i < storeList.size(); i++)
-                {
+                for (int i = 0; i < storeList.size(); i++) {
                     StoreEntity storeEntity = realm.createObject(StoreEntity.class);
                     storeEntity.map(storeList.get(i));
                 }
@@ -34,14 +31,12 @@ public class StoreDataSource {
         realm.close();
     }
 
-    public static List<Store> getAllObjects()
-    {
+    public static List<Store> getAllObjects() {
         Realm realm = Realm.getDefaultInstance();
         List<Store> storeList = new ArrayList<>();
         RealmResults<StoreEntity> results = realm.where(StoreEntity.class).findAll();
 
-        for (int i = 0; i < results.size(); i++)
-        {
+        for (int i = 0; i < results.size(); i++) {
             storeList.add(new Store(results.get(i)));
         }
 
@@ -50,22 +45,20 @@ public class StoreDataSource {
         return storeList;
     }
 
-    public static List<Store> getStoreInBounds(double minLat, double minLng, double maxLat, double maxLng)
-    {
+    public static List<Store> getStoreInBounds(double minLat, double minLng, double maxLat, double maxLng) {
         Realm realm = Realm.getDefaultInstance();
         List<Store> storeList = new ArrayList<>();
         // Build the query looking at all users:
         RealmQuery<StoreEntity> query = realm.where(StoreEntity.class);
 
         // Add query conditions:
-        query.between("latitude",minLat,maxLat);
+        query.between("latitude", minLat, maxLat);
         query.between("longitude", minLng, maxLng);
 
         // Execute the query:
         RealmResults<StoreEntity> result = query.findAll();
 
-        for (int i = 0; i < result.size(); i++)
-        {
+        for (int i = 0; i < result.size(); i++) {
             Store store = new Store(result.get(i));
             storeList.add(store);
         }
@@ -75,53 +68,39 @@ public class StoreDataSource {
         return storeList;
     }
 
-    public static List<Store> getStore(String queryString)
-    {
+    public static List<Store> getStore(String queryString) {
         queryString = queryString.toLowerCase().trim();
-        if (queryString.equals("circle k") || queryString.equals("circlek"))
-        {
+        if (queryString.equals("circle k") || queryString.equals("circlek")) {
             return getStore(Constant.TYPE_CIRCLE_K);
-        }
-        else if (queryString.equals("mini stop") || queryString.equals("ministop"))
-        {
+        } else if (queryString.equals("mini stop") || queryString.equals("ministop")) {
             return getStore(Constant.TYPE_MINI_STOP);
-        }
-        else if (queryString.equals("family mart") || queryString.equals("familymart"))
-        {
+        } else if (queryString.equals("family mart") || queryString.equals("familymart")) {
             return getStore(Constant.TYPE_FAMILY_MART);
-        }
-        else if (queryString.equals("shop and go") || queryString.equals("shopandgo") || queryString.equals("shop n go"))
-        {
+        } else if (queryString.equals("shop and go") || queryString.equals("shopandgo") || queryString.equals("shop n go")) {
             return getStore(Constant.TYPE_SHOP_N_GO);
-        }
-        else if (queryString.equals("bsmart") || queryString.equals("b smart") || queryString.equals("bs mart") || queryString.equals("bmart") || queryString.equals("b'smart") || queryString.equals("b's mart"))
-        {
+        } else if (queryString.equals("bsmart") || queryString.equals("b smart") || queryString.equals("bs mart") || queryString.equals("bmart") || queryString.equals("b'smart") || queryString.equals("b's mart")) {
             return getStore(Constant.TYPE_BSMART);
-        }
-        else
-        {
+        } else {
             //Cant determine
             //Quite hard to implement
             return getCustomStore(queryString);
         }
     }
 
-    public static List<Store> getCustomStore(String customQuerySearch)
-    {
+    public static List<Store> getCustomStore(String customQuerySearch) {
         Realm realm = Realm.getDefaultInstance();
 
         List<Store> storeList = new ArrayList<>();
 
         RealmQuery<StoreEntity> query = realm.where(StoreEntity.class);
 
-        query.contains("title",customQuerySearch);
+        query.contains("title", customQuerySearch);
         query.or().contains("address", customQuerySearch);
 
         RealmResults<StoreEntity> results = query.findAll();
 
         int size = results.size();
-        for (int i = 0; i < size; i++)
-        {
+        for (int i = 0; i < size; i++) {
             Store store = new Store(results.get(i));
             storeList.add(store);
         }
@@ -131,21 +110,19 @@ public class StoreDataSource {
         return storeList;
     }
 
-    public static List<Store> getStore(int type)
-    {
+    public static List<Store> getStore(int type) {
         Realm realm = Realm.getDefaultInstance();
 
         List<Store> storeList = new ArrayList<>();
 
         RealmQuery<StoreEntity> query = realm.where(StoreEntity.class);
 
-        query.equalTo("type",type);
+        query.equalTo("type", type);
 
         RealmResults<StoreEntity> results = query.findAll();
 
         int size = results.size();
-        for (int i = 0; i < size; i++)
-        {
+        for (int i = 0; i < size; i++) {
             Store store = new Store(results.get(i));
             storeList.add(store);
         }

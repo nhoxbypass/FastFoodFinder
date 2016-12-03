@@ -1,28 +1,26 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fl_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/flFavParent"
     tools:context="com.example.mypc.fastfoodfinder.ui.main.FavouritedLocationFragment">
 
     <android.support.v7.widget.RecyclerView
-        android:layout_marginTop="50dp"
+        android:id="@+id/rv_favourite_stores"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:id="@+id/rvFavouriteDes"
-        >
-    </android.support.v7.widget.RecyclerView>
-     <android.support.design.widget.FloatingActionButton
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:layout_gravity="bottom"
-       android:layout_marginLeft="290dp"
-       android:layout_marginBottom="20dp"
-         app:backgroundTint="@color/googleBlue"
-       android:id="@+id/fbFavoriteChange"
-       android:src="@drawable/ic_swap_black"
-       />
+        android:layout_marginTop="50dp"
+        android:clipToPadding="false"></android.support.v7.widget.RecyclerView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_change"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="290dp"
+        android:src="@drawable/ic_swap_black"
+        app:backgroundTint="@color/googleBlue" />
 
 </FrameLayout>

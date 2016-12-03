@@ -9,12 +9,17 @@ import io.realm.RealmObject;
  */
 public class StoreEntity extends RealmObject {
 
+    int type;
+    private String title;
+    private String address;
+    private double latitude;
+    private double longitude;
+    private String telephone;
+
     public StoreEntity() {
     }
 
-
-    public void map(Store store)
-    {
+    public void map(Store store) {
         title = store.getTitle();
         address = store.getAddress();
         latitude = Double.parseDouble(store.getLat());
@@ -35,8 +40,7 @@ public class StoreEntity extends RealmObject {
         return longitude;
     }
 
-    public LatLng getPosition()
-    {
+    public LatLng getPosition() {
         return new LatLng(latitude, longitude);
     }
 
@@ -52,8 +56,6 @@ public class StoreEntity extends RealmObject {
         this.telephone = telephone;
     }
 
-    private String title;
-
     public String getAddress() {
         return address;
     }
@@ -61,10 +63,4 @@ public class StoreEntity extends RealmObject {
     public void setAddress(String address) {
         this.address = address;
     }
-
-    private String address;
-    private double latitude;
-    private double longitude;
-    private String telephone;
-    int type;
 }
