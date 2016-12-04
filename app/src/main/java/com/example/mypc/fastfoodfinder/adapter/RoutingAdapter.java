@@ -5,10 +5,13 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.mypc.fastfoodfinder.R;
 import com.example.mypc.fastfoodfinder.model.Routing.Step;
+import com.example.mypc.fastfoodfinder.utils.MapUtils;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
@@ -20,7 +23,7 @@ import butterknife.ButterKnife;
 /**
  * Created by nhoxb on 11/30/2016.
  */
-public class RoutingAdapter extends RecyclerView.Adapter<RoutingAdapter.VH>{
+public class RoutingAdapter extends RecyclerView.Adapter<RoutingAdapter.VH> {
 
     List<Step> mStepList;
     OnNavigationItemClickListener mListener;
@@ -35,14 +38,13 @@ public class RoutingAdapter extends RecyclerView.Adapter<RoutingAdapter.VH>{
         this.mStepList = steps;
     }
 
-    public void setOnNavigationItemClickListener(OnNavigationItemClickListener listener)
-    {
+    public void setOnNavigationItemClickListener(OnNavigationItemClickListener listener) {
         mListener = listener;
     }
 
     @Override
     public VH onCreateViewHolder(ViewGroup parent, int viewType) {
-        View convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_routing,parent, false);
+        View convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_routing, parent, false);
         return new VH(convertView);
     }
 
@@ -56,12 +58,16 @@ public class RoutingAdapter extends RecyclerView.Adapter<RoutingAdapter.VH>{
         return mStepList.size();
     }
 
-    class VH extends RecyclerView.ViewHolder
-    {
-        @BindView(R.id.tv_routing_guide)
-        TextView routingGuide;
-        @BindView(R.id.tv_routing_distance)
-        TextView routingDistance;
+
+    public interface OnNavigationItemClickListener {
+        public void onClick(LatLng latLng);
+    }
+
+    class VH extends RecyclerView.ViewHolder {
+        @BindView(R.id.tv_routing_guide) TextView routingGuide;
+        @BindView(R.id.tv_routing_distance) TextView routingDistance;
+        @BindView(R.id.iv_routing) ImageView routingImageView;
+
         public VH(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
@@ -74,8 +80,11 @@ public class RoutingAdapter extends RecyclerView.Adapter<RoutingAdapter.VH>{
             });
         }
 
-        public void setData(Step step)
-        {
+        public void setData(Step step) {
+
+            int imgResId = MapUtils.getDirectionImage(step.getDirection());
+            routingImageView.setImageResource(imgResId);
+
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                 routingGuide.setText(Html.fromHtml(step.getInstruction(), Html.FROM_HTML_MODE_LEGACY));
             } else {
@@ -84,10 +93,5 @@ public class RoutingAdapter extends RecyclerView.Adapter<RoutingAdapter.VH>{
             routingGuide.setText(Html.fromHtml(step.getInstruction()));
             routingDistance.setText(step.getDistance());
         }
-    }
-
-    public interface OnNavigationItemClickListener
-    {
-        public void onClick(LatLng latLng);
     }
 }

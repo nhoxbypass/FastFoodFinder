@@ -74,4 +74,29 @@ public class MapUtils {
 
         return (start.distanceTo(end)/1000.0);
     }
+
+    public static int getDirectionImage(String direction) {
+        if (direction == null)
+            return R.drawable.ic_arrow_up;
+
+        if (direction.equals("straight"))
+        {
+            return R.drawable.ic_arrow_up;
+        }
+        else if (direction.equals("turn-left"))
+        {
+            return R.drawable.ic_arrow_left;
+        }
+        else if (direction.equals("turn-right"))
+        {
+            return R.drawable.ic_arrow_right;
+        }
+        else if (direction.equals("merge"))
+        {
+            return R.drawable.ic_arrow_merge;
+        }
+        else {
+            return R.drawable.ic_arrow_up;
+        }
+    }
 }

@@ -33,14 +33,10 @@ public class CommentActivity extends AppCompatActivity implements NoticeDialog.N
 
     private final int MAX_CHAR = 500;
 
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-    @BindView(R.id.comment)
-    EditText etComment;
-    @BindView(R.id.remain_char)
-    TextView tvRemainChar;
-    @BindView(R.id.post)
-    Button btnPost;
+    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.comment) EditText etComment;
+    @BindView(R.id.remain_char) TextView tvRemainChar;
+    @BindView(R.id.post) Button btnPost;
 
     public static Intent getIntent(Context context) {
         Intent intent = new Intent(context, CommentActivity.class);

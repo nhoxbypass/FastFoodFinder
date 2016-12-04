@@ -35,7 +35,6 @@
             android:theme="@style/AppTheme.NoActionBar.TranslucentStatus">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -49,9 +48,12 @@
         </activity>
         <activity android:name=".activity.MapRoutingActivity">
         </activity>
-        <activity android:name=".activity.CommentActivity">
+        <activity
+            android:name=".activity.CommentActivity"
+            android:windowSoftInputMode="adjustPan">
         </activity>
-        <activity android:name=".activity.StoreListActivity"></activity>
+        <activity android:name=".activity.StoreListActivity">
+        </activity>
     </application>
 
 </manifest>

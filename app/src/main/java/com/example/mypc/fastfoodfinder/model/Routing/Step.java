@@ -10,17 +10,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by nhoxb on 11/11/2016.
  */
-public class Step implements Parcelable{
-    protected Step(Parcel in) {
-        JsonParser parser = new JsonParser();
-        distance = parser.parse(in.readString()).getAsJsonObject();
-        duration = parser.parse(in.readString()).getAsJsonObject();
-        startMapCoordination = in.readParcelable(MapCoordination.class.getClassLoader());
-        endMapCoordination = in.readParcelable(MapCoordination.class.getClassLoader());
-        instruction = in.readString();
-        travelMode = in.readString();
-    }
-
+public class Step implements Parcelable {
     public static final Creator<Step> CREATOR = new Creator<Step>() {
         @Override
         public Step createFromParcel(Parcel in) {
@@ -32,13 +22,37 @@ public class Step implements Parcelable{
             return new Step[size];
         }
     };
+    @SerializedName("distance")
+    JsonObject distance;
+    @SerializedName("duration")
+    JsonObject duration;
+    @SerializedName("start_location")
+    MapCoordination startMapCoordination;
+    @SerializedName("end_location")
+    MapCoordination endMapCoordination;
+    @SerializedName("html_instructions")
+    String instruction;
+    @SerializedName("maneuver")
+    String direction;
+    @SerializedName("travel_mode")
+    String travelMode;
+
+    protected Step(Parcel in) {
+        JsonParser parser = new JsonParser();
+        distance = parser.parse(in.readString()).getAsJsonObject();
+        duration = parser.parse(in.readString()).getAsJsonObject();
+        startMapCoordination = in.readParcelable(MapCoordination.class.getClassLoader());
+        endMapCoordination = in.readParcelable(MapCoordination.class.getClassLoader());
+        instruction = in.readString();
+        travelMode = in.readString();
+        direction = in.readString();
+    }
 
     public String getDistance() {
         return distance.getAsJsonPrimitive("text").getAsString();
     }
 
-    public long getDistanceValue()
-    {
+    public long getDistanceValue() {
         return distance.getAsJsonPrimitive("value").getAsLong();
     }
 
@@ -46,8 +60,7 @@ public class Step implements Parcelable{
         return duration.getAsJsonPrimitive("text").getAsString();
     }
 
-    public long getDurationValue()
-    {
+    public long getDurationValue() {
         return duration.getAsJsonPrimitive("value").getAsLong();
     }
 
@@ -67,18 +80,13 @@ public class Step implements Parcelable{
         return travelMode;
     }
 
-    @SerializedName("distance")
-    JsonObject distance;
-    @SerializedName("duration")
-    JsonObject duration;
-    @SerializedName("start_location")
-    MapCoordination startMapCoordination;
-    @SerializedName("end_location")
-    MapCoordination endMapCoordination;
-    @SerializedName("html_instructions")
-    String instruction;
-    @SerializedName("travel_mode")
-    String travelMode;
+    public String getDirection() {
+        return direction;
+    }
+
+    public void setDirection(String direction) {
+        this.direction = direction;
+    }
 
     @Override
     public int describeContents() {
@@ -93,5 +101,6 @@ public class Step implements Parcelable{
         parcel.writeParcelable(endMapCoordination, i);
         parcel.writeString(instruction);
         parcel.writeString(travelMode);
+        parcel.writeString(direction);
     }
 }
