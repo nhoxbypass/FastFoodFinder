@@ -28,7 +28,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SearchFragment extends Fragment {
+public class    SearchFragment extends Fragment {
 
     @BindView(R.id.btn_search_circle_k) CircleImageView quickSearchCircleK;
     @BindView(R.id.btn_search_family_mart) CircleImageView quickSearchFamilyMart;

@@ -25,7 +25,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.realm.Realm;
 
@@ -38,6 +40,8 @@ public class SplashActivity extends AppCompatActivity {
     // Firebase instance variables
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
+    private FirebaseDatabase mDatabase;
+    DatabaseReference mDatabaseRef;
 
 
     @Override
@@ -110,11 +114,11 @@ public class SplashActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 // Firebase instance variables
                                 // Get a reference to our posts
-                                final FirebaseDatabase database = FirebaseDatabase.getInstance();
-                                DatabaseReference ref = database.getReference(Constant.CHILD_STORES_LOCATION);
+                                mDatabase = FirebaseDatabase.getInstance();
+                                mDatabaseRef = mDatabase.getReference(Constant.CHILD_STORES_LOCATION);
 
                                 // Attach a listener to read the data at our posts reference
-                                ref.addValueEventListener(new ValueEventListener() {
+                                mDatabaseRef.addValueEventListener(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
                                         parseDataFromFirebase(dataSnapshot);
@@ -145,9 +149,7 @@ public class SplashActivity extends AppCompatActivity {
 
     private void parseDataFromFirebase(DataSnapshot dataSnapshot) {
         List<Store> storeList = new ArrayList<Store>();
-
         for (DataSnapshot child : dataSnapshot.getChildren()) {
-
             for (DataSnapshot storeLocation : child.child(Constant.CHILD_MARKERS_ADD).getChildren()) {
                 Store store = storeLocation.getValue(Store.class);
                 store.setType(getStoreType(child.getKey()));
@@ -164,21 +166,18 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private int getStoreType(String key) {
-        switch (key) {
-            case "circle_k":
+            if (key.equals("circle_k"))
                 return Constant.TYPE_CIRCLE_K;
-            case "mini_stop":
+            else if (key.equals("mini_stop"))
                 return Constant.TYPE_MINI_STOP;
-            case "family_mart":
+            else if (key.equals("family_mart"))
                 return Constant.TYPE_FAMILY_MART;
-            case "logo_red_bsmart":
+            else if (key.equals("bsmart"))
                 return Constant.TYPE_BSMART;
-            case "shop_n_go":
+            else if (key.equals("shop_n_go"))
                 return Constant.TYPE_SHOP_N_GO;
-
-            default:
+            else
                 return Constant.TYPE_CIRCLE_K;
-        }
     }
 
     private void saveStoresLocation(List<Store> storeList) {

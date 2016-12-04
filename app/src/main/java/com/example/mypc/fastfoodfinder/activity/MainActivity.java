@@ -84,7 +84,9 @@ public class MainActivity extends AppCompatActivity {
         PACKAGE_NAME = getApplicationContext().getPackageName();
 
         setupAllViews();
-        initFirebaseAuth(mFirebaseAuth, mFirebaseUser);
+        // Initialize Firebase Auth
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        mFirebaseUser = initFirebaseAuth(mFirebaseAuth);
 
         //Inflate Map fragment
         mNavigationView.getMenu().getItem(0).setChecked(true);
@@ -170,10 +172,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void initFirebaseAuth(FirebaseAuth auth, FirebaseUser user) {
-        // Initialize Firebase Auth
-        auth = FirebaseAuth.getInstance();
-        user = auth.getCurrentUser();
+    private FirebaseUser initFirebaseAuth(FirebaseAuth auth) {
+        FirebaseUser user = auth.getCurrentUser();
         if (user == null) {
             mNavHeaderName.setVisibility(View.GONE);
             mNavHeaderScreenName.setVisibility(View.GONE);
@@ -185,6 +185,8 @@ public class MainActivity extends AppCompatActivity {
             mNavHeaderName.setText(user.getDisplayName());
             mNavHeaderScreenName.setText(user.getEmail());
         }
+
+        return user;
     }
 
 
