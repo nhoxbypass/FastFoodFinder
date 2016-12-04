@@ -30,7 +30,7 @@ import butterknife.ButterKnife;
 public class RecentlyLocationFragment extends Fragment implements OnStartDragListener {
     private static boolean isFABChangeClicked = false;
     @BindView(R.id.rv_recently_stores) RecyclerView recyclerView;
-    @BindView(R.id.fl_container) FrameLayout frameLayout;
+    @BindView(R.id.fl_container) FrameLayout containerLayout;
     private RecentlyLocationAdapter mRecentlyAdapter;
     private LinearLayoutManager mLayoutManager;
     private ItemTouchHelper mItemTouchHelper;
@@ -60,7 +60,7 @@ public class RecentlyLocationFragment extends Fragment implements OnStartDragLis
     }
 
     private void setupRecyclerView(RecyclerView rv) {
-        mRecentlyAdapter = new RecentlyLocationAdapter(this, frameLayout);
+        mRecentlyAdapter = new RecentlyLocationAdapter(this, containerLayout);
         mLayoutManager = new LinearLayoutManager(getContext());
         rv.setLayoutManager(mLayoutManager);
         rv.setAdapter(mRecentlyAdapter);

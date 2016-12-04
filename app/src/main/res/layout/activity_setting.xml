@@ -201,7 +201,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/logout"
+                    android:drawableLeft="@drawable/ic_logout"
                     style="@style/SettingsOptionsText"
                     android:text="@string/sign_out"
                     android:id="@+id/tv_setting_sign_out"/>

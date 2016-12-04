@@ -179,7 +179,6 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
             LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, mLocationRequest, new LocationListener() {
                 @Override
                 public void onLocationChanged(Location location) {
-                    Log.d("MAPP", "Firing onLocationChanged..............................................");
                     currLocation = new LatLng(location.getLatitude(), location.getLongitude());
                     // Creating a LatLng object for the current location
                     LatLng latLng = currLocation;
@@ -344,7 +343,7 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
                     mGoogleMap.setMyLocationEnabled(true);
                 }
 
-                //Animate marker when camera move
+                //Animate default_marker when camera move
                 mGoogleMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
                     @Override
                     public void onCameraMove() {
@@ -361,7 +360,7 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
 
 
     void addMarkersToMap(List<Store> storeList, GoogleMap googleMap) {
-        // Set icons of the marker to green
+        // Set icons of the default_marker to green
         for (int i = 0; i < storeList.size(); i++) {
             Store store = storeList.get(i);
             Marker marker = googleMap.addMarker(new MarkerOptions().position(store.getPosition())
@@ -370,7 +369,7 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
                     .icon(BitmapDescriptorFactory.fromBitmap(getStoreIcon(getContext(), store.getType()))));
             marker.setTag(store);
             mMarkerMap.put(i,marker);
-            //animateMarker(currMarkerBitmap,marker);
+            //animateMarker(currMarkerBitmap,default_marker);
         }
     }
 
@@ -407,12 +406,12 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
     private void setMarkersListener(GoogleMap googleMap) {
         if (googleMap != null) {
             // The Map is verified. It is now safe to manipulate the map.
-            // Attach marker click listener to the map here
+            // Attach default_marker click listener to the map here
             googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 public boolean onMarkerClick(Marker marker) {
-                    // Handle marker click here
-                    //marker.showInfoWindow();
-                    //LatLng storeLocation = marker.getPosition();
+                    // Handle default_marker click here
+                    //default_marker.showInfoWindow();
+                    //LatLng storeLocation = default_marker.getPosition();
                     //getDirection(storeLocation);
                     Store store = (Store) marker.getTag();
                     showDialogStoreInfo(store);
@@ -498,7 +497,7 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
                     nearByStores.put(i, new StoreViewModel(storeList[0].get(i), cameraPosition));
                     if (!mNearlyStoreMap.containsKey(i))
                     {
-                        //New store
+                        //New ic_store
                         newStoreNearBy.add(i);
                     }
                 }
@@ -513,7 +512,7 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
             mNearlyStoreMap.putAll(nearByStores);
             mAdapter.setStores(new ArrayList<StoreViewModel>(mNearlyStoreMap.values()));
 
-            //Animate marker
+            //Animate default_marker
             for (int i = 0; i < newStoreNearBy.size(); i++) {
                 Bitmap bitmap = getStoreIcon(getContext(),mStoreList.get(newStoreNearBy.get(i)).getType());
                 animateMarker(bitmap, mMarkerMap.get(newStoreNearBy.get(i)));

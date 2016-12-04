@@ -31,7 +31,7 @@ import butterknife.ButterKnife;
 public class FavouritedLocationFragment extends Fragment implements OnStartDragListener {
     static boolean isFABChangeClicked = false;
     @BindView(R.id.rv_favourite_stores) RecyclerView recyclerView;
-    @BindView(R.id.fl_container) FrameLayout frameLayout;
+    @BindView(R.id.fl_container) FrameLayout containerLayout;
     @BindView(R.id.fab_change) FloatingActionButton fabChangePosition;
 
     private LinearLayoutManager mLayoutManager;
@@ -79,7 +79,7 @@ public class FavouritedLocationFragment extends Fragment implements OnStartDragL
     }
 
     private void setupRecyclerView(RecyclerView rv) {
-        mFavouriteAdapter = new FavouriteLocationAdapter(this, frameLayout);
+        mFavouriteAdapter = new FavouriteLocationAdapter(this, containerLayout);
         mLayoutManager = new LinearLayoutManager(getContext());
         rv.setLayoutManager(mLayoutManager);
         rv.setAdapter(mFavouriteAdapter);

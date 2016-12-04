@@ -11,7 +11,6 @@ import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
 import android.util.DisplayMetrics;
-import android.util.TypedValue;
 
 /**
  * Created by taq on 27/11/2016.

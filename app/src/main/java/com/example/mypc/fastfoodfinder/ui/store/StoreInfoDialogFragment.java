@@ -91,7 +91,7 @@ public class StoreInfoDialogFragment extends DialogFragment {
                 if (store.getTel() != null && !store.getTel().equals("")) {
                     startActivity(DisplayUtils.getCallIntent(store.getTel()));
                 } else {
-                    Toast.makeText(getActivity(), "The store doesn't have number phone!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "The ic_store doesn't have number phone!", Toast.LENGTH_SHORT).show();
                 }
             }
         });

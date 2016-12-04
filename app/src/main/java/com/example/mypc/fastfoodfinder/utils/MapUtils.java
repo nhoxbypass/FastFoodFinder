@@ -1,24 +1,19 @@
 package com.example.mypc.fastfoodfinder.utils;
 
-import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.location.Location;
-import android.util.Log;
 
 import com.example.mypc.fastfoodfinder.R;
-import com.example.mypc.fastfoodfinder.activity.MainActivity;
 import com.google.android.gms.maps.model.LatLng;
 
 /**
  * Created by nhoxb on 11/16/2016.
  */
 public class MapUtils {
-    public static Bitmap resizeMarkerIcon(Bitmap imageBitmap, int width, int height){
+    public static Bitmap resizeMarkerIcon(Bitmap imageBitmap, int width, int height) {
         if (width > 100)
             width = 200 - width;
-        if (height >  100)
+        if (height > 100)
             height = 200 - height;
 
         if (width == 0)
@@ -38,8 +33,7 @@ public class MapUtils {
             return null;
     }
 
-    public static int getLogoDrawableId(int type)
-    {
+    public static int getLogoDrawableId(int type) {
         int id = R.drawable.logo_circle_k_50;
         switch (type) {
             case Constant.TYPE_CIRCLE_K:
@@ -62,8 +56,7 @@ public class MapUtils {
         return id;
     }
 
-    public static double calcDistance(LatLng startPosition, LatLng endPosition)
-    {
+    public static double calcDistance(LatLng startPosition, LatLng endPosition) {
         //
         Location start = new Location("pointA");
         start.setLatitude(startPosition.latitude);
@@ -72,30 +65,22 @@ public class MapUtils {
         end.setLatitude(endPosition.latitude);
         end.setLongitude(endPosition.longitude);
 
-        return (start.distanceTo(end)/1000.0);
+        return (start.distanceTo(end) / 1000.0);
     }
 
     public static int getDirectionImage(String direction) {
         if (direction == null)
             return R.drawable.ic_arrow_up;
 
-        if (direction.equals("straight"))
-        {
+        if (direction.equals("straight")) {
             return R.drawable.ic_arrow_up;
-        }
-        else if (direction.equals("turn-left"))
-        {
+        } else if (direction.equals("turn-left")) {
             return R.drawable.ic_arrow_left;
-        }
-        else if (direction.equals("turn-right"))
-        {
+        } else if (direction.equals("turn-right")) {
             return R.drawable.ic_arrow_right;
-        }
-        else if (direction.equals("merge"))
-        {
+        } else if (direction.equals("merge")) {
             return R.drawable.ic_arrow_merge;
-        }
-        else {
+        } else {
             return R.drawable.ic_arrow_up;
         }
     }

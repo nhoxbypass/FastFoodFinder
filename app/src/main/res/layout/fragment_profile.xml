@@ -137,7 +137,7 @@
                             android:layout_marginLeft="2dp"
                             android:layout_marginStart="2dp"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/hinhmau" />
+                            android:src="@drawable/placeholder" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -210,7 +210,7 @@
                             android:layout_weight="1"
                             android:layout_height="40dp"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/hinhmau" />
+                            android:src="@drawable/placeholder" />
 
                         <ImageView
                             android:layout_width="0dp"
@@ -219,7 +219,7 @@
                             android:layout_marginLeft="2dp"
                             android:layout_marginStart="2dp"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/hinhmau" />
+                            android:src="@drawable/placeholder" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -293,7 +293,7 @@
                             android:layout_weight="1"
                             android:layout_height="40dp"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/hinhmau" />
+                            android:src="@drawable/placeholder" />
 
                         <ImageView
                             android:layout_width="0dp"
@@ -302,7 +302,7 @@
                             android:layout_marginLeft="2dp"
                             android:layout_marginStart="2dp"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/hinhmau" />
+                            android:src="@drawable/placeholder" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -311,7 +311,7 @@
                     android:layout_height="40dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="22dp"
-                    android:src="@drawable/ic_checkin" />
+                    android:src="@drawable/ic_list_checkin" />
 
                 <TextView
                     android:layout_width="wrap_content"

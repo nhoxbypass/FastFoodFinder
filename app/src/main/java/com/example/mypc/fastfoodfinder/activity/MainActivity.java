@@ -340,7 +340,7 @@ public class MainActivity extends AppCompatActivity {
         menuItem.setChecked(true);
         // Set action bar title
         setTitle(menuItem.getTitle());
-        // Close the navigation drawer
+        // Close the ic_navigation drawer
         mDrawerLayout.closeDrawers();
     }
 

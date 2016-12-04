@@ -18,7 +18,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_centerInParent="true"
-            android:src="@drawable/marker"
+            android:src="@drawable/default_marker"
             android:layout_gravity="center_horizontal"/>
     </RelativeLayout>
 

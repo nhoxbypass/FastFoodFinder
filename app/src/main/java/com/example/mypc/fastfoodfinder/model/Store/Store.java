@@ -13,9 +13,9 @@ public class Store implements Serializable {
 
     //Type
     //0: circle_k
-    //1: ministop
+    //1: logo_red_ministop
     //2: family mart
-    //3: bsmart
+    //3: logo_red_bsmart
     //4: shop n go
 
     @Exclude

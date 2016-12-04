@@ -44,17 +44,18 @@ public class SearchFragment extends Fragment {
     @BindView(R.id.tvNearest) TextView tvNearest;
     @BindView(R.id.tvTrending) TextView tvTrending;
     @BindView(R.id.tvConvenienceStore) TextView tvConvenienceStore;
-    boolean visible;
-    String searchText;
+
+    private boolean isLoadmoreVisible;
+    private String searchString;
 
     public SearchFragment() {
         // Required empty public constructor
     }
 
     public static SearchFragment newInstance() {
-        
+
         Bundle args = new Bundle();
-        
+
         SearchFragment fragment = new SearchFragment();
         fragment.setArguments(args);
         return fragment;
@@ -78,13 +79,12 @@ public class SearchFragment extends Fragment {
         return root;
     }
 
-    private void setupQuickSearchBar()
-    {
+    private void setupQuickSearchBar() {
         quickSearchCircleK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                searchText = "Circle K";
-                EventBus.getDefault().post(new SearchResult(SearchResult.SEARCH_QUICK_OK, searchText, Constant.TYPE_CIRCLE_K));
+                searchString = "Circle K";
+                EventBus.getDefault().post(new SearchResult(SearchResult.SEARCH_QUICK_OK, searchString, Constant.TYPE_CIRCLE_K));
                 searchContainer.setVisibility(View.GONE);
             }
         });
@@ -92,8 +92,8 @@ public class SearchFragment extends Fragment {
         quickSearchFamilyMart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                searchText = "Family Mart";
-                EventBus.getDefault().post(new SearchResult(SearchResult.SEARCH_QUICK_OK, searchText, Constant.TYPE_FAMILY_MART));
+                searchString = "Family Mart";
+                EventBus.getDefault().post(new SearchResult(SearchResult.SEARCH_QUICK_OK, searchString, Constant.TYPE_FAMILY_MART));
                 searchContainer.setVisibility(View.GONE);
             }
         });
@@ -101,8 +101,8 @@ public class SearchFragment extends Fragment {
         quickSearchMiniStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                searchText = "Mini Stop";
-                EventBus.getDefault().post(new SearchResult(SearchResult.SEARCH_QUICK_OK, searchText, Constant.TYPE_MINI_STOP));
+                searchString = "Mini Stop";
+                EventBus.getDefault().post(new SearchResult(SearchResult.SEARCH_QUICK_OK, searchString, Constant.TYPE_MINI_STOP));
                 searchContainer.setVisibility(View.GONE);
             }
         });
@@ -110,8 +110,8 @@ public class SearchFragment extends Fragment {
         quickSearchBsMart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                searchText = "BsMart";
-                EventBus.getDefault().post(new SearchResult(SearchResult.SEARCH_QUICK_OK, searchText, Constant.TYPE_BSMART));
+                searchString = "BsMart";
+                EventBus.getDefault().post(new SearchResult(SearchResult.SEARCH_QUICK_OK, searchString, Constant.TYPE_BSMART));
                 searchContainer.setVisibility(View.GONE);
             }
         });
@@ -119,8 +119,8 @@ public class SearchFragment extends Fragment {
         quickSearchShopNGo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                searchText = "Shop and Go";
-                EventBus.getDefault().post(new SearchResult(SearchResult.SEARCH_QUICK_OK, searchText, Constant.TYPE_SHOP_N_GO));
+                searchString = "Shop and Go";
+                EventBus.getDefault().post(new SearchResult(SearchResult.SEARCH_QUICK_OK, searchString, Constant.TYPE_SHOP_N_GO));
                 searchContainer.setVisibility(View.GONE);
             }
         });
@@ -130,8 +130,8 @@ public class SearchFragment extends Fragment {
             public void onClick(View view) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                     TransitionManager.beginDelayedTransition(cardViewQuickSearch);
-                    visible = !visible;
-                    searchMoreLayout.setVisibility(visible ? View.VISIBLE : View.GONE);
+                    isLoadmoreVisible = !isLoadmoreVisible;
+                    searchMoreLayout.setVisibility(isLoadmoreVisible ? View.VISIBLE : View.GONE);
                 }
             }
         });

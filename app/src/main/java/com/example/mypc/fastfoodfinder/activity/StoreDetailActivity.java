@@ -37,7 +37,7 @@ import static com.example.mypc.fastfoodfinder.R.id.map;
 
 public class StoreDetailActivity extends AppCompatActivity implements StoreDetailAdapter.StoreActionListener {
 
-    public static final String STORE = "store";
+    public static final String STORE = "ic_store";
     public static final int REQUEST_COMMENT = 113;
     public static final String COMMENT = "comment";
 
@@ -126,7 +126,7 @@ public class StoreDetailActivity extends AppCompatActivity implements StoreDetai
         if (tel != null && !tel.equals("")) {
             startActivity(DisplayUtils.getCallIntent(tel));
         } else {
-            Toast.makeText(this, "The store doesn't have number phone!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "The ic_store doesn't have number phone!", Toast.LENGTH_SHORT).show();
         }
     }
 

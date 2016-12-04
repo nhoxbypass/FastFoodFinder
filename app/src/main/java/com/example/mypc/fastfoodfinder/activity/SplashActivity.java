@@ -55,7 +55,7 @@ public class SplashActivity extends AppCompatActivity {
         //Check if is first run
         if (isFirstRun) {
             //First run
-            //Download data from Firebase and store in Realm
+            //Download data from Firebase and ic_store in Realm
             readDataFromFirebase(new OnGetDataListener() {
                 @Override
                 public void onStart() {
@@ -171,7 +171,7 @@ public class SplashActivity extends AppCompatActivity {
                 return Constant.TYPE_MINI_STOP;
             case "family_mart":
                 return Constant.TYPE_FAMILY_MART;
-            case "bsmart":
+            case "logo_red_bsmart":
                 return Constant.TYPE_BSMART;
             case "shop_n_go":
                 return Constant.TYPE_SHOP_N_GO;
