@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="300dp"
     android:layout_marginTop="40dp"
@@ -48,6 +49,88 @@
         android:layout_marginRight="16dp"
         android:id="@+id/edtName"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Choose Icon:"
+        android:layout_marginTop="24dp"
+        android:layout_marginLeft="16dp"
+        android:textSize="24sp"
+        />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_width="@dimen/icon_radius"
+                    android:layout_height="@dimen/icon_radius"
+                    android:src="@drawable/ic_samplelist1"
+                    android:id="@+id/icon1"/>
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_width="@dimen/icon_radius"
+                    android:layout_height="@dimen/icon_radius"
+                    android:layout_marginLeft="8dp"
+                    android:src="@drawable/ic_samplelist2"
+                    android:id="@+id/icon2"/>
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_width="@dimen/icon_radius"
+                    android:layout_height="@dimen/icon_radius"
+                    android:layout_marginLeft="8dp"
+                    android:src="@drawable/ic_samplelist3"
+                    android:id="@+id/icon3"/>
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_width="@dimen/icon_radius"
+                    android:layout_height="@dimen/icon_radius"
+                    android:layout_marginLeft="8dp"
+                    android:src="@drawable/ic_samplelist4"
+                    android:id="@+id/icon4"/>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp">
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_width="@dimen/icon_radius"
+                    android:layout_height="@dimen/icon_radius"
+                    android:src="@drawable/ic_samplelist5"
+                    android:id="@+id/icon5"/>
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_width="@dimen/icon_radius"
+                    android:layout_height="@dimen/icon_radius"
+                    android:layout_marginLeft="8dp"
+                    android:src="@drawable/ic_samplelist6"
+                    android:id="@+id/icon6"/>
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_width="@dimen/icon_radius"
+                    android:layout_height="@dimen/icon_radius"
+                    android:layout_marginLeft="8dp"
+                    android:src="@drawable/ic_samplelist7"
+                    android:id="@+id/icon7"/>
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_width="@dimen/icon_radius"
+                    android:layout_height="@dimen/icon_radius"
+                    android:layout_marginLeft="8dp"
+                    android:src="@drawable/ic_samplelist8"
+                    android:id="@+id/icon8"/>
+
+
+            </LinearLayout>
+        </LinearLayout>
 
     <Button
         android:layout_width="match_parent"

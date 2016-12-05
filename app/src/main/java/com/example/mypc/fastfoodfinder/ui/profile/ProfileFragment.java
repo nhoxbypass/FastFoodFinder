@@ -31,7 +31,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ProfileFragment extends Fragment {
 
     ImageView ivCoverImage;
-    ImageView ivCreateNew;
     Button btnUpdateCoverImage;
     DialogUpdateCoverImage mDialog;
     DialogCreateNewList mDialogCreate;
@@ -39,6 +38,7 @@ public class ProfileFragment extends Fragment {
     CardView viewpoint, viewpoint2, viewpoint3, viewpoint4, viewpoint5,cvCreate;
     ImageView ivAvatarProfile;
     TextView tvName, tvEmail;
+    CircleImageView iconList;
     static int listCount = 3;
 
     // Firebase instance variables
@@ -57,10 +57,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       /* mPhotoUrl = savedInstanceState.getString("url");
-        mName = savedInstanceState.getString("name");
-        mEmail = savedInstanceState.getString("email");*/
-        setHasOptionsMenu(true);
+          setHasOptionsMenu(true);
     }
 
     @Nullable
@@ -79,7 +76,6 @@ public class ProfileFragment extends Fragment {
         ivAvatarProfile = (ImageView) rootView.findViewById(R.id.iv_profile_avatar);
         tvName = (TextView) rootView.findViewById(R.id.tvName);
         tvEmail = (TextView) rootView.findViewById(R.id.tvEmail);
-        ivCreateNew = (ImageView) rootView.findViewById(R.id.ivCreateNew);
 
         return rootView;
     }
@@ -124,34 +120,31 @@ public class ProfileFragment extends Fragment {
                 mDialogCreate.show(getFragmentManager(),"");
                 mDialogCreate.setOnButtonClickListener(new DialogCreateNewList.OnCreateListListener() {
                     @Override
-                    public void OnButtonClick(String name) {
+                    public void OnButtonClick(String name, int idIconSource) {
                         LayoutInflater newCardView = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         CardView cardView = (CardView) newCardView.inflate(R.layout.cardview_new_list,null);
                         TextView tvName = (TextView) cardView.findViewById(R.id.tvNameList);
                         TextView tvDescription = (TextView) cardView.findViewById(R.id.tvDescription);
                         tvName.setText(name);
-                        LayoutInflater newCardView2 = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        CardView cardView2 = (CardView) newCardView2.inflate(R.layout.cardview_create_new_list,null);
                         Toast.makeText(getContext(),String.valueOf(listCount),Toast.LENGTH_SHORT).show();
                         if (listCount==4) {
-                            //cvCreate.setY(1000);
-                            //cvCreate.setX(50);
-                            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(477,378);
+                            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(475,378);
                             params.setMargins(50,1000,0,50);
                             cvCreate.setLayoutParams(params);
                             ViewGroup insertPoint = (ViewGroup) viewpoint;
                             insertPoint.addView(cardView, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-
+                            iconList = (CircleImageView) insertPoint.findViewById(R.id.iconList);
+                            iconList.setImageResource(idIconSource);
                         }
                         else if (listCount==5)
                         {
-                            //cvCreate.setY(1000);
-                            //cvCreate.setX(550);
                             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(475,378);
                             params.setMargins(580,1000,0,50);
                             cvCreate.setLayoutParams(params);
                             ViewGroup insertPoint = (ViewGroup) viewpoint2;
-                            insertPoint.addView(cardView, 0,params);
+                            insertPoint.addView(cardView, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                            iconList = (CircleImageView) insertPoint.findViewById(R.id.iconList);
+                            iconList.setImageResource(idIconSource);
                         }
                         else if (listCount == 6){
                             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(475,378);
@@ -159,19 +152,28 @@ public class ProfileFragment extends Fragment {
                             cvCreate.setLayoutParams(params);
                             ViewGroup insertPoint = (ViewGroup) viewpoint3;
                             insertPoint.addView(cardView, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-                            }
+                            iconList = (CircleImageView) insertPoint.findViewById(R.id.iconList);
+                            iconList.setImageResource(idIconSource);
+
+                        }
                         else if (listCount == 7){
                             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(475,378);
-                            params.setMargins(580,1450,0,50);
+                            params.setMargins(580,1420,0,50);
                             cvCreate.setLayoutParams(params);
 
                             ViewGroup insertPoint = (ViewGroup) viewpoint4;
                             insertPoint.addView(cardView, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-                              }
+
+                            iconList = (CircleImageView) insertPoint.findViewById(R.id.iconList);
+                            iconList.setImageResource(idIconSource);
+                        }
                         else if (listCount ==8){
                             cvCreate.setVisibility(View.GONE);
                             ViewGroup insertPoint = (ViewGroup) viewpoint5;
                             insertPoint.addView(cardView, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                            iconList = (CircleImageView) insertPoint.findViewById(R.id.iconList);
+                            iconList.setImageResource(idIconSource);
+
                         }
                     }
 
