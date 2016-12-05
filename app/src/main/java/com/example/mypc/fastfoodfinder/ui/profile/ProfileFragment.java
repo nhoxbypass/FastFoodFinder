@@ -45,7 +45,7 @@ public class ProfileFragment extends Fragment {
     @BindView(R.id.ivCoverImage)  ImageView ivCoverImage;
     @BindView(R.id.btnUpdateCoverImage)  Button btnUpdateCoverImage;
     @BindView(R.id.ivCreate)  CircleImageView civCreate;
-     @BindView(R.id.cvCreateNew)   CardView cvCreate;
+    @BindView(R.id.cvCreateNew)   CardView cvCreate;
     @BindView(R.id.iv_profile_avatar)   ImageView ivAvatarProfile;
     @BindView(R.id.tvName)   TextView tvName;
     @BindView(R.id.tvEmail)   TextView tvEmail;
@@ -81,25 +81,10 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_profile,container,false);
-<<<<<<< HEAD
-        ivCoverImage = (ImageView) rootView.findViewById(R.id.ivCoverImage);
-        btnUpdateCoverImage = (Button) rootView.findViewById(R.id.btnUpdateCoverImage);
-        civCreate = (CircleImageView) rootView.findViewById(R.id.ivCreate);
-        viewpoint = (CardView) rootView.findViewById(R.id.viewPoint);
-        viewpoint2 = (CardView) rootView.findViewById(R.id.viewPoint2);
-        viewpoint3 = (CardView) rootView.findViewById(R.id.viewpoint3);
-        viewpoint4 = (CardView) rootView.findViewById(R.id.viewPoint4);
-        viewpoint5 = (CardView) rootView.findViewById(R.id.viewpoint5);
-        cvCreate = (CardView) rootView.findViewById(R.id.cvCreateNew);
-        ivAvatarProfile = (ImageView) rootView.findViewById(R.id.iv_profile_avatar);
-        tvName = (TextView) rootView.findViewById(R.id.tvName);
-        tvEmail = (TextView) rootView.findViewById(R.id.tvEmail);
-        ivCreateNew = (ImageView) rootView.findViewById(R.id.ivCreate);
 
-=======
         ButterKnife.bind(this, rootView);
         listName = new ArrayList<>();
->>>>>>> origin/master
+
         return rootView;
     }
 
