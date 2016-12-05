@@ -27,6 +27,7 @@
     <style name="RippleEffect">
         <item name="android:background">?selectableItemBackground</item>
         <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
     </style>
 
     <style name="TextInfo">

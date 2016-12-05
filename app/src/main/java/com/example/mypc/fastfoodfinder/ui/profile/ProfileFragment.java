@@ -79,7 +79,7 @@ public class ProfileFragment extends Fragment {
         ivAvatarProfile = (ImageView) rootView.findViewById(R.id.iv_profile_avatar);
         tvName = (TextView) rootView.findViewById(R.id.tvName);
         tvEmail = (TextView) rootView.findViewById(R.id.tvEmail);
-        ivCreateNew = (ImageView) rootView.findViewById(R.id.ivCreateNew);
+        ivCreateNew = (ImageView) rootView.findViewById(R.id.ivCreate);
 
         return rootView;
     }

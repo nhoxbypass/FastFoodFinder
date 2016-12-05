@@ -2,6 +2,8 @@ package com.example.mypc.fastfoodfinder.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.text.Spanned;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.mypc.fastfoodfinder.R;
 import com.example.mypc.fastfoodfinder.model.Routing.Step;
+import com.example.mypc.fastfoodfinder.utils.DisplayUtils;
 import com.example.mypc.fastfoodfinder.utils.MapUtils;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -24,22 +27,33 @@ import butterknife.ButterKnife;
  * Created by nhoxb on 11/30/2016.
  */
 public class RoutingAdapter extends RecyclerView.Adapter<RoutingAdapter.VH> {
-
+    public static final int TYPE_FULL = 0;
+    public static final int TYPE_SHORT = 1;
     List<Step> mStepList;
     OnNavigationItemClickListener mListener;
+    private int mType;
 
     public RoutingAdapter() {
         super();
         mStepList = new ArrayList<>();
     }
 
-    public RoutingAdapter(List<Step> steps) {
+    public RoutingAdapter(List<Step> steps, int type) {
         super();
         this.mStepList = steps;
+        mType = type;
     }
 
     public void setOnNavigationItemClickListener(OnNavigationItemClickListener listener) {
         mListener = listener;
+    }
+
+    public LatLng getDirectionLocationAt(int index)
+    {
+        if (index < 0 || index >= mStepList.size()) {
+            index = 0;
+        }
+        return mStepList.get(index).getEndMapCoordination().getLocation();
     }
 
     @Override
@@ -60,7 +74,7 @@ public class RoutingAdapter extends RecyclerView.Adapter<RoutingAdapter.VH> {
 
 
     public interface OnNavigationItemClickListener {
-        public void onClick(LatLng latLng);
+        public void onClick(int index);
     }
 
     class VH extends RecyclerView.ViewHolder {
@@ -75,7 +89,7 @@ public class RoutingAdapter extends RecyclerView.Adapter<RoutingAdapter.VH> {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mListener.onClick(mStepList.get(getAdapterPosition()).getEndMapCoordination().getLocation());
+                    mListener.onClick(getAdapterPosition());
                 }
             });
         }
@@ -84,13 +98,17 @@ public class RoutingAdapter extends RecyclerView.Adapter<RoutingAdapter.VH> {
 
             int imgResId = MapUtils.getDirectionImage(step.getDirection());
             routingImageView.setImageResource(imgResId);
-
+            Spanned instruction;
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                routingGuide.setText(Html.fromHtml(step.getInstruction(), Html.FROM_HTML_MODE_LEGACY));
+                instruction = Html.fromHtml(step.getInstruction(), Html.FROM_HTML_MODE_COMPACT);
             } else {
-                routingGuide.setText(Html.fromHtml(step.getInstruction()));
+                instruction = Html.fromHtml(step.getInstruction());
             }
-            routingGuide.setText(Html.fromHtml(step.getInstruction()));
+
+            if (mType == TYPE_FULL)
+                routingGuide.setText(DisplayUtils.trimWhitespace(instruction));
+            else if (mType == TYPE_SHORT)
+                routingGuide.setText(DisplayUtils.getTrimmedShortInstruction(instruction));
             routingDistance.setText(step.getDistance());
         }
     }

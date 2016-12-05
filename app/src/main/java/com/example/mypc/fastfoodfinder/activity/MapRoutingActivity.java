@@ -5,16 +5,21 @@ import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SnapHelper;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mypc.fastfoodfinder.R;
 import com.example.mypc.fastfoodfinder.adapter.RoutingAdapter;
+import com.example.mypc.fastfoodfinder.helper.DividerItemDecoration;
 import com.example.mypc.fastfoodfinder.model.Routing.MapsDirection;
 import com.example.mypc.fastfoodfinder.model.Routing.Step;
 import com.example.mypc.fastfoodfinder.model.Store.Store;
@@ -52,9 +57,17 @@ public class MapRoutingActivity extends AppCompatActivity {
     @BindView(R.id.tv_routing_overview)
     TextView txtTravelOverview;
     @BindView(R.id.rv_bottom_sheet)
-    RecyclerView recyclerView;
+    RecyclerView bottomRecyclerView;
+    @BindView(R.id.rv_direction_instruction)
+    RecyclerView topRecyclerView;
     @BindView(R.id.ll_bottom_sheet)
     LinearLayout mBottomSheetContainer;
+    @BindView(R.id.btn_prev_instruction)
+    ImageButton prevInstruction;
+    @BindView(R.id.btn_next_instruction)
+    ImageButton nextInstruction;
+    @BindView(R.id.ll_routing_button_container)
+    LinearLayout routingButtonContainer;
 
     private BottomSheetBehavior mBottomSheetBehavior;
 
@@ -65,9 +78,16 @@ public class MapRoutingActivity extends AppCompatActivity {
     private Polyline mCurrDirection;
     private LatLng mCurrLocation;
     private Store mCurrStore;
-    private RoutingAdapter mRoutingAdapter;
+    private RoutingAdapter mBottomRoutingAdapter;
+    private RoutingAdapter mTopRoutingAdapter;
     private List<Step> mStepList;
     private List<LatLng> mGeoPointList;
+    RoutingAdapter.OnNavigationItemClickListener mListener;
+    DividerItemDecoration divider;
+
+    private int currDirectionIndex = 0;
+
+    boolean isPreviewMode = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,12 +109,66 @@ public class MapRoutingActivity extends AppCompatActivity {
         mCurrLocation = mStepList.get(0).getStartMapCoordination().getLocation();
         mGeoPointList = PolyUtil.decode(mMapsDirection.getRouteList().get(0).getEncodedPolylineString());
 
-        mRoutingAdapter = new RoutingAdapter(mStepList);
+
+
+
+        mBottomRoutingAdapter = new RoutingAdapter(mStepList, RoutingAdapter.TYPE_FULL);
         LinearLayoutManager layoutManager = new LinearLayoutManager(MapRoutingActivity.this);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(mRoutingAdapter);
+        bottomRecyclerView.setLayoutManager(layoutManager);
+        bottomRecyclerView.setAdapter(mBottomRoutingAdapter);
+
+        mTopRoutingAdapter = new RoutingAdapter(mStepList, RoutingAdapter.TYPE_SHORT);
+        final LinearLayoutManager topLayoutManager = new LinearLayoutManager(MapRoutingActivity.this, LinearLayoutManager.HORIZONTAL, false);
+        topRecyclerView.setLayoutManager(topLayoutManager);
+        topRecyclerView.setAdapter(mTopRoutingAdapter);
+        SnapHelper snapHelper = new LinearSnapHelper();
+        snapHelper.attachToRecyclerView(topRecyclerView);
+
+        mListener = new RoutingAdapter.OnNavigationItemClickListener() {
+            @Override
+            public void onClick(int index) {
+                showDirectionAt(index);
+                currDirectionIndex = index;
+                enterPreviewMode();
+            }
+        };
+
+        prevInstruction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                currDirectionIndex--;
+                if (currDirectionIndex >= 0 && currDirectionIndex < mBottomRoutingAdapter.getItemCount()) {
+                    topRecyclerView.smoothScrollToPosition(currDirectionIndex);
+                    showDirectionAt(currDirectionIndex);
+                }
+                else
+                {
+                    currDirectionIndex = 0;
+                }
+            }
+        });
+
+        nextInstruction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                currDirectionIndex++;
+                if (currDirectionIndex >= 0 && currDirectionIndex < mBottomRoutingAdapter.getItemCount()) {
+                    topRecyclerView.smoothScrollToPosition(currDirectionIndex);
+                    showDirectionAt(currDirectionIndex);
+                }
+                else
+                {
+                    currDirectionIndex = mBottomRoutingAdapter.getItemCount() - 1;
+                }
+            }
+        });
+
 
         setUpMapIfNeeded();
+    }
+
+    private void showDirectionAt(int currDirectionIndex) {
+        mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mBottomRoutingAdapter.getDirectionLocationAt(currDirectionIndex), 18));
     }
 
     private void getExtrasBundle() {
@@ -123,7 +197,12 @@ public class MapRoutingActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // handle arrow click here
         if (item.getItemId() == android.R.id.home) {
-            finish(); // close this activity and return to preview activity (if there is any)
+            if (isPreviewMode) {
+                exitPreviewMode();
+            } else {
+                finish(); // close this activity and return to preview activity (if there is any)
+
+            }
         }
 
         return super.onOptionsItemSelected(item);
@@ -170,13 +249,8 @@ public class MapRoutingActivity extends AppCompatActivity {
             txtTravelOverview.setText("Via " + mMapsDirection.getRouteList().get(0).getSummary());
 
 
-            mRoutingAdapter.setOnNavigationItemClickListener(new RoutingAdapter.OnNavigationItemClickListener() {
-                @Override
-                public void onClick(LatLng latLng) {
-                    mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18));
-                    mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                }
-            });
+            mBottomRoutingAdapter.setOnNavigationItemClickListener(mListener);
+            mTopRoutingAdapter.setOnNavigationItemClickListener(mListener);
         }
     }
 
@@ -194,7 +268,6 @@ public class MapRoutingActivity extends AppCompatActivity {
 
         for (int i = 0; i < geoPointList.size(); i++) {
             LatLng geoPoint = geoPointList.get(i);
-            options.add(geoPoint);
             options.add(geoPoint);
             builder.include(geoPoint);
         }
@@ -220,5 +293,22 @@ public class MapRoutingActivity extends AppCompatActivity {
         CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding);
 
         googleMap.animateCamera(cu);
+    }
+
+    private void enterPreviewMode()
+    {
+        routingButtonContainer.setVisibility(View.VISIBLE);
+        topRecyclerView.setVisibility(View.VISIBLE);
+        mBottomSheetBehavior.setHideable(true);
+        mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        isPreviewMode = true;
+    }
+
+    private void exitPreviewMode() {
+        routingButtonContainer.setVisibility(View.GONE);
+        topRecyclerView.setVisibility(View.GONE);
+        mBottomSheetBehavior.setHideable(false);
+        mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        isPreviewMode = false;
     }
 }

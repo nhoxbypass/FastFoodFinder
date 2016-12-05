@@ -10,6 +10,7 @@ import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
+import android.text.SpannableStringBuilder;
 import android.util.DisplayMetrics;
 
 /**
@@ -51,5 +52,55 @@ public class DisplayUtils {
         Intent callIntent = new Intent(Intent.ACTION_CALL);
         callIntent.setData(Uri.parse("tel:08" + tel));
         return callIntent;
+    }
+
+    public static CharSequence trimWhitespace(CharSequence source) {
+
+        if(source == null)
+            return "";
+
+
+        SpannableStringBuilder builder = new SpannableStringBuilder(source);
+        char c;
+
+        for (int i = 0; i < source.length(); i++)
+        {
+            c = source.charAt(i);
+            if (Character.isWhitespace(c)) {
+                if (i < (source.length() - 1) && Character.isWhitespace(source.charAt(i + 1)))
+                    //Ignore next char
+                    //Because it is a whitespace again
+                    builder.delete(i,i+1);
+            }
+        }
+
+        if (Character.isWhitespace(builder.charAt(builder.length() - 1)))
+            builder.delete(builder.length() - 1,builder.length());
+
+        return builder.subSequence(0,builder.length());
+    }
+
+    public static CharSequence getTrimmedShortInstruction(CharSequence source) {
+
+        if(source == null)
+            return "";
+
+        int i = 0;
+        int newLen = 0;
+
+        // loop back to the first non-whitespace character
+        for (i = 0; i< source.length() - 1; i++)
+        {
+            if (Character.isWhitespace(source.charAt(i)) && Character.isWhitespace(source.charAt(i+1)))
+            {
+                newLen = i;
+                break;
+            }
+        }
+
+        if (newLen <= 1)
+            newLen = source.length();
+
+        return source.subSequence(0, newLen);
     }
 }

@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
-    android:layout_marginBottom="8dp"
+    style="@style/RippleEffect"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <ImageView
         android:layout_width="64dp"
         android:layout_height="64dp"
+        android:layout_gravity="center_vertical"
         android:src="@drawable/ic_arrow_up"
         android:id="@+id/iv_routing"/>
     <LinearLayout
@@ -17,16 +18,23 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@android:color/black"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorGrey"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="12dp"
+            android:textColor="@android:color/black"
             android:textSize="16sp"
             android:text="Đi về hướng Bắc về phía Cầu Mật/Phạm Thế Hiển"
             android:id="@+id/tv_routing_guide"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="12dp"
             android:textSize="14sp"
             android:text="40 m"
             android:id="@+id/tv_routing_distance"/>

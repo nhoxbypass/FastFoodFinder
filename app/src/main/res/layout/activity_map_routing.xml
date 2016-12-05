@@ -6,21 +6,26 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".activity.MapRoutingActivity">
-    <android.support.v7.widget.Toolbar
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="?attr/actionBarSize"
-        app:titleTextColor="@color/colorWhite"
-        tools:title="Routing"
-        android:fitsSystemWindows="true"
-        android:background="@color/googleRed"
-        android:id="@+id/toolbar"/>
+        android:layout_height="wrap_content">
+        <android.support.v7.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="?attr/actionBarSize"
+            app:titleTextColor="@color/colorWhite"
+            tools:title="Routing"
+            android:fitsSystemWindows="true"
+            android:background="@color/googleRed"
+            android:id="@+id/toolbar"/>
+    </android.support.design.widget.AppBarLayout>
+
     <fragment
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_below="@id/toolbar"
         android:id="@+id/map"
         android:layout_marginTop="56dp"
-        android:layout_marginBottom="80dp"
+        android:layout_marginBottom="40dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         map:cameraTargetLat="10.7496203"
@@ -32,13 +37,30 @@
         map:uiRotateGestures="true"
         map:uiScrollGestures="true"
         map:uiTiltGestures="true"
-        map:uiZoomControls="true"
+        map:uiZoomControls="false"
         map:uiZoomGestures="true"
         tools:ignore="MissingPrefix" />
 
-    <LinearLayout
+    <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorWhite"
+        android:background="@color/colorWhite"
+        android:visibility="gone"
+        app:elevation="6dp"
+        android:layout_marginTop="56dp"
+        android:id="@+id/rv_direction_instruction"/>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:layout_marginBottom="40dp"
+        android:background="@color/colorGrey"/>
+    <LinearLayout
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:elevation="6dp"
         android:orientation="vertical"
         android:id="@+id/ll_bottom_sheet"
         android:background="@color/colorWhite"
@@ -75,7 +97,6 @@
             android:textSize="14sp"
             android:id="@+id/tv_routing_overview"
             tools:text="Via Nguyễn Biểu và Cầu Chữ Y"/>
-
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -84,5 +105,30 @@
             android:background="@color/colorWhite"
             android:id="@+id/rv_bottom_sheet"
             android:clipToPadding="true" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:id="@+id/ll_routing_button_container"
+        app:layout_anchor="@id/rv_bottom_sheet"
+        app:layout_anchorGravity="top">
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            style="@style/RippleEffect"
+            android:id="@+id/btn_prev_instruction"
+            android:background="@color/colorWhite"
+            android:src="@drawable/ic_chevron_left"
+            android:layout_height="40dp" />
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            style="@style/RippleEffect"
+            android:background="@color/colorWhite"
+            android:id="@+id/btn_next_instruction"
+            android:src="@drawable/ic_chevron_right"
+            android:layout_height="40dp" />
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>
