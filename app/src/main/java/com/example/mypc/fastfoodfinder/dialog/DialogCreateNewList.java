@@ -16,6 +16,8 @@ import android.widget.Toast;
 
 import com.example.mypc.fastfoodfinder.R;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -26,9 +28,9 @@ public class DialogCreateNewList extends DialogFragment {
 
     ImageView ivQuit;
     Button btnDone;
-    EditText edtDescription;
     EditText edtName;
     OnCreateListListener mListener;
+    ArrayList<String> listName;
 
     public static DialogCreateNewList newInstance() {
         DialogCreateNewList frag = new DialogCreateNewList();
@@ -38,7 +40,7 @@ public class DialogCreateNewList extends DialogFragment {
     }
 
     public interface OnCreateListListener{
-        void OnButtonClick(String name, String description);
+        void OnButtonClick(String name);
     }
 
     public void setOnButtonClickListener (OnCreateListListener listener){
@@ -51,7 +53,6 @@ public class DialogCreateNewList extends DialogFragment {
         View rootView = inflater.inflate(R.layout.dialog_create_new_list,container,false);
         ivQuit = (ImageView) rootView.findViewById(R.id.ivQuit);
         btnDone = (Button) rootView.findViewById(R.id.btnDone);
-        edtDescription = (EditText) rootView.findViewById(R.id.edtDescription);
         edtName = (EditText) rootView.findViewById(R.id.edtName);
         return rootView;
     }
@@ -65,6 +66,10 @@ public class DialogCreateNewList extends DialogFragment {
                 dismiss();
             }
         });
+        listName = new ArrayList<>();
+        listName.add("My Save Places");
+        listName.add("My Favourite Places");
+        listName.add("My Checked in Places");
 
         btnDone.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,8 +78,19 @@ public class DialogCreateNewList extends DialogFragment {
                     Toast.makeText(getContext(),"Name is not empty!",Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    mListener.OnButtonClick(edtName.getText().toString(), edtDescription.getText().toString());
-                    dismiss();
+                    boolean check = true;
+                    for (int i = 0; i< listName.size();i++){
+                        if (edtName.getText().equals(listName.get(i))){
+                            Toast.makeText(getContext(),"Name is already created, try a new one!",Toast.LENGTH_SHORT).show();
+                            check = false;
+                        }
+                    }
+                    if (check)
+                    {
+                        mListener.OnButtonClick(edtName.getText().toString());
+                        listName.add(edtName.getText().toString());
+                        dismiss();
+                    }
                 }
             }
         });

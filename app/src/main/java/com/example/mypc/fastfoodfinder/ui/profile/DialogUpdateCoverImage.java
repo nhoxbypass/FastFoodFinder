@@ -12,6 +12,8 @@ import android.widget.ImageView;
 
 import com.example.mypc.fastfoodfinder.R;
 
+import java.util.ArrayList;
+
 /**
  * Created by MyPC on 11/29/2016.
  */
