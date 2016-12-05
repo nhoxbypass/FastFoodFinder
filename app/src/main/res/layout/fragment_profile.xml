@@ -66,8 +66,9 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/iv_profile_avatar">
+        android:layout_height="wrap_content"
+        android:layout_below="@id/iv_profile_avatar"
+        android:id="@+id/listCreated">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -128,7 +129,7 @@
                             android:layout_weight="1"
                             android:layout_height="40dp"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/sample_food_3" />
+                            android:src="@drawable/placeholder" />
 
                         <ImageView
                             android:layout_width="0dp"
@@ -331,22 +332,6 @@
                     android:text="@string/_2_places" />
 
             </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:layout_width="160dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/viewPoint"
-                android:layout_marginTop="16dp"
-                android:layout_marginStart="16dp"
-                app:cardBackgroundColor="#EEEEEE"
-                android:layout_marginLeft="16dp"
-                app:cardElevation="6dp"
-                android:layout_below="@id/cv_favourite_places"
-                android:layout_toRightOf="@id/cv_checkin_places"
-                android:layout_toEndOf="@id/cv_checkin_places"
-                ></android.support.v7.widget.CardView>
-
-
                <android.support.v7.widget.CardView
                 android:layout_width="160dp"
                 android:layout_height="120dp"
@@ -382,63 +367,39 @@
                     android:textSize="@dimen/medium_textsize"
                     android:textStyle="bold" />
         </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:layout_width="160dp"
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/RippleEffect"
-                android:layout_below="@id/cv_checkin_places"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
-                android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
-                app:cardBackgroundColor="#EEEEEE"
-                android:id="@+id/viewPoint2"
-                app:cardElevation="6dp"
-                                                
-                >
-            </android.support.v7.widget.CardView>
-            <android.support.v7.widget.CardView
-                android:layout_width="160dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/viewPoint"
-                android:layout_marginTop="16dp"
-                android:layout_marginStart="16dp"
-                app:cardBackgroundColor="#EEEEEE"
-                android:layout_marginLeft="16dp"
-                app:cardElevation="6dp"
-                android:layout_toRightOf="@+id/viewPoint2"
-                android:id="@+id/viewpoint3"
-                ></android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:layout_width="160dp"
-                android:layout_height="wrap_content"
-                style="@style/RippleEffect"
-                android:layout_below="@id/viewPoint2"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                app:cardBackgroundColor="#EEEEEE"
-                android:id="@+id/viewPoint4"
-                app:cardElevation="6dp"
+                android:layout_below="@+id/cv_checkin_places"
+                android:layout_marginTop="24dp"
+                android:id="@+id/textId"
 
                 >
-            </android.support.v7.widget.CardView>
-            <android.support.v7.widget.CardView
-                android:layout_width="160dp"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/list_you_create"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:text="(0)"
+                    android:textSize="18sp"
+                    android:id="@+id/tvNumberList"/>
+            </LinearLayout>
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/viewpoint3"
-                android:layout_marginTop="16dp"
-                android:layout_marginStart="16dp"
-                app:cardBackgroundColor="#EEEEEE"
-                android:layout_marginLeft="16dp"
-                app:cardElevation="6dp"
-                android:layout_toRightOf="@+id/viewPoint4"
-                android:id="@+id/viewpoint5"
-                ></android.support.v7.widget.CardView>
-
+                android:layout_below="@+id/textId"
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="8dp"
+                android:id="@+id/rvListPacket">
+            </android.support.v7.widget.RecyclerView>
         </RelativeLayout>
     </ScrollView>
+
 </RelativeLayout>

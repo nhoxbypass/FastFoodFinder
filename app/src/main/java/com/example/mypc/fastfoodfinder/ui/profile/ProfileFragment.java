@@ -1,10 +1,13 @@
 package com.example.mypc.fastfoodfinder.ui.profile;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,32 +22,46 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.mypc.fastfoodfinder.R;
+import com.example.mypc.fastfoodfinder.activity.DetailListActivity;
+import com.example.mypc.fastfoodfinder.adapter.ListPacketAdapter;
 import com.example.mypc.fastfoodfinder.dialog.DialogCreateNewList;
+import com.example.mypc.fastfoodfinder.model.ListPacket;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class ProfileFragment extends Fragment {
 
-    ImageView ivCoverImage;
-    ImageView ivCreateNew;
-    Button btnUpdateCoverImage;
+    public static final String KEY_NAME = "name";
+    public static final String KEY_ID = "idIcon";
+    public static final String KEY_NUMBER_PLACES ="number";
+    public static final String KEY_URL ="url";
+    @BindView(R.id.ivCoverImage)  ImageView ivCoverImage;
+    @BindView(R.id.btnUpdateCoverImage)  Button btnUpdateCoverImage;
+    @BindView(R.id.ivCreate)  CircleImageView civCreate;
+     @BindView(R.id.cvCreateNew)   CardView cvCreate;
+    @BindView(R.id.iv_profile_avatar)   ImageView ivAvatarProfile;
+    @BindView(R.id.tvName)   TextView tvName;
+    @BindView(R.id.tvEmail)   TextView tvEmail;
+    @BindView(R.id.rvListPacket)  RecyclerView rvListPacket;
+    @BindView(R.id.tvNumberList) TextView tvNumberList;
+    @BindView(R.id.cv_saved_places) CardView cvSavePlace;
+    @BindView(R.id.cv_checkin_places) CardView cvCheckinPlace;
+    @BindView(R.id.cv_favourite_places) CardView cvFavouritePlace;
     DialogUpdateCoverImage mDialog;
     DialogCreateNewList mDialogCreate;
-    CircleImageView civCreate;
-    CardView viewpoint, viewpoint2, viewpoint3, viewpoint4, viewpoint5,cvCreate;
-    ImageView ivAvatarProfile;
-    TextView tvName, tvEmail;
-    static int listCount = 3;
-
+    public static ArrayList<String> listName;
+    ListPacketAdapter mAdapter;
     // Firebase instance variables
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
-
+    StaggeredGridLayoutManager mLayoutManager;
 
     public static ProfileFragment newInstance(){
         Bundle extras = new Bundle();
@@ -57,9 +74,6 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       /* mPhotoUrl = savedInstanceState.getString("url");
-        mName = savedInstanceState.getString("name");
-        mEmail = savedInstanceState.getString("email");*/
         setHasOptionsMenu(true);
     }
 
@@ -67,6 +81,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_profile,container,false);
+<<<<<<< HEAD
         ivCoverImage = (ImageView) rootView.findViewById(R.id.ivCoverImage);
         btnUpdateCoverImage = (Button) rootView.findViewById(R.id.btnUpdateCoverImage);
         civCreate = (CircleImageView) rootView.findViewById(R.id.ivCreate);
@@ -81,13 +96,24 @@ public class ProfileFragment extends Fragment {
         tvEmail = (TextView) rootView.findViewById(R.id.tvEmail);
         ivCreateNew = (ImageView) rootView.findViewById(R.id.ivCreate);
 
+=======
+        ButterKnife.bind(this, rootView);
+        listName = new ArrayList<>();
+>>>>>>> origin/master
         return rootView;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        listName.add("My Save Places");
+        listName.add("My Favourite Places");
+        listName.add("My Checked in Places");
 
+        mAdapter = new ListPacketAdapter();
+        mLayoutManager = new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL);
+        rvListPacket.setAdapter(mAdapter);
+        rvListPacket.setLayoutManager(mLayoutManager);
         // Initialize Firebase Auth
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
@@ -121,62 +147,61 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(final View view) {
                 mDialogCreate = DialogCreateNewList.newInstance();
-                mDialogCreate.show(getFragmentManager(),"");
+                mDialogCreate.show(getFragmentManager(), "");
                 mDialogCreate.setOnButtonClickListener(new DialogCreateNewList.OnCreateListListener() {
                     @Override
-                    public void OnButtonClick(String name) {
-                        LayoutInflater newCardView = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        CardView cardView = (CardView) newCardView.inflate(R.layout.cardview_new_list,null);
-                        TextView tvName = (TextView) cardView.findViewById(R.id.tvNameList);
-                        TextView tvDescription = (TextView) cardView.findViewById(R.id.tvDescription);
-                        tvName.setText(name);
-                        LayoutInflater newCardView2 = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        CardView cardView2 = (CardView) newCardView2.inflate(R.layout.cardview_create_new_list,null);
-                        Toast.makeText(getContext(),String.valueOf(listCount),Toast.LENGTH_SHORT).show();
-                        if (listCount==4) {
-                            //cvCreate.setY(1000);
-                            //cvCreate.setX(50);
-                            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(477,378);
-                            params.setMargins(50,1000,0,50);
-                            cvCreate.setLayoutParams(params);
-                            ViewGroup insertPoint = (ViewGroup) viewpoint;
-                            insertPoint.addView(cardView, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-
-                        }
-                        else if (listCount==5)
-                        {
-                            //cvCreate.setY(1000);
-                            //cvCreate.setX(550);
-                            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(475,378);
-                            params.setMargins(580,1000,0,50);
-                            cvCreate.setLayoutParams(params);
-                            ViewGroup insertPoint = (ViewGroup) viewpoint2;
-                            insertPoint.addView(cardView, 0,params);
-                        }
-                        else if (listCount == 6){
-                            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(475,378);
-                            params.setMargins(50,1450,0,50);
-                            cvCreate.setLayoutParams(params);
-                            ViewGroup insertPoint = (ViewGroup) viewpoint3;
-                            insertPoint.addView(cardView, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-                            }
-                        else if (listCount == 7){
-                            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(475,378);
-                            params.setMargins(580,1450,0,50);
-                            cvCreate.setLayoutParams(params);
-
-                            ViewGroup insertPoint = (ViewGroup) viewpoint4;
-                            insertPoint.addView(cardView, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-                              }
-                        else if (listCount ==8){
-                            cvCreate.setVisibility(View.GONE);
-                            ViewGroup insertPoint = (ViewGroup) viewpoint5;
-                            insertPoint.addView(cardView, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-                        }
+                    public void OnButtonClick(String name, int idIconSource) {
+                        mAdapter.addListPacket(new ListPacket(name, idIconSource));
+                        tvNumberList.setText("("+String.valueOf(mAdapter.getItemCount())+")");
                     }
-
                 });
-                listCount++;
+            }
+        });
+
+        cvSavePlace.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), DetailListActivity.class);
+                intent.putExtra(KEY_NAME,"My Save Places");
+                intent.putExtra(KEY_ID,R.drawable.ic_save);
+                intent.putExtra(KEY_NUMBER_PLACES,2);
+                intent.putExtra(KEY_URL,mFirebaseUser.getPhotoUrl());
+                startActivity(intent);
+            }
+        });
+        cvFavouritePlace.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), DetailListActivity.class);
+                intent.putExtra(KEY_NAME,"My Favourite Places");
+                intent.putExtra(KEY_ID,R.drawable.ic_favourite);
+                intent.putExtra(KEY_NUMBER_PLACES,2);
+                intent.putExtra(KEY_URL,mFirebaseUser.getPhotoUrl());
+
+                startActivity(intent);
+            }
+        });
+        cvCheckinPlace.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), DetailListActivity.class);
+                intent.putExtra(KEY_NAME,"My Checked In Places");
+                intent.putExtra(KEY_ID,R.drawable.ic_list_checkin);
+                intent.putExtra(KEY_NUMBER_PLACES,2);
+                intent.putExtra(KEY_URL,mFirebaseUser.getPhotoUrl());
+                startActivity(intent);
+            }
+        });
+
+        mAdapter.setOnItemClickListener(new ListPacketAdapter.OnItemClickListener() {
+            @Override
+            public void OnClick(ListPacket listPacket) {
+                Intent intent = new Intent(getContext(), DetailListActivity.class);
+                intent.putExtra(KEY_NAME,listPacket.getName());
+                intent.putExtra(KEY_ID,listPacket.getIdIconSource());
+                intent.putExtra(KEY_NUMBER_PLACES, 0);
+                intent.putExtra(KEY_URL,mFirebaseUser.getPhotoUrl());
+                startActivity(intent);
             }
         });
     }
