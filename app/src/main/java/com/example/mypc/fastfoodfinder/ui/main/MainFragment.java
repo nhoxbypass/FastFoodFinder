@@ -121,7 +121,7 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        inflateSupportMapFragment(mMapFragment);
+        mMapFragment = inflateSupportMapFragment();
     }
 
     @Override
@@ -269,10 +269,10 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
         }
     }
 
-    public void inflateSupportMapFragment(SupportMapFragment mapFragment) {
+    public SupportMapFragment inflateSupportMapFragment() {
         FragmentManager fragmentManager = getChildFragmentManager();
-        mMapFragment = (SupportMapFragment) fragmentManager.findFragmentById(R.id.maps_container);
-        if (mMapFragment == null) {
+        SupportMapFragment mapFragment = (SupportMapFragment) fragmentManager.findFragmentById(R.id.maps_container);
+        if (mapFragment == null) {
             CameraPosition cameraPosition = CameraPosition.builder()
                     .target(new LatLng(10.7473821, 106.6805755))
                     .zoom(16)
@@ -284,10 +284,12 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
                     .rotateGesturesEnabled(true)
                     .zoomGesturesEnabled(true)
                     .tiltGesturesEnabled(true);
-            mMapFragment = SupportMapFragment.newInstance(options);
-            fragmentManager.beginTransaction().replace(R.id.map_placeholder, mMapFragment).commit();
+            mapFragment = SupportMapFragment.newInstance(options);
+            fragmentManager.beginTransaction().replace(R.id.map_placeholder, mapFragment).commit();
             fragmentManager.executePendingTransactions();
         }
+
+        return mapFragment;
     }
 
 

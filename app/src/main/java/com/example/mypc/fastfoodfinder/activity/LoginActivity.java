@@ -84,9 +84,9 @@ public class LoginActivity extends AppCompatActivity {
             }
         };
 
-        setupGoogleSignIn(mGoogleApiClient);
+        mGoogleApiClient = setupGoogleSignIn();
 
-        setupFacebookSignIn(mCallBackManager);
+        mCallBackManager = setupFacebookSignIn();
 
         skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,8 +152,8 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private void setupFacebookSignIn(CallbackManager callbackManager) {
-        callbackManager = CallbackManager.Factory.create();
+    private CallbackManager setupFacebookSignIn() {
+        CallbackManager callbackManager = CallbackManager.Factory.create();
         fbSignInButton.setReadPermissions("email", "public_profile");
 
         fbSignInButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
@@ -175,9 +175,12 @@ public class LoginActivity extends AppCompatActivity {
                 // ...
             }
         });
+
+        return callbackManager;
     }
 
-    private void setupGoogleSignIn(GoogleApiClient client) {
+    private GoogleApiClient setupGoogleSignIn() {
+        GoogleApiClient client;
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -192,6 +195,8 @@ public class LoginActivity extends AppCompatActivity {
                 })
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
+
+        return client;
     }
 
 

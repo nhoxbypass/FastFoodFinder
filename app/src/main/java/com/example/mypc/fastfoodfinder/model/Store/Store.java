@@ -20,6 +20,8 @@ public class Store implements Serializable {
 
     @Exclude
     int type;
+    @PropertyName("id")
+    private int id;
     @PropertyName("title")
     private String title;
     @PropertyName("address")
@@ -61,6 +63,15 @@ public class Store implements Serializable {
         address = viewModel.getStoreAddress();
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @Exclude
     public LatLng getPosition() {
         return new LatLng(Double.parseDouble(lat), Double.parseDouble(lng));
     }
@@ -92,10 +103,12 @@ public class Store implements Serializable {
         this.lng = lng;
     }
 
+    @Exclude
     public int getType() {
         return type;
     }
 
+    @Exclude
     public void setType(int type) {
         this.type = type;
     }
