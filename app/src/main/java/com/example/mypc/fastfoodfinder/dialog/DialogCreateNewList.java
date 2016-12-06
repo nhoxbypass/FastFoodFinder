@@ -1,20 +1,24 @@
 package com.example.mypc.fastfoodfinder.dialog;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.renderscript.ScriptGroup;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.view.PagerTabStrip;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.mypc.fastfoodfinder.R;
+import com.example.mypc.fastfoodfinder.ui.profile.ProfileFragment;
 
 import java.util.ArrayList;
 
@@ -40,7 +44,6 @@ public class DialogCreateNewList extends DialogFragment {
     @BindView(R.id.icon9)   CircleImageView icon9;
     @BindView(R.id.icon10)   CircleImageView icon10;
     OnCreateListListener mListener;
-    static ArrayList<String> listName;
     int idIconSource = R.drawable.ic_new_list;
 
     public static DialogCreateNewList newInstance() {
@@ -75,10 +78,6 @@ public class DialogCreateNewList extends DialogFragment {
                 dismiss();
             }
         });
-        listName = new ArrayList<>();
-        listName.add("My Save Places");
-        listName.add("My Favourite Places");
-        listName.add("My Checked in Places");
         getIdIconSource();
         btnDone.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,8 +87,8 @@ public class DialogCreateNewList extends DialogFragment {
                 }
                 else {
                     boolean check = true;
-                    for (int i = 0; i< listName.size();i++){
-                        if (edtName.getText().equals(listName.get(i))){
+                    for (int i = 0; i< ProfileFragment.listName.size();i++){
+                        if (edtName.getText().equals(ProfileFragment.listName.get(i))){
                             Toast.makeText(getContext(),"Name is already created, try a new one!",Toast.LENGTH_SHORT).show();
                             check = false;
                         }
@@ -97,7 +96,7 @@ public class DialogCreateNewList extends DialogFragment {
                     if (check)
                     {
                         mListener.OnButtonClick(edtName.getText().toString(), idIconSource);
-                        listName.add(edtName.getText().toString());
+                        ProfileFragment.listName.add(edtName.getText().toString());
                         dismiss();
                     }
                 }
@@ -112,60 +111,78 @@ public class DialogCreateNewList extends DialogFragment {
             @Override
             public void onClick(View view) {
                 idIconSource = R.drawable.ic_newlist1;
+                icon1.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.image_click));
             }
         });
         icon2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 idIconSource = R.drawable.ic_newlist2;
+                icon2.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.image_click));
+
             }
         });
         icon3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 idIconSource = R.drawable.ic_newlist3;
+                icon3.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.image_click));
+
             }
         });
         icon4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 idIconSource = R.drawable.ic_newlist4;
+                icon4.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.image_click));
+
             }
         });
         icon5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 idIconSource = R.drawable.ic_newlist5;
+                icon5.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.image_click));
+
             }
         });
         icon6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 idIconSource = R.drawable.ic_newlist6;
+                icon6.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.image_click));
+
             }
         });
         icon7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 idIconSource = R.drawable.ic_newlist7;
+                icon7.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.image_click));
             }
         });
         icon8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 idIconSource = R.drawable.ic_newlist8;
+                icon8.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.image_click));
+
             }
         });
         icon9.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 idIconSource = R.drawable.ic_newlist9;
+                icon9.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.image_click));
+
             }
         });
         icon10.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 idIconSource = R.drawable.ic_newlist10;
+                icon10.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.image_click));
+
             }
         });
     }

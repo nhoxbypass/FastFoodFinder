@@ -47,7 +47,7 @@ public class ProfileFragment extends Fragment {
     CircleImageView iconNew;
     DialogUpdateCoverImage mDialog;
     DialogCreateNewList mDialogCreate;
-
+    public static ArrayList<String> listName;
 
     // Firebase instance variables
     private FirebaseAuth mFirebaseAuth;
@@ -73,12 +73,16 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_profile,container,false);
         ButterKnife.bind(this, rootView);
+        listName = new ArrayList<>();
         return rootView;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        listName.add("My Save Places");
+        listName.add("My Favourite Places");
+        listName.add("My Checked in Places");
 
         // Initialize Firebase Auth
         mFirebaseAuth = FirebaseAuth.getInstance();
