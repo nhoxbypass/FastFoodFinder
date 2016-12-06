@@ -88,7 +88,7 @@ public class DialogCreateNewList extends DialogFragment {
                 else {
                     boolean check = true;
                     for (int i = 0; i< ProfileFragment.listName.size();i++){
-                        if (edtName.getText().equals(ProfileFragment.listName.get(i))){
+                         if (edtName.getText().toString().equals(ProfileFragment.listName.get(i))){
                             Toast.makeText(getContext(),"Name is already created, try a new one!",Toast.LENGTH_SHORT).show();
                             check = false;
                         }
