@@ -54,6 +54,7 @@
         </activity>
         <activity android:name=".activity.StoreListActivity">
         </activity>
+        <activity android:name=".activity.DetailListActivity"></activity>
     </application>
 
 </manifest>

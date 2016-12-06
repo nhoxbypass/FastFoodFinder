@@ -1,6 +1,7 @@
 package com.example.mypc.fastfoodfinder.ui.profile;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.mypc.fastfoodfinder.R;
+import com.example.mypc.fastfoodfinder.activity.DetailListActivity;
 import com.example.mypc.fastfoodfinder.adapter.ListPacketAdapter;
 import com.example.mypc.fastfoodfinder.dialog.DialogCreateNewList;
 import com.example.mypc.fastfoodfinder.model.ListPacket;
@@ -35,6 +37,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class ProfileFragment extends Fragment {
+
+    public static final String KEY_NAME = "name";
+    public static final String KEY_ID = "idIcon";
+    public static final String KEY_NUMBER_PLACES ="number";
+    public static final String KEY_URL ="url";
     @BindView(R.id.ivCoverImage)  ImageView ivCoverImage;
     @BindView(R.id.btnUpdateCoverImage)  Button btnUpdateCoverImage;
     @BindView(R.id.ivCreate)  CircleImageView civCreate;
@@ -44,6 +51,9 @@ public class ProfileFragment extends Fragment {
     @BindView(R.id.tvEmail)   TextView tvEmail;
     @BindView(R.id.rvListPacket)  RecyclerView rvListPacket;
     @BindView(R.id.tvNumberList) TextView tvNumberList;
+    @BindView(R.id.cv_saved_places) CardView cvSavePlace;
+    @BindView(R.id.cv_checkin_places) CardView cvCheckinPlace;
+    @BindView(R.id.cv_favourite_places) CardView cvFavouritePlace;
     DialogUpdateCoverImage mDialog;
     DialogCreateNewList mDialogCreate;
     public static ArrayList<String> listName;
@@ -128,6 +138,53 @@ public class ProfileFragment extends Fragment {
                         tvNumberList.setText("("+String.valueOf(mAdapter.getItemCount())+")");
                     }
                 });
+            }
+        });
+
+        cvSavePlace.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), DetailListActivity.class);
+                intent.putExtra(KEY_NAME,"My Save Places");
+                intent.putExtra(KEY_ID,R.drawable.ic_save);
+                intent.putExtra(KEY_NUMBER_PLACES,2);
+                intent.putExtra(KEY_URL,mFirebaseUser.getPhotoUrl());
+                startActivity(intent);
+            }
+        });
+        cvFavouritePlace.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), DetailListActivity.class);
+                intent.putExtra(KEY_NAME,"My Favourite Places");
+                intent.putExtra(KEY_ID,R.drawable.ic_favourite);
+                intent.putExtra(KEY_NUMBER_PLACES,2);
+                intent.putExtra(KEY_URL,mFirebaseUser.getPhotoUrl());
+
+                startActivity(intent);
+            }
+        });
+        cvCheckinPlace.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), DetailListActivity.class);
+                intent.putExtra(KEY_NAME,"My Checked In Places");
+                intent.putExtra(KEY_ID,R.drawable.ic_list_checkin);
+                intent.putExtra(KEY_NUMBER_PLACES,2);
+                intent.putExtra(KEY_URL,mFirebaseUser.getPhotoUrl());
+                startActivity(intent);
+            }
+        });
+
+        mAdapter.setOnItemClickListener(new ListPacketAdapter.OnItemClickListener() {
+            @Override
+            public void OnClick(ListPacket listPacket) {
+                Intent intent = new Intent(getContext(), DetailListActivity.class);
+                intent.putExtra(KEY_NAME,listPacket.getName());
+                intent.putExtra(KEY_ID,listPacket.getIdIconSource());
+                intent.putExtra(KEY_NUMBER_PLACES, 0);
+                intent.putExtra(KEY_URL,mFirebaseUser.getPhotoUrl());
+                startActivity(intent);
             }
         });
     }

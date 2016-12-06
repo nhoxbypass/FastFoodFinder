@@ -1,6 +1,7 @@
 package com.example.mypc.fastfoodfinder.adapter;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
@@ -10,7 +11,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.mypc.fastfoodfinder.R;
+import com.example.mypc.fastfoodfinder.activity.DetailListActivity;
 import com.example.mypc.fastfoodfinder.model.ListPacket;
+import com.example.mypc.fastfoodfinder.ui.profile.ProfileFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +28,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ListPacketAdapter extends RecyclerView.Adapter<ListPacketAdapter.ListViewHolder> {
 
     List<ListPacket> mListPackets;
-
+    OnItemClickListener mListener;
     public ListPacketAdapter(){
         mListPackets = new ArrayList<>();
     }
@@ -33,6 +36,14 @@ public class ListPacketAdapter extends RecyclerView.Adapter<ListPacketAdapter.Li
     public void addListPacket(ListPacket listPacket){
         mListPackets.add(listPacket);
         notifyItemRangeInserted(mListPackets.size(),1);
+    }
+
+    public interface OnItemClickListener{
+        void OnClick(ListPacket listPacket);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener){
+        mListener = onItemClickListener;
     }
 
     @Override
@@ -60,6 +71,16 @@ public class ListPacketAdapter extends RecyclerView.Adapter<ListPacketAdapter.Li
         public ListViewHolder(final View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ListPacket listPacket = mListPackets.get(getAdapterPosition());
+                    mListener.OnClick(listPacket);
+
+                }
+            });
+
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
