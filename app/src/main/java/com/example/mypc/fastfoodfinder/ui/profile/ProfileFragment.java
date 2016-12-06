@@ -119,7 +119,7 @@ public class ProfileFragment extends Fragment {
             getUserData(mFirebaseUser.getUid());
         }
 
-        load();
+
         ivCoverImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -144,7 +144,9 @@ public class ProfileFragment extends Fragment {
                     @Override
                     public void OnButtonClick(String name, int idIconSource) {
                         int id = mCurrUser.getUserStoreLists().size();
-                        mAdapter.addListPacket(new UserStoreList(id, new ArrayList<Integer>(),idIconSource, name));
+                        UserStoreList list = new UserStoreList(id, new ArrayList<Integer>(),idIconSource, name);
+                        mAdapter.addListPacket(list);
+                        mCurrUser.addStoreList(list);
                         tvNumberList.setText("("+String.valueOf(mAdapter.getItemCount())+")");
                     }
                 });
@@ -198,7 +200,7 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-    public void load(){
+    public void loadUserList(){
         for (int i = 0; i< mCurrUser.getUserStoreLists().size();i++){
             mAdapter.addListPacket(new UserStoreList(mCurrUser.getUserStoreLists().get(i).getId(), new ArrayList<Integer>(),mCurrUser.getUserStoreLists().get(i).getIconId(), mCurrUser.getUserStoreLists().get(i).getListName()));
         }
@@ -237,6 +239,7 @@ public class ProfileFragment extends Fragment {
                         .into(ivAvatarProfile);
                 tvName.setText(mCurrUser.getName());
                 tvEmail.setText(mCurrUser.getEmail());
+                loadUserList();
             }
 
             @Override

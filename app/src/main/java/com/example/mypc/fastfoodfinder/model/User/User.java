@@ -90,7 +90,7 @@ public class User {
         list.setId(userStoreLists.size());
         userStoreLists.add(list);
 
-        ref.child("idList").setValue(userStoreLists);
+        ref.child("userStoreLists").setValue(userStoreLists);
     }
 
     public void removeStoreList(UserStoreList list) {
