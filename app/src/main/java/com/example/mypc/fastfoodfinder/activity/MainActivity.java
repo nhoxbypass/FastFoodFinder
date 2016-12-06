@@ -33,11 +33,14 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.mypc.fastfoodfinder.R;
 import com.example.mypc.fastfoodfinder.helper.SearchResult;
+import com.example.mypc.fastfoodfinder.model.User.User;
 import com.example.mypc.fastfoodfinder.ui.main.MainMapFragment;
 import com.example.mypc.fastfoodfinder.ui.main.SearchFragment;
 import com.example.mypc.fastfoodfinder.ui.profile.ProfileFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
