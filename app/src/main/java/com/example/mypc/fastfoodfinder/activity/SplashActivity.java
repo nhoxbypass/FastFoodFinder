@@ -41,7 +41,7 @@ public class SplashActivity extends AppCompatActivity {
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
     private FirebaseDatabase mDatabase;
-    DatabaseReference mDatabaseRef;
+    private DatabaseReference mDatabaseRef;
 
 
     @Override

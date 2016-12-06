@@ -1,5 +1,6 @@
 package com.example.mypc.fastfoodfinder.model.Store;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,9 +18,13 @@ public class UserStoreList {
 
     public UserStoreList(int id, List<Integer> storesId, int iconId, String listName) {
         this.id = id;
-        this.storeIdList = storesId;
         this.iconId = iconId;
         this.listName = listName;
+
+        if (storesId == null)
+            this.storeIdList =  new ArrayList<>();
+        else
+            this.storeIdList = storesId;
     }
 
     public int getId() {

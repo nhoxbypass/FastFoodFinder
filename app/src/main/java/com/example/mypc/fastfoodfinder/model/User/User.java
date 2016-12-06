@@ -23,15 +23,6 @@ public class User {
     private String email;
     private String uid;
     private String photoUrl;
-
-    public List<UserStoreList> getUserStoreLists() {
-        return userStoreLists;
-    }
-
-    public void setUserStoreLists(List<UserStoreList> userStoreLists) {
-        this.userStoreLists = userStoreLists;
-    }
-
     private List<UserStoreList> userStoreLists;
 
     public User() {
@@ -45,12 +36,17 @@ public class User {
 
         if (storeLists == null || storeLists.size() == 0) {
             this.userStoreLists = new ArrayList<>();
-            userStoreLists.add(new UserStoreList(0,new ArrayList<Integer>(), R.drawable.ic_save,"My Saved Places"));
-            userStoreLists.add(new UserStoreList(0,new ArrayList<Integer>(), R.drawable.ic_favourite,"My Favourite Places"));
-            userStoreLists.add(new UserStoreList(0,new ArrayList<Integer>(), R.drawable.ic_list_checkin,"My Checked in Places"));
-        }
-        else
+            userStoreLists.add(new UserStoreList(0, new ArrayList<Integer>(), R.drawable.ic_save, "My Saved Places"));
+        } else
             this.userStoreLists = storeLists;
+    }
+
+    public List<UserStoreList> getUserStoreLists() {
+        return userStoreLists;
+    }
+
+    public void setUserStoreLists(List<UserStoreList> userStoreLists) {
+        this.userStoreLists = userStoreLists;
     }
 
     public String getName() {
