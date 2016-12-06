@@ -20,17 +20,28 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by MyPC on 11/30/2016.
  */
 public class DialogCreateNewList extends DialogFragment {
-
-    ImageView ivQuit;
-    Button btnDone;
-    EditText edtName;
+    @BindView(R.id.ivQuit)   ImageView ivQuit;
+    @BindView(R.id.btnDone)   Button btnDone;
+    @BindView(R.id.edtName)   EditText edtName;
+    @BindView(R.id.icon1)   CircleImageView icon1;
+    @BindView(R.id.icon2)   CircleImageView icon2;
+    @BindView(R.id.icon3)   CircleImageView icon3;
+    @BindView(R.id.icon4)   CircleImageView icon4;
+    @BindView(R.id.icon5)   CircleImageView icon5;
+    @BindView(R.id.icon6)   CircleImageView icon6;
+    @BindView(R.id.icon7)   CircleImageView icon7;
+    @BindView(R.id.icon8)   CircleImageView icon8;
+    @BindView(R.id.icon9)   CircleImageView icon9;
+    @BindView(R.id.icon10)   CircleImageView icon10;
     OnCreateListListener mListener;
-    ArrayList<String> listName;
+    static ArrayList<String> listName;
+    int idIconSource = R.drawable.ic_new_list;
 
     public static DialogCreateNewList newInstance() {
         DialogCreateNewList frag = new DialogCreateNewList();
@@ -40,7 +51,7 @@ public class DialogCreateNewList extends DialogFragment {
     }
 
     public interface OnCreateListListener{
-        void OnButtonClick(String name);
+        void OnButtonClick(String name, int idIconSource);
     }
 
     public void setOnButtonClickListener (OnCreateListListener listener){
@@ -51,9 +62,7 @@ public class DialogCreateNewList extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.dialog_create_new_list,container,false);
-        ivQuit = (ImageView) rootView.findViewById(R.id.ivQuit);
-        btnDone = (Button) rootView.findViewById(R.id.btnDone);
-        edtName = (EditText) rootView.findViewById(R.id.edtName);
+        ButterKnife.bind(this,rootView);
         return rootView;
     }
 
@@ -70,7 +79,7 @@ public class DialogCreateNewList extends DialogFragment {
         listName.add("My Save Places");
         listName.add("My Favourite Places");
         listName.add("My Checked in Places");
-
+        getIdIconSource();
         btnDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -87,7 +96,7 @@ public class DialogCreateNewList extends DialogFragment {
                     }
                     if (check)
                     {
-                        mListener.OnButtonClick(edtName.getText().toString());
+                        mListener.OnButtonClick(edtName.getText().toString(), idIconSource);
                         listName.add(edtName.getText().toString());
                         dismiss();
                     }
@@ -97,6 +106,70 @@ public class DialogCreateNewList extends DialogFragment {
 
 
     }
+
+    public void getIdIconSource(){
+        icon1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                idIconSource = R.drawable.ic_newlist1;
+            }
+        });
+        icon2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                idIconSource = R.drawable.ic_newlist2;
+            }
+        });
+        icon3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                idIconSource = R.drawable.ic_newlist3;
+            }
+        });
+        icon4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                idIconSource = R.drawable.ic_newlist4;
+            }
+        });
+        icon5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                idIconSource = R.drawable.ic_newlist5;
+            }
+        });
+        icon6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                idIconSource = R.drawable.ic_newlist6;
+            }
+        });
+        icon7.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                idIconSource = R.drawable.ic_newlist7;
+            }
+        });
+        icon8.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                idIconSource = R.drawable.ic_newlist8;
+            }
+        });
+        icon9.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                idIconSource = R.drawable.ic_newlist9;
+            }
+        });
+        icon10.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                idIconSource = R.drawable.ic_newlist10;
+            }
+        });
+    }
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState)
     {
