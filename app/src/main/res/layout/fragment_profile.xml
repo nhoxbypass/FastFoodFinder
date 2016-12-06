@@ -44,7 +44,7 @@
         android:layout_marginTop="112dp"
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
-        android:text="Trần Thị Nhã"
+        android:text="Annonymous"
         android:textColor="@android:color/white"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -58,7 +58,7 @@
         android:layout_marginTop="136dp"
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
-        android:text="\@tranthinha160296"
+        android:text="\@annonymous"
         android:textColor="@android:color/white"
         android:id="@+id/tvEmail"
         android:textSize="14sp" />

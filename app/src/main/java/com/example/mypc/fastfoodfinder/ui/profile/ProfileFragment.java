@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,8 +27,16 @@ import com.example.mypc.fastfoodfinder.activity.DetailListActivity;
 import com.example.mypc.fastfoodfinder.adapter.ListPacketAdapter;
 import com.example.mypc.fastfoodfinder.dialog.DialogCreateNewList;
 import com.example.mypc.fastfoodfinder.model.ListPacket;
+import com.example.mypc.fastfoodfinder.model.Store.UserStoreList;
+import com.example.mypc.fastfoodfinder.model.User.User;
+import com.example.mypc.fastfoodfinder.utils.Constant;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -61,7 +70,11 @@ public class ProfileFragment extends Fragment {
     // Firebase instance variables
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
+    private FirebaseDatabase mDatabase;
+    private DatabaseReference mDatabaseRef;
     StaggeredGridLayoutManager mLayoutManager;
+
+    private User mCurrUser;
 
     public static ProfileFragment newInstance(){
         Bundle extras = new Bundle();
@@ -105,12 +118,9 @@ public class ProfileFragment extends Fragment {
         if (mFirebaseUser == null) {
             tvName.setText("Unregistered User");
             tvEmail.setText("anonymous@fastfoodfinder.com");
+            mCurrUser = new User("Unregistered User", "anonymous@fastfoodfinder.com", "http://cdn.builtlean.com/wp-content/uploads/2015/11/noavatar.png", "null" ,new ArrayList<UserStoreList>());
         } else {
-            Glide.with(getContext())
-                    .load(mFirebaseUser.getPhotoUrl())
-                    .into(ivAvatarProfile);
-            tvName.setText(mFirebaseUser.getDisplayName());
-            tvEmail.setText(mFirebaseUser.getEmail())   ;
+            getUserData(mFirebaseUser.getUid());
         }
 
         ivCoverImage.setOnClickListener(new View.OnClickListener() {
@@ -210,6 +220,28 @@ public class ProfileFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
         MenuItem item = menu.findItem(R.id.action_search);
         item.setVisible(false);
+    }
+
+    void getUserData(String uid)
+    {
+        mDatabase = FirebaseDatabase.getInstance();
+        mDatabaseRef = mDatabase.getReference().child(Constant.CHILD_USERS).child(uid);
+        mDatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                mCurrUser = dataSnapshot.getValue(User.class);
+                Glide.with(getContext())
+                        .load(mCurrUser.getPhotoUrl())
+                        .into(ivAvatarProfile);
+                tvName.setText(mCurrUser.getName());
+                tvEmail.setText(mCurrUser.getEmail());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e("MAPP", "Failed to get user data");
+            }
+        });
     }
 
 }
