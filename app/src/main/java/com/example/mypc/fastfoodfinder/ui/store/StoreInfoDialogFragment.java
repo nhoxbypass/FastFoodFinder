@@ -13,13 +13,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mypc.fastfoodfinder.R;
 import com.example.mypc.fastfoodfinder.activity.StoreDetailActivity;
 import com.example.mypc.fastfoodfinder.model.Store.Store;
-import com.example.mypc.fastfoodfinder.ui.main.MainFragment;
 import com.example.mypc.fastfoodfinder.utils.DisplayUtils;
 
 import butterknife.BindView;
@@ -47,17 +47,23 @@ public class StoreInfoDialogFragment extends DialogFragment {
     TextView tvStoreAddress;
     @BindView(R.id.call_direction)
     View vCallDirection;
+    @BindView(R.id.save_this)
+    Button btnAddToFavorite;
 
-    MainFragment.DirectionCallListener mListener;
-
-
+    private StoreDialogActionListener mListener;
     public CallDirectionViewHolder cdvh;
+
+    // tên chuối thiệt
+    public interface StoreDialogActionListener {
+        void onDirection(Store store);
+        void onAddToFavorite(int storeId);
+    }
 
     public StoreInfoDialogFragment() {
 
     }
 
-    public void setDialogListen(MainFragment.DirectionCallListener listener)
+    public void setDialogListen(StoreDialogActionListener listener)
     {
         mListener = listener;
     }
@@ -77,7 +83,7 @@ public class StoreInfoDialogFragment extends DialogFragment {
         final Store store = (Store) getArguments().getSerializable(StoreDetailActivity.STORE);
 
         tvStoreName.setText(store.getTitle());
-        tvStoreAddress.setText(store.getTitle());
+        tvStoreAddress.setText(store.getAddress());
         tvViewDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,9 +104,15 @@ public class StoreInfoDialogFragment extends DialogFragment {
         cdvh.btnDirection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(getActivity(), "direction", Toast.LENGTH_SHORT).show();
-                //TODO gọi hàm chỉ đường
                 mListener.onDirection(store);
+            }
+        });
+
+        btnAddToFavorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onAddToFavorite(store.getId());
+                dismiss();
             }
         });
     }

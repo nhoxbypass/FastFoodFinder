@@ -135,4 +135,16 @@ public class StoreDetailActivity extends AppCompatActivity implements StoreDetai
         Toast.makeText(this, "direction", Toast.LENGTH_SHORT).show();
         //TODO gọi hàm chỉ đường
     }
+
+    @Override
+    public void onAddToFavorite(int storeId) {
+        //TODO gọi hàm lưu vào danh sách yêu thích
+        Toast.makeText(this, "add to favorite " + storeId, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onCheckIn(int storeId) {
+        //TODO gọi hàm check in
+        Toast.makeText(this, "check in " + storeId, Toast.LENGTH_SHORT).show();
+    }
 }

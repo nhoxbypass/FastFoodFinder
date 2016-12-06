@@ -45,6 +45,8 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         void onShowComment();
         void onCall(String tel);
         void onDirect();
+        void onAddToFavorite(int storeId);
+        void onCheckIn(int storeId);
     }
 
     public StoreDetailAdapter(Store store) {
@@ -126,12 +128,16 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         @BindView(R.id.call)
         Button btnCall;
 
+        private Store mStore;
+
         public HeaderViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
 
-        public void bind(final Store mStore) {
+        public void bind(Store store) {
+            mStore = store;
+
             save.setOnClickListener(this);
             check.setOnClickListener(this);
             rate.setOnClickListener(this);
@@ -151,6 +157,14 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         @Override
         public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.save_this:
+                    mListener.onAddToFavorite(mStore.getId());
+                    break;
+                case R.id.check_in:
+                    mListener.onCheckIn(mStore.getId());
+                    break;
+            }
             v.setSelected(!v.isSelected());
         }
     }
@@ -174,7 +188,7 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         public void bind(final Store mStore) {
             tvName.setText(mStore.getTitle());
-            tvAddress.setText(mStore.getTitle());
+            tvAddress.setText(mStore.getAddress());
 
             cdvh.btnCall.setOnClickListener(new View.OnClickListener() {
                 @Override

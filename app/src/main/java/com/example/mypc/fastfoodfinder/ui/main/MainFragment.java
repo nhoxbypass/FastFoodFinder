@@ -453,13 +453,19 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
         animator.start();
     }
 
-    private void showDialogStoreInfo(Store store) {
+    private void showDialogStoreInfo(final Store store) {
         FragmentManager fm = getActivity().getSupportFragmentManager();
         StoreInfoDialogFragment dialog = StoreInfoDialogFragment.newInstance(store);
-        dialog.setDialogListen(new DirectionCallListener() {
+        dialog.setDialogListen(new StoreInfoDialogFragment.StoreDialogActionListener() {
             @Override
             public void onDirection(Store store) {
                 getDirection(store);
+            }
+
+            @Override
+            public void onAddToFavorite(int storeId) {
+                //TODO lưu vào danh sách yêu thích
+                Toast.makeText(getActivity(), "add to favorite " + storeId, Toast.LENGTH_SHORT).show();
             }
         });
         dialog.show(fm, "dialog-info");
@@ -520,10 +526,5 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
                 animateMarker(bitmap, mMarkerMap.get(newStoreNearBy.get(i)));
             }
         }
-    }
-
-    public interface DirectionCallListener
-    {
-        public void onDirection(Store store);
     }
 }

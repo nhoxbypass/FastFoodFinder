@@ -62,6 +62,7 @@
         android:background="#b6b6b6" />
 
     <Button
+        android:id="@+id/save_this"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
