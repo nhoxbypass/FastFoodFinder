@@ -1,7 +1,14 @@
 package com.example.mypc.fastfoodfinder.ui.profile;
 
 import android.app.Dialog;
+import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.ParcelFileDescriptor;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,23 +19,33 @@ import android.widget.ImageView;
 
 import com.example.mypc.fastfoodfinder.R;
 
+import java.io.FileDescriptor;
+import java.io.IOException;
 import java.util.ArrayList;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by MyPC on 11/29/2016.
  */
 public class DialogUpdateCoverImage extends android.support.v4.app.DialogFragment {
 
-    ImageView ivOne;
-    ImageView ivTwo;
-    ImageView ivThree;
-    ImageView ivFour;
-    ImageView ivFive;
-    ImageView ivSix;
-    ImageView ivChosenImage;
-    Button btnDone;
-    Button btnCancel;
+    private static int RESULT_LOAD_IMAGE = 1;
+
+
+    @BindView(R.id.ivOne)    ImageView ivOne;
+    @BindView(R.id.ivTwo)    ImageView ivTwo;
+    @BindView(R.id.ivThree)    ImageView ivThree;
+    @BindView(R.id.ivFour)    ImageView ivFour;
+    @BindView(R.id.ivFive)    ImageView ivFive;
+    @BindView(R.id.ivSix)    ImageView ivSix;
+    @BindView(R.id.ivChosenImage)   ImageView ivChosenImage;
+    @BindView(R.id.btnDone)    Button btnDone;
+    @BindView(R.id.btnCancel)    Button btnCancel;
+    @BindView(R.id.btnBrowser)     Button btnBrowser;
     int IdChosenImage = 0;
+
     OnButtonClickListener mListener;
 
 
@@ -65,15 +82,18 @@ public class DialogUpdateCoverImage extends android.support.v4.app.DialogFragmen
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ivOne = (ImageView) view.findViewById(R.id.ivOne);
-        ivTwo = (ImageView) view.findViewById(R.id.ivTwo);
-        ivThree = (ImageView) view.findViewById(R.id.ivThree);
-        ivFour = (ImageView) view.findViewById(R.id.ivFour);
-        ivFive = (ImageView) view.findViewById(R.id.ivFive);
-        ivSix = (ImageView) view.findViewById(R.id.ivSix);
-        ivChosenImage = (ImageView) view.findViewById(R.id.ivChosenImage);
-        btnCancel = (Button) view.findViewById(R.id.btnCancel);
-        btnDone = (Button) view.findViewById(R.id.btnDone);
+        ButterKnife.bind(this,view);
+
+        btnBrowser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(
+                        Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(i, RESULT_LOAD_IMAGE);
+            }
+        });
+
         ivOne.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -132,6 +152,41 @@ public class DialogUpdateCoverImage extends android.support.v4.app.DialogFragmen
                 dismiss();
             }
         });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RESULT_LOAD_IMAGE && resultCode == getActivity().RESULT_OK && null != data) {
+            Uri selectedImage = data.getData();
+            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+
+            Cursor cursor = getActivity().getContentResolver().query(selectedImage,
+                    filePathColumn, null, null, null);
+            cursor.moveToFirst();
+
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String picturePath = cursor.getString(columnIndex);
+            cursor.close();
+
+            Bitmap bmp = null;
+            try {
+                bmp = getBitmapFromUri(selectedImage);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            ivChosenImage.setImageBitmap(bmp);
+
+        }
+    }
+    private Bitmap getBitmapFromUri(Uri uri) throws IOException {
+        ParcelFileDescriptor parcelFileDescriptor =
+               getActivity().getContentResolver().openFileDescriptor(uri, "r");
+        FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
+        Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
+        parcelFileDescriptor.close();
+        return image;
     }
     public static DialogUpdateCoverImage newInstance() {
         DialogUpdateCoverImage frag = new DialogUpdateCoverImage();

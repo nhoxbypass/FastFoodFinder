@@ -2,6 +2,7 @@ package com.example.mypc.fastfoodfinder.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.renderscript.ScriptGroup;
 import android.support.annotation.Nullable;
@@ -112,13 +113,32 @@ public class DialogCreateNewList extends DialogFragment {
             public void onClick(View view) {
                 idIconSource = R.drawable.ic_newlist1;
                 icon1.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.image_click));
+                icon2.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon3.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon4.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon5.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon6.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon7.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon8.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon9.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon10.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+
             }
         });
         icon2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 idIconSource = R.drawable.ic_newlist2;
+                icon1.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
                 icon2.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.image_click));
+                icon3.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon4.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon5.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon6.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon7.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon8.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon9.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon10.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
 
             }
         });
@@ -126,7 +146,16 @@ public class DialogCreateNewList extends DialogFragment {
             @Override
             public void onClick(View view) {
                 idIconSource = R.drawable.ic_newlist3;
+                icon1.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon2.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
                 icon3.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.image_click));
+                icon4.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon5.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon6.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon7.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon8.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon9.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon10.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
 
             }
         });
@@ -134,7 +163,16 @@ public class DialogCreateNewList extends DialogFragment {
             @Override
             public void onClick(View view) {
                 idIconSource = R.drawable.ic_newlist4;
+                icon1.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon2.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon3.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
                 icon4.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.image_click));
+                icon5.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon6.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon7.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon8.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon9.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon10.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
 
             }
         });
@@ -142,7 +180,16 @@ public class DialogCreateNewList extends DialogFragment {
             @Override
             public void onClick(View view) {
                 idIconSource = R.drawable.ic_newlist5;
+                icon1.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon2.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon3.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon4.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
                 icon5.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.image_click));
+                icon6.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon7.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon8.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon9.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon10.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
 
             }
         });
@@ -150,7 +197,16 @@ public class DialogCreateNewList extends DialogFragment {
             @Override
             public void onClick(View view) {
                 idIconSource = R.drawable.ic_newlist6;
+                icon1.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon2.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon3.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon4.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon5.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
                 icon6.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.image_click));
+                icon7.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon8.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon9.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon10.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
 
             }
         });
@@ -158,14 +214,32 @@ public class DialogCreateNewList extends DialogFragment {
             @Override
             public void onClick(View view) {
                 idIconSource = R.drawable.ic_newlist7;
+                icon1.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon2.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon3.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon4.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon5.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon6.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
                 icon7.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.image_click));
+                icon8.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon9.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon10.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
             }
         });
         icon8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 idIconSource = R.drawable.ic_newlist8;
+                icon1.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon2.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon3.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon4.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon5.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon6.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon7.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
                 icon8.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.image_click));
+                icon9.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon10.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
 
             }
         });
@@ -173,7 +247,16 @@ public class DialogCreateNewList extends DialogFragment {
             @Override
             public void onClick(View view) {
                 idIconSource = R.drawable.ic_newlist9;
+                icon1.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon2.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon3.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon4.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon5.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon6.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon7.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon8.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
                 icon9.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.image_click));
+                icon10.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
 
             }
         });
@@ -181,6 +264,15 @@ public class DialogCreateNewList extends DialogFragment {
             @Override
             public void onClick(View view) {
                 idIconSource = R.drawable.ic_newlist10;
+                icon1.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon2.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon3.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon4.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon5.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon6.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon7.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon8.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon9.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
                 icon10.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.image_click));
 
             }

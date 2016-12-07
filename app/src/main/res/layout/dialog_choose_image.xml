@@ -90,6 +90,7 @@
         android:layout_marginTop="10dp"
         android:drawableLeft="@drawable/ic_camera"
         android:drawablePadding="8dp"
+        android:id="@+id/btnBrowser"
         android:text="BROWSER"/>
     <TextView
         android:layout_width="wrap_content"
