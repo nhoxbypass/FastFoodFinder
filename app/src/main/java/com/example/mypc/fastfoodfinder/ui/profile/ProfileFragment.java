@@ -1,6 +1,5 @@
 package com.example.mypc.fastfoodfinder.ui.profile;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,16 +16,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.mypc.fastfoodfinder.R;
 import com.example.mypc.fastfoodfinder.activity.DetailListActivity;
-import com.example.mypc.fastfoodfinder.adapter.ListPacketAdapter;
+import com.example.mypc.fastfoodfinder.adapter.UserStoreListAdapter;
 import com.example.mypc.fastfoodfinder.dialog.DialogCreateNewList;
-import com.example.mypc.fastfoodfinder.model.ListPacket;
 import com.example.mypc.fastfoodfinder.model.Store.UserStoreList;
 import com.example.mypc.fastfoodfinder.model.User.User;
 import com.example.mypc.fastfoodfinder.utils.Constant;
@@ -53,11 +49,11 @@ public class ProfileFragment extends Fragment {
     public static final String KEY_URL ="url";
     @BindView(R.id.ivCoverImage)  ImageView ivCoverImage;
     @BindView(R.id.btnUpdateCoverImage)  Button btnUpdateCoverImage;
-    @BindView(R.id.ivCreate)  CircleImageView civCreate;
-    @BindView(R.id.cvCreateNew)   CardView cvCreate;
-    @BindView(R.id.iv_profile_avatar)   ImageView ivAvatarProfile;
-    @BindView(R.id.tvName)   TextView tvName;
-    @BindView(R.id.tvEmail)   TextView tvEmail;
+    @BindView(R.id.ivCreate) CircleImageView civCreate;
+    @BindView(R.id.cvCreateNew)  CardView cvCreate;
+    @BindView(R.id.iv_profile_avatar)  ImageView ivAvatarProfile;
+    @BindView(R.id.tvName)  TextView tvName;
+    @BindView(R.id.tvEmail)  TextView tvEmail;
     @BindView(R.id.rvListPacket)  RecyclerView rvListPacket;
     @BindView(R.id.tvNumberList) TextView tvNumberList;
     @BindView(R.id.cv_saved_places) CardView cvSavePlace;
@@ -66,7 +62,7 @@ public class ProfileFragment extends Fragment {
     DialogUpdateCoverImage mDialog;
     DialogCreateNewList mDialogCreate;
     public static ArrayList<String> listName;
-    ListPacketAdapter mAdapter;
+    UserStoreListAdapter mAdapter;
     // Firebase instance variables
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
@@ -78,7 +74,7 @@ public class ProfileFragment extends Fragment {
 
     public static ProfileFragment newInstance(){
         Bundle extras = new Bundle();
-       ProfileFragment fragment = new ProfileFragment();
+        ProfileFragment fragment = new ProfileFragment();
         fragment.setArguments(extras);
         return fragment;
     }
@@ -108,7 +104,7 @@ public class ProfileFragment extends Fragment {
         listName.add("My Favourite Places");
         listName.add("My Checked in Places");
 
-        mAdapter = new ListPacketAdapter();
+        mAdapter = new UserStoreListAdapter();
         mLayoutManager = new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL);
         rvListPacket.setAdapter(mAdapter);
         rvListPacket.setLayoutManager(mLayoutManager);
@@ -123,6 +119,7 @@ public class ProfileFragment extends Fragment {
             getUserData(mFirebaseUser.getUid());
         }
 
+        load();
         ivCoverImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -146,7 +143,8 @@ public class ProfileFragment extends Fragment {
                 mDialogCreate.setOnButtonClickListener(new DialogCreateNewList.OnCreateListListener() {
                     @Override
                     public void OnButtonClick(String name, int idIconSource) {
-                        mAdapter.addListPacket(new ListPacket(name, idIconSource));
+                        int id = mCurrUser.getUserStoreLists().size();
+                        mAdapter.addListPacket(new UserStoreList(id, new ArrayList<Integer>(),idIconSource, name));
                         tvNumberList.setText("("+String.valueOf(mAdapter.getItemCount())+")");
                     }
                 });
@@ -172,7 +170,6 @@ public class ProfileFragment extends Fragment {
                 intent.putExtra(KEY_ID,R.drawable.ic_favourite);
                 intent.putExtra(KEY_NUMBER_PLACES,2);
                 intent.putExtra(KEY_URL,mFirebaseUser.getPhotoUrl());
-
                 startActivity(intent);
             }
         });
@@ -188,17 +185,24 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        mAdapter.setOnItemClickListener(new ListPacketAdapter.OnItemClickListener() {
+        mAdapter.setOnItemClickListener(new UserStoreListAdapter.OnItemClickListener() {
             @Override
-            public void OnClick(ListPacket listPacket) {
+            public void OnClick(UserStoreList listPacket) {
                 Intent intent = new Intent(getContext(), DetailListActivity.class);
-                intent.putExtra(KEY_NAME,listPacket.getName());
-                intent.putExtra(KEY_ID,listPacket.getIdIconSource());
+                intent.putExtra(KEY_NAME,listPacket.getListName());
+                intent.putExtra(KEY_ID,listPacket.getIconId());
                 intent.putExtra(KEY_NUMBER_PLACES, 0);
                 intent.putExtra(KEY_URL,mFirebaseUser.getPhotoUrl());
                 startActivity(intent);
             }
         });
+    }
+
+    public void load(){
+        for (int i = 0; i< mCurrUser.getUserStoreLists().size();i++){
+            mAdapter.addListPacket(new UserStoreList(mCurrUser.getUserStoreLists().get(i).getId(), new ArrayList<Integer>(),mCurrUser.getUserStoreLists().get(i).getIconId(), mCurrUser.getUserStoreLists().get(i).getListName()));
+            tvNumberList.setText("("+String.valueOf(mAdapter.getItemCount())+")");
+        }
     }
 
     public void showDialog(DialogUpdateCoverImage dialog){
@@ -211,8 +215,6 @@ public class ProfileFragment extends Fragment {
                     ivCoverImage.setImageResource(Id);
             }
         });
-
-
     }
 
     @Override

@@ -1,7 +1,6 @@
 package com.example.mypc.fastfoodfinder.adapter;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
@@ -11,9 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.mypc.fastfoodfinder.R;
-import com.example.mypc.fastfoodfinder.activity.DetailListActivity;
-import com.example.mypc.fastfoodfinder.model.ListPacket;
-import com.example.mypc.fastfoodfinder.ui.profile.ProfileFragment;
+import com.example.mypc.fastfoodfinder.model.Store.UserStoreList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,21 +22,21 @@ import de.hdodenhof.circleimageview.CircleImageView;
 /**
  * Created by MyPC on 12/5/2016.
  */
-public class ListPacketAdapter extends RecyclerView.Adapter<ListPacketAdapter.ListViewHolder> {
+public class UserStoreListAdapter extends RecyclerView.Adapter<UserStoreListAdapter.ListViewHolder> {
 
-    List<ListPacket> mListPackets;
+    List<UserStoreList> mListPackets;
     OnItemClickListener mListener;
-    public ListPacketAdapter(){
+    public UserStoreListAdapter(){
         mListPackets = new ArrayList<>();
     }
 
-    public void addListPacket(ListPacket listPacket){
+    public void addListPacket(UserStoreList listPacket){
         mListPackets.add(listPacket);
         notifyItemRangeInserted(mListPackets.size(),1);
     }
 
     public interface OnItemClickListener{
-        void OnClick(ListPacket listPacket);
+        void OnClick(UserStoreList listPacket);
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener){
@@ -55,9 +52,9 @@ public class ListPacketAdapter extends RecyclerView.Adapter<ListPacketAdapter.Li
 
     @Override
     public void onBindViewHolder(ListViewHolder holder, int position) {
-        ListPacket listPacket = mListPackets.get(position);
-        holder.tvName.setText(listPacket.getName());
-        holder.cvIcon.setImageResource(listPacket.getIdIconSource());
+        UserStoreList listPacket = mListPackets.get(position);
+        holder.tvName.setText(listPacket.getListName());
+        holder.cvIcon.setImageResource(listPacket.getIconId());
     }
 
     @Override
@@ -75,7 +72,7 @@ public class ListPacketAdapter extends RecyclerView.Adapter<ListPacketAdapter.Li
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ListPacket listPacket = mListPackets.get(getAdapterPosition());
+                    UserStoreList listPacket = mListPackets.get(getAdapterPosition());
                     mListener.OnClick(listPacket);
 
                 }
