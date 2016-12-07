@@ -127,7 +127,7 @@ public class SplashActivity extends AppCompatActivity {
 
                                     @Override
                                     public void onCancelled(DatabaseError databaseError) {
-                                        Log.w("MAPP", "The read failed: " + databaseError.getCode());
+                                        Log.w("MAPP", "The read failed: " + databaseError.getMessage());
                                         listener.onFailed(databaseError);
                                     }
                                 });

@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.mypc.fastfoodfinder.R;
+import com.example.mypc.fastfoodfinder.model.Store.UserStoreList;
 import com.example.mypc.fastfoodfinder.model.User.User;
 import com.example.mypc.fastfoodfinder.utils.Constant;
 import com.facebook.AccessToken;
@@ -36,6 +37,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -207,7 +210,7 @@ public class LoginActivity extends AppCompatActivity {
             photoUrl = firebaseUser.getPhotoUrl().toString();
         }
 
-        User user = new User(firebaseUser.getDisplayName(), firebaseUser.getEmail(), photoUrl, firebaseUser.getUid());
+        User user = new User(firebaseUser.getDisplayName(), firebaseUser.getEmail(), photoUrl, firebaseUser.getUid(), new ArrayList<UserStoreList>());
         user.saveUserData(databaseRef);
     }
 
