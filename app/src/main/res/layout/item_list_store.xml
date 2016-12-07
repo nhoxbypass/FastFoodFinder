@@ -8,7 +8,7 @@
     <ImageView
         android:id="@+id/ivStoreImage"
         android:layout_width="0dp"
-        android:layout_height="88dp"
+        android:layout_height="72dp"
         android:layout_weight="2"
         android:scaleType="centerCrop"
         android:src="@drawable/logo_bsmart_50" />
@@ -16,7 +16,7 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:layout_weight="6"
         android:orientation="vertical">
@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:text="Coffe"
             android:textColor="#3F51B5"
-            android:textSize="24sp"
+            android:textSize="16sp"
             android:textStyle="bold" />
 
         <TextView
@@ -48,7 +48,7 @@
     <Button
         android:id="@+id/btnRate"
         android:layout_width="0dp"
-        android:layout_height="36dp"
+        android:layout_height="32dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
         android:layout_weight="1"
