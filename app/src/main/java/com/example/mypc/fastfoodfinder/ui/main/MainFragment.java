@@ -175,18 +175,20 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
         addMarkersToMap(mStoreList, mGoogleMap);
         setMarkersListener(mGoogleMap);
 
+        final boolean[] isZoomToUser = {false};
         if (PermissionUtils.checkLocation(getContext())) {
             LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, mLocationRequest, new LocationListener() {
                 @Override
                 public void onLocationChanged(Location location) {
                     currLocation = new LatLng(location.getLatitude(), location.getLongitude());
                     // Creating a LatLng object for the current location
-                    LatLng latLng = currLocation;
-                    // Showing the current location in Google Map
-                    //mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
 
-                    // Zoom in the Google Map
-                    //mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(16));
+                    if (!isZoomToUser[0]) {
+                        // Zoom and show current location in the Google Map
+                        mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currLocation, 16f));
+
+                        isZoomToUser[0] = true;
+                    }
                 }
             });
 
@@ -196,13 +198,8 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
             } else
                 currLocation = mGoogleMap.getCameraPosition().target;
 
-            // Creating a LatLng object for the current location
-            LatLng latLng = currLocation;
             // Showing the current location in Google Map
-            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-
-            // Zoom in the Google Map
-            mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(16));
+            mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currLocation, 16f));
         } else {
             PermissionUtils.requestLocaiton(getActivity());
         }
@@ -251,6 +248,9 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
                     Toast.makeText(getContext(),"Failed to get stores data!",Toast.LENGTH_SHORT).show();
 
                 addMarkersToMap(mStoreList, mGoogleMap);
+
+                mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mStoreList.get(0).getPosition(),16f));
+
                 AnimateMarkerTask storeTask = new AnimateMarkerTask();
                 storeTask.execute(mStoreList);
                 break;
@@ -262,6 +262,8 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
                 if (mStoreList == null || mStoreList.size() <= 0)
                     Toast.makeText(getContext(),"Failed to get stores data!",Toast.LENGTH_SHORT).show();
                 addMarkersToMap(mStoreList, mGoogleMap);
+                if (currLocation != null)
+                    mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currLocation,16f));
                 break;
 
             default:
@@ -362,6 +364,8 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
 
 
     void addMarkersToMap(List<Store> storeList, GoogleMap googleMap) {
+        googleMap.clear();
+
         // Set icons of the default_marker to green
         for (int i = 0; i < storeList.size(); i++) {
             Store store = storeList.get(i);
