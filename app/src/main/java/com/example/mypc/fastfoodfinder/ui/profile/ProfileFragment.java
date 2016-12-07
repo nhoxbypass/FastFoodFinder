@@ -201,8 +201,8 @@ public class ProfileFragment extends Fragment {
     public void load(){
         for (int i = 0; i< mCurrUser.getUserStoreLists().size();i++){
             mAdapter.addListPacket(new UserStoreList(mCurrUser.getUserStoreLists().get(i).getId(), new ArrayList<Integer>(),mCurrUser.getUserStoreLists().get(i).getIconId(), mCurrUser.getUserStoreLists().get(i).getListName()));
-            tvNumberList.setText("("+String.valueOf(mAdapter.getItemCount())+")");
         }
+        tvNumberList.setText("("+String.valueOf(mAdapter.getItemCount())+")");
     }
 
     public void showDialog(DialogUpdateCoverImage dialog){
