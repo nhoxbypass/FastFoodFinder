@@ -112,11 +112,12 @@ public class ProfileFragment extends Fragment {
         // Initialize Firebase Auth
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
-        if (mFirebaseUser == null) {
-            tvName.setText("Unregistered User");
-            tvEmail.setText("anonymous@fastfoodfinder.com");
-            mCurrUser = new User("Unregistered User", "anonymous@fastfoodfinder.com", "http://cdn.builtlean.com/wp-content/uploads/2015/11/noavatar.png", "null" ,new ArrayList<UserStoreList>());
-        } else {
+
+        tvName.setText("Unregistered User");
+        tvEmail.setText("anonymous@fastfoodfinder.com");
+        mCurrUser = new User("Unregistered User", "anonymous@fastfoodfinder.com", "http://cdn.builtlean.com/wp-content/uploads/2015/11/noavatar.png", "null" ,new ArrayList<UserStoreList>());
+
+        if (mFirebaseUser != null) {
             getUserData(mFirebaseUser.getUid());
         }
     }
