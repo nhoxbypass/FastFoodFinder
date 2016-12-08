@@ -1,5 +1,8 @@
 package com.example.mypc.fastfoodfinder.model.Store;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.PropertyName;
@@ -9,7 +12,7 @@ import java.io.Serializable;
 /**
  * Created by nhoxb on 11/10/2016.
  */
-public class Store implements Serializable {
+public class Store implements Parcelable {
 
     //Type
     //0: circle_k
@@ -62,6 +65,28 @@ public class Store implements Serializable {
         type = viewModel.getType();
         address = viewModel.getStoreAddress();
     }
+
+    protected Store(Parcel in) {
+        type = in.readInt();
+        id = in.readInt();
+        title = in.readString();
+        address = in.readString();
+        lat = in.readString();
+        lng = in.readString();
+        tel = in.readString();
+    }
+
+    public static final Creator<Store> CREATOR = new Creator<Store>() {
+        @Override
+        public Store createFromParcel(Parcel in) {
+            return new Store(in);
+        }
+
+        @Override
+        public Store[] newArray(int size) {
+            return new Store[size];
+        }
+    };
 
     public int getId() {
         return id;
@@ -128,5 +153,21 @@ public class Store implements Serializable {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(type);
+        parcel.writeInt(id);
+        parcel.writeString(title);
+        parcel.writeString(address);
+        parcel.writeString(lat);
+        parcel.writeString(lng);
+        parcel.writeString(tel);
     }
 }

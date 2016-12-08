@@ -394,7 +394,7 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
                 Intent intent = new Intent(getContext(), MapRoutingActivity.class);
                 Bundle extras = new Bundle();
                 extras.putParcelable(KEY_ROUTE_LIST, response.body());
-                extras.putSerializable(KEY_DES_STORE, store);
+                extras.putParcelable(KEY_DES_STORE, store);
                 intent.putExtras(extras);
                 startActivity(intent);
 

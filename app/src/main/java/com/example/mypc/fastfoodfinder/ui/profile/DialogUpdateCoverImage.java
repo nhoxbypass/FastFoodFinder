@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
@@ -45,12 +47,13 @@ public class DialogUpdateCoverImage extends android.support.v4.app.DialogFragmen
     @BindView(R.id.btnCancel)    Button btnCancel;
     @BindView(R.id.btnBrowser)     Button btnBrowser;
     int IdChosenImage = 0;
+    Bitmap mBmp = null;
 
     OnButtonClickListener mListener;
 
 
     public interface OnButtonClickListener{
-        void onButtonClickListener(int Id);
+        void onButtonClickListener(int Id, Bitmap bmp);
     }
 
     public void setOnButtonClickListener(OnButtonClickListener listener){
@@ -76,7 +79,7 @@ public class DialogUpdateCoverImage extends android.support.v4.app.DialogFragmen
     @Override
     public void onStart() {
         super.onStart();
-        getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
     }
 
     @Override
@@ -141,7 +144,7 @@ public class DialogUpdateCoverImage extends android.support.v4.app.DialogFragmen
         btnDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mListener.onButtonClickListener(IdChosenImage);
+                mListener.onButtonClickListener(IdChosenImage, mBmp);
                 dismiss();
             }
         });
@@ -175,9 +178,9 @@ public class DialogUpdateCoverImage extends android.support.v4.app.DialogFragmen
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
             ivChosenImage.setImageBitmap(bmp);
-
+            IdChosenImage = -1;
+            mBmp = bmp;
         }
     }
     private Bitmap getBitmapFromUri(Uri uri) throws IOException {

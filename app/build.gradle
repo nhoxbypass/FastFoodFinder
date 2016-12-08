@@ -3,9 +3,16 @@ apply plugin: 'android-apt'
 apply plugin: 'realm-android'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+            storeFile file('D:/debug.keystore')
+            storePassword 'android'
+        }
+    }
     compileSdkVersion 24
     buildToolsVersion "25.0.0"
-
     defaultConfig {
         applicationId "com.example.mypc.fastfoodfinder"
         minSdkVersion 16
@@ -23,8 +30,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        debug {
+            signingConfig signingConfigs.config
+        }
     }
-
     aaptOptions {
         cruncherEnabled = false
     }
@@ -57,7 +66,6 @@ dependencies {
     compile 'com.google.android.gms:play-services-auth:9.8.0'
     compile 'com.facebook.android:facebook-android-sdk:[4,5)'
     compile 'com.google.maps.android:android-maps-utils:0.4+'
-
 }
 
 apply plugin: 'com.google.gms.google-services'

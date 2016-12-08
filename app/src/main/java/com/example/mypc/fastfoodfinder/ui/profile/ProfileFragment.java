@@ -1,6 +1,7 @@
 package com.example.mypc.fastfoodfinder.ui.profile;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -23,6 +24,7 @@ import com.example.mypc.fastfoodfinder.R;
 import com.example.mypc.fastfoodfinder.activity.DetailListActivity;
 import com.example.mypc.fastfoodfinder.adapter.UserStoreListAdapter;
 import com.example.mypc.fastfoodfinder.dialog.DialogCreateNewList;
+import com.example.mypc.fastfoodfinder.model.Store.Store;
 import com.example.mypc.fastfoodfinder.model.Store.UserStoreList;
 import com.example.mypc.fastfoodfinder.model.User.User;
 import com.example.mypc.fastfoodfinder.utils.Constant;
@@ -35,6 +37,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,8 +47,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ProfileFragment extends Fragment {
 
     public static final String KEY_NAME = "name";
-    public static final String KEY_ID = "idIcon";
-    public static final String KEY_NUMBER_PLACES ="number";
+    public static final String KEY_ID = "id";
+    public static final String KEY_IDICON = "idicon";
+    public static final String KEY_STORE= "store";
+
     public static final String KEY_URL ="url";
     @BindView(R.id.ivCoverImage)  ImageView ivCoverImage;
     @BindView(R.id.btnUpdateCoverImage)  Button btnUpdateCoverImage;
@@ -69,6 +74,7 @@ public class ProfileFragment extends Fragment {
     private FirebaseDatabase mDatabase;
     private DatabaseReference mDatabaseRef;
     StaggeredGridLayoutManager mLayoutManager;
+    List<UserStoreList> defaultList;
 
     private User mCurrUser;
 
@@ -93,17 +99,13 @@ public class ProfileFragment extends Fragment {
 
         ButterKnife.bind(this, rootView);
         listName = new ArrayList<>();
-
+        defaultList = new ArrayList<>();
         return rootView;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        listName.add("My Save Places");
-        listName.add("My Favourite Places");
-        listName.add("My Checked in Places");
-
         mAdapter = new UserStoreListAdapter();
         mLayoutManager = new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL);
         rvListPacket.setAdapter(mAdapter);
@@ -118,8 +120,74 @@ public class ProfileFragment extends Fragment {
         } else {
             getUserData(mFirebaseUser.getUid());
         }
+    }
 
+    public void loadUserList(){
+        for (int i = 0; i< mCurrUser.getUserStoreLists().size();i++){
+            UserStoreList list = new UserStoreList(mCurrUser.getUserStoreLists().get(i).getId(), new ArrayList<Integer>(),mCurrUser.getUserStoreLists().get(i).getIconId(), mCurrUser.getUserStoreLists().get(i).getListName());
+            if(i<=2){
+                defaultList.add(list);
+            }
+            else {
+                mAdapter.addListPacket(list);
+            }
+        }
+        tvNumberList.setText("("+String.valueOf(mAdapter.getItemCount())+")");
+    }
 
+    public void showDialog(DialogUpdateCoverImage dialog){
+        dialog = DialogUpdateCoverImage.newInstance();
+        dialog.show(getFragmentManager(),"");
+        dialog.setOnButtonClickListener(new DialogUpdateCoverImage.OnButtonClickListener() {
+            @Override
+            public void onButtonClickListener(int Id, Bitmap bitmap) {
+                if (Id!=0)
+                    if(Id == -1){
+                        ivCoverImage.setImageBitmap(bitmap);
+                    }
+                else {
+                        ivCoverImage.setImageResource(Id);
+                    }
+            }
+        });
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        MenuItem item = menu.findItem(R.id.action_search);
+        item.setVisible(false);
+    }
+
+    void getUserData(String uid)
+    {
+        mDatabase = FirebaseDatabase.getInstance();
+        mDatabaseRef = mDatabase.getReference().child(Constant.CHILD_USERS).child(uid);
+        mDatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                mCurrUser = dataSnapshot.getValue(User.class);
+                Glide.with(getContext())
+                        .load(mCurrUser.getPhotoUrl())
+                        .into(ivAvatarProfile);
+                tvName.setText(mCurrUser.getName());
+                tvEmail.setText(mCurrUser.getEmail());
+                loadUserList();
+                for (int i=0;i<mCurrUser.getUserStoreLists().size();i++){
+                    listName.add(mCurrUser.getUserStoreLists().get(i).getListName());
+                }
+                onListener();
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e("MAPP", "Failed to get user data");
+            }
+        });
+    }
+
+    public void onListener(){
         ivCoverImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -156,97 +224,51 @@ public class ProfileFragment extends Fragment {
         cvSavePlace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(), DetailListActivity.class);
-                intent.putExtra(KEY_NAME,"My Save Places");
-                intent.putExtra(KEY_ID,R.drawable.ic_save);
-                intent.putExtra(KEY_NUMBER_PLACES,2);
-                intent.putExtra(KEY_URL,mFirebaseUser.getPhotoUrl());
-                startActivity(intent);
+                sendToDetailListActivity(defaultList.get(0));
+
             }
         });
         cvFavouritePlace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(), DetailListActivity.class);
-                intent.putExtra(KEY_NAME,"My Favourite Places");
-                intent.putExtra(KEY_ID,R.drawable.ic_favourite);
-                intent.putExtra(KEY_NUMBER_PLACES,2);
-                intent.putExtra(KEY_URL,mFirebaseUser.getPhotoUrl());
-                startActivity(intent);
+                sendToDetailListActivity(defaultList.get(1));
+
             }
         });
         cvCheckinPlace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(), DetailListActivity.class);
-                intent.putExtra(KEY_NAME,"My Checked In Places");
-                intent.putExtra(KEY_ID,R.drawable.ic_list_checkin);
-                intent.putExtra(KEY_NUMBER_PLACES,2);
-                intent.putExtra(KEY_URL,mFirebaseUser.getPhotoUrl());
-                startActivity(intent);
+                  sendToDetailListActivity(defaultList.get(2));
+            }
+        });
+
+        mAdapter.setOnItemLongClickListener(new UserStoreListAdapter.OnItemLongClickListener() {
+            @Override
+            public void onClick(UserStoreList userStoreList) {
+                tvNumberList.setText("("+String.valueOf(mAdapter.getItemCount())+")");
+                mCurrUser.removeStoreList(userStoreList);
             }
         });
 
         mAdapter.setOnItemClickListener(new UserStoreListAdapter.OnItemClickListener() {
             @Override
             public void OnClick(UserStoreList listPacket) {
-                Intent intent = new Intent(getContext(), DetailListActivity.class);
-                intent.putExtra(KEY_NAME,listPacket.getListName());
-                intent.putExtra(KEY_ID,listPacket.getIconId());
-                intent.putExtra(KEY_NUMBER_PLACES, 0);
-                intent.putExtra(KEY_URL,mFirebaseUser.getPhotoUrl());
-                startActivity(intent);
+                sendToDetailListActivity(listPacket);
+
             }
         });
     }
 
-    public void loadUserList(){
-        for (int i = 0; i< mCurrUser.getUserStoreLists().size();i++){
-            mAdapter.addListPacket(new UserStoreList(mCurrUser.getUserStoreLists().get(i).getId(), new ArrayList<Integer>(),mCurrUser.getUserStoreLists().get(i).getIconId(), mCurrUser.getUserStoreLists().get(i).getListName()));
-        }
-        tvNumberList.setText("("+String.valueOf(mAdapter.getItemCount())+")");
+
+    void sendToDetailListActivity(UserStoreList userStoreList){
+        Intent intent = new Intent(getContext(), DetailListActivity.class);
+        intent.putExtra(KEY_URL,mFirebaseUser.getPhotoUrl());
+        intent.putExtra(KEY_NAME,userStoreList.getListName());
+        intent.putExtra(KEY_ID,userStoreList.getId());
+        intent.putExtra(KEY_IDICON,userStoreList.getIconId());
+        Bundle bundle = new Bundle();
+        bundle.putIntegerArrayList(KEY_STORE,userStoreList.getStoreList());
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
-
-    public void showDialog(DialogUpdateCoverImage dialog){
-        dialog = DialogUpdateCoverImage.newInstance();
-        dialog.show(getFragmentManager(),"");
-        dialog.setOnButtonClickListener(new DialogUpdateCoverImage.OnButtonClickListener() {
-            @Override
-            public void onButtonClickListener(int Id) {
-                if (Id!=0)
-                    ivCoverImage.setImageResource(Id);
-            }
-        });
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        MenuItem item = menu.findItem(R.id.action_search);
-        item.setVisible(false);
-    }
-
-    void getUserData(String uid)
-    {
-        mDatabase = FirebaseDatabase.getInstance();
-        mDatabaseRef = mDatabase.getReference().child(Constant.CHILD_USERS).child(uid);
-        mDatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                mCurrUser = dataSnapshot.getValue(User.class);
-                Glide.with(getContext())
-                        .load(mCurrUser.getPhotoUrl())
-                        .into(ivAvatarProfile);
-                tvName.setText(mCurrUser.getName());
-                tvEmail.setText(mCurrUser.getEmail());
-                loadUserList();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.e("MAPP", "Failed to get user data");
-            }
-        });
-    }
-
 }

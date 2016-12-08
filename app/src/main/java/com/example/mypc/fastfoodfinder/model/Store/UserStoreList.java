@@ -1,22 +1,31 @@
 package com.example.mypc.fastfoodfinder.model.Store;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by nhoxb on 12/6/2016.
  */
-public class UserStoreList {
+public class UserStoreList implements Parcelable {
 
     private int id;
     private String listName;
     private int iconId;
-    private List<Integer> storeIdList;
+    private ArrayList<Integer> storeIdList;
+
+    protected UserStoreList(Parcel in) {
+        id = in.readInt();
+        listName = in.readString();
+        iconId = in.readInt();
+    }
 
     public UserStoreList() {
     }
 
-    public UserStoreList(int id, List<Integer> storesId, int iconId, String listName) {
+    public UserStoreList(int id, ArrayList<Integer> storesId, int iconId, String listName) {
         this.id = id;
         this.iconId = iconId;
         this.listName = listName;
@@ -27,6 +36,19 @@ public class UserStoreList {
             this.storeIdList = storesId;
     }
 
+
+    public static final Creator<UserStoreList> CREATOR = new Creator<UserStoreList>() {
+        @Override
+        public UserStoreList createFromParcel(Parcel in) {
+            return new UserStoreList(in);
+        }
+
+        @Override
+        public UserStoreList[] newArray(int size) {
+            return new UserStoreList[size];
+        }
+    };
+
     public int getId() {
         return id;
     }
@@ -35,11 +57,11 @@ public class UserStoreList {
         this.id = id;
     }
 
-    public List<Integer> getStoreList() {
+    public ArrayList<Integer> getStoreList() {
         return storeIdList;
     }
 
-    public void setStoreList(List<Integer> storeList) {
+    public void setStoreList(ArrayList<Integer> storeList) {
         this.storeIdList = storeList;
     }
 
@@ -69,5 +91,18 @@ public class UserStoreList {
 
     public void setIconId(int iconId) {
         this.iconId = iconId;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(id);
+        parcel.writeString(listName);
+        parcel.writeInt(iconId);
+        parcel.writeList(storeIdList);
     }
 }

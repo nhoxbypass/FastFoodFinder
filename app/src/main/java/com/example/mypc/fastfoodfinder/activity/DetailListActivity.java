@@ -13,6 +13,7 @@ import com.example.mypc.fastfoodfinder.R;
 import com.example.mypc.fastfoodfinder.adapter.StoreListAdapter;
 import com.example.mypc.fastfoodfinder.helper.DividerItemDecoration;
 import com.example.mypc.fastfoodfinder.model.Store.Store;
+import com.example.mypc.fastfoodfinder.model.Store.UserStoreList;
 import com.example.mypc.fastfoodfinder.ui.profile.ProfileFragment;
 import com.example.mypc.fastfoodfinder.utils.Constant;
 
@@ -51,21 +52,23 @@ public class DetailListActivity extends AppCompatActivity {
 
     void getData(){
         Intent intent = getIntent();
+
+        //list name
         tvListName.setText(intent.getStringExtra(ProfileFragment.KEY_NAME));
-        cvIconList.setImageResource(intent.getIntExtra(ProfileFragment.KEY_ID,R.drawable.ic_new_list));
+        //icon of list
+        cvIconList.setImageResource(intent.getIntExtra(ProfileFragment.KEY_IDICON,0));
+
         Glide.with(getApplicationContext())
                 .load(intent.getStringExtra(ProfileFragment.KEY_URL))
                 .into(avatar);
-        int Num = intent.getIntExtra(ProfileFragment.KEY_NUMBER_PLACES,0);
-        if (Num == 0){
-            tvNumberPlace.setText("0 Place");
-        }
-        else {
-            tvNumberPlace.setText(String.valueOf(Num)+" Places");
-            ArrayList<Store> stores = new ArrayList<>();
-            stores.add(new Store("Circle K Ly Tu Trong","238 Ly Tu Trong, Ben Thanh Ward, District 1, Ho Chi Minh, Vietnam","10.7721924", "106.69433409999999", "3822 7403", Constant.TYPE_CIRCLE_K));
-            stores.add(new Store("Familymart - Đường D2", "39 Đường D2, P. 25, Quận Bình Thạnh, TP. HCM","10.80252", "106.715622", "35 126 283", Constant.TYPE_FAMILY_MART));
-            mAdapter.setDesS(stores);
-        }
+        //id of list
+        int id = intent.getIntExtra(ProfileFragment.KEY_ID,0);
+        //list id of store
+        ArrayList<Integer> list = intent.getIntegerArrayListExtra(ProfileFragment.KEY_STORE);
+
+        int numberPlace = list.size();
+
+        //add list store to mAdapter here
+
     }
 }

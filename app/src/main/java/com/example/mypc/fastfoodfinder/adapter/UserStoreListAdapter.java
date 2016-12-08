@@ -26,10 +26,19 @@ public class UserStoreListAdapter extends RecyclerView.Adapter<UserStoreListAdap
 
     List<UserStoreList> mListPackets;
     OnItemClickListener mListener;
+    OnItemLongClickListener mOnItemLongClickListener;
     public UserStoreListAdapter(){
         mListPackets = new ArrayList<>();
     }
 
+
+    public interface OnItemLongClickListener{
+        void onClick(UserStoreList userStoreList);
+    }
+
+    public void setOnItemLongClickListener(OnItemLongClickListener listener){
+        mOnItemLongClickListener = listener;
+    }
     public void addListPacket(UserStoreList listPacket){
         mListPackets.add(listPacket);
         notifyItemRangeInserted(mListPackets.size(),1);
@@ -82,6 +91,7 @@ public class UserStoreListAdapter extends RecyclerView.Adapter<UserStoreListAdap
                 @Override
                 public boolean onLongClick(View view) {
                     final int position = getAdapterPosition();
+                    final UserStoreList userStoreList = mListPackets.get(position);
                     new AlertDialog.Builder(itemView.getContext())
                             .setTitle(R.string.delete_favourite_location)
                             .setMessage(R.string.are_you_sure)
@@ -89,8 +99,17 @@ public class UserStoreListAdapter extends RecyclerView.Adapter<UserStoreListAdap
                                 public void onClick(DialogInterface dialog, int which) {
                                     mListPackets.remove(position);
                                     notifyDataSetChanged();
-                                    Snackbar.make(itemView, R.string.undo, Snackbar.LENGTH_INDEFINITE).show();
-                                }
+                                    mOnItemLongClickListener.onClick(userStoreList);
+                                    Snackbar.make(itemView, R.string.do_you_want_undo, Snackbar.LENGTH_LONG)
+                                            .setAction(R.string.undo, new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View view) {
+                                                    mListPackets.add(position, userStoreList);
+                                                    notifyItemInserted(position);
+                                                }
+                                            })
+                                            .setDuration(30000)
+                                            .show();                                }
                             })
                             .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {

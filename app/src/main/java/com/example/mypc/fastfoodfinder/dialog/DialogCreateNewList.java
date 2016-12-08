@@ -112,16 +112,17 @@ public class DialogCreateNewList extends DialogFragment {
             @Override
             public void onClick(View view) {
                 idIconSource = R.drawable.ic_newlist1;
-                icon1.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.image_click));
-                icon2.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon3.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon4.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon5.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon6.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon7.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon8.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon9.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon10.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon1.setScaleX(1.25f); icon1.setScaleY(1.25f); icon1.setAlpha(1f);
+                icon2.setScaleX(1f); icon2.setScaleY(1f); icon2.setAlpha(0.5f);
+                icon3.setScaleX(1f); icon3.setScaleY(1f); icon3.setAlpha(0.5f);
+                icon4.setScaleX(1f); icon4.setScaleY(1f); icon4.setAlpha(0.5f);
+                icon5.setScaleX(1f); icon5.setScaleY(1f); icon5.setAlpha(0.5f);
+                icon6.setScaleX(1f); icon6.setScaleY(1f); icon6.setAlpha(0.5f);
+                icon7.setScaleX(1f); icon7.setScaleY(1f); icon7.setAlpha(0.5f);
+                icon8.setScaleX(1f); icon8.setScaleY(1f); icon8.setAlpha(0.5f);
+                icon9.setScaleX(1f); icon9.setScaleY(1f); icon9.setAlpha(0.5f);
+                icon10.setScaleX(1f); icon10.setScaleY(1f); icon10.setAlpha(0.5f);
+
 
             }
         });
@@ -129,16 +130,16 @@ public class DialogCreateNewList extends DialogFragment {
             @Override
             public void onClick(View view) {
                 idIconSource = R.drawable.ic_newlist2;
-                icon1.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon2.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.image_click));
-                icon3.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon4.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon5.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon6.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon7.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon8.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon9.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon10.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon1.setScaleX(1f); icon1.setScaleY(1f); icon1.setAlpha(0.5f);
+                icon2.setScaleX(1.25f); icon2.setScaleY(1.25f); icon2.setAlpha(1f);
+                icon3.setScaleX(1f); icon3.setScaleY(1f); icon3.setAlpha(0.5f);
+                icon4.setScaleX(1f); icon4.setScaleY(1f); icon4.setAlpha(0.5f);
+                icon5.setScaleX(1f); icon5.setScaleY(1f); icon5.setAlpha(0.5f);
+                icon6.setScaleX(1f); icon6.setScaleY(1f); icon6.setAlpha(0.5f);
+                icon7.setScaleX(1f); icon7.setScaleY(1f); icon7.setAlpha(0.5f);
+                icon8.setScaleX(1f); icon8.setScaleY(1f); icon8.setAlpha(0.5f);
+                icon9.setScaleX(1f); icon9.setScaleY(1f); icon9.setAlpha(0.5f);
+                icon10.setScaleX(1f); icon10.setScaleY(1f); icon10.setAlpha(0.5f);
 
             }
         });
@@ -146,16 +147,16 @@ public class DialogCreateNewList extends DialogFragment {
             @Override
             public void onClick(View view) {
                 idIconSource = R.drawable.ic_newlist3;
-                icon1.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon2.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon3.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.image_click));
-                icon4.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon5.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon6.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon7.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon8.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon9.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon10.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon1.setScaleX(1f); icon1.setScaleY(1f); icon1.setAlpha(0.5f);
+                icon2.setScaleX(1f); icon2.setScaleY(1f); icon2.setAlpha(0.5f);
+                icon3.setScaleX(1.25f); icon3.setScaleY(1.25f); icon3.setAlpha(1f);
+                icon4.setScaleX(1f); icon4.setScaleY(1f); icon4.setAlpha(0.5f);
+                icon5.setScaleX(1f); icon5.setScaleY(1f); icon5.setAlpha(0.5f);
+                icon6.setScaleX(1f); icon6.setScaleY(1f); icon6.setAlpha(0.5f);
+                icon7.setScaleX(1f); icon7.setScaleY(1f); icon7.setAlpha(0.5f);
+                icon8.setScaleX(1f); icon8.setScaleY(1f); icon8.setAlpha(0.5f);
+                icon9.setScaleX(1f); icon9.setScaleY(1f); icon9.setAlpha(0.5f);
+                icon10.setScaleX(1f); icon10.setScaleY(1f); icon10.setAlpha(0.5f);
 
             }
         });
@@ -163,16 +164,16 @@ public class DialogCreateNewList extends DialogFragment {
             @Override
             public void onClick(View view) {
                 idIconSource = R.drawable.ic_newlist4;
-                icon1.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon2.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon3.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon4.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.image_click));
-                icon5.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon6.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon7.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon8.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon9.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon10.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
+                icon1.setScaleX(1f); icon1.setScaleY(1f); icon1.setAlpha(0.5f);
+                icon2.setScaleX(1f); icon2.setScaleY(1f); icon2.setAlpha(0.5f);
+                icon3.setScaleX(1f); icon3.setScaleY(1f); icon3.setAlpha(0.5f);
+                icon4.setScaleX(1.25f); icon4.setScaleY(1.25f); icon4.setAlpha(1f);
+                icon5.setScaleX(1f); icon5.setScaleY(1f); icon5.setAlpha(0.5f);
+                icon6.setScaleX(1f); icon6.setScaleY(1f); icon6.setAlpha(0.5f);
+                icon7.setScaleX(1f); icon7.setScaleY(1f); icon7.setAlpha(0.5f);
+                icon8.setScaleX(1f); icon8.setScaleY(1f); icon8.setAlpha(0.5f);
+                icon9.setScaleX(1f); icon9.setScaleY(1f); icon9.setAlpha(0.5f);
+                icon10.setScaleX(1f); icon10.setScaleY(1f); icon10.setAlpha(0.5f);
 
             }
         });
@@ -180,101 +181,95 @@ public class DialogCreateNewList extends DialogFragment {
             @Override
             public void onClick(View view) {
                 idIconSource = R.drawable.ic_newlist5;
-                icon1.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon2.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon3.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon4.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon5.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.image_click));
-                icon6.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon7.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon8.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon9.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon10.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-
+                icon1.setScaleX(1f); icon1.setScaleY(1f); icon1.setAlpha(0.5f);
+                icon2.setScaleX(1f); icon2.setScaleY(1f); icon2.setAlpha(0.5f);
+                icon3.setScaleX(1f); icon3.setScaleY(1f); icon3.setAlpha(0.5f);
+                icon4.setScaleX(1f); icon4.setScaleY(1f); icon4.setAlpha(0.5f);
+                icon5.setScaleX(1.25f); icon5.setScaleY(1.25f); icon5.setAlpha(1f);
+                icon6.setScaleX(1f); icon6.setScaleY(1f); icon6.setAlpha(0.5f);
+                icon7.setScaleX(1f); icon7.setScaleY(1f); icon7.setAlpha(0.5f);
+                icon8.setScaleX(1f); icon8.setScaleY(1f); icon8.setAlpha(0.5f);
+                icon9.setScaleX(1f); icon9.setScaleY(1f); icon9.setAlpha(0.5f);
+                icon10.setScaleX(1f); icon10.setScaleY(1f); icon10.setAlpha(0.5f);
             }
         });
         icon6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 idIconSource = R.drawable.ic_newlist6;
-                icon1.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon2.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon3.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon4.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon5.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon6.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.image_click));
-                icon7.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon8.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon9.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon10.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-
+                icon1.setScaleX(1f); icon1.setScaleY(1f); icon1.setAlpha(0.5f);
+                icon2.setScaleX(1f); icon2.setScaleY(1f); icon2.setAlpha(0.5f);
+                icon3.setScaleX(1f); icon3.setScaleY(1f); icon3.setAlpha(0.5f);
+                icon4.setScaleX(1f); icon4.setScaleY(1f); icon4.setAlpha(0.5f);
+                icon5.setScaleX(1f); icon5.setScaleY(1f); icon5.setAlpha(0.5f);
+                icon6.setScaleX(1.25f); icon6.setScaleY(1.25f); icon6.setAlpha(1f);
+                icon7.setScaleX(1f); icon7.setScaleY(1f); icon7.setAlpha(0.5f);
+                icon8.setScaleX(1f); icon8.setScaleY(1f); icon8.setAlpha(0.5f);
+                icon9.setScaleX(1f); icon9.setScaleY(1f); icon9.setAlpha(0.5f);
+                icon10.setScaleX(1f); icon10.setScaleY(1f); icon10.setAlpha(0.5f);
             }
         });
         icon7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 idIconSource = R.drawable.ic_newlist7;
-                icon1.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon2.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon3.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon4.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon5.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon6.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon7.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.image_click));
-                icon8.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon9.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon10.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-            }
+                icon1.setScaleX(1f); icon1.setScaleY(1f); icon1.setAlpha(0.5f);
+                icon2.setScaleX(1f); icon2.setScaleY(1f); icon2.setAlpha(0.5f);
+                icon3.setScaleX(1f); icon3.setScaleY(1f); icon3.setAlpha(0.5f);
+                icon4.setScaleX(1f); icon4.setScaleY(1f); icon4.setAlpha(0.5f);
+                icon5.setScaleX(1f); icon5.setScaleY(1f); icon5.setAlpha(0.5f);
+                icon6.setScaleX(1f); icon6.setScaleY(1f); icon6.setAlpha(0.5f);
+                icon7.setScaleX(1.25f); icon7.setScaleY(1.25f); icon7.setAlpha(1f);
+                icon8.setScaleX(1f); icon8.setScaleY(1f); icon8.setAlpha(0.5f);
+                icon9.setScaleX(1f); icon9.setScaleY(1f); icon9.setAlpha(0.5f);
+                icon10.setScaleX(1f); icon10.setScaleY(1f); icon10.setAlpha(0.5f);         }
         });
         icon8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 idIconSource = R.drawable.ic_newlist8;
-                icon1.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon2.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon3.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon4.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon5.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon6.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon7.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon8.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.image_click));
-                icon9.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon10.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-
+                icon1.setScaleX(1f); icon1.setScaleY(1f); icon1.setAlpha(0.5f);
+                icon2.setScaleX(1f); icon2.setScaleY(1f); icon2.setAlpha(0.5f);
+                icon3.setScaleX(1f); icon3.setScaleY(1f); icon3.setAlpha(0.5f);
+                icon4.setScaleX(1f); icon4.setScaleY(1f); icon4.setAlpha(0.5f);
+                icon5.setScaleX(1f); icon5.setScaleY(1f); icon5.setAlpha(0.5f);
+                icon6.setScaleX(1f); icon6.setScaleY(1f); icon6.setAlpha(0.5f);
+                icon7.setScaleX(1f); icon7.setScaleY(1f); icon7.setAlpha(0.5f);
+                icon8.setScaleX(1.25f); icon8.setScaleY(1.25f); icon8.setAlpha(1f);
+                icon9.setScaleX(1f); icon9.setScaleY(1f); icon9.setAlpha(0.5f);
+                icon10.setScaleX(1f); icon10.setScaleY(1f); icon10.setAlpha(0.5f);
             }
         });
         icon9.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 idIconSource = R.drawable.ic_newlist9;
-                icon1.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon2.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon3.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon4.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon5.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon6.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon7.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon8.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon9.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.image_click));
-                icon10.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-
+                icon1.setScaleX(1f); icon1.setScaleY(1f); icon1.setAlpha(0.5f);
+                icon2.setScaleX(1f); icon2.setScaleY(1f); icon2.setAlpha(0.5f);
+                icon3.setScaleX(1f); icon3.setScaleY(1f); icon3.setAlpha(0.5f);
+                icon4.setScaleX(1f); icon4.setScaleY(1f); icon4.setAlpha(0.5f);
+                icon5.setScaleX(1f); icon5.setScaleY(1f); icon5.setAlpha(0.5f);
+                icon6.setScaleX(1f); icon6.setScaleY(1f); icon6.setAlpha(0.5f);
+                icon7.setScaleX(1f); icon7.setScaleY(1f); icon7.setAlpha(0.5f);
+                icon8.setScaleX(1f); icon8.setScaleY(1f); icon8.setAlpha(0.5f);
+                icon9.setScaleX(1.25f); icon9.setScaleY(1.25f); icon9.setAlpha(1f);
+                icon10.setScaleX(1f); icon10.setScaleY(1f); icon10.setAlpha(0.5f);
             }
         });
         icon10.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 idIconSource = R.drawable.ic_newlist10;
-                icon1.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon2.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon3.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon4.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon5.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon6.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon7.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon8.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon9.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.blur_iamge_click));
-                icon10.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.image_click));
-
+                icon1.setScaleX(1f); icon1.setScaleY(1f); icon1.setAlpha(0.5f);
+                icon2.setScaleX(1f); icon2.setScaleY(1f); icon2.setAlpha(0.5f);
+                icon3.setScaleX(1f); icon3.setScaleY(1f); icon3.setAlpha(0.5f);
+                icon4.setScaleX(1f); icon4.setScaleY(1f); icon4.setAlpha(0.5f);
+                icon5.setScaleX(1f); icon5.setScaleY(1f); icon5.setAlpha(0.5f);
+                icon6.setScaleX(1f); icon6.setScaleY(1f); icon6.setAlpha(0.5f);
+                icon7.setScaleX(1f); icon7.setScaleY(1f); icon7.setAlpha(0.5f);
+                icon8.setScaleX(1f); icon8.setScaleY(1f); icon8.setAlpha(0.5f);
+                icon9.setScaleX(1f); icon9.setScaleY(1f); icon9.setAlpha(0.5f);
+                icon10.setScaleX(1.25f); icon10.setScaleY(1.25f); icon10.setAlpha(1f);
             }
         });
     }

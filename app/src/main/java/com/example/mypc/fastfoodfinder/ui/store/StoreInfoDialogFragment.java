@@ -33,7 +33,7 @@ public class StoreInfoDialogFragment extends DialogFragment {
 
     public static StoreInfoDialogFragment newInstance(Store store) {
         Bundle args = new Bundle();
-        args.putSerializable(StoreDetailActivity.STORE, store);
+        args.putParcelable(StoreDetailActivity.STORE, store);
         StoreInfoDialogFragment fragment = new StoreInfoDialogFragment();
         fragment.setArguments(args);
         return fragment;
