@@ -34,7 +34,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginTop="88dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/sample_avatar" />
+        android:src="@drawable/noavatar" />
 
     <TextView
         android:layout_width="wrap_content"

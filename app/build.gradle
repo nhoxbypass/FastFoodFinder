@@ -7,8 +7,8 @@ android {
         config {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
-            storeFile file('D:/debug.keystore')
             storePassword 'android'
+            storeFile file('C:/Users/nhoxb/.android/debug.keystore')
         }
     }
     compileSdkVersion 24

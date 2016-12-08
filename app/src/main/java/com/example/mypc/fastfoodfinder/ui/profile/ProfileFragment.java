@@ -24,7 +24,6 @@ import com.example.mypc.fastfoodfinder.R;
 import com.example.mypc.fastfoodfinder.activity.DetailListActivity;
 import com.example.mypc.fastfoodfinder.adapter.UserStoreListAdapter;
 import com.example.mypc.fastfoodfinder.dialog.DialogCreateNewList;
-import com.example.mypc.fastfoodfinder.model.Store.Store;
 import com.example.mypc.fastfoodfinder.model.Store.UserStoreList;
 import com.example.mypc.fastfoodfinder.model.User.User;
 import com.example.mypc.fastfoodfinder.utils.Constant;
@@ -267,7 +266,8 @@ public class ProfileFragment extends Fragment {
         intent.putExtra(KEY_ID,userStoreList.getId());
         intent.putExtra(KEY_IDICON,userStoreList.getIconId());
         Bundle bundle = new Bundle();
-        bundle.putIntegerArrayList(KEY_STORE,userStoreList.getStoreList());
+        ArrayList<Integer> tmp = new ArrayList<>(userStoreList.getStoreIdList());
+        bundle.putIntegerArrayList(KEY_STORE, tmp);
         intent.putExtras(bundle);
         startActivity(intent);
     }

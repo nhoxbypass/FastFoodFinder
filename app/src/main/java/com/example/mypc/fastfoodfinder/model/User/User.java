@@ -36,9 +36,22 @@ public class User {
 
         if (storeLists == null || storeLists.size() == 0) {
             this.userStoreLists = new ArrayList<>();
-            userStoreLists.add(new UserStoreList(0, new ArrayList<Integer>(), R.drawable.ic_save, "My Saved Places"));
-            userStoreLists.add(new UserStoreList(1, new ArrayList<Integer>(), R.drawable.ic_favourite, "My Favourite Places"));
-            userStoreLists.add(new UserStoreList(2, new ArrayList<Integer>(), R.drawable.ic_list_checkin, "My Checked in Places"));
+
+            List<Integer> storeIdList = new ArrayList<>();
+            storeIdList.add(5);
+            storeIdList.add(25);
+            storeIdList.add(115);
+            storeIdList.add(255);
+            storeIdList.add(344);
+            userStoreLists.add(new UserStoreList(0, storeIdList, R.drawable.ic_save, "My Saved Places"));
+
+            storeIdList = new ArrayList<>();
+            storeIdList.add(5);
+            storeIdList.add(115);
+            storeIdList.add(344);
+
+            userStoreLists.add(new UserStoreList(1, storeIdList, R.drawable.ic_favourite, "My Favourite Places"));
+            userStoreLists.add(new UserStoreList(2, storeIdList, R.drawable.ic_list_checkin, "My Checked in Places"));
         } else
             this.userStoreLists = storeLists;
     }
@@ -96,7 +109,9 @@ public class User {
     public void removeStoreList(int position) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference().child(Constant.CHILD_USERS).child(uid);
+
         userStoreLists.remove(position);
+
         ref.child("userStoreLists").setValue(userStoreLists);
 
     }

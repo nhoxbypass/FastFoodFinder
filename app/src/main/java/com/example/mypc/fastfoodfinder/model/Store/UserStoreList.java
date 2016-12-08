@@ -3,6 +3,8 @@ package com.example.mypc.fastfoodfinder.model.Store;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.firebase.database.PropertyName;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,26 +16,29 @@ public class UserStoreList implements Parcelable {
     private int id;
     private String listName;
     private int iconId;
-    private ArrayList<Integer> storeIdList;
+    @PropertyName("storeIdList")
+    private List<Integer> storeIdList;
 
     protected UserStoreList(Parcel in) {
         id = in.readInt();
         listName = in.readString();
         iconId = in.readInt();
+        storeIdList = new ArrayList<>();
+        in.readList(storeIdList, Integer.class.getClassLoader());
     }
 
     public UserStoreList() {
     }
 
-    public UserStoreList(int id, ArrayList<Integer> storesId, int iconId, String listName) {
+    public UserStoreList(int id, List<Integer> storeIdList, int iconId, String listName) {
         this.id = id;
         this.iconId = iconId;
         this.listName = listName;
 
-        if (storesId == null)
+        if (storeIdList == null)
             this.storeIdList =  new ArrayList<>();
         else
-            this.storeIdList = storesId;
+            this.storeIdList = storeIdList;
     }
 
 
@@ -57,12 +62,13 @@ public class UserStoreList implements Parcelable {
         this.id = id;
     }
 
-    public ArrayList<Integer> getStoreList() {
+    public List<Integer> getStoreIdList() {
         return storeIdList;
     }
 
-    public void setStoreList(ArrayList<Integer> storeList) {
-        this.storeIdList = storeList;
+    @PropertyName("storeIdList")
+    public void setStoreIdList(List<Integer> storeIdList) {
+        this.storeIdList = storeIdList;
     }
 
     public void addStore(Store store) {
