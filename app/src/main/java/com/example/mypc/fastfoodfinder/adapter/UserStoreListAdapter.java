@@ -100,16 +100,8 @@ public class UserStoreListAdapter extends RecyclerView.Adapter<UserStoreListAdap
                                     mListPackets.remove(position);
                                     notifyDataSetChanged();
                                     mOnItemLongClickListener.onClick(position);
-                                    Snackbar.make(itemView, R.string.do_you_want_undo, Snackbar.LENGTH_LONG)
-                                            .setAction(R.string.undo, new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View view) {
-                                                    mListPackets.add(position, userStoreList);
-                                                    notifyItemInserted(position);
-                                                }
-                                            })
-                                            .setDuration(30000)
-                                            .show();                                }
+                             
+                                }
                             })
                             .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
