@@ -45,7 +45,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:text="Post" />
+            android:background="@color/googleRed"
+            android:text="Post"
+            android:textColor="@android:color/white" />
 
         <TextView
             android:id="@+id/remain_char"

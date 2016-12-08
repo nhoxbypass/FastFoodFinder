@@ -7,12 +7,14 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
 import android.view.View;
 import android.widget.TextView;
 
 import com.example.mypc.fastfoodfinder.R;
+import com.example.mypc.fastfoodfinder.ui.profile.StoreFilterDialogFragment;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Locale;
@@ -122,6 +124,15 @@ public class SettingActivity extends AppCompatActivity {
                     swChangeLanguage.setChecked(false);
                     isVietnamese = true;
                 }
+            }
+        });
+
+        txtSetNotification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fm = getSupportFragmentManager();
+                StoreFilterDialogFragment dlg = StoreFilterDialogFragment.newInstance();
+                dlg.show(fm, "dialog-filter");
             }
         });
     }
