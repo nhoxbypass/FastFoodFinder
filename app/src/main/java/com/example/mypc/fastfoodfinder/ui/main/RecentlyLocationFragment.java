@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.example.mypc.fastfoodfinder.R;
+import com.example.mypc.fastfoodfinder.activity.StoreDetailActivity;
 import com.example.mypc.fastfoodfinder.adapter.RecentlyLocationAdapter;
 import com.example.mypc.fastfoodfinder.helper.DividerItemDecoration;
 import com.example.mypc.fastfoodfinder.helper.OnStartDragListener;
@@ -61,6 +62,14 @@ public class RecentlyLocationFragment extends Fragment implements OnStartDragLis
 
     private void setupRecyclerView(RecyclerView rv) {
         mRecentlyAdapter = new RecentlyLocationAdapter(this, containerLayout);
+
+        mRecentlyAdapter.setOnItemClickListener(new RecentlyLocationAdapter.OnItemClickListener() {
+            @Override
+            public void onClick(Store store) {
+                getActivity().startActivity(StoreDetailActivity.getIntent(getContext(), store));
+            }
+        });
+
         mLayoutManager = new LinearLayoutManager(getContext());
         rv.setLayoutManager(mLayoutManager);
         rv.setAdapter(mRecentlyAdapter);

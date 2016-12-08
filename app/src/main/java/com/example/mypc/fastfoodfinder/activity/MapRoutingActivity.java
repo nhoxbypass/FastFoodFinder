@@ -242,7 +242,7 @@ public class MapRoutingActivity extends AppCompatActivity {
                         .snippet(mCurrStore.getAddress())
                         .icon(BitmapDescriptorFactory.fromResource(MapUtils.getLogoDrawableId(mCurrStore.getType()))));
             }
-            
+
             drawPolylines(mGeoPointList, mGoogleMap);
 
 

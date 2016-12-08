@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.example.mypc.fastfoodfinder.R;
+import com.example.mypc.fastfoodfinder.activity.StoreDetailActivity;
 import com.example.mypc.fastfoodfinder.adapter.FavouriteLocationAdapter;
 import com.example.mypc.fastfoodfinder.helper.DividerItemDecoration;
 import com.example.mypc.fastfoodfinder.helper.OnStartDragListener;
@@ -39,9 +40,7 @@ public class FavouritedLocationFragment extends Fragment implements OnStartDragL
     private ItemTouchHelper mItemTouchHelper;
 
     public FavouritedLocationFragment() {
-    }
-
-    ;
+    };
 
     public static FavouritedLocationFragment newInstance() {
         Bundle args = new Bundle();
@@ -80,6 +79,14 @@ public class FavouritedLocationFragment extends Fragment implements OnStartDragL
 
     private void setupRecyclerView(RecyclerView rv) {
         mFavouriteAdapter = new FavouriteLocationAdapter(this, containerLayout);
+
+        mFavouriteAdapter.setOnItemClickListener(new FavouriteLocationAdapter.OnItemClickListener() {
+            @Override
+            public void onClick(Store des) {
+                getActivity().startActivity(StoreDetailActivity.getIntent(getContext(), des));
+            }
+        });
+
         mLayoutManager = new LinearLayoutManager(getContext());
         rv.setLayoutManager(mLayoutManager);
         rv.setAdapter(mFavouriteAdapter);
