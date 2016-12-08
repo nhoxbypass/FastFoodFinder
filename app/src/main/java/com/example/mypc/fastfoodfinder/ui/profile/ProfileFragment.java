@@ -244,9 +244,9 @@ public class ProfileFragment extends Fragment {
 
         mAdapter.setOnItemLongClickListener(new UserStoreListAdapter.OnItemLongClickListener() {
             @Override
-            public void onClick(UserStoreList userStoreList) {
+            public void onClick(int position) {
                 tvNumberList.setText("("+String.valueOf(mAdapter.getItemCount())+")");
-                mCurrUser.removeStoreList(userStoreList);
+                mCurrUser.removeStoreList(position);
             }
         });
 

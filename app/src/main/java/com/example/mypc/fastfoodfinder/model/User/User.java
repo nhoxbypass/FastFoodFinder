@@ -93,8 +93,12 @@ public class User {
         ref.child("userStoreLists").setValue(userStoreLists);
     }
 
-    public void removeStoreList(UserStoreList list) {
-        userStoreLists.remove(list);
+    public void removeStoreList(int position) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference().child(Constant.CHILD_USERS).child(uid);
+        userStoreLists.remove(position);
+        ref.child("userStoreLists").setValue(userStoreLists);
+
     }
 
 

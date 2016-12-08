@@ -33,7 +33,7 @@ public class UserStoreListAdapter extends RecyclerView.Adapter<UserStoreListAdap
 
 
     public interface OnItemLongClickListener{
-        void onClick(UserStoreList userStoreList);
+        void onClick(int position);
     }
 
     public void setOnItemLongClickListener(OnItemLongClickListener listener){
@@ -99,7 +99,7 @@ public class UserStoreListAdapter extends RecyclerView.Adapter<UserStoreListAdap
                                 public void onClick(DialogInterface dialog, int which) {
                                     mListPackets.remove(position);
                                     notifyDataSetChanged();
-                                    mOnItemLongClickListener.onClick(userStoreList);
+                                    mOnItemLongClickListener.onClick(position);
                                     Snackbar.make(itemView, R.string.do_you_want_undo, Snackbar.LENGTH_LONG)
                                             .setAction(R.string.undo, new View.OnClickListener() {
                                                 @Override
