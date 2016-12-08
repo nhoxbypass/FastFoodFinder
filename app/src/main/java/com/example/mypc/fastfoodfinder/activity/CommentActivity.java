@@ -98,10 +98,7 @@ public class CommentActivity extends AppCompatActivity implements NoticeDialog.N
                             Toast.LENGTH_SHORT).show();
                     return;
                 }
-                Comment comment = DataUtils.getComments().get(0);
-                comment.setContent(etComment.getText().toString());
-                comment.setMediaUrl("");
-
+                Comment comment = DataUtils.createUserComment(etComment.getText().toString());
                 Intent data = new Intent();
                 data.putExtra(StoreDetailActivity.COMMENT, comment);
                 setResult(RESULT_OK, data);

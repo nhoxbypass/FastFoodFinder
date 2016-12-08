@@ -60,6 +60,17 @@ public class DataUtils {
         return comments;
     }
 
+    public static Comment createUserComment(String content) {
+        SimpleDateFormat dfDateTime = new SimpleDateFormat("EEE MMM dd HH:mm:ss ZZZZZ yyyy", Locale.getDefault());
+        String date = dfDateTime.format(new Date());
+        return new Comment("Tam Doan",
+                "http://i.imgur.com/wfV3jkw.jpg",
+                content,
+                "",
+                date,
+                getRandomInt(0, 4));
+    }
+
     public static int getRandomInt(int min, int max) {
         Random rand = new Random();
         return rand.nextInt((max - min) + 1) + min;
