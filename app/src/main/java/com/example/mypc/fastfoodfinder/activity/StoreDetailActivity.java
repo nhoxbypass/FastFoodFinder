@@ -72,7 +72,7 @@ public class StoreDetailActivity extends AppCompatActivity implements StoreDetai
         setContentView(R.layout.activity_store_detail);
         ButterKnife.bind(this);
 
-        Store store = (Store) getIntent().getParcelableExtra(STORE);
+        Store store = getIntent().getParcelableExtra(STORE);
         mStoreDetailAdapter = new StoreDetailAdapter(store);
         mStoreDetailAdapter.setListener(this);
         rvContent.setAdapter(mStoreDetailAdapter);

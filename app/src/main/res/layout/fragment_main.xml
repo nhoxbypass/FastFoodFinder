@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <FrameLayout
+            android:layout_marginTop="48dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/map_placeholder"/>
@@ -30,9 +31,10 @@
         app:layout_behavior="@string/bottom_sheet_behavior"
         app:behavior_peekHeight="160dp">
         <ImageView
-            android:layout_width="40dp"
-            android:layout_height="28dp"
+            android:layout_width="48dp"
+            android:layout_height="24dp"
             android:background="@color/colorGrey"
+            android:scaleType="fitXY"
             android:src="@drawable/ic_menu"
             android:layout_marginRight="16dp"
             android:layout_gravity="right|end" />
@@ -49,7 +51,6 @@
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="4dp"
             android:background="@color/colorWhite"
             android:id="@+id/rv_bottom_sheet"
             android:clipToPadding="true" />

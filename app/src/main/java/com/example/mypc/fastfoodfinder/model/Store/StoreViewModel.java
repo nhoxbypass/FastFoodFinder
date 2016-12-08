@@ -9,6 +9,16 @@ import com.google.android.gms.maps.model.LatLng;
  * Created by nhoxb on 11/9/2016.
  */
 public class StoreViewModel {
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    private int id;
     private String mStoreName;
     private double mStoreDistance;
     private String mStoreAddress;
@@ -26,6 +36,7 @@ public class StoreViewModel {
     }
     public StoreViewModel(Store store, LatLng currCameraPosition) {
         //Must refactor
+        id = store.getId();
         mStoreName = store.getTitle();
         mStoreAddress = store.getAddress();
         mDrawableLogo = MapUtils.getLogoDrawableId(store.getType());

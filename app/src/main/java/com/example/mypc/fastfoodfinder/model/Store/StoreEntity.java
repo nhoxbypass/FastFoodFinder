@@ -10,6 +10,7 @@ import io.realm.RealmObject;
 public class StoreEntity extends RealmObject {
 
     int type;
+    int id;
     private String title;
     private String address;
     private double latitude;
@@ -19,7 +20,16 @@ public class StoreEntity extends RealmObject {
     public StoreEntity() {
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public void map(Store store) {
+        id = store.getId();
         title = store.getTitle();
         address = store.getAddress();
         latitude = Double.parseDouble(store.getLat());

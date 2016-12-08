@@ -80,7 +80,7 @@ public class StoreInfoDialogFragment extends DialogFragment {
         ButterKnife.bind(this, view);
         cdvh = new CallDirectionViewHolder(vCallDirection);
 
-        final Store store = (Store) getArguments().getParcelable(StoreDetailActivity.STORE);
+        final Store store =  getArguments().getParcelable(StoreDetailActivity.STORE);
 
         tvStoreName.setText(store.getTitle());
         tvStoreAddress.setText(store.getAddress());

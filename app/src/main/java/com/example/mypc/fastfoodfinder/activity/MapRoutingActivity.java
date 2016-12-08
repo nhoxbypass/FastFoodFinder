@@ -174,7 +174,7 @@ public class MapRoutingActivity extends AppCompatActivity {
     private void getExtrasBundle() {
         Bundle extras = getIntent().getExtras();
         mMapsDirection = extras.getParcelable(MainFragment.KEY_ROUTE_LIST);
-        mCurrStore = (Store) extras.getSerializable(MainFragment.KEY_DES_STORE);
+        mCurrStore = extras.getParcelable(MainFragment.KEY_DES_STORE);
 
         if (mMapsDirection == null || mCurrStore == null || mMapsDirection.getRouteList().size() <= 0) {
             Toast.makeText(MapRoutingActivity.this, "Failed to open Routing screen!", Toast.LENGTH_SHORT).show();
@@ -236,11 +236,13 @@ public class MapRoutingActivity extends AppCompatActivity {
                     .snippet("Your current location, please follow the line")
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.bluedot)));
 
-            Marker storeMarker = googleMap.addMarker(new MarkerOptions().position(mCurrStore.getPosition())
-                    .title(mCurrStore.getTitle())
-                    .snippet(mCurrStore.getAddress())
-                    .icon(BitmapDescriptorFactory.fromResource(MapUtils.getLogoDrawableId(mCurrStore.getType()))));
-
+            if (mCurrStore != null && mCurrStore.getPosition() != null) {
+                Marker storeMarker = googleMap.addMarker(new MarkerOptions().position(mCurrStore.getPosition())
+                        .title(mCurrStore.getTitle())
+                        .snippet(mCurrStore.getAddress())
+                        .icon(BitmapDescriptorFactory.fromResource(MapUtils.getLogoDrawableId(mCurrStore.getType()))));
+            }
+            
             drawPolylines(mGeoPointList, mGoogleMap);
 
 

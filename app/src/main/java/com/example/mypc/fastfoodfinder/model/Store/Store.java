@@ -39,7 +39,8 @@ public class Store implements Parcelable {
     public Store() {
     }
 
-    public Store(String title, String address, String lat, String lng, String tel, int type) {
+    public Store(int id, String title, String address, String lat, String lng, String tel, int type) {
+        this.id= id;
         this.title = title;
         this.address = address;
         this.lat = lat;
@@ -49,6 +50,7 @@ public class Store implements Parcelable {
     }
 
     public Store(StoreEntity entity) {
+        id = entity.getId();
         title = entity.getTitle();
         address = entity.getAddress();
         lat = String.valueOf(entity.getLatitude());
@@ -58,6 +60,7 @@ public class Store implements Parcelable {
     }
 
     public Store(StoreViewModel viewModel) {
+        id = viewModel.getId();
         title = viewModel.getStoreName();
         lat = String.valueOf(viewModel.getPosition().latitude);
         lng = String.valueOf(viewModel.getPosition().longitude);
@@ -65,6 +68,7 @@ public class Store implements Parcelable {
         type = viewModel.getType();
         address = viewModel.getStoreAddress();
     }
+
 
     protected Store(Parcel in) {
         type = in.readInt();
@@ -154,6 +158,7 @@ public class Store implements Parcelable {
     public void setAddress(String address) {
         this.address = address;
     }
+
 
     @Override
     public int describeContents() {
