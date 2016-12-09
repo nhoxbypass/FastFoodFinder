@@ -19,10 +19,8 @@ android {
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
-        multiDexEnabled true
     }
     dexOptions {
-        incremental true
         javaMaxHeapSize "2g"
     }
     buildTypes {
@@ -48,11 +46,9 @@ dependencies {
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.support:design:24.2.1'
     compile 'com.google.maps.android:android-maps-utils:0.4.+'
-    compile 'com.google.android.gms:play-services:9.8.0'
     compile 'com.google.android.gms:play-services-maps:9.8.0'
     compile 'com.google.android.gms:play-services-location:9.8.0'
     compile 'com.google.firebase:firebase-database:9.8.0'
-    compile 'com.google.firebase:firebase-core:9.8.0'
     compile 'com.jakewharton:butterknife:8.4.0'
     compile 'com.android.support:support-v4:24.2.1'
     compile 'com.github.bumptech.glide:glide:3.7.0'
@@ -65,7 +61,6 @@ dependencies {
     compile 'com.google.firebase:firebase-auth:9.8.0'
     compile 'com.google.android.gms:play-services-auth:9.8.0'
     compile 'com.facebook.android:facebook-android-sdk:[4,5)'
-    compile 'com.google.maps.android:android-maps-utils:0.4+'
 }
 
 apply plugin: 'com.google.gms.google-services'

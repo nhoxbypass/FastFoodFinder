@@ -67,10 +67,15 @@ public class DisplayUtils {
         {
             c = source.charAt(i);
             if (Character.isWhitespace(c)) {
-                if (i < (source.length() - 1) && Character.isWhitespace(source.charAt(i + 1)))
-                    //Ignore next char
-                    //Because it is a whitespace again
-                    builder.delete(i,i+1);
+                try {
+                    if (i < (source.length() - 1) && Character.isWhitespace(source.charAt(i + 1)))
+                        //Ignore next char
+                        //Because it is a whitespace again
+                        builder.delete(i, i + 1);
+                }
+                catch (Exception ex)
+                {
+                }
             }
         }
 
