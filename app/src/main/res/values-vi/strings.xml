@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">FastFoodFinder</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
+    <!-- TODO: Remove or change this all_placeholder text -->
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="ipsum">Jarlsberg lancashire edam. Dolcelatte hard cheese brie st. agur blue

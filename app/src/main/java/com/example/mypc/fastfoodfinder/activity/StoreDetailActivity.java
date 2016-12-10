@@ -17,7 +17,7 @@ import com.bumptech.glide.Glide;
 import com.example.mypc.fastfoodfinder.R;
 import com.example.mypc.fastfoodfinder.adapter.StoreDetailAdapter;
 import com.example.mypc.fastfoodfinder.model.Comment;
-import com.example.mypc.fastfoodfinder.model.Store.Store;
+import com.example.mypc.fastfoodfinder.model.store.Store;
 import com.example.mypc.fastfoodfinder.utils.DisplayUtils;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -84,7 +84,7 @@ public class StoreDetailActivity extends AppCompatActivity implements StoreDetai
         collapsingToolbar.setTitle(store.getTitle());
 
         Glide.with(this)
-                .load(R.drawable.sample_circle_k_cover)
+                .load(R.drawable.detail_sample_circlekcover)
                 .centerCrop()
                 .into(ivBackdrop);
 

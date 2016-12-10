@@ -8,7 +8,7 @@
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:layout_gravity="center_vertical"
-        android:src="@drawable/ic_arrow_up"
+        android:src="@drawable/ic_routing_up"
         android:id="@+id/iv_routing"/>
     <LinearLayout
         android:layout_width="wrap_content"

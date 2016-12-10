@@ -1,4 +1,4 @@
-package com.example.mypc.fastfoodfinder.model.Store;
+package com.example.mypc.fastfoodfinder.model.store;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -7,8 +7,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.PropertyName;
 
-import java.io.Serializable;
-
 /**
  * Created by nhoxb on 11/10/2016.
  */
@@ -16,9 +14,9 @@ public class Store implements Parcelable {
 
     //Type
     //0: circle_k
-    //1: logo_red_ministop
+    //1: logo_ministop_red
     //2: family mart
-    //3: logo_red_bsmart
+    //3: logo_bsmart_red
     //4: shop n go
 
     @Exclude

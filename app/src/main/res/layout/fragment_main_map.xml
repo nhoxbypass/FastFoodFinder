@@ -1,35 +1,58 @@
-<?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/maps_container"
+    tools:context=".ui.main.MainMapFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
-        android:id="@+id/main_content"
-        tools:context=".ui.main.MainMapFragment">
-        <android.support.design.widget.AppBarLayout
+        android:layout_height="wrap_content">
+        <FrameLayout
+            android:layout_marginTop="48dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fitsSystemWindows="true"
-            tools:title="Appbar"
-            app:titleTextColor="@color/colorWhite"
-            android:id="@+id/appbar_layout">
-            <android.support.design.widget.TabLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:tabBackground="@color/googleRed"
-                app:tabTextColor="@color/colorTabText"
-                app:tabSelectedTextColor="@color/colorWhite"
-                android:fitsSystemWindows="true"
-                app:tabIndicatorColor="@color/colorWhite"
-                app:tabIndicatorHeight="2dp"
-                android:id="@+id/tab_layout"/>
-        </android.support.design.widget.AppBarLayout>
-        <android.support.v4.view.ViewPager
+            android:id="@+id/map_placeholder"/>
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_map_defaultmarker"
+            android:layout_gravity="center_horizontal"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/ll_bottom_sheet"
+        app:layout_behavior="@string/bottom_sheet_behavior"
+        app:behavior_peekHeight="160dp">
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="24dp"
+            android:background="@color/colorGrey"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_main_hamburger"
+            android:layout_marginRight="16dp"
+            android:layout_gravity="right|end" />
+        <View
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/view_pager"
-            android:layout_below="@id/appbar_layout"
-            />
+            android:layout_height="2dp"
+            android:layout_marginBottom="2dp"
+            android:background="@color/googleYellow"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:background="@color/googleYellow"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
+            android:id="@+id/rv_bottom_sheet"
+            android:clipToPadding="true" />
+    </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

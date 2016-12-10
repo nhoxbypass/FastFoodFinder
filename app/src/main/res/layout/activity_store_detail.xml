@@ -37,7 +37,7 @@
                     android:fitsSystemWindows="true"
                     android:scaleType="centerCrop"
                     app:layout_collapseMode="parallax"
-                    tool:src="@drawable/sample_circle_k_cover" />
+                    tool:src="@drawable/detail_sample_circlekcover" />
 
                 <View
                     android:layout_width="match_parent"
@@ -86,9 +86,9 @@
                 android:padding="10dp"
                 android:text="Tips from people who has been here" />
 
-            <include layout="@layout/item_comment" />
+            <include layout="@layout/item_store_comment" />
 
-            <include layout="@layout/item_comment" />
+            <include layout="@layout/item_store_comment" />
 
         </LinearLayout>
 

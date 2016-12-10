@@ -1,4 +1,4 @@
-package com.example.mypc.fastfoodfinder.model.Store;
+package com.example.mypc.fastfoodfinder.model.store;
 
 import android.support.annotation.DrawableRes;
 

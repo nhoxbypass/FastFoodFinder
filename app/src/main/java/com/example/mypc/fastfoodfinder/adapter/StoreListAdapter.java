@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.mypc.fastfoodfinder.R;
-import com.example.mypc.fastfoodfinder.model.Store.Store;
+import com.example.mypc.fastfoodfinder.model.store.Store;
 import com.example.mypc.fastfoodfinder.utils.MapUtils;
 
 import java.util.ArrayList;

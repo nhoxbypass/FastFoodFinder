@@ -10,8 +10,8 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.mypc.fastfoodfinder.R;
-import com.example.mypc.fastfoodfinder.model.Store.Store;
-import com.example.mypc.fastfoodfinder.model.Store.StoreDataSource;
+import com.example.mypc.fastfoodfinder.model.store.Store;
+import com.example.mypc.fastfoodfinder.model.store.StoreDataSource;
 import com.example.mypc.fastfoodfinder.utils.Constant;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -25,9 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import io.realm.Realm;
 

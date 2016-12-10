@@ -1,4 +1,4 @@
-package com.example.mypc.fastfoodfinder.model.Store;
+package com.example.mypc.fastfoodfinder.model.store;
 
 import com.example.mypc.fastfoodfinder.utils.Constant;
 
@@ -73,13 +73,13 @@ public class StoreDataSource {
         queryString = queryString.toLowerCase().trim();
         if (queryString.equals("circle k") || queryString.equals("circlek")) {
             return getStore(Constant.TYPE_CIRCLE_K);
-        } else if (queryString.equals("mini stop") || queryString.equals("logo_red_ministop")) {
+        } else if (queryString.equals("mini stop") || queryString.equals("logo_ministop_red")) {
             return getStore(Constant.TYPE_MINI_STOP);
-        } else if (queryString.equals("family mart") || queryString.equals("logo_red_familymart")) {
+        } else if (queryString.equals("family mart") || queryString.equals("logo_familymart_red")) {
             return getStore(Constant.TYPE_FAMILY_MART);
         } else if (queryString.equals("shop and go") || queryString.equals("shopandgo") || queryString.equals("shop n go")) {
             return getStore(Constant.TYPE_SHOP_N_GO);
-        } else if (queryString.equals("logo_red_bsmart") || queryString.equals("b smart") || queryString.equals("bs mart") || queryString.equals("bmart") || queryString.equals("b'smart") || queryString.equals("b's mart")) {
+        } else if (queryString.equals("logo_bsmart_red") || queryString.equals("b smart") || queryString.equals("bs mart") || queryString.equals("bmart") || queryString.equals("b'smart") || queryString.equals("b's mart")) {
             return getStore(Constant.TYPE_BSMART);
         } else {
             //Cant determine

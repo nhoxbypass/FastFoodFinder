@@ -13,7 +13,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="24dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_clock"/>
+        android:src="@drawable/ic_all_clock_grey"/>
 
     <LinearLayout
         android:layout_width="0dp"

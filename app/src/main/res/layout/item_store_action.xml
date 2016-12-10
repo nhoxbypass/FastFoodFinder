@@ -45,7 +45,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:drawableTop="@drawable/ic_pencil"
+            android:drawableTop="@drawable/ic_detail_pencil"
             android:text="@string/comment" />
 
     </LinearLayout>
@@ -91,7 +91,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:drawableLeft="@drawable/ic_call"
+            android:drawableLeft="@drawable/ic_all_call"
             android:text="Call" />
     </RelativeLayout>
 

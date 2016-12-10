@@ -11,7 +11,7 @@
         android:layout_height="40dp"
         android:layout_gravity="center_vertical"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_star" />
+        android:src="@drawable/ic_main_star_yellow" />
 
     <RelativeLayout
         android:layout_width="248dp"
@@ -43,6 +43,6 @@
         android:layout_height="28dp"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="12dp"
-        android:src="@drawable/ic_goto" />
+        android:src="@drawable/ic_main_goto" />
 
 </LinearLayout>

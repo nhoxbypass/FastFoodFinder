@@ -1,4 +1,4 @@
-package com.example.mypc.fastfoodfinder.model.Routing;
+package com.example.mypc.fastfoodfinder.model.routing;
 
 import android.os.Parcel;
 import android.os.Parcelable;

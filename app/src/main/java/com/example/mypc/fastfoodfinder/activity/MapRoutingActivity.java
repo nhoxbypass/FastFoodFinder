@@ -20,10 +20,10 @@ import android.widget.Toast;
 import com.example.mypc.fastfoodfinder.R;
 import com.example.mypc.fastfoodfinder.adapter.RoutingAdapter;
 import com.example.mypc.fastfoodfinder.helper.DividerItemDecoration;
-import com.example.mypc.fastfoodfinder.model.Routing.MapsDirection;
-import com.example.mypc.fastfoodfinder.model.Routing.Step;
-import com.example.mypc.fastfoodfinder.model.Store.Store;
-import com.example.mypc.fastfoodfinder.ui.main.MainFragment;
+import com.example.mypc.fastfoodfinder.model.routing.MapsDirection;
+import com.example.mypc.fastfoodfinder.model.routing.Step;
+import com.example.mypc.fastfoodfinder.model.store.Store;
+import com.example.mypc.fastfoodfinder.ui.main.MainMapFragment;
 import com.example.mypc.fastfoodfinder.utils.DisplayUtils;
 import com.example.mypc.fastfoodfinder.utils.MapUtils;
 import com.google.android.gms.maps.CameraUpdate;
@@ -173,8 +173,8 @@ public class MapRoutingActivity extends AppCompatActivity {
 
     private void getExtrasBundle() {
         Bundle extras = getIntent().getExtras();
-        mMapsDirection = extras.getParcelable(MainFragment.KEY_ROUTE_LIST);
-        mCurrStore = extras.getParcelable(MainFragment.KEY_DES_STORE);
+        mMapsDirection = extras.getParcelable(MainMapFragment.KEY_ROUTE_LIST);
+        mCurrStore = extras.getParcelable(MainMapFragment.KEY_DES_STORE);
 
         if (mMapsDirection == null || mCurrStore == null || mMapsDirection.getRouteList().size() <= 0) {
             Toast.makeText(MapRoutingActivity.this, "Failed to open Routing screen!", Toast.LENGTH_SHORT).show();
@@ -185,7 +185,7 @@ public class MapRoutingActivity extends AppCompatActivity {
     private void setupToolbar(Toolbar toolbar) {
         setSupportActionBar(toolbar);
 
-        // add back arrow to toolbar
+        // add back arrow to mToolbar
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -234,7 +234,7 @@ public class MapRoutingActivity extends AppCompatActivity {
             Marker currMarker = googleMap.addMarker(new MarkerOptions().position(mCurrLocation)
                     .title("Your location")
                     .snippet("Your current location, please follow the line")
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.bluedot)));
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_bluedot)));
 
             if (mCurrStore != null && mCurrStore.getPosition() != null) {
                 Marker storeMarker = googleMap.addMarker(new MarkerOptions().position(mCurrStore.getPosition())

@@ -19,7 +19,7 @@ import android.widget.Toast;
 
 import com.example.mypc.fastfoodfinder.R;
 import com.example.mypc.fastfoodfinder.activity.StoreDetailActivity;
-import com.example.mypc.fastfoodfinder.model.Store.Store;
+import com.example.mypc.fastfoodfinder.model.store.Store;
 import com.example.mypc.fastfoodfinder.utils.DisplayUtils;
 
 import butterknife.BindView;

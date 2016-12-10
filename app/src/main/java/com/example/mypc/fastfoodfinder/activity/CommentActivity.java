@@ -33,10 +33,10 @@ public class CommentActivity extends AppCompatActivity implements NoticeDialog.N
 
     private final int MAX_CHAR = 500;
 
-    @BindView(R.id.toolbar) Toolbar toolbar;
-    @BindView(R.id.comment) EditText etComment;
-    @BindView(R.id.remain_char) TextView tvRemainChar;
-    @BindView(R.id.post) Button btnPost;
+    @BindView(R.id.toolbar) Toolbar mToolbar;
+    @BindView(R.id.et_comment) EditText etComment;
+    @BindView(R.id.tv_remain_char) TextView tvRemainChar;
+    @BindView(R.id.btn_post) Button btnPost;
 
     public static Intent getIntent(Context context) {
         Intent intent = new Intent(context, CommentActivity.class);
@@ -54,8 +54,8 @@ public class CommentActivity extends AppCompatActivity implements NoticeDialog.N
     }
 
     private void setupToolbar() {
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_all_close);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Add comment or photo");
     }

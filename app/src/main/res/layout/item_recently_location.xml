@@ -12,7 +12,7 @@
         android:layout_height="40dp"
         android:layout_gravity="center_vertical"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_clock" />
+        android:src="@drawable/ic_all_clock_grey" />
 
     <RelativeLayout
         android:layout_width="248dp"
@@ -44,6 +44,6 @@
         android:layout_height="28dp"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="12dp"
-        android:src="@drawable/ic_goto" />
+        android:src="@drawable/ic_main_goto" />
 
 </LinearLayout>

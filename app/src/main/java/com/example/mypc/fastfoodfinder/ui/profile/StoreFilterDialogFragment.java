@@ -50,7 +50,7 @@ public class StoreFilterDialogFragment extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_store_filter, container);
+        return inflater.inflate(R.layout.dialog_store_filter, container);
     }
 
     @Override
@@ -84,7 +84,7 @@ public class StoreFilterDialogFragment extends DialogFragment {
     private void setupTagContainer() {
         LayoutInflater inflater = LayoutInflater.from(getContext());
         for (String key : LIST_STORES) {
-            View view = inflater.inflate(R.layout.item_store_tag, tagContainer, false);
+            View view = inflater.inflate(R.layout.view_store_tag, tagContainer, false);
             TagViewHolder holder = new TagViewHolder(view);
             holder.setName(getStoreName(key));
             tagContainer.addView(view);

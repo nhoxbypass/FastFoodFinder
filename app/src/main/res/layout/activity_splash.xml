@@ -9,7 +9,7 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_centerInParent="true"
-        android:src="@drawable/ic_store_24_hour"/>
+        android:src="@drawable/ic_all_store24h"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

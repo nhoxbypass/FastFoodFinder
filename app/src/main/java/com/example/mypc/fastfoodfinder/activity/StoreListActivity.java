@@ -9,7 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import com.example.mypc.fastfoodfinder.R;
 import com.example.mypc.fastfoodfinder.adapter.StoreListAdapter;
 import com.example.mypc.fastfoodfinder.helper.DividerItemDecoration;
-import com.example.mypc.fastfoodfinder.model.Store.Store;
+import com.example.mypc.fastfoodfinder.model.store.Store;
 import com.example.mypc.fastfoodfinder.utils.Constant;
 
 import java.util.ArrayList;

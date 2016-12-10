@@ -17,7 +17,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.example.mypc.fastfoodfinder.R;
 import com.example.mypc.fastfoodfinder.model.Comment;
-import com.example.mypc.fastfoodfinder.model.Store.Store;
+import com.example.mypc.fastfoodfinder.model.store.Store;
 import com.example.mypc.fastfoodfinder.ui.store.CallDirectionViewHolder;
 import com.example.mypc.fastfoodfinder.utils.DataUtils;
 
@@ -74,7 +74,7 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             case TITLE:
                 return new TitleViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_store_title, parent, false));
             default:
-                return new CommentViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_comment, parent, false));
+                return new CommentViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_store_comment, parent, false));
         }
     }
 

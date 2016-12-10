@@ -1,7 +1,6 @@
 package com.example.mypc.fastfoodfinder.adapter;
 
 import android.content.DialogInterface;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.mypc.fastfoodfinder.R;
-import com.example.mypc.fastfoodfinder.model.Store.UserStoreList;
+import com.example.mypc.fastfoodfinder.model.store.UserStoreList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +54,7 @@ public class UserStoreListAdapter extends RecyclerView.Adapter<UserStoreListAdap
     @Override
     public ListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.cardview_new_list,parent,false);
+                .inflate(R.layout.view_new_list,parent,false);
         return new ListViewHolder(itemView);
     }
 

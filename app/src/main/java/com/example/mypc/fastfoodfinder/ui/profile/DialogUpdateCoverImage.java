@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
@@ -23,7 +21,6 @@ import com.example.mypc.fastfoodfinder.R;
 
 import java.io.FileDescriptor;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -100,44 +97,44 @@ public class DialogUpdateCoverImage extends android.support.v4.app.DialogFragmen
         ivOne.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ivChosenImage.setImageResource(R.drawable.sample_background);
-                IdChosenImage = R.drawable.sample_background;
+                ivChosenImage.setImageResource(R.drawable.profile_sample_background);
+                IdChosenImage = R.drawable.profile_sample_background;
             }
         });
         ivTwo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ivChosenImage.setImageResource(R.drawable.sample_avatar);
-                IdChosenImage = R.drawable.sample_avatar;
+                ivChosenImage.setImageResource(R.drawable.all_sample_avatar);
+                IdChosenImage = R.drawable.all_sample_avatar;
 
             }
         });
         ivThree.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ivChosenImage.setImageResource(R.drawable.sample_background_3);
-                IdChosenImage = R.drawable.sample_background_3;
+                ivChosenImage.setImageResource(R.drawable.profile_sample_background_3);
+                IdChosenImage = R.drawable.profile_sample_background_3;
             }
         });
         ivFour.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ivChosenImage.setImageResource(R.drawable.sample_background_4);
-                IdChosenImage = R.drawable.sample_background_4;
+                ivChosenImage.setImageResource(R.drawable.profile_sample_background_4);
+                IdChosenImage = R.drawable.profile_sample_background_4;
             }
         });
         ivFive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ivChosenImage.setImageResource(R.drawable.sample_background_5);
-                IdChosenImage = R.drawable.sample_background_5;
+                ivChosenImage.setImageResource(R.drawable.profile_sample_background_5);
+                IdChosenImage = R.drawable.profile_sample_background_5;
             }
         });
         ivSix.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ivChosenImage.setImageResource(R.drawable.sample_background_6);
-                IdChosenImage = R.drawable.sample_background_6;
+                ivChosenImage.setImageResource(R.drawable.profile_sample_background_6);
+                IdChosenImage = R.drawable.profile_sample_background_6;
             }
         });
 

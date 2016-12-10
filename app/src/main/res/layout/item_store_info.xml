@@ -15,14 +15,14 @@
         android:id="@+id/info_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/shape_gradient"
+        android:background="@drawable/detail_shape_gradient"
         android:minHeight="130dp"
         android:padding="10dp">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_about" />
+            android:src="@drawable/ic_all_about" />
 
         <TextView
             android:id="@+id/store_name"
@@ -71,7 +71,7 @@
 
     <include
         android:id="@+id/call_direction"
-        layout="@layout/item_call_direction"
+        layout="@layout/layout_call_direction"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/line" />

@@ -21,11 +21,10 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.mypc.fastfoodfinder.R;
-import com.example.mypc.fastfoodfinder.activity.DetailListActivity;
+import com.example.mypc.fastfoodfinder.activity.ListDetailActivity;
 import com.example.mypc.fastfoodfinder.adapter.UserStoreListAdapter;
-import com.example.mypc.fastfoodfinder.dialog.DialogCreateNewList;
-import com.example.mypc.fastfoodfinder.model.Store.UserStoreList;
-import com.example.mypc.fastfoodfinder.model.User.User;
+import com.example.mypc.fastfoodfinder.model.store.UserStoreList;
+import com.example.mypc.fastfoodfinder.model.user.User;
 import com.example.mypc.fastfoodfinder.utils.Constant;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -115,7 +114,7 @@ public class ProfileFragment extends Fragment {
 
         tvName.setText("Unregistered User");
         tvEmail.setText("anonymous@fastfoodfinder.com");
-        mCurrUser = new User("Unregistered User", "anonymous@fastfoodfinder.com", "http://cdn.builtlean.com/wp-content/uploads/2015/11/noavatar.png", "null" ,new ArrayList<UserStoreList>());
+        mCurrUser = new User("Unregistered User", "anonymous@fastfoodfinder.com", "http://cdn.builtlean.com/wp-content/uploads/2015/11/all_noavatar.png.png", "null" ,new ArrayList<UserStoreList>());
 
         if (mFirebaseUser != null) {
             getUserData(mFirebaseUser.getUid());
@@ -261,7 +260,7 @@ public class ProfileFragment extends Fragment {
 
 
     void sendToDetailListActivity(UserStoreList userStoreList){
-        Intent intent = new Intent(getContext(), DetailListActivity.class);
+        Intent intent = new Intent(getContext(), ListDetailActivity.class);
         intent.putExtra(KEY_URL,mFirebaseUser.getPhotoUrl());
         intent.putExtra(KEY_NAME,userStoreList.getListName());
         intent.putExtra(KEY_ID,userStoreList.getId());

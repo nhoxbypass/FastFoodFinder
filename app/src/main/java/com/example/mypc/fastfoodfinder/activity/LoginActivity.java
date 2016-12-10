@@ -10,8 +10,8 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.mypc.fastfoodfinder.R;
-import com.example.mypc.fastfoodfinder.model.Store.UserStoreList;
-import com.example.mypc.fastfoodfinder.model.User.User;
+import com.example.mypc.fastfoodfinder.model.store.UserStoreList;
+import com.example.mypc.fastfoodfinder.model.user.User;
 import com.example.mypc.fastfoodfinder.utils.Constant;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -204,7 +204,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void saveUserData(FirebaseUser firebaseUser, DatabaseReference databaseRef) {
-        String photoUrl = "http://cdn.builtlean.com/wp-content/uploads/2015/11/noavatar.png";
+        String photoUrl = "http://cdn.builtlean.com/wp-content/uploads/2015/11/all_noavatar.png.png";
 
         if (firebaseUser.getPhotoUrl() != null) {
             photoUrl = firebaseUser.getPhotoUrl().toString();

@@ -32,15 +32,12 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.mypc.fastfoodfinder.R;
-import com.example.mypc.fastfoodfinder.helper.SearchResult;
-import com.example.mypc.fastfoodfinder.model.User.User;
-import com.example.mypc.fastfoodfinder.ui.main.MainMapFragment;
+import com.example.mypc.fastfoodfinder.helper.SearchEventResult;
+import com.example.mypc.fastfoodfinder.ui.main.MainFragment;
 import com.example.mypc.fastfoodfinder.ui.main.SearchFragment;
 import com.example.mypc.fastfoodfinder.ui.profile.ProfileFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -95,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
         mNavigationView.getMenu().getItem(0).setChecked(true);
         mNavigationView.setCheckedItem(R.id.menu_action_map);
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.fl_fragment_placeholder, MainMapFragment.newInstance()).commit();
+        fragmentManager.beginTransaction().replace(R.id.fl_fragment_placeholder, MainFragment.newInstance()).commit();
     }
 
     @Override
@@ -147,11 +144,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onSearchResult(SearchResult searchResult) {
-        int resultCode = searchResult.getResultCode();
+    public void onSearchResult(SearchEventResult searchEventResult) {
+        int resultCode = searchEventResult.getResultCode();
         switch (resultCode) {
-            case SearchResult.SEARCH_QUICK_OK:
-                mSearchView.setQuery(searchResult.getSearchString(), false);
+            case SearchEventResult.SEARCH_QUICK_OK:
+                mSearchView.setQuery(searchEventResult.getSearchString(), false);
                 mSearchView.setIconified(false);
                 // Check if no view has focus:
                 View view = this.getCurrentFocus();
@@ -162,11 +159,11 @@ public class MainActivity extends AppCompatActivity {
                     mSearchInput.clearFocus();
                 }
                 break;
-            case SearchResult.SEARCH_STORE_OK:
+            case SearchEventResult.SEARCH_STORE_OK:
                 removeSearchFragment();
                 break;
 
-            case SearchResult.SEARCH_COLLAPSE:
+            case SearchEventResult.SEARCH_COLLAPSE:
                 break;
 
             default:
@@ -220,7 +217,7 @@ public class MainActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                EventBus.getDefault().post(new SearchResult(SearchResult.SEARCH_STORE_OK, query));
+                EventBus.getDefault().post(new SearchEventResult(SearchEventResult.SEARCH_STORE_OK, query));
                 return false;
             }
 
@@ -240,7 +237,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public boolean onMenuItemActionCollapse(MenuItem menuItem) {
-                EventBus.getDefault().post(new SearchResult(SearchResult.SEARCH_COLLAPSE));
+                EventBus.getDefault().post(new SearchEventResult(SearchEventResult.SEARCH_COLLAPSE));
                 removeSearchFragment();
                 return true;
             }
@@ -321,14 +318,14 @@ public class MainActivity extends AppCompatActivity {
                 fragment = ProfileFragment.newInstance();
                 break;
             case R.id.menu_action_map:
-                fragmentClass = MainMapFragment.class;
+                fragmentClass = MainFragment.class;
                 break;
             case R.id.menu_action_setting:
                 Intent intent = new Intent(MainActivity.this, SettingActivity.class);
                 startActivity(intent);
                 return;
             default:
-                fragmentClass = MainMapFragment.class;
+                fragmentClass = MainFragment.class;
         }
 
         try {
@@ -345,7 +342,7 @@ public class MainActivity extends AppCompatActivity {
         menuItem.setChecked(true);
         // Set action bar title
         setTitle(menuItem.getTitle());
-        // Close the ic_navigation drawer
+        // Close the ic_search_navigation drawer
         mDrawerLayout.closeDrawers();
     }
 

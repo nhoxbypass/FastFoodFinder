@@ -120,7 +120,7 @@
             style="@style/RippleEffect"
             android:id="@+id/btn_prev_instruction"
             android:background="@color/colorWhite"
-            android:src="@drawable/ic_chevron_left"
+            android:src="@drawable/ic_routing_previous"
             android:layout_height="40dp" />
         <ImageButton
             android:layout_width="0dp"
@@ -128,7 +128,7 @@
             style="@style/RippleEffect"
             android:background="@color/colorWhite"
             android:id="@+id/btn_next_instruction"
-            android:src="@drawable/ic_chevron_right"
+            android:src="@drawable/ic_routing_next"
             android:layout_height="40dp" />
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

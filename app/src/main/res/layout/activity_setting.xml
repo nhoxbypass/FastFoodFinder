@@ -21,7 +21,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_share"
+                android:drawableLeft="@drawable/ic_all_share"
                 style="@style/SettingsOptionsText"
                 android:text="@string/share_app_with_friends"
                 android:id="@+id/tv_setting_share_app"/>
@@ -59,14 +59,14 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_metric"
+                    android:drawableLeft="@drawable/ic_setting_metric"
                     style="@style/SettingsOptionsText"
                     android:text="@string/use_metric_units"
                     android:id="@+id/tv_setting_change_metric"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_translate"
+                    android:drawableLeft="@drawable/ic_setting_translate"
                     style="@style/SettingsOptionsText"
                     android:text="@string/vietnamese"
                     android:id="@+id/tv_setting_english"/>
@@ -91,21 +91,21 @@
                <TextView
                    android:layout_width="match_parent"
                    android:layout_height="wrap_content"
-                   android:drawableLeft="@drawable/ic_profile"
+                   android:drawableLeft="@drawable/ic_setting_profile"
                    style="@style/SettingsOptionsText"
                    android:text="@string/edit_your_profile"
                    android:id="@+id/tv_setting_edit_profile"/>
                <TextView
                    android:layout_width="match_parent"
                    android:layout_height="wrap_content"
-                   android:drawableLeft="@drawable/ic_security"
+                   android:drawableLeft="@drawable/ic_setting_security"
                    style="@style/SettingsOptionsText"
                    android:text="@string/change_your_password"
                    android:id="@+id/tv_setting_change_password"/>
                <TextView
                    android:layout_width="match_parent"
                    android:layout_height="wrap_content"
-                   android:drawableLeft="@drawable/ic_security"
+                   android:drawableLeft="@drawable/ic_setting_security"
                    style="@style/SettingsOptionsText"
                    android:text="@string/change_your_email"
                    android:id="@+id/tv_setting_change_email"/>
@@ -136,14 +136,14 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_profile"
+                    android:drawableLeft="@drawable/ic_setting_profile"
                     style="@style/SettingsOptionsText"
                     android:text="@string/set_notifications"
                     android:id="@+id/tv_setting_notification"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_security"
+                    android:drawableLeft="@drawable/ic_setting_security"
                     style="@style/SettingsOptionsText"
                     android:text="Email"
                     android:id="@+id/tv_setting_notification_email"/>
@@ -166,35 +166,35 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_about"
+                    android:drawableLeft="@drawable/ic_all_about"
                     style="@style/SettingsOptionsText"
                     android:text="@string/about_fastfood_finder"
                     android:id="@+id/tv_setting_about_app"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_about"
+                    android:drawableLeft="@drawable/ic_all_about"
                     style="@style/SettingsOptionsText"
                     android:text="@string/rate_app"
                     android:id="@+id/tv_setting_rate_app"/>
                 <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_about"
+                android:drawableLeft="@drawable/ic_all_about"
                 style="@style/SettingsOptionsText"
                 android:text="@string/send_feedback"
                 android:id="@+id/tv_setting_feedback"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_about"
+                    android:drawableLeft="@drawable/ic_all_about"
                     style="@style/SettingsOptionsText"
                     android:text="@string/privacy_policy"
                     android:id="@+id/tv_setting_privacy_policy"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_term_of_use"
+                    android:drawableLeft="@drawable/ic_setting_termofuse"
                     style="@style/SettingsOptionsText"
                     android:text="@string/terms_of_use"
                     android:id="@+id/tv_setting_term_of_use"/>

@@ -10,10 +10,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.mypc.fastfoodfinder.R;
-import com.example.mypc.fastfoodfinder.ui.main.FavouritedLocationFragment;
-import com.example.mypc.fastfoodfinder.ui.main.MainFragment;
-import com.example.mypc.fastfoodfinder.ui.main.RecentlyLocationFragment;
-import com.example.mypc.fastfoodfinder.utils.Constant;
+import com.example.mypc.fastfoodfinder.ui.main.MainFavouritedFragment;
+import com.example.mypc.fastfoodfinder.ui.main.MainMapFragment;
+import com.example.mypc.fastfoodfinder.ui.main.MainRecentlyFragment;
 
 /**
  * Created by nhoxb on 11/8/2016.
@@ -22,7 +21,7 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
 
     final int PAGE_COUNT = 3;
     private String pageTitles[] = new String[] { String.valueOf(R.string.map), String.valueOf(R.string.recently), String.valueOf(R.string.favourite)};
-    private int[] imageResId = { R.drawable.ic_map, R.drawable.ic_history, R.drawable.ic_stars };
+    private int[] imageResId = { R.drawable.ic_main_map, R.drawable.ic_main_clock_red, R.drawable.ic_main_star_red};
 
     private Context mContext;
 
@@ -37,11 +36,11 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
         switch (position)
         {
             case 0:
-                return MainFragment.newInstance();
+                return MainMapFragment.newInstance();
             case 1:
-                return RecentlyLocationFragment.newInstance();
+                return MainRecentlyFragment.newInstance();
             case 2:
-                return FavouritedLocationFragment.newInstance();
+                return MainFavouritedFragment.newInstance();
 
         }
 
@@ -65,7 +64,7 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
 
     public View getTabView(int position) {
         // Given you have a custom layout in `res/layout/custom_tab.xml` with a TextView and ImageView
-        View v = LayoutInflater.from(mContext).inflate(R.layout.item_tablayout, null);
+        View v = LayoutInflater.from(mContext).inflate(R.layout.view_tablayout, null);
         TextView tv = (TextView) v.findViewById(R.id.tv_tablayout);
         tv.setText(pageTitles[position]);
         ImageView img = (ImageView) v.findViewById(R.id.iv_tablayout);

@@ -37,7 +37,7 @@
                         android:layout_margin="16dp"
                         android:background="?selectableItemBackgroundBorderless"
                         android:clickable="true"
-                        android:src="@drawable/logo_red_circle_k"
+                        android:src="@drawable/logo_circlek_red"
                         app:civ_border_color="@color/googleRed"
                         app:civ_fill_color="@color/googleRed" />
 
@@ -48,7 +48,7 @@
                         android:layout_margin="16dp"
                         android:background="?selectableItemBackgroundBorderless"
                         android:clickable="true"
-                        android:src="@drawable/logo_red_familymart"
+                        android:src="@drawable/logo_familymart_red"
                         app:civ_border_color="@color/googleRed"
                         app:civ_fill_color="@color/googleRed" />
 
@@ -59,7 +59,7 @@
                         android:layout_margin="16dp"
                         android:background="?selectableItemBackgroundBorderless"
                         android:clickable="true"
-                        android:src="@drawable/logo_red_ministop"
+                        android:src="@drawable/logo_ministop_red"
                         app:civ_border_color="@color/googleRed"
                         app:civ_fill_color="@color/googleRed" />
 
@@ -70,7 +70,7 @@
                         android:layout_margin="16dp"
                         android:background="?selectableItemBackgroundBorderless"
                         android:clickable="true"
-                        android:src="@drawable/ic_loadmore"
+                        android:src="@drawable/ic_search_loadmore"
                         app:civ_border_color="@color/googleRed"
                         app:civ_fill_color="@color/googleRed" />
                 </LinearLayout>
@@ -87,7 +87,7 @@
                         android:layout_width="56dp"
                         android:layout_height="56dp"
                         android:layout_margin="16dp"
-                        android:src="@drawable/logo_red_shopngo"
+                        android:src="@drawable/logo_shopngo_red"
                         app:civ_border_color="@color/googleRed"
                         app:civ_fill_color="@color/googleRed" />
 
@@ -96,7 +96,7 @@
                         android:layout_width="56dp"
                         android:layout_height="56dp"
                         android:layout_margin="16dp"
-                        android:src="@drawable/logo_red_bsmart"
+                        android:src="@drawable/logo_bsmart_red"
                         app:civ_border_color="@color/googleRed"
                         app:civ_fill_color="@color/googleRed" />
 
@@ -105,7 +105,7 @@
                         android:layout_width="56dp"
                         android:layout_height="56dp"
                         android:layout_margin="16dp"
-                        android:src="@drawable/ic_list_checkin"
+                        android:src="@drawable/ic_profile_checkin"
                         app:civ_border_color="@color/googleRed"
                         app:civ_fill_color="@color/googleRed" />
 
@@ -114,7 +114,7 @@
                         android:layout_width="56dp"
                         android:layout_height="56dp"
                         android:layout_margin="16dp"
-                        android:src="@drawable/ic_favourite"
+                        android:src="@drawable/ic_profile_favourite"
                         app:civ_border_color="@color/googleRed"
                         app:civ_fill_color="@color/googleRed" />
                 </LinearLayout>
@@ -191,15 +191,15 @@
 
                 <include
                     android:id="@+id/layout_suggestion_1"
-                    layout="@layout/item_suggestion" />
+                    layout="@layout/item_search_suggestion" />
 
                 <include
                     android:id="@+id/layout_suggestion_2"
-                    layout="@layout/item_suggestion" />
+                    layout="@layout/item_search_suggestion" />
 
                 <include
                     android:id="@+id/layout_suggestion_3"
-                    layout="@layout/item_suggestion" />
+                    layout="@layout/item_search_suggestion" />
             </LinearLayout>
         </android.support.v7.widget.CardView>
 
@@ -229,7 +229,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:drawableLeft="@drawable/ic_trophy"
+                    android:drawableLeft="@drawable/ic_search_trophy"
                     android:drawablePadding="8dp"
                     android:gravity="center_vertical"
                     android:text="@string/top_picks"
@@ -240,7 +240,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:drawableLeft="@drawable/ic_navigation"
+                    android:drawableLeft="@drawable/ic_search_navigation"
                     android:drawablePadding="8dp"
                     android:gravity="center_vertical"
                     android:text="@string/nearest"
@@ -251,7 +251,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:drawableLeft="@drawable/ic_trending_up"
+                    android:drawableLeft="@drawable/ic_search_trendingup"
                     android:drawablePadding="8dp"
                     android:gravity="center_vertical"
                     android:text="@string/trending"
@@ -262,7 +262,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:drawableLeft="@drawable/store_green"
+                    android:drawableLeft="@drawable/ic_all_store"
                     android:drawablePadding="8dp"
                     android:gravity="center_vertical"
                     android:text="@string/convenience_store"

@@ -1,9 +1,9 @@
-package com.example.mypc.fastfoodfinder.model.User;
+package com.example.mypc.fastfoodfinder.model.user;
 
 import android.util.Log;
 
 import com.example.mypc.fastfoodfinder.R;
-import com.example.mypc.fastfoodfinder.model.Store.UserStoreList;
+import com.example.mypc.fastfoodfinder.model.store.UserStoreList;
 import com.example.mypc.fastfoodfinder.utils.Constant;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -43,15 +43,15 @@ public class User {
             storeIdList.add(115);
             storeIdList.add(255);
             storeIdList.add(344);
-            userStoreLists.add(new UserStoreList(0, storeIdList, R.drawable.ic_save, "My Saved Places"));
+            userStoreLists.add(new UserStoreList(0, storeIdList, R.drawable.ic_profile_saved, "My Saved Places"));
 
             storeIdList = new ArrayList<>();
             storeIdList.add(5);
             storeIdList.add(115);
             storeIdList.add(344);
 
-            userStoreLists.add(new UserStoreList(1, storeIdList, R.drawable.ic_favourite, "My Favourite Places"));
-            userStoreLists.add(new UserStoreList(2, storeIdList, R.drawable.ic_list_checkin, "My Checked in Places"));
+            userStoreLists.add(new UserStoreList(1, storeIdList, R.drawable.ic_profile_favourite, "My Favourite Places"));
+            userStoreLists.add(new UserStoreList(2, storeIdList, R.drawable.ic_profile_checkin, "My Checked in Places"));
         } else
             this.userStoreLists = storeLists;
     }
@@ -117,7 +117,7 @@ public class User {
     }
 
 
-    //TODO: Save user data to Firebase. Can extense to ic_save other attribute like address, avatar image link
+    //TODO: Save user data to Firebase. Can extense to ic_profile_saved other attribute like address, avatar image link
     public void saveUserData(final DatabaseReference mFirebaseDatabaseReference) {
         mFirebaseDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
 
