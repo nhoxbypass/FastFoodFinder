@@ -8,37 +8,37 @@ Time spent: **0** hours spent in total
 
 The basic **required** functionality:
 
-* [ ] Show the splash screen and do the robust check for Internet connection.
-* [ ] Locate current user's position by GPS or 3g, wifi. If can not detect, get user's past location.
-* [ ] Show top 10 nearest stores by marking on the maps in the first tab. 
-* [ ] Show list of 10 nearest store in bottom sheet below the map, sort ascending by the distance from user to this store. User can click on each item to show the way to this store (routing). 
-* [ ] Swipe to "recent" tab. Show recently tab that searched or selected by user.
+* [x] Show the splash screen and do the robust check for Internet connection.
+* [x] Locate current user's position by GPS or 3g, wifi. If can not detect, get user's past location.
+* [x] Show top 10 nearest stores by marking on the maps in the first tab. 
+* [x] Show list of 10 nearest store in bottom sheet below the map, sort ascending by the distance from user to this store. User can click on each item to show the way to this store (routing). 
+* [x] Swipe to "recent" tab. Show recently tab that searched or selected by user.
 * [ ] Have a button to quickly show the nearest store base on user settings
-* [ ] If user have logged in, user can swipe to the "Favourited" tab, to show list of stores that user visited and favourited.
+* [x] If user have logged in, user can swipe to the "Favourited" tab, to show list of stores that user visited and favourited.
 * [ ] User can filter stores that display in map by pressing the filter icon in Toolbar, and fulfill the Filter dialog.
-* [ ] User can click on a store in the map to show the basic detail, overview of this store to determine to go or choose another store.
+* [x] User can click on a store in the map to show the basic detail, overview of this store to determine to go or choose another store.
 * [ ] User can navigate to other activity to see the list of district, and some advanced filter. User can select and see the list of stores fit user need.
 
 
 The **extended** features are implemented:
 
-* [ ] User can toggle navigation drawer to see their profile. If user doesn't logged in. They can loggin by email, gmail or facebook.
-* [ ] User can toggle the navigation drawer to select "Last visit", "Profile Detail", "Favourite list", "Settings", etc,...
+* [x] User can toggle navigation drawer to see their profile. If user doesn't logged in. They can loggin by email, gmail or facebook.
+* [x] User can toggle the navigation drawer to select "Last visit", "Profile Detail", "Favourite list", "Settings", etc,...
 * [ ] Update to newest stores data, user can routing event dont have Internet
-* [ ] User can search for store name, addresses,... in the search view in toolbar
+* [x] User can search for store name, addresses,... in the search view in toolbar
 
 The **advance** features are implemented:
 
 * [ ] User can add new place that they liked
-* [ ] Sort stores base on location. Type of store.
-* [ ] User can sit at home and choose a specified location (use pin of google maps or lat/long) to list the store nearest.
+* [x] Sort stores base on location. Type of store.
+* [x] User can sit at home and choose a specified location (use pin of google maps or lat/long) to list the store nearest.
 * [ ] User can orders and wait for their food to be shipped to their home. (If stores provided this services)
 
 ## Video Walkthrough
 
 Here's a walkthrough of implemented user stories:
 
-![Video Walkthrough](none.gif)
+![Video Walkthrough](https://www.youtube.com/watch?v=bU6y5b3JXeA)
 
 ## Notes
 
