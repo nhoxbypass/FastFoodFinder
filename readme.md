@@ -38,7 +38,7 @@ The **advance** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-![Video Walkthrough](https://www.youtube.com/watch?v=bU6y5b3JXeA)
+https://www.youtube.com/watch?v=QSXAEoJX9t8
 
 ## Notes
 
