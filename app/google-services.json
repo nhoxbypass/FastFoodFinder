@@ -8,18 +8,18 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:33822817198:android:27b03f47c3ef3969",
+        "mobilesdk_app_id": "1:33822817198:android:6123a021549970d2",
         "android_client_info": {
-          "package_name": "com.example.mypc.fastfoodfinder"
+          "package_name": "com.iceteaviet.fastfoodfinder"
         }
       },
       "oauth_client": [
         {
-          "client_id": "33822817198-8i433ua990iqt22vrp0o6i8fblio39mf.apps.googleusercontent.com",
+          "client_id": "33822817198-rf4clvm4hbmb730qtrsfh2n5k7f2qifs.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.mypc.fastfoodfinder",
-            "certificate_hash": "E7C40B26BB679D9B340D94AFB73E8DE5FDF1E0CE"
+            "package_name": "com.iceteaviet.fastfoodfinder",
+            "certificate_hash": "326400d74acba0c8dd979cc24ec083b939ec5cd5"
           }
         },
         {
