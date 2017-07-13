@@ -14,5 +14,4 @@ public class Constant {
     public static final int TYPE_FAMILY_MART = 2;
     public static final int TYPE_BSMART = 3;
     public static final int TYPE_SHOP_N_GO = 4;
-    public static String MAP_BASE_URL = "https://maps.googleapis.com/maps/api/directions/";
 }

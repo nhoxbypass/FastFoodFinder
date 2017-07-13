@@ -14,9 +14,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by nhoxb on 11/11/2016.
  */
 public class RetrofitUtils {
-    public static Retrofit get(String apiKey) {
+    public static Retrofit get(String apiKey, String baseUrl) {
         return new Retrofit.Builder()
-                .baseUrl(Constant.MAP_BASE_URL)
+                .baseUrl(baseUrl)
                 .client(getClient(apiKey))
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();

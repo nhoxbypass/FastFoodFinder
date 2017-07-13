@@ -34,6 +34,7 @@ import com.iceteaviet.fastfoodfinder.model.Routing.MapsDirection;
 import com.iceteaviet.fastfoodfinder.model.Store.Store;
 import com.iceteaviet.fastfoodfinder.model.Store.StoreDataSource;
 import com.iceteaviet.fastfoodfinder.model.Store.StoreViewModel;
+import com.iceteaviet.fastfoodfinder.rest.RestClient;
 import com.iceteaviet.fastfoodfinder.ui.store.StoreInfoDialogFragment;
 import com.iceteaviet.fastfoodfinder.utils.MapUtils;
 import com.iceteaviet.fastfoodfinder.utils.PermissionUtils;
@@ -87,7 +88,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
 
     private static final Hashtable<Integer, Bitmap> CACHE = new Hashtable<Integer, Bitmap>();
     BottomSheetBehavior mBottomSheetBehavior;
-    MapsDirectionApi mMapDirectionApi;
+
     LocationRequest mLocationRequest;
     @BindView(R.id.rv_bottom_sheet) RecyclerView mNearStoreRecyclerView;
     @BindView(R.id.maps_container) CoordinatorLayout mCoordinatorLayoutContainer;
@@ -386,9 +387,9 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
         queries.put("origin", MapUtils.getLatLngString(currLocation));
         queries.put("destination", MapUtils.getLatLngString(storeLocation));
 
-        mMapDirectionApi = RetrofitUtils.get(getString(R.string.google_maps_browser_key)).create(MapsDirectionApi.class);
 
-        mMapDirectionApi.getDirection(queries).enqueue(new Callback<MapsDirection>() {
+        RestClient.getInstance().setGooglemapBrowserKey(getString(R.string.google_maps_browser_key));
+        RestClient.getInstance().getDirection(queries, new Callback<MapsDirection>() {
             @Override
             public void onResponse(Call<MapsDirection> call, Response<MapsDirection> response) {
                 Intent intent = new Intent(getContext(), MapRoutingActivity.class);
