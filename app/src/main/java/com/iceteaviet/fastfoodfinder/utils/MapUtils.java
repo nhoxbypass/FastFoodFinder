@@ -3,6 +3,7 @@ package com.iceteaviet.fastfoodfinder.utils;
 import android.graphics.Bitmap;
 import android.location.Location;
 
+import com.google.android.gms.location.LocationRequest;
 import com.iceteaviet.fastfoodfinder.R;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -10,6 +11,15 @@ import com.google.android.gms.maps.model.LatLng;
  * Created by nhoxb on 11/16/2016.
  */
 public class MapUtils {
+    public static LocationRequest createLocationRequest() {
+        LocationRequest mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(Constant.INTERVAL);
+        mLocationRequest.setFastestInterval(Constant.FASTEST_INTERVAL);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        return mLocationRequest;
+    }
+
     public static Bitmap resizeMarkerIcon(Bitmap imageBitmap, int width, int height) {
         if (width > 100)
             width = 200 - width;

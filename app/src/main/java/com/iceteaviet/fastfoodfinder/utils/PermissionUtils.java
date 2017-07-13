@@ -13,7 +13,7 @@ public class PermissionUtils {
     public static final int REQUEST_LOCATION = 1000;
 
     public static void requestLocaiton(Activity context) {
-        if (!checkLocation(context)) {
+        if (!isLocationPermissionGranted(context)) {
             ActivityCompat.requestPermissions(context, new String[]{
                             Manifest.permission.ACCESS_FINE_LOCATION,
                             Manifest.permission.ACCESS_COARSE_LOCATION},
@@ -21,7 +21,7 @@ public class PermissionUtils {
         }
     }
 
-    public static boolean checkLocation(Context context) {
+    public static boolean isLocationPermissionGranted(Context context) {
         return !(ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION)

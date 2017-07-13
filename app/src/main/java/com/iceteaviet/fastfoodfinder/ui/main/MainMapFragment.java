@@ -3,7 +3,6 @@ package com.iceteaviet.fastfoodfinder.ui.main;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
@@ -25,12 +24,9 @@ import android.view.animation.BounceInterpolator;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.iceteaviet.fastfoodfinder.rest.MapsDirectionApi;
 import com.iceteaviet.fastfoodfinder.R;
-import com.iceteaviet.fastfoodfinder.activity.MapRoutingActivity;
 import com.iceteaviet.fastfoodfinder.adapter.NearByStoreAdapter;
 import com.iceteaviet.fastfoodfinder.helper.SearchEventResult;
-import com.iceteaviet.fastfoodfinder.model.Routing.MapsDirection;
 import com.iceteaviet.fastfoodfinder.model.Store.Store;
 import com.iceteaviet.fastfoodfinder.model.Store.StoreDataSource;
 import com.iceteaviet.fastfoodfinder.model.Store.StoreViewModel;
@@ -38,7 +34,6 @@ import com.iceteaviet.fastfoodfinder.rest.RestClient;
 import com.iceteaviet.fastfoodfinder.ui.store.StoreInfoDialogFragment;
 import com.iceteaviet.fastfoodfinder.utils.MapUtils;
 import com.iceteaviet.fastfoodfinder.utils.PermissionUtils;
-import com.iceteaviet.fastfoodfinder.utils.RetrofitUtils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -70,22 +65,12 @@ import java.util.Random;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class MainMapFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks {
-
-    private static final long INTERVAL = 1000 * 10;
-    private static final long FASTEST_INTERVAL = 1000 * 5;
-    public static final String KEY_ROUTE_LIST = "route_list";
-    public static final String KEY_DES_STORE = "des_store";
-
-
     private static final Hashtable<Integer, Bitmap> CACHE = new Hashtable<Integer, Bitmap>();
     BottomSheetBehavior mBottomSheetBehavior;
 
@@ -133,7 +118,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
 
         initializeVariables();
 
-        createLocationRequest();
+        mLocationRequest = MapUtils.createLocationRequest();
     }
 
     @Nullable
@@ -177,7 +162,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
         setMarkersListener(mGoogleMap);
 
         final boolean[] isZoomToUser = {false};
-        if (PermissionUtils.checkLocation(getContext())) {
+        if (PermissionUtils.isLocationPermissionGranted(getContext())) {
             LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, mLocationRequest, new LocationListener() {
                 @Override
                 public void onLocationChanged(Location location) {
@@ -309,6 +294,8 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
 
         currMarkerBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.logo_circlek_50);
 
+        RestClient.getInstance().setGooglemapBrowserKey(getString(R.string.google_maps_browser_key));
+
         googleApiClient = new GoogleApiClient.Builder(getContext())
                 .addConnectionCallbacks(MainMapFragment.this)
                 .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
@@ -341,7 +328,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
 
                 mGoogleMap = googleMap;
                 mGoogleMap.setBuildingsEnabled(true);
-                if (PermissionUtils.checkLocation(getContext())) {
+                if (PermissionUtils.isLocationPermissionGranted(getContext())) {
                     mGoogleMap.setMyLocationEnabled(true);
                 } else {
                     PermissionUtils.requestLocaiton(getActivity());
@@ -387,25 +374,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
         queries.put("origin", MapUtils.getLatLngString(currLocation));
         queries.put("destination", MapUtils.getLatLngString(storeLocation));
 
-
-        RestClient.getInstance().setGooglemapBrowserKey(getString(R.string.google_maps_browser_key));
-        RestClient.getInstance().getDirection(queries, new Callback<MapsDirection>() {
-            @Override
-            public void onResponse(Call<MapsDirection> call, Response<MapsDirection> response) {
-                Intent intent = new Intent(getContext(), MapRoutingActivity.class);
-                Bundle extras = new Bundle();
-                extras.putParcelable(KEY_ROUTE_LIST, response.body());
-                extras.putParcelable(KEY_DES_STORE, store);
-                intent.putExtras(extras);
-                startActivity(intent);
-
-            }
-
-            @Override
-            public void onFailure(Call<MapsDirection> call, Throwable t) {
-                Log.e("MAPP", "Get direction failed");
-            }
-        });
+        RestClient.getInstance().showDirection(getActivity(), queries, store);
     }
 
 
@@ -426,15 +395,6 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
                 }
             });
         }
-    }
-
-
-
-    private void createLocationRequest() {
-        mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(INTERVAL);
-        mLocationRequest.setFastestInterval(FASTEST_INTERVAL);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 
 

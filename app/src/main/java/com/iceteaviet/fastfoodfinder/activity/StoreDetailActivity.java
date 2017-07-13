@@ -2,7 +2,9 @@ package com.iceteaviet.fastfoodfinder.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -10,10 +12,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.iceteaviet.fastfoodfinder.rest.RestClient;
 import com.iceteaviet.fastfoodfinder.utils.DisplayUtils;
 import com.iceteaviet.fastfoodfinder.R;
 import com.iceteaviet.fastfoodfinder.adapter.StoreDetailAdapter;
@@ -25,6 +35,11 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.iceteaviet.fastfoodfinder.utils.MapUtils;
+import com.iceteaviet.fastfoodfinder.utils.PermissionUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,11 +50,15 @@ import static com.iceteaviet.fastfoodfinder.R.id.map;
  * Created by taq on 18/11/2016.
  */
 
-public class StoreDetailActivity extends AppCompatActivity implements StoreDetailAdapter.StoreActionListener {
+public class StoreDetailActivity extends AppCompatActivity implements StoreDetailAdapter.StoreActionListener, GoogleApiClient.ConnectionCallbacks {
 
     public static final String STORE = "ic_store";
     public static final int REQUEST_COMMENT = 113;
     public static final String COMMENT = "comment";
+    private Store currentStore;
+    LatLng currLocation;
+    private GoogleApiClient googleApiClient;
+    LocationRequest mLocationRequest;
 
     @BindView(R.id.appbar)
     AppBarLayout appbar;
@@ -72,8 +91,8 @@ public class StoreDetailActivity extends AppCompatActivity implements StoreDetai
         setContentView(R.layout.activity_store_detail);
         ButterKnife.bind(this);
 
-        Store store = getIntent().getParcelableExtra(STORE);
-        mStoreDetailAdapter = new StoreDetailAdapter(store);
+        currentStore = getIntent().getParcelableExtra(STORE);
+        mStoreDetailAdapter = new StoreDetailAdapter(currentStore);
         mStoreDetailAdapter.setListener(this);
         rvContent.setAdapter(mStoreDetailAdapter);
         rvContent.setLayoutManager(new LinearLayoutManager(this));
@@ -81,14 +100,24 @@ public class StoreDetailActivity extends AppCompatActivity implements StoreDetai
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        collapsingToolbar.setTitle(store.getTitle());
+        collapsingToolbar.setTitle(currentStore.getTitle());
 
         Glide.with(this)
                 .load(R.drawable.detail_sample_circlekcover)
                 .centerCrop()
                 .into(ivBackdrop);
 
-        //setUpMapIfNeeded();
+        mLocationRequest = MapUtils.createLocationRequest();
+        googleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
+                    @Override
+                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+                        Log.e("MAPP", "Failed to get current location");
+                    }
+                })
+                .addApi(LocationServices.API)
+                .build();
     }
 
     private void setUpMapIfNeeded() {
@@ -102,6 +131,18 @@ public class StoreDetailActivity extends AppCompatActivity implements StoreDetai
                 }
             });
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        googleApiClient.connect();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        googleApiClient.disconnect();
     }
 
     @Override
@@ -132,8 +173,12 @@ public class StoreDetailActivity extends AppCompatActivity implements StoreDetai
 
     @Override
     public void onDirect() {
-        Toast.makeText(this, "direction", Toast.LENGTH_SHORT).show();
-        //TODO gọi hàm chỉ đường
+        LatLng storeLocation = currentStore.getPosition();
+        Map<String, String> queries = new HashMap<String, String>();
+
+        queries.put("origin", MapUtils.getLatLngString(currLocation));
+        queries.put("destination", MapUtils.getLatLngString(storeLocation));
+        RestClient.getInstance().showDirection(StoreDetailActivity.this, queries, currentStore);
     }
 
     @Override
@@ -146,5 +191,32 @@ public class StoreDetailActivity extends AppCompatActivity implements StoreDetai
     public void onCheckIn(int storeId) {
         //TODO gọi hàm check in
         Toast.makeText(this, "check in " + storeId, Toast.LENGTH_SHORT).show();
+    }
+
+    @SuppressWarnings("MissingPermission")
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        if (PermissionUtils.isLocationPermissionGranted(this)) {
+            LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, mLocationRequest, new LocationListener() {
+                @Override
+                public void onLocationChanged(Location location) {
+                    currLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                    // Creating a LatLng object for the current location
+                }
+            });
+
+            Location lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+            if (lastLocation != null) {
+                currLocation = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
+            } else
+                Toast.makeText(StoreDetailActivity.this, "Cannot get current location!", Toast.LENGTH_SHORT).show();
+        } else {
+            PermissionUtils.requestLocaiton(this);
+        }
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        Toast.makeText(this, "Cannot connect to Location service", Toast.LENGTH_SHORT).show();
     }
 }

@@ -19,12 +19,14 @@ import android.widget.Toast;
 
 import com.iceteaviet.fastfoodfinder.helper.DividerItemDecoration;
 import com.iceteaviet.fastfoodfinder.model.Routing.Step;
+import com.iceteaviet.fastfoodfinder.rest.RestClient;
 import com.iceteaviet.fastfoodfinder.ui.main.MainMapFragment;
 import com.iceteaviet.fastfoodfinder.utils.DisplayUtils;
 import com.iceteaviet.fastfoodfinder.R;
 import com.iceteaviet.fastfoodfinder.adapter.RoutingAdapter;
 import com.iceteaviet.fastfoodfinder.model.Routing.MapsDirection;
 import com.iceteaviet.fastfoodfinder.model.Store.Store;
+import com.iceteaviet.fastfoodfinder.utils.Keys;
 import com.iceteaviet.fastfoodfinder.utils.MapUtils;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -173,8 +175,8 @@ public class MapRoutingActivity extends AppCompatActivity {
 
     private void getExtrasBundle() {
         Bundle extras = getIntent().getExtras();
-        mMapsDirection = extras.getParcelable(MainMapFragment.KEY_ROUTE_LIST);
-        mCurrStore = extras.getParcelable(MainMapFragment.KEY_DES_STORE);
+        mMapsDirection = extras.getParcelable(Keys.KEY_ROUTE_LIST);
+        mCurrStore = extras.getParcelable(Keys.KEY_DES_STORE);
 
         if (mMapsDirection == null || mCurrStore == null || mMapsDirection.getRouteList().size() <= 0) {
             Toast.makeText(MapRoutingActivity.this, "Failed to open Routing screen!", Toast.LENGTH_SHORT).show();

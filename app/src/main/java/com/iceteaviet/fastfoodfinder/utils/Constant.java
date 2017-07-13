@@ -14,4 +14,8 @@ public class Constant {
     public static final int TYPE_FAMILY_MART = 2;
     public static final int TYPE_BSMART = 3;
     public static final int TYPE_SHOP_N_GO = 4;
+
+    //Map utils
+    public static final long INTERVAL = 1000 * 10;
+    public static final long FASTEST_INTERVAL = 1000 * 5;
 }
