@@ -28,7 +28,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseError;
@@ -56,7 +55,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private GoogleApiClient mGoogleApiClient;
     private CallbackManager mCallBackManager;
-    private FirebaseAuth mAuth;
+
     private boolean isAuthenticated = false;
 
     @Override
@@ -69,11 +68,10 @@ public class LoginActivity extends AppCompatActivity {
 
 
         // Initialize Firebase Auth
-        mAuth = FirebaseAuth.getInstance();
-        if (mAuth.getCurrentUser() != null) {
+        if (FirebaseClient.getInstance().getAuth().getCurrentUser() != null) {
             // User is signed in
             this.finish();
-            Log.d("MAPP", "onAuthStateChanged:signed_in:" + mAuth.getCurrentUser().getUid());
+            Log.d("MAPP", "onAuthStateChanged:signed_in:" + FirebaseClient.getInstance().getAuth().getCurrentUser().getUid());
         } else {
             // User is signed out
             Log.d("MAPP", "onAuthStateChanged:signed_out");
@@ -226,7 +224,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
-        mAuth.signInWithCredential(credential)
+        FirebaseClient.getInstance().getAuth().signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -256,7 +254,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void handleFacebookAccessToken(AccessToken token) {
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
-        mAuth.signInWithCredential(credential)
+        FirebaseClient.getInstance().getAuth().signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {

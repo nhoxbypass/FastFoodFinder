@@ -121,4 +121,19 @@ public class DataUtils {
         }
         return "unknown";
     }
+
+    public static int getStoreType(String key) {
+        if (key.equals("circle_k"))
+            return Constant.TYPE_CIRCLE_K;
+        else if (key.equals("mini_stop"))
+            return Constant.TYPE_MINI_STOP;
+        else if (key.equals("family_mart"))
+            return Constant.TYPE_FAMILY_MART;
+        else if (key.equals("bsmart"))
+            return Constant.TYPE_BSMART;
+        else if (key.equals("shop_n_go"))
+            return Constant.TYPE_SHOP_N_GO;
+        else
+            return Constant.TYPE_CIRCLE_K;
+    }
 }

@@ -2,6 +2,7 @@ package com.iceteaviet.fastfoodfinder.rest;
 
 import android.util.Log;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -13,6 +14,10 @@ import com.iceteaviet.fastfoodfinder.model.Store.StoreDataSource;
 import com.iceteaviet.fastfoodfinder.model.Store.UserStoreList;
 import com.iceteaviet.fastfoodfinder.model.User.User;
 import com.iceteaviet.fastfoodfinder.utils.Constant;
+import com.iceteaviet.fastfoodfinder.utils.DataUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by tamdoan on 14/07/2017.
@@ -20,18 +25,34 @@ import com.iceteaviet.fastfoodfinder.utils.Constant;
 
 public class FirebaseClient {
     private static FirebaseClient mInstance = null;
-    private final DatabaseReference mDatabaseRef;
+    private FirebaseAuth mAuth;
+    private DatabaseReference mDatabaseRef;
     private FirebaseDatabase mDatabase;
 
     private FirebaseClient() {
         mDatabase = FirebaseDatabase.getInstance();
         mDatabaseRef = mDatabase.getReference();
+        mAuth = FirebaseAuth.getInstance();
     }
 
     public static FirebaseClient getInstance() {
         if (mInstance == null)
             mInstance = new FirebaseClient();
         return mInstance;
+    }
+
+    public void refresh() {
+        mDatabase = FirebaseDatabase.getInstance();
+        mDatabaseRef = mDatabase.getReference();
+        mAuth = FirebaseAuth.getInstance();
+    }
+
+    public FirebaseAuth getAuth() {
+        return mAuth;
+    }
+
+    public boolean isSignedIn() {
+        return mAuth.getCurrentUser() != null && !mAuth.getCurrentUser().isAnonymous();
     }
 
     public void addListenerForSingleUserValueEvent(String uid, final UserValueEventListener listener) {
@@ -73,7 +94,35 @@ public class FirebaseClient {
         mDatabaseRef.child(Constant.CHILD_USERS).child(user.getUid()).setValue(user);
     }
 
-    public void addFavouriteStoresEventListener(String uid, final StoreValueEventListener listener) {
+    public void addListenerForSingleStoreListValueEvent(final StoreListValueEventListener listener) {
+        mDatabaseRef.child(Constant.CHILD_STORES_LOCATION).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                listener.onDataChange(parseDataFromFirebase(dataSnapshot));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w("MAPP", "The read failed: " + databaseError.getMessage());
+                listener.onCancelled(databaseError);
+            }
+        });
+    }
+
+    private List<Store> parseDataFromFirebase(DataSnapshot dataSnapshot) {
+        List<Store> storeList = new ArrayList<Store>();
+        for (DataSnapshot child : dataSnapshot.getChildren()) {
+            for (DataSnapshot storeLocation : child.child(Constant.CHILD_MARKERS_ADD).getChildren()) {
+                Store store = storeLocation.getValue(Store.class);
+                store.setType(DataUtils.getStoreType(child.getKey()));
+                storeList.add(store);
+            }
+        }
+
+        return storeList;
+    }
+
+    public void addFavouriteStoresEventListener(String uid, final ChildStoreEventListener listener) {
         mDatabaseRef.child(Constant.CHILD_USERS)
                 .child(uid)
                 .child(Constant.CHILD_USERS_STORE_LIST)
@@ -117,7 +166,7 @@ public class FirebaseClient {
         return null;
     }
 
-    public interface StoreValueEventListener {
+    public interface ChildStoreEventListener {
         void onChildAdded(Store store, String var2);
 
         void onChildChanged(Store store, String var2);
@@ -131,6 +180,12 @@ public class FirebaseClient {
 
     public interface UserValueEventListener {
         void onDataChange(User user);
+
+        void onCancelled(DatabaseError error);
+    }
+
+    public interface StoreListValueEventListener {
+        void onDataChange(List<Store> storeList);
 
         void onCancelled(DatabaseError error);
     }

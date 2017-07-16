@@ -12,22 +12,14 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.iceteaviet.fastfoodfinder.BuildConfig;
 import com.iceteaviet.fastfoodfinder.R;
 import com.iceteaviet.fastfoodfinder.model.Store.Store;
 import com.iceteaviet.fastfoodfinder.model.Store.StoreDataSource;
 import com.iceteaviet.fastfoodfinder.model.User.User;
 import com.iceteaviet.fastfoodfinder.rest.FirebaseClient;
-import com.iceteaviet.fastfoodfinder.utils.Constant;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
@@ -38,12 +30,6 @@ public class SplashActivity extends AppCompatActivity {
     private final int SPLASH_DISPLAY_LENGTH = 1000; //Duration of wait
     public boolean isFirstRun = false;
     private SharedPreferences mSharedPreferences;
-    // Firebase instance variables
-    private FirebaseAuth mFirebaseAuth;
-    private FirebaseUser mFirebaseUser;
-    private FirebaseDatabase mDatabase;
-    private DatabaseReference mDatabaseRef;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,8 +38,7 @@ public class SplashActivity extends AppCompatActivity {
 
         Realm.init(SplashActivity.this);
 
-        // Initialize Firebase Auth
-        mFirebaseAuth = FirebaseAuth.getInstance();
+        FirebaseClient.getInstance().refresh();
         mSharedPreferences = getSharedPreferences(BuildConfig.APPLICATION_ID, MODE_PRIVATE);
         isFirstRun = mSharedPreferences.getBoolean(KEY_FIRST_RUN, true);
 
@@ -67,10 +52,10 @@ public class SplashActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onSuccess(DataSnapshot data) {
+                public void onSuccess(List<Store> data) {
                     mSharedPreferences.edit().putBoolean(KEY_FIRST_RUN, false).apply();
-                    if (mFirebaseAuth != null) {
-                        mFirebaseAuth.signOut();
+                    if (FirebaseClient.getInstance().getAuth() != null) {
+                        FirebaseClient.getInstance().getAuth().signOut();
                         Toast.makeText(SplashActivity.this, R.string.update_database_successfull, Toast.LENGTH_SHORT).show();
                     }
                     startMyActivity(LoginActivity.class);
@@ -79,15 +64,16 @@ public class SplashActivity extends AppCompatActivity {
                 @Override
                 public void onFailed(DatabaseError databaseError) {
                     Toast.makeText(SplashActivity.this, R.string.update_database_failed + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
-                    mFirebaseAuth.signOut();
+                    FirebaseClient.getInstance().getAuth().signOut();
                     restartActivity();
                 }
             });
         } else {
-            mFirebaseUser = mFirebaseAuth.getCurrentUser();
-            if (mFirebaseUser != null && !mFirebaseUser.isAnonymous()) {
+            if (FirebaseClient.getInstance().isSignedIn()) {
                 //User still signed in
-                FirebaseClient.getInstance().addListenerForSingleUserValueEvent(mFirebaseUser.getUid(), new FirebaseClient.UserValueEventListener() {
+                FirebaseClient.getInstance().addListenerForSingleUserValueEvent(
+                        FirebaseClient.getInstance().getAuth().getCurrentUser().getUid(),
+                        new FirebaseClient.UserValueEventListener() {
                     @Override
                     public void onDataChange(User user) {
                         User.currentUser = user;
@@ -122,31 +108,23 @@ public class SplashActivity extends AppCompatActivity {
         // Do first run stuff here then set 'firstrun' as false
         // using the following line to edit/commit prefs
 
-        mFirebaseUser = mFirebaseAuth.getCurrentUser();
-        if (mFirebaseUser == null) {
+        if (FirebaseClient.getInstance().isSignedIn()) {
             // Not signed in
-            mFirebaseAuth.signInWithEmailAndPassword("store_downloader@fastfoodfinder.com", "123456789")
+            FirebaseClient.getInstance().getAuth().signInWithEmailAndPassword("store_downloader@fastfoodfinder.com", "123456789")
                     .addOnCompleteListener(SplashActivity.this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                // Firebase instance variables
-                                // Get a reference to our posts
-                                mDatabase = FirebaseDatabase.getInstance();
-                                mDatabaseRef = mDatabase.getReference(Constant.CHILD_STORES_LOCATION);
-
-                                // Attach a listener to read the data at our posts reference
-                                mDatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                FirebaseClient.getInstance().addListenerForSingleStoreListValueEvent(new FirebaseClient.StoreListValueEventListener() {
                                     @Override
-                                    public void onDataChange(DataSnapshot dataSnapshot) {
-                                        parseDataFromFirebase(dataSnapshot);
-                                        listener.onSuccess(dataSnapshot);
+                                    public void onDataChange(List<Store> storeList) {
+                                        saveStoresLocation(storeList);
+                                        listener.onSuccess(storeList);
                                     }
 
                                     @Override
-                                    public void onCancelled(DatabaseError databaseError) {
-                                        Log.w("MAPP", "The read failed: " + databaseError.getMessage());
-                                        listener.onFailed(databaseError);
+                                    public void onCancelled(DatabaseError error) {
+                                        listener.onFailed(error);
                                     }
                                 });
                             } else {
@@ -160,42 +138,14 @@ public class SplashActivity extends AppCompatActivity {
         } else {
             Log.d("MAPP", "Already sign in but didn't get data");
             Toast.makeText(SplashActivity.this, R.string.update_database_failed, Toast.LENGTH_SHORT).show();
-            mFirebaseAuth.signOut();
+            FirebaseClient.getInstance().getAuth().signOut();
             restartActivity();
         }
-    }
-
-    private void parseDataFromFirebase(DataSnapshot dataSnapshot) {
-        List<Store> storeList = new ArrayList<Store>();
-        for (DataSnapshot child : dataSnapshot.getChildren()) {
-            for (DataSnapshot storeLocation : child.child(Constant.CHILD_MARKERS_ADD).getChildren()) {
-                Store store = storeLocation.getValue(Store.class);
-                store.setType(getStoreType(child.getKey()));
-                storeList.add(store);
-            }
-        }
-
-        saveStoresLocation(storeList);
     }
 
     private void restartActivity() {
         startActivity(getIntent());
         finish();
-    }
-
-    private int getStoreType(String key) {
-        if (key.equals("circle_k"))
-            return Constant.TYPE_CIRCLE_K;
-        else if (key.equals("mini_stop"))
-            return Constant.TYPE_MINI_STOP;
-        else if (key.equals("family_mart"))
-            return Constant.TYPE_FAMILY_MART;
-        else if (key.equals("bsmart"))
-            return Constant.TYPE_BSMART;
-        else if (key.equals("shop_n_go"))
-            return Constant.TYPE_SHOP_N_GO;
-        else
-            return Constant.TYPE_CIRCLE_K;
     }
 
     private void saveStoresLocation(List<Store> storeList) {
@@ -205,7 +155,7 @@ public class SplashActivity extends AppCompatActivity {
     public interface OnGetDataListener {
         public void onStart();
 
-        public void onSuccess(DataSnapshot data);
+        public void onSuccess(List<Store> data);
 
         public void onFailed(DatabaseError databaseError);
     }

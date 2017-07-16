@@ -13,9 +13,9 @@ import android.support.v7.widget.SwitchCompat;
 import android.view.View;
 import android.widget.TextView;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.iceteaviet.fastfoodfinder.BuildConfig;
 import com.iceteaviet.fastfoodfinder.R;
+import com.iceteaviet.fastfoodfinder.rest.FirebaseClient;
 import com.iceteaviet.fastfoodfinder.ui.profile.StoreFilterDialogFragment;
 
 import java.util.Locale;
@@ -57,7 +57,6 @@ public class SettingActivity extends AppCompatActivity {
     @BindView(R.id.tv_setting_english)
     TextView tvSettingLanguage;
     private boolean isVietnamese = true;
-    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,16 +74,17 @@ public class SettingActivity extends AppCompatActivity {
             swChangeLanguage.setChecked(true);
         }
         // Initialize Firebase Auth
-        mAuth = FirebaseAuth.getInstance();
-        if (mAuth == null || mAuth.getCurrentUser() == null || mAuth.getCurrentUser().isAnonymous()) {
+        if (FirebaseClient.getInstance().getAuth() == null
+                || FirebaseClient.getInstance().getAuth().getCurrentUser() == null
+                || (FirebaseClient.getInstance().getAuth().getCurrentUser() != null && FirebaseClient.getInstance().getAuth().getCurrentUser().isAnonymous())) {
             txtSignOut.setEnabled(false);
         }
 
         txtSignOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mAuth != null) {
-                    mAuth.signOut();
+                if (FirebaseClient.getInstance().getAuth() != null) {
+                    FirebaseClient.getInstance().getAuth().signOut();
                     Intent intent = new Intent(SettingActivity.this, LoginActivity.class);
                     startActivity(intent);
                     finish();

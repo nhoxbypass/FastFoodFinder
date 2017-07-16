@@ -113,7 +113,7 @@ public class MainFavouritedFragment extends Fragment implements OnStartDragListe
             List<Store> stores = StoreDataSource.getStoresById(User.currentUser.getFavouriteStoreList().getStoreIdList());
             mFavouriteAdapter.setStores(stores);
 
-            FirebaseClient.getInstance().addFavouriteStoresEventListener(User.currentUser.getUid(), new FirebaseClient.StoreValueEventListener() {
+            FirebaseClient.getInstance().addFavouriteStoresEventListener(User.currentUser.getUid(), new FirebaseClient.ChildStoreEventListener() {
                 @Override
                 public void onChildAdded(Store store, String var2) {
                     if (!User.currentUser.getFavouriteStoreList().getStoreIdList().contains(store.getId())) {
