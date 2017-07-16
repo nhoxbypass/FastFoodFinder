@@ -22,14 +22,12 @@ public class SearchEventResult {
         mStoreType = mResult = resultCode;
     }
 
-    public SearchEventResult(int resultCode, String searchString)
-    {
+    public SearchEventResult(int resultCode, String searchString) {
         mResult = resultCode;
         mSearchString = searchString;
     }
 
-    public SearchEventResult(int resultCode)
-    {
+    public SearchEventResult(int resultCode) {
         mResult = resultCode;
     }
 
@@ -41,8 +39,7 @@ public class SearchEventResult {
         return mSearchString;
     }
 
-    public int getStoreType()
-    {
+    public int getStoreType() {
         return mStoreType;
     }
 }

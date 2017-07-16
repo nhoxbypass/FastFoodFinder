@@ -24,16 +24,6 @@ import android.view.animation.BounceInterpolator;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.iceteaviet.fastfoodfinder.R;
-import com.iceteaviet.fastfoodfinder.adapter.NearByStoreAdapter;
-import com.iceteaviet.fastfoodfinder.helper.SearchEventResult;
-import com.iceteaviet.fastfoodfinder.model.Store.Store;
-import com.iceteaviet.fastfoodfinder.model.Store.StoreDataSource;
-import com.iceteaviet.fastfoodfinder.model.Store.StoreViewModel;
-import com.iceteaviet.fastfoodfinder.rest.RestClient;
-import com.iceteaviet.fastfoodfinder.ui.store.StoreInfoDialogFragment;
-import com.iceteaviet.fastfoodfinder.utils.MapUtils;
-import com.iceteaviet.fastfoodfinder.utils.PermissionUtils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -50,6 +40,16 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.iceteaviet.fastfoodfinder.R;
+import com.iceteaviet.fastfoodfinder.adapter.NearByStoreAdapter;
+import com.iceteaviet.fastfoodfinder.helper.SearchEventResult;
+import com.iceteaviet.fastfoodfinder.model.Store.Store;
+import com.iceteaviet.fastfoodfinder.model.Store.StoreDataSource;
+import com.iceteaviet.fastfoodfinder.model.Store.StoreViewModel;
+import com.iceteaviet.fastfoodfinder.rest.RestClient;
+import com.iceteaviet.fastfoodfinder.ui.store.StoreInfoDialogFragment;
+import com.iceteaviet.fastfoodfinder.utils.MapUtils;
+import com.iceteaviet.fastfoodfinder.utils.PermissionUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -75,13 +75,16 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
     BottomSheetBehavior mBottomSheetBehavior;
 
     LocationRequest mLocationRequest;
-    @BindView(R.id.rv_bottom_sheet) RecyclerView mNearStoreRecyclerView;
-    @BindView(R.id.maps_container) CoordinatorLayout mCoordinatorLayoutContainer;
-    @BindView(R.id.ll_bottom_sheet) LinearLayout mBottomSheetContainer;
+    @BindView(R.id.rv_bottom_sheet)
+    RecyclerView mNearStoreRecyclerView;
+    @BindView(R.id.maps_container)
+    CoordinatorLayout mCoordinatorLayoutContainer;
+    @BindView(R.id.ll_bottom_sheet)
+    LinearLayout mBottomSheetContainer;
     LatLng currLocation;
     List<Store> mStoreList;
-    Map<Integer,Marker> mMarkerMap;
-    Map<Integer,StoreViewModel> mNearlyStoreMap;
+    Map<Integer, Marker> mMarkerMap;
+    Map<Integer, StoreViewModel> mNearlyStoreMap;
     Bitmap currMarkerBitmap;
     private GoogleMap mGoogleMap;
     private SupportMapFragment mMapFragment;
@@ -101,7 +104,6 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
         fragment.setArguments(args);
         return fragment;
     }
-
 
 
     @Override
@@ -212,15 +214,14 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onSearchResult(SearchEventResult searchEventResult) {
         int resultCode = searchEventResult.getResultCode();
-        switch (resultCode)
-        {
+        switch (resultCode) {
             case SearchEventResult.SEARCH_QUICK_OK:
                 mStoreList.clear();
                 mGoogleMap.clear();
 
                 mStoreList = StoreDataSource.getStoresByType(searchEventResult.getStoreType());
                 if (mStoreList == null || mStoreList.size() <= 0)
-                    Toast.makeText(getContext(),"Failed to get stores data!",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Failed to get stores data!", Toast.LENGTH_SHORT).show();
 
                 addMarkersToMap(mStoreList, mGoogleMap);
                 AnimateMarkerTask task = new AnimateMarkerTask();
@@ -231,11 +232,11 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
                 mGoogleMap.clear();
                 mStoreList = StoreDataSource.getStore(searchEventResult.getSearchString());
                 if (mStoreList == null || mStoreList.size() <= 0)
-                    Toast.makeText(getContext(),"Failed to get stores data!",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Failed to get stores data!", Toast.LENGTH_SHORT).show();
 
                 addMarkersToMap(mStoreList, mGoogleMap);
 
-                mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mStoreList.get(0).getPosition(),16f));
+                mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mStoreList.get(0).getPosition(), 16f));
 
                 AnimateMarkerTask storeTask = new AnimateMarkerTask();
                 storeTask.execute(mStoreList);
@@ -246,10 +247,10 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
                 mGoogleMap.clear();
                 mStoreList = StoreDataSource.getAllObjects();
                 if (mStoreList == null || mStoreList.size() <= 0)
-                    Toast.makeText(getContext(),"Failed to get stores data!",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Failed to get stores data!", Toast.LENGTH_SHORT).show();
                 addMarkersToMap(mStoreList, mGoogleMap);
                 if (currLocation != null)
-                    mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currLocation,16f));
+                    mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currLocation, 16f));
                 break;
 
             default:
@@ -290,7 +291,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
 
         mStoreList = StoreDataSource.getAllObjects();
         if (mStoreList == null || mStoreList.size() <= 0)
-            Toast.makeText(getContext(),"Failed to get stores data!",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Failed to get stores data!", Toast.LENGTH_SHORT).show();
 
         currMarkerBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.logo_circlek_50);
 
@@ -307,7 +308,6 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
                 .addApi(LocationServices.API)
                 .build();
     }
-
 
 
     private void initBottomSheet() {
@@ -362,7 +362,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
                     .snippet(store.getAddress())
                     .icon(BitmapDescriptorFactory.fromBitmap(getStoreIcon(getContext(), store.getType()))));
             marker.setTag(store);
-            mMarkerMap.put(i,marker);
+            mMarkerMap.put(i, marker);
             //animateMarker(currMarkerBitmap,ic_map_defaultmarker);
         }
     }
@@ -376,7 +376,6 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
 
         RestClient.getInstance().showDirection(getActivity(), queries, store);
     }
-
 
 
     private void setMarkersListener(GoogleMap googleMap) {
@@ -440,7 +439,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
         synchronized (CACHE) {
             if (!CACHE.containsKey(type)) {
                 int id = MapUtils.getLogoDrawableId(type);
-                Bitmap bitmap = BitmapFactory.decodeResource(getResources(),id);
+                Bitmap bitmap = BitmapFactory.decodeResource(getResources(), id);
 
                 CACHE.put(type, bitmap);
             }
@@ -451,7 +450,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
     class AnimateMarkerTask extends AsyncTask<List<Store>, Void, Void> {
         LatLngBounds bounds = mGoogleMap.getProjection().getVisibleRegion().latLngBounds;
         LatLng cameraPosition;
-        Map<Integer,StoreViewModel> nearByStores;
+        Map<Integer, StoreViewModel> nearByStores;
         List<Integer> newStoreNearBy;
 
         @Override
@@ -464,12 +463,11 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
         }
 
         @Override
-        protected Void doInBackground(List<Store>...storeList) {
+        protected Void doInBackground(List<Store>... storeList) {
             for (int i = 0; i < storeList[0].size(); i++) {
                 if (bounds.contains(storeList[0].get(i).getPosition())) {
                     nearByStores.put(i, new StoreViewModel(storeList[0].get(i), cameraPosition));
-                    if (!mNearlyStoreMap.containsKey(i))
-                    {
+                    if (!mNearlyStoreMap.containsKey(i)) {
                         //New ic_store
                         newStoreNearBy.add(i);
                     }
@@ -487,7 +485,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
 
             //Animate ic_map_defaultmarker
             for (int i = 0; i < newStoreNearBy.size(); i++) {
-                Bitmap bitmap = getStoreIcon(getContext(),mStoreList.get(newStoreNearBy.get(i)).getType());
+                Bitmap bitmap = getStoreIcon(getContext(), mStoreList.get(newStoreNearBy.get(i)).getType());
                 animateMarker(bitmap, mMarkerMap.get(newStoreNearBy.get(i)));
             }
         }

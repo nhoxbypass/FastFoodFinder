@@ -56,15 +56,14 @@ public class DisplayUtils {
 
     public static CharSequence trimWhitespace(CharSequence source) {
 
-        if(source == null)
+        if (source == null)
             return "";
 
 
         SpannableStringBuilder builder = new SpannableStringBuilder(source);
         char c;
 
-        for (int i = 0; i < source.length(); i++)
-        {
+        for (int i = 0; i < source.length(); i++) {
             c = source.charAt(i);
             if (Character.isWhitespace(c)) {
                 try {
@@ -72,32 +71,28 @@ public class DisplayUtils {
                         //Ignore next char
                         //Because it is a whitespace again
                         builder.delete(i, i + 1);
-                }
-                catch (Exception ex)
-                {
+                } catch (Exception ex) {
                 }
             }
         }
 
         if (Character.isWhitespace(builder.charAt(builder.length() - 1)))
-            builder.delete(builder.length() - 1,builder.length());
+            builder.delete(builder.length() - 1, builder.length());
 
-        return builder.subSequence(0,builder.length());
+        return builder.subSequence(0, builder.length());
     }
 
     public static CharSequence getTrimmedShortInstruction(CharSequence source) {
 
-        if(source == null)
+        if (source == null)
             return "";
 
         int i = 0;
         int newLen = 0;
 
         // loop back to the first non-whitespace character
-        for (i = 0; i< source.length() - 1; i++)
-        {
-            if (Character.isWhitespace(source.charAt(i)) && Character.isWhitespace(source.charAt(i+1)))
-            {
+        for (i = 0; i < source.length() - 1; i++) {
+            if (Character.isWhitespace(source.charAt(i)) && Character.isWhitespace(source.charAt(i + 1))) {
                 newLen = i;
                 break;
             }

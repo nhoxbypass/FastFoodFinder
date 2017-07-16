@@ -9,12 +9,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by nhoxb on 11/11/2016.
  */
-public class MapCoordination  implements Parcelable{
-    protected MapCoordination(Parcel in) {
-        latitude = in.readDouble();
-        longitude = in.readDouble();
-    }
-
+public class MapCoordination implements Parcelable {
     public static final Creator<MapCoordination> CREATOR = new Creator<MapCoordination>() {
         @Override
         public MapCoordination createFromParcel(Parcel in) {
@@ -26,6 +21,15 @@ public class MapCoordination  implements Parcelable{
             return new MapCoordination[size];
         }
     };
+    @SerializedName("lat")
+    double latitude;
+    @SerializedName("lng")
+    double longitude;
+
+    protected MapCoordination(Parcel in) {
+        latitude = in.readDouble();
+        longitude = in.readDouble();
+    }
 
     public double getLatitude() {
         return latitude;
@@ -35,15 +39,9 @@ public class MapCoordination  implements Parcelable{
         return longitude;
     }
 
-    public LatLng getLocation()
-    {
+    public LatLng getLocation() {
         return new LatLng(latitude, longitude);
     }
-
-    @SerializedName("lat")
-    double latitude;
-    @SerializedName("lng")
-    double longitude;
 
     @Override
     public int describeContents() {

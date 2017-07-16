@@ -11,14 +11,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import com.iceteaviet.fastfoodfinder.activity.StoreDetailActivity;
-import com.iceteaviet.fastfoodfinder.utils.Constant;
 import com.iceteaviet.fastfoodfinder.R;
+import com.iceteaviet.fastfoodfinder.activity.StoreDetailActivity;
 import com.iceteaviet.fastfoodfinder.adapter.RecentlyStoreAdapter;
 import com.iceteaviet.fastfoodfinder.helper.DividerItemDecoration;
 import com.iceteaviet.fastfoodfinder.helper.OnStartDragListener;
 import com.iceteaviet.fastfoodfinder.helper.SimpleItemTouchHelperCallback;
 import com.iceteaviet.fastfoodfinder.model.Store.Store;
+import com.iceteaviet.fastfoodfinder.utils.Constant;
 
 import java.util.ArrayList;
 
@@ -30,8 +30,10 @@ import butterknife.ButterKnife;
  */
 public class MainRecentlyFragment extends Fragment implements OnStartDragListener {
     private static boolean isFABChangeClicked = false;
-    @BindView(R.id.rv_recently_stores) RecyclerView recyclerView;
-    @BindView(R.id.fl_container) FrameLayout containerLayout;
+    @BindView(R.id.rv_recently_stores)
+    RecyclerView recyclerView;
+    @BindView(R.id.fl_container)
+    FrameLayout containerLayout;
     private RecentlyStoreAdapter mRecentlyAdapter;
     private LinearLayoutManager mLayoutManager;
     private ItemTouchHelper mItemTouchHelper;

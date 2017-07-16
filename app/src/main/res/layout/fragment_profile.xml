@@ -18,60 +18,62 @@
         android:id="@+id/btnUpdateCoverImage"
         android:layout_width="wrap_content"
         android:layout_height="32dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="128dp"
         android:alpha="0.75"
         android:drawableLeft="@drawable/ic_all_camera"
         android:drawablePadding="4dp"
-        android:layout_marginTop="128dp"
-        android:layout_alignParentRight="true"
         android:text="@string/update_cover_image"
         android:textSize="8sp"
         android:visibility="visible" />
 
     <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/iv_profile_avatar"
         android:layout_width="90dp"
         android:layout_height="90dp"
-        android:id="@+id/iv_profile_avatar"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="88dp"
         android:scaleType="centerCrop"
         android:src="@drawable/all_noavatar" />
 
     <TextView
+        android:id="@+id/tvName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/iv_profile_avatar"
-        android:layout_toEndOf="@id/iv_profile_avatar"
-        android:layout_marginTop="112dp"
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="112dp"
+        android:layout_toEndOf="@id/iv_profile_avatar"
+        android:layout_toRightOf="@id/iv_profile_avatar"
         android:text="Annonymous"
         android:textColor="@android:color/white"
         android:textSize="20sp"
-        android:textStyle="bold"
-        android:id="@+id/tvName"/>
+        android:textStyle="bold" />
 
     <TextView
+        android:id="@+id/tvEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/iv_profile_avatar"
-        android:layout_toEndOf="@id/iv_profile_avatar"
-        android:layout_marginTop="136dp"
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="136dp"
+        android:layout_toEndOf="@id/iv_profile_avatar"
+        android:layout_toRightOf="@id/iv_profile_avatar"
         android:text="\@annonymous"
         android:textColor="@android:color/white"
-        android:id="@+id/tvEmail"
         android:textSize="14sp" />
 
 
     <ScrollView
+        android:id="@+id/listCreated"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/iv_profile_avatar"
-        android:id="@+id/listCreated">
+        android:layout_below="@id/iv_profile_avatar">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -89,54 +91,59 @@
                 android:text="@string/_3_lists" />
 
             <android.support.v7.widget.CardView
+                android:id="@+id/cv_saved_places"
+                style="@style/RippleEffect"
                 android:layout_width="160dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/cv_saved_places"
-                app:cardElevation="6dp"
-                style="@style/RippleEffect"
                 android:layout_marginLeft="16dp"
-                android:layout_marginTop="56dp">
+                android:layout_marginTop="56dp"
+                app:cardElevation="6dp">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
+
                         <ImageView
                             android:layout_width="0dp"
-                            android:layout_weight="1"
                             android:layout_height="40dp"
+                            android:layout_weight="1"
                             android:scaleType="centerCrop"
                             android:src="@drawable/detail_sample_food_1" />
 
                         <ImageView
                             android:layout_width="0dp"
-                            android:layout_weight="1"
                             android:layout_height="40dp"
                             android:layout_marginLeft="2dp"
                             android:layout_marginStart="2dp"
+                            android:layout_weight="1"
                             android:scaleType="centerCrop"
                             android:src="@drawable/detail_sample_food_2" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp">
+
                         <ImageView
                             android:layout_width="0dp"
-                            android:layout_weight="1"
                             android:layout_height="40dp"
+                            android:layout_weight="1"
                             android:scaleType="centerCrop"
                             android:src="@drawable/all_placeholder" />
 
                         <ImageView
                             android:layout_width="0dp"
-                            android:layout_weight="1"
                             android:layout_height="40dp"
                             android:layout_marginLeft="2dp"
                             android:layout_marginStart="2dp"
+                            android:layout_weight="1"
                             android:scaleType="centerCrop"
                             android:src="@drawable/all_placeholder" />
                     </LinearLayout>
@@ -170,55 +177,60 @@
 
 
             <android.support.v7.widget.CardView
+                android:id="@+id/cv_favourite_places"
                 android:layout_width="160dp"
                 android:layout_height="wrap_content"
-                app:cardElevation="6dp"
-                android:id="@+id/cv_favourite_places"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="56dp"
                 android:layout_toEndOf="@id/cv_saved_places"
                 android:layout_toRightOf="@id/cv_saved_places"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="56dp">
+                app:cardElevation="6dp">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
+
                         <ImageView
                             android:layout_width="0dp"
-                            android:layout_weight="1"
                             android:layout_height="40dp"
+                            android:layout_weight="1"
                             android:scaleType="centerCrop"
                             android:src="@drawable/detail_sample_food_3" />
 
                         <ImageView
                             android:layout_width="0dp"
-                            android:layout_weight="1"
                             android:layout_height="40dp"
                             android:layout_marginLeft="2dp"
                             android:layout_marginStart="2dp"
+                            android:layout_weight="1"
                             android:scaleType="centerCrop"
                             android:src="@drawable/detail_sample_food_4" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp">
+
                         <ImageView
                             android:layout_width="0dp"
-                            android:layout_weight="1"
                             android:layout_height="40dp"
+                            android:layout_weight="1"
                             android:scaleType="centerCrop"
                             android:src="@drawable/all_placeholder" />
 
                         <ImageView
                             android:layout_width="0dp"
-                            android:layout_weight="1"
                             android:layout_height="40dp"
                             android:layout_marginLeft="2dp"
                             android:layout_marginStart="2dp"
+                            android:layout_weight="1"
                             android:scaleType="centerCrop"
                             android:src="@drawable/all_placeholder" />
                     </LinearLayout>
@@ -242,9 +254,9 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/fav_list_items_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/fav_list_items_count"
                     android:layout_marginLeft="8dp"
                     android:layout_marginTop="104dp"
                     android:text="@string/_2_places" />
@@ -253,56 +265,61 @@
 
 
             <android.support.v7.widget.CardView
-                android:layout_width="160dp"
-                android:layout_height="wrap_content"
-                app:cardElevation="6dp"
                 android:id="@+id/cv_checkin_places"
                 style="@style/RippleEffect"
+                android:layout_width="160dp"
+                android:layout_height="wrap_content"
                 android:layout_below="@id/cv_saved_places"
-                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp">
+                android:layout_marginTop="16dp"
+                app:cardElevation="6dp">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
+
                         <ImageView
                             android:layout_width="0dp"
-                            android:layout_weight="1"
                             android:layout_height="40dp"
+                            android:layout_weight="1"
                             android:scaleType="centerCrop"
                             android:src="@drawable/detail_sample_food_1" />
 
                         <ImageView
                             android:layout_width="0dp"
-                            android:layout_weight="1"
                             android:layout_height="40dp"
                             android:layout_marginLeft="2dp"
                             android:layout_marginStart="2dp"
+                            android:layout_weight="1"
                             android:scaleType="centerCrop"
                             android:src="@drawable/detail_sample_food_4" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp">
+
                         <ImageView
                             android:layout_width="0dp"
-                            android:layout_weight="1"
                             android:layout_height="40dp"
+                            android:layout_weight="1"
                             android:scaleType="centerCrop"
                             android:src="@drawable/all_placeholder" />
 
                         <ImageView
                             android:layout_width="0dp"
-                            android:layout_weight="1"
                             android:layout_height="40dp"
                             android:layout_marginLeft="2dp"
                             android:layout_marginStart="2dp"
+                            android:layout_weight="1"
                             android:scaleType="centerCrop"
                             android:src="@drawable/all_placeholder" />
                     </LinearLayout>
@@ -333,29 +350,29 @@
                     android:text="@string/_2_places" />
 
             </android.support.v7.widget.CardView>
-               <android.support.v7.widget.CardView
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/cvCreateNew"
+                style="@style/RippleEffect"
                 android:layout_width="160dp"
                 android:layout_height="120dp"
-                style="@style/RippleEffect"
+                android:layout_below="@id/cv_favourite_places"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_toEndOf="@id/cv_checkin_places"
+                android:layout_toRightOf="@id/cv_checkin_places"
                 app:cardBackgroundColor="#EEEEEE"
-                app:cardElevation="6dp"
-                android:id="@+id/cvCreateNew"
-                    android:layout_below="@id/cv_favourite_places"
-                    android:layout_toRightOf="@id/cv_checkin_places"
-                    android:layout_toEndOf="@id/cv_checkin_places"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginLeft="16dp"
-                    >
+                app:cardElevation="6dp">
 
 
                 <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/ivCreate"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="30dp"
-                    android:src="@drawable/ic_profile_addlist"
-                    android:id="@+id/ivCreate"/>
+                    android:src="@drawable/ic_profile_addlist" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -367,39 +384,41 @@
                     android:textColor="#304FFE"
                     android:textSize="@dimen/medium_textsize"
                     android:textStyle="bold" />
-        </android.support.v7.widget.CardView>
+            </android.support.v7.widget.CardView>
+
             <LinearLayout
+                android:id="@+id/textId"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
                 android:layout_below="@+id/cv_checkin_places"
+                android:layout_marginLeft="16dp"
                 android:layout_marginTop="24dp"
-                android:id="@+id/textId"
 
                 >
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/list_you_create"
                     android:textSize="18sp"
-                    android:textStyle="bold"
-                    />
+                    android:textStyle="bold" />
+
                 <TextView
+                    android:id="@+id/tvNumberList"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
                     android:text="(0)"
-                    android:textSize="18sp"
-                    android:id="@+id/tvNumberList"/>
+                    android:textSize="18sp" />
             </LinearLayout>
+
             <android.support.v7.widget.RecyclerView
+                android:id="@+id/rvListPacket"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textId"
-                android:layout_marginTop="8dp"
                 android:layout_marginLeft="8dp"
-                android:id="@+id/rvListPacket">
-            </android.support.v7.widget.RecyclerView>
+                android:layout_marginTop="8dp"></android.support.v7.widget.RecyclerView>
         </RelativeLayout>
     </ScrollView>
 

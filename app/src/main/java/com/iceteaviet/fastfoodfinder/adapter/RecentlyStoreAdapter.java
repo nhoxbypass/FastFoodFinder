@@ -13,10 +13,10 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.iceteaviet.fastfoodfinder.helper.ItemTouchHelperAdapter;
-import com.iceteaviet.fastfoodfinder.helper.OnStartDragListener;
 import com.iceteaviet.fastfoodfinder.R;
+import com.iceteaviet.fastfoodfinder.helper.ItemTouchHelperAdapter;
 import com.iceteaviet.fastfoodfinder.helper.ItemTouchHelperViewHolder;
+import com.iceteaviet.fastfoodfinder.helper.OnStartDragListener;
 import com.iceteaviet.fastfoodfinder.model.Store.Store;
 
 import java.util.ArrayList;

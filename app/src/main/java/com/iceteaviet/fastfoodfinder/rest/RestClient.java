@@ -23,10 +23,9 @@ import retrofit2.Response;
 
 public class RestClient {
     public static String MAP_BASE_URL = "https://maps.googleapis.com/maps/api/directions/";
-
+    private static RestClient mInstance = null;
     public String googlemapBrowserKey = "";
     private MapsDirectionApi mMapDirectionApi;
-    private static RestClient mInstance = null;
 
     private RestClient() {
         mMapDirectionApi = RetrofitUtils.get(googlemapBrowserKey, MAP_BASE_URL).create(MapsDirectionApi.class);

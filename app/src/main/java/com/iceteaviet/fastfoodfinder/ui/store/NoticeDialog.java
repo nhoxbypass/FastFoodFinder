@@ -15,10 +15,6 @@ public class NoticeDialog extends DialogFragment {
 
     private static final String MESSAGE = "message";
 
-    public interface NoticeDialogListener {
-        void onClickOk();
-    }
-
     public NoticeDialog() {
     }
 
@@ -52,5 +48,9 @@ public class NoticeDialog extends DialogFragment {
             }
         });
         return alertDialogBuilder.create();
+    }
+
+    public interface NoticeDialogListener {
+        void onClickOk();
     }
 }

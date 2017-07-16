@@ -26,9 +26,10 @@ import butterknife.ButterKnife;
 public class MainFragment extends Fragment {
 
 
-
-    @BindView(R.id.tab_layout) TabLayout mTabLayout;
-    @BindView(R.id.view_pager) ViewPager mViewPager;
+    @BindView(R.id.tab_layout)
+    TabLayout mTabLayout;
+    @BindView(R.id.view_pager)
+    ViewPager mViewPager;
     MainPagerAdapter mPagerAdapter;
 
     public MainFragment() {
@@ -36,9 +37,9 @@ public class MainFragment extends Fragment {
     }
 
     public static MainFragment newInstance() {
-        
+
         Bundle args = new Bundle();
-        
+
         MainFragment fragment = new MainFragment();
         fragment.setArguments(args);
         return fragment;
@@ -67,8 +68,7 @@ public class MainFragment extends Fragment {
         mTabLayout.setupWithViewPager(mViewPager);
 
 
-        for (int i = 0; i < mTabLayout.getTabCount(); i++)
-        {
+        for (int i = 0; i < mTabLayout.getTabCount(); i++) {
             mTabLayout.getTabAt(i).setText(null);
             mTabLayout.getTabAt(i).setIcon(mPagerAdapter.getIcon(i));
         }
@@ -85,7 +85,7 @@ public class MainFragment extends Fragment {
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-                int tabItemColor = ContextCompat.getColor(getContext(),R.color.colorYouTubeDark);
+                int tabItemColor = ContextCompat.getColor(getContext(), R.color.colorYouTubeDark);
                 tab.getIcon().setColorFilter(tabItemColor, PorterDuff.Mode.SRC_IN);
             }
 

@@ -9,9 +9,9 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.iceteaviet.fastfoodfinder.R;
 import com.iceteaviet.fastfoodfinder.adapter.StoreListAdapter;
 import com.iceteaviet.fastfoodfinder.helper.DividerItemDecoration;
-import com.iceteaviet.fastfoodfinder.R;
 import com.iceteaviet.fastfoodfinder.model.Store.StoreDataSource;
 import com.iceteaviet.fastfoodfinder.ui.profile.ProfileFragment;
 
@@ -26,11 +26,16 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 public class ListDetailActivity extends AppCompatActivity {
 
-    @BindView(R.id.rvList)   RecyclerView rvStoreList;
-    @BindView(R.id.iconList)   CircleImageView cvIconList;
-    @BindView(R.id.tvListName)   TextView tvListName;
-    @BindView(R.id.tvNumberPlace) TextView tvNumberPlace;
-    @BindView(R.id.cvAvatar) CircleImageView avatar;
+    @BindView(R.id.rvList)
+    RecyclerView rvStoreList;
+    @BindView(R.id.iconList)
+    CircleImageView cvIconList;
+    @BindView(R.id.tvListName)
+    TextView tvListName;
+    @BindView(R.id.tvNumberPlace)
+    TextView tvNumberPlace;
+    @BindView(R.id.cvAvatar)
+    CircleImageView avatar;
     StoreListAdapter mAdapter;
     LinearLayoutManager layoutManager;
 
@@ -48,19 +53,19 @@ public class ListDetailActivity extends AppCompatActivity {
         getData();
     }
 
-    void getData(){
+    void getData() {
         Intent intent = getIntent();
 
         //list name
         tvListName.setText(intent.getStringExtra(ProfileFragment.KEY_NAME));
         //icon of list
-        cvIconList.setImageResource(intent.getIntExtra(ProfileFragment.KEY_IDICON,0));
+        cvIconList.setImageResource(intent.getIntExtra(ProfileFragment.KEY_IDICON, 0));
 
         Glide.with(getApplicationContext())
                 .load(intent.getStringExtra(ProfileFragment.KEY_URL))
                 .into(avatar);
         //id of list
-        int id = intent.getIntExtra(ProfileFragment.KEY_ID,0);
+        int id = intent.getIntExtra(ProfileFragment.KEY_ID, 0);
         //list id of store
         ArrayList<Integer> list = intent.getIntegerArrayListExtra(ProfileFragment.KEY_STORE);
 

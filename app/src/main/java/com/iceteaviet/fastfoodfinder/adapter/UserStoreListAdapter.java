@@ -8,8 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.iceteaviet.fastfoodfinder.model.Store.UserStoreList;
 import com.iceteaviet.fastfoodfinder.R;
+import com.iceteaviet.fastfoodfinder.model.Store.UserStoreList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,35 +26,28 @@ public class UserStoreListAdapter extends RecyclerView.Adapter<UserStoreListAdap
     List<UserStoreList> mListPackets;
     OnItemClickListener mListener;
     OnItemLongClickListener mOnItemLongClickListener;
-    public UserStoreListAdapter(){
+
+    public UserStoreListAdapter() {
         mListPackets = new ArrayList<>();
     }
 
-
-    public interface OnItemLongClickListener{
-        void onClick(int position);
-    }
-
-    public void setOnItemLongClickListener(OnItemLongClickListener listener){
+    public void setOnItemLongClickListener(OnItemLongClickListener listener) {
         mOnItemLongClickListener = listener;
     }
-    public void addListPacket(UserStoreList listPacket){
+
+    public void addListPacket(UserStoreList listPacket) {
         mListPackets.add(listPacket);
-        notifyItemRangeInserted(mListPackets.size(),1);
+        notifyItemRangeInserted(mListPackets.size(), 1);
     }
 
-    public interface OnItemClickListener{
-        void OnClick(UserStoreList listPacket);
-    }
-
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener){
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         mListener = onItemClickListener;
     }
 
     @Override
     public ListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.view_new_list,parent,false);
+                .inflate(R.layout.view_new_list, parent, false);
         return new ListViewHolder(itemView);
     }
 
@@ -70,12 +63,23 @@ public class UserStoreListAdapter extends RecyclerView.Adapter<UserStoreListAdap
         return mListPackets.size();
     }
 
-    class ListViewHolder extends RecyclerView.ViewHolder{
-        @BindView(R.id.tvNameList)   TextView tvName;
-        @BindView(R.id.iconNewList)  CircleImageView cvIcon;
+    public interface OnItemLongClickListener {
+        void onClick(int position);
+    }
+
+    public interface OnItemClickListener {
+        void OnClick(UserStoreList listPacket);
+    }
+
+    class ListViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.tvNameList)
+        TextView tvName;
+        @BindView(R.id.iconNewList)
+        CircleImageView cvIcon;
+
         public ListViewHolder(final View itemView) {
             super(itemView);
-            ButterKnife.bind(this,itemView);
+            ButterKnife.bind(this, itemView);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -99,7 +103,7 @@ public class UserStoreListAdapter extends RecyclerView.Adapter<UserStoreListAdap
                                     mListPackets.remove(position);
                                     notifyDataSetChanged();
                                     mOnItemLongClickListener.onClick(position);
-                             
+
                                 }
                             })
                             .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {

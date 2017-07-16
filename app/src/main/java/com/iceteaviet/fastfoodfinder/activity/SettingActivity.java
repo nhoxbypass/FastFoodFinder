@@ -13,10 +13,10 @@ import android.support.v7.widget.SwitchCompat;
 import android.view.View;
 import android.widget.TextView;
 
-import com.iceteaviet.fastfoodfinder.ui.profile.StoreFilterDialogFragment;
+import com.google.firebase.auth.FirebaseAuth;
 import com.iceteaviet.fastfoodfinder.BuildConfig;
 import com.iceteaviet.fastfoodfinder.R;
-import com.google.firebase.auth.FirebaseAuth;
+import com.iceteaviet.fastfoodfinder.ui.profile.StoreFilterDialogFragment;
 
 import java.util.Locale;
 
@@ -26,7 +26,6 @@ import butterknife.ButterKnife;
 public class SettingActivity extends AppCompatActivity {
 
     public static final String KEY_LANGUAGE = "lang";
-    private boolean isVietnamese = true;
     @BindView(R.id.tv_setting_share_app)
     TextView txtShareApp;
     @BindView(R.id.tv_setting_change_metric)
@@ -57,6 +56,7 @@ public class SettingActivity extends AppCompatActivity {
     SwitchCompat swChangeLanguage;
     @BindView(R.id.tv_setting_english)
     TextView tvSettingLanguage;
+    private boolean isVietnamese = true;
     private FirebaseAuth mAuth;
 
     @Override

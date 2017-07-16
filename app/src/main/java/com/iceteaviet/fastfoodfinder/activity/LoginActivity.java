@@ -9,12 +9,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.google.firebase.database.DatabaseError;
-import com.iceteaviet.fastfoodfinder.model.Store.UserStoreList;
-import com.iceteaviet.fastfoodfinder.model.User.User;
-import com.iceteaviet.fastfoodfinder.rest.FirebaseClient;
-import com.iceteaviet.fastfoodfinder.utils.Constant;
-import com.iceteaviet.fastfoodfinder.R;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -37,8 +31,11 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.DatabaseError;
+import com.iceteaviet.fastfoodfinder.R;
+import com.iceteaviet.fastfoodfinder.model.Store.UserStoreList;
+import com.iceteaviet.fastfoodfinder.model.User.User;
+import com.iceteaviet.fastfoodfinder.rest.FirebaseClient;
 
 import java.util.ArrayList;
 
@@ -221,8 +218,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 }
             });
-        }
-        else {
+        } else {
             startActivity(intent);
             finish();
         }

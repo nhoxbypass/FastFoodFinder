@@ -1,58 +1,63 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/maps_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/maps_container"
     tools:context=".ui.main.MainMapFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <FrameLayout
-            android:layout_marginTop="48dp"
+            android:id="@+id/map_placeholder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/map_placeholder"/>
+            android:layout_marginTop="48dp" />
+
         <ImageView
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_centerInParent="true"
-            android:src="@drawable/ic_map_defaultmarker"
-            android:layout_gravity="center_horizontal"/>
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/ic_map_defaultmarker" />
     </RelativeLayout>
 
     <LinearLayout
+        android:id="@+id/ll_bottom_sheet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:id="@+id/ll_bottom_sheet"
-        app:layout_behavior="@string/bottom_sheet_behavior"
-        app:behavior_peekHeight="160dp">
+        app:behavior_peekHeight="160dp"
+        app:layout_behavior="@string/bottom_sheet_behavior">
+
         <ImageView
             android:layout_width="48dp"
             android:layout_height="24dp"
+            android:layout_gravity="right|end"
+            android:layout_marginRight="16dp"
             android:background="@color/colorGrey"
             android:scaleType="fitXY"
-            android:src="@drawable/ic_main_hamburger"
-            android:layout_marginRight="16dp"
-            android:layout_gravity="right|end" />
+            android:src="@drawable/ic_main_hamburger" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:layout_marginBottom="2dp"
-            android:background="@color/googleYellow"/>
+            android:background="@color/googleYellow" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="4dp"
-            android:background="@color/googleYellow"/>
+            android:background="@color/googleYellow" />
 
         <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_bottom_sheet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorWhite"
-            android:id="@+id/rv_bottom_sheet"
             android:clipToPadding="true" />
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

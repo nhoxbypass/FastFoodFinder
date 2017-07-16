@@ -2,7 +2,6 @@ package com.iceteaviet.fastfoodfinder.rest;
 
 import android.util.Log;
 
-import com.bumptech.glide.Glide;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -15,17 +14,14 @@ import com.iceteaviet.fastfoodfinder.model.Store.UserStoreList;
 import com.iceteaviet.fastfoodfinder.model.User.User;
 import com.iceteaviet.fastfoodfinder.utils.Constant;
 
-import java.util.List;
-
 /**
  * Created by tamdoan on 14/07/2017.
  */
 
 public class FirebaseClient {
-    private FirebaseDatabase mDatabase;
-    private final DatabaseReference mDatabaseRef;
-
     private static FirebaseClient mInstance = null;
+    private final DatabaseReference mDatabaseRef;
+    private FirebaseDatabase mDatabase;
 
     private FirebaseClient() {
         mDatabase = FirebaseDatabase.getInstance();
@@ -38,8 +34,7 @@ public class FirebaseClient {
         return mInstance;
     }
 
-    public void addListenerForSingleUserValueEvent(String uid, final UserValueEventListener listener)
-    {
+    public void addListenerForSingleUserValueEvent(String uid, final UserValueEventListener listener) {
         mDatabaseRef.child(Constant.CHILD_USERS).child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

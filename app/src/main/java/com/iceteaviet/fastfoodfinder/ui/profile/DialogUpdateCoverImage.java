@@ -33,40 +33,55 @@ public class DialogUpdateCoverImage extends android.support.v4.app.DialogFragmen
     private static int RESULT_LOAD_IMAGE = 1;
 
 
-    @BindView(R.id.ivOne)    ImageView ivOne;
-    @BindView(R.id.ivTwo)    ImageView ivTwo;
-    @BindView(R.id.ivThree)    ImageView ivThree;
-    @BindView(R.id.ivFour)    ImageView ivFour;
-    @BindView(R.id.ivFive)    ImageView ivFive;
-    @BindView(R.id.ivSix)    ImageView ivSix;
-    @BindView(R.id.ivChosenImage)   ImageView ivChosenImage;
-    @BindView(R.id.btnDone)    Button btnDone;
-    @BindView(R.id.btnCancel)    Button btnCancel;
-    @BindView(R.id.btnBrowser)     Button btnBrowser;
+    @BindView(R.id.ivOne)
+    ImageView ivOne;
+    @BindView(R.id.ivTwo)
+    ImageView ivTwo;
+    @BindView(R.id.ivThree)
+    ImageView ivThree;
+    @BindView(R.id.ivFour)
+    ImageView ivFour;
+    @BindView(R.id.ivFive)
+    ImageView ivFive;
+    @BindView(R.id.ivSix)
+    ImageView ivSix;
+    @BindView(R.id.ivChosenImage)
+    ImageView ivChosenImage;
+    @BindView(R.id.btnDone)
+    Button btnDone;
+    @BindView(R.id.btnCancel)
+    Button btnCancel;
+    @BindView(R.id.btnBrowser)
+    Button btnBrowser;
     int IdChosenImage = 0;
     Bitmap mBmp = null;
 
     OnButtonClickListener mListener;
 
 
-    public interface OnButtonClickListener{
-        void onButtonClickListener(int Id, Bitmap bmp);
+    public DialogUpdateCoverImage() {
     }
 
-    public void setOnButtonClickListener(OnButtonClickListener listener){
+    public static DialogUpdateCoverImage newInstance() {
+        DialogUpdateCoverImage frag = new DialogUpdateCoverImage();
+        Bundle args = new Bundle();
+        frag.setArguments(args);
+        return frag;
+    }
+
+    public void setOnButtonClickListener(OnButtonClickListener listener) {
         mListener = listener;
     }
 
-    public DialogUpdateCoverImage(){}
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        return inflater.inflate(R.layout.dialog_choose_image,container,false);
+        return inflater.inflate(R.layout.dialog_choose_image, container, false);
     }
+
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState)
-    {
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
         Dialog dialog = super.onCreateDialog(savedInstanceState);
         //request
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
@@ -82,7 +97,7 @@ public class DialogUpdateCoverImage extends android.support.v4.app.DialogFragmen
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ButterKnife.bind(this,view);
+        ButterKnife.bind(this, view);
 
         btnBrowser.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -159,7 +174,7 @@ public class DialogUpdateCoverImage extends android.support.v4.app.DialogFragmen
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == getActivity().RESULT_OK && null != data) {
             Uri selectedImage = data.getData();
-            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+            String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
             Cursor cursor = getActivity().getContentResolver().query(selectedImage,
                     filePathColumn, null, null, null);
@@ -180,19 +195,18 @@ public class DialogUpdateCoverImage extends android.support.v4.app.DialogFragmen
             mBmp = bmp;
         }
     }
+
     private Bitmap getBitmapFromUri(Uri uri) throws IOException {
         ParcelFileDescriptor parcelFileDescriptor =
-               getActivity().getContentResolver().openFileDescriptor(uri, "r");
+                getActivity().getContentResolver().openFileDescriptor(uri, "r");
         FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
         Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
         parcelFileDescriptor.close();
         return image;
     }
-    public static DialogUpdateCoverImage newInstance() {
-        DialogUpdateCoverImage frag = new DialogUpdateCoverImage();
-        Bundle args = new Bundle();
-        frag.setArguments(args);
-        return frag;
+
+    public interface OnButtonClickListener {
+        void onButtonClickListener(int Id, Bitmap bmp);
     }
 
 }

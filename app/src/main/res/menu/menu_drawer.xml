@@ -1,38 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:title="@string/persional">
+    <item android:title="@string/persional">
         <menu>
             <item
-                android:title="@string/map"
-                android:id="@+id/menu_action_map"/>
+                android:id="@+id/menu_action_map"
+                android:title="@string/map" />
             <item
-                android:title="@string/profile"
-                android:id="@+id/menu_action_profile"/>
+                android:id="@+id/menu_action_profile"
+                android:title="@string/profile" />
             <item
-                android:title="@string/my_moment"
-                android:id="@+id/menu_action_moment"/>
+                android:id="@+id/menu_action_moment"
+                android:title="@string/my_moment" />
             <item
-                android:title="@string/list"
-                android:id="@+id/menu_action_list"/>
+                android:id="@+id/menu_action_list"
+                android:title="@string/list" />
             <item
-                android:title="@string/connection"
-                android:id="@+id/menu_action_connect"/>
+                android:id="@+id/menu_action_connect"
+                android:title="@string/connection" />
         </menu>
     </item>
 
-    <item
-        android:title="@string/general">
+    <item android:title="@string/general">
         <menu>
             <item
-                android:title="@string/setting"
-                android:id="@+id/menu_action_setting"/>
+                android:id="@+id/menu_action_setting"
+                android:title="@string/setting" />
             <item
-                android:title="@string/help_and_feedback"
-                android:id="@+id/menu_action_help"/>
+                android:id="@+id/menu_action_help"
+                android:title="@string/help_and_feedback" />
             <item
-                android:title="@string/about_author"
-                android:id="@+id/menu_action_about"/>
+                android:id="@+id/menu_action_about"
+                android:title="@string/about_author" />
         </menu>
 
     </item>

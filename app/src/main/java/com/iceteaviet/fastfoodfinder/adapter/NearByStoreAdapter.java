@@ -8,8 +8,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.iceteaviet.fastfoodfinder.model.Store.StoreViewModel;
 import com.iceteaviet.fastfoodfinder.R;
+import com.iceteaviet.fastfoodfinder.model.Store.StoreViewModel;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -26,30 +26,26 @@ public class NearByStoreAdapter extends RecyclerView.Adapter<NearByStoreAdapter.
     private List<StoreViewModel> mListStore;
     private StoreListListener mLisener;
 
-    public void setOnStoreListListener(StoreListListener listener)
-    {
-        mLisener = listener;
-    }
-
     public NearByStoreAdapter() {
         mListStore = new ArrayList<>();
     }
 
-    public void addStore(StoreViewModel store)
-    {
+    public void setOnStoreListListener(StoreListListener listener) {
+        mLisener = listener;
+    }
+
+    public void addStore(StoreViewModel store) {
         mListStore.add(store);
         notifyItemInserted(mListStore.size() - 1);
     }
 
-    public void addStores(List<StoreViewModel> listStores)
-    {
+    public void addStores(List<StoreViewModel> listStores) {
         int position = mListStore.size();
         mListStore.addAll(listStores);
         notifyItemRangeInserted(position, mListStore.size());
     }
 
-    public void setStores(List<StoreViewModel> listStores)
-    {
+    public void setStores(List<StoreViewModel> listStores) {
         mListStore.clear();
         mListStore.addAll(listStores);
         notifyDataSetChanged();
@@ -57,7 +53,7 @@ public class NearByStoreAdapter extends RecyclerView.Adapter<NearByStoreAdapter.
 
     @Override
     public StoreViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_store,parent, false);
+        View convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_store, parent, false);
         return new StoreViewHolder(convertView);
     }
 
@@ -71,12 +67,19 @@ public class NearByStoreAdapter extends RecyclerView.Adapter<NearByStoreAdapter.
         return mListStore.size();
     }
 
-    class StoreViewHolder extends RecyclerView.ViewHolder
-    {
-        @BindView(R.id.iv_item_store) ImageView logo;
-        @BindView(R.id.tv_item_storename) TextView storeName;
-        @BindView(R.id.tv_item_address) TextView storeAddress;
-        @BindView(R.id.tv_item_distance) TextView storeDistance;
+    public interface StoreListListener {
+        void onItemClick(StoreViewModel store);
+    }
+
+    class StoreViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.iv_item_store)
+        ImageView logo;
+        @BindView(R.id.tv_item_storename)
+        TextView storeName;
+        @BindView(R.id.tv_item_address)
+        TextView storeAddress;
+        @BindView(R.id.tv_item_distance)
+        TextView storeDistance;
 
         public StoreViewHolder(View itemView) {
             super(itemView);
@@ -91,8 +94,7 @@ public class NearByStoreAdapter extends RecyclerView.Adapter<NearByStoreAdapter.
             });
         }
 
-        public void setData(StoreViewModel store)
-        {
+        public void setData(StoreViewModel store) {
             Glide.with(logo.getContext())
                     .load(store.getDrawableLogo())
                     .into(logo);
@@ -100,10 +102,5 @@ public class NearByStoreAdapter extends RecyclerView.Adapter<NearByStoreAdapter.
             storeAddress.setText(store.getStoreAddress());
             storeDistance.setText(new DecimalFormat("##.##").format(store.getStoreDistance()) + " Km");
         }
-    }
-
-    public interface StoreListListener
-    {
-        void onItemClick(StoreViewModel store);
     }
 }

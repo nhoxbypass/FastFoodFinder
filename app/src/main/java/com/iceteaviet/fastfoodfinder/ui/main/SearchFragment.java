@@ -13,8 +13,8 @@ import android.view.ViewGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.iceteaviet.fastfoodfinder.activity.StoreListActivity;
 import com.iceteaviet.fastfoodfinder.R;
+import com.iceteaviet.fastfoodfinder.activity.StoreListActivity;
 import com.iceteaviet.fastfoodfinder.helper.SearchEventResult;
 import com.iceteaviet.fastfoodfinder.utils.Constant;
 
@@ -28,22 +28,35 @@ import de.hdodenhof.circleimageview.CircleImageView;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class    SearchFragment extends Fragment {
+public class SearchFragment extends Fragment {
 
-    @BindView(R.id.btn_search_circle_k) CircleImageView quickSearchCircleK;
-    @BindView(R.id.btn_search_family_mart) CircleImageView quickSearchFamilyMart;
-    @BindView(R.id.btn_search_mini_stop) CircleImageView quickSearchMiniStop;
-    @BindView(R.id.btn_load_more) CircleImageView quickSearchLoadMore;
-    @BindView(R.id.btn_search_bsmart) CircleImageView quickSearchBsMart;
-    @BindView(R.id.btn_search_shop_n_go) CircleImageView quickSearchShopNGo;
+    @BindView(R.id.btn_search_circle_k)
+    CircleImageView quickSearchCircleK;
+    @BindView(R.id.btn_search_family_mart)
+    CircleImageView quickSearchFamilyMart;
+    @BindView(R.id.btn_search_mini_stop)
+    CircleImageView quickSearchMiniStop;
+    @BindView(R.id.btn_load_more)
+    CircleImageView quickSearchLoadMore;
+    @BindView(R.id.btn_search_bsmart)
+    CircleImageView quickSearchBsMart;
+    @BindView(R.id.btn_search_shop_n_go)
+    CircleImageView quickSearchShopNGo;
 
-    @BindView(R.id.cv_action_container) ViewGroup cardViewQuickSearch;
-    @BindView(R.id.ll_load_more_container) ViewGroup searchMoreLayout;
-    @BindView(R.id.sv_search_container) ScrollView searchContainer;
-    @BindView(R.id.tvTop) TextView tvTop;
-    @BindView(R.id.tvNearest) TextView tvNearest;
-    @BindView(R.id.tvTrending) TextView tvTrending;
-    @BindView(R.id.tvConvenienceStore) TextView tvConvenienceStore;
+    @BindView(R.id.cv_action_container)
+    ViewGroup cardViewQuickSearch;
+    @BindView(R.id.ll_load_more_container)
+    ViewGroup searchMoreLayout;
+    @BindView(R.id.sv_search_container)
+    ScrollView searchContainer;
+    @BindView(R.id.tvTop)
+    TextView tvTop;
+    @BindView(R.id.tvNearest)
+    TextView tvNearest;
+    @BindView(R.id.tvTrending)
+    TextView tvTrending;
+    @BindView(R.id.tvConvenienceStore)
+    TextView tvConvenienceStore;
 
     private boolean isLoadmoreVisible;
     private String searchString;

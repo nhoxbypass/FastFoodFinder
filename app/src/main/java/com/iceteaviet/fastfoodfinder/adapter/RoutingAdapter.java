@@ -9,11 +9,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.model.LatLng;
+import com.iceteaviet.fastfoodfinder.R;
 import com.iceteaviet.fastfoodfinder.model.Routing.Step;
 import com.iceteaviet.fastfoodfinder.utils.DisplayUtils;
-import com.iceteaviet.fastfoodfinder.R;
 import com.iceteaviet.fastfoodfinder.utils.MapUtils;
-import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,8 +46,7 @@ public class RoutingAdapter extends RecyclerView.Adapter<RoutingAdapter.VH> {
         mListener = listener;
     }
 
-    public LatLng getDirectionLocationAt(int index)
-    {
+    public LatLng getDirectionLocationAt(int index) {
         if (index < 0 || index >= mStepList.size()) {
             index = 0;
         }
@@ -76,9 +75,12 @@ public class RoutingAdapter extends RecyclerView.Adapter<RoutingAdapter.VH> {
     }
 
     class VH extends RecyclerView.ViewHolder {
-        @BindView(R.id.tv_routing_guide) TextView routingGuide;
-        @BindView(R.id.tv_routing_distance) TextView routingDistance;
-        @BindView(R.id.iv_routing) ImageView routingImageView;
+        @BindView(R.id.tv_routing_guide)
+        TextView routingGuide;
+        @BindView(R.id.tv_routing_distance)
+        TextView routingDistance;
+        @BindView(R.id.iv_routing)
+        ImageView routingImageView;
 
         public VH(View itemView) {
             super(itemView);

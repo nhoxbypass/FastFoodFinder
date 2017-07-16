@@ -31,14 +31,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.iceteaviet.fastfoodfinder.R;
 import com.iceteaviet.fastfoodfinder.helper.SearchEventResult;
 import com.iceteaviet.fastfoodfinder.model.User.User;
-import com.iceteaviet.fastfoodfinder.ui.main.SearchFragment;
-import com.iceteaviet.fastfoodfinder.R;
 import com.iceteaviet.fastfoodfinder.ui.main.MainFragment;
+import com.iceteaviet.fastfoodfinder.ui.main.SearchFragment;
 import com.iceteaviet.fastfoodfinder.ui.profile.ProfileFragment;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -53,7 +51,8 @@ public class MainActivity extends AppCompatActivity {
 
     public static String PACKAGE_NAME;
 
-    @BindView(R.id.nav_view) NavigationView mNavigationView;
+    @BindView(R.id.nav_view)
+    NavigationView mNavigationView;
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
     @BindView(R.id.toolbar)

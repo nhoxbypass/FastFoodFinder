@@ -1,132 +1,140 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/choose_a_image"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
-        />
+        android:text="@string/choose_a_image" />
+
     <android.support.v7.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:cardElevation="6dp"
-        app:cardUseCompatPadding="true"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginTop="4dp">
-        <ImageView
-            android:layout_width="90dp"
-            android:layout_height="60dp"
-            android:scaleType="centerCrop"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="4dp"
-            android:id="@+id/ivOne"
-            android:src="@drawable/profile_sample_background"/>
-        <ImageView
-            android:layout_width="90dp"
-            android:layout_height="60dp"
-            android:layout_marginTop="4dp"
-            android:scaleType="centerCrop"
-            android:layout_marginLeft="104dp"
-            android:id="@+id/ivTwo"
-            android:src="@drawable/all_sample_avatar"
-            />
-        <ImageView
-            android:layout_width="90dp"
-            android:layout_height="60dp"
-            android:layout_marginTop="4dp"
-            android:scaleType="centerCrop"
-            android:layout_marginLeft="200dp"
-            android:src="@drawable/profile_sample_background_3"
-            android:id="@+id/ivThree"
-            />
+        android:layout_marginTop="4dp"
+        app:cardElevation="6dp"
+        app:cardUseCompatPadding="true">
 
         <ImageView
+            android:id="@+id/ivOne"
             android:layout_width="90dp"
             android:layout_height="60dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="4dp"
             android:scaleType="centerCrop"
+            android:src="@drawable/profile_sample_background" />
+
+        <ImageView
+            android:id="@+id/ivTwo"
+            android:layout_width="90dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="104dp"
+            android:layout_marginTop="4dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/all_sample_avatar" />
+
+        <ImageView
+            android:id="@+id/ivThree"
+            android:layout_width="90dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="200dp"
+            android:layout_marginTop="4dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/profile_sample_background_3" />
+
+        <ImageView
+            android:id="@+id/ivFour"
+            android:layout_width="90dp"
+            android:layout_height="60dp"
+            android:layout_marginBottom="4dp"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="68dp"
-            android:layout_marginBottom="4dp"
-            android:id="@+id/ivFour"
-            android:src="@drawable/profile_sample_background_4"/>
+            android:scaleType="centerCrop"
+            android:src="@drawable/profile_sample_background_4" />
+
         <ImageView
+            android:id="@+id/ivFive"
             android:layout_width="90dp"
             android:layout_height="60dp"
-            android:scaleType="centerCrop"
+            android:layout_marginBottom="4dp"
             android:layout_marginLeft="104dp"
             android:layout_marginTop="68dp"
-            android:layout_marginBottom="4dp"
-            android:id="@+id/ivFive"
-            android:src="@drawable/profile_sample_background_5"
-            />
+            android:scaleType="centerCrop"
+            android:src="@drawable/profile_sample_background_5" />
+
         <ImageView
+            android:id="@+id/ivSix"
             android:layout_width="90dp"
             android:layout_height="60dp"
-            android:scaleType="centerCrop"
+            android:layout_marginBottom="4dp"
             android:layout_marginLeft="200dp"
             android:layout_marginTop="68dp"
-            android:layout_marginBottom="4dp"
-            android:src="@drawable/profile_sample_background_6"
-            android:id="@+id/ivSix"
-            />
+            android:scaleType="centerCrop"
+            android:src="@drawable/profile_sample_background_6" />
     </android.support.v7.widget.CardView>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
-        android:text="@string/choose_from_your_device"/>
+        android:text="@string/choose_from_your_device" />
+
     <Button
+        android:id="@+id/btnBrowser"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="10dp"
         android:drawableLeft="@drawable/ic_all_camera"
         android:drawablePadding="8dp"
-        android:id="@+id/btnBrowser"
-        android:text="BROWSER"/>
+        android:text="BROWSER" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
-        android:text="@string/image_you_choose"/>
+        android:text="@string/image_you_choose" />
+
     <ImageView
+        android:id="@+id/ivChosenImage"
         android:layout_width="200dp"
         android:layout_height="80dp"
-        android:scaleType="centerCrop"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
-        android:id="@+id/ivChosenImage"
-        android:src="@drawable/profile_sample_background"/>
+        android:scaleType="centerCrop"
+        android:src="@drawable/profile_sample_background" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="16dp">
+
         <Button
+            android:id="@+id/btnCancel"
+            style="?attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            style="?attr/borderlessButtonStyle"
-            android:textColor="@color/googleBlue"
-            android:id="@+id/btnCancel"
-            android:text="CANCEL"/>
+            android:text="CANCEL"
+            android:textColor="@color/googleBlue" />
+
         <Button
-            android:layout_width="wrap_content"
-            style="?attr/borderlessButtonStyle"
-            android:layout_toLeftOf="@id/btnCancel"
-            android:textColor="@color/googleBlue"
-            android:layout_height="wrap_content"
             android:id="@+id/btnDone"
-            android:text="DONE"/>
+            style="?attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/btnCancel"
+            android:text="DONE"
+            android:textColor="@color/googleBlue" />
     </RelativeLayout>
 </LinearLayout>

@@ -17,17 +17,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.iceteaviet.fastfoodfinder.helper.DividerItemDecoration;
-import com.iceteaviet.fastfoodfinder.model.Routing.Step;
-import com.iceteaviet.fastfoodfinder.rest.RestClient;
-import com.iceteaviet.fastfoodfinder.ui.main.MainMapFragment;
-import com.iceteaviet.fastfoodfinder.utils.DisplayUtils;
-import com.iceteaviet.fastfoodfinder.R;
-import com.iceteaviet.fastfoodfinder.adapter.RoutingAdapter;
-import com.iceteaviet.fastfoodfinder.model.Routing.MapsDirection;
-import com.iceteaviet.fastfoodfinder.model.Store.Store;
-import com.iceteaviet.fastfoodfinder.utils.Keys;
-import com.iceteaviet.fastfoodfinder.utils.MapUtils;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -41,6 +30,15 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.PolyUtil;
+import com.iceteaviet.fastfoodfinder.R;
+import com.iceteaviet.fastfoodfinder.adapter.RoutingAdapter;
+import com.iceteaviet.fastfoodfinder.helper.DividerItemDecoration;
+import com.iceteaviet.fastfoodfinder.model.Routing.MapsDirection;
+import com.iceteaviet.fastfoodfinder.model.Routing.Step;
+import com.iceteaviet.fastfoodfinder.model.Store.Store;
+import com.iceteaviet.fastfoodfinder.utils.DisplayUtils;
+import com.iceteaviet.fastfoodfinder.utils.Keys;
+import com.iceteaviet.fastfoodfinder.utils.MapUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,12 +68,12 @@ public class MapRoutingActivity extends AppCompatActivity {
     ImageButton nextInstruction;
     @BindView(R.id.ll_routing_button_container)
     LinearLayout routingButtonContainer;
-
+    RoutingAdapter.OnNavigationItemClickListener mListener;
+    DividerItemDecoration divider;
+    boolean isPreviewMode = false;
     private BottomSheetBehavior mBottomSheetBehavior;
-
     private GoogleMap mGoogleMap;
     private SupportMapFragment mMapFragment;
-
     private MapsDirection mMapsDirection;
     private Polyline mCurrDirection;
     private LatLng mCurrLocation;
@@ -84,12 +82,7 @@ public class MapRoutingActivity extends AppCompatActivity {
     private RoutingAdapter mTopRoutingAdapter;
     private List<Step> mStepList;
     private List<LatLng> mGeoPointList;
-    RoutingAdapter.OnNavigationItemClickListener mListener;
-    DividerItemDecoration divider;
-
     private int currDirectionIndex = 0;
-
-    boolean isPreviewMode = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,8 +103,6 @@ public class MapRoutingActivity extends AppCompatActivity {
         mStepList = mMapsDirection.getRouteList().get(0).getLegList().get(0).getStepList();
         mCurrLocation = mStepList.get(0).getStartMapCoordination().getLocation();
         mGeoPointList = PolyUtil.decode(mMapsDirection.getRouteList().get(0).getEncodedPolylineString());
-
-
 
 
         mBottomRoutingAdapter = new RoutingAdapter(mStepList, RoutingAdapter.TYPE_FULL);
@@ -142,9 +133,7 @@ public class MapRoutingActivity extends AppCompatActivity {
                 if (currDirectionIndex >= 0 && currDirectionIndex < mBottomRoutingAdapter.getItemCount()) {
                     topRecyclerView.smoothScrollToPosition(currDirectionIndex);
                     showDirectionAt(currDirectionIndex);
-                }
-                else
-                {
+                } else {
                     currDirectionIndex = 0;
                 }
             }
@@ -157,9 +146,7 @@ public class MapRoutingActivity extends AppCompatActivity {
                 if (currDirectionIndex >= 0 && currDirectionIndex < mBottomRoutingAdapter.getItemCount()) {
                     topRecyclerView.smoothScrollToPosition(currDirectionIndex);
                     showDirectionAt(currDirectionIndex);
-                }
-                else
-                {
+                } else {
                     currDirectionIndex = mBottomRoutingAdapter.getItemCount() - 1;
                 }
             }
@@ -299,8 +286,7 @@ public class MapRoutingActivity extends AppCompatActivity {
         googleMap.animateCamera(cu);
     }
 
-    private void enterPreviewMode()
-    {
+    private void enterPreviewMode() {
         routingButtonContainer.setVisibility(View.VISIBLE);
         topRecyclerView.setVisibility(View.VISIBLE);
         mBottomSheetBehavior.setHideable(true);

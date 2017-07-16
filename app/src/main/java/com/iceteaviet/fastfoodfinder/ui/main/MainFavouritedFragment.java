@@ -13,21 +13,18 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.UserRecoverableAuthException;
 import com.google.firebase.database.DatabaseError;
+import com.iceteaviet.fastfoodfinder.R;
 import com.iceteaviet.fastfoodfinder.activity.StoreDetailActivity;
+import com.iceteaviet.fastfoodfinder.adapter.FavouriteStoreAdapter;
 import com.iceteaviet.fastfoodfinder.helper.DividerItemDecoration;
 import com.iceteaviet.fastfoodfinder.helper.OnStartDragListener;
+import com.iceteaviet.fastfoodfinder.helper.SimpleItemTouchHelperCallback;
 import com.iceteaviet.fastfoodfinder.model.Store.Store;
 import com.iceteaviet.fastfoodfinder.model.Store.StoreDataSource;
 import com.iceteaviet.fastfoodfinder.model.User.User;
 import com.iceteaviet.fastfoodfinder.rest.FirebaseClient;
-import com.iceteaviet.fastfoodfinder.utils.Constant;
-import com.iceteaviet.fastfoodfinder.R;
-import com.iceteaviet.fastfoodfinder.adapter.FavouriteStoreAdapter;
-import com.iceteaviet.fastfoodfinder.helper.SimpleItemTouchHelperCallback;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -38,16 +35,21 @@ import butterknife.ButterKnife;
  */
 public class MainFavouritedFragment extends Fragment implements OnStartDragListener {
     static boolean isFABChangeClicked = false;
-    @BindView(R.id.rv_favourite_stores) RecyclerView recyclerView;
-    @BindView(R.id.fl_container) FrameLayout containerLayout;
-    @BindView(R.id.fab_change) FloatingActionButton fabChangePosition;
+    @BindView(R.id.rv_favourite_stores)
+    RecyclerView recyclerView;
+    @BindView(R.id.fl_container)
+    FrameLayout containerLayout;
+    @BindView(R.id.fab_change)
+    FloatingActionButton fabChangePosition;
 
     private LinearLayoutManager mLayoutManager;
     private FavouriteStoreAdapter mFavouriteAdapter;
     private ItemTouchHelper mItemTouchHelper;
 
     public MainFavouritedFragment() {
-    };
+    }
+
+    ;
 
     public static MainFavouritedFragment newInstance() {
         Bundle args = new Bundle();

@@ -124,10 +124,10 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginLeft="8dp"
             android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
+            android:layout_marginTop="16dp"
             android:text="@string/recently"
             android:textColor="@color/colorGrey" />
 
@@ -141,8 +141,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="8dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingTop="8dp">
 
                 <include
                     android:id="@+id/layout_recent_1"
@@ -169,10 +169,10 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginLeft="8dp"
             android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
+            android:layout_marginTop="16dp"
             android:text="@string/suggestions_for_this_afternoon"
             android:textColor="@color/colorGrey" />
 
@@ -185,9 +185,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="8dp"
+                android:orientation="vertical"
                 android:paddingBottom="8dp"
-                android:orientation="vertical">
+                android:paddingTop="8dp">
 
                 <include
                     android:id="@+id/layout_suggestion_1"
@@ -206,10 +206,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginLeft="8dp"
             android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
+            android:layout_marginTop="16dp"
             android:text="@string/suggestion"
             android:textColor="@color/colorGrey" />
 
@@ -226,6 +226,7 @@
                 android:padding="8dp">
 
                 <TextView
+                    android:id="@+id/tvTop"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
@@ -233,10 +234,10 @@
                     android:drawablePadding="8dp"
                     android:gravity="center_vertical"
                     android:text="@string/top_picks"
-                    android:textColor="@android:color/black"
-                    android:id="@+id/tvTop"/>
+                    android:textColor="@android:color/black" />
 
                 <TextView
+                    android:id="@+id/tvNearest"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
@@ -244,10 +245,10 @@
                     android:drawablePadding="8dp"
                     android:gravity="center_vertical"
                     android:text="@string/nearest"
-                    android:textColor="@android:color/black"
-                    android:id="@+id/tvNearest"/>
+                    android:textColor="@android:color/black" />
 
                 <TextView
+                    android:id="@+id/tvTrending"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
@@ -255,10 +256,10 @@
                     android:drawablePadding="8dp"
                     android:gravity="center_vertical"
                     android:text="@string/trending"
-                    android:textColor="@android:color/black"
-                    android:id="@+id/tvTrending"/>
+                    android:textColor="@android:color/black" />
 
                 <TextView
+                    android:id="@+id/tvConvenienceStore"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
@@ -266,9 +267,7 @@
                     android:drawablePadding="8dp"
                     android:gravity="center_vertical"
                     android:text="@string/convenience_store"
-                    android:id="@+id/tvConvenienceStore"
-                    android:textColor="@android:color/black"
-                    />
+                    android:textColor="@android:color/black" />
             </LinearLayout>
         </android.support.v7.widget.CardView>
 

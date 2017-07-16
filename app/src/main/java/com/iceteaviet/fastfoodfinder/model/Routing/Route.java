@@ -15,13 +15,6 @@ import java.util.List;
 public class Route implements Parcelable {
 
 
-    protected Route(Parcel in) {
-        legList = in.createTypedArrayList(Leg.CREATOR);
-        summary = in.readString();
-        JsonParser parser = new JsonParser();
-        encodedPolyline = parser.parse(in.readString()).getAsJsonObject();
-    }
-
     public static final Creator<Route> CREATOR = new Creator<Route>() {
         @Override
         public Route createFromParcel(Parcel in) {
@@ -33,6 +26,19 @@ public class Route implements Parcelable {
             return new Route[size];
         }
     };
+    @SerializedName("legs")
+    List<Leg> legList;
+    @SerializedName("summary")
+    String summary;
+    @SerializedName("overview_polyline")
+    JsonObject encodedPolyline;
+
+    protected Route(Parcel in) {
+        legList = in.createTypedArrayList(Leg.CREATOR);
+        summary = in.readString();
+        JsonParser parser = new JsonParser();
+        encodedPolyline = parser.parse(in.readString()).getAsJsonObject();
+    }
 
     public List<Leg> getLegList() {
         return legList;
@@ -42,11 +48,6 @@ public class Route implements Parcelable {
         return summary;
     }
 
-    @SerializedName("legs")
-    List<Leg> legList;
-    @SerializedName("summary")
-    String summary;
-
     public JsonObject getEncodedPolyline() {
         return encodedPolyline;
     }
@@ -55,13 +56,9 @@ public class Route implements Parcelable {
         this.encodedPolyline = encodedPolyline;
     }
 
-    public String getEncodedPolylineString()
-    {
+    public String getEncodedPolylineString() {
         return encodedPolyline.getAsJsonPrimitive("points").getAsString();
     }
-
-    @SerializedName("overview_polyline")
-    JsonObject encodedPolyline;
 
     @Override
     public int describeContents() {

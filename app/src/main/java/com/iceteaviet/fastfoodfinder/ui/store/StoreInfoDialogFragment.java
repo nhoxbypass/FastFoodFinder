@@ -17,10 +17,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.iceteaviet.fastfoodfinder.R;
 import com.iceteaviet.fastfoodfinder.activity.StoreDetailActivity;
 import com.iceteaviet.fastfoodfinder.model.Store.Store;
 import com.iceteaviet.fastfoodfinder.utils.DisplayUtils;
-import com.iceteaviet.fastfoodfinder.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,14 +31,7 @@ import butterknife.ButterKnife;
 
 public class StoreInfoDialogFragment extends DialogFragment {
 
-    public static StoreInfoDialogFragment newInstance(Store store) {
-        Bundle args = new Bundle();
-        args.putParcelable(StoreDetailActivity.STORE, store);
-        StoreInfoDialogFragment fragment = new StoreInfoDialogFragment();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
+    public CallDirectionViewHolder cdvh;
     @BindView(R.id.store_name)
     TextView tvStoreName;
     @BindView(R.id.view_detail)
@@ -51,20 +44,19 @@ public class StoreInfoDialogFragment extends DialogFragment {
     Button btnAddToFavorite;
 
     private StoreDialogActionListener mListener;
-    public CallDirectionViewHolder cdvh;
-
-    // tên chuối thiệt
-    public interface StoreDialogActionListener {
-        void onDirection(Store store);
-        void onAddToFavorite(int storeId);
-    }
-
     public StoreInfoDialogFragment() {
 
     }
 
-    public void setDialogListen(StoreDialogActionListener listener)
-    {
+    public static StoreInfoDialogFragment newInstance(Store store) {
+        Bundle args = new Bundle();
+        args.putParcelable(StoreDetailActivity.STORE, store);
+        StoreInfoDialogFragment fragment = new StoreInfoDialogFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public void setDialogListen(StoreDialogActionListener listener) {
         mListener = listener;
     }
 
@@ -80,7 +72,7 @@ public class StoreInfoDialogFragment extends DialogFragment {
         ButterKnife.bind(this, view);
         cdvh = new CallDirectionViewHolder(vCallDirection);
 
-        final Store store =  getArguments().getParcelable(StoreDetailActivity.STORE);
+        final Store store = getArguments().getParcelable(StoreDetailActivity.STORE);
 
         tvStoreName.setText(store.getTitle());
         tvStoreAddress.setText(store.getAddress());
@@ -137,8 +129,15 @@ public class StoreInfoDialogFragment extends DialogFragment {
         Point size = new Point();
         Display display = window.getWindowManager().getDefaultDisplay();
         display.getSize(size);
-        window.setLayout((int)(0.8 * size.x), WindowManager.LayoutParams.WRAP_CONTENT);
+        window.setLayout((int) (0.8 * size.x), WindowManager.LayoutParams.WRAP_CONTENT);
         window.setGravity(Gravity.CENTER);
         super.onResume();
+    }
+
+    // tên chuối thiệt
+    public interface StoreDialogActionListener {
+        void onDirection(Store store);
+
+        void onAddToFavorite(int storeId);
     }
 }

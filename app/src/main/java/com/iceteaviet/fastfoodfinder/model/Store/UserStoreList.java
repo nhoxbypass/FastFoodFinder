@@ -15,6 +15,17 @@ public class UserStoreList implements Parcelable {
     public static final int ID_SAVED = 0;
     public static final int ID_FAVOURITE = 1;
     public static final int ID_CHECKED_IN = 2;
+    public static final Creator<UserStoreList> CREATOR = new Creator<UserStoreList>() {
+        @Override
+        public UserStoreList createFromParcel(Parcel in) {
+            return new UserStoreList(in);
+        }
+
+        @Override
+        public UserStoreList[] newArray(int size) {
+            return new UserStoreList[size];
+        }
+    };
     private int id;
     private String listName;
     private int iconId;
@@ -32,29 +43,17 @@ public class UserStoreList implements Parcelable {
     public UserStoreList() {
     }
 
+
     public UserStoreList(int id, List<Integer> storeIdList, int iconId, String listName) {
         this.id = id;
         this.iconId = iconId;
         this.listName = listName;
 
         if (storeIdList == null)
-            this.storeIdList =  new ArrayList<>();
+            this.storeIdList = new ArrayList<>();
         else
             this.storeIdList = storeIdList;
     }
-
-
-    public static final Creator<UserStoreList> CREATOR = new Creator<UserStoreList>() {
-        @Override
-        public UserStoreList createFromParcel(Parcel in) {
-            return new UserStoreList(in);
-        }
-
-        @Override
-        public UserStoreList[] newArray(int size) {
-            return new UserStoreList[size];
-        }
-    };
 
     public int getId() {
         return id;

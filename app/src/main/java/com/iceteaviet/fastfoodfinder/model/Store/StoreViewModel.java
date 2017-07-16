@@ -2,21 +2,13 @@ package com.iceteaviet.fastfoodfinder.model.Store;
 
 import android.support.annotation.DrawableRes;
 
-import com.iceteaviet.fastfoodfinder.utils.MapUtils;
 import com.google.android.gms.maps.model.LatLng;
+import com.iceteaviet.fastfoodfinder.utils.MapUtils;
 
 /**
  * Created by nhoxb on 11/9/2016.
  */
 public class StoreViewModel {
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     private int id;
     private String mStoreName;
@@ -25,7 +17,6 @@ public class StoreViewModel {
     private int mDrawableLogo;
     private LatLng mPosition;
     private int mType;
-
     public StoreViewModel(@DrawableRes int drawableLogo, String storeName, double storeDistance, String storeAddress, LatLng position, int type) {
         mDrawableLogo = drawableLogo;
         mStoreName = storeName;
@@ -46,6 +37,14 @@ public class StoreViewModel {
         //Get distance
         mStoreDistance = MapUtils.calcDistance(currCameraPosition, store.getPosition());
 
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getStoreName() {

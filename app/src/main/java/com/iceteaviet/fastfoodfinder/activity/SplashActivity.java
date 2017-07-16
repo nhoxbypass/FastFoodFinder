@@ -9,14 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.iceteaviet.fastfoodfinder.BuildConfig;
-import com.iceteaviet.fastfoodfinder.R;
-import com.iceteaviet.fastfoodfinder.model.Store.Store;
-import com.iceteaviet.fastfoodfinder.model.Store.StoreDataSource;
-import com.iceteaviet.fastfoodfinder.model.Store.UserStoreList;
-import com.iceteaviet.fastfoodfinder.model.User.User;
-import com.iceteaviet.fastfoodfinder.rest.FirebaseClient;
-import com.iceteaviet.fastfoodfinder.utils.Constant;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -27,6 +19,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.iceteaviet.fastfoodfinder.BuildConfig;
+import com.iceteaviet.fastfoodfinder.R;
+import com.iceteaviet.fastfoodfinder.model.Store.Store;
+import com.iceteaviet.fastfoodfinder.model.Store.StoreDataSource;
+import com.iceteaviet.fastfoodfinder.model.User.User;
+import com.iceteaviet.fastfoodfinder.rest.FirebaseClient;
+import com.iceteaviet.fastfoodfinder.utils.Constant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,7 +87,7 @@ public class SplashActivity extends AppCompatActivity {
             mFirebaseUser = mFirebaseAuth.getCurrentUser();
             if (mFirebaseUser != null && !mFirebaseUser.isAnonymous()) {
                 //User still signed in
-               FirebaseClient.getInstance().addListenerForSingleUserValueEvent(mFirebaseUser.getUid(), new FirebaseClient.UserValueEventListener() {
+                FirebaseClient.getInstance().addListenerForSingleUserValueEvent(mFirebaseUser.getUid(), new FirebaseClient.UserValueEventListener() {
                     @Override
                     public void onDataChange(User user) {
                         User.currentUser = user;
@@ -100,8 +99,7 @@ public class SplashActivity extends AppCompatActivity {
 
                     }
                 });
-            }
-            else {
+            } else {
                 Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     @Override
@@ -186,18 +184,18 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private int getStoreType(String key) {
-            if (key.equals("circle_k"))
-                return Constant.TYPE_CIRCLE_K;
-            else if (key.equals("mini_stop"))
-                return Constant.TYPE_MINI_STOP;
-            else if (key.equals("family_mart"))
-                return Constant.TYPE_FAMILY_MART;
-            else if (key.equals("bsmart"))
-                return Constant.TYPE_BSMART;
-            else if (key.equals("shop_n_go"))
-                return Constant.TYPE_SHOP_N_GO;
-            else
-                return Constant.TYPE_CIRCLE_K;
+        if (key.equals("circle_k"))
+            return Constant.TYPE_CIRCLE_K;
+        else if (key.equals("mini_stop"))
+            return Constant.TYPE_MINI_STOP;
+        else if (key.equals("family_mart"))
+            return Constant.TYPE_FAMILY_MART;
+        else if (key.equals("bsmart"))
+            return Constant.TYPE_BSMART;
+        else if (key.equals("shop_n_go"))
+            return Constant.TYPE_SHOP_N_GO;
+        else
+            return Constant.TYPE_CIRCLE_K;
     }
 
     private void saveStoresLocation(List<Store> storeList) {

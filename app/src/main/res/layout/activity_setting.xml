@@ -1,210 +1,238 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".activity.SettingActivity">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
         <TextView
+            style="@style/SettingsCategoryText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/SettingsCategoryText"
             android:text="@string/share_app" />
+
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardElevation="4dp">
+
             <TextView
+                android:id="@+id/tv_setting_share_app"
+                style="@style/SettingsOptionsText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/ic_all_share"
-                style="@style/SettingsOptionsText"
-                android:text="@string/share_app_with_friends"
-                android:id="@+id/tv_setting_share_app"/>
+                android:text="@string/share_app_with_friends" />
         </android.support.v7.widget.CardView>
 
         <TextView
+            style="@style/SettingsCategoryText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/SettingsCategoryText"
             android:text="@string/general" />
+
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardElevation="4dp">
+
             <android.support.v7.widget.SwitchCompat
+                android:id="@+id/sw_metric"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="right|end|top"
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="6dp"
-                android:id="@+id/sw_metric"
-                android:layout_gravity="right|end|top"
-                android:gravity="center_vertical"/>
+                android:gravity="center_vertical" />
+
             <android.support.v7.widget.SwitchCompat
+                android:id="@+id/sw_languages"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="8dp"
-                android:layout_marginBottom="8dp"
-                android:id="@+id/sw_languages"
                 android:layout_gravity="right|end|bottom"
-                android:gravity="center_vertical"/>
+                android:layout_marginBottom="8dp"
+                android:layout_marginRight="8dp"
+                android:gravity="center_vertical" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
                 <TextView
+                    android:id="@+id/tv_setting_change_metric"
+                    style="@style/SettingsOptionsText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_setting_metric"
-                    style="@style/SettingsOptionsText"
-                    android:text="@string/use_metric_units"
-                    android:id="@+id/tv_setting_change_metric"/>
+                    android:text="@string/use_metric_units" />
+
                 <TextView
+                    android:id="@+id/tv_setting_english"
+                    style="@style/SettingsOptionsText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_setting_translate"
-                    style="@style/SettingsOptionsText"
-                    android:text="@string/vietnamese"
-                    android:id="@+id/tv_setting_english"/>
+                    android:text="@string/vietnamese" />
             </LinearLayout>
 
 
         </android.support.v7.widget.CardView>
 
         <TextView
+            style="@style/SettingsCategoryText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/SettingsCategoryText"
             android:text="@string/profile" />
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardElevation="4dp">
-           <LinearLayout
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content"
-               android:orientation="vertical">
-               <TextView
-                   android:layout_width="match_parent"
-                   android:layout_height="wrap_content"
-                   android:drawableLeft="@drawable/ic_setting_profile"
-                   style="@style/SettingsOptionsText"
-                   android:text="@string/edit_your_profile"
-                   android:id="@+id/tv_setting_edit_profile"/>
-               <TextView
-                   android:layout_width="match_parent"
-                   android:layout_height="wrap_content"
-                   android:drawableLeft="@drawable/ic_setting_security"
-                   style="@style/SettingsOptionsText"
-                   android:text="@string/change_your_password"
-                   android:id="@+id/tv_setting_change_password"/>
-               <TextView
-                   android:layout_width="match_parent"
-                   android:layout_height="wrap_content"
-                   android:drawableLeft="@drawable/ic_setting_security"
-                   style="@style/SettingsOptionsText"
-                   android:text="@string/change_your_email"
-                   android:id="@+id/tv_setting_change_email"/>
-           </LinearLayout>
-        </android.support.v7.widget.CardView>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/SettingsCategoryText"
-            android:text="@string/notifications" />
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardElevation="4dp">
-            <android.support.v7.widget.SwitchCompat
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="6dp"
-                android:id="@+id/sw_notification"
-                android:layout_gravity="right|end|top"
-                android:gravity="center_vertical"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
                 <TextView
+                    android:id="@+id/tv_setting_edit_profile"
+                    style="@style/SettingsOptionsText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_setting_profile"
-                    style="@style/SettingsOptionsText"
-                    android:text="@string/set_notifications"
-                    android:id="@+id/tv_setting_notification"/>
+                    android:text="@string/edit_your_profile" />
+
                 <TextView
+                    android:id="@+id/tv_setting_change_password"
+                    style="@style/SettingsOptionsText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_setting_security"
+                    android:text="@string/change_your_password" />
+
+                <TextView
+                    android:id="@+id/tv_setting_change_email"
                     style="@style/SettingsOptionsText"
-                    android:text="Email"
-                    android:id="@+id/tv_setting_notification_email"/>
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_setting_security"
+                    android:text="@string/change_your_email" />
             </LinearLayout>
         </android.support.v7.widget.CardView>
 
         <TextView
+            style="@style/SettingsCategoryText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/SettingsCategoryText"
-            android:text="@string/support" />
+            android:text="@string/notifications" />
+
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardElevation="4dp">
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/sw_notification"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|end|top"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="6dp"
+                android:gravity="center_vertical" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
                 <TextView
+                    android:id="@+id/tv_setting_notification"
+                    style="@style/SettingsOptionsText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_all_about"
-                    style="@style/SettingsOptionsText"
-                    android:text="@string/about_fastfood_finder"
-                    android:id="@+id/tv_setting_about_app"/>
+                    android:drawableLeft="@drawable/ic_setting_profile"
+                    android:text="@string/set_notifications" />
+
                 <TextView
+                    android:id="@+id/tv_setting_notification_email"
+                    style="@style/SettingsOptionsText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_all_about"
-                    style="@style/SettingsOptionsText"
-                    android:text="@string/rate_app"
-                    android:id="@+id/tv_setting_rate_app"/>
-                <TextView
+                    android:drawableLeft="@drawable/ic_setting_security"
+                    android:text="Email" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <TextView
+            style="@style/SettingsCategoryText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/support" />
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardElevation="4dp">
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_all_about"
-                style="@style/SettingsOptionsText"
-                android:text="@string/send_feedback"
-                android:id="@+id/tv_setting_feedback"/>
+                android:orientation="vertical">
+
                 <TextView
+                    android:id="@+id/tv_setting_about_app"
+                    style="@style/SettingsOptionsText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_all_about"
-                    style="@style/SettingsOptionsText"
-                    android:text="@string/privacy_policy"
-                    android:id="@+id/tv_setting_privacy_policy"/>
+                    android:text="@string/about_fastfood_finder" />
+
                 <TextView
+                    android:id="@+id/tv_setting_rate_app"
+                    style="@style/SettingsOptionsText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_all_about"
+                    android:text="@string/rate_app" />
+
+                <TextView
+                    android:id="@+id/tv_setting_feedback"
+                    style="@style/SettingsOptionsText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_all_about"
+                    android:text="@string/send_feedback" />
+
+                <TextView
+                    android:id="@+id/tv_setting_privacy_policy"
+                    style="@style/SettingsOptionsText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_all_about"
+                    android:text="@string/privacy_policy" />
+
+                <TextView
+                    android:id="@+id/tv_setting_term_of_use"
+                    style="@style/SettingsOptionsText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_setting_termofuse"
-                    style="@style/SettingsOptionsText"
-                    android:text="@string/terms_of_use"
-                    android:id="@+id/tv_setting_term_of_use"/>
+                    android:text="@string/terms_of_use" />
+
                 <TextView
+                    android:id="@+id/tv_setting_sign_out"
+                    style="@style/SettingsOptionsText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_logout"
-                    style="@style/SettingsOptionsText"
-                    android:text="@string/sign_out"
-                    android:id="@+id/tv_setting_sign_out"/>
+                    android:text="@string/sign_out" />
             </LinearLayout>
         </android.support.v7.widget.CardView>
 

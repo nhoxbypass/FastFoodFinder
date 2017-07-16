@@ -4,8 +4,8 @@ import android.graphics.Bitmap;
 import android.location.Location;
 
 import com.google.android.gms.location.LocationRequest;
-import com.iceteaviet.fastfoodfinder.R;
 import com.google.android.gms.maps.model.LatLng;
+import com.iceteaviet.fastfoodfinder.R;
 
 /**
  * Created by nhoxb on 11/16/2016.

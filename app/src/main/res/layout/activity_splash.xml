@@ -5,25 +5,28 @@
     android:layout_height="match_parent"
     android:background="@color/googleRed"
     tools:context=".activity.SplashActivity">
+
     <ImageView
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_centerInParent="true"
-        android:src="@drawable/ic_all_store24h"/>
+        android:src="@drawable/ic_all_store24h" />
+
     <TextView
+        android:id="@+id/footer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/footer"
-        android:layout_marginBottom="8dp"
-        android:textSize="16dp"
-        android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="8dp"
+        android:text="Fastfood Finder 2016"
         android:textColor="@color/colorWhite"
-        android:text="Fastfood Finder 2016"/>
+        android:textSize="16dp" />
+
     <ProgressBar
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:backgroundTint="@color/googleYellow"
+        android:layout_above="@id/footer"
         android:layout_centerHorizontal="true"
-        android:layout_above="@id/footer"/>
+        android:backgroundTint="@color/googleYellow" />
 </RelativeLayout>

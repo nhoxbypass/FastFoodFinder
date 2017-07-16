@@ -15,11 +15,11 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
+import com.iceteaviet.fastfoodfinder.R;
+import com.iceteaviet.fastfoodfinder.model.Comment;
 import com.iceteaviet.fastfoodfinder.model.Store.Store;
 import com.iceteaviet.fastfoodfinder.ui.store.CallDirectionViewHolder;
 import com.iceteaviet.fastfoodfinder.utils.DataUtils;
-import com.iceteaviet.fastfoodfinder.R;
-import com.iceteaviet.fastfoodfinder.model.Comment;
 
 import java.util.List;
 
@@ -40,14 +40,6 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private Store mStore;
     private List<Comment> mComments;
     private StoreActionListener mListener;
-
-    public interface StoreActionListener {
-        void onShowComment();
-        void onCall(String tel);
-        void onDirect();
-        void onAddToFavorite(int storeId);
-        void onCheckIn(int storeId);
-    }
 
     public StoreDetailAdapter(Store store) {
         mStore = store;
@@ -115,6 +107,18 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
     }
 
+    public interface StoreActionListener {
+        void onShowComment();
+
+        void onCall(String tel);
+
+        void onDirect();
+
+        void onAddToFavorite(int storeId);
+
+        void onCheckIn(int storeId);
+    }
+
     public class HeaderViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         @BindView(R.id.save_this)
@@ -171,14 +175,13 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     public class InfoViewHolder extends RecyclerView.ViewHolder {
 
+        public CallDirectionViewHolder cdvh;
         @BindView(R.id.store_name)
         TextView tvName;
         @BindView(R.id.store_address)
         TextView tvAddress;
         @BindView(R.id.call_direction)
         View vCallDirection;
-
-        public CallDirectionViewHolder cdvh;
 
         public InfoViewHolder(View itemView) {
             super(itemView);
@@ -207,10 +210,9 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     public class TitleViewHolder extends RecyclerView.ViewHolder {
 
+        public final Context context;
         @BindView(R.id.content)
         TextView content;
-
-        public final Context context;
 
         public TitleViewHolder(View itemView) {
             super(itemView);

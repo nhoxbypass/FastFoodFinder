@@ -2,12 +2,12 @@ package com.iceteaviet.fastfoodfinder.model.User;
 
 import android.util.Log;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.iceteaviet.fastfoodfinder.R;
 import com.iceteaviet.fastfoodfinder.model.Store.UserStoreList;
 import com.iceteaviet.fastfoodfinder.rest.FirebaseClient;
 import com.iceteaviet.fastfoodfinder.utils.Constant;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,12 +17,12 @@ import java.util.List;
  */
 public class User {
 
+    public static User currentUser;
     private String name;
     private String email;
     private String uid;
     private String photoUrl;
     private List<UserStoreList> userStoreLists;
-    public static User currentUser;
 
     public User() {
     }

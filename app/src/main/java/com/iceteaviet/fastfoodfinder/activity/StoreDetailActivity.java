@@ -22,19 +22,18 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.iceteaviet.fastfoodfinder.rest.RestClient;
-import com.iceteaviet.fastfoodfinder.utils.DisplayUtils;
-import com.iceteaviet.fastfoodfinder.R;
-import com.iceteaviet.fastfoodfinder.adapter.StoreDetailAdapter;
-import com.iceteaviet.fastfoodfinder.model.Comment;
-import com.iceteaviet.fastfoodfinder.model.Store.Store;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.iceteaviet.fastfoodfinder.R;
+import com.iceteaviet.fastfoodfinder.adapter.StoreDetailAdapter;
+import com.iceteaviet.fastfoodfinder.model.Comment;
+import com.iceteaviet.fastfoodfinder.model.Store.Store;
+import com.iceteaviet.fastfoodfinder.rest.RestClient;
+import com.iceteaviet.fastfoodfinder.utils.DisplayUtils;
 import com.iceteaviet.fastfoodfinder.utils.MapUtils;
 import com.iceteaviet.fastfoodfinder.utils.PermissionUtils;
 
@@ -55,26 +54,20 @@ public class StoreDetailActivity extends AppCompatActivity implements StoreDetai
     public static final String STORE = "ic_store";
     public static final int REQUEST_COMMENT = 113;
     public static final String COMMENT = "comment";
-    private Store currentStore;
     LatLng currLocation;
-    private GoogleApiClient googleApiClient;
     LocationRequest mLocationRequest;
-
     @BindView(R.id.appbar)
     AppBarLayout appbar;
-
     @BindView(R.id.collapsing_toolbar)
     CollapsingToolbarLayout collapsingToolbar;
-
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-
     @BindView(R.id.backdrop)
     ImageView ivBackdrop;
-
     @BindView(R.id.content)
     RecyclerView rvContent;
-
+    private Store currentStore;
+    private GoogleApiClient googleApiClient;
     private SupportMapFragment mMapFragment;
     private GoogleMap mGoogleMap;
     private StoreDetailAdapter mStoreDetailAdapter;

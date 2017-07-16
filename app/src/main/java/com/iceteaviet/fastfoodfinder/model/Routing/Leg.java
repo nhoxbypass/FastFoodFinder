@@ -12,16 +12,7 @@ import java.util.List;
 /**
  * Created by nhoxb on 11/11/2016.
  */
-public class Leg implements Parcelable{
-
-    protected Leg(Parcel in) {
-        JsonParser parser = new JsonParser();
-        distance = parser.parse(in.readString()).getAsJsonObject();
-        duration = parser.parse(in.readString()).getAsJsonObject();
-        startAddress = in.readString();
-        endAddress = in.readString();
-        stepList = in.createTypedArrayList(Step.CREATOR);
-    }
+public class Leg implements Parcelable {
 
     public static final Creator<Leg> CREATOR = new Creator<Leg>() {
         @Override
@@ -34,13 +25,31 @@ public class Leg implements Parcelable{
             return new Leg[size];
         }
     };
+    @SerializedName("distance")
+    JsonObject distance;
+    @SerializedName("duration")
+    JsonObject duration;
+    @SerializedName("start_address")
+    String startAddress;
+    @SerializedName("end_address")
+    String endAddress;
+    @SerializedName("steps")
+    List<Step> stepList;
+
+    protected Leg(Parcel in) {
+        JsonParser parser = new JsonParser();
+        distance = parser.parse(in.readString()).getAsJsonObject();
+        duration = parser.parse(in.readString()).getAsJsonObject();
+        startAddress = in.readString();
+        endAddress = in.readString();
+        stepList = in.createTypedArrayList(Step.CREATOR);
+    }
 
     public String getDistance() {
         return distance.getAsJsonPrimitive("text").getAsString();
     }
 
-    public long getDistanceValue()
-    {
+    public long getDistanceValue() {
         return distance.getAsJsonPrimitive("value").getAsLong();
     }
 
@@ -48,8 +57,7 @@ public class Leg implements Parcelable{
         return duration.getAsJsonPrimitive("text").getAsString();
     }
 
-    public long getDurationValue()
-    {
+    public long getDurationValue() {
         return duration.getAsJsonPrimitive("value").getAsLong();
     }
 
@@ -64,17 +72,6 @@ public class Leg implements Parcelable{
     public List<Step> getStepList() {
         return stepList;
     }
-
-    @SerializedName("distance")
-    JsonObject distance;
-    @SerializedName("duration")
-    JsonObject duration;
-    @SerializedName("start_address")
-    String startAddress;
-    @SerializedName("end_address")
-    String endAddress;
-    @SerializedName("steps")
-    List<Step> stepList;
 
     @Override
     public int describeContents() {

@@ -1,43 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/nav_header_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    android:id="@+id/nav_header_container"
-    android:background="@drawable/all_sample_cover">
+    android:background="@drawable/all_sample_cover"
+    android:orientation="vertical"
+    android:padding="16dp">
+
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/iv_nav_header_avatar"
-        android:layout_marginTop="48dp"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:src="@drawable/ic_menu_profile"
-        android:scaleType="centerCrop" />
+        android:layout_marginTop="48dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_menu_profile" />
+
     <TextView
+        android:id="@+id/tv_nav_header_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:textSize="16sp"
-        android:textColor="@android:color/white"
         android:text="Đoàn Hiếu Tâm"
-        android:id="@+id/tv_nav_header_name"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="14sp"
         android:textColor="@android:color/white"
-        android:text="\@xataora_tn25"
-        android:id="@+id/tv_nav_header_screenname"/>
-    <Button
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_nav_header_screenname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="\@xataora_tn25"
+        android:textColor="@android:color/white"
+        android:textSize="14sp" />
+
+    <Button
         android:id="@+id/btn_nav_header_signin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:background="@android:color/transparent"
-        android:textColor="@color/colorWhite"
         android:text="@string/sign_in"
-        android:visibility="gone"
-        />
+        android:textColor="@color/colorWhite"
+        android:visibility="gone" />
 
 </LinearLayout>

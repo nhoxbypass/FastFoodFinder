@@ -7,8 +7,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.PropertyName;
 
-import java.util.Objects;
-
 /**
  * Created by nhoxb on 11/10/2016.
  */
@@ -21,6 +19,17 @@ public class Store implements Parcelable {
     //3: logo_bsmart_red
     //4: shop n go
 
+    public static final Creator<Store> CREATOR = new Creator<Store>() {
+        @Override
+        public Store createFromParcel(Parcel in) {
+            return new Store(in);
+        }
+
+        @Override
+        public Store[] newArray(int size) {
+            return new Store[size];
+        }
+    };
     @Exclude
     int type;
     @PropertyName("id")
@@ -40,7 +49,7 @@ public class Store implements Parcelable {
     }
 
     public Store(int id, String title, String address, String lat, String lng, String tel, int type) {
-        this.id= id;
+        this.id = id;
         this.title = title;
         this.address = address;
         this.lat = lat;
@@ -59,6 +68,7 @@ public class Store implements Parcelable {
         type = entity.getType();
     }
 
+
     public Store(StoreViewModel viewModel) {
         id = viewModel.getId();
         title = viewModel.getStoreName();
@@ -69,7 +79,6 @@ public class Store implements Parcelable {
         address = viewModel.getStoreAddress();
     }
 
-
     protected Store(Parcel in) {
         type = in.readInt();
         id = in.readInt();
@@ -79,18 +88,6 @@ public class Store implements Parcelable {
         lng = in.readString();
         tel = in.readString();
     }
-
-    public static final Creator<Store> CREATOR = new Creator<Store>() {
-        @Override
-        public Store createFromParcel(Parcel in) {
-            return new Store(in);
-        }
-
-        @Override
-        public Store[] newArray(int size) {
-            return new Store[size];
-        }
-    };
 
     public int getId() {
         return id;

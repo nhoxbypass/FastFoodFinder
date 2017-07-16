@@ -13,8 +13,8 @@
         android:paddingBottom="6dp">
 
         <TextView
-            style="@style/TextAction"
             android:id="@+id/save_this"
+            style="@style/TextAction"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -22,8 +22,8 @@
             android:text="@string/save_this" />
 
         <TextView
-            style="@style/TextAction"
             android:id="@+id/check_in"
+            style="@style/TextAction"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -31,8 +31,8 @@
             android:text="@string/checked_in" />
 
         <TextView
-            style="@style/TextAction"
             android:id="@+id/rate_it"
+            style="@style/TextAction"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -40,8 +40,8 @@
             android:text="@string/rate_it" />
 
         <TextView
-            style="@style/TextAction"
             android:id="@+id/comment"
+            style="@style/TextAction"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

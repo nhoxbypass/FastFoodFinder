@@ -20,7 +20,7 @@ public class CallDirectionViewHolder {
     @BindView(R.id.direction)
     public FrameLayout btnDirection;
 
-    public CallDirectionViewHolder (View itemView) {
+    public CallDirectionViewHolder(View itemView) {
         ButterKnife.bind(this, itemView);
     }
 }
