@@ -72,23 +72,23 @@ public class StoreDataSource {
     public static List<Store> getStore(String queryString) {
         queryString = queryString.toLowerCase().trim();
         if (queryString.equals("circle k") || queryString.equals("circlek")) {
-            return getStore(Constant.TYPE_CIRCLE_K);
+            return getStoresByType(Constant.TYPE_CIRCLE_K);
         } else if (queryString.equals("mini stop") || queryString.equals("logo_ministop_red")) {
-            return getStore(Constant.TYPE_MINI_STOP);
+            return getStoresByType(Constant.TYPE_MINI_STOP);
         } else if (queryString.equals("family mart") || queryString.equals("logo_familymart_red")) {
-            return getStore(Constant.TYPE_FAMILY_MART);
+            return getStoresByType(Constant.TYPE_FAMILY_MART);
         } else if (queryString.equals("shop and go") || queryString.equals("shopandgo") || queryString.equals("shop n go")) {
-            return getStore(Constant.TYPE_SHOP_N_GO);
+            return getStoresByType(Constant.TYPE_SHOP_N_GO);
         } else if (queryString.equals("logo_bsmart_red") || queryString.equals("b smart") || queryString.equals("bs mart") || queryString.equals("bmart") || queryString.equals("b'smart") || queryString.equals("b's mart")) {
-            return getStore(Constant.TYPE_BSMART);
+            return getStoresByType(Constant.TYPE_BSMART);
         } else {
             //Cant determine
             //Quite hard to implement
-            return getCustomStore(getQueryString(queryString));
+            return getStoresByCustomAddress(normalizeDistrictQuery(queryString));
         }
     }
 
-    public static List<Store> getCustomStore(List<String> customQuerySearch) {
+    public static List<Store> getStoresByCustomAddress(List<String> customQuerySearch) {
         Realm realm = Realm.getDefaultInstance();
 
         List<Store> storeList = new ArrayList<>();
@@ -117,7 +117,7 @@ public class StoreDataSource {
         return storeList;
     }
 
-    private static List<String> getQueryString(String queryString)
+    private static List<String> normalizeDistrictQuery(String queryString)
     {
         List<String> result = new ArrayList<>();
         queryString = queryString.toLowerCase().trim();
@@ -223,14 +223,14 @@ public class StoreDataSource {
         return  result;
     }
 
-    public static List<Store> getStore(int type) {
+    private static List<Store> getStoresBy(String key, int value) {
         Realm realm = Realm.getDefaultInstance();
 
         List<Store> storeList = new ArrayList<>();
 
         RealmQuery<StoreEntity> query = realm.where(StoreEntity.class);
 
-        query.equalTo("type", type);
+        query.equalTo(key, value);
 
         RealmResults<StoreEntity> results = query.findAll();
 
@@ -243,5 +243,46 @@ public class StoreDataSource {
         realm.close();
 
         return storeList;
+    }
+
+    private static List<Store> getStoresBy(String key, List<Integer> values) {
+        if (values.isEmpty())
+            return new ArrayList<>();
+
+        Realm realm = Realm.getDefaultInstance();
+
+        List<Store> storeList = new ArrayList<>();
+
+        RealmQuery<StoreEntity> query = realm.where(StoreEntity.class);
+
+        query.equalTo(key, values.get(0));
+        for (int i = 1; i < values.size(); i++) {
+            query.or().equalTo(key, values.get(i));
+        }
+
+        RealmResults<StoreEntity> results = query.findAll();
+
+        int size = results.size();
+        for (int i = 0; i < size; i++) {
+            Store store = new Store(results.get(i));
+            storeList.add(store);
+        }
+
+        realm.close();
+
+        return storeList;
+    }
+
+    public static List<Store> getStoresByType(int type) {
+        return getStoresBy("type", type);
+    }
+
+
+    public static List<Store> getStoresById(int id) {
+        return getStoresBy("id", id);
+    }
+
+    public static List<Store> getStoresById(List<Integer> ids) {
+        return getStoresBy("id", ids);
     }
 }

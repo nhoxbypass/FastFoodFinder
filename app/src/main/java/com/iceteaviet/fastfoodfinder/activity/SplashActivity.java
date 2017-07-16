@@ -13,6 +13,9 @@ import com.iceteaviet.fastfoodfinder.BuildConfig;
 import com.iceteaviet.fastfoodfinder.R;
 import com.iceteaviet.fastfoodfinder.model.Store.Store;
 import com.iceteaviet.fastfoodfinder.model.Store.StoreDataSource;
+import com.iceteaviet.fastfoodfinder.model.Store.UserStoreList;
+import com.iceteaviet.fastfoodfinder.model.User.User;
+import com.iceteaviet.fastfoodfinder.rest.FirebaseClient;
 import com.iceteaviet.fastfoodfinder.utils.Constant;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -33,7 +36,7 @@ import io.realm.Realm;
 public class SplashActivity extends AppCompatActivity {
 
     public static final String KEY_FIRST_RUN = "firstRun";
-    private final int SPLASH_DISPLAY_LENGTH = 1500; //Duration of wait
+    private final int SPLASH_DISPLAY_LENGTH = 1000; //Duration of wait
     public boolean isFirstRun = false;
     private SharedPreferences mSharedPreferences;
     // Firebase instance variables
@@ -82,13 +85,31 @@ public class SplashActivity extends AppCompatActivity {
                 }
             });
         } else {
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    startMyActivity(MainActivity.class);
-                }
-            }, SPLASH_DISPLAY_LENGTH);
+            mFirebaseUser = mFirebaseAuth.getCurrentUser();
+            if (mFirebaseUser != null && !mFirebaseUser.isAnonymous()) {
+                //User still signed in
+               FirebaseClient.getInstance().addListenerForSingleUserValueEvent(mFirebaseUser.getUid(), new FirebaseClient.UserValueEventListener() {
+                    @Override
+                    public void onDataChange(User user) {
+                        User.currentUser = user;
+                        startMyActivity(MainActivity.class);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError error) {
+
+                    }
+                });
+            }
+            else {
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        startMyActivity(MainActivity.class);
+                    }
+                }, SPLASH_DISPLAY_LENGTH);
+            }
         }
     }
 
@@ -117,7 +138,7 @@ public class SplashActivity extends AppCompatActivity {
                                 mDatabaseRef = mDatabase.getReference(Constant.CHILD_STORES_LOCATION);
 
                                 // Attach a listener to read the data at our posts reference
-                                mDatabaseRef.addValueEventListener(new ValueEventListener() {
+                                mDatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
                                         parseDataFromFirebase(dataSnapshot);

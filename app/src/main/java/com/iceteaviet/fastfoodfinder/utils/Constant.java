@@ -7,6 +7,7 @@ public class Constant {
     public static final String CHILD_STORES_LOCATION = "stores_location";
     public static final String CHILD_USERS = "users";
     public static final String CHILD_MARKERS_ADD = "markers_add";
+    public static final String CHILD_USERS_STORE_LIST = "userStoreLists";
 
     //Type
     public static final int TYPE_CIRCLE_K = 0;

@@ -105,6 +105,24 @@ public class FavouriteStoreAdapter extends RecyclerView.Adapter<FavouriteStoreAd
         notifyDataSetChanged();
     }
 
+    public void updateStore(Store store) {
+        for (int i = 0; i < mStoreList.size(); i++) {
+            if (store.getId() == mStoreList.get(i).getId()) {
+                mStoreList.set(i, store);
+                notifyItemChanged(i);
+                return;
+            }
+        }
+    }
+
+    public void removeStore(Store store) {
+        int index = mStoreList.indexOf(store);
+        if (index != -1) {
+            mStoreList.remove(index);
+            notifyItemRemoved(index);
+        }
+    }
+
     @Override
     public void onBindViewHolder(final FavouriteStoreViewHolder holder, int position) {
         Store store = mStoreList.get(position);

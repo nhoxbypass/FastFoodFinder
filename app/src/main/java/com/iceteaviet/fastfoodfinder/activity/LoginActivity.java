@@ -9,8 +9,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseError;
 import com.iceteaviet.fastfoodfinder.model.Store.UserStoreList;
 import com.iceteaviet.fastfoodfinder.model.User.User;
+import com.iceteaviet.fastfoodfinder.rest.FirebaseClient;
 import com.iceteaviet.fastfoodfinder.utils.Constant;
 import com.iceteaviet.fastfoodfinder.R;
 import com.facebook.AccessToken;
@@ -58,8 +60,7 @@ public class LoginActivity extends AppCompatActivity {
     private GoogleApiClient mGoogleApiClient;
     private CallbackManager mCallBackManager;
     private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
-    private DatabaseReference mFirebaseDatabaseReference;
+    private boolean isAuthenticated = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,21 +72,15 @@ public class LoginActivity extends AppCompatActivity {
 
 
         // Initialize Firebase Auth
-        mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference().child(Constant.CHILD_USERS);
         mAuth = FirebaseAuth.getInstance();
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    // User is signed in
-                    Log.d("MAPP", "onAuthStateChanged:signed_in:" + user.getUid());
-                } else {
-                    // User is signed out
-                    Log.d("MAPP", "onAuthStateChanged:signed_out");
-                }
-            }
-        };
+        if (mAuth.getCurrentUser() != null) {
+            // User is signed in
+            this.finish();
+            Log.d("MAPP", "onAuthStateChanged:signed_in:" + mAuth.getCurrentUser().getUid());
+        } else {
+            // User is signed out
+            Log.d("MAPP", "onAuthStateChanged:signed_out");
+        }
 
         mGoogleApiClient = setupGoogleSignIn();
 
@@ -94,7 +89,7 @@ public class LoginActivity extends AppCompatActivity {
         skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startMyActivity(MainActivity.class);
+                startMainActivity();
             }
         });
 
@@ -144,15 +139,11 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        if (mAuthListener != null) {
-            mAuth.removeAuthStateListener(mAuthListener);
-        }
     }
 
     private CallbackManager setupFacebookSignIn() {
@@ -203,21 +194,38 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    private void saveUserData(FirebaseUser firebaseUser, DatabaseReference databaseRef) {
+    private void saveUserIfNotExists(FirebaseUser firebaseUser) {
         String photoUrl = "http://cdn.builtlean.com/wp-content/uploads/2015/11/all_noavatar.png.png";
 
         if (firebaseUser.getPhotoUrl() != null) {
             photoUrl = firebaseUser.getPhotoUrl().toString();
         }
 
-        User user = new User(firebaseUser.getDisplayName(), firebaseUser.getEmail(), photoUrl, firebaseUser.getUid(), new ArrayList<UserStoreList>());
-        user.saveUserData(databaseRef);
+        User.currentUser = new User(firebaseUser.getDisplayName(), firebaseUser.getEmail(), photoUrl, firebaseUser.getUid(), new ArrayList<UserStoreList>());
+        User.currentUser.saveUserIfNotExists();
     }
 
-    private void startMyActivity(Class<?> activity) {
-        Intent intent = new Intent(LoginActivity.this, activity);
-        startActivity(intent);
-        finish();
+    private void startMainActivity() {
+        final Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        if (isAuthenticated) {
+            FirebaseClient.getInstance().addListenerForSingleUserValueEvent(User.currentUser.getUid(), new FirebaseClient.UserValueEventListener() {
+                @Override
+                public void onDataChange(User user) {
+                    User.currentUser = user;
+                    startActivity(intent);
+                    finish();
+                }
+
+                @Override
+                public void onCancelled(DatabaseError error) {
+
+                }
+            });
+        }
+        else {
+            startActivity(intent);
+            finish();
+        }
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
@@ -237,8 +245,9 @@ public class LoginActivity extends AppCompatActivity {
                                     Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(LoginActivity.this, R.string.sign_in_successfully, Toast.LENGTH_SHORT).show();
-                            saveUserData(task.getResult().getUser(), mFirebaseDatabaseReference);
-                            startMyActivity(MainActivity.class);
+                            saveUserIfNotExists(task.getResult().getUser());
+                            isAuthenticated = true;
+                            startMainActivity();
                         }
                     }
                 });
@@ -265,6 +274,7 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText(LoginActivity.this, R.string.authentication_failed,
                                     Toast.LENGTH_SHORT).show();
                         } else {
+                            isAuthenticated = true;
                             Toast.makeText(LoginActivity.this, R.string.sign_in_successfully, Toast.LENGTH_SHORT).show();
                         }
                     }

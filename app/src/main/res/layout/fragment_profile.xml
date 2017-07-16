@@ -244,6 +244,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:id="@+id/fav_list_items_count"
                     android:layout_marginLeft="8dp"
                     android:layout_marginTop="104dp"
                     android:text="@string/_2_places" />

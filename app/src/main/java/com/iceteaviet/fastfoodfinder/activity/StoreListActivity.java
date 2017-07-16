@@ -56,6 +56,6 @@ public class StoreListActivity extends AppCompatActivity {
         stores.add(new Store(8, "Familymart - Đường D2", "39 Đường D2, P. 25, Quận Bình Thạnh, TP. HCM","10.80252", "106.715622", "35 126 283", Constant.TYPE_FAMILY_MART));
         stores.add(new Store(9, "FamilyMart - 123 Nguyễn Đình Chiểu", "123 Nguyễn Đình Chiểu, Phường 6, Quận 3, TP. HCM","10.7775462","106.6892408999999","3835 3193", Constant.TYPE_FAMILY_MART));
         stores.add(new Store(10, "FamilyMart - Tôn Dật Tiến", "Tôn Dật Tiên, Quận 7, TP. HCM","10.723322", "106.71498", "3835 3193",Constant.TYPE_FAMILY_MART));
-        adapter.setDesS(stores);
+        adapter.setStores(stores);
     }
 }

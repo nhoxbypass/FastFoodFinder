@@ -4,12 +4,10 @@ import android.util.Log;
 
 import com.iceteaviet.fastfoodfinder.R;
 import com.iceteaviet.fastfoodfinder.model.Store.UserStoreList;
+import com.iceteaviet.fastfoodfinder.rest.FirebaseClient;
 import com.iceteaviet.fastfoodfinder.utils.Constant;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +22,7 @@ public class User {
     private String uid;
     private String photoUrl;
     private List<UserStoreList> userStoreLists;
+    public static User currentUser;
 
     public User() {
     }
@@ -54,6 +53,17 @@ public class User {
             userStoreLists.add(new UserStoreList(2, storeIdList, R.drawable.ic_profile_checkin, "My Checked in Places"));
         } else
             this.userStoreLists = storeLists;
+    }
+
+    public UserStoreList getFavouriteStoreList() {
+        for (int i = 0; i < userStoreLists.size(); i++) {
+            if (userStoreLists.get(i).getId() == UserStoreList.ID_FAVOURITE) {
+                return userStoreLists.get(i);
+            }
+        }
+
+        Log.wtf(User.class.getName(), "Cannot find favourite list !!!");
+        return null;
     }
 
     public List<UserStoreList> getUserStoreLists() {
@@ -103,7 +113,7 @@ public class User {
         list.setId(userStoreLists.size());
         userStoreLists.add(list);
 
-        ref.child("userStoreLists").setValue(userStoreLists);
+        ref.child(Constant.CHILD_USERS_STORE_LIST).setValue(userStoreLists);
     }
 
     public void removeStoreList(int position) {
@@ -112,26 +122,17 @@ public class User {
 
         userStoreLists.remove(position);
 
-        ref.child("userStoreLists").setValue(userStoreLists);
+        ref.child(Constant.CHILD_USERS_STORE_LIST).setValue(userStoreLists);
 
     }
 
 
     //TODO: Save user data to Firebase. Can extense to ic_profile_saved other attribute like address, avatar image link
-    public void saveUserData(final DatabaseReference mFirebaseDatabaseReference) {
-        mFirebaseDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+    public void setUserData() {
+        FirebaseClient.getInstance().setUserData(new User(name, email, photoUrl, uid, userStoreLists));
+    }
 
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (!dataSnapshot.hasChild(uid)) {
-                    mFirebaseDatabaseReference.child(uid).setValue(new User(name, email, photoUrl, uid, userStoreLists));
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.e("MAPP", "Error checking user exists");
-            }
-        });
+    public void saveUserIfNotExists() {
+        FirebaseClient.getInstance().saveUserIfNotExists(new User(name, email, photoUrl, uid, userStoreLists));
     }
 }

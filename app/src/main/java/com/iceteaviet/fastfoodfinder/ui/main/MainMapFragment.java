@@ -218,7 +218,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
                 mStoreList.clear();
                 mGoogleMap.clear();
 
-                mStoreList = StoreDataSource.getStore(searchEventResult.getStoreType());
+                mStoreList = StoreDataSource.getStoresByType(searchEventResult.getStoreType());
                 if (mStoreList == null || mStoreList.size() <= 0)
                     Toast.makeText(getContext(),"Failed to get stores data!",Toast.LENGTH_SHORT).show();
 

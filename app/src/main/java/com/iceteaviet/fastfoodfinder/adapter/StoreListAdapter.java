@@ -24,7 +24,7 @@ import butterknife.ButterKnife;
  */
 public class StoreListAdapter extends RecyclerView.Adapter<StoreListAdapter.StoreListViewHolder> {
 
-    List<Store> mStoreList;
+    private List<Store> mStoreList;
 
     public StoreListAdapter() {
         mStoreList = new ArrayList<>();
@@ -43,7 +43,7 @@ public class StoreListAdapter extends RecyclerView.Adapter<StoreListAdapter.Stor
         holder.setData(store);
     }
 
-    public void setDesS(List<Store> stores) {
+    public void setStores(List<Store> stores) {
         mStoreList.clear();
         mStoreList.addAll(stores);
         notifyDataSetChanged();

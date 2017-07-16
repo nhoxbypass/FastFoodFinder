@@ -23,6 +23,7 @@ import com.bumptech.glide.Glide;
 import com.iceteaviet.fastfoodfinder.activity.ListDetailActivity;
 import com.iceteaviet.fastfoodfinder.model.Store.UserStoreList;
 import com.iceteaviet.fastfoodfinder.model.User.User;
+import com.iceteaviet.fastfoodfinder.rest.FirebaseClient;
 import com.iceteaviet.fastfoodfinder.utils.Constant;
 import com.iceteaviet.fastfoodfinder.R;
 import com.iceteaviet.fastfoodfinder.adapter.UserStoreListAdapter;
@@ -62,6 +63,7 @@ public class ProfileFragment extends Fragment {
     @BindView(R.id.cv_saved_places) CardView cvSavePlace;
     @BindView(R.id.cv_checkin_places) CardView cvCheckinPlace;
     @BindView(R.id.cv_favourite_places) CardView cvFavouritePlace;
+    @BindView(R.id.fav_list_items_count) TextView tvFavItemsCount;
     DialogUpdateCoverImage mDialog;
     DialogCreateNewList mDialogCreate;
     public static ArrayList<String> listName;
@@ -69,12 +71,8 @@ public class ProfileFragment extends Fragment {
     // Firebase instance variables
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
-    private FirebaseDatabase mDatabase;
-    private DatabaseReference mDatabaseRef;
     StaggeredGridLayoutManager mLayoutManager;
     List<UserStoreList> defaultList;
-
-    private User mCurrUser;
 
     public static ProfileFragment newInstance(){
         Bundle extras = new Bundle();
@@ -114,7 +112,8 @@ public class ProfileFragment extends Fragment {
 
         tvName.setText("Unregistered User");
         tvEmail.setText("anonymous@fastfoodfinder.com");
-        mCurrUser = new User("Unregistered User", "anonymous@fastfoodfinder.com", "http://cdn.builtlean.com/wp-content/uploads/2015/11/all_noavatar.png.png", "null" ,new ArrayList<UserStoreList>());
+        if (User.currentUser == null)
+            User.currentUser = new User("Unregistered User", "anonymous@fastfoodfinder.com", "http://cdn.builtlean.com/wp-content/uploads/2015/11/all_noavatar.png.png", "null" ,new ArrayList<UserStoreList>());
 
         if (mFirebaseUser != null) {
             getUserData(mFirebaseUser.getUid());
@@ -122,13 +121,12 @@ public class ProfileFragment extends Fragment {
     }
 
     public void loadUserList(){
-        for (int i = 0; i< mCurrUser.getUserStoreLists().size();i++){
-            UserStoreList list = new UserStoreList(mCurrUser.getUserStoreLists().get(i).getId(), new ArrayList<Integer>(),mCurrUser.getUserStoreLists().get(i).getIconId(), mCurrUser.getUserStoreLists().get(i).getListName());
-            if(i<=2){
-                defaultList.add(list);
+        for (int i = 0; i< User.currentUser.getUserStoreLists().size();i++){
+            if(i <= 2) {
+                defaultList.add(User.currentUser.getUserStoreLists().get(i));
             }
             else {
-                mAdapter.addListPacket(list);
+                mAdapter.addListPacket(User.currentUser.getUserStoreLists().get(i));
             }
         }
         tvNumberList.setText("("+String.valueOf(mAdapter.getItemCount())+")");
@@ -160,28 +158,26 @@ public class ProfileFragment extends Fragment {
 
     void getUserData(String uid)
     {
-        mDatabase = FirebaseDatabase.getInstance();
-        mDatabaseRef = mDatabase.getReference().child(Constant.CHILD_USERS).child(uid);
-        mDatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseClient.getInstance().addListenerForSingleUserValueEvent(uid, new FirebaseClient.UserValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                mCurrUser = dataSnapshot.getValue(User.class);
+            public void onDataChange(User user) {
+                User.currentUser = user;
                 Glide.with(getContext())
-                        .load(mCurrUser.getPhotoUrl())
+                        .load(User.currentUser.getPhotoUrl())
                         .into(ivAvatarProfile);
-                tvName.setText(mCurrUser.getName());
-                tvEmail.setText(mCurrUser.getEmail());
+                tvName.setText(User.currentUser.getName());
+                tvEmail.setText(User.currentUser.getEmail());
                 loadUserList();
-                for (int i=0;i<mCurrUser.getUserStoreLists().size();i++){
-                    listName.add(mCurrUser.getUserStoreLists().get(i).getListName());
+                for (int i = 0; i< User.currentUser.getUserStoreLists().size();i++){
+                    listName.add(User.currentUser.getUserStoreLists().get(i).getListName());
                 }
+                tvFavItemsCount.setText(User.currentUser.getFavouriteStoreList().getStoreIdList().size() + " nơi");
                 onListener();
-
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.e("MAPP", "Failed to get user data");
+            public void onCancelled(DatabaseError error) {
+
             }
         });
     }
@@ -210,10 +206,10 @@ public class ProfileFragment extends Fragment {
                 mDialogCreate.setOnButtonClickListener(new DialogCreateNewList.OnCreateListListener() {
                     @Override
                     public void OnButtonClick(String name, int idIconSource) {
-                        int id = mCurrUser.getUserStoreLists().size();
+                        int id = User.currentUser.getUserStoreLists().size();
                         UserStoreList list = new UserStoreList(id, new ArrayList<Integer>(),idIconSource, name);
                         mAdapter.addListPacket(list);
-                        mCurrUser.addStoreList(list);
+                        User.currentUser.addStoreList(list);
                         tvNumberList.setText("("+String.valueOf(mAdapter.getItemCount())+")");
                     }
                 });
@@ -223,21 +219,21 @@ public class ProfileFragment extends Fragment {
         cvSavePlace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sendToDetailListActivity(defaultList.get(0));
+                sendToDetailListActivity(defaultList.get(UserStoreList.ID_SAVED));
 
             }
         });
         cvFavouritePlace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sendToDetailListActivity(defaultList.get(1));
+                sendToDetailListActivity(defaultList.get(UserStoreList.ID_FAVOURITE));
 
             }
         });
         cvCheckinPlace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                  sendToDetailListActivity(defaultList.get(2));
+                  sendToDetailListActivity(defaultList.get(UserStoreList.ID_CHECKED_IN));
             }
         });
 
@@ -245,7 +241,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(int position) {
                 tvNumberList.setText("("+String.valueOf(mAdapter.getItemCount())+")");
-                mCurrUser.removeStoreList(position);
+                User.currentUser.removeStoreList(position);
             }
         });
 
@@ -261,7 +257,7 @@ public class ProfileFragment extends Fragment {
 
     void sendToDetailListActivity(UserStoreList userStoreList){
         Intent intent = new Intent(getContext(), ListDetailActivity.class);
-        intent.putExtra(KEY_URL,mFirebaseUser.getPhotoUrl());
+        intent.putExtra(KEY_URL, User.currentUser.getPhotoUrl());
         intent.putExtra(KEY_NAME,userStoreList.getListName());
         intent.putExtra(KEY_ID,userStoreList.getId());
         intent.putExtra(KEY_IDICON,userStoreList.getIconId());

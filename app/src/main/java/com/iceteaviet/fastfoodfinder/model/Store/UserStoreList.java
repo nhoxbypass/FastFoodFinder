@@ -12,7 +12,9 @@ import java.util.List;
  * Created by nhoxb on 12/6/2016.
  */
 public class UserStoreList implements Parcelable {
-
+    public static final int ID_SAVED = 0;
+    public static final int ID_FAVOURITE = 1;
+    public static final int ID_CHECKED_IN = 2;
     private int id;
     private String listName;
     private int iconId;

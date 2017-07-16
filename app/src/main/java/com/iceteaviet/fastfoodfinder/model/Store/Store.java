@@ -7,6 +7,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.PropertyName;
 
+import java.util.Objects;
+
 /**
  * Created by nhoxb on 11/10/2016.
  */
@@ -157,6 +159,17 @@ public class Store implements Parcelable {
         this.address = address;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Store) {
+            if (this.id == ((Store) obj).id
+                    && this.title.equals(((Store) obj).title)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     @Override
     public int describeContents() {

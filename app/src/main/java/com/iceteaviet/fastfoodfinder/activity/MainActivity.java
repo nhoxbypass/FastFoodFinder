@@ -32,6 +32,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.iceteaviet.fastfoodfinder.helper.SearchEventResult;
+import com.iceteaviet.fastfoodfinder.model.User.User;
 import com.iceteaviet.fastfoodfinder.ui.main.SearchFragment;
 import com.iceteaviet.fastfoodfinder.R;
 import com.iceteaviet.fastfoodfinder.ui.main.MainFragment;
@@ -66,9 +67,6 @@ public class MainActivity extends AppCompatActivity {
     EditText mSearchInput;
     Button mNavHeaderSignIn;
     private ActionBarDrawerToggle mDrawerToggle;
-    // Firebase instance variables
-    private FirebaseAuth mFirebaseAuth;
-    private FirebaseUser mFirebaseUser;
 
 
     @Override
@@ -83,9 +81,8 @@ public class MainActivity extends AppCompatActivity {
         PACKAGE_NAME = getApplicationContext().getPackageName();
 
         setupAllViews();
-        // Initialize Firebase Auth
-        mFirebaseAuth = FirebaseAuth.getInstance();
-        mFirebaseUser = initFirebaseAuth(mFirebaseAuth);
+        // Initialize Auth
+        initAuth();
 
         //Inflate Map fragment
         mNavigationView.getMenu().getItem(0).setChecked(true);
@@ -171,21 +168,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private FirebaseUser initFirebaseAuth(FirebaseAuth auth) {
-        FirebaseUser user = auth.getCurrentUser();
-        if (user == null) {
+    private void initAuth() {
+        if (User.currentUser == null) {
             mNavHeaderName.setVisibility(View.GONE);
             mNavHeaderScreenName.setVisibility(View.GONE);
             mNavHeaderSignIn.setVisibility(View.VISIBLE);
         } else {
             Glide.with(MainActivity.this)
-                    .load(user.getPhotoUrl())
+                    .load(User.currentUser.getPhotoUrl())
                     .into(mNavHeaderAvatar);
-            mNavHeaderName.setText(user.getDisplayName());
-            mNavHeaderScreenName.setText(user.getEmail());
+            mNavHeaderName.setText(User.currentUser.getName());
+            mNavHeaderScreenName.setText(User.currentUser.getEmail());
         }
-
-        return user;
     }
 
 

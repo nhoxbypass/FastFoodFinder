@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide;
 import com.iceteaviet.fastfoodfinder.adapter.StoreListAdapter;
 import com.iceteaviet.fastfoodfinder.helper.DividerItemDecoration;
 import com.iceteaviet.fastfoodfinder.R;
+import com.iceteaviet.fastfoodfinder.model.Store.StoreDataSource;
 import com.iceteaviet.fastfoodfinder.ui.profile.ProfileFragment;
 
 import java.util.ArrayList;
@@ -66,6 +67,6 @@ public class ListDetailActivity extends AppCompatActivity {
         int numberPlace = list.size();
 
         //add list store to mAdapter here
-
+        mAdapter.setStores(StoreDataSource.getStoresById(list));
     }
 }

@@ -11,17 +11,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
+import com.google.android.gms.auth.UserRecoverableAuthException;
+import com.google.firebase.database.DatabaseError;
 import com.iceteaviet.fastfoodfinder.activity.StoreDetailActivity;
 import com.iceteaviet.fastfoodfinder.helper.DividerItemDecoration;
 import com.iceteaviet.fastfoodfinder.helper.OnStartDragListener;
 import com.iceteaviet.fastfoodfinder.model.Store.Store;
+import com.iceteaviet.fastfoodfinder.model.Store.StoreDataSource;
+import com.iceteaviet.fastfoodfinder.model.User.User;
+import com.iceteaviet.fastfoodfinder.rest.FirebaseClient;
 import com.iceteaviet.fastfoodfinder.utils.Constant;
 import com.iceteaviet.fastfoodfinder.R;
 import com.iceteaviet.fastfoodfinder.adapter.FavouriteStoreAdapter;
 import com.iceteaviet.fastfoodfinder.helper.SimpleItemTouchHelperCallback;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -100,12 +107,46 @@ public class MainFavouritedFragment extends Fragment implements OnStartDragListe
 
 
     private void loadData() {
-        ArrayList<Store> stores = new ArrayList<>();
-        stores.add(new Store(1, "Circle K Le Thi Rieng", "148 Le Thi Rieng, Ben Thanh Ward, District 1, Ho Chi Minh, Vietnam", "10.770379", "106.68912279999995", "3925 6620", Constant.TYPE_CIRCLE_K));
-        stores.add(new Store(2, "Shop & Go - Phan Đình Phùng", "180 Phan Đình Phùng, P. 2, Quận Phú Nhuận, TP. HCM", "10.7955070000000", "106.6825610000000", "38 353 193", Constant.TYPE_SHOP_N_GO));
-        stores.add(new Store(3, "Circle K Ly Tu Trong", "238 Ly Tu Trong, Ben Thanh Ward, District 1, Ho Chi Minh, Vietnam", "10.7721924", "106.69433409999999", "3822 7403", Constant.TYPE_CIRCLE_K));
-        stores.add(new Store(4, "Familymart - Đường D2", "39 Đường D2, P. 25, Quận Bình Thạnh, TP. HCM", "10.80252", "106.715622", "35 126 283", Constant.TYPE_FAMILY_MART));
-        mFavouriteAdapter.setStores(stores);
+        if (User.currentUser != null) {
+            List<Store> stores = StoreDataSource.getStoresById(User.currentUser.getFavouriteStoreList().getStoreIdList());
+            mFavouriteAdapter.setStores(stores);
+
+            FirebaseClient.getInstance().addFavouriteStoresEventListener(User.currentUser.getUid(), new FirebaseClient.StoreValueEventListener() {
+                @Override
+                public void onChildAdded(Store store, String var2) {
+                    if (!User.currentUser.getFavouriteStoreList().getStoreIdList().contains(store.getId())) {
+                        mFavouriteAdapter.addStore(store);
+                        User.currentUser.getFavouriteStoreList().getStoreIdList().add(store.getId());
+                    }
+                }
+
+                @Override
+                public void onChildChanged(Store store, String var2) {
+                    if (User.currentUser.getFavouriteStoreList().getStoreIdList().contains(store.getId())) {
+                        mFavouriteAdapter.updateStore(store);
+                    }
+                }
+
+                @Override
+                public void onChildRemoved(Store store) {
+                    if (User.currentUser.getFavouriteStoreList().getStoreIdList().contains(store.getId())) {
+                        mFavouriteAdapter.removeStore(store);
+                        User.currentUser.getFavouriteStoreList().removeStore(store.getId());
+                    }
+
+                }
+
+                @Override
+                public void onChildMoved(Store store, String var2) {
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError error) {
+                    Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 
     @Override
