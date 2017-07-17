@@ -19,8 +19,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseError;
 import com.iceteaviet.fastfoodfinder.R;
 import com.iceteaviet.fastfoodfinder.activity.ListDetailActivity;
@@ -77,9 +75,6 @@ public class ProfileFragment extends Fragment {
     UserStoreListAdapter mAdapter;
     StaggeredGridLayoutManager mLayoutManager;
     List<UserStoreList> defaultList;
-    // Firebase instance variables
-    private FirebaseAuth mFirebaseAuth;
-    private FirebaseUser mFirebaseUser;
 
     public static ProfileFragment newInstance() {
         Bundle extras = new Bundle();
@@ -113,17 +108,15 @@ public class ProfileFragment extends Fragment {
         mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         rvListPacket.setAdapter(mAdapter);
         rvListPacket.setLayoutManager(mLayoutManager);
-        // Initialize Firebase Auth
-        mFirebaseAuth = FirebaseAuth.getInstance();
-        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+        FirebaseClient.getInstance().refresh();
 
         tvName.setText("Unregistered User");
         tvEmail.setText("anonymous@fastfoodfinder.com");
         if (User.currentUser == null)
             User.currentUser = new User("Unregistered User", "anonymous@fastfoodfinder.com", "http://cdn.builtlean.com/wp-content/uploads/2015/11/all_noavatar.png.png", "null", new ArrayList<UserStoreList>());
 
-        if (mFirebaseUser != null) {
-            getUserData(mFirebaseUser.getUid());
+        if (FirebaseClient.getInstance().isSignedIn()) {
+            getUserData(FirebaseClient.getInstance().getAuth().getCurrentUser().getUid());
         }
     }
 
@@ -210,7 +203,7 @@ public class ProfileFragment extends Fragment {
                 mDialogCreate.setOnButtonClickListener(new DialogCreateNewList.OnCreateListListener() {
                     @Override
                     public void OnButtonClick(String name, int idIconSource) {
-                        int id = User.currentUser.getUserStoreLists().size();
+                        int id = User.currentUser.getUserStoreLists().size(); //New id = current size
                         UserStoreList list = new UserStoreList(id, new ArrayList<Integer>(), idIconSource, name);
                         mAdapter.addListPacket(list);
                         User.currentUser.addStoreList(list);

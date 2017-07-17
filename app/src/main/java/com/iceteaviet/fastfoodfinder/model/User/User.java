@@ -2,12 +2,9 @@ package com.iceteaviet.fastfoodfinder.model.User;
 
 import android.util.Log;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.iceteaviet.fastfoodfinder.R;
 import com.iceteaviet.fastfoodfinder.model.Store.UserStoreList;
 import com.iceteaviet.fastfoodfinder.rest.FirebaseClient;
-import com.iceteaviet.fastfoodfinder.utils.Constant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -107,23 +104,13 @@ public class User {
     }
 
     public void addStoreList(UserStoreList list) {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference().child(Constant.CHILD_USERS).child(uid);
-
-        list.setId(userStoreLists.size());
         userStoreLists.add(list);
-
-        ref.child(Constant.CHILD_USERS_STORE_LIST).setValue(userStoreLists);
+        FirebaseClient.getInstance().saveUserStoreListIfNotExists(this.uid, userStoreLists);
     }
 
     public void removeStoreList(int position) {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference().child(Constant.CHILD_USERS).child(uid);
-
         userStoreLists.remove(position);
-
-        ref.child(Constant.CHILD_USERS_STORE_LIST).setValue(userStoreLists);
-
+        FirebaseClient.getInstance().saveUserStoreListIfNotExists(uid, userStoreLists);
     }
 
 

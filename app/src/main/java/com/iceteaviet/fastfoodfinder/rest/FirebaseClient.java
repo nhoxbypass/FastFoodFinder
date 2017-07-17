@@ -90,6 +90,13 @@ public class FirebaseClient {
         });
     }
 
+    public void saveUserStoreListIfNotExists(String uid, List<UserStoreList> storeList) {
+        mDatabaseRef.child(Constant.CHILD_USERS)
+                .child(uid)
+                .child(Constant.CHILD_USERS_STORE_LIST)
+                .setValue(storeList);
+    }
+
     public void setUserData(User user) {
         mDatabaseRef.child(Constant.CHILD_USERS).child(user.getUid()).setValue(user);
     }

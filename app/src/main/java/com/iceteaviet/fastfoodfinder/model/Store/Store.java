@@ -31,7 +31,7 @@ public class Store implements Parcelable {
         }
     };
     @Exclude
-    int type;
+    private int type;
     @PropertyName("id")
     private int id;
     @PropertyName("title")
