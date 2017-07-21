@@ -12,7 +12,6 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.iceteaviet.fastfoodfinder.BuildConfig;
 import com.iceteaviet.fastfoodfinder.R;
@@ -20,6 +19,8 @@ import com.iceteaviet.fastfoodfinder.model.Store.Store;
 import com.iceteaviet.fastfoodfinder.model.Store.StoreDataSource;
 import com.iceteaviet.fastfoodfinder.model.User.User;
 import com.iceteaviet.fastfoodfinder.rest.FirebaseClient;
+import com.iceteaviet.fastfoodfinder.utils.NetworkUtils;
+
 import java.util.List;
 
 import io.realm.Realm;
@@ -71,20 +72,31 @@ public class SplashActivity extends AppCompatActivity {
         } else {
             if (FirebaseClient.getInstance().isSignedIn()) {
                 //User still signed in
-                FirebaseClient.getInstance().addListenerForSingleUserValueEvent(
-                        FirebaseClient.getInstance().getAuth().getCurrentUser().getUid(),
-                        new FirebaseClient.UserValueEventListener() {
-                    @Override
-                    public void onDataChange(User user) {
-                        User.currentUser = user;
+
+                if (NetworkUtils.isNetworkReachable(this)) {
+                    if (NetworkUtils.isInternetConnected()) {
+                        FirebaseClient.getInstance().addListenerForSingleUserValueEvent(
+                                FirebaseClient.getInstance().getAuth().getCurrentUser().getUid(),
+                                new FirebaseClient.UserValueEventListener() {
+                                    @Override
+                                    public void onDataChange(User user) {
+                                        User.currentUser = user;
+                                        startMyActivity(MainActivity.class);
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError error) {
+
+                                    }
+                                });
+                    } else {
+                        Toast.makeText(this, "Network reachable but cannot access to the Internet!", Toast.LENGTH_SHORT).show();
                         startMyActivity(MainActivity.class);
                     }
-
-                    @Override
-                    public void onCancelled(DatabaseError error) {
-
-                    }
-                });
+                } else {
+                    Toast.makeText(this, "Network is unreachable!", Toast.LENGTH_SHORT).show();
+                    startMyActivity(MainActivity.class);
+                }
             } else {
                 Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
