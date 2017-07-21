@@ -312,9 +312,14 @@ public class MainActivity extends AppCompatActivity {
             case R.id.menu_action_map:
                 fragmentClass = MainFragment.class;
                 break;
+            case R.id.menu_action_ar:
+                //TODO: Implement live sight
+                Intent arIntent = new Intent(MainActivity.this, ArCameraActivity.class);
+                startActivity(arIntent);
+                return;
             case R.id.menu_action_setting:
-                Intent intent = new Intent(MainActivity.this, SettingActivity.class);
-                startActivity(intent);
+                Intent settingIntent = new Intent(MainActivity.this, SettingActivity.class);
+                startActivity(settingIntent);
                 return;
             default:
                 fragmentClass = MainFragment.class;

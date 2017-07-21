@@ -6,14 +6,14 @@
                 android:id="@+id/menu_action_map"
                 android:title="@string/map" />
             <item
+                android:id="@+id/menu_action_ar"
+                android:title="@string/ar" />
+            <item
                 android:id="@+id/menu_action_profile"
                 android:title="@string/profile" />
             <item
                 android:id="@+id/menu_action_moment"
                 android:title="@string/my_moment" />
-            <item
-                android:id="@+id/menu_action_list"
-                android:title="@string/list" />
             <item
                 android:id="@+id/menu_action_connect"
                 android:title="@string/connection" />

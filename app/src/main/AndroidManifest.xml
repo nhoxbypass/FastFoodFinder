@@ -8,6 +8,9 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature android:name="android.hardware.camera" />
 
     <application
         android:allowBackup="true"
@@ -34,8 +37,10 @@
         <activity
             android:name=".activity.SplashActivity"
             android:theme="@style/AppTheme.NoActionBar.TranslucentStatus">
-            <intent-filter>.
+            <intent-filter>
+                .
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -45,13 +50,14 @@
             android:theme="@style/AppTheme.NoActionBar.TranslucentStatus" />
         <activity
             android:name=".activity.SettingActivity"
-            android:configChanges="locale"></activity>
-        <activity android:name=".activity.MapRoutingActivity"></activity>
+            android:configChanges="locale" />
+        <activity android:name=".activity.MapRoutingActivity" />
         <activity
             android:name=".activity.CommentActivity"
-            android:windowSoftInputMode="adjustPan"></activity>
-        <activity android:name=".activity.StoreListActivity"></activity>
-        <activity android:name=".activity.ListDetailActivity"></activity>
+            android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".activity.StoreListActivity" />
+        <activity android:name=".activity.ListDetailActivity" />
+        <activity android:name=".activity.ArCameraActivity"></activity>
     </application>
 
 </manifest>

@@ -70,7 +70,7 @@ import io.realm.Realm;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MainMapFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks {
+public class MainMapFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks, LocationListener {
     private static final Hashtable<Integer, Bitmap> CACHE = new Hashtable<Integer, Bitmap>();
     BottomSheetBehavior mBottomSheetBehavior;
 
@@ -90,6 +90,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
     private SupportMapFragment mMapFragment;
     private NearByStoreAdapter mAdapter;
     private GoogleApiClient googleApiClient;
+    private boolean isZoomToUser = false;
 
 
     public MainMapFragment() {
@@ -163,22 +164,8 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
         addMarkersToMap(mStoreList, mGoogleMap);
         setMarkersListener(mGoogleMap);
 
-        final boolean[] isZoomToUser = {false};
         if (PermissionUtils.isLocationPermissionGranted(getContext())) {
-            LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, mLocationRequest, new LocationListener() {
-                @Override
-                public void onLocationChanged(Location location) {
-                    currLocation = new LatLng(location.getLatitude(), location.getLongitude());
-                    // Creating a LatLng object for the current location
-
-                    if (!isZoomToUser[0]) {
-                        // Zoom and show current location in the Google Map
-                        mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currLocation, 16f));
-
-                        isZoomToUser[0] = true;
-                    }
-                }
-            });
+            LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, mLocationRequest, this);
 
             Location lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
             if (lastLocation != null) {
@@ -398,6 +385,9 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
 
 
     void animateMarker(final Bitmap bitmap, final Marker marker) {
+        if (marker == null)
+            return;
+
         ValueAnimator animator = ValueAnimator.ofFloat(0.1f, 1);
         animator.setDuration(1000);
         animator.setStartDelay(500);
@@ -444,6 +434,19 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
                 CACHE.put(type, bitmap);
             }
             return CACHE.get(type);
+        }
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        currLocation = new LatLng(location.getLatitude(), location.getLongitude());
+        // Creating a LatLng object for the current location
+
+        if (!isZoomToUser) {
+            // Zoom and show current location in the Google Map
+            mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currLocation, 16f));
+
+            isZoomToUser = true;
         }
     }
 
