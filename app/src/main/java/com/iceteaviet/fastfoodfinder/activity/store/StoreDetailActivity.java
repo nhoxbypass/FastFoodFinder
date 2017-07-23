@@ -33,6 +33,7 @@ import com.iceteaviet.fastfoodfinder.adapter.StoreDetailAdapter;
 import com.iceteaviet.fastfoodfinder.model.Comment;
 import com.iceteaviet.fastfoodfinder.model.store.Store;
 import com.iceteaviet.fastfoodfinder.network.RestClient;
+import com.iceteaviet.fastfoodfinder.utils.Constant;
 import com.iceteaviet.fastfoodfinder.utils.DisplayUtils;
 import com.iceteaviet.fastfoodfinder.utils.LocationUtils;
 import com.iceteaviet.fastfoodfinder.utils.PermissionUtils;
@@ -51,9 +52,7 @@ import static com.iceteaviet.fastfoodfinder.R.id.map;
 
 public class StoreDetailActivity extends AppCompatActivity implements StoreDetailAdapter.StoreActionListener, GoogleApiClient.ConnectionCallbacks {
 
-    public static final String STORE = "ic_store";
     public static final int REQUEST_COMMENT = 113;
-    public static final String COMMENT = "comment";
     LatLng currLocation;
     LocationRequest mLocationRequest;
     @BindView(R.id.appbar)
@@ -74,7 +73,7 @@ public class StoreDetailActivity extends AppCompatActivity implements StoreDetai
 
     public static Intent getIntent(Context context, Store store) {
         Intent intent = new Intent(context, StoreDetailActivity.class);
-        intent.putExtra(STORE, store);
+        intent.putExtra(Constant.STORE, store);
         return intent;
     }
 
@@ -84,7 +83,7 @@ public class StoreDetailActivity extends AppCompatActivity implements StoreDetai
         setContentView(R.layout.activity_store_detail);
         ButterKnife.bind(this);
 
-        currentStore = getIntent().getParcelableExtra(STORE);
+        currentStore = getIntent().getParcelableExtra(Constant.STORE);
         mStoreDetailAdapter = new StoreDetailAdapter(currentStore);
         mStoreDetailAdapter.setListener(this);
         rvContent.setAdapter(mStoreDetailAdapter);
@@ -141,7 +140,7 @@ public class StoreDetailActivity extends AppCompatActivity implements StoreDetai
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK && requestCode == REQUEST_COMMENT) {
-            Comment comment = (Comment) data.getSerializableExtra(COMMENT);
+            Comment comment = (Comment) data.getSerializableExtra(Constant.COMMENT);
             if (comment != null) {
                 mStoreDetailAdapter.addComment(comment);
                 appbar.setExpanded(false);

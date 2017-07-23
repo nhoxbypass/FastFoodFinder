@@ -28,6 +28,7 @@ import com.iceteaviet.fastfoodfinder.model.user.User;
 import com.iceteaviet.fastfoodfinder.network.FirebaseClient;
 import com.iceteaviet.fastfoodfinder.ui.dialog.profile.DialogCreateNewList;
 import com.iceteaviet.fastfoodfinder.ui.dialog.profile.DialogUpdateCoverImage;
+import com.iceteaviet.fastfoodfinder.utils.Constant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,13 +39,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class ProfileFragment extends Fragment {
-
-    public static final String KEY_NAME = "name";
-    public static final String KEY_ID = "id";
-    public static final String KEY_IDICON = "idicon";
-    public static final String KEY_STORE = "store";
-
-    public static final String KEY_URL = "url";
     public static ArrayList<String> listName;
     @BindView(R.id.ivCoverImage)
     ImageView ivCoverImage;
@@ -256,13 +250,13 @@ public class ProfileFragment extends Fragment {
 
     void sendToDetailListActivity(UserStoreList userStoreList) {
         Intent intent = new Intent(getContext(), ListDetailActivity.class);
-        intent.putExtra(KEY_URL, User.currentUser.getPhotoUrl());
-        intent.putExtra(KEY_NAME, userStoreList.getListName());
-        intent.putExtra(KEY_ID, userStoreList.getId());
-        intent.putExtra(KEY_IDICON, userStoreList.getIconId());
+        intent.putExtra(Constant.KEY_URL, User.currentUser.getPhotoUrl());
+        intent.putExtra(Constant.KEY_NAME, userStoreList.getListName());
+        intent.putExtra(Constant.KEY_ID, userStoreList.getId());
+        intent.putExtra(Constant.KEY_IDICON, userStoreList.getIconId());
         Bundle bundle = new Bundle();
         ArrayList<Integer> tmp = new ArrayList<>(userStoreList.getStoreIdList());
-        bundle.putIntegerArrayList(KEY_STORE, tmp);
+        bundle.putIntegerArrayList(Constant.KEY_STORE, tmp);
         intent.putExtras(bundle);
         startActivity(intent);
     }

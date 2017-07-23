@@ -21,6 +21,7 @@ import com.iceteaviet.fastfoodfinder.R;
 import com.iceteaviet.fastfoodfinder.activity.store.StoreDetailActivity;
 import com.iceteaviet.fastfoodfinder.model.store.Store;
 import com.iceteaviet.fastfoodfinder.ui.CallDirectionViewHolder;
+import com.iceteaviet.fastfoodfinder.utils.Constant;
 import com.iceteaviet.fastfoodfinder.utils.DisplayUtils;
 
 import butterknife.BindView;
@@ -52,7 +53,7 @@ public class StoreInfoDialogFragment extends DialogFragment {
 
     public static StoreInfoDialogFragment newInstance(Store store) {
         Bundle args = new Bundle();
-        args.putParcelable(StoreDetailActivity.STORE, store);
+        args.putParcelable(Constant.STORE, store);
         StoreInfoDialogFragment fragment = new StoreInfoDialogFragment();
         fragment.setArguments(args);
         return fragment;
@@ -74,7 +75,7 @@ public class StoreInfoDialogFragment extends DialogFragment {
         ButterKnife.bind(this, view);
         cdvh = new CallDirectionViewHolder(vCallDirection);
 
-        final Store store = getArguments().getParcelable(StoreDetailActivity.STORE);
+        final Store store = getArguments().getParcelable(Constant.STORE);
 
         tvStoreName.setText(store.getTitle());
         tvStoreAddress.setText(store.getAddress());

@@ -13,7 +13,7 @@ import com.iceteaviet.fastfoodfinder.R;
 import com.iceteaviet.fastfoodfinder.adapter.StoreListAdapter;
 import com.iceteaviet.fastfoodfinder.model.store.StoreDataSource;
 import com.iceteaviet.fastfoodfinder.ui.DividerItemDecoration;
-import com.iceteaviet.fastfoodfinder.ui.fragment.profile.ProfileFragment;
+import com.iceteaviet.fastfoodfinder.utils.Constant;
 
 import java.util.ArrayList;
 
@@ -57,17 +57,17 @@ public class ListDetailActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         //list name
-        tvListName.setText(intent.getStringExtra(ProfileFragment.KEY_NAME));
+        tvListName.setText(intent.getStringExtra(Constant.KEY_NAME));
         //icon of list
-        cvIconList.setImageResource(intent.getIntExtra(ProfileFragment.KEY_IDICON, 0));
+        cvIconList.setImageResource(intent.getIntExtra(Constant.KEY_IDICON, 0));
 
         Glide.with(getApplicationContext())
-                .load(intent.getStringExtra(ProfileFragment.KEY_URL))
+                .load(intent.getStringExtra(Constant.KEY_URL))
                 .into(avatar);
         //id of list
-        int id = intent.getIntExtra(ProfileFragment.KEY_ID, 0);
+        int id = intent.getIntExtra(Constant.KEY_ID, 0);
         //list id of store
-        ArrayList<Integer> list = intent.getIntegerArrayListExtra(ProfileFragment.KEY_STORE);
+        ArrayList<Integer> list = intent.getIntegerArrayListExtra(Constant.KEY_STORE);
 
         int numberPlace = list.size();
 

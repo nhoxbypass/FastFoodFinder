@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.iceteaviet.fastfoodfinder.R;
 import com.iceteaviet.fastfoodfinder.model.Comment;
 import com.iceteaviet.fastfoodfinder.ui.dialog.store.NoticeDialog;
+import com.iceteaviet.fastfoodfinder.utils.Constant;
 import com.iceteaviet.fastfoodfinder.utils.DataUtils;
 
 import butterknife.BindView;
@@ -104,7 +105,7 @@ public class CommentActivity extends AppCompatActivity implements NoticeDialog.N
                 }
                 Comment comment = DataUtils.createUserComment(etComment.getText().toString());
                 Intent data = new Intent();
-                data.putExtra(StoreDetailActivity.COMMENT, comment);
+                data.putExtra(Constant.COMMENT, comment);
                 setResult(RESULT_OK, data);
                 finish();
             }
