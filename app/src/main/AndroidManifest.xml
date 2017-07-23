@@ -29,13 +29,13 @@
             android:value="@string/google_maps_api_key" />
 
         <activity
-            android:name=".activity.MainActivity"
+            android:name=".activity.main.MainActivity"
             android:theme="@style/AppTheme.NoActionBar.TranslucentStatus" />
         <activity
-            android:name=".activity.LoginActivity"
+            android:name=".activity.main.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar.TranslucentStatus" />
         <activity
-            android:name=".activity.SplashActivity"
+            android:name=".activity.main.SplashActivity"
             android:theme="@style/AppTheme.NoActionBar.TranslucentStatus">
             <intent-filter>
                 .
@@ -45,19 +45,19 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.StoreDetailActivity"
-            android:parentActivityName=".activity.MainActivity"
+            android:name=".activity.store.StoreDetailActivity"
+            android:parentActivityName=".activity.main.MainActivity"
             android:theme="@style/AppTheme.NoActionBar.TranslucentStatus" />
         <activity
-            android:name=".activity.SettingActivity"
+            android:name=".activity.main.SettingActivity"
             android:configChanges="locale" />
-        <activity android:name=".activity.MapRoutingActivity" />
+        <activity android:name=".activity.main.MapRoutingActivity" />
         <activity
-            android:name=".activity.CommentActivity"
+            android:name=".activity.store.CommentActivity"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".activity.StoreListActivity" />
-        <activity android:name=".activity.ListDetailActivity" />
-        <activity android:name=".activity.ArCameraActivity"></activity>
+        <activity android:name=".activity.main.StoreListActivity" />
+        <activity android:name=".activity.profile.ListDetailActivity" />
+        <activity android:name=".activity.ar.ArCameraActivity"></activity>
     </application>
 
 </manifest>

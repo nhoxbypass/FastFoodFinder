@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.iceteaviet.fastfoodfinder.R;
-import com.iceteaviet.fastfoodfinder.model.Store.StoreViewModel;
+import com.iceteaviet.fastfoodfinder.model.store.StoreViewModel;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * Created by nhoxb on 11/9/2016.
+ * Created by Genius Doan on 11/9/2016.
  */
 public class NearByStoreAdapter extends RecyclerView.Adapter<NearByStoreAdapter.StoreViewHolder> {
 

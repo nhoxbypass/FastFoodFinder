@@ -1,7 +1,7 @@
 package com.iceteaviet.fastfoodfinder.utils;
 
 /**
- * Created by tamdoan on 13/07/2017.
+ * Created by Genius Doan on 13/07/2017.
  */
 
 public class Keys {

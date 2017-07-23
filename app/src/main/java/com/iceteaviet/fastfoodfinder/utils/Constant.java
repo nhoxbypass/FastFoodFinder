@@ -1,7 +1,7 @@
 package com.iceteaviet.fastfoodfinder.utils;
 
 /**
- * Created by nhoxb on 11/11/2016.
+ * Created by Genius Doan on 11/11/2016.
  */
 public class Constant {
     public static final String CHILD_STORES_LOCATION = "stores_location";

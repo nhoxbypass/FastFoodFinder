@@ -10,12 +10,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.iceteaviet.fastfoodfinder.R;
-import com.iceteaviet.fastfoodfinder.ui.main.MainFavouritedFragment;
-import com.iceteaviet.fastfoodfinder.ui.main.MainMapFragment;
-import com.iceteaviet.fastfoodfinder.ui.main.MainRecentlyFragment;
+import com.iceteaviet.fastfoodfinder.ui.fragment.main.MainFavouritedFragment;
+import com.iceteaviet.fastfoodfinder.ui.fragment.main.MainMapFragment;
+import com.iceteaviet.fastfoodfinder.ui.fragment.main.MainRecentlyFragment;
 
 /**
- * Created by nhoxb on 11/8/2016.
+ * Created by Genius Doan on 11/8/2016.
  */
 public class MainPagerAdapter extends FragmentPagerAdapter {
 

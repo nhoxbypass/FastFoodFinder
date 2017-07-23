@@ -7,7 +7,7 @@ import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 
 /**
- * Created by nhoxb on 11/8/2016.
+ * Created by Genius Doan on 11/8/2016.
  */
 public class PermissionUtils {
     public static final int REQUEST_LOCATION = 1000;

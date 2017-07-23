@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.iceteaviet.fastfoodfinder.R;
-import com.iceteaviet.fastfoodfinder.model.Store.UserStoreList;
+import com.iceteaviet.fastfoodfinder.model.store.UserStoreList;
 
 import java.util.ArrayList;
 import java.util.List;

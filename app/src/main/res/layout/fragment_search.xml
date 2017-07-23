@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:background="#E0E0E0"
         android:orientation="vertical"
-        tools:context=".ui.main.SearchFragment">
+        tools:context=".ui.fragment.main.SearchFragment">
 
         <!-- TODO: Update blank fragment layout -->
         <android.support.v7.widget.CardView

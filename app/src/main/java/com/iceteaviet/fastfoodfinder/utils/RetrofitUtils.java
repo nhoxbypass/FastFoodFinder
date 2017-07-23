@@ -11,7 +11,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
- * Created by nhoxb on 11/11/2016.
+ * Created by Genius Doan on 11/11/2016.
  */
 public class RetrofitUtils {
     public static Retrofit get(String apiKey, String baseUrl) {

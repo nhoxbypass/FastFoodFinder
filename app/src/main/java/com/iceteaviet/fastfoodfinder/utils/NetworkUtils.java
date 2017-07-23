@@ -7,7 +7,7 @@ import android.net.NetworkInfo;
 import java.io.IOException;
 
 /**
- * Created by tamdoan on 22/07/2017.
+ * Created by Genius Doan on 22/07/2017.
  */
 
 public class NetworkUtils {

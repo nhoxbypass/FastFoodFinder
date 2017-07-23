@@ -4,7 +4,7 @@ import android.location.Location;
 import android.support.annotation.DrawableRes;
 
 /**
- * Created by tamdoan on 20/07/2017.
+ * Created by Genius Doan on 20/07/2017.
  */
 
 public class AugmentedPOI {

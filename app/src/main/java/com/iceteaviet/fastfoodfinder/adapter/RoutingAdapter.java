@@ -11,9 +11,8 @@ import android.widget.TextView;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.iceteaviet.fastfoodfinder.R;
-import com.iceteaviet.fastfoodfinder.model.Routing.Step;
+import com.iceteaviet.fastfoodfinder.model.routing.Step;
 import com.iceteaviet.fastfoodfinder.utils.DisplayUtils;
-import com.iceteaviet.fastfoodfinder.utils.MapUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +21,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * Created by nhoxb on 11/30/2016.
+ * Created by Genius Doan on 11/30/2016.
  */
 public class RoutingAdapter extends RecyclerView.Adapter<RoutingAdapter.VH> {
     public static final int TYPE_FULL = 0;
@@ -96,7 +95,7 @@ public class RoutingAdapter extends RecyclerView.Adapter<RoutingAdapter.VH> {
 
         public void setData(Step step) {
 
-            int imgResId = MapUtils.getDirectionImage(step.getDirection());
+            int imgResId = DisplayUtils.getDirectionImage(step.getDirection());
             routingImageView.setImageResource(imgResId);
             Spanned instruction;
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {

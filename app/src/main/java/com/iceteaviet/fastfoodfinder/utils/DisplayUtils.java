@@ -13,6 +13,8 @@ import android.renderscript.ScriptIntrinsicBlur;
 import android.text.SpannableStringBuilder;
 import android.util.DisplayMetrics;
 
+import com.iceteaviet.fastfoodfinder.R;
+
 /**
  * Created by taq on 27/11/2016.
  */
@@ -102,5 +104,61 @@ public class DisplayUtils {
             newLen = source.length();
 
         return source.subSequence(0, newLen);
+    }
+
+    public static Bitmap resizeMarkerIcon(Bitmap imageBitmap, int width, int height) {
+        if (width > 100)
+            width = 200 - width;
+        if (height > 100)
+            height = 200 - height;
+
+        if (width == 0)
+            width = 1;
+        if (height == 0)
+            height = 1;
+
+
+        Bitmap resizedBitmap = Bitmap.createScaledBitmap(imageBitmap, width, height, false);
+        return resizedBitmap;
+    }
+
+    public static int getStoreLogoDrawableId(int type) {
+        int id = R.drawable.logo_circlek_50;
+        switch (type) {
+            case Constant.TYPE_CIRCLE_K:
+                id = R.drawable.logo_circlek_50;
+                break;
+            case Constant.TYPE_MINI_STOP:
+                id = R.drawable.logo_ministop_50;
+                break;
+            case Constant.TYPE_FAMILY_MART:
+                id = R.drawable.logo_familymart_50;
+                break;
+            case Constant.TYPE_BSMART:
+                id = R.drawable.logo_bsmart_50;
+                break;
+            case Constant.TYPE_SHOP_N_GO:
+                id = R.drawable.logo_shopngo_50;
+                break;
+        }
+
+        return id;
+    }
+
+    public static int getDirectionImage(String direction) {
+        if (direction == null)
+            return R.drawable.ic_routing_up;
+
+        if (direction.equals("straight")) {
+            return R.drawable.ic_routing_up;
+        } else if (direction.equals("turn-left")) {
+            return R.drawable.ic_routing_left;
+        } else if (direction.equals("turn-right")) {
+            return R.drawable.ic_routing_right;
+        } else if (direction.equals("merge")) {
+            return R.drawable.ic_routing_merge;
+        } else {
+            return R.drawable.ic_routing_up;
+        }
     }
 }

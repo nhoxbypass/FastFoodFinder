@@ -17,8 +17,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.iceteaviet.fastfoodfinder.R;
 import com.iceteaviet.fastfoodfinder.model.Comment;
-import com.iceteaviet.fastfoodfinder.model.Store.Store;
-import com.iceteaviet.fastfoodfinder.ui.store.CallDirectionViewHolder;
+import com.iceteaviet.fastfoodfinder.model.store.Store;
+import com.iceteaviet.fastfoodfinder.ui.CallDirectionViewHolder;
 import com.iceteaviet.fastfoodfinder.utils.DataUtils;
 
 import java.util.List;

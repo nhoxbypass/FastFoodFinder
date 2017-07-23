@@ -10,8 +10,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.iceteaviet.fastfoodfinder.R;
-import com.iceteaviet.fastfoodfinder.model.Store.Store;
-import com.iceteaviet.fastfoodfinder.utils.MapUtils;
+import com.iceteaviet.fastfoodfinder.model.store.Store;
+import com.iceteaviet.fastfoodfinder.utils.DisplayUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,7 +77,7 @@ public class StoreListAdapter extends RecyclerView.Adapter<StoreListAdapter.Stor
             tvStoreAddress.setText(store.getAddress());
             tvTel.setText(store.getTel());
             Glide.with(ivStoreImage.getContext())
-                    .load(MapUtils.getLogoDrawableId(store.getType()))
+                    .load(DisplayUtils.getStoreLogoDrawableId(store.getType()))
                     .into(ivStoreImage);
         }
     }

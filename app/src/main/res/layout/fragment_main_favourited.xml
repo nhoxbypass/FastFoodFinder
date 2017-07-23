@@ -4,7 +4,7 @@
     android:id="@+id/fl_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.main.MainFavouritedFragment">
+    tools:context=".ui.fragment.main.MainFavouritedFragment">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_favourite_stores"
