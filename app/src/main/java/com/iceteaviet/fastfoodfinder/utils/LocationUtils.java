@@ -9,9 +9,13 @@ import com.google.android.gms.maps.model.LatLng;
  * Created by Genius Doan on 20/07/2017.
  */
 
-public class LocationUtils {
+final public class LocationUtils {
     private final static double WGS84_A = 6378137.0;                  // WGS 84 semi-major axis constant in meters
     private final static double WGS84_E2 = 0.00669437999014;          // square of WGS 84 eccentricity
+
+    private LocationUtils() {
+
+    }
 
     public static LocationRequest createLocationRequest() {
         LocationRequest mLocationRequest = new LocationRequest();

@@ -19,10 +19,13 @@ import com.iceteaviet.fastfoodfinder.R;
  * Created by taq on 27/11/2016.
  */
 
-public class DisplayUtils {
-
+final public class DisplayUtils {
     private static final float BITMAP_SCALE = 0.4f;
     private static final float BLUR_RADIUS = 7.5f;
+
+    private DisplayUtils() {
+
+    }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     public static Bitmap blur(Context context, Bitmap image) {

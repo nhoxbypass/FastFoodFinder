@@ -9,8 +9,12 @@ import android.support.v4.app.ActivityCompat;
 /**
  * Created by Genius Doan on 11/8/2016.
  */
-public class PermissionUtils {
+final public class PermissionUtils {
     public static final int REQUEST_LOCATION = 1000;
+
+    private PermissionUtils() {
+
+    }
 
     public static void requestLocaiton(Activity context) {
         if (!isLocationPermissionGranted(context)) {

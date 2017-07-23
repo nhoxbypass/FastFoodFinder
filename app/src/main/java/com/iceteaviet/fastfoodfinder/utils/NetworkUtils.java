@@ -10,7 +10,11 @@ import java.io.IOException;
  * Created by Genius Doan on 22/07/2017.
  */
 
-public class NetworkUtils {
+final public class NetworkUtils {
+    private NetworkUtils() {
+
+    }
+
     public static boolean isNetworkReachable(Context context) {
         ConnectivityManager conMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = conMgr.getActiveNetworkInfo();

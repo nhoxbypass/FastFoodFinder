@@ -16,7 +16,10 @@ import java.util.Random;
  * Created by binhlt on 23/11/2016.
  */
 
-public class DataUtils {
+final public class DataUtils {
+    private DataUtils() {
+
+    }
 
     public static List<Comment> getComments() {
         String[] names = new String[]{
