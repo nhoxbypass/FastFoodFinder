@@ -89,5 +89,6 @@
     <string name="my_moment">Khoảnh khắc của tôi</string>
     <string name="vietnamese">Tiếng Việt</string>
     <string name="subscription">Hóng khuyến mãi</string>
+    <string name="update_db">Cập nhật dữ liệu cửa hàng</string>
 
 </resources>

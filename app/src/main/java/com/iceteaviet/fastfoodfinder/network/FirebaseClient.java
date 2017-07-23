@@ -1,7 +1,12 @@
 package com.iceteaviet.fastfoodfinder.network;
 
+import android.app.Activity;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -71,6 +76,43 @@ public class FirebaseClient {
                 listener.onCancelled(databaseError);
             }
         });
+    }
+
+    public void readDataFromFirebase(Activity activity, final OnGetDataListener listener) {
+        listener.onStart();
+        // Do first run stuff here then set 'firstrun' as false
+        // using the following line to edit/commit prefs
+
+        if (FirebaseClient.getInstance().isSignedIn()) {
+            // Not signed in
+            FirebaseClient.getInstance().getAuth().signInWithEmailAndPassword("store_downloader@fastfoodfinder.com", "123456789")
+                    .addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                FirebaseClient.getInstance().addListenerForSingleStoreListValueEvent(new FirebaseClient.StoreListValueEventListener() {
+                                    @Override
+                                    public void onDataChange(List<Store> storeList) {
+                                        listener.onSuccess(storeList);
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError error) {
+                                        listener.onFailed(error.getMessage());
+                                    }
+                                });
+                            } else {
+                                Log.w("MAPP", "Sign In to Get data ", task.getException());
+                                listener.onFailed(task.getException().getMessage());
+                            }
+                        }
+                    });
+
+        } else {
+            Log.d("MAPP", "Already sign in but didn't get data");
+            FirebaseClient.getInstance().getAuth().signOut();
+            listener.onFailed("Already sign in but didn't get data");
+        }
     }
 
     public void saveUserIfNotExists(final User user) {
@@ -195,5 +237,13 @@ public class FirebaseClient {
         void onDataChange(List<Store> storeList);
 
         void onCancelled(DatabaseError error);
+    }
+
+    public interface OnGetDataListener {
+        public void onStart();
+
+        public void onSuccess(List<Store> data);
+
+        public void onFailed(String errorMessage);
     }
 }

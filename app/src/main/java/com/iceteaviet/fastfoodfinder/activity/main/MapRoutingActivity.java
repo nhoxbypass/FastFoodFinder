@@ -36,8 +36,8 @@ import com.iceteaviet.fastfoodfinder.model.routing.MapsDirection;
 import com.iceteaviet.fastfoodfinder.model.routing.Step;
 import com.iceteaviet.fastfoodfinder.model.store.Store;
 import com.iceteaviet.fastfoodfinder.ui.DividerItemDecoration;
+import com.iceteaviet.fastfoodfinder.utils.Constant;
 import com.iceteaviet.fastfoodfinder.utils.DisplayUtils;
-import com.iceteaviet.fastfoodfinder.utils.Keys;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -161,8 +161,8 @@ public class MapRoutingActivity extends AppCompatActivity {
 
     private void getExtrasBundle() {
         Bundle extras = getIntent().getExtras();
-        mMapsDirection = extras.getParcelable(Keys.KEY_ROUTE_LIST);
-        mCurrStore = extras.getParcelable(Keys.KEY_DES_STORE);
+        mMapsDirection = extras.getParcelable(Constant.KEY_ROUTE_LIST);
+        mCurrStore = extras.getParcelable(Constant.KEY_DES_STORE);
 
         if (mMapsDirection == null || mCurrStore == null || mMapsDirection.getRouteList().size() <= 0) {
             Toast.makeText(MapRoutingActivity.this, "Failed to open Routing screen!", Toast.LENGTH_SHORT).show();

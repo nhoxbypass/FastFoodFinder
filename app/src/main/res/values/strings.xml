@@ -95,6 +95,7 @@
     <string name="list_you_create">List you create</string>
     <string name="subscription">Receive discount</string>
     <string name="title_activity_camera_view">CameraViewActivity</string>
+    <string name="update_db">Update store database</string>
 
 </resources>
 

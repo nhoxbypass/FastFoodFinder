@@ -14,22 +14,24 @@ import io.realm.RealmResults;
  * Created by Genius Doan on 11/20/2016.
  */
 public class StoreDataSource {
-    public static void store(final List<Store> storeList) {
-        Realm realm = Realm.getDefaultInstance();
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                realm.where(StoreEntity.class)
-                        .findAll()
-                        .deleteAllFromRealm();
+    public static void setData(final List<Store> storeList) {
+        if (storeList != null) {
+            Realm realm = Realm.getDefaultInstance();
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    realm.where(StoreEntity.class)
+                            .findAll()
+                            .deleteAllFromRealm();
 
-                for (int i = 0; i < storeList.size(); i++) {
-                    StoreEntity storeEntity = realm.createObject(StoreEntity.class);
-                    storeEntity.map(storeList.get(i));
+                    for (int i = 0; i < storeList.size(); i++) {
+                        StoreEntity storeEntity = realm.createObject(StoreEntity.class);
+                        storeEntity.map(storeList.get(i));
+                    }
                 }
-            }
-        });
-        realm.close();
+            });
+            realm.close();
+        }
     }
 
     public static List<Store> getAllObjects() {

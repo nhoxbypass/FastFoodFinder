@@ -12,12 +12,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.iceteaviet.fastfoodfinder.BuildConfig;
 import com.iceteaviet.fastfoodfinder.R;
+import com.iceteaviet.fastfoodfinder.model.store.Store;
+import com.iceteaviet.fastfoodfinder.model.store.StoreDataSource;
 import com.iceteaviet.fastfoodfinder.network.FirebaseClient;
 import com.iceteaviet.fastfoodfinder.ui.fragment.profile.StoreFilterDialogFragment;
 
+import java.util.List;
 import java.util.Locale;
 
 import butterknife.BindView;
@@ -40,6 +44,8 @@ public class SettingActivity extends AppCompatActivity {
     TextView txtSetNotification;
     @BindView(R.id.tv_setting_notification_email)
     TextView txtSetEmailNotification;
+    @BindView(R.id.tv_setting_update_db)
+    TextView txtUpdate;
     @BindView(R.id.tv_setting_about_app)
     TextView txtAboutApp;
     @BindView(R.id.tv_setting_rate_app)
@@ -134,6 +140,35 @@ public class SettingActivity extends AppCompatActivity {
                 FragmentManager fm = getSupportFragmentManager();
                 StoreFilterDialogFragment dlg = StoreFilterDialogFragment.newInstance();
                 dlg.show(fm, "dialog-filter");
+            }
+        });
+
+        txtUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseClient.getInstance().readDataFromFirebase(SettingActivity.this, new FirebaseClient.OnGetDataListener() {
+                    @Override
+                    public void onStart() {
+
+                    }
+
+                    @Override
+                    public void onSuccess(List<Store> data) {
+                        StoreDataSource.setData(data);
+                        if (FirebaseClient.getInstance().getAuth() != null) {
+                            FirebaseClient.getInstance().getAuth().signOut();
+                        }
+                        Toast.makeText(SettingActivity.this, R.string.update_database_successfull, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFailed(String errorMessage) {
+                        Toast.makeText(SettingActivity.this, R.string.update_database_failed + errorMessage, Toast.LENGTH_SHORT).show();
+                        if (FirebaseClient.getInstance().getAuth() != null) {
+                            FirebaseClient.getInstance().getAuth().signOut();
+                        }
+                    }
+                });
             }
         });
     }

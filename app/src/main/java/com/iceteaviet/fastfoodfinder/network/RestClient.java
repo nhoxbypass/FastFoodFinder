@@ -8,7 +8,7 @@ import android.util.Log;
 import com.iceteaviet.fastfoodfinder.activity.main.MapRoutingActivity;
 import com.iceteaviet.fastfoodfinder.model.routing.MapsDirection;
 import com.iceteaviet.fastfoodfinder.model.store.Store;
-import com.iceteaviet.fastfoodfinder.utils.Keys;
+import com.iceteaviet.fastfoodfinder.utils.Constant;
 import com.iceteaviet.fastfoodfinder.utils.RetrofitUtils;
 
 import java.util.Map;
@@ -44,8 +44,8 @@ public class RestClient {
             public void onResponse(Call<MapsDirection> call, Response<MapsDirection> response) {
                 Intent intent = new Intent(activity, MapRoutingActivity.class);
                 Bundle extras = new Bundle();
-                extras.putParcelable(Keys.KEY_ROUTE_LIST, response.body());
-                extras.putParcelable(Keys.KEY_DES_STORE, store);
+                extras.putParcelable(Constant.KEY_ROUTE_LIST, response.body());
+                extras.putParcelable(Constant.KEY_DES_STORE, store);
                 intent.putExtras(extras);
                 activity.startActivity(intent);
 
