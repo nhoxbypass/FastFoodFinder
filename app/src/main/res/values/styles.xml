@@ -52,8 +52,6 @@
 
     <style name="SettingsOptionsText">
         <item name="android:drawablePadding">40dp</item>
-        <item name="android:background">?attr/selectableItemBackground</item>
-        <item name="android:clickable">true</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:padding">8dp</item>
         <item name="android:textColor">@android:color/black</item>
@@ -73,4 +71,10 @@
     <style name="AppTheme.NoActionBar.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.NoActionBar.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="Ripple">
+        <item name="colorControlHighlight">#E0E0E0</item>
+
+        <item name="android:background">?attr/selectableItemBackground</item>
+    </style>
 </resources>

@@ -80,10 +80,7 @@ public class FirebaseClient {
 
     public void readDataFromFirebase(Activity activity, final OnGetDataListener listener) {
         listener.onStart();
-        // Do first run stuff here then set 'firstrun' as false
-        // using the following line to edit/commit prefs
-
-        if (FirebaseClient.getInstance().isSignedIn()) {
+        if (!FirebaseClient.getInstance().isSignedIn()) {
             // Not signed in
             FirebaseClient.getInstance().getAuth().signInWithEmailAndPassword("store_downloader@fastfoodfinder.com", "123456789")
                     .addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
@@ -94,6 +91,7 @@ public class FirebaseClient {
                                     @Override
                                     public void onDataChange(List<Store> storeList) {
                                         listener.onSuccess(storeList);
+                                        mAuth.signOut();
                                     }
 
                                     @Override
@@ -109,9 +107,17 @@ public class FirebaseClient {
                     });
 
         } else {
-            Log.d("MAPP", "Already sign in but didn't get data");
-            FirebaseClient.getInstance().getAuth().signOut();
-            listener.onFailed("Already sign in but didn't get data");
+            FirebaseClient.getInstance().addListenerForSingleStoreListValueEvent(new FirebaseClient.StoreListValueEventListener() {
+                @Override
+                public void onDataChange(List<Store> storeList) {
+                    listener.onSuccess(storeList);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError error) {
+                    listener.onFailed(error.getMessage());
+                }
+            });
         }
     }
 

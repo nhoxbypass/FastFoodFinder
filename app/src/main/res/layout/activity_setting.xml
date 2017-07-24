@@ -186,13 +186,41 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tv_setting_update_db"
-                    style="@style/SettingsOptionsText"
+                <LinearLayout
+                    android:id="@+id/ll_setting_update_db"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_setting_update"
-                    android:text="@string/update_db" />
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingTop="4dp">
+
+                    <ProgressBar
+                        android:id="@+id/progress_bar_update_db"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:visibility="gone" />
+
+                    <ImageView
+                        android:id="@+id/iv_update_db"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_setting_update"
+                        android:visibility="visible" />
+
+                    <TextView
+                        style="@style/SettingsOptionsText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="32dp"
+                        android:background="@android:color/transparent"
+                        android:clickable="false"
+                        android:text="@string/update_db" />
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/tv_setting_about_app"

@@ -51,9 +51,6 @@ public class SplashActivity extends AppCompatActivity {
                 public void onSuccess(List<Store> data) {
                     mSharedPreferences.edit().putBoolean(KEY_FIRST_RUN, false).apply();
                     StoreDataSource.setData(data);
-                    if (FirebaseClient.getInstance().getAuth() != null) {
-                        FirebaseClient.getInstance().getAuth().signOut();
-                    }
                     Toast.makeText(SplashActivity.this, R.string.update_database_successfull, Toast.LENGTH_SHORT).show();
                     startMyActivity(LoginActivity.class);
                 }
@@ -61,9 +58,6 @@ public class SplashActivity extends AppCompatActivity {
                 @Override
                 public void onFailed(String errorMessage) {
                     Toast.makeText(SplashActivity.this, R.string.update_database_failed + errorMessage, Toast.LENGTH_SHORT).show();
-                    if (FirebaseClient.getInstance().getAuth() != null) {
-                        FirebaseClient.getInstance().getAuth().signOut();
-                    }
                     restartActivity();
                 }
             });
