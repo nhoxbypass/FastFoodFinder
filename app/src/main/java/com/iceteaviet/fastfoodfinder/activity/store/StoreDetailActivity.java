@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -96,7 +97,7 @@ public class StoreDetailActivity extends AppCompatActivity implements StoreDetai
 
         Glide.with(this)
                 .load(R.drawable.detail_sample_circlekcover)
-                .centerCrop()
+                .apply(new RequestOptions().centerCrop())
                 .into(ivBackdrop);
 
         mLocationRequest = LocationUtils.createLocationRequest();

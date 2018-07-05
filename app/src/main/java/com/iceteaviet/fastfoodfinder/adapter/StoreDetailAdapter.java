@@ -248,8 +248,8 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         public void bind(Comment comment) {
             final Context context = ivProfile.getContext();
             Glide.with(context)
-                    .load(comment.getAvatar())
                     .asBitmap()
+                    .load(comment.getAvatar())
                     .into(new BitmapImageViewTarget(ivProfile) {
                         @Override
                         protected void setResource(Bitmap resource) {
