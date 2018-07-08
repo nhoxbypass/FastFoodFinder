@@ -9,14 +9,14 @@ import android.support.v4.app.ActivityCompat;
 /**
  * Created by Genius Doan on 11/8/2016.
  */
-final public class PermissionUtils {
-    public static final int REQUEST_LOCATION = 1000;
+public final class PermissionUtils {
+    public static final int REQUEST_LOCATION = 1001;
 
     private PermissionUtils() {
 
     }
 
-    public static void requestLocaiton(Activity context) {
+    public static void requestLocationPermission(Activity context) {
         if (!isLocationPermissionGranted(context)) {
             ActivityCompat.requestPermissions(context, new String[]{
                             Manifest.permission.ACCESS_FINE_LOCATION,

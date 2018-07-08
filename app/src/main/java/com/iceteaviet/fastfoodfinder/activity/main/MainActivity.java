@@ -38,6 +38,7 @@ import com.iceteaviet.fastfoodfinder.model.user.User;
 import com.iceteaviet.fastfoodfinder.ui.fragment.main.MainFragment;
 import com.iceteaviet.fastfoodfinder.ui.fragment.main.SearchFragment;
 import com.iceteaviet.fastfoodfinder.ui.fragment.profile.ProfileFragment;
+import com.iceteaviet.fastfoodfinder.utils.PermissionUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -129,6 +130,20 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        switch (requestCode) {
+            case PermissionUtils.REQUEST_LOCATION:
+                // TODO: Enable my location
+                break;
+
+            default:
+                break;
+        }
     }
 
     @Override

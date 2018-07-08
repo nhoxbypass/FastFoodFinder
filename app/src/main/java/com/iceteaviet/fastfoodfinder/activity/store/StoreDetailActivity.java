@@ -204,7 +204,7 @@ public class StoreDetailActivity extends AppCompatActivity implements StoreDetai
             } else
                 Toast.makeText(StoreDetailActivity.this, "Cannot get current location!", Toast.LENGTH_SHORT).show();
         } else {
-            PermissionUtils.requestLocaiton(this);
+            PermissionUtils.requestLocationPermission(this);
         }
     }
 

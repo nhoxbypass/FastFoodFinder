@@ -118,7 +118,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Realm.init(getContext());
-        PermissionUtils.requestLocaiton(getActivity());
+        PermissionUtils.requestLocationPermission(getActivity());
 
         initializeVariables();
 
@@ -177,7 +177,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
             // Showing the current location in Google Map
             mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currLocation, 16f));
         } else {
-            PermissionUtils.requestLocaiton(getActivity());
+            PermissionUtils.requestLocationPermission(getActivity());
         }
     }
 
@@ -316,10 +316,9 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
 
                 mGoogleMap = googleMap;
                 mGoogleMap.setBuildingsEnabled(true);
-                if (PermissionUtils.isLocationPermissionGranted(getContext())) {
-                    mGoogleMap.setMyLocationEnabled(true);
+                if (!PermissionUtils.isLocationPermissionGranted(getContext())) {
+                    PermissionUtils.requestLocationPermission(getActivity());
                 } else {
-                    PermissionUtils.requestLocaiton(getActivity());
                     mGoogleMap.setMyLocationEnabled(true);
                 }
 
