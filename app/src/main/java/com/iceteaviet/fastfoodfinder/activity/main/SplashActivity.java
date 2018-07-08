@@ -49,6 +49,7 @@ public class SplashActivity extends AppCompatActivity {
 
                 @Override
                 public void onSuccess(List<Store> data) {
+                    FirebaseClient.getInstance().signOut();
                     mSharedPreferences.edit().putBoolean(KEY_FIRST_RUN, false).apply();
                     StoreDataSource.setData(data);
                     Toast.makeText(SplashActivity.this, R.string.update_database_successfull, Toast.LENGTH_SHORT).show();
@@ -57,6 +58,7 @@ public class SplashActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailed(String errorMessage) {
+                    FirebaseClient.getInstance().signOut();
                     Toast.makeText(SplashActivity.this, R.string.update_database_failed + errorMessage, Toast.LENGTH_SHORT).show();
                     restartActivity();
                 }

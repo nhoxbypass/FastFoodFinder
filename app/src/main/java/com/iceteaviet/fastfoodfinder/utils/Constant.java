@@ -34,6 +34,9 @@ final public class Constant {
     public static final long INTERVAL = 1000 * 10;
     public static final long FASTEST_INTERVAL = 1000 * 5;
 
+    public static final String DOWNLOADER_BOT_EMAIL = "store_downloader@fastfoodfinder.com";
+    public static final String DOWNLOADER_BOT_PWD = "123456789";
+
     private Constant() {
 
     }

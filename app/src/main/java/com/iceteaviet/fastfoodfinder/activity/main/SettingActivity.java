@@ -97,7 +97,7 @@ public class SettingActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (FirebaseClient.getInstance().getAuth() != null) {
-                    FirebaseClient.getInstance().getAuth().signOut();
+                    FirebaseClient.getInstance().signOut();
                     Intent intent = new Intent(SettingActivity.this, LoginActivity.class);
                     startActivity(intent);
                     finish();

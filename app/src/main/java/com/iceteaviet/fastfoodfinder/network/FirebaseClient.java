@@ -60,6 +60,10 @@ public class FirebaseClient {
         return mAuth.getCurrentUser() != null && !mAuth.getCurrentUser().isAnonymous();
     }
 
+    public void signOut() {
+        mAuth.signOut();
+    }
+
     public void addListenerForSingleUserValueEvent(String uid, final UserValueEventListener listener) {
         mDatabaseRef.child(Constant.CHILD_USERS).child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -82,7 +86,7 @@ public class FirebaseClient {
         listener.onStart();
         if (!FirebaseClient.getInstance().isSignedIn()) {
             // Not signed in
-            FirebaseClient.getInstance().getAuth().signInWithEmailAndPassword("store_downloader@fastfoodfinder.com", "123456789")
+            FirebaseClient.getInstance().getAuth().signInWithEmailAndPassword(Constant.DOWNLOADER_BOT_EMAIL, Constant.DOWNLOADER_BOT_PWD)
                     .addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
@@ -91,7 +95,6 @@ public class FirebaseClient {
                                     @Override
                                     public void onDataChange(List<Store> storeList) {
                                         listener.onSuccess(storeList);
-                                        mAuth.signOut();
                                     }
 
                                     @Override
