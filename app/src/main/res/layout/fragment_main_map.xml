@@ -4,7 +4,7 @@
     android:id="@+id/maps_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragment.main.MainMapFragment">
+    tools:context=".ui.main.map.MainMapFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <RelativeLayout

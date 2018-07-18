@@ -10,6 +10,7 @@ android {
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
     }
 
     buildTypes {
@@ -58,6 +59,11 @@ dependencies {
     implementation 'io.realm:realm-android-library:5.3.1'
 
     implementation 'com.facebook.android:facebook-android-sdk:4.34.0'
+
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
+    implementation 'io.reactivex.rxjava2:rxjava:2.0.2'
+
+    implementation 'com.android.support:multidex:1.0.3'
 
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.7.1'

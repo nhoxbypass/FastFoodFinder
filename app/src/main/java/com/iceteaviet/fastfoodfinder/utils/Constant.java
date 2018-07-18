@@ -2,8 +2,9 @@ package com.iceteaviet.fastfoodfinder.utils;
 
 /**
  * Use class instead of interface for constant class to avoid Constant Interface Antipattern
- * @see https://stackoverflow.com/questions/2659593/what-is-the-use-of-interface-constants
  *
+ * @see https://stackoverflow.com/questions/2659593/what-is-the-use-of-interface-constants
+ * <p>
  * Created by Genius Doan on 11/11/2016.
  */
 
