@@ -40,6 +40,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.perf.metrics.AddTrace;
 import com.iceteaviet.fastfoodfinder.App;
 import com.iceteaviet.fastfoodfinder.R;
 import com.iceteaviet.fastfoodfinder.data.DataManager;
@@ -301,6 +302,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
         }
     }
 
+    @AddTrace(name = "getVisibleStore")
     private List<Store> getVisibleStore(List<Store> storeList, LatLngBounds bounds, LatLng cameraPosition) {
         List<Store> stores = new ArrayList<>();
         List<Store> newVisibleStores = new ArrayList<>();
