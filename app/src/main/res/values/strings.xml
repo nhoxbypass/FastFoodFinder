@@ -96,6 +96,7 @@
     <string name="subscription">Receive discount</string>
     <string name="title_activity_camera_view">CameraViewActivity</string>
     <string name="update_db">Update store database</string>
+    <string name="permission_denied">Permission denied!</string>
 
 </resources>
 

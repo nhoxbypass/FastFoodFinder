@@ -1,6 +1,7 @@
 package com.iceteaviet.fastfoodfinder.ui.store;
 
 import android.app.Dialog;
+import android.content.pm.PackageManager;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -21,6 +22,8 @@ import com.iceteaviet.fastfoodfinder.R;
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store;
 import com.iceteaviet.fastfoodfinder.utils.Constant;
 import com.iceteaviet.fastfoodfinder.utils.FormatUtils;
+import com.iceteaviet.fastfoodfinder.utils.PermissionUtils;
+import com.iceteaviet.fastfoodfinder.utils.StringUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,6 +46,8 @@ public class StoreInfoDialogFragment extends DialogFragment {
     @BindView(R.id.save_this)
     Button btnAddToFavorite;
 
+    Store store;
+
     private StoreDialogActionListener mListener;
 
     public StoreInfoDialogFragment() {
@@ -63,17 +68,19 @@ public class StoreInfoDialogFragment extends DialogFragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_store_info, container);
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
         cdvh = new StoreDetailAdapter.CallDirectionViewHolder(vCallDirection);
 
-        final Store store = getArguments().getParcelable(Constant.STORE);
+        store = getArguments().getParcelable(Constant.STORE);
+        if (store == null)
+            return;
 
         tvStoreName.setText(store.getTitle());
         tvStoreAddress.setText(store.getAddress());
@@ -87,10 +94,13 @@ public class StoreInfoDialogFragment extends DialogFragment {
         cdvh.btnCall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (store.getTel() != null && !store.getTel().equals("")) {
-                    startActivity(FormatUtils.getCallIntent(store.getTel()));
+                if (!StringUtils.isEmpty(store.getTel())) {
+                    if (PermissionUtils.isCallPhonePermissionGranted(getContext()))
+                        startActivity(FormatUtils.getCallIntent(store.getTel()));
+                    else
+                        PermissionUtils.requestCallPhonePermission(StoreInfoDialogFragment.this);
                 } else {
-                    Toast.makeText(getActivity(), "The ic_store doesn't have number phone!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "The store doesn't have number phone!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -133,6 +143,24 @@ public class StoreInfoDialogFragment extends DialogFragment {
         window.setLayout((int) (0.8 * size.x), WindowManager.LayoutParams.WRAP_CONTENT);
         window.setGravity(Gravity.CENTER);
         super.onResume();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        switch (requestCode) {
+            case PermissionUtils.REQUEST_CALL_PHONE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    startActivity(FormatUtils.getCallIntent(store.getTel()));
+                } else {
+                    Toast.makeText(getContext(), R.string.permission_denied, Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+        }
     }
 
     // tên chuối thiệt

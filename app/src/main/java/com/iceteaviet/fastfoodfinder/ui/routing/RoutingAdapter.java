@@ -92,7 +92,8 @@ public class RoutingAdapter extends RecyclerView.Adapter<RoutingAdapter.ViewHold
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    listener.onClick(getAdapterPosition());
+                    if (listener != null)
+                        listener.onClick(getAdapterPosition());
                 }
             });
         }

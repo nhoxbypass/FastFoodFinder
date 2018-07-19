@@ -1,7 +1,9 @@
 package com.iceteaviet.fastfoodfinder.ui.store;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -157,6 +159,24 @@ public class StoreDetailActivity extends AppCompatActivity implements StoreDetai
     }
 
     @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        switch (requestCode) {
+            case PermissionUtils.REQUEST_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    getCurrentLocation();
+                } else {
+                    Toast.makeText(this, R.string.permission_denied, Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+        }
+    }
+
+    @Override
     public void onShowComment() {
         startActivityForResult(CommentActivity.getIntent(this), REQUEST_COMMENT);
     }
@@ -218,19 +238,7 @@ public class StoreDetailActivity extends AppCompatActivity implements StoreDetai
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         if (PermissionUtils.isLocationPermissionGranted(this)) {
-            LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, mLocationRequest, new LocationListener() {
-                @Override
-                public void onLocationChanged(Location location) {
-                    currLocation = new LatLng(location.getLatitude(), location.getLongitude());
-                    // Creating a LatLng object for the current location
-                }
-            });
-
-            Location lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
-            if (lastLocation != null) {
-                currLocation = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
-            } else
-                Toast.makeText(StoreDetailActivity.this, "Cannot get current location!", Toast.LENGTH_SHORT).show();
+            getCurrentLocation();
         } else {
             PermissionUtils.requestLocationPermission(this);
         }
@@ -239,5 +247,22 @@ public class StoreDetailActivity extends AppCompatActivity implements StoreDetai
     @Override
     public void onConnectionSuspended(int i) {
         Toast.makeText(this, "Cannot connect to Location service", Toast.LENGTH_SHORT).show();
+    }
+
+    @SuppressLint("MissingPermission")
+    private void getCurrentLocation() {
+        LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, mLocationRequest, new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                currLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                // Creating a LatLng object for the current location
+            }
+        });
+
+        Location lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+        if (lastLocation != null) {
+            currLocation = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
+        } else
+            Toast.makeText(StoreDetailActivity.this, "Cannot get current location!", Toast.LENGTH_SHORT).show();
     }
 }

@@ -2,8 +2,10 @@ package com.iceteaviet.fastfoodfinder.ui.main.map;
 
 
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
@@ -123,7 +125,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        PermissionUtils.requestLocationPermission(getActivity());
+        PermissionUtils.requestLocationPermission(this);
 
         initializeVariables();
 
@@ -164,6 +166,27 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
         EventBus.getDefault().unregister(this);
     }
 
+    @SuppressLint("MissingPermission")
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        switch (requestCode) {
+            case PermissionUtils.REQUEST_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    mGoogleMap.setMyLocationEnabled(true);
+                    LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, mLocationRequest, this);
+                    getLastLocation();
+                } else {
+                    Toast.makeText(getContext(), R.string.permission_denied, Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+        }
+    }
+
     @SuppressWarnings("MissingPermission")
     @Override
     public void onConnected(@Nullable Bundle bundle) {
@@ -173,16 +196,12 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
         if (PermissionUtils.isLocationPermissionGranted(getContext())) {
             LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, mLocationRequest, this);
 
-            Location lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
-            if (lastLocation != null) {
-                currLocation = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
-            } else
-                currLocation = mGoogleMap.getCameraPosition().target;
+            getLastLocation();
 
             // Showing the current location in Google Map
             mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currLocation, 16f));
         } else {
-            PermissionUtils.requestLocationPermission(getActivity());
+            PermissionUtils.requestLocationPermission(this);
         }
     }
 
@@ -421,7 +440,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
                 mGoogleMap = googleMap;
                 mGoogleMap.setBuildingsEnabled(true);
                 if (!PermissionUtils.isLocationPermissionGranted(getContext())) {
-                    PermissionUtils.requestLocationPermission(getActivity());
+                    PermissionUtils.requestLocationPermission(MainMapFragment.this);
                 } else {
                     mGoogleMap.setMyLocationEnabled(true);
                 }
@@ -573,5 +592,14 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
 
             isZoomToUser = true;
         }
+    }
+
+    @SuppressLint("MissingPermission")
+    private void getLastLocation() {
+        Location lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+        if (lastLocation != null) {
+            currLocation = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
+        } else
+            currLocation = mGoogleMap.getCameraPosition().target;
     }
 }
