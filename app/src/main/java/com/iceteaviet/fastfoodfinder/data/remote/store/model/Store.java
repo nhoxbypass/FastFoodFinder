@@ -45,6 +45,8 @@ public class Store implements Parcelable {
     private String lng;
     @PropertyName("tel")
     private String tel;
+    @Exclude
+    private LatLng position;
 
     public Store() {
     }
@@ -90,7 +92,9 @@ public class Store implements Parcelable {
 
     @Exclude
     public LatLng getPosition() {
-        return new LatLng(Double.parseDouble(lat), Double.parseDouble(lng));
+        if (position == null)
+            position = new LatLng(Double.valueOf(lat), Double.valueOf(lng));
+        return position;
     }
 
     public String getTitle() {
