@@ -70,7 +70,7 @@ public class SplashActivity extends AppCompatActivity {
             if (dataManager.isSignedIn()) {
                 //User still signed in
                 if (NetworkUtils.isNetworkReachable(this)) {
-                    if (NetworkUtils.isInternetConnected()) {
+                    if (NetworkUtils.isInternetConnected()) { // TODO: 4 seconds
                         dataManager.getUserDataSource().getUser(dataManager.getCurrentUserUid())
                                 .subscribe(new SingleObserver<User>() {
                                     @Override

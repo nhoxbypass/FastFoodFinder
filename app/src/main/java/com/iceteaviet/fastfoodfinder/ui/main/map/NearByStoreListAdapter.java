@@ -1,6 +1,7 @@
 package com.iceteaviet.fastfoodfinder.ui.main.map;
 
 import android.support.annotation.NonNull;
+import android.support.v7.recyclerview.extensions.ListAdapter;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,7 +14,6 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.model.LatLng;
 import com.iceteaviet.fastfoodfinder.R;
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store;
-import com.iceteaviet.fastfoodfinder.ui.main.StoreDiffCallback;
 import com.iceteaviet.fastfoodfinder.utils.LocationUtils;
 import com.iceteaviet.fastfoodfinder.utils.ui.UiUtils;
 
@@ -25,16 +25,34 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * Created by Genius Doan on 11/9/2016.
+ * Created by tom on 7/21/18.
  */
+public class NearByStoreListAdapter extends ListAdapter<Store, NearByStoreListAdapter.StoreViewHolder> {
 
-@Deprecated
-public class NearByStoreAdapter extends RecyclerView.Adapter<NearByStoreAdapter.StoreViewHolder> {
+    public static final DiffUtil.ItemCallback<Store> DIFF_CALLBACK =
+            new DiffUtil.ItemCallback<Store>() {
+                @Override
+                public boolean areItemsTheSame(Store oldItem, Store newItem) {
+                    return oldItem.getId() == newItem.getId();
+                }
+
+                @Override
+                public boolean areContentsTheSame(Store oldItem, Store newItem) {
+                    return oldItem.getAddress().equals(newItem.getAddress());
+                }
+            };
+
     private LatLng currCameraPosition;
     private List<Store> mListStore;
     private StoreListListener listener;
 
-    public NearByStoreAdapter() {
+    public NearByStoreListAdapter() {
+        this(DIFF_CALLBACK);
+    }
+
+    protected NearByStoreListAdapter(@NonNull DiffUtil.ItemCallback<Store> diffCallback) {
+        super(diffCallback);
+
         mListStore = new ArrayList<>();
     }
 
@@ -46,41 +64,24 @@ public class NearByStoreAdapter extends RecyclerView.Adapter<NearByStoreAdapter.
         this.currCameraPosition = currCameraPosition;
     }
 
-    public void addStore(Store store) {
-        mListStore.add(store);
-        notifyItemInserted(mListStore.size() - 1);
-    }
-
-    public void addStores(List<Store> listStores) {
-        int position = mListStore.size();
-        mListStore.addAll(listStores);
-        notifyItemRangeInserted(position, mListStore.size());
-    }
-
     public void setStores(List<Store> listStores) {
-        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new StoreDiffCallback(this.mListStore, listStores));
-
         mListStore.clear();
         mListStore.addAll(listStores);
 
-        diffResult.dispatchUpdatesTo(this);
+        submitList(listStores); // DiffUtil takes care of the check
     }
 
+    @NonNull
     @Override
     public StoreViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_store, parent, false);
-        return new StoreViewHolder(convertView, listener, mListStore);
+        return new NearByStoreListAdapter.StoreViewHolder(convertView, listener, mListStore);
     }
 
     @Override
     public void onBindViewHolder(@NonNull StoreViewHolder holder, int position) {
-        Store store = mListStore.get(position);
+        Store store = getItem(position);
         holder.setData(store, LocationUtils.calcDistance(currCameraPosition, store.getPosition()));
-    }
-
-    @Override
-    public int getItemCount() {
-        return mListStore.size();
     }
 
     public interface StoreListListener {
@@ -105,7 +106,8 @@ public class NearByStoreAdapter extends RecyclerView.Adapter<NearByStoreAdapter.
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    listener.onItemClick(storeList.get(getAdapterPosition()));
+                    if (listener != null)
+                        listener.onItemClick(storeList.get(getAdapterPosition()));
                 }
             });
         }

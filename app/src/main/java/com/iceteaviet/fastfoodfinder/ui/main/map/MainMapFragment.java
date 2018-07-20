@@ -96,7 +96,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
     Bitmap currMarkerBitmap;
     private GoogleMap mGoogleMap;
     private SupportMapFragment mMapFragment;
-    private NearByStoreAdapter mAdapter;
+    private NearByStoreListAdapter mAdapter;
     private GoogleApiClient googleApiClient;
     private boolean isZoomToUser = false;
     private DataManager dataManager;
@@ -245,7 +245,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
 
                                 addMarkersToMap(mStoreList, mGoogleMap);
                                 mAdapter.setCurrCameraPosition(mGoogleMap.getCameraPosition().target);
-                                mAdapter.setStores(getVisibleStore(mStoreList, mGoogleMap.getProjection().getVisibleRegion().latLngBounds, mGoogleMap.getCameraPosition().target));
+                                mAdapter.setStores(getVisibleStore(mStoreList, mGoogleMap.getProjection().getVisibleRegion().latLngBounds));
                             }
 
                             @Override
@@ -276,7 +276,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
                                 mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mStoreList.get(0).getPosition(), 16f));
 
                                 mAdapter.setCurrCameraPosition(mGoogleMap.getCameraPosition().target);
-                                mAdapter.setStores(getVisibleStore(mStoreList, mGoogleMap.getProjection().getVisibleRegion().latLngBounds, mGoogleMap.getCameraPosition().target));
+                                mAdapter.setStores(getVisibleStore(mStoreList, mGoogleMap.getProjection().getVisibleRegion().latLngBounds));
                             }
 
                             @Override
@@ -320,17 +320,15 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
     }
 
     @AddTrace(name = "getVisibleStore")
-    private List<Store> getVisibleStore(List<Store> storeList, LatLngBounds bounds, LatLng cameraPosition) {
+    private List<Store> getVisibleStore(List<Store> storeList, LatLngBounds bounds) {
         List<Store> stores = new ArrayList<>();
         List<Store> newVisibleStores = new ArrayList<>();
-        List<Store> visibleStores = new ArrayList<>();
 
         for (int i = 0; i < storeList.size(); i++) {
             Store store = storeList.get(i);
             if (bounds.contains(store.getPosition())) {
                 // Inside visible range
                 stores.add(store);
-                visibleStores.add(store);
                 if (!this.visibleStores.contains(store)) {
                     // New store become visible
                     newVisibleStores.add(store);
@@ -338,7 +336,8 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
             }
         }
 
-        this.visibleStores = visibleStores;
+        // Update visible stores
+        this.visibleStores = stores;
 
         animateMarkers(newVisibleStores);
 
@@ -381,7 +380,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
         mStoreList = new ArrayList<>();
         visibleStores = new ArrayList<>();
         mMarkerMap = new HashMap<>();
-        mAdapter = new NearByStoreAdapter();
+        mAdapter = new NearByStoreListAdapter();
         dataManager = App.getDataManager();
 
         dataManager.getLocalStoreDataSource().getAllStores()
@@ -420,7 +419,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
 
 
     private void initBottomSheet() {
-        mAdapter.setOnStoreListListener(new NearByStoreAdapter.StoreListListener() {
+        mAdapter.setOnStoreListListener(new NearByStoreListAdapter.StoreListListener() {
             @Override
             public void onItemClick(Store store) {
                 getDirection(store);
@@ -443,14 +442,14 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
                     mGoogleMap.setMyLocationEnabled(true);
                 }
 
-                //Animate ic_map_defaultmarker when camera move
+                //Animate marker icons when camera move
                 mGoogleMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
                     @Override
                     public void onCameraMove() {
                         Random random = new Random();
                         if (random.nextBoolean()) {
                             mAdapter.setCurrCameraPosition(mGoogleMap.getCameraPosition().target);
-                            mAdapter.setStores(getVisibleStore(mStoreList, mGoogleMap.getProjection().getVisibleRegion().latLngBounds, mGoogleMap.getCameraPosition().target));
+                            mAdapter.setStores(getVisibleStore(mStoreList, mGoogleMap.getProjection().getVisibleRegion().latLngBounds));
                         }
                     }
                 });
@@ -540,6 +539,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
             public void onAnimationUpdate(ValueAnimator animation) {
                 float scale = (float) animation.getAnimatedValue();
                 try {
+                    // TODO: Optimize .fromBitmap & resize icons
                     marker.setIcon(BitmapDescriptorFactory.fromBitmap(DisplayUtils.resizeMarkerIcon(bitmap, Math.round(scale * 75), Math.round(scale * 75))));
                 } catch (IllegalArgumentException ex) {
                     Log.e(TAG, ex.getMessage());
