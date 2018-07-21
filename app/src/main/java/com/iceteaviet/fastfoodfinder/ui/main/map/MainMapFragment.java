@@ -19,6 +19,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,8 +71,13 @@ import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.Observer;
 import io.reactivex.SingleObserver;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subjects.PublishSubject;
 
 
 /**
@@ -99,6 +105,8 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
     private NearByStoreListAdapter mAdapter;
     private GoogleApiClient googleApiClient;
     private boolean isZoomToUser = false;
+
+    private PublishSubject<Store> newVisibleStorePublisher;
     private DataManager dataManager;
 
 
@@ -162,6 +170,12 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
     public void onPause() {
         super.onPause();
         EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        newVisibleStorePublisher.onComplete();
+        super.onDestroy();
     }
 
     @SuppressLint("MissingPermission")
@@ -245,7 +259,8 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
 
                                 addMarkersToMap(mStoreList, mGoogleMap);
                                 mAdapter.setCurrCameraPosition(mGoogleMap.getCameraPosition().target);
-                                mAdapter.setStores(getVisibleStore(mStoreList, mGoogleMap.getProjection().getVisibleRegion().latLngBounds));
+                                visibleStores = getVisibleStore(mStoreList, mGoogleMap.getProjection().getVisibleRegion().latLngBounds);
+                                mAdapter.setStores(visibleStores);
                             }
 
                             @Override
@@ -276,7 +291,8 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
                                 mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mStoreList.get(0).getPosition(), 16f));
 
                                 mAdapter.setCurrCameraPosition(mGoogleMap.getCameraPosition().target);
-                                mAdapter.setStores(getVisibleStore(mStoreList, mGoogleMap.getProjection().getVisibleRegion().latLngBounds));
+                                visibleStores = getVisibleStore(mStoreList, mGoogleMap.getProjection().getVisibleRegion().latLngBounds);
+                                mAdapter.setStores(visibleStores);
                             }
 
                             @Override
@@ -322,7 +338,6 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
     @AddTrace(name = "getVisibleStore")
     private List<Store> getVisibleStore(List<Store> storeList, LatLngBounds bounds) {
         List<Store> stores = new ArrayList<>();
-        List<Store> newVisibleStores = new ArrayList<>();
 
         for (int i = 0; i < storeList.size(); i++) {
             Store store = storeList.get(i);
@@ -331,25 +346,12 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
                 stores.add(store);
                 if (!this.visibleStores.contains(store)) {
                     // New store become visible
-                    newVisibleStores.add(store);
+                    newVisibleStorePublisher.onNext(store);
                 }
             }
         }
 
-        // Update visible stores
-        this.visibleStores = stores;
-
-        animateMarkers(newVisibleStores);
-
         return stores;
-    }
-
-    private void animateMarkers(List<Store> newVisibleStores) {
-        // Animate new visible store
-        for (int i = 0; i < newVisibleStores.size(); i++) {
-            Bitmap bitmap = getStoreIcon(getContext(), newVisibleStores.get(i).getType());
-            animateMarker(bitmap, mMarkerMap.get(newVisibleStores.get(i).getId()));
-        }
     }
 
     public SupportMapFragment inflateSupportMapFragment() {
@@ -380,8 +382,10 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
         mStoreList = new ArrayList<>();
         visibleStores = new ArrayList<>();
         mMarkerMap = new HashMap<>();
+
         mAdapter = new NearByStoreListAdapter();
         dataManager = App.getDataManager();
+        newVisibleStorePublisher = PublishSubject.create();
 
         dataManager.getLocalStoreDataSource().getAllStores()
                 .subscribe(new SingleObserver<List<Store>>() {
@@ -449,10 +453,45 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
                         Random random = new Random();
                         if (random.nextBoolean()) {
                             mAdapter.setCurrCameraPosition(mGoogleMap.getCameraPosition().target);
-                            mAdapter.setStores(getVisibleStore(mStoreList, mGoogleMap.getProjection().getVisibleRegion().latLngBounds));
+                            visibleStores = getVisibleStore(mStoreList, mGoogleMap.getProjection().getVisibleRegion().latLngBounds);
+                            mAdapter.setStores(visibleStores);
                         }
                     }
                 });
+
+                newVisibleStorePublisher
+                        .observeOn(Schedulers.computation())
+                        .map(new Function<Store, Pair<Marker, Bitmap>>() {
+                            @Override
+                            public Pair<Marker, Bitmap> apply(Store store) {
+                                Bitmap bitmap = getStoreIcon(getContext(), store.getType());
+                                Marker marker = mMarkerMap.get(store.getId());
+
+                                return new Pair<>(marker, bitmap);
+                            }
+                        })
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Observer<Pair<Marker, Bitmap>>() {
+                            @Override
+                            public void onSubscribe(Disposable d) {
+
+                            }
+
+                            @Override
+                            public void onNext(Pair<Marker, Bitmap> pair) {
+                                animateMarker(pair.second, pair.first);
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+
+                            }
+
+                            @Override
+                            public void onComplete() {
+
+                            }
+                        });
             }
         });
     }
@@ -470,13 +509,12 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
                     .icon(BitmapDescriptorFactory.fromBitmap(getStoreIcon(getContext(), store.getType()))));
             marker.setTag(store);
             mMarkerMap.put(store.getId(), marker);
-            //animateMarker(currMarkerBitmap,ic_map_defaultmarker);
         }
     }
 
     void getDirection(final Store store) {
         LatLng storeLocation = store.getPosition();
-        Map<String, String> queries = new HashMap<String, String>();
+        Map<String, String> queries = new HashMap<>();
 
         queries.put("origin", LocationUtils.getLatLngString(currLocation));
         queries.put("destination", LocationUtils.getLatLngString(storeLocation));
@@ -509,13 +547,10 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
     private void setMarkersListener(GoogleMap googleMap) {
         if (googleMap != null) {
             // The Map is verified. It is now safe to manipulate the map.
-            // Attach ic_map_defaultmarker click listener to the map here
+            // Attach marker click listener to the map here
             googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 public boolean onMarkerClick(Marker marker) {
-                    // Handle ic_map_defaultmarker click here
-                    //ic_map_defaultmarker.showInfoWindow();
-                    //LatLng storeLocation = ic_map_defaultmarker.getPosition();
-                    //getDirection(storeLocation);
+                    // Handle store marker click click here
                     Store store = (Store) marker.getTag();
                     showDialogStoreInfo(store);
                     return false;

@@ -64,6 +64,7 @@ public class NearByStoreListAdapter extends ListAdapter<Store, NearByStoreListAd
         this.currCameraPosition = currCameraPosition;
     }
 
+    // FIXME: Called too many times
     public void setStores(List<Store> listStores) {
         mListStore.clear();
         mListStore.addAll(listStores);
