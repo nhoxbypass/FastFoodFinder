@@ -22,20 +22,21 @@ public class Step implements Parcelable {
             return new Step[size];
         }
     };
+
     @SerializedName("distance")
-    JsonObject distance;
+    private JsonObject distance;
     @SerializedName("duration")
-    JsonObject duration;
+    private JsonObject duration;
     @SerializedName("start_location")
-    MapCoordination startMapCoordination;
+    private MapCoordination startMapCoordination;
     @SerializedName("end_location")
-    MapCoordination endMapCoordination;
+    private MapCoordination endMapCoordination;
     @SerializedName("html_instructions")
-    String instruction;
+    private String instruction;
     @SerializedName("maneuver")
-    String direction;
+    private String direction;
     @SerializedName("travel_mode")
-    String travelMode;
+    private String travelMode;
 
     protected Step(Parcel in) {
         JsonParser parser = new JsonParser();

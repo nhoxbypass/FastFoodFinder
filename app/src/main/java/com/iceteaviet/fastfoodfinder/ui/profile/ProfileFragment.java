@@ -109,8 +109,8 @@ public class ProfileFragment extends Fragment {
 
         tvName.setText(R.string.unregistered_user);
         tvEmail.setText(R.string.unregistered_email);
-        if (User.currentUser == null)
-            User.currentUser = new User(getString(R.string.unregistered_user), getString(R.string.unregistered_email), Constant.NO_AVATAR_PLACEHOLDER_URL, "null", new ArrayList<UserStoreList>());
+        if (dataManager.getCurrentUser() == null)
+            dataManager.setCurrentUser(new User(getString(R.string.unregistered_user), getString(R.string.unregistered_email), Constant.NO_AVATAR_PLACEHOLDER_URL, "null", new ArrayList<UserStoreList>()));
 
         if (dataManager.isSignedIn()) {
             getUserData(dataManager.getCurrentUserUid());
@@ -118,11 +118,12 @@ public class ProfileFragment extends Fragment {
     }
 
     public void loadUserList() {
-        for (int i = 0; i < User.currentUser.getUserStoreLists().size(); i++) {
+        User currentUser = dataManager.getCurrentUser();
+        for (int i = 0; i < currentUser.getUserStoreLists().size(); i++) {
             if (i <= 2) {
-                defaultList.add(User.currentUser.getUserStoreLists().get(i));
+                defaultList.add(currentUser.getUserStoreLists().get(i));
             } else {
-                mAdapter.addListPacket(User.currentUser.getUserStoreLists().get(i));
+                mAdapter.addListPacket(currentUser.getUserStoreLists().get(i));
             }
         }
         tvNumberList.setText("(" + String.valueOf(mAdapter.getItemCount()) + ")");
@@ -163,17 +164,17 @@ public class ProfileFragment extends Fragment {
 
                     @Override
                     public void onSuccess(User user) {
-                        User.currentUser = user;
+                        dataManager.setCurrentUser(user);
                         Glide.with(getContext())
-                                .load(User.currentUser.getPhotoUrl())
+                                .load(user.getPhotoUrl())
                                 .into(ivAvatarProfile);
-                        tvName.setText(User.currentUser.getName());
-                        tvEmail.setText(User.currentUser.getEmail());
+                        tvName.setText(user.getName());
+                        tvEmail.setText(user.getEmail());
                         loadUserList();
-                        for (int i = 0; i < User.currentUser.getUserStoreLists().size(); i++) {
-                            listName.add(User.currentUser.getUserStoreLists().get(i).getListName());
+                        for (int i = 0; i < user.getUserStoreLists().size(); i++) {
+                            listName.add(user.getUserStoreLists().get(i).getListName());
                         }
-                        tvFavItemsCount.setText(User.currentUser.getFavouriteStoreList().getStoreIdList().size() + " nơi");
+                        tvFavItemsCount.setText(user.getFavouriteStoreList().getStoreIdList().size() + " nơi");
                         onListener();
                     }
 
@@ -208,11 +209,12 @@ public class ProfileFragment extends Fragment {
                 mDialogCreate.setOnButtonClickListener(new DialogCreateNewList.OnCreateListListener() {
                     @Override
                     public void onButtonClick(String name, int idIconSource) {
-                        int id = User.currentUser.getUserStoreLists().size(); //New id = current size
+                        User currentUser = dataManager.getCurrentUser();
+                        int id = currentUser.getUserStoreLists().size(); //New id = current size
                         UserStoreList list = new UserStoreList(id, new ArrayList<Integer>(), idIconSource, name);
                         mAdapter.addListPacket(list);
-                        User.currentUser.addStoreList(list);
-                        dataManager.getUserDataSource().updateStoreListForUser(User.currentUser.getUid(), User.currentUser.getUserStoreLists());
+                        currentUser.addStoreList(list);
+                        dataManager.getUserDataSource().updateStoreListForUser(currentUser.getUid(), currentUser.getUserStoreLists());
                         tvNumberList.setText("(" + String.valueOf(mAdapter.getItemCount()) + ")");
                     }
                 });
@@ -243,9 +245,10 @@ public class ProfileFragment extends Fragment {
         mAdapter.setOnItemLongClickListener(new UserStoreListAdapter.OnItemLongClickListener() {
             @Override
             public void onClick(int position) {
+                User currentUser = dataManager.getCurrentUser();
                 tvNumberList.setText("(" + String.valueOf(mAdapter.getItemCount()) + ")");
-                User.currentUser.removeStoreList(position);
-                dataManager.getUserDataSource().updateStoreListForUser(User.currentUser.getUid(), User.currentUser.getUserStoreLists());
+                currentUser.removeStoreList(position);
+                dataManager.getUserDataSource().updateStoreListForUser(currentUser.getUid(), currentUser.getUserStoreLists());
             }
         });
 
@@ -261,7 +264,7 @@ public class ProfileFragment extends Fragment {
 
     void sendToDetailListActivity(UserStoreList userStoreList) {
         Intent intent = new Intent(getContext(), ListDetailActivity.class);
-        intent.putExtra(Constant.KEY_URL, User.currentUser.getPhotoUrl());
+        intent.putExtra(Constant.KEY_URL, dataManager.getCurrentUser().getPhotoUrl());
         intent.putExtra(Constant.KEY_NAME, userStoreList.getListName());
         intent.putExtra(Constant.KEY_ID, userStoreList.getId());
         intent.putExtra(Constant.KEY_IDICON, userStoreList.getIconId());

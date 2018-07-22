@@ -197,14 +197,15 @@ public class LoginActivity extends AppCompatActivity {
             photoUrl = firebaseUser.getPhotoUrl().toString();
         }
 
-        User.currentUser = new User(firebaseUser.getDisplayName(), firebaseUser.getEmail(), photoUrl, firebaseUser.getUid(), new ArrayList<UserStoreList>());
-        dataManager.getUserDataSource().insertOrUpdate(User.currentUser);
+        User user = new User(firebaseUser.getDisplayName(), firebaseUser.getEmail(), photoUrl, firebaseUser.getUid(), new ArrayList<UserStoreList>());
+        dataManager.setCurrentUser(user);
+        dataManager.getUserDataSource().insertOrUpdate(user);
     }
 
     private void startMainActivity() {
         final Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         if (isAuthenticated) {
-            dataManager.getUserDataSource().getUser(User.currentUser.getUid())
+            dataManager.getUserDataSource().getUser(dataManager.getCurrentUserUid())
                     .subscribe(new SingleObserver<User>() {
                         @Override
                         public void onSubscribe(Disposable d) {
@@ -213,7 +214,7 @@ public class LoginActivity extends AppCompatActivity {
 
                         @Override
                         public void onSuccess(User user) {
-                            User.currentUser = user;
+                            dataManager.setCurrentUser(user);
                             startActivity(intent);
                             finish();
                         }

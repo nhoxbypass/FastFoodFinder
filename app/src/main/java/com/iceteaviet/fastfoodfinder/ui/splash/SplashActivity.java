@@ -80,7 +80,7 @@ public class SplashActivity extends AppCompatActivity {
 
                                     @Override
                                     public void onSuccess(User user) {
-                                        User.currentUser = user;
+                                        dataManager.setCurrentUser(user);
                                         startMyActivity(MainActivity.class);
                                     }
 

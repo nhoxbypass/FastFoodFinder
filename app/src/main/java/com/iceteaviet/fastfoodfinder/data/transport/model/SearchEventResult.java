@@ -7,9 +7,9 @@ public class SearchEventResult {
     public static final int SEARCH_QUICK_OK = 0;
     public static final int SEARCH_STORE_OK = 1;
     public static final int SEARCH_COLLAPSE = 2;
-    int mResult;
-    String mSearchString;
-    int mStoreType;
+    private int mResult;
+    private String mSearchString;
+    private int mStoreType;
 
     public SearchEventResult(int resultCode, String searchString, int storeType) {
         mResult = resultCode;

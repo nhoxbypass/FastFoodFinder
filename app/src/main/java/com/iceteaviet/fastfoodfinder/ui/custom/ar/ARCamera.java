@@ -22,16 +22,17 @@ public class ARCamera extends ViewGroup implements SurfaceHolder.Callback {
     private final static float Z_NEAR = 0.5f;
     private final static float Z_FAR = 2000;
     private final String TAG = ARCamera.class.getSimpleName();
-    SurfaceView surfaceView;
-    SurfaceHolder surfaceHolder;
-    Camera.Size previewSize;
-    List<Camera.Size> supportedPreviewSizes;
-    Camera camera;
-    Camera.Parameters parameters;
-    Activity activity;
-    float[] projectionMatrix = new float[16];
-    int cameraWidth;
-    int cameraHeight;
+
+    private SurfaceView surfaceView;
+    private SurfaceHolder surfaceHolder;
+    private Camera.Size previewSize;
+    private List<Camera.Size> supportedPreviewSizes;
+    private Camera camera;
+    private Camera.Parameters parameters;
+    private Activity activity;
+    private float[] projectionMatrix = new float[16];
+    private int cameraWidth;
+    private int cameraHeight;
 
     public ARCamera(Context context, SurfaceView surfaceView) {
         super(context);

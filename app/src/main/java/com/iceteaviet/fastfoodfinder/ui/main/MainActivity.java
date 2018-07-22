@@ -31,8 +31,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.iceteaviet.fastfoodfinder.App;
 import com.iceteaviet.fastfoodfinder.R;
-import com.iceteaviet.fastfoodfinder.data.remote.user.model.User;
+import com.iceteaviet.fastfoodfinder.data.DataManager;
 import com.iceteaviet.fastfoodfinder.data.transport.model.SearchEventResult;
 import com.iceteaviet.fastfoodfinder.ui.ar.ArCameraActivity;
 import com.iceteaviet.fastfoodfinder.ui.login.LoginActivity;
@@ -66,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
     EditText mSearchInput;
     Button mNavHeaderSignIn;
     ActionBarDrawerToggle mDrawerToggle;
+    DataManager dataManager;
 
 
     @Override
@@ -74,11 +76,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        setSupportActionBar(mToolbar);
-
         PACKAGE_NAME = getApplicationContext().getPackageName();
+        dataManager = App.getDataManager();
 
+        setSupportActionBar(mToolbar);
         setupAllViews();
+
         // Initialize Auth
         initAuth();
 
@@ -172,16 +175,16 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void initAuth() {
-        if (User.currentUser == null) {
+        if (dataManager.getCurrentUser() == null) {
             mNavHeaderName.setVisibility(View.GONE);
             mNavHeaderScreenName.setVisibility(View.GONE);
             mNavHeaderSignIn.setVisibility(View.VISIBLE);
         } else {
             Glide.with(MainActivity.this)
-                    .load(User.currentUser.getPhotoUrl())
+                    .load(dataManager.getCurrentUser().getPhotoUrl())
                     .into(mNavHeaderAvatar);
-            mNavHeaderName.setText(User.currentUser.getName());
-            mNavHeaderScreenName.setText(User.currentUser.getEmail());
+            mNavHeaderName.setText(dataManager.getCurrentUser().getName());
+            mNavHeaderScreenName.setText(dataManager.getCurrentUser().getEmail());
         }
     }
 

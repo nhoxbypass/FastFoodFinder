@@ -13,8 +13,6 @@ import java.util.List;
  * Created by Genius Doan on 11/11/2016.
  */
 public class Route implements Parcelable {
-
-
     public static final Creator<Route> CREATOR = new Creator<Route>() {
         @Override
         public Route createFromParcel(Parcel in) {
@@ -26,12 +24,13 @@ public class Route implements Parcelable {
             return new Route[size];
         }
     };
+
     @SerializedName("legs")
-    List<Leg> legList;
+    private List<Leg> legList;
     @SerializedName("summary")
-    String summary;
+    private String summary;
     @SerializedName("overview_polyline")
-    JsonObject encodedPolyline;
+    private JsonObject encodedPolyline;
 
     protected Route(Parcel in) {
         legList = in.createTypedArrayList(Leg.CREATOR);

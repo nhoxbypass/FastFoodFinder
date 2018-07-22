@@ -9,6 +9,7 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.iceteaviet.fastfoodfinder.data.remote.user.model.User;
 
 import io.reactivex.Single;
 import io.reactivex.SingleEmitter;
@@ -20,6 +21,7 @@ import io.reactivex.SingleOnSubscribe;
 
 public class FirebaseClientAuth implements ClientAuth {
     private FirebaseAuth mAuth;
+    private User currentUser;
 
     public FirebaseClientAuth() {
         mAuth = FirebaseAuth.getInstance();
@@ -96,5 +98,15 @@ public class FirebaseClientAuth implements ClientAuth {
                         });
             }
         });
+    }
+
+    @Override
+    public User getCurrentUser() {
+        return currentUser;
+    }
+
+    @Override
+    public void setCurrentUser(User user) {
+        currentUser = user;
     }
 }

@@ -41,16 +41,16 @@ import io.reactivex.schedulers.Schedulers;
 public class ArCameraActivity extends BaseActivity implements SensorEventListener, LocationListener {
 
     public static final int REQUEST_LOCATION_PERMISSIONS_CODE = 0;
-    final static String TAG = ArCameraActivity.class.getSimpleName();
+    private final static String TAG = ArCameraActivity.class.getSimpleName();
     private final static int REQUEST_CAMERA_PERMISSIONS_CODE = 11;
     private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 0; // 10 meters
     private static final long MIN_TIME_BW_UPDATES = 0; //1000 * 60 * 1; // 1 minute
     private static final double RADIUS = 0.005;
 
-    public Location location;
-    boolean isGPSEnabled;
-    boolean isNetworkEnabled;
-    boolean locationServiceAvailable;
+    private Location location;
+    private boolean isGPSEnabled;
+    private boolean isNetworkEnabled;
+    private boolean locationServiceAvailable;
     private SurfaceView surfaceView;
     private FrameLayout cameraContainerLayout;
     private AROverlayView arOverlayView;

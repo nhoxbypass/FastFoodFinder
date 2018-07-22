@@ -10,6 +10,7 @@ import com.iceteaviet.fastfoodfinder.data.remote.ClientAuth;
 import com.iceteaviet.fastfoodfinder.data.remote.routing.MapsRoutingApiHelper;
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store;
 import com.iceteaviet.fastfoodfinder.data.remote.user.UserDataSource;
+import com.iceteaviet.fastfoodfinder.data.remote.user.model.User;
 import com.iceteaviet.fastfoodfinder.utils.Constant;
 
 import java.util.List;
@@ -153,5 +154,15 @@ public class AppDataManager implements DataManager {
     @Override
     public Single<FirebaseUser> signInWithCredential(AuthCredential authCredential) {
         return clientAuth.signInWithCredential(authCredential);
+    }
+
+    @Override
+    public User getCurrentUser() {
+        return clientAuth.getCurrentUser();
+    }
+
+    @Override
+    public void setCurrentUser(User user) {
+        clientAuth.setCurrentUser(user);
     }
 }

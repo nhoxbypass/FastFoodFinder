@@ -26,15 +26,15 @@ public class Leg implements Parcelable {
         }
     };
     @SerializedName("distance")
-    JsonObject distance;
+    private JsonObject distance;
     @SerializedName("duration")
-    JsonObject duration;
+    private JsonObject duration;
     @SerializedName("start_address")
-    String startAddress;
+    private String startAddress;
     @SerializedName("end_address")
-    String endAddress;
+    private String endAddress;
     @SerializedName("steps")
-    List<Step> stepList;
+    private List<Step> stepList;
 
     protected Leg(Parcel in) {
         JsonParser parser = new JsonParser();

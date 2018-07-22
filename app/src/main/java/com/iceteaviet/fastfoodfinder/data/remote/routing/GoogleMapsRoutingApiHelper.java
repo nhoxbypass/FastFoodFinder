@@ -21,14 +21,10 @@ import retrofit2.Response;
  * Created by tom on 7/18/18.
  */
 public class GoogleMapsRoutingApiHelper implements MapsRoutingApiHelper {
-    public static final String TAG = GoogleMapsRoutingApiHelper.class.getSimpleName();
-    public String googleMapBrowserKey = "";
+    private static final String TAG = GoogleMapsRoutingApiHelper.class.getSimpleName();
     private MapsRoutingApi mMapDirectionApi;
 
-    public GoogleMapsRoutingApiHelper(String key) {
-        if (key != null)
-            this.googleMapBrowserKey = key;
-
+    public GoogleMapsRoutingApiHelper(String googleMapBrowserKey) {
         mMapDirectionApi = RetrofitUtils.get(googleMapBrowserKey, ApiEndPoint.GOOGLE_MAP_BASE_URL).create(MapsRoutingApi.class);
     }
 

@@ -19,7 +19,6 @@ import com.iceteaviet.fastfoodfinder.App;
 import com.iceteaviet.fastfoodfinder.R;
 import com.iceteaviet.fastfoodfinder.data.DataManager;
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store;
-import com.iceteaviet.fastfoodfinder.data.remote.user.model.User;
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreEvent;
 import com.iceteaviet.fastfoodfinder.ui.main.OnStartDragListener;
 import com.iceteaviet.fastfoodfinder.ui.main.SimpleItemTouchHelperCallback;
@@ -115,9 +114,9 @@ public class MainFavouriteFragment extends Fragment implements OnStartDragListen
 
 
     private void loadData() {
-        if (User.currentUser != null) {
+        if (dataManager.getCurrentUser() != null) {
             dataManager.getLocalStoreDataSource()
-                    .findStoresByIds(User.currentUser.getFavouriteStoreList().getStoreIdList())
+                    .findStoresByIds(dataManager.getCurrentUser().getFavouriteStoreList().getStoreIdList())
                     .subscribe(new SingleObserver<List<Store>>() {
                         @Override
                         public void onSubscribe(Disposable d) {
@@ -136,7 +135,7 @@ public class MainFavouriteFragment extends Fragment implements OnStartDragListen
                     });
 
 
-            dataManager.getUserDataSource().subscribeFavouriteStoresOfUser(User.currentUser.getUid())
+            dataManager.getUserDataSource().subscribeFavouriteStoresOfUser(dataManager.getCurrentUserUid())
                     .subscribe(new Observer<UserStoreEvent>() {
                         @Override
                         public void onSubscribe(Disposable d) {
@@ -148,22 +147,22 @@ public class MainFavouriteFragment extends Fragment implements OnStartDragListen
                             Store store = userStoreEvent.getStore();
                             switch (userStoreEvent.getEventActionCode()) {
                                 case UserStoreEvent.ACTION_ADDED:
-                                    if (!User.currentUser.getFavouriteStoreList().getStoreIdList().contains(store.getId())) {
+                                    if (!dataManager.getCurrentUser().getFavouriteStoreList().getStoreIdList().contains(store.getId())) {
                                         mFavouriteAdapter.addStore(store);
-                                        User.currentUser.getFavouriteStoreList().getStoreIdList().add(store.getId());
+                                        dataManager.getCurrentUser().getFavouriteStoreList().getStoreIdList().add(store.getId());
                                     }
                                     break;
 
                                 case UserStoreEvent.ACTION_CHANGED:
-                                    if (User.currentUser.getFavouriteStoreList().getStoreIdList().contains(store.getId())) {
+                                    if (dataManager.getCurrentUser().getFavouriteStoreList().getStoreIdList().contains(store.getId())) {
                                         mFavouriteAdapter.updateStore(store);
                                     }
                                     break;
 
                                 case UserStoreEvent.ACTION_REMOVED:
-                                    if (User.currentUser.getFavouriteStoreList().getStoreIdList().contains(store.getId())) {
+                                    if (dataManager.getCurrentUser().getFavouriteStoreList().getStoreIdList().contains(store.getId())) {
                                         mFavouriteAdapter.removeStore(store);
-                                        User.currentUser.getFavouriteStoreList().removeStore(store.getId());
+                                        dataManager.getCurrentUser().getFavouriteStoreList().removeStore(store.getId());
                                     }
                                     break;
 

@@ -22,9 +22,8 @@ import java.util.List;
  */
 
 public class AROverlayView extends View {
-    Context context;
-    Paint paint;
-    float[] cameraCoordinateVector;
+    private Paint paint;
+    private float[] cameraCoordinateVector;
     private float[] rotatedProjectionMatrix = new float[16];
     private Location currentLocation;
     private List<AugmentedPOI> arPoints;
@@ -32,10 +31,6 @@ public class AROverlayView extends View {
 
     public AROverlayView(Context context) {
         super(context);
-
-        this.context = context;
-
-        //Demo points
         arPoints = new ArrayList<>();
         arBitmaps = new ArrayList<>();
         cameraCoordinateVector = new float[4];

@@ -22,9 +22,9 @@ public class MapCoordination implements Parcelable {
         }
     };
     @SerializedName("lat")
-    double latitude;
+    private double latitude;
     @SerializedName("lng")
-    double longitude;
+    private double longitude;
 
     protected MapCoordination(Parcel in) {
         latitude = in.readDouble();

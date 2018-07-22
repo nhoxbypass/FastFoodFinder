@@ -11,8 +11,6 @@ import java.util.List;
  * Created by Genius Doan on 11/24/2016.
  */
 public class User {
-
-    public static User currentUser;
     private String name;
     private String email;
     private String uid;

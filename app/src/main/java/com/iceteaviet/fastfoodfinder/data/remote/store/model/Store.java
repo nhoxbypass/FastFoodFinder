@@ -13,12 +13,12 @@ import com.iceteaviet.fastfoodfinder.data.local.store.model.StoreEntity;
  */
 public class Store implements Parcelable {
 
-    //Type
-    //0: circle_k
-    //1: logo_ministop_red
-    //2: family mart
-    //3: logo_bsmart_red
-    //4: shop n go
+    // Type
+    // 0: circle_k
+    // 1: ministop
+    // 2: family mart
+    // 3: bsmart
+    // 4: shop n go
 
     public static final Creator<Store> CREATOR = new Creator<Store>() {
         @Override

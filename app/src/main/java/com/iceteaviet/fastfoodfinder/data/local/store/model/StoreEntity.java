@@ -10,8 +10,8 @@ import io.realm.RealmObject;
  */
 public class StoreEntity extends RealmObject {
 
-    int type;
-    int id;
+    private int type;
+    private int id;
     private String title;
     private String address;
     private double latitude;

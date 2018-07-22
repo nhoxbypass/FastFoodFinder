@@ -23,7 +23,7 @@ public class MapsDirection implements Parcelable {
         }
     };
     @SerializedName("routes")
-    List<Route> routeList;
+    private List<Route> routeList;
 
     protected MapsDirection(Parcel in) {
         routeList = in.createTypedArrayList(Route.CREATOR);
