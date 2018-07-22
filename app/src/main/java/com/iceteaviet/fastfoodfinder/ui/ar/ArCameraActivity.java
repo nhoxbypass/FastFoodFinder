@@ -36,6 +36,7 @@ import java.util.List;
 
 import io.reactivex.SingleObserver;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class ArCameraActivity extends BaseActivity implements SensorEventListener, LocationListener {
 
@@ -44,6 +45,8 @@ public class ArCameraActivity extends BaseActivity implements SensorEventListene
     private final static int REQUEST_CAMERA_PERMISSIONS_CODE = 11;
     private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 0; // 10 meters
     private static final long MIN_TIME_BW_UPDATES = 0;//1000 * 60 * 1; // 1 minute
+    private static final double RADIUS = 0.05;
+
     public Location location;
     boolean isGPSEnabled;
     boolean isNetworkEnabled;
@@ -88,6 +91,12 @@ public class ArCameraActivity extends BaseActivity implements SensorEventListene
     }
 
     @Override
+    protected void onDestroy() {
+        arOverlayView.destroy();
+        super.onDestroy();
+    }
+
+    @Override
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_ROTATION_VECTOR) {
             float[] rotationMatrixFromVector = new float[16];
@@ -112,10 +121,11 @@ public class ArCameraActivity extends BaseActivity implements SensorEventListene
 
     @Override
     public void onLocationChanged(Location location) {
-        dataManager.getLocalStoreDataSource().getStoreInBounds(location.getLatitude() - 0.005,
-                location.getLongitude() - 0.005,
-                location.getLatitude() + 0.005,
-                location.getLongitude() + 0.005)
+        dataManager.getLocalStoreDataSource().getStoreInBounds(location.getLatitude() - RADIUS,
+                location.getLongitude() - RADIUS,
+                location.getLatitude() + RADIUS,
+                location.getLongitude() + RADIUS)
+                .observeOn(Schedulers.computation())
                 .subscribe(new SingleObserver<List<Store>>() {
                     @Override
                     public void onSubscribe(Disposable d) {

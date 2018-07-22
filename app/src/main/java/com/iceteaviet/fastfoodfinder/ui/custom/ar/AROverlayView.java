@@ -27,6 +27,8 @@ public class AROverlayView extends View {
     private float[] rotatedProjectionMatrix = new float[16];
     private Location currentLocation;
     private List<AugmentedPOI> arPoints;
+    float[] cameraCoordinateVector;
+    private List<Bitmap> arBitmaps;
 
     public AROverlayView(Context context) {
         super(context);
@@ -35,6 +37,8 @@ public class AROverlayView extends View {
 
         //Demo points
         arPoints = new ArrayList<>();
+        arBitmaps = new ArrayList<>();
+        cameraCoordinateVector = new float[4];
 
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setStyle(Paint.Style.FILL);
@@ -45,11 +49,17 @@ public class AROverlayView extends View {
 
     public void setArPoints(List<AugmentedPOI> list) {
         this.arPoints.clear();
+        this.arBitmaps.clear();
+
         this.arPoints.addAll(list);
+        for (int i = 0; i < list.size(); i++) {
+            arBitmaps.add(BitmapFactory.decodeResource(getResources(), list.get(i).getIcon()));
+        }
     }
 
     public void addArPoint(AugmentedPOI poi) {
         this.arPoints.add(poi);
+        arBitmaps.add(BitmapFactory.decodeResource(getResources(), poi.getIcon()));
     }
 
     @Override
@@ -64,7 +74,6 @@ public class AROverlayView extends View {
             float[] pointInECEF = LocationUtils.WSG84toECEF(arPoints.get(i).getLocation());
             float[] pointInENU = LocationUtils.ECEFtoENU(currentLocation, currentLocationInECEF, pointInECEF);
 
-            float[] cameraCoordinateVector = new float[4];
             Matrix.multiplyMV(cameraCoordinateVector, 0, rotatedProjectionMatrix, 0, pointInENU, 0);
 
             // cameraCoordinateVector[2] is z, that always less than 0 to display on right position
@@ -73,12 +82,20 @@ public class AROverlayView extends View {
                 float x = (0.5f + cameraCoordinateVector[0] / cameraCoordinateVector[3]) * canvas.getWidth();
                 float y = (0.5f - cameraCoordinateVector[1] / cameraCoordinateVector[3]) * canvas.getHeight();
 
-                Bitmap b = BitmapFactory.decodeResource(getResources(), arPoints.get(i).getIcon());
-                canvas.drawBitmap(b, x, y, paint);
+                canvas.drawBitmap(arBitmaps.get(i), x, y, paint);
                 canvas.drawText(arPoints.get(i).getName(), x - (30 * arPoints.get(i).getName().length() / 2), y - 80, paint);
             }
         }
     }
+
+
+    public void destroy() {
+        for (int i = 0; i < arBitmaps.size(); i++) {
+            if (!arBitmaps.get(i).isRecycled())
+                arBitmaps.get(i).recycle();
+        }
+    }
+
 
     public void updateRotatedProjectionMatrix(float[] rotatedProjectionMatrix) {
         this.rotatedProjectionMatrix = rotatedProjectionMatrix;
