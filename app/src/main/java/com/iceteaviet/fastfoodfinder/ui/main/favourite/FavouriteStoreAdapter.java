@@ -2,6 +2,7 @@ package com.iceteaviet.fastfoodfinder.ui.main.favourite;
 
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v7.app.AlertDialog;
@@ -124,7 +125,7 @@ public class FavouriteStoreAdapter extends RecyclerView.Adapter<FavouriteStoreAd
     }
 
     @Override
-    public void onBindViewHolder(final FavouriteStoreViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final FavouriteStoreViewHolder holder, int position) {
         Store store = mStoreList.get(position);
         holder.setData(store);
         // Start a drag whenever the handle view it touched

@@ -84,5 +84,6 @@
         android:text="@string/view_more_detail"
         android:textAlignment="center"
         android:textColor="@color/googleBlue"
-        android:textSize="16dp" />
+        android:focusable="true"
+        android:textSize="16sp" />
 </LinearLayout>

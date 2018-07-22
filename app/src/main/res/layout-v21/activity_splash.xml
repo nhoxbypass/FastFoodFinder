@@ -19,13 +19,14 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="8dp"
-        android:text="@string/splash_footer"
+        android:text="Fastfood Finder 2016"
         android:textColor="@color/colorWhite"
-        android:textSize="16sp" />
+        android:textSize="16dp" />
 
     <ProgressBar
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_above="@id/footer"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:backgroundTint="@color/googleYellow" />
 </RelativeLayout>

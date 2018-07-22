@@ -20,6 +20,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.Pair;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -98,7 +99,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
     LatLng currLocation;
     List<Store> mStoreList;
     List<Store> visibleStores;
-    Map<Integer, Marker> mMarkerMap; // pair storeId - marker
+    SparseArray<Marker> markerSparseArray; // pair storeId - marker
     Bitmap currMarkerBitmap;
     private GoogleMap mGoogleMap;
     private SupportMapFragment mMapFragment;
@@ -381,7 +382,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
     public void initializeVariables() {
         mStoreList = new ArrayList<>();
         visibleStores = new ArrayList<>();
-        mMarkerMap = new HashMap<>();
+        markerSparseArray = new SparseArray<>();
 
         mAdapter = new NearByStoreListAdapter();
         dataManager = App.getDataManager();
@@ -465,7 +466,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
                             @Override
                             public Pair<Marker, Bitmap> apply(Store store) {
                                 Bitmap bitmap = getStoreIcon(getContext(), store.getType());
-                                Marker marker = mMarkerMap.get(store.getId());
+                                Marker marker = markerSparseArray.get(store.getId());
 
                                 return new Pair<>(marker, bitmap);
                             }
@@ -500,7 +501,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
     void addMarkersToMap(List<Store> storeList, GoogleMap googleMap) {
         googleMap.clear();
 
-        // Set icons of the ic_map_defaultmarker to green
+        // Set icons of the store marker to green
         for (int i = 0; i < storeList.size(); i++) {
             Store store = storeList.get(i);
             Marker marker = googleMap.addMarker(new MarkerOptions().position(store.getPosition())
@@ -508,7 +509,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
                     .snippet(store.getAddress())
                     .icon(BitmapDescriptorFactory.fromBitmap(getStoreIcon(getContext(), store.getType()))));
             marker.setTag(store);
-            mMarkerMap.put(store.getId(), marker);
+            markerSparseArray.put(store.getId(), marker);
         }
     }
 

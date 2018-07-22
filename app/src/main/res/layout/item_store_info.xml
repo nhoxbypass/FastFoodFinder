@@ -32,7 +32,7 @@
             android:ellipsize="end"
             android:lines="1"
             android:text="Circle K"
-            android:textSize="18dp" />
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/store_address"

@@ -38,6 +38,8 @@ final public class Constant {
     public static final String DOWNLOADER_BOT_EMAIL = "store_downloader@fastfoodfinder.com";
     public static final String DOWNLOADER_BOT_PWD = "123456789";
 
+    public static final String NO_AVATAR_PLACEHOLDER_URL = "http://cdn.builtlean.com/wp-content/uploads/2015/11/all_noavatar.png.png";
+
     private Constant() {
 
     }

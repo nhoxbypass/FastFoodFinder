@@ -9,7 +9,7 @@
     <string name="app_name">FastFoodFinder</string>
 
     <!-- TODO: Remove or change this all_placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="ipsum">Jarlsberg lancashire edam. Dolcelatte hard cheese brie st. agur blue
@@ -90,13 +90,14 @@
     <string name="about_author">About Author</string>
     <string name="my_moment">My moment</string>
     <string name="vietnamese">Vietnamese</string>
-    <string name="my_new_list">My New List</string>
     <string name="_0_places">0 Places</string>
-    <string name="list_you_create">List you create</string>
+    <string name="list_you_create">List you created</string>
     <string name="subscription">Receive discount</string>
-    <string name="title_activity_camera_view">CameraViewActivity</string>
     <string name="update_db">Update store database</string>
     <string name="permission_denied">Permission denied!</string>
+    <string name="splash_footer">Fastfood Finder 2016</string>
+    <string name="unregistered_user">Unregistered User</string>
+    <string name="unregistered_email" translatable="false">anonymous@fastfoodfinder.com</string>
 
 </resources>
 

@@ -25,7 +25,8 @@
         android:drawablePadding="4dp"
         android:text="@string/update_cover_image"
         android:textSize="8sp"
-        android:visibility="visible" />
+        android:visibility="visible"
+        tools:ignore="SmallSp" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/iv_profile_avatar"

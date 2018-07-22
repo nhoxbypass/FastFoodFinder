@@ -107,10 +107,10 @@ public class ProfileFragment extends Fragment {
         rvListPacket.setAdapter(mAdapter);
         rvListPacket.setLayoutManager(mLayoutManager);
 
-        tvName.setText("Unregistered User");
-        tvEmail.setText("anonymous@fastfoodfinder.com");
+        tvName.setText(R.string.unregistered_user);
+        tvEmail.setText(R.string.unregistered_email);
         if (User.currentUser == null)
-            User.currentUser = new User("Unregistered User", "anonymous@fastfoodfinder.com", "http://cdn.builtlean.com/wp-content/uploads/2015/11/all_noavatar.png.png", "null", new ArrayList<UserStoreList>());
+            User.currentUser = new User(getString(R.string.unregistered_user), getString(R.string.unregistered_email), Constant.NO_AVATAR_PLACEHOLDER_URL, "null", new ArrayList<UserStoreList>());
 
         if (dataManager.isSignedIn()) {
             getUserData(dataManager.getCurrentUserUid());

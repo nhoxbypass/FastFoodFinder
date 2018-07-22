@@ -81,7 +81,6 @@
     <string name="notifications">Thông báo</string>
     <string name="your_places">Danh sách địa điểm của bạn</string>
     <string name="persional">Cá nhân</string>
-    <string name="list">Trực quan</string>
     <string name="connection">Kết nối</string>
     <string name="setting">Cài đặt</string>
     <string name="help_and_feedback">Trợ giúp và phản hồi</string>
@@ -90,5 +89,10 @@
     <string name="vietnamese">Tiếng Việt</string>
     <string name="subscription">Hóng khuyến mãi</string>
     <string name="update_db">Cập nhật dữ liệu cửa hàng</string>
+    <string name="ar">Trực quan</string>
+    <string name="_0_places">0 địa </string>
+    <string name="list_you_create">Danh sách bạn đã </string>
+    <string name="permission_denied">Quyền truy cập bị từ chối!</string>
+    <string name="unregistered_user">Người dùng chưa đăng ký</string>
 
 </resources>

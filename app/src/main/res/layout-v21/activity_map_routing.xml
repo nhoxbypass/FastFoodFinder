@@ -49,6 +49,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="56dp"
         android:background="@color/colorWhite"
+        android:backgroundTint="@color/colorWhite"
         android:visibility="gone"
         app:elevation="6dp" />
 
@@ -109,6 +110,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:background="@color/colorWhite"
+            android:backgroundTint="#FAFAFA"
             android:clipToPadding="true" />
     </LinearLayout>
 
