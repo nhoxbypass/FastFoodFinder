@@ -43,7 +43,6 @@ public class ListDetailActivity extends AppCompatActivity {
     CircleImageView avatar;
 
     private StoreListAdapter mAdapter;
-    private LinearLayoutManager layoutManager;
 
     private DataManager dataManager;
 
@@ -55,7 +54,7 @@ public class ListDetailActivity extends AppCompatActivity {
 
         dataManager = App.getDataManager();
         mAdapter = new StoreListAdapter();
-        layoutManager = new LinearLayoutManager(getApplicationContext());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         rvStoreList.setAdapter(mAdapter);
         rvStoreList.setLayoutManager(layoutManager);
         RecyclerView.ItemDecoration decoration = new DividerItemDecoration(getApplicationContext(), DividerItemDecoration.VERTICAL);

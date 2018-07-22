@@ -68,7 +68,6 @@ public class ProfileFragment extends Fragment {
     private DialogUpdateCoverImage mDialog;
     private DialogCreateNewList mDialogCreate;
     private UserStoreListAdapter mAdapter;
-    private StaggeredGridLayoutManager mLayoutManager;
     private List<UserStoreList> defaultList;
     private ArrayList<String> listName;
 
@@ -104,7 +103,7 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mAdapter = new UserStoreListAdapter();
-        mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         rvListPacket.setAdapter(mAdapter);
         rvListPacket.setLayoutManager(mLayoutManager);
 

@@ -95,13 +95,11 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
     CoordinatorLayout mCoordinatorLayoutContainer;
     @BindView(R.id.ll_bottom_sheet)
     LinearLayout mBottomSheetContainer;
-    private BottomSheetBehavior mBottomSheetBehavior;
 
     private LatLng currLocation;
     private List<Store> mStoreList;
     private List<Store> visibleStores;
     private SparseArray<Marker> markerSparseArray; // pair storeId - marker
-    private Bitmap currMarkerBitmap;
     private GoogleMap mGoogleMap;
     private SupportMapFragment mMapFragment;
     private NearByStoreListAdapter mAdapter;
@@ -142,7 +140,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_main_map, container, false);
         ButterKnife.bind(this, rootView);
-        mBottomSheetBehavior = BottomSheetBehavior.from(mBottomSheetContainer);
+        BottomSheetBehavior.from(mBottomSheetContainer);
         return rootView;
     }
 

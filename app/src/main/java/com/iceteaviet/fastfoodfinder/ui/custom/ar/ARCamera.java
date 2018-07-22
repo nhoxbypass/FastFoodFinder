@@ -24,7 +24,6 @@ public class ARCamera extends ViewGroup implements SurfaceHolder.Callback {
     private final String TAG = ARCamera.class.getSimpleName();
 
     private SurfaceView surfaceView;
-    private SurfaceHolder surfaceHolder;
     private Camera.Size previewSize;
     private List<Camera.Size> supportedPreviewSizes;
     private Camera camera;
@@ -42,7 +41,7 @@ public class ARCamera extends ViewGroup implements SurfaceHolder.Callback {
         super(context);
 
         this.activity = (Activity) context;
-        surfaceHolder = this.surfaceView.getHolder();
+        SurfaceHolder surfaceHolder = this.surfaceView.getHolder();
         surfaceHolder.addCallback(this);
         surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
     }

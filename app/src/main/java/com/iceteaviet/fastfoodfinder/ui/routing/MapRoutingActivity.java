@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
@@ -68,7 +67,6 @@ public class MapRoutingActivity extends AppCompatActivity {
     LinearLayout routingButtonContainer;
 
     private RoutingAdapter.OnNavigationItemClickListener mListener;
-    private DividerItemDecoration divider;
     private boolean isPreviewMode = false;
     private BottomSheetBehavior mBottomSheetBehavior;
     private GoogleMap mGoogleMap;
