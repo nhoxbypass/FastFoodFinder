@@ -142,68 +142,68 @@ final public class DataUtils {
 
     public static List<String> normalizeDistrictQuery(String queryString) {
         List<String> result = new ArrayList<>();
-        queryString = queryString.toLowerCase().trim();
+        String trimmedQuery = queryString.toLowerCase().trim();
 
-        if (queryString.equals("gò vấp") || queryString.equals("go vap") || queryString.equals("govap")) {
+        if (trimmedQuery.equals("gò vấp") || trimmedQuery.equals("go vap") || trimmedQuery.equals("govap")) {
             result.add("Gò Vấp");
             result.add("Go Vap");
-        } else if (queryString.equals("tân bình") || queryString.equals("tan binh") || queryString.equals("tanbinh")) {
+        } else if (trimmedQuery.equals("tân bình") || trimmedQuery.equals("tan binh") || trimmedQuery.equals("tanbinh")) {
             result.add("Tân Bình");
             result.add("Tan Binh");
-        } else if (queryString.equals("tân phú") || queryString.equals("tan phu") || queryString.equals("tanphu")) {
+        } else if (trimmedQuery.equals("tân phú") || trimmedQuery.equals("tan phu") || trimmedQuery.equals("tanphu")) {
             result.add("Tân Phú");
             result.add("Tan Phu");
-        } else if (queryString.equals("bình thạnh") || queryString.equals("binh thanh") || queryString.equals("binhthanh")) {
+        } else if (trimmedQuery.equals("bình thạnh") || trimmedQuery.equals("binh thanh") || trimmedQuery.equals("binhthanh")) {
             result.add("Bình Thạnh");
             result.add("Binh Thanh");
-        } else if (queryString.equals("phú nhuận") || queryString.equals("phu nhuan") || queryString.equals("phunhuan")) {
+        } else if (trimmedQuery.equals("phú nhuận") || trimmedQuery.equals("phu nhuan") || trimmedQuery.equals("phunhuan")) {
             result.add("Phú Nhuận");
             result.add("Phu Nhuan");
-        } else if (queryString.equals("quận 9") || queryString.equals("quan 9")) {
+        } else if (trimmedQuery.equals("quận 9") || trimmedQuery.equals("quan 9")) {
             result.add("Quận 9");
             result.add("Quan 9");
             result.add("District 9");
-        } else if (queryString.equals("quận 1") || queryString.equals("quan 1")) {
+        } else if (trimmedQuery.equals("quận 1") || trimmedQuery.equals("quan 1")) {
             result.add("Quận 1");
             result.add("Quan 1");
             result.add("District 1");
-        } else if (queryString.equals("quận 2") || queryString.equals("quan 2")) {
+        } else if (trimmedQuery.equals("quận 2") || trimmedQuery.equals("quan 2")) {
             result.add("Quận 2");
             result.add("Quan 2");
             result.add("District 2");
-        } else if (queryString.equals("quận 3") || queryString.equals("quan 3")) {
+        } else if (trimmedQuery.equals("quận 3") || trimmedQuery.equals("quan 3")) {
             result.add("Quận 3");
             result.add("Quan 3");
             result.add("District 3");
-        } else if (queryString.equals("quận 4") || queryString.equals("quan 4")) {
+        } else if (trimmedQuery.equals("quận 4") || trimmedQuery.equals("quan 4")) {
             result.add("Quận 4");
             result.add("Quan 4");
             result.add("District 4");
-        } else if (queryString.equals("quận 5") || queryString.equals("quan 5")) {
+        } else if (trimmedQuery.equals("quận 5") || trimmedQuery.equals("quan 5")) {
             result.add("Quận 5");
             result.add("Quan 5");
             result.add("District 5");
-        } else if (queryString.equals("quận 6") || queryString.equals("quan 6")) {
+        } else if (trimmedQuery.equals("quận 6") || trimmedQuery.equals("quan 6")) {
             result.add("Quận 6");
             result.add("Quan 6");
             result.add("District 6");
-        } else if (queryString.equals("quận 7") || queryString.equals("quan 7")) {
+        } else if (trimmedQuery.equals("quận 7") || trimmedQuery.equals("quan 7")) {
             result.add("Quận 7");
             result.add("Quan 7");
             result.add("District 7");
-        } else if (queryString.equals("quận 8") || queryString.equals("quan 8")) {
+        } else if (trimmedQuery.equals("quận 8") || trimmedQuery.equals("quan 8")) {
             result.add("Quận 8");
             result.add("Quan 8");
             result.add("District 8");
-        } else if (queryString.equals("quận 10") || queryString.equals("quan 10")) {
+        } else if (trimmedQuery.equals("quận 10") || trimmedQuery.equals("quan 10")) {
             result.add("Quận 10");
             result.add("Quan 10");
             result.add("District 10");
-        } else if (queryString.equals("quận 11") || queryString.equals("quan 11")) {
+        } else if (trimmedQuery.equals("quận 11") || trimmedQuery.equals("quan 11")) {
             result.add("Quận 11");
             result.add("Quan 11");
             result.add("District 11");
-        } else if (queryString.equals("quận 12") || queryString.equals("quan 12")) {
+        } else if (trimmedQuery.equals("quận 12") || trimmedQuery.equals("quan 12")) {
             result.add("Quận 12");
             result.add("Quan 12");
             result.add("District 12");

@@ -58,13 +58,13 @@
     <string name="rate_it">Đánh giá nó</string>
     <string name="comment">Bình luận</string>
     <string name="now_open">Mở</string>
-    <string name="tips_from_people_who_has_been_here">Lưu ý từ những người đã từng đi...</string>
+    <string name="tips_from_people_who_has_been_here">Lưu ý từ những người đã từng đi…</string>
     <string name="map">Bản đồ</string>
     <string name="sign_in">Đăng nhập</string>
     <string name="sign_in_successfully">Đăng nhập thành công!</string>
     <string name="authentication_failed">Authentication failed.</string>
     <string name="search_error">Lỗi tìm kiếm!</string>
-    <string name="type_name_store">Nhập tên cửa hàng...</string>
+    <string name="type_name_store">Nhập tên cửa hàng…</string>
     <string name="update_database_successfull">Cập nhật dữ liệu thành công</string>
     <string name="update_database_failed">"Cập nhật dữ liệu thất bại: "</string>
     <string name="do_you_want_undo">Phục hồi?</string>

@@ -45,7 +45,7 @@ final public class LocationUtils {
         return (start.distanceTo(end) / 1000.0);
     }
 
-    public static float[] WSG84toECEF(Location location) {
+    public static float[] convertWSG84toECEF(Location location) {
         double radLat = Math.toRadians(location.getLatitude());
         double radLon = Math.toRadians(location.getLongitude());
 
@@ -63,7 +63,7 @@ final public class LocationUtils {
         return new float[]{x, y, z};
     }
 
-    public static float[] ECEFtoENU(Location currentLocation, float[] ecefCurrentLocation, float[] ecefPOI) {
+    public static float[] convertECEFtoENU(Location currentLocation, float[] ecefCurrentLocation, float[] ecefPOI) {
         double radLat = Math.toRadians(currentLocation.getLatitude());
         double radLon = Math.toRadians(currentLocation.getLongitude());
 

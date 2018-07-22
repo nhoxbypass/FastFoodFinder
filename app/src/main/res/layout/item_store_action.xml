@@ -80,7 +80,6 @@
                 android:id="@+id/open_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/status"
                 android:paddingTop="4dp"
                 android:text="08:00 AM - 10:00 PM" />
         </LinearLayout>

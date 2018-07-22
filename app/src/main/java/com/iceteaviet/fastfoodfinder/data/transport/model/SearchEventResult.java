@@ -19,7 +19,7 @@ public class SearchEventResult {
 
     public SearchEventResult(int resultCode, int storeType) {
         mResult = resultCode;
-        mStoreType = mResult = resultCode;
+        mStoreType = storeType;
     }
 
     public SearchEventResult(int resultCode, String searchString) {

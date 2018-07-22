@@ -85,6 +85,7 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 break;
             default:
                 ((CommentViewHolder) holder).bind(mComments.get(position - 3));
+                break;
         }
     }
 
@@ -169,6 +170,8 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     break;
                 case R.id.check_in:
                     listener.onCheckIn(mStore.getId());
+                    break;
+                default:
                     break;
             }
             v.setSelected(!v.isSelected());

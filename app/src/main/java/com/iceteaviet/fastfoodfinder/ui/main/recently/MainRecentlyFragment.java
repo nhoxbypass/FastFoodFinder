@@ -1,8 +1,10 @@
 package com.iceteaviet.fastfoodfinder.ui.main.recently;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -16,7 +18,6 @@ import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store;
 import com.iceteaviet.fastfoodfinder.ui.main.OnStartDragListener;
 import com.iceteaviet.fastfoodfinder.ui.main.SimpleItemTouchHelperCallback;
 import com.iceteaviet.fastfoodfinder.ui.store.StoreDetailActivity;
-import com.iceteaviet.fastfoodfinder.utils.ui.DividerItemDecoration;
 
 import java.util.ArrayList;
 
@@ -33,11 +34,8 @@ public class MainRecentlyFragment extends Fragment implements OnStartDragListene
     @BindView(R.id.fl_container)
     FrameLayout containerLayout;
     private RecentlyStoreAdapter mRecentlyAdapter;
-    private LinearLayoutManager mLayoutManager;
     private ItemTouchHelper mItemTouchHelper;
 
-    public MainRecentlyFragment() {
-    }
 
     public static MainRecentlyFragment newInstance() {
         Bundle args = new Bundle();
@@ -48,14 +46,14 @@ public class MainRecentlyFragment extends Fragment implements OnStartDragListene
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main_recently, container, false);
         ButterKnife.bind(this, rootView);
         return rootView;
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         setupRecyclerView(recyclerView);
         loadData();
     }
@@ -70,10 +68,10 @@ public class MainRecentlyFragment extends Fragment implements OnStartDragListene
             }
         });
 
-        mLayoutManager = new LinearLayoutManager(getContext());
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         rv.setLayoutManager(mLayoutManager);
         rv.setAdapter(mRecentlyAdapter);
-        RecyclerView.ItemDecoration decoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST);
+        RecyclerView.ItemDecoration decoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
 
         rv.addItemDecoration(decoration);
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(mRecentlyAdapter);

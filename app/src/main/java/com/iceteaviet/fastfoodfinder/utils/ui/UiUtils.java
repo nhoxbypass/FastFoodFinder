@@ -23,9 +23,9 @@ public final class UiUtils {
                 return R.drawable.logo_bsmart_50;
             case Constant.TYPE_SHOP_N_GO:
                 return R.drawable.logo_shopngo_50;
+            default:
+                return R.drawable.logo_circlek_50;
         }
-
-        return R.drawable.logo_circlek_50;
     }
 
     public static int getDirectionImage(String direction) {

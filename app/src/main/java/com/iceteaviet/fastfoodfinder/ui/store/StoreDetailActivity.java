@@ -26,11 +26,8 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.iceteaviet.fastfoodfinder.App;
 import com.iceteaviet.fastfoodfinder.R;
 import com.iceteaviet.fastfoodfinder.data.DataManager;
@@ -50,8 +47,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.SingleObserver;
 import io.reactivex.disposables.Disposable;
-
-import static com.iceteaviet.fastfoodfinder.R.id.map;
 
 /**
  * Created by taq on 18/11/2016.
@@ -121,19 +116,6 @@ public class StoreDetailActivity extends AppCompatActivity implements StoreDetai
                 .build();
     }
 
-    private void setUpMapIfNeeded() {
-        if (mMapFragment == null) {
-            mMapFragment = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(map));
-            mMapFragment.getMapAsync(new OnMapReadyCallback() {
-                @Override
-                public void onMapReady(GoogleMap map) {
-                    mGoogleMap = map;
-                    Marker m = mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(40, -4)));
-                }
-            });
-        }
-    }
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -173,6 +155,9 @@ public class StoreDetailActivity extends AppCompatActivity implements StoreDetai
                 }
                 return;
             }
+
+            default:
+                break;
         }
     }
 
@@ -193,7 +178,7 @@ public class StoreDetailActivity extends AppCompatActivity implements StoreDetai
     @Override
     public void onDirect() {
         LatLng storeLocation = currentStore.getPosition();
-        Map<String, String> queries = new HashMap<String, String>();
+        Map<String, String> queries = new HashMap<>();
 
         queries.put("origin", LocationUtils.getLatLngString(currLocation));
         queries.put("destination", LocationUtils.getLatLngString(storeLocation));
@@ -217,7 +202,7 @@ public class StoreDetailActivity extends AppCompatActivity implements StoreDetai
 
                     @Override
                     public void onError(Throwable e) {
-
+                        e.printStackTrace();
                     }
                 });
     }

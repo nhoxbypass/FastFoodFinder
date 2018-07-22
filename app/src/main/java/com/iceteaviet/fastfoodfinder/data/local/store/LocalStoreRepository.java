@@ -24,10 +24,6 @@ import io.realm.RealmResults;
  */
 public class LocalStoreRepository implements StoreDataSource {
 
-    public LocalStoreRepository() {
-
-    }
-
     @Override
     public void setStores(final List<Store> storeList) {
         if (storeList != null) {
@@ -101,16 +97,16 @@ public class LocalStoreRepository implements StoreDataSource {
 
     @Override
     public Single<List<Store>> findStores(String queryString) {
-        queryString = queryString.toLowerCase().trim();
-        if (queryString.equals("circle k") || queryString.equals("circlek")) {
+        String trimmedQuery = queryString.toLowerCase().trim();
+        if (isCircleKQuery(trimmedQuery)) {
             return findStoresByType(Constant.TYPE_CIRCLE_K);
-        } else if (queryString.equals("mini stop") || queryString.equals("logo_ministop_red")) {
+        } else if (isMinisStopQuery(trimmedQuery)) {
             return findStoresByType(Constant.TYPE_MINI_STOP);
-        } else if (queryString.equals("family mart") || queryString.equals("logo_familymart_red")) {
+        } else if (isFamilyMartQuery(trimmedQuery)) {
             return findStoresByType(Constant.TYPE_FAMILY_MART);
-        } else if (queryString.equals("shop and go") || queryString.equals("shopandgo") || queryString.equals("shop n go")) {
+        } else if (isShopnGoQuery(trimmedQuery)) {
             return findStoresByType(Constant.TYPE_SHOP_N_GO);
-        } else if (queryString.equals("logo_bsmart_red") || queryString.equals("b smart") || queryString.equals("bs mart") || queryString.equals("bmart") || queryString.equals("b'smart") || queryString.equals("b's mart")) {
+        } else if (isBsMartQuery(trimmedQuery)) {
             return findStoresByType(Constant.TYPE_BSMART);
         } else {
             // Cant determine
@@ -227,5 +223,25 @@ public class LocalStoreRepository implements StoreDataSource {
     @Override
     public Single<List<Store>> findStoresByIds(List<Integer> ids) {
         return findStoresBy("id", ids);
+    }
+
+    private boolean isCircleKQuery(String query) {
+        return query.equals("circle k") || query.equals("circlek");
+    }
+
+    private boolean isMinisStopQuery(String query) {
+        return query.equals("mini stop") || query.equals("ministop");
+    }
+
+    private boolean isFamilyMartQuery(String queryString) {
+        return queryString.equals("family mart") || queryString.equals("familymart");
+    }
+
+    private boolean isShopnGoQuery(String queryString) {
+        return queryString.equals("shop and go") || queryString.equals("shopandgo") || queryString.equals("shop n go");
+    }
+
+    private boolean isBsMartQuery(String queryString) {
+        return queryString.equals("bsmart") || queryString.equals("b smart") || queryString.equals("bs mart") || queryString.equals("bmart") || queryString.equals("b'smart") || queryString.equals("b's mart");
     }
 }

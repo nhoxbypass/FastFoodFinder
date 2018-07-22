@@ -15,8 +15,6 @@ public class NoticeDialog extends DialogFragment {
 
     private static final String MESSAGE = "message";
 
-    public NoticeDialog() {
-    }
 
     public static NoticeDialog newInstance(String message) {
         Bundle args = new Bundle();

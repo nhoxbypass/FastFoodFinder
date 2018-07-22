@@ -31,10 +31,6 @@ public class MainFragment extends Fragment {
     ViewPager mViewPager;
     MainPagerAdapter mPagerAdapter;
 
-    public MainFragment() {
-        // Required empty public constructor
-    }
-
     public static MainFragment newInstance() {
 
         Bundle args = new Bundle();
@@ -61,7 +57,7 @@ public class MainFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mPagerAdapter = new MainPagerAdapter(getChildFragmentManager(), getContext());
+        mPagerAdapter = new MainPagerAdapter(getChildFragmentManager());
         mViewPager.setAdapter(mPagerAdapter);
         mViewPager.setOffscreenPageLimit(2);
         mTabLayout.setupWithViewPager(mViewPager);

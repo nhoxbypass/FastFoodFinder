@@ -48,7 +48,7 @@ public class RoutingAdapter extends RecyclerView.Adapter<RoutingAdapter.ViewHold
 
     public LatLng getDirectionLocationAt(int index) {
         if (index < 0 || index >= mStepList.size()) {
-            index = 0;
+            return null;
         }
         return mStepList.get(index).getEndMapCoordination().getLocation();
     }
@@ -71,7 +71,7 @@ public class RoutingAdapter extends RecyclerView.Adapter<RoutingAdapter.ViewHold
 
 
     public interface OnNavigationItemClickListener {
-        public void onClick(int index);
+        void onClick(int index);
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

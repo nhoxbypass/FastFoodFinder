@@ -18,9 +18,6 @@ public class StoreEntity extends RealmObject {
     private double longitude;
     private String telephone;
 
-    public StoreEntity() {
-    }
-
     public int getId() {
         return id;
     }

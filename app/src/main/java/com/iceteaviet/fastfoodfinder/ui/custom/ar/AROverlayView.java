@@ -24,10 +24,10 @@ import java.util.List;
 public class AROverlayView extends View {
     Context context;
     Paint paint;
+    float[] cameraCoordinateVector;
     private float[] rotatedProjectionMatrix = new float[16];
     private Location currentLocation;
     private List<AugmentedPOI> arPoints;
-    float[] cameraCoordinateVector;
     private List<Bitmap> arBitmaps;
 
     public AROverlayView(Context context) {
@@ -70,9 +70,9 @@ public class AROverlayView extends View {
             return;
         }
         for (int i = 0; i < arPoints.size(); i++) {
-            float[] currentLocationInECEF = LocationUtils.WSG84toECEF(currentLocation);
-            float[] pointInECEF = LocationUtils.WSG84toECEF(arPoints.get(i).getLocation());
-            float[] pointInENU = LocationUtils.ECEFtoENU(currentLocation, currentLocationInECEF, pointInECEF);
+            float[] currentLocationInECEF = LocationUtils.convertWSG84toECEF(currentLocation);
+            float[] pointInECEF = LocationUtils.convertWSG84toECEF(arPoints.get(i).getLocation());
+            float[] pointInENU = LocationUtils.convertECEFtoENU(currentLocation, currentLocationInECEF, pointInECEF);
 
             Matrix.multiplyMV(cameraCoordinateVector, 0, rotatedProjectionMatrix, 0, pointInENU, 0);
 

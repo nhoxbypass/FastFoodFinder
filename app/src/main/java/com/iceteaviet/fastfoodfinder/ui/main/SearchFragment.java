@@ -61,10 +61,6 @@ public class SearchFragment extends Fragment {
     private boolean isLoadmoreVisible;
     private String searchString;
 
-    public SearchFragment() {
-        // Required empty public constructor
-    }
-
     public static SearchFragment newInstance() {
 
         Bundle args = new Bundle();

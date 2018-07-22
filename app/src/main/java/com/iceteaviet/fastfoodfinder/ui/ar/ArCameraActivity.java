@@ -145,7 +145,7 @@ public class ArCameraActivity extends BaseActivity implements SensorEventListene
 
                     @Override
                     public void onError(Throwable e) {
-
+                        e.printStackTrace();
                     }
                 });
 

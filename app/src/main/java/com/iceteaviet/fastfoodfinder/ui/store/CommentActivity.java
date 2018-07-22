@@ -127,6 +127,8 @@ public class CommentActivity extends AppCompatActivity implements NoticeDialog.N
             case android.R.id.home:
                 checkClose();
                 return true;
+            default:
+                break;
         }
         return super.onOptionsItemSelected(item);
     }

@@ -154,10 +154,8 @@ public class Store implements Parcelable {
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof Store) {
-            if (this.id == ((Store) obj).id
-                    && this.title.equals(((Store) obj).title)) {
-                return true;
-            }
+            return this.id == ((Store) obj).id
+                    && this.title.equals(((Store) obj).title);
         }
 
         return false;

@@ -50,9 +50,6 @@ public class StoreInfoDialogFragment extends DialogFragment {
 
     private StoreDialogActionListener mListener;
 
-    public StoreInfoDialogFragment() {
-
-    }
 
     public static StoreInfoDialogFragment newInstance(Store store) {
         Bundle args = new Bundle();

@@ -163,6 +163,9 @@ public class ARCamera extends ViewGroup implements SurfaceHolder.Callback {
             case Surface.ROTATION_270:
                 degrees = 270;
                 break;
+            default:
+                degrees = 0;
+                break;
         }
 
         int orientation;
@@ -176,15 +179,13 @@ public class ARCamera extends ViewGroup implements SurfaceHolder.Callback {
         return orientation;
     }
 
-    private Camera.Size getOptimalPreviewSize(List<Camera.Size> sizes, int width, int height) {
+    private Camera.Size getOptimalPreviewSize(List<Camera.Size> sizes, int width, int targetHeight) {
         final double ASPECT_TOLERANCE = 0.1;
-        double targetRatio = (double) width / height;
+        double targetRatio = (double) width / targetHeight;
         if (sizes == null) return null;
 
         Camera.Size optimalSize = null;
         double minDiff = Double.MAX_VALUE;
-
-        int targetHeight = height;
 
         for (Camera.Size size : sizes) {
             double ratio = (double) size.width / size.height;

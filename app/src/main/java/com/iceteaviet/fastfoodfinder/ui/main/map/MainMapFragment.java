@@ -86,7 +86,7 @@ import io.reactivex.subjects.PublishSubject;
  */
 public class MainMapFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks, LocationListener {
     private static final String TAG = MainMapFragment.class.getSimpleName();
-    private static final Hashtable<Integer, Bitmap> CACHE = new Hashtable<Integer, Bitmap>();
+    private static final Hashtable<Integer, Bitmap> CACHE = new Hashtable<>();
     BottomSheetBehavior mBottomSheetBehavior;
 
     LocationRequest mLocationRequest;
@@ -110,10 +110,6 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
     private PublishSubject<Store> newVisibleStorePublisher;
     private DataManager dataManager;
 
-
-    public MainMapFragment() {
-        // Required empty public constructor
-    }
 
     public static MainMapFragment newInstance() {
 
@@ -197,6 +193,9 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
                 }
                 return;
             }
+
+            default:
+                break;
         }
     }
 
@@ -333,6 +332,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
 
             default:
                 Toast.makeText(getContext(), R.string.search_error, Toast.LENGTH_SHORT).show();
+                break;
         }
     }
 
@@ -485,7 +485,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
 
                             @Override
                             public void onError(Throwable e) {
-
+                                e.printStackTrace();
                             }
 
                             @Override
@@ -542,7 +542,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
 
                     @Override
                     public void onError(Throwable e) {
-
+                        e.printStackTrace();
                     }
                 });
     }

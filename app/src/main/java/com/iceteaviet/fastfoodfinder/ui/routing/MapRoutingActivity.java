@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
@@ -25,7 +26,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -36,7 +36,6 @@ import com.iceteaviet.fastfoodfinder.data.remote.routing.model.Step;
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store;
 import com.iceteaviet.fastfoodfinder.utils.Constant;
 import com.iceteaviet.fastfoodfinder.utils.DisplayUtils;
-import com.iceteaviet.fastfoodfinder.utils.ui.DividerItemDecoration;
 import com.iceteaviet.fastfoodfinder.utils.ui.UiUtils;
 
 import java.util.ArrayList;
@@ -219,13 +218,13 @@ public class MapRoutingActivity extends AppCompatActivity {
             mGoogleMap = googleMap;
             mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mCurrLocation, 16));
 
-            Marker currMarker = googleMap.addMarker(new MarkerOptions().position(mCurrLocation)
+            googleMap.addMarker(new MarkerOptions().position(mCurrLocation)
                     .title("Your location")
                     .snippet("Your current location, please follow the line")
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_bluedot)));
 
             if (mCurrStore != null && mCurrStore.getPosition() != null) {
-                Marker storeMarker = googleMap.addMarker(new MarkerOptions().position(mCurrStore.getPosition())
+                googleMap.addMarker(new MarkerOptions().position(mCurrStore.getPosition())
                         .title(mCurrStore.getTitle())
                         .snippet(mCurrStore.getAddress())
                         .icon(BitmapDescriptorFactory.fromResource(UiUtils.getStoreLogoDrawableId(mCurrStore.getType()))));

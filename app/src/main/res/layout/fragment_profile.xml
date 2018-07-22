@@ -419,7 +419,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textId"
                 android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"></android.support.v7.widget.RecyclerView>
+                android:layout_marginTop="8dp" />
         </RelativeLayout>
     </ScrollView>
 

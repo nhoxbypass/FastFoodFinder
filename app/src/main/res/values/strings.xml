@@ -38,7 +38,7 @@
     <string name="browser">BROWSER</string>
     <string name="image_you_choose">Image you choose:</string>
     <string name="done">DONE</string>
-    <string name="cancel">CANCEL</string>
+    <string name="cancel">Cancel</string>
     <string name="update_cover_image">Update cover image</string>
     <string name="my_list">My List</string>
     <string name="_3_lists">3 lists</string>
@@ -66,13 +66,13 @@
     <string name="rate_it">Rate it</string>
     <string name="comment">Comment</string>
     <string name="now_open">NOW OPEN</string>
-    <string name="tips_from_people_who_has_been_here">Tips from people who has been here...</string>
+    <string name="tips_from_people_who_has_been_here">Tips from people who has been here…</string>
     <string name="map">MAP</string>
     <string name="sign_in">Sign In</string>
     <string name="sign_in_successfully">Sign In Successfully!</string>
     <string name="authentication_failed">Authentication failed.</string>
     <string name="search_error">Search error!</string>
-    <string name="type_name_store">Type name of store...</string>
+    <string name="type_name_store">Type name of store…</string>
     <string name="update_database_successfull">Update database successfully</string>
     <string name="update_database_failed">"Update database failed: "</string>
     <string name="do_you_want_undo">Undo?</string>

@@ -128,8 +128,8 @@ public class ProfileFragment extends Fragment {
         tvNumberList.setText("(" + String.valueOf(mAdapter.getItemCount()) + ")");
     }
 
-    public void showDialog(DialogUpdateCoverImage dialog) {
-        dialog = DialogUpdateCoverImage.newInstance();
+    public DialogUpdateCoverImage showDialog() {
+        DialogUpdateCoverImage dialog = DialogUpdateCoverImage.newInstance();
         dialog.show(getFragmentManager(), "");
         dialog.setOnButtonClickListener(new DialogUpdateCoverImage.OnButtonClickListener() {
             @Override
@@ -142,6 +142,8 @@ public class ProfileFragment extends Fragment {
                     }
             }
         });
+
+        return dialog;
     }
 
     @Override
@@ -177,7 +179,7 @@ public class ProfileFragment extends Fragment {
 
                     @Override
                     public void onError(Throwable e) {
-
+                        e.printStackTrace();
                     }
                 });
     }
@@ -193,7 +195,7 @@ public class ProfileFragment extends Fragment {
         btnUpdateCoverImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showDialog(mDialog);
+                mDialog = showDialog();
                 btnUpdateCoverImage.setVisibility(View.GONE);
             }
         });
@@ -205,7 +207,7 @@ public class ProfileFragment extends Fragment {
                 mDialogCreate.show(getFragmentManager(), "");
                 mDialogCreate.setOnButtonClickListener(new DialogCreateNewList.OnCreateListListener() {
                     @Override
-                    public void OnButtonClick(String name, int idIconSource) {
+                    public void onButtonClick(String name, int idIconSource) {
                         int id = User.currentUser.getUserStoreLists().size(); //New id = current size
                         UserStoreList list = new UserStoreList(id, new ArrayList<Integer>(), idIconSource, name);
                         mAdapter.addListPacket(list);
@@ -249,7 +251,7 @@ public class ProfileFragment extends Fragment {
 
         mAdapter.setOnItemClickListener(new UserStoreListAdapter.OnItemClickListener() {
             @Override
-            public void OnClick(UserStoreList listPacket) {
+            public void onClick(UserStoreList listPacket) {
                 sendToDetailListActivity(listPacket);
 
             }

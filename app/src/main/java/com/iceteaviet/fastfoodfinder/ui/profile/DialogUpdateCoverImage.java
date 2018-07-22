@@ -59,9 +59,6 @@ public class DialogUpdateCoverImage extends android.support.v4.app.DialogFragmen
     OnButtonClickListener mListener;
 
 
-    public DialogUpdateCoverImage() {
-    }
-
     public static DialogUpdateCoverImage newInstance() {
         DialogUpdateCoverImage frag = new DialogUpdateCoverImage();
         Bundle args = new Bundle();
@@ -180,8 +177,8 @@ public class DialogUpdateCoverImage extends android.support.v4.app.DialogFragmen
                     filePathColumn, null, null, null);
             cursor.moveToFirst();
 
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            String picturePath = cursor.getString(columnIndex);
+            //int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            //String picturePath = cursor.getString(columnIndex);
             cursor.close();
 
             Bitmap bmp = null;

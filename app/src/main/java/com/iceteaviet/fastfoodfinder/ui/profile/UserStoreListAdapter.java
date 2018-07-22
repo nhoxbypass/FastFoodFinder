@@ -68,7 +68,7 @@ public class UserStoreListAdapter extends RecyclerView.Adapter<UserStoreListAdap
     }
 
     public interface OnItemClickListener {
-        void OnClick(UserStoreList listPacket);
+        void onClick(UserStoreList listPacket);
     }
 
     class ListViewHolder extends RecyclerView.ViewHolder {
@@ -85,7 +85,7 @@ public class UserStoreListAdapter extends RecyclerView.Adapter<UserStoreListAdap
                 @Override
                 public void onClick(View view) {
                     UserStoreList listPacket = mListPackets.get(getAdapterPosition());
-                    mListener.OnClick(listPacket);
+                    mListener.onClick(listPacket);
 
                 }
             });
@@ -94,7 +94,7 @@ public class UserStoreListAdapter extends RecyclerView.Adapter<UserStoreListAdap
                 @Override
                 public boolean onLongClick(View view) {
                     final int position = getAdapterPosition();
-                    final UserStoreList userStoreList = mListPackets.get(position);
+                    //final UserStoreList userStoreList = mListPackets.get(position);
                     new AlertDialog.Builder(itemView.getContext())
                             .setTitle(R.string.delete_favourite_location)
                             .setMessage(R.string.are_you_sure)

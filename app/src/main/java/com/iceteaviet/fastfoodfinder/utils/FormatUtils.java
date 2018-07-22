@@ -28,6 +28,7 @@ public final class FormatUtils {
                         //Because it is a whitespace again
                         builder.delete(i, i + 1);
                 } catch (Exception ex) {
+                    ex.printStackTrace();
                 }
             }
         }
@@ -61,9 +62,9 @@ public final class FormatUtils {
     }
 
     public static Intent getCallIntent(String tel) {
-        tel = tel.replaceAll("\\s", "");
+        String normalizedTel = tel.replaceAll("\\s", "");
         Intent callIntent = new Intent(Intent.ACTION_CALL);
-        callIntent.setData(Uri.parse("tel:08" + tel));
+        callIntent.setData(Uri.parse("tel:08" + normalizedTel));
         return callIntent;
     }
 }

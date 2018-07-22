@@ -1,6 +1,5 @@
 package com.iceteaviet.fastfoodfinder.ui.main;
 
-import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -19,12 +18,8 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
     private String pageTitles[] = new String[]{String.valueOf(R.string.map), String.valueOf(R.string.recently), String.valueOf(R.string.favourite)};
     private int[] imageResId = {R.drawable.ic_main_map, R.drawable.ic_main_clock_red, R.drawable.ic_main_star_red};
 
-    private Context mContext;
-
-
-    public MainPagerAdapter(FragmentManager fm, Context context) {
+    public MainPagerAdapter(FragmentManager fm) {
         super(fm);
-        mContext = context;
     }
 
     @Override
@@ -36,10 +31,9 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
                 return MainRecentlyFragment.newInstance();
             case 2:
                 return MainFavouriteFragment.newInstance();
-
+            default:
+                return null;
         }
-
-        return null;
     }
 
     @Override

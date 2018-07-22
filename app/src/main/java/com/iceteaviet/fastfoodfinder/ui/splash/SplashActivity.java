@@ -86,7 +86,7 @@ public class SplashActivity extends AppCompatActivity {
 
                                     @Override
                                     public void onError(Throwable e) {
-
+                                        e.printStackTrace();
                                     }
                                 });
                     } else {

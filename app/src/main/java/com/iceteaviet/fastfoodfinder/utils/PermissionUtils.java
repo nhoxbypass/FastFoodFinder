@@ -28,9 +28,9 @@ public final class PermissionUtils {
 
     public static void requestLocationPermission(Fragment fragment) {
         fragment.requestPermissions(new String[]{
-                            Manifest.permission.ACCESS_FINE_LOCATION,
-                            Manifest.permission.ACCESS_COARSE_LOCATION},
-                    REQUEST_LOCATION);
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION},
+                REQUEST_LOCATION);
     }
 
     public static boolean isLocationPermissionGranted(Context context) {

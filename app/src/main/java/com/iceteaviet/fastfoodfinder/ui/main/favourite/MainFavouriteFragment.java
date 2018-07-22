@@ -1,9 +1,11 @@
 package com.iceteaviet.fastfoodfinder.ui.main.favourite;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -22,7 +24,6 @@ import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreEvent;
 import com.iceteaviet.fastfoodfinder.ui.main.OnStartDragListener;
 import com.iceteaviet.fastfoodfinder.ui.main.SimpleItemTouchHelperCallback;
 import com.iceteaviet.fastfoodfinder.ui.store.StoreDetailActivity;
-import com.iceteaviet.fastfoodfinder.utils.ui.DividerItemDecoration;
 
 import java.util.List;
 
@@ -44,7 +45,6 @@ public class MainFavouriteFragment extends Fragment implements OnStartDragListen
     @BindView(R.id.fab_change)
     FloatingActionButton fabChangePosition;
 
-    private LinearLayoutManager mLayoutManager;
     private FavouriteStoreAdapter mFavouriteAdapter;
     private ItemTouchHelper mItemTouchHelper;
 
@@ -66,7 +66,7 @@ public class MainFavouriteFragment extends Fragment implements OnStartDragListen
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main_favourited, container, false);
         ButterKnife.bind(this, rootView);
         return rootView;
@@ -102,10 +102,10 @@ public class MainFavouriteFragment extends Fragment implements OnStartDragListen
             }
         });
 
-        mLayoutManager = new LinearLayoutManager(getContext());
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         rv.setLayoutManager(mLayoutManager);
         rv.setAdapter(mFavouriteAdapter);
-        RecyclerView.ItemDecoration decoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST);
+        RecyclerView.ItemDecoration decoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
 
         rv.addItemDecoration(decoration);
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(mFavouriteAdapter);
@@ -131,7 +131,7 @@ public class MainFavouriteFragment extends Fragment implements OnStartDragListen
 
                         @Override
                         public void onError(Throwable e) {
-
+                            e.printStackTrace();
                         }
                     });
 
@@ -168,6 +168,9 @@ public class MainFavouriteFragment extends Fragment implements OnStartDragListen
                                     break;
 
                                 case UserStoreEvent.ACTION_MOVED:
+                                    break;
+
+                                default:
                                     break;
                             }
                         }

@@ -97,6 +97,59 @@ public class SettingActivity extends AppCompatActivity {
             txtSignOut.setEnabled(false);
         }
 
+        setupEventListeners(pref);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        // refresh your views here
+        super.onConfigurationChanged(newConfig);
+    }
+
+    public void loadLanguage(String languageToLoad) {
+        Locale locale = new Locale(languageToLoad);
+        Locale.setDefault(locale);
+        Configuration configuration = new Configuration();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            setSystemLocale(configuration, locale);
+        } else {
+            setSystemLocaleLegacy(configuration, locale);
+        }
+
+        getBaseContext().getResources().updateConfiguration(configuration,
+                getBaseContext().getResources().getDisplayMetrics());
+        changeLanguage();
+    }
+
+    @SuppressWarnings("deprecation")
+    public void setSystemLocaleLegacy(Configuration config, Locale locale) {
+        config.locale = locale;
+    }
+
+    @TargetApi(Build.VERSION_CODES.N)
+    public void setSystemLocale(Configuration config, Locale locale) {
+        config.setLocale(locale);
+    }
+
+    public void changeLanguage() {
+        txtShareApp.setText(R.string.share_app_with_friends);
+        txtChangeMetric.setText(R.string.use_metric_units);
+        txtEditProfile.setText(R.string.edit_your_profile);
+        txtChangePassword.setText(R.string.change_your_password);
+        txtChangeEmail.setText(R.string.change_your_email);
+        txtSetNotification.setText(R.string.set_notifications);
+        tvSettingLanguage.setText(R.string.english);
+        txtAboutApp.setText(R.string.about_fastfood_finder);
+        txtRateApp.setText(R.string.rate_app);
+        txtFeedBack.setText(R.string.send_feedback);
+        txtPrivacyPolicy.setText(R.string.privacy_policy);
+        txtTermOfUse.setText(R.string.terms_of_use);
+        txtSignOut.setText(R.string.sign_out);
+
+    }
+
+    private void setupEventListeners(final SharedPreferences pref) {
         txtSignOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -180,55 +233,5 @@ public class SettingActivity extends AppCompatActivity {
                         });
             }
         });
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        // refresh your views here
-        super.onConfigurationChanged(newConfig);
-    }
-
-    public void loadLanguage(String lang) {
-        String languageToLoad = lang;
-        Locale locale = new Locale(languageToLoad);
-        Locale.setDefault(locale);
-        Configuration configuration = new Configuration();
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            setSystemLocale(configuration, locale);
-        } else {
-            setSystemLocaleLegacy(configuration, locale);
-        }
-
-        getBaseContext().getResources().updateConfiguration(configuration,
-                getBaseContext().getResources().getDisplayMetrics());
-        changeLanguage();
-    }
-
-    @SuppressWarnings("deprecation")
-    public void setSystemLocaleLegacy(Configuration config, Locale locale) {
-        config.locale = locale;
-    }
-
-    @TargetApi(Build.VERSION_CODES.N)
-    public void setSystemLocale(Configuration config, Locale locale) {
-        config.setLocale(locale);
-    }
-
-    public void changeLanguage() {
-        txtShareApp.setText(R.string.share_app_with_friends);
-        txtChangeMetric.setText(R.string.use_metric_units);
-        txtEditProfile.setText(R.string.edit_your_profile);
-        txtChangePassword.setText(R.string.change_your_password);
-        txtChangeEmail.setText(R.string.change_your_email);
-        txtSetNotification.setText(R.string.set_notifications);
-        tvSettingLanguage.setText(R.string.english);
-        txtAboutApp.setText(R.string.about_fastfood_finder);
-        txtRateApp.setText(R.string.rate_app);
-        txtFeedBack.setText(R.string.send_feedback);
-        txtPrivacyPolicy.setText(R.string.privacy_policy);
-        txtTermOfUse.setText(R.string.terms_of_use);
-        txtSignOut.setText(R.string.sign_out);
-
     }
 }

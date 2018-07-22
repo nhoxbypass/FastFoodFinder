@@ -146,9 +146,9 @@ public class FavouriteStoreAdapter extends RecyclerView.Adapter<FavouriteStoreAd
     }
 
     private interface FavouritedListListener {
-        public void onClick(Store store);
+        void onClick(Store store);
 
-        public void onItemDismiss();
+        void onItemDismiss();
     }
 
     public interface OnItemClickListener {

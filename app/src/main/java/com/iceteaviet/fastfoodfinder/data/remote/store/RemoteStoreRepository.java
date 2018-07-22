@@ -98,7 +98,7 @@ public class RemoteStoreRepository implements StoreDataSource {
     }
 
     private List<Store> parseDataFromFirebase(DataSnapshot dataSnapshot) {
-        List<Store> storeList = new ArrayList<Store>();
+        List<Store> storeList = new ArrayList<>();
         for (DataSnapshot child : dataSnapshot.getChildren()) {
             for (DataSnapshot storeLocation : child.child(Constant.CHILD_MARKERS_ADD).getChildren()) {
                 Store store = storeLocation.getValue(Store.class);

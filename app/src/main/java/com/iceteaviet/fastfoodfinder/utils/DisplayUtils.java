@@ -43,8 +43,7 @@ final public class DisplayUtils {
     }
 
     public static int convertDpToPx(DisplayMetrics displayMetrics, int dp) {
-        int px = Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
-        return px;
+        return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
     }
 
     public static Bitmap resizeMarkerIcon(Bitmap imageBitmap, int width, int height) {
@@ -59,7 +58,6 @@ final public class DisplayUtils {
             height = 1;
 
 
-        Bitmap resizedBitmap = Bitmap.createScaledBitmap(imageBitmap, width, height, false);
-        return resizedBitmap;
+        return Bitmap.createScaledBitmap(imageBitmap, width, height, false);
     }
 }

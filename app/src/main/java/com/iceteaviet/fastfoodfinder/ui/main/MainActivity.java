@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
     TextView mNavHeaderScreenName;
     EditText mSearchInput;
     Button mNavHeaderSignIn;
-    private ActionBarDrawerToggle mDrawerToggle;
+    ActionBarDrawerToggle mDrawerToggle;
 
 
     @Override
@@ -122,7 +122,11 @@ public class MainActivity extends AppCompatActivity {
             case android.R.id.home:
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 return true;
+
+            default:
+                break;
         }
+
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
@@ -162,6 +166,7 @@ public class MainActivity extends AppCompatActivity {
 
             default:
                 Toast.makeText(MainActivity.this, R.string.search_error, Toast.LENGTH_SHORT).show();
+                break;
         }
     }
 
@@ -322,6 +327,7 @@ public class MainActivity extends AppCompatActivity {
                 return;
             default:
                 fragmentClass = MainFragment.class;
+                break;
         }
 
         try {
