@@ -64,12 +64,13 @@ public class ProfileFragment extends Fragment {
     CardView cvFavouritePlace;
     @BindView(R.id.fav_list_items_count)
     TextView tvFavItemsCount;
-    DialogUpdateCoverImage mDialog;
-    DialogCreateNewList mDialogCreate;
-    UserStoreListAdapter mAdapter;
-    StaggeredGridLayoutManager mLayoutManager;
-    List<UserStoreList> defaultList;
-    ArrayList<String> listName;
+
+    private DialogUpdateCoverImage mDialog;
+    private DialogCreateNewList mDialogCreate;
+    private UserStoreListAdapter mAdapter;
+    private StaggeredGridLayoutManager mLayoutManager;
+    private List<UserStoreList> defaultList;
+    private ArrayList<String> listName;
 
     private DataManager dataManager;
 

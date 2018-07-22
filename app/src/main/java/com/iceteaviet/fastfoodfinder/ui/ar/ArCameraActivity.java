@@ -48,9 +48,6 @@ public class ArCameraActivity extends BaseActivity implements SensorEventListene
     private static final double RADIUS = 0.005;
 
     private Location location;
-    private boolean isGPSEnabled;
-    private boolean isNetworkEnabled;
-    private boolean locationServiceAvailable;
     private SurfaceView surfaceView;
     private FrameLayout cameraContainerLayout;
     private AROverlayView arOverlayView;
@@ -258,15 +255,8 @@ public class ArCameraActivity extends BaseActivity implements SensorEventListene
             this.locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
 
             // Get GPS and network status
-            this.isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-            this.isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-
-            if (!isNetworkEnabled && !isGPSEnabled) {
-                // cannot get location
-                this.locationServiceAvailable = false;
-            }
-
-            this.locationServiceAvailable = true;
+            boolean isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+            boolean isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
             if (isNetworkEnabled) {
                 locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,

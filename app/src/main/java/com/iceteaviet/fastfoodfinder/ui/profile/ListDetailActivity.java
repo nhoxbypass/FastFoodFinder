@@ -41,10 +41,11 @@ public class ListDetailActivity extends AppCompatActivity {
     TextView tvNumberPlace;
     @BindView(R.id.cvAvatar)
     CircleImageView avatar;
-    StoreListAdapter mAdapter;
-    LinearLayoutManager layoutManager;
 
-    DataManager dataManager;
+    private StoreListAdapter mAdapter;
+    private LinearLayoutManager layoutManager;
+
+    private DataManager dataManager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

@@ -71,6 +71,7 @@ public class SettingActivity extends AppCompatActivity {
     SwitchCompat swChangeLanguage;
     @BindView(R.id.tv_setting_english)
     TextView tvSettingLanguage;
+
     private boolean isVietnamese = true;
 
     private DataManager dataManager;

@@ -36,7 +36,6 @@ import io.reactivex.disposables.Disposable;
  * Created by MyPC on 11/16/2016.
  */
 public class MainFavouriteFragment extends Fragment implements OnStartDragListener {
-    static boolean isFABChangeClicked = false;
     @BindView(R.id.rv_favourite_stores)
     RecyclerView recyclerView;
     @BindView(R.id.fl_container)
@@ -48,6 +47,7 @@ public class MainFavouriteFragment extends Fragment implements OnStartDragListen
     private ItemTouchHelper mItemTouchHelper;
 
     private DataManager dataManager;
+    boolean isFABChangeClicked = false;
 
     public static MainFavouriteFragment newInstance() {
         Bundle args = new Bundle();

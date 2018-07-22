@@ -28,16 +28,19 @@ public class ARCamera extends ViewGroup implements SurfaceHolder.Callback {
     private Camera.Size previewSize;
     private List<Camera.Size> supportedPreviewSizes;
     private Camera camera;
-    private Camera.Parameters parameters;
     private Activity activity;
     private float[] projectionMatrix = new float[16];
     private int cameraWidth;
     private int cameraHeight;
 
     public ARCamera(Context context, SurfaceView surfaceView) {
+        this(context);
+        this.surfaceView = surfaceView;
+    }
+
+    public ARCamera(Context context) {
         super(context);
 
-        this.surfaceView = surfaceView;
         this.activity = (Activity) context;
         surfaceHolder = this.surfaceView.getHolder();
         surfaceHolder.addCallback(this);
@@ -60,9 +63,6 @@ public class ARCamera extends ViewGroup implements SurfaceHolder.Callback {
     public void surfaceCreated(SurfaceHolder holder) {
         try {
             if (camera != null) {
-
-                parameters = camera.getParameters();
-
                 int orientation = getCameraOrientation();
 
                 camera.setDisplayOrientation(orientation);

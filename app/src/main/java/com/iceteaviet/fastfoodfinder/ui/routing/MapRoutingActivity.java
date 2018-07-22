@@ -66,9 +66,10 @@ public class MapRoutingActivity extends AppCompatActivity {
     ImageButton nextInstruction;
     @BindView(R.id.ll_routing_button_container)
     LinearLayout routingButtonContainer;
-    RoutingAdapter.OnNavigationItemClickListener mListener;
-    DividerItemDecoration divider;
-    boolean isPreviewMode = false;
+
+    private RoutingAdapter.OnNavigationItemClickListener mListener;
+    private DividerItemDecoration divider;
+    private boolean isPreviewMode = false;
     private BottomSheetBehavior mBottomSheetBehavior;
     private GoogleMap mGoogleMap;
     private SupportMapFragment mMapFragment;

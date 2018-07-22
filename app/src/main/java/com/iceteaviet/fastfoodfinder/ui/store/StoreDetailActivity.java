@@ -55,8 +55,7 @@ import io.reactivex.disposables.Disposable;
 public class StoreDetailActivity extends AppCompatActivity implements StoreDetailAdapter.StoreActionListener, GoogleApiClient.ConnectionCallbacks {
 
     public static final int REQUEST_COMMENT = 113;
-    LatLng currLocation;
-    LocationRequest mLocationRequest;
+
     @BindView(R.id.appbar)
     AppBarLayout appbar;
     @BindView(R.id.collapsing_toolbar)
@@ -67,6 +66,9 @@ public class StoreDetailActivity extends AppCompatActivity implements StoreDetai
     ImageView ivBackdrop;
     @BindView(R.id.content)
     RecyclerView rvContent;
+
+    private LatLng currLocation;
+    private LocationRequest mLocationRequest;
     private Store currentStore;
     private GoogleApiClient googleApiClient;
     private SupportMapFragment mMapFragment;

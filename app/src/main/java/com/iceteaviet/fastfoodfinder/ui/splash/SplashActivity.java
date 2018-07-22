@@ -23,10 +23,10 @@ import io.reactivex.SingleObserver;
 import io.reactivex.disposables.Disposable;
 
 public class SplashActivity extends AppCompatActivity {
-
     public static final String KEY_FIRST_RUN = "firstRun";
+
     private final int SPLASH_DISPLAY_LENGTH = 1000; //Duration of wait
-    public boolean isFirstRun = false;
+    private boolean isFirstRun = false;
     private SharedPreferences mSharedPreferences;
     private DataManager dataManager;
 

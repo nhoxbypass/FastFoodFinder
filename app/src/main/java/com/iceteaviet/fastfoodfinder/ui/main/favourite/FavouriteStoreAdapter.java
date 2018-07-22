@@ -33,7 +33,7 @@ import butterknife.ButterKnife;
 public class FavouriteStoreAdapter extends RecyclerView.Adapter<FavouriteStoreAdapter.FavouriteStoreViewHolder>
         implements ItemTouchHelperAdapter {
     private final OnStartDragListener mDragStartListener;
-    View mContainerView;
+    private View mContainerView;
     private List<Store> mStoreList;
     private OnItemClickListener mOnItemClickListener;
 

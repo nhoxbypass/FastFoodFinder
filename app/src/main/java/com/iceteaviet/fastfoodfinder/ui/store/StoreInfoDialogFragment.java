@@ -46,7 +46,7 @@ public class StoreInfoDialogFragment extends DialogFragment {
     @BindView(R.id.save_this)
     Button btnAddToFavorite;
 
-    Store store;
+    private Store store;
 
     private StoreDialogActionListener mListener;
 

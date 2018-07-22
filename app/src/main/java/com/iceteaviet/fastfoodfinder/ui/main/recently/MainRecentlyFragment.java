@@ -28,13 +28,14 @@ import butterknife.ButterKnife;
  * Created by MyPC on 11/20/2016.
  */
 public class MainRecentlyFragment extends Fragment implements OnStartDragListener {
-    private static boolean isFABChangeClicked = false;
     @BindView(R.id.rv_recently_stores)
     RecyclerView recyclerView;
     @BindView(R.id.fl_container)
     FrameLayout containerLayout;
+
     private RecentlyStoreAdapter mRecentlyAdapter;
     private ItemTouchHelper mItemTouchHelper;
+    private boolean isFABChangeClicked = false;
 
 
     public static MainRecentlyFragment newInstance() {

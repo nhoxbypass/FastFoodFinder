@@ -31,8 +31,8 @@ import butterknife.ButterKnife;
 public class RecentlyStoreAdapter extends RecyclerView.Adapter<RecentlyStoreAdapter.RecentlyStoreViewHolder>
         implements ItemTouchHelperAdapter {
     private final OnStartDragListener mDragStartListener;
-    List<Store> mStoreList;
-    View mContainerView;
+    private List<Store> mStoreList;
+    private View mContainerView;
     private OnItemClickListener mOnItemClickListener;
 
     public RecentlyStoreAdapter(OnStartDragListener onStartDragListener, FrameLayout frameLayout) {

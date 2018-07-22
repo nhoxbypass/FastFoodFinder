@@ -87,7 +87,6 @@ import io.reactivex.subjects.PublishSubject;
 public class MainMapFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks, LocationListener {
     private static final String TAG = MainMapFragment.class.getSimpleName();
     private static final Hashtable<Integer, Bitmap> CACHE = new Hashtable<>();
-    BottomSheetBehavior mBottomSheetBehavior;
 
     LocationRequest mLocationRequest;
     @BindView(R.id.rv_bottom_sheet)
@@ -96,11 +95,13 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
     CoordinatorLayout mCoordinatorLayoutContainer;
     @BindView(R.id.ll_bottom_sheet)
     LinearLayout mBottomSheetContainer;
-    LatLng currLocation;
-    List<Store> mStoreList;
-    List<Store> visibleStores;
-    SparseArray<Marker> markerSparseArray; // pair storeId - marker
-    Bitmap currMarkerBitmap;
+    private BottomSheetBehavior mBottomSheetBehavior;
+
+    private LatLng currLocation;
+    private List<Store> mStoreList;
+    private List<Store> visibleStores;
+    private SparseArray<Marker> markerSparseArray; // pair storeId - marker
+    private Bitmap currMarkerBitmap;
     private GoogleMap mGoogleMap;
     private SupportMapFragment mMapFragment;
     private NearByStoreListAdapter mAdapter;
@@ -407,8 +408,6 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
                         Toast.makeText(getContext(), "Failed to get stores data!", Toast.LENGTH_SHORT).show();
                     }
                 });
-
-        currMarkerBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.logo_circlek_50);
 
         googleApiClient = new GoogleApiClient.Builder(getContext())
                 .addConnectionCallbacks(MainMapFragment.this)

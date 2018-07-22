@@ -27,8 +27,9 @@ import butterknife.ButterKnife;
 public class RoutingAdapter extends RecyclerView.Adapter<RoutingAdapter.ViewHolder> {
     public static final int TYPE_FULL = 0;
     public static final int TYPE_SHORT = 1;
-    List<Step> mStepList;
-    OnNavigationItemClickListener mListener;
+
+    private List<Step> mStepList;
+    private OnNavigationItemClickListener mListener;
     private int mType;
 
     public RoutingAdapter() {

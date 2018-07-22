@@ -62,7 +62,6 @@ public class SearchFragment extends Fragment {
     private String searchString;
 
     public static SearchFragment newInstance() {
-
         Bundle args = new Bundle();
 
         SearchFragment fragment = new SearchFragment();

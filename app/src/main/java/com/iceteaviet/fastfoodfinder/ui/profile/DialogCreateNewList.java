@@ -52,9 +52,9 @@ public class DialogCreateNewList extends DialogFragment {
     CircleImageView icon9;
     @BindView(R.id.icon10)
     CircleImageView icon10;
-    OnCreateListListener mListener;
-    int idIconSource = R.drawable.ic_profile_list_1;
 
+    private OnCreateListListener mListener;
+    private int idIconSource = R.drawable.ic_profile_list_1;
     ArrayList<String> listName;
 
     public static DialogCreateNewList newInstance(ArrayList<String> listName) {

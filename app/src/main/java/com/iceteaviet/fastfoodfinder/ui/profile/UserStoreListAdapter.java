@@ -23,9 +23,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 public class UserStoreListAdapter extends RecyclerView.Adapter<UserStoreListAdapter.ListViewHolder> {
 
-    List<UserStoreList> mListPackets;
-    OnItemClickListener mListener;
-    OnItemLongClickListener mOnItemLongClickListener;
+    private List<UserStoreList> mListPackets;
+    private OnItemClickListener mListener;
+    private OnItemLongClickListener mOnItemLongClickListener;
 
     public UserStoreListAdapter() {
         mListPackets = new ArrayList<>();

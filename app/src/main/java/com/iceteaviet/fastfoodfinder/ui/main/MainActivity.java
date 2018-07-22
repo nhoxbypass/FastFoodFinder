@@ -58,16 +58,17 @@ public class MainActivity extends AppCompatActivity {
     DrawerLayout mDrawerLayout;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    View mHeaderLayout;
-    SearchView mSearchView;
-    LinearLayout mNavHeaderContainer;
-    CircleImageView mNavHeaderAvatar;
-    TextView mNavHeaderName;
-    TextView mNavHeaderScreenName;
-    EditText mSearchInput;
-    Button mNavHeaderSignIn;
-    ActionBarDrawerToggle mDrawerToggle;
-    DataManager dataManager;
+    private View mHeaderLayout;
+    private SearchView mSearchView;
+    private LinearLayout mNavHeaderContainer;
+    private CircleImageView mNavHeaderAvatar;
+    private TextView mNavHeaderName;
+    private TextView mNavHeaderScreenName;
+    private EditText mSearchInput;
+    private Button mNavHeaderSignIn;
+    private ActionBarDrawerToggle mDrawerToggle;
+
+    private DataManager dataManager;
 
 
     @Override

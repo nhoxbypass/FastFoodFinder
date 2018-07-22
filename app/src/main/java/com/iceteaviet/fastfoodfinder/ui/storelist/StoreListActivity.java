@@ -21,10 +21,10 @@ import butterknife.ButterKnife;
  */
 public class StoreListActivity extends AppCompatActivity {
 
-    LinearLayoutManager layoutManager;
-    StoreListAdapter adapter;
     @BindView(R.id.rv_top_list)
     RecyclerView recyclerView;
+
+    private StoreListAdapter adapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,7 +34,7 @@ public class StoreListActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         adapter = new StoreListAdapter();
-        layoutManager = new LinearLayoutManager(getApplicationContext());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
         RecyclerView.ItemDecoration decoration = new DividerItemDecoration(getApplicationContext(), DividerItemDecoration.VERTICAL);

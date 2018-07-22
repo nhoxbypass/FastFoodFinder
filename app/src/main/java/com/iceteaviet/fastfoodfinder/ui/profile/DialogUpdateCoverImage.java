@@ -32,7 +32,6 @@ public class DialogUpdateCoverImage extends android.support.v4.app.DialogFragmen
 
     private static int RESULT_LOAD_IMAGE = 1;
 
-
     @BindView(R.id.ivOne)
     ImageView ivOne;
     @BindView(R.id.ivTwo)
@@ -53,10 +52,11 @@ public class DialogUpdateCoverImage extends android.support.v4.app.DialogFragmen
     Button btnCancel;
     @BindView(R.id.btnBrowser)
     Button btnBrowser;
-    int IdChosenImage = 0;
-    Bitmap mBmp = null;
 
-    OnButtonClickListener mListener;
+    private int IdChosenImage = 0;
+    private Bitmap mBmp = null;
+
+    private OnButtonClickListener mListener;
 
 
     public static DialogUpdateCoverImage newInstance() {
