@@ -44,8 +44,8 @@ public class ArCameraActivity extends BaseActivity implements SensorEventListene
     final static String TAG = ArCameraActivity.class.getSimpleName();
     private final static int REQUEST_CAMERA_PERMISSIONS_CODE = 11;
     private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 0; // 10 meters
-    private static final long MIN_TIME_BW_UPDATES = 0;//1000 * 60 * 1; // 1 minute
-    private static final double RADIUS = 0.05;
+    private static final long MIN_TIME_BW_UPDATES = 0; //1000 * 60 * 1; // 1 minute
+    private static final double RADIUS = 0.005;
 
     public Location location;
     boolean isGPSEnabled;
@@ -66,9 +66,9 @@ public class ArCameraActivity extends BaseActivity implements SensorEventListene
         super.onCreate(savedInstanceState);
 
         sensorManager = (SensorManager) this.getSystemService(SENSOR_SERVICE);
-        cameraContainerLayout = (FrameLayout) findViewById(R.id.camera_container_layout);
-        surfaceView = (SurfaceView) findViewById(R.id.surface_view);
-        tvCurrentLocation = (TextView) findViewById(R.id.tv_current_location);
+        cameraContainerLayout = findViewById(R.id.camera_container_layout);
+        surfaceView = findViewById(R.id.surface_view);
+        tvCurrentLocation = findViewById(R.id.tv_current_location);
         arOverlayView = new AROverlayView(this);
 
         dataManager = App.getDataManager();
@@ -255,7 +255,7 @@ public class ArCameraActivity extends BaseActivity implements SensorEventListene
         }
 
         try {
-            this.locationManager = (LocationManager) this.getSystemService(this.LOCATION_SERVICE);
+            this.locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
 
             // Get GPS and network status
             this.isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);

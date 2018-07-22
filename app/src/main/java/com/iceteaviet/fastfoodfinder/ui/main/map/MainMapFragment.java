@@ -499,6 +499,9 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
 
 
     void addMarkersToMap(List<Store> storeList, GoogleMap googleMap) {
+        if (googleMap == null)
+            return;
+
         googleMap.clear();
 
         // Set icons of the store marker to green
