@@ -6,6 +6,7 @@ import android.util.Log;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseUser;
 import com.iceteaviet.fastfoodfinder.data.base.store.StoreDataSource;
+import com.iceteaviet.fastfoodfinder.data.local.prefs.PreferencesHelper;
 import com.iceteaviet.fastfoodfinder.data.remote.ClientAuth;
 import com.iceteaviet.fastfoodfinder.data.remote.routing.MapsRoutingApiHelper;
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store;
@@ -32,15 +33,17 @@ public class AppDataManager implements DataManager {
     private ClientAuth clientAuth;
     private UserDataSource userDataSource;
     private MapsRoutingApiHelper mapsRoutingApiHelper;
+    private PreferencesHelper preferencesHelper;
 
     public AppDataManager(StoreDataSource storeDataSource, StoreDataSource remoteStoreDataSource,
                           ClientAuth clientAuth, UserDataSource userDataSource,
-                          MapsRoutingApiHelper mapsRoutingApiHelper) {
+                          MapsRoutingApiHelper mapsRoutingApiHelper, PreferencesHelper preferencesHelper) {
         this.localStoreDataSource = storeDataSource;
         this.remoteStoreDataSource = remoteStoreDataSource;
         this.clientAuth = clientAuth;
         this.userDataSource = userDataSource;
         this.mapsRoutingApiHelper = mapsRoutingApiHelper;
+        this.preferencesHelper = preferencesHelper;
     }
 
     @Override
@@ -61,6 +64,11 @@ public class AppDataManager implements DataManager {
     @Override
     public MapsRoutingApiHelper getMapsRoutingApiHelper() {
         return mapsRoutingApiHelper;
+    }
+
+    @Override
+    public PreferencesHelper getPreferencesHelper() {
+        return preferencesHelper;
     }
 
     @Override

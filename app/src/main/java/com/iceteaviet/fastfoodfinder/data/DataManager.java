@@ -3,6 +3,7 @@ package com.iceteaviet.fastfoodfinder.data;
 import android.app.Activity;
 
 import com.iceteaviet.fastfoodfinder.data.base.store.StoreDataSource;
+import com.iceteaviet.fastfoodfinder.data.local.prefs.PreferencesHelper;
 import com.iceteaviet.fastfoodfinder.data.remote.ClientAuth;
 import com.iceteaviet.fastfoodfinder.data.remote.routing.MapsRoutingApiHelper;
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store;
@@ -23,6 +24,8 @@ public interface DataManager extends ClientAuth {
     UserDataSource getUserDataSource();
 
     MapsRoutingApiHelper getMapsRoutingApiHelper();
+
+    PreferencesHelper getPreferencesHelper();
 
     Single<List<Store>> readDataFromFirebase(Activity activity);
 }

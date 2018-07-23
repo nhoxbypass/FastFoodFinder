@@ -5,6 +5,8 @@ import android.support.multidex.MultiDexApplication;
 import com.google.firebase.database.FirebaseDatabase;
 import com.iceteaviet.fastfoodfinder.data.AppDataManager;
 import com.iceteaviet.fastfoodfinder.data.DataManager;
+import com.iceteaviet.fastfoodfinder.data.local.prefs.AppPreferencesHelper;
+import com.iceteaviet.fastfoodfinder.data.local.prefs.PreferencesHelper;
 import com.iceteaviet.fastfoodfinder.data.local.store.LocalStoreRepository;
 import com.iceteaviet.fastfoodfinder.data.remote.ClientAuth;
 import com.iceteaviet.fastfoodfinder.data.remote.FirebaseClientAuth;
@@ -38,7 +40,8 @@ public class App extends MultiDexApplication {
         UserDataSource userDataSource = new UserRepository(FirebaseDatabase.getInstance().getReference(), localStoreRepository);
         MapsRoutingApiHelper mapsRoutingApiHelper = new GoogleMapsRoutingApiHelper(getString(R.string.google_maps_browser_key));
         ClientAuth clientAuth = new FirebaseClientAuth();
+        PreferencesHelper preferencesHelper = new AppPreferencesHelper(this);
 
-        dataManager = new AppDataManager(localStoreRepository, remoteStoreRepository, clientAuth, userDataSource, mapsRoutingApiHelper);
+        dataManager = new AppDataManager(localStoreRepository, remoteStoreRepository, clientAuth, userDataSource, mapsRoutingApiHelper, preferencesHelper);
     }
 }

@@ -24,9 +24,19 @@ import io.realm.RealmResults;
  */
 public class LocalStoreRepository implements StoreDataSource {
 
+    private List<Store> cachedStores;
+
+    public LocalStoreRepository() {
+        cachedStores = new ArrayList<>();
+    }
+
     @Override
     public void setStores(final List<Store> storeList) {
         if (storeList != null) {
+            // Cache
+            cachedStores = storeList;
+
+            // Write to persistence
             Realm realm = Realm.getDefaultInstance();
             realm.executeTransaction(new Realm.Transaction() {
                 @Override
@@ -51,18 +61,23 @@ public class LocalStoreRepository implements StoreDataSource {
         return Single.create(new SingleOnSubscribe<List<Store>>() {
             @Override
             public void subscribe(SingleEmitter<List<Store>> emitter) {
+                if (cachedStores != null && cachedStores.size() > 0) {
+                    // Use cached stores
+                    emitter.onSuccess(new ArrayList<>(cachedStores));
+                    return;
+                }
+
                 Realm realm = Realm.getDefaultInstance();
-                List<Store> storeList = new ArrayList<>();
                 RealmResults<StoreEntity> results = realm
                         .where(StoreEntity.class)
                         .findAll();
 
                 for (int i = 0; i < results.size(); i++) {
-                    storeList.add(new Store(results.get(i)));
+                    cachedStores.add(new Store(results.get(i)));
                 }
 
                 realm.close();
-                emitter.onSuccess(storeList);
+                emitter.onSuccess(new ArrayList<>(cachedStores));
             }
         });
     }
@@ -223,6 +238,10 @@ public class LocalStoreRepository implements StoreDataSource {
     @Override
     public Single<List<Store>> findStoresByIds(List<Integer> ids) {
         return findStoresBy("id", ids);
+    }
+
+    public void clearCache() {
+        cachedStores = new ArrayList<>();
     }
 
     private boolean isCircleKQuery(String query) {
