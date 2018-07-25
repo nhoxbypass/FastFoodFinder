@@ -64,7 +64,7 @@ public class SplashActivity extends AppCompatActivity {
         } else {
             if (dataManager.isSignedIn()) {
                 // User still signed in
-                dataManager.getUserDataSource().getUser(dataManager.getCurrentUserUid())
+                dataManager.getRemoteUserDataSource().getUser(dataManager.getCurrentUserUid())
                         .subscribeOn(Schedulers.io())
                         .observeOn(Schedulers.io())
                         .subscribe(new SingleObserver<User>() {

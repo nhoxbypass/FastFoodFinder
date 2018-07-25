@@ -133,7 +133,7 @@ public class MainFavouriteFragment extends Fragment implements OnStartDragListen
                     });
 
 
-            dataManager.getUserDataSource().subscribeFavouriteStoresOfUser(dataManager.getCurrentUserUid())
+            dataManager.getRemoteUserDataSource().subscribeFavouriteStoresOfUser(dataManager.getCurrentUserUid())
                     .subscribe(new Observer<UserStoreEvent>() {
                         @Override
                         public void onSubscribe(Disposable d) {

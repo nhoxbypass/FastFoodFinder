@@ -113,7 +113,7 @@ public class ProfileFragment extends Fragment {
             dataManager.setCurrentUser(new User(getString(R.string.unregistered_user), getString(R.string.unregistered_email), Constant.NO_AVATAR_PLACEHOLDER_URL, "null", new ArrayList<UserStoreList>()));
 
         if (dataManager.isSignedIn()) {
-            getUserData(dataManager.getCurrentUserUid());
+            getCurrentUserData();
         }
     }
 
@@ -154,8 +154,8 @@ public class ProfileFragment extends Fragment {
         item.setVisible(false);
     }
 
-    void getUserData(String uid) {
-        dataManager.getUserDataSource().getUser(uid)
+    void getCurrentUserData() {
+        dataManager.getRemoteUserDataSource().getUser(dataManager.getCurrentUserUid())
                 .subscribe(new SingleObserver<User>() {
                     @Override
                     public void onSubscribe(Disposable d) {
@@ -214,7 +214,7 @@ public class ProfileFragment extends Fragment {
                         UserStoreList list = new UserStoreList(id, new ArrayList<Integer>(), idIconSource, name);
                         mAdapter.addListPacket(list);
                         currentUser.addStoreList(list);
-                        dataManager.getUserDataSource().updateStoreListForUser(currentUser.getUid(), currentUser.getUserStoreLists());
+                        dataManager.getRemoteUserDataSource().updateStoreListForUser(currentUser.getUid(), currentUser.getUserStoreLists());
                         tvNumberList.setText("(" + String.valueOf(mAdapter.getItemCount()) + ")");
                     }
                 });
@@ -248,7 +248,7 @@ public class ProfileFragment extends Fragment {
                 User currentUser = dataManager.getCurrentUser();
                 tvNumberList.setText("(" + String.valueOf(mAdapter.getItemCount()) + ")");
                 currentUser.removeStoreList(position);
-                dataManager.getUserDataSource().updateStoreListForUser(currentUser.getUid(), currentUser.getUserStoreLists());
+                dataManager.getRemoteUserDataSource().updateStoreListForUser(currentUser.getUid(), currentUser.getUserStoreLists());
             }
         });
 

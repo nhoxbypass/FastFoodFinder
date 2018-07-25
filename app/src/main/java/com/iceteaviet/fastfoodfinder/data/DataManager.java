@@ -21,7 +21,9 @@ public interface DataManager extends ClientAuth {
 
     StoreDataSource getRemoteStoreDataSource();
 
-    UserDataSource getUserDataSource();
+    UserDataSource getRemoteUserDataSource();
+
+    UserDataSource getLocalUserDataSource();
 
     MapsRoutingApiHelper getMapsRoutingApiHelper();
 

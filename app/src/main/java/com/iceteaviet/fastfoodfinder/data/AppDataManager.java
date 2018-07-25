@@ -31,17 +31,20 @@ public class AppDataManager implements DataManager {
     private StoreDataSource localStoreDataSource;
     private StoreDataSource remoteStoreDataSource;
     private ClientAuth clientAuth;
-    private UserDataSource userDataSource;
+    private UserDataSource localUserDataSource;
+    private UserDataSource remoteUserDataSource;
     private MapsRoutingApiHelper mapsRoutingApiHelper;
     private PreferencesHelper preferencesHelper;
 
     public AppDataManager(StoreDataSource storeDataSource, StoreDataSource remoteStoreDataSource,
-                          ClientAuth clientAuth, UserDataSource userDataSource,
+                          ClientAuth clientAuth,
+                          UserDataSource userDataSource, UserDataSource remoteUserDataSource,
                           MapsRoutingApiHelper mapsRoutingApiHelper, PreferencesHelper preferencesHelper) {
         this.localStoreDataSource = storeDataSource;
         this.remoteStoreDataSource = remoteStoreDataSource;
         this.clientAuth = clientAuth;
-        this.userDataSource = userDataSource;
+        this.localUserDataSource = userDataSource;
+        this.remoteUserDataSource = remoteUserDataSource;
         this.mapsRoutingApiHelper = mapsRoutingApiHelper;
         this.preferencesHelper = preferencesHelper;
     }
@@ -57,8 +60,13 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public UserDataSource getUserDataSource() {
-        return userDataSource;
+    public UserDataSource getLocalUserDataSource() {
+        return localUserDataSource;
+    }
+
+    @Override
+    public UserDataSource getRemoteUserDataSource() {
+        return remoteUserDataSource;
     }
 
     @Override
@@ -141,7 +149,11 @@ public class AppDataManager implements DataManager {
 
     @Override
     public String getCurrentUserUid() {
-        return clientAuth.getCurrentUserUid();
+        String uid = clientAuth.getCurrentUserUid();
+        if (uid == null || uid.isEmpty())
+            uid = preferencesHelper.getCurrentUserUid();
+
+        return uid;
     }
 
     @Override
@@ -166,11 +178,18 @@ public class AppDataManager implements DataManager {
 
     @Override
     public User getCurrentUser() {
-        return clientAuth.getCurrentUser();
+        User user = clientAuth.getCurrentUser();
+        if (user == null)
+            user = localUserDataSource.getUser(getCurrentUserUid())
+                    .blockingGet();
+
+        return user;
     }
 
     @Override
     public void setCurrentUser(User user) {
         clientAuth.setCurrentUser(user);
+        preferencesHelper.setCurrentUserUid(user.getUid());
+        localUserDataSource.insertOrUpdate(user);
     }
 }

@@ -19,4 +19,8 @@ public interface PreferencesHelper {
     int getNumberOfStores();
 
     void setNumberOfStores(int numberOfStores);
+
+    String getCurrentUserUid();
+
+    void setCurrentUserUid(String uid);
 }

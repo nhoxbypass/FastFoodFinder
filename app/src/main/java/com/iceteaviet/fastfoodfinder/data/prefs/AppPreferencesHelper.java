@@ -13,6 +13,7 @@ public class AppPreferencesHelper implements PreferencesHelper {
     private static final String PREFS_NAME = "english_now_android";
     private static final String KEY_APP_LAUNCH_FIRST_TIME = "app_launch_first_time";
     private static final String KEY_NUMBER_OF_STORES = "number_of_stores";
+    private static final String KEY_CURRENT_USER_UID = "current_user_uid";
 
     private final SharedPreferences sharedPreferences;
 
@@ -65,6 +66,18 @@ public class AppPreferencesHelper implements PreferencesHelper {
     public void setNumberOfStores(int numberOfStores) {
         sharedPreferences.edit()
                 .putInt(KEY_NUMBER_OF_STORES, numberOfStores)
+                .apply();
+    }
+
+    @Override
+    public String getCurrentUserUid() {
+        return sharedPreferences.getString(KEY_CURRENT_USER_UID, null);
+    }
+
+    @Override
+    public void setCurrentUserUid(String uid) {
+        sharedPreferences.edit()
+                .putString(KEY_CURRENT_USER_UID, uid)
                 .apply();
     }
 }
