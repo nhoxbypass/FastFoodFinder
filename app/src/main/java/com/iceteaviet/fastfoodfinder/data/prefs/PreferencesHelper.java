@@ -1,4 +1,4 @@
-package com.iceteaviet.fastfoodfinder.data.local.prefs;
+package com.iceteaviet.fastfoodfinder.data.prefs;
 
 /**
  * Created by tom on 7/24/18.

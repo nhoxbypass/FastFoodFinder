@@ -3,6 +3,8 @@ package com.iceteaviet.fastfoodfinder.data.remote.user.model;
 import android.util.Log;
 
 import com.iceteaviet.fastfoodfinder.R;
+import com.iceteaviet.fastfoodfinder.data.local.user.model.UserEntity;
+import com.iceteaviet.fastfoodfinder.data.local.user.model.UserStoreListEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +48,18 @@ public class User {
             userStoreLists.add(new UserStoreList(2, storeIdList, R.drawable.ic_profile_checkin, "My Checked in Places"));
         } else
             this.userStoreLists = storeLists;
+    }
+
+    public User(UserEntity entity) {
+        this.name = entity.getName();
+        this.email = entity.getEmail();
+        this.uid = entity.getUid();
+        this.photoUrl = entity.getPhotoUrl();
+        this.userStoreLists = new ArrayList<>();
+        List<UserStoreListEntity> userStoreListEntities = entity.getUserStoreLists();
+        for (int i = 0; i < userStoreListEntities.size(); i++) {
+            this.userStoreLists.add(new UserStoreList(userStoreListEntities.get(i)));
+        }
     }
 
     public UserStoreList getFavouriteStoreList() {

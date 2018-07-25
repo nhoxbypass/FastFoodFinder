@@ -1,4 +1,4 @@
-package com.iceteaviet.fastfoodfinder.data.base.store;
+package com.iceteaviet.fastfoodfinder.data.domain.store;
 
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store;
 

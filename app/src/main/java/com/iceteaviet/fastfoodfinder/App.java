@@ -5,15 +5,15 @@ import android.support.multidex.MultiDexApplication;
 import com.google.firebase.database.FirebaseDatabase;
 import com.iceteaviet.fastfoodfinder.data.AppDataManager;
 import com.iceteaviet.fastfoodfinder.data.DataManager;
-import com.iceteaviet.fastfoodfinder.data.local.prefs.AppPreferencesHelper;
-import com.iceteaviet.fastfoodfinder.data.local.prefs.PreferencesHelper;
+import com.iceteaviet.fastfoodfinder.data.domain.user.UserDataSource;
 import com.iceteaviet.fastfoodfinder.data.local.store.LocalStoreRepository;
+import com.iceteaviet.fastfoodfinder.data.prefs.AppPreferencesHelper;
+import com.iceteaviet.fastfoodfinder.data.prefs.PreferencesHelper;
 import com.iceteaviet.fastfoodfinder.data.remote.ClientAuth;
 import com.iceteaviet.fastfoodfinder.data.remote.FirebaseClientAuth;
 import com.iceteaviet.fastfoodfinder.data.remote.routing.GoogleMapsRoutingApiHelper;
 import com.iceteaviet.fastfoodfinder.data.remote.routing.MapsRoutingApiHelper;
 import com.iceteaviet.fastfoodfinder.data.remote.store.RemoteStoreRepository;
-import com.iceteaviet.fastfoodfinder.data.remote.user.UserDataSource;
 import com.iceteaviet.fastfoodfinder.data.remote.user.UserRepository;
 
 import io.realm.Realm;

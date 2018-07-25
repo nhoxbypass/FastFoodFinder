@@ -7,7 +7,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
-import com.iceteaviet.fastfoodfinder.data.base.store.StoreDataSource;
+import com.iceteaviet.fastfoodfinder.data.domain.store.StoreDataSource;
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store;
 import com.iceteaviet.fastfoodfinder.utils.Constant;
 import com.iceteaviet.fastfoodfinder.utils.DataUtils;

@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.firebase.database.PropertyName;
+import com.iceteaviet.fastfoodfinder.data.local.user.model.UserStoreListEntity;
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store;
 
 import java.util.ArrayList;
@@ -54,6 +55,13 @@ public class UserStoreList implements Parcelable {
             this.storeIdList = new ArrayList<>();
         else
             this.storeIdList = storeIdList;
+    }
+
+    public UserStoreList(UserStoreListEntity userStoreListEntity) {
+        this.id = userStoreListEntity.getId();
+        this.iconId = userStoreListEntity.getIconId();
+        this.listName = userStoreListEntity.getListName();
+        this.storeIdList = userStoreListEntity.getStoreIdList();
     }
 
     public int getId() {

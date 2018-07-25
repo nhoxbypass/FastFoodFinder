@@ -1,4 +1,4 @@
-package com.iceteaviet.fastfoodfinder.data.local.prefs;
+package com.iceteaviet.fastfoodfinder.data.prefs;
 
 import android.content.Context;
 import android.content.SharedPreferences;

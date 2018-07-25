@@ -1,4 +1,4 @@
-package com.iceteaviet.fastfoodfinder.data.remote.user;
+package com.iceteaviet.fastfoodfinder.data.domain.user;
 
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User;
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreEvent;
