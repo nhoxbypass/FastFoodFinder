@@ -12,12 +12,13 @@ import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store;
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User;
 import com.iceteaviet.fastfoodfinder.ui.login.LoginActivity;
 import com.iceteaviet.fastfoodfinder.ui.main.MainActivity;
-import com.iceteaviet.fastfoodfinder.utils.NetworkUtils;
 
 import java.util.List;
 
 import io.reactivex.SingleObserver;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class SplashActivity extends AppCompatActivity {
     private DataManager dataManager;
@@ -32,7 +33,9 @@ public class SplashActivity extends AppCompatActivity {
         if (dataManager.getPreferencesHelper().getAppLaunchFirstTime()
                 || dataManager.getPreferencesHelper().getNumberOfStores() == 0) {
             // Download data from Firebase and store in Realm
-            dataManager.readDataFromFirebase(this)
+            dataManager.loadStoresFromServer(this)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new SingleObserver<List<Store>>() {
                         @Override
                         public void onSubscribe(Disposable d) {
@@ -54,36 +57,34 @@ public class SplashActivity extends AppCompatActivity {
                         @Override
                         public void onError(Throwable e) {
                             dataManager.signOut();
-                            Toast.makeText(SplashActivity.this, R.string.update_database_failed + e.getMessage(), Toast.LENGTH_SHORT).show();
-                            restartActivity();
+                            e.printStackTrace();
+                            startMyActivity(MainActivity.class);
                         }
                     });
         } else {
             if (dataManager.isSignedIn()) {
                 // User still signed in
-                if (NetworkUtils.isNetworkReachable(this)) {
-                    dataManager.getUserDataSource().getUser(dataManager.getCurrentUserUid())
-                            .subscribe(new SingleObserver<User>() {
-                                @Override
-                                public void onSubscribe(Disposable d) {
+                dataManager.getUserDataSource().getUser(dataManager.getCurrentUserUid())
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(Schedulers.io())
+                        .subscribe(new SingleObserver<User>() {
+                            @Override
+                            public void onSubscribe(Disposable d) {
 
-                                }
+                            }
 
-                                @Override
-                                public void onSuccess(User user) {
-                                    dataManager.setCurrentUser(user);
-                                    startMyActivity(MainActivity.class);
-                                }
+                            @Override
+                            public void onSuccess(User user) {
+                                dataManager.setCurrentUser(user);
+                            }
 
-                                @Override
-                                public void onError(Throwable e) {
-                                    e.printStackTrace();
-                                }
-                            });
-                } else {
-                    Toast.makeText(this, "Network is unreachable!", Toast.LENGTH_SHORT).show();
-                    startMyActivity(MainActivity.class);
-                }
+                            @Override
+                            public void onError(Throwable e) {
+                                e.printStackTrace();
+                            }
+                        });
+
+                startMyActivity(MainActivity.class);
             } else {
                 startMyActivity(MainActivity.class);
             }
@@ -93,11 +94,6 @@ public class SplashActivity extends AppCompatActivity {
     private void startMyActivity(Class<?> activity) {
         Intent intent = new Intent(SplashActivity.this, activity);
         startActivity(intent);
-        finish();
-    }
-
-    private void restartActivity() {
-        startActivity(getIntent());
         finish();
     }
 }

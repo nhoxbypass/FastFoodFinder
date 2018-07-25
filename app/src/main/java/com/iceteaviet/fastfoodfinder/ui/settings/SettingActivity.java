@@ -209,7 +209,7 @@ public class SettingActivity extends AppCompatActivity {
         layoutUpdateDb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                App.getDataManager().readDataFromFirebase(SettingActivity.this)
+                App.getDataManager().loadStoresFromServer(SettingActivity.this)
                         .subscribe(new SingleObserver<List<Store>>() {
                             @Override
                             public void onSubscribe(Disposable d) {

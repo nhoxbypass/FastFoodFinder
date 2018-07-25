@@ -72,7 +72,7 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public Single<List<Store>> readDataFromFirebase(Activity activity) {
+    public Single<List<Store>> loadStoresFromServer(Activity activity) {
         return Single.create(new SingleOnSubscribe<List<Store>>() {
             @Override
             public void subscribe(final SingleEmitter<List<Store>> emitter) throws Exception {

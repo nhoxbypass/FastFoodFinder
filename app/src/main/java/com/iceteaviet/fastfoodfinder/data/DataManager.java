@@ -27,5 +27,5 @@ public interface DataManager extends ClientAuth {
 
     PreferencesHelper getPreferencesHelper();
 
-    Single<List<Store>> readDataFromFirebase(Activity activity);
+    Single<List<Store>> loadStoresFromServer(Activity activity);
 }

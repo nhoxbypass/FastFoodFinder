@@ -3,7 +3,6 @@ package com.iceteaviet.fastfoodfinder.ui.main.map;
 
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -462,7 +461,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
                         .map(new Function<Store, Pair<Marker, Bitmap>>() {
                             @Override
                             public Pair<Marker, Bitmap> apply(Store store) {
-                                Bitmap bitmap = getStoreIcon(getContext(), store.getType());
+                                Bitmap bitmap = getStoreIcon(store.getType());
                                 Marker marker = markerSparseArray.get(store.getId());
 
                                 return new Pair<>(marker, bitmap);
@@ -507,7 +506,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
             Marker marker = googleMap.addMarker(new MarkerOptions().position(store.getPosition())
                     .title(store.getTitle())
                     .snippet(store.getAddress())
-                    .icon(BitmapDescriptorFactory.fromBitmap(getStoreIcon(getContext(), store.getType()))));
+                    .icon(BitmapDescriptorFactory.fromBitmap(getStoreIcon(store.getType()))));
             marker.setTag(store);
             markerSparseArray.put(store.getId(), marker);
         }
@@ -603,7 +602,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
         dialog.show(fm, "dialog-info");
     }
 
-    public Bitmap getStoreIcon(Context context, Integer type) {
+    public Bitmap getStoreIcon(Integer type) {
         synchronized (CACHE) {
             if (!CACHE.containsKey(type)) {
                 int id = UiUtils.getStoreLogoDrawableId(type);
