@@ -39,18 +39,18 @@ public class App extends MultiDexApplication {
         Realm.init(this);
         PACKAGE_NAME = getApplicationContext().getPackageName();
 
-        LocalStoreRepository localStoreRepository = new LocalStoreRepository();
-        StoreDataSource remoteStoreRepository = new RemoteStoreRepository(FirebaseDatabase.getInstance().getReference());
+        LocalStoreRepository localStoreDataSource = new LocalStoreRepository();
+        StoreDataSource remoteStoreDataSource = new RemoteStoreRepository(FirebaseDatabase.getInstance().getReference());
 
-        UserDataSource localUserRepository = new LocalUserRepository();
-        UserDataSource remoteUserDataSource = new UserRepository(FirebaseDatabase.getInstance().getReference(), localStoreRepository);
+        UserDataSource localUserDataSource = new LocalUserRepository();
+        UserDataSource remoteUserDataSource = new UserRepository(FirebaseDatabase.getInstance().getReference(), localStoreDataSource);
 
         MapsRoutingApiHelper mapsRoutingApiHelper = new GoogleMapsRoutingApiHelper(getString(R.string.google_maps_browser_key));
         ClientAuth clientAuth = new FirebaseClientAuth();
         PreferencesHelper preferencesHelper = new AppPreferencesHelper(this);
 
-        dataManager = new AppDataManager(localStoreRepository, remoteStoreRepository, clientAuth,
-                remoteUserDataSource, localUserRepository,
+        dataManager = new AppDataManager(localStoreDataSource, remoteStoreDataSource, clientAuth,
+                localUserDataSource, remoteUserDataSource,
                 mapsRoutingApiHelper, preferencesHelper);
     }
 }

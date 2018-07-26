@@ -66,6 +66,9 @@ public class UserRepository implements UserDataSource {
         return Single.create(new SingleOnSubscribe<User>() {
             @Override
             public void subscribe(final SingleEmitter<User> emitter) {
+                if (uid == null)
+                    emitter.onSuccess(null);
+
                 databaseRef.child(Constant.CHILD_USERS).child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

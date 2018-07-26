@@ -74,10 +74,13 @@ public class LocalUserRepository implements UserDataSource {
     }
 
     @Override
-    public Single<User> getUser(String uid) {
+    public Single<User> getUser(final String uid) {
         return Single.create(new SingleOnSubscribe<User>() {
             @Override
             public void subscribe(SingleEmitter<User> emitter) {
+                if (uid == null)
+                    emitter.onSuccess(null);
+
                 Realm realm = Realm.getDefaultInstance();
 
                 UserEntity entity = realm.where(UserEntity.class)
