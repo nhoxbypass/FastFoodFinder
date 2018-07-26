@@ -50,7 +50,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static String PACKAGE_NAME;
+
 
     @BindView(R.id.nav_view)
     NavigationView mNavigationView;
@@ -77,11 +77,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        PACKAGE_NAME = getApplicationContext().getPackageName();
         dataManager = App.getDataManager();
 
         setSupportActionBar(mToolbar);
         setupAllViews();
+        setupEventListeners();
 
         // Initialize Auth
         initAuth();
@@ -149,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
     public void onSearchResult(SearchEventResult searchEventResult) {
         int resultCode = searchEventResult.getResultCode();
         switch (resultCode) {
-            case SearchEventResult.SEARCH_QUICK_OK:
+            case SearchEventResult.SEARCH_ACTION_QUICK:
                 mSearchView.setQuery(searchEventResult.getSearchString(), false);
                 mSearchView.setIconified(false);
                 // Check if no view has focus:
@@ -161,11 +161,11 @@ public class MainActivity extends AppCompatActivity {
                     mSearchInput.clearFocus();
                 }
                 break;
-            case SearchEventResult.SEARCH_STORE_OK:
+            case SearchEventResult.SEARCH_ACTION_QUERY_SUBMIT:
                 removeSearchFragment();
                 break;
 
-            case SearchEventResult.SEARCH_COLLAPSE:
+            case SearchEventResult.SEARCH_ACTION_COLLAPSE:
                 break;
 
             default:
@@ -206,8 +206,8 @@ public class MainActivity extends AppCompatActivity {
             searchView.setSearchableInfo(searchManager.getSearchableInfo(MainActivity.this.getComponentName()));
 
             searchView.setQueryHint(getString(R.string.type_name_store));
-            searchView.setBackgroundColor(Color.parseColor("#E53935"));
-            mSearchInput = (EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+            searchView.setBackgroundColor(ContextCompat.getColor(this, R.color.material_red_600));
+            mSearchInput = searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
             mSearchInput.setHintTextColor(ContextCompat.getColor(MainActivity.this, R.color.colorHintText));
             mSearchInput.setTextColor(Color.WHITE);
         }
@@ -217,7 +217,7 @@ public class MainActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                EventBus.getDefault().post(new SearchEventResult(SearchEventResult.SEARCH_STORE_OK, query));
+                EventBus.getDefault().post(new SearchEventResult(SearchEventResult.SEARCH_ACTION_QUERY_SUBMIT, query));
                 return false;
             }
 
@@ -237,7 +237,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public boolean onMenuItemActionCollapse(MenuItem menuItem) {
-                EventBus.getDefault().post(new SearchEventResult(SearchEventResult.SEARCH_COLLAPSE));
+                EventBus.getDefault().post(new SearchEventResult(SearchEventResult.SEARCH_ACTION_COLLAPSE));
                 removeSearchFragment();
                 return true;
             }
@@ -280,15 +280,17 @@ public class MainActivity extends AppCompatActivity {
         mDrawerToggle = setupDrawerToggle();
 
         mHeaderLayout = mNavigationView.getHeaderView(0);
-        mNavHeaderContainer = (LinearLayout) mHeaderLayout.findViewById(R.id.nav_header_container);
-        mNavHeaderAvatar = (CircleImageView) mHeaderLayout.findViewById(R.id.iv_nav_header_avatar);
-        mNavHeaderName = (TextView) mHeaderLayout.findViewById(R.id.tv_nav_header_name);
-        mNavHeaderScreenName = (TextView) mHeaderLayout.findViewById(R.id.tv_nav_header_screenname);
-        mNavHeaderSignIn = (Button) mHeaderLayout.findViewById(R.id.btn_nav_header_signin);
+        mNavHeaderContainer = mHeaderLayout.findViewById(R.id.nav_header_container);
+        mNavHeaderAvatar = mHeaderLayout.findViewById(R.id.iv_nav_header_avatar);
+        mNavHeaderName = mHeaderLayout.findViewById(R.id.tv_nav_header_name);
+        mNavHeaderScreenName = mHeaderLayout.findViewById(R.id.tv_nav_header_screenname);
+        mNavHeaderSignIn = mHeaderLayout.findViewById(R.id.btn_nav_header_signin);
 
         // Tie DrawerLayout events to the ActionBarToggle
         mDrawerLayout.addDrawerListener(mDrawerToggle);
+    }
 
+    private void setupEventListeners() {
         mNavHeaderSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -321,7 +323,6 @@ public class MainActivity extends AppCompatActivity {
                 fragmentClass = MainFragment.class;
                 break;
             case R.id.menu_action_ar:
-                //TODO: Implement live sight
                 Intent arIntent = new Intent(MainActivity.this, ArCameraActivity.class);
                 startActivity(arIntent);
                 return;

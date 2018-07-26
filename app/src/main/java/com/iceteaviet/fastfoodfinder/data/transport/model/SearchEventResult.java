@@ -4,9 +4,9 @@ package com.iceteaviet.fastfoodfinder.data.transport.model;
  * Created by Genius Doan on 11/28/2016.
  */
 public class SearchEventResult {
-    public static final int SEARCH_QUICK_OK = 0;
-    public static final int SEARCH_STORE_OK = 1;
-    public static final int SEARCH_COLLAPSE = 2;
+    public static final int SEARCH_ACTION_QUICK = 0;
+    public static final int SEARCH_ACTION_QUERY_SUBMIT = 1;
+    public static final int SEARCH_ACTION_COLLAPSE = 2;
     private int mResult;
     private String mSearchString;
     private int mStoreType;

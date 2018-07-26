@@ -237,7 +237,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
     public void onSearchResult(SearchEventResult searchEventResult) {
         int resultCode = searchEventResult.getResultCode();
         switch (resultCode) {
-            case SearchEventResult.SEARCH_QUICK_OK:
+            case SearchEventResult.SEARCH_ACTION_QUICK:
                 mStoreList.clear();
                 mGoogleMap.clear();
 
@@ -267,7 +267,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
                             }
                         });
                 break;
-            case SearchEventResult.SEARCH_STORE_OK:
+            case SearchEventResult.SEARCH_ACTION_QUERY_SUBMIT:
                 mStoreList.clear();
                 mGoogleMap.clear();
                 dataManager.getLocalStoreDataSource()
@@ -300,7 +300,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
                         });
                 break;
 
-            case SearchEventResult.SEARCH_COLLAPSE:
+            case SearchEventResult.SEARCH_ACTION_COLLAPSE:
                 mStoreList.clear();
                 mGoogleMap.clear();
                 dataManager.getLocalStoreDataSource().getAllStores()

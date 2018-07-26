@@ -13,6 +13,7 @@
     <color name="colorGrey">#9E9E9E</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorTabText">#1F1F1F</color>
+    <color name="material_red_600">#E53935</color>
     <color name="material_green_50">#E8F5E9</color>
     <color name="material_green_500">#4CAF50</color>
     <color name="material_green_700">#388E3C</color>
