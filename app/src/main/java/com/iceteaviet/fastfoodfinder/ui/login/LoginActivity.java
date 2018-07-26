@@ -33,6 +33,7 @@ import com.iceteaviet.fastfoodfinder.data.DataManager;
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User;
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList;
 import com.iceteaviet.fastfoodfinder.ui.main.MainActivity;
+import com.iceteaviet.fastfoodfinder.utils.Constant;
 
 import java.util.ArrayList;
 
@@ -43,7 +44,8 @@ import io.reactivex.disposables.Disposable;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = LoginActivity.class.getSimpleName();
-    private static final int RC_SIGN_IN = 1;
+    private static final int RETURN_CODE_GOOGLE_SIGN_IN = 1;
+
     @BindView(R.id.btn_skip)
     Button skipButton;
     @BindView(R.id.btn_join_now)
@@ -56,8 +58,6 @@ public class LoginActivity extends AppCompatActivity {
     private GoogleApiClient mGoogleApiClient;
     private CallbackManager mCallBackManager;
     private DataManager dataManager;
-
-    private boolean isAuthenticated = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,12 +79,12 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         mGoogleApiClient = setupGoogleSignIn();
-
         mCallBackManager = setupFacebookSignIn();
 
         skipButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Anonymous mode
                 startMainActivity();
             }
         });
@@ -92,13 +92,7 @@ public class LoginActivity extends AppCompatActivity {
         joinNowButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            }
-        });
-
-        fbSignInButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
+                // TODO: Support email login
             }
         });
 
@@ -115,13 +109,15 @@ public class LoginActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) {
+        if (requestCode == RETURN_CODE_GOOGLE_SIGN_IN) { // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if (result.isSuccess()) {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = result.getSignInAccount();
-                firebaseAuthWithGoogle(account);
+                if (account != null)
+                    authWithGoogle(account);
+                else
+                    Log.e(TAG, "Login failed with google");
             } else {
                 Log.e(TAG, "Login failed with google");
             }
@@ -191,7 +187,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void saveUserIfNotExists(FirebaseUser firebaseUser) {
-        String photoUrl = "http://cdn.builtlean.com/wp-content/uploads/2015/11/all_noavatar.png.png";
+        String photoUrl = Constant.NO_AVATAR_PLACEHOLDER_URL;
 
         if (firebaseUser.getPhotoUrl() != null) {
             photoUrl = firebaseUser.getPhotoUrl().toString();
@@ -204,33 +200,11 @@ public class LoginActivity extends AppCompatActivity {
 
     private void startMainActivity() {
         final Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-        if (isAuthenticated) {
-            dataManager.getRemoteUserDataSource().getUser(dataManager.getCurrentUserUid())
-                    .subscribe(new SingleObserver<User>() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
-
-                        }
-
-                        @Override
-                        public void onSuccess(User user) {
-                            dataManager.setCurrentUser(user);
-                            startActivity(intent);
-                            finish();
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-                            e.printStackTrace();
-                        }
-                    });
-        } else {
-            startActivity(intent);
-            finish();
-        }
+        startActivity(intent);
+        finish();
     }
 
-    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+    private void authWithGoogle(GoogleSignInAccount acct) {
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         dataManager.signInWithCredential(credential)
                 .subscribe(new SingleObserver<FirebaseUser>() {
@@ -244,7 +218,6 @@ public class LoginActivity extends AppCompatActivity {
                         if (firebaseUser != null) {
                             Toast.makeText(LoginActivity.this, R.string.sign_in_successfully, Toast.LENGTH_SHORT).show();
                             saveUserIfNotExists(firebaseUser);
-                            isAuthenticated = true;
                             startMainActivity();
                         } else {
                             Log.w(TAG, "signInWithCredential");
@@ -264,7 +237,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void signIntWithGoogle(GoogleApiClient mGoogleApiClient) {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-        startActivityForResult(signInIntent, RC_SIGN_IN);
+        startActivityForResult(signInIntent, RETURN_CODE_GOOGLE_SIGN_IN);
     }
 
     private void handleFacebookAccessToken(AccessToken token) {
@@ -278,8 +251,15 @@ public class LoginActivity extends AppCompatActivity {
 
                     @Override
                     public void onSuccess(FirebaseUser firebaseUser) {
-                        isAuthenticated = true;
-                        Toast.makeText(LoginActivity.this, R.string.sign_in_successfully, Toast.LENGTH_SHORT).show();
+                        if (firebaseUser != null) {
+                            Toast.makeText(LoginActivity.this, R.string.sign_in_successfully, Toast.LENGTH_SHORT).show();
+                            saveUserIfNotExists(firebaseUser);
+                            startMainActivity();
+                        } else {
+                            Log.w(TAG, "signInWithCredential");
+                            Toast.makeText(LoginActivity.this, R.string.authentication_failed,
+                                    Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                     @Override

@@ -28,7 +28,7 @@ public class User {
         this.uid = uid;
         this.photoUrl = photoUrl;
 
-        if (storeLists == null || storeLists.size() == 0) {
+        if (storeLists == null || storeLists.isEmpty()) {
             this.userStoreLists = new ArrayList<>();
 
             List<Integer> storeIdList = new ArrayList<>();
