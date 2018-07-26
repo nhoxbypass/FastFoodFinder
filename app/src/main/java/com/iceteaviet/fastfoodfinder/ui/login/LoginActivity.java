@@ -123,7 +123,7 @@ public class LoginActivity extends AppCompatActivity {
                 GoogleSignInAccount account = result.getSignInAccount();
                 firebaseAuthWithGoogle(account);
             } else {
-                Log.e("MAPP", "Login failed with google");
+                Log.e(TAG, "Login failed with google");
             }
         } else {
             // Pass the activity result back to the Facebook SDK
@@ -149,19 +149,19 @@ public class LoginActivity extends AppCompatActivity {
         fbSignInButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                Log.d("MAPP", "facebook:onSuccess: " + loginResult);
+                Log.d(TAG, "facebook:onSuccess: " + loginResult);
                 handleFacebookAccessToken(loginResult.getAccessToken());
             }
 
             @Override
             public void onCancel() {
-                Log.d("MAPP", "facebook:onCancel");
+                Log.d(TAG, "facebook:onCancel");
                 // ...
             }
 
             @Override
             public void onError(FacebookException error) {
-                Log.d("MAPP", "facebook:onError", error);
+                Log.d(TAG, "facebook:onError", error);
                 // ...
             }
         });
@@ -180,7 +180,7 @@ public class LoginActivity extends AppCompatActivity {
                 .enableAutoManage(LoginActivity.this, new GoogleApiClient.OnConnectionFailedListener() {
                     @Override
                     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                        Log.e("MAPP", "google connect failed");
+                        Log.e(TAG, "google connect failed");
                     }
                 })
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
@@ -247,7 +247,7 @@ public class LoginActivity extends AppCompatActivity {
                             isAuthenticated = true;
                             startMainActivity();
                         } else {
-                            Log.w("MAPP", "signInWithCredential");
+                            Log.w(TAG, "signInWithCredential");
                             Toast.makeText(LoginActivity.this, R.string.authentication_failed,
                                     Toast.LENGTH_SHORT).show();
                         }
@@ -255,7 +255,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.w("MAPP", "signInWithCredential", e);
+                        Log.w(TAG, "signInWithCredential", e);
                         Toast.makeText(LoginActivity.this, R.string.authentication_failed,
                                 Toast.LENGTH_SHORT).show();
                     }
@@ -284,7 +284,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.w("MAPP", "signInWithCredential", e);
+                        Log.w(TAG, "signInWithCredential", e);
                         Toast.makeText(LoginActivity.this, R.string.authentication_failed,
                                 Toast.LENGTH_SHORT).show();
                     }

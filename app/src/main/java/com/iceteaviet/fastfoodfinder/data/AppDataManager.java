@@ -36,6 +36,8 @@ public class AppDataManager implements DataManager {
     private MapsRoutingApiHelper mapsRoutingApiHelper;
     private PreferencesHelper preferencesHelper;
 
+    private User currentUser;
+
     public AppDataManager(StoreDataSource storeDataSource, StoreDataSource remoteStoreDataSource,
                           ClientAuth clientAuth,
                           UserDataSource userDataSource, UserDataSource remoteUserDataSource,
@@ -178,17 +180,16 @@ public class AppDataManager implements DataManager {
 
     @Override
     public User getCurrentUser() {
-        User user = clientAuth.getCurrentUser();
-        if (user == null)
-            user = localUserDataSource.getUser(getCurrentUserUid())
+        if (currentUser == null)
+            currentUser = localUserDataSource.getUser(getCurrentUserUid())
                     .blockingGet();
 
-        return user;
+        return currentUser;
     }
 
     @Override
     public void setCurrentUser(User user) {
-        clientAuth.setCurrentUser(user);
+        currentUser = user;
         preferencesHelper.setCurrentUserUid(user.getUid());
         localUserDataSource.insertOrUpdate(user);
     }

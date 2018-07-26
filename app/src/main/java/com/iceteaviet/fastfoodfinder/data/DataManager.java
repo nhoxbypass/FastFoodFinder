@@ -8,6 +8,7 @@ import com.iceteaviet.fastfoodfinder.data.prefs.PreferencesHelper;
 import com.iceteaviet.fastfoodfinder.data.remote.ClientAuth;
 import com.iceteaviet.fastfoodfinder.data.remote.routing.MapsRoutingApiHelper;
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store;
+import com.iceteaviet.fastfoodfinder.data.remote.user.model.User;
 
 import java.util.List;
 
@@ -30,4 +31,8 @@ public interface DataManager extends ClientAuth {
     PreferencesHelper getPreferencesHelper();
 
     Single<List<Store>> loadStoresFromServer(Activity activity);
+
+    User getCurrentUser();
+
+    void setCurrentUser(User user);
 }
