@@ -72,7 +72,7 @@ public class MainRecentlyFragment extends Fragment implements OnStartDragListene
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         rv.setLayoutManager(mLayoutManager);
         rv.setAdapter(mRecentlyAdapter);
-        RecyclerView.ItemDecoration decoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
+        RecyclerView.ItemDecoration decoration = new DividerItemDecoration(rv.getContext(), DividerItemDecoration.VERTICAL);
 
         rv.addItemDecoration(decoration);
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(mRecentlyAdapter);

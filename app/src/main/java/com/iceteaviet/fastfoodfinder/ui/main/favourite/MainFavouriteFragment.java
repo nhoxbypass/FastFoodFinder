@@ -70,7 +70,7 @@ public class MainFavouriteFragment extends Fragment implements OnStartDragListen
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         setupRecyclerView(recyclerView);
         //client = TwitterApplication.getRestClient();
         fabChangePosition.setOnClickListener(new View.OnClickListener() {
@@ -102,7 +102,7 @@ public class MainFavouriteFragment extends Fragment implements OnStartDragListen
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         rv.setLayoutManager(mLayoutManager);
         rv.setAdapter(mFavouriteAdapter);
-        RecyclerView.ItemDecoration decoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
+        RecyclerView.ItemDecoration decoration = new DividerItemDecoration(rv.getContext(), DividerItemDecoration.VERTICAL);
 
         rv.addItemDecoration(decoration);
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(mFavouriteAdapter);

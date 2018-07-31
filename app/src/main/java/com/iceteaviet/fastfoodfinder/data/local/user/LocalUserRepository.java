@@ -88,7 +88,7 @@ public class LocalUserRepository implements UserDataSource {
                 if (entity != null)
                     emitter.onSuccess(new User(entity));
                 else
-                    emitter.onError(new NullPointerException("Not found"));
+                    emitter.onSuccess(null);
 
                 realm.close();
             }

@@ -1,7 +1,6 @@
 package com.iceteaviet.fastfoodfinder.ui.main.map;
 
 
-import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -23,7 +22,6 @@ import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.BounceInterpolator;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -53,7 +51,6 @@ import com.iceteaviet.fastfoodfinder.data.transport.model.SearchEventResult;
 import com.iceteaviet.fastfoodfinder.ui.routing.MapRoutingActivity;
 import com.iceteaviet.fastfoodfinder.ui.store.StoreInfoDialogFragment;
 import com.iceteaviet.fastfoodfinder.utils.Constant;
-import com.iceteaviet.fastfoodfinder.utils.DisplayUtils;
 import com.iceteaviet.fastfoodfinder.utils.LocationUtils;
 import com.iceteaviet.fastfoodfinder.utils.PermissionUtils;
 import com.iceteaviet.fastfoodfinder.utils.ui.UiUtils;
@@ -67,7 +64,7 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -106,6 +103,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
     private boolean isZoomToUser = false;
 
     private PublishSubject<Store> newVisibleStorePublisher;
+    private PublishSubject<CameraPosition> cameraPositionPublisher;
     private DataManager dataManager;
 
 
@@ -129,13 +127,12 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initializeVariables();
-
-        mLocationRequest = LocationUtils.createLocationRequest();
+        initStoreData();
     }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_main_map, container, false);
         ButterKnife.bind(this, rootView);
@@ -146,9 +143,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mNearStoreRecyclerView.setAdapter(mAdapter);
-        // Set the layout manager
-        mNearStoreRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        initBottomSheet();
     }
 
     @Override
@@ -156,8 +151,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
         super.onResume();
         EventBus.getDefault().register(this);
         if (mGoogleMap == null) {
-            initializeMap();
-            initBottomSheet();
+            initializeMapData();
         }
     }
 
@@ -185,7 +179,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     mGoogleMap.setMyLocationEnabled(true);
                     LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, mLocationRequest, this);
-                    getLastLocation();
+                    currLocation = getLastLocation();
                 } else {
                     Toast.makeText(getContext(), R.string.permission_denied, Toast.LENGTH_SHORT).show();
                 }
@@ -206,7 +200,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
         if (PermissionUtils.isLocationPermissionGranted(getContext())) {
             LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, mLocationRequest, this);
 
-            getLastLocation();
+            currLocation = getLastLocation();
 
             // Showing the current location in Google Map
             mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currLocation, 16f));
@@ -385,7 +379,23 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
         mAdapter = new NearByStoreListAdapter();
         dataManager = App.getDataManager();
         newVisibleStorePublisher = PublishSubject.create();
+        cameraPositionPublisher = PublishSubject.create();
 
+        googleApiClient = new GoogleApiClient.Builder(getContext())
+                .addConnectionCallbacks(MainMapFragment.this)
+                .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
+                    @Override
+                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+                        Log.e(TAG, "Failed to get current location");
+                    }
+                })
+                .addApi(LocationServices.API)
+                .build();
+
+        mLocationRequest = LocationUtils.createLocationRequest();
+    }
+
+    private void initStoreData() {
         dataManager.getLocalStoreDataSource().getAllStores()
                 .subscribe(new SingleObserver<List<Store>>() {
                     @Override
@@ -405,21 +415,13 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
                         Toast.makeText(getContext(), "Failed to get stores data!", Toast.LENGTH_SHORT).show();
                     }
                 });
-
-        googleApiClient = new GoogleApiClient.Builder(getContext())
-                .addConnectionCallbacks(MainMapFragment.this)
-                .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
-                    @Override
-                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                        Log.e(TAG, "Failed to get current location");
-                    }
-                })
-                .addApi(LocationServices.API)
-                .build();
     }
 
 
     private void initBottomSheet() {
+        mNearStoreRecyclerView.setAdapter(mAdapter);
+        mNearStoreRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
         mAdapter.setOnStoreListListener(new NearByStoreListAdapter.StoreListListener() {
             @Override
             public void onItemClick(Store store) {
@@ -428,7 +430,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
         });
     }
 
-    private void initializeMap() {
+    private void initializeMapData() {
         mMapFragment.getMapAsync(new OnMapReadyCallback() {
 
             @SuppressWarnings("MissingPermission")
@@ -447,14 +449,37 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
                 mGoogleMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
                     @Override
                     public void onCameraMove() {
-                        Random random = new Random();
-                        if (random.nextBoolean()) {
-                            mAdapter.setCurrCameraPosition(mGoogleMap.getCameraPosition().target);
-                            visibleStores = getVisibleStore(mStoreList, mGoogleMap.getProjection().getVisibleRegion().latLngBounds);
-                            mAdapter.setStores(visibleStores);
-                        }
+                        if (cameraPositionPublisher != null)
+                            cameraPositionPublisher.onNext(mGoogleMap.getCameraPosition());
                     }
                 });
+
+                cameraPositionPublisher
+                        .debounce(1500, TimeUnit.MILLISECONDS)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Observer<CameraPosition>() {
+                            @Override
+                            public void onSubscribe(Disposable d) {
+
+                            }
+
+                            @Override
+                            public void onNext(CameraPosition cameraPosition) {
+                                mAdapter.setCurrCameraPosition(cameraPosition.target);
+                                visibleStores = getVisibleStore(mStoreList, mGoogleMap.getProjection().getVisibleRegion().latLngBounds);
+                                mAdapter.setStores(visibleStores);
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+
+                            }
+
+                            @Override
+                            public void onComplete() {
+
+                            }
+                        });
 
                 newVisibleStorePublisher
                         .observeOn(Schedulers.computation())
@@ -476,7 +501,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
 
                             @Override
                             public void onNext(Pair<Marker, Bitmap> pair) {
-                                animateMarker(pair.second, pair.first);
+                                UiUtils.animateMarker(pair.second, pair.first);
                             }
 
                             @Override
@@ -516,8 +541,8 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
         LatLng storeLocation = store.getPosition();
         Map<String, String> queries = new HashMap<>();
 
-        queries.put("origin", LocationUtils.getLatLngString(currLocation));
-        queries.put("destination", LocationUtils.getLatLngString(storeLocation));
+        queries.put(Constant.PARAM_ORIGIN, LocationUtils.getLatLngString(currLocation));
+        queries.put(Constant.PARAM_DESTINATION, LocationUtils.getLatLngString(storeLocation));
 
         dataManager.getMapsRoutingApiHelper().getMapsDirection(queries, store)
                 .subscribe(new SingleObserver<MapsDirection>() {
@@ -559,30 +584,6 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
         }
     }
 
-
-    void animateMarker(final Bitmap bitmap, final Marker marker) {
-        if (marker == null)
-            return;
-
-        ValueAnimator animator = ValueAnimator.ofFloat(0.1f, 1);
-        animator.setDuration(1000);
-        animator.setStartDelay(500);
-        animator.setInterpolator(new BounceInterpolator());
-
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                float scale = (float) animation.getAnimatedValue();
-                try {
-                    // TODO: Optimize .fromBitmap & resize icons
-                    marker.setIcon(BitmapDescriptorFactory.fromBitmap(DisplayUtils.resizeMarkerIcon(bitmap, Math.round(scale * 75), Math.round(scale * 75))));
-                } catch (IllegalArgumentException ex) {
-                    Log.e(TAG, ex.getMessage());
-                }
-            }
-        });
-        animator.start();
-    }
 
     private void showDialogStoreInfo(final Store store) {
         FragmentManager fm = getActivity().getSupportFragmentManager();
@@ -628,11 +629,11 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
     }
 
     @SuppressLint("MissingPermission")
-    private void getLastLocation() {
+    private LatLng getLastLocation() {
         Location lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
         if (lastLocation != null) {
-            currLocation = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
+            return new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
         } else
-            currLocation = mGoogleMap.getCameraPosition().target;
+            return mGoogleMap.getCameraPosition().target;
     }
 }

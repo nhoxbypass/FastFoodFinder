@@ -7,6 +7,7 @@ import com.iceteaviet.fastfoodfinder.data.local.store.model.StoreEntity;
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store;
 import com.iceteaviet.fastfoodfinder.utils.Constant;
 import com.iceteaviet.fastfoodfinder.utils.DataUtils;
+import com.iceteaviet.fastfoodfinder.utils.exception.EmptyParamsException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -195,11 +196,11 @@ public class LocalStoreRepository implements StoreDataSource {
     @Override
     public Single<List<Store>> findStoresBy(final String key, final List<Integer> values) {
         if (values.isEmpty())
-            return Single.error(new NullPointerException("Empty values!"));
+            return Single.error(new EmptyParamsException());
 
         return Single.create(new SingleOnSubscribe<List<Store>>() {
             @Override
-            public void subscribe(SingleEmitter<List<Store>> emitter) throws Exception {
+            public void subscribe(SingleEmitter<List<Store>> emitter) {
                 Realm realm = Realm.getDefaultInstance();
                 List<Store> storeList = new ArrayList<>();
 

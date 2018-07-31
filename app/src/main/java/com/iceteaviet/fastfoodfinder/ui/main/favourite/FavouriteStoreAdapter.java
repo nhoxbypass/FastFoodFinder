@@ -44,7 +44,7 @@ public class FavouriteStoreAdapter extends RecyclerView.Adapter<FavouriteStoreAd
     }
 
     @Override
-    public FavouriteStoreViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public FavouriteStoreViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_favourite_location, parent, false);
         return new FavouriteStoreViewHolder(itemView);
@@ -128,16 +128,6 @@ public class FavouriteStoreAdapter extends RecyclerView.Adapter<FavouriteStoreAd
     public void onBindViewHolder(@NonNull final FavouriteStoreViewHolder holder, int position) {
         Store store = mStoreList.get(position);
         holder.setData(store);
-        // Start a drag whenever the handle view it touched
-        holder.itemView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
-                    mDragStartListener.onStartDrag(holder);
-                }
-                return false;
-            }
-        });
     }
 
     @Override
@@ -203,6 +193,15 @@ public class FavouriteStoreAdapter extends RecyclerView.Adapter<FavouriteStoreAd
                 }
             });
 
+            itemView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
+                        mDragStartListener.onStartDrag(FavouriteStoreViewHolder.this);
+                    }
+                    return false;
+                }
+            });
         }
 
         @Override

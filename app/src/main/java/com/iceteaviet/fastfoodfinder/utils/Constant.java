@@ -40,6 +40,9 @@ final public class Constant {
 
     public static final String NO_AVATAR_PLACEHOLDER_URL = "http://cdn.builtlean.com/wp-content/uploads/2015/11/all_noavatar.png.png";
 
+    public static final String PARAM_DESTINATION = "destination";
+    public static final String PARAM_ORIGIN = "origin";
+
     private Constant() {
 
     }
