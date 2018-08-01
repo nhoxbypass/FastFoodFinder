@@ -1,5 +1,6 @@
 package com.iceteaviet.fastfoodfinder.ui.profile;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.database.Cursor;
@@ -9,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,7 +32,7 @@ import butterknife.ButterKnife;
  */
 public class DialogUpdateCoverImage extends android.support.v4.app.DialogFragment {
 
-    private static int RESULT_LOAD_IMAGE = 1;
+    private static final int RESULT_LOAD_IMAGE = 1;
 
     @BindView(R.id.ivOne)
     ImageView ivOne;
@@ -53,7 +55,7 @@ public class DialogUpdateCoverImage extends android.support.v4.app.DialogFragmen
     @BindView(R.id.btnBrowser)
     Button btnBrowser;
 
-    private int IdChosenImage = 0;
+    private int chosenImageId = 0;
     private Bitmap mBmp = null;
 
     private OnButtonClickListener mListener;
@@ -72,7 +74,7 @@ public class DialogUpdateCoverImage extends android.support.v4.app.DialogFragmen
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         return inflater.inflate(R.layout.dialog_choose_image, container, false);
     }
@@ -80,7 +82,6 @@ public class DialogUpdateCoverImage extends android.support.v4.app.DialogFragmen
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Dialog dialog = super.onCreateDialog(savedInstanceState);
-        //request
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         return dialog;
     }
@@ -92,7 +93,7 @@ public class DialogUpdateCoverImage extends android.support.v4.app.DialogFragmen
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
 
@@ -110,14 +111,14 @@ public class DialogUpdateCoverImage extends android.support.v4.app.DialogFragmen
             @Override
             public void onClick(View view) {
                 ivChosenImage.setImageResource(R.drawable.profile_sample_background);
-                IdChosenImage = R.drawable.profile_sample_background;
+                chosenImageId = R.drawable.profile_sample_background;
             }
         });
         ivTwo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ivChosenImage.setImageResource(R.drawable.all_sample_avatar);
-                IdChosenImage = R.drawable.all_sample_avatar;
+                chosenImageId = R.drawable.all_sample_avatar;
 
             }
         });
@@ -125,35 +126,35 @@ public class DialogUpdateCoverImage extends android.support.v4.app.DialogFragmen
             @Override
             public void onClick(View view) {
                 ivChosenImage.setImageResource(R.drawable.profile_sample_background_3);
-                IdChosenImage = R.drawable.profile_sample_background_3;
+                chosenImageId = R.drawable.profile_sample_background_3;
             }
         });
         ivFour.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ivChosenImage.setImageResource(R.drawable.profile_sample_background_4);
-                IdChosenImage = R.drawable.profile_sample_background_4;
+                chosenImageId = R.drawable.profile_sample_background_4;
             }
         });
         ivFive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ivChosenImage.setImageResource(R.drawable.profile_sample_background_5);
-                IdChosenImage = R.drawable.profile_sample_background_5;
+                chosenImageId = R.drawable.profile_sample_background_5;
             }
         });
         ivSix.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ivChosenImage.setImageResource(R.drawable.profile_sample_background_6);
-                IdChosenImage = R.drawable.profile_sample_background_6;
+                chosenImageId = R.drawable.profile_sample_background_6;
             }
         });
 
         btnDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mListener.onButtonClickListener(IdChosenImage, mBmp);
+                mListener.onButtonClickListener(chosenImageId, mBmp);
                 dismiss();
             }
         });
@@ -169,27 +170,33 @@ public class DialogUpdateCoverImage extends android.support.v4.app.DialogFragmen
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RESULT_LOAD_IMAGE && resultCode == getActivity().RESULT_OK && null != data) {
-            Uri selectedImage = data.getData();
-            String[] filePathColumn = {MediaStore.Images.Media.DATA};
+        switch (requestCode) {
+            case RESULT_LOAD_IMAGE:
+                if (resultCode == Activity.RESULT_OK && data != null) {
+                    Uri selectedImage = data.getData();
+                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
-            Cursor cursor = getActivity().getContentResolver().query(selectedImage,
-                    filePathColumn, null, null, null);
-            cursor.moveToFirst();
+                    Cursor cursor = getActivity().getContentResolver().query(selectedImage,
+                            filePathColumn, null, null, null);
+                    cursor.moveToFirst();
 
-            //int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            //String picturePath = cursor.getString(columnIndex);
-            cursor.close();
+                    //int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                    //String picturePath = cursor.getString(columnIndex);
+                    cursor.close();
 
-            Bitmap bmp = null;
-            try {
-                bmp = getBitmapFromUri(selectedImage);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            ivChosenImage.setImageBitmap(bmp);
-            IdChosenImage = -1;
-            mBmp = bmp;
+                    Bitmap bmp = null;
+                    try {
+                        bmp = getBitmapFromUri(selectedImage);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    ivChosenImage.setImageBitmap(bmp);
+                    chosenImageId = -1;
+                    mBmp = bmp;
+                }
+                break;
+            default:
+                break;
         }
     }
 

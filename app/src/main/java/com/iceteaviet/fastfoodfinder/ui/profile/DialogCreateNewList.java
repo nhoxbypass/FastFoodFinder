@@ -26,6 +26,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Created by MyPC on 11/30/2016.
  */
 public class DialogCreateNewList extends DialogFragment {
+    private static final String KEY_LIST_NAME = "list_name";
+
     @BindView(R.id.ivQuit)
     ImageView ivQuit;
     @BindView(R.id.btnDone)
@@ -59,7 +61,7 @@ public class DialogCreateNewList extends DialogFragment {
     public static DialogCreateNewList newInstance(ArrayList<String> listName) {
         DialogCreateNewList frag = new DialogCreateNewList();
         Bundle args = new Bundle();
-        args.putStringArrayList("list_name", listName);
+        args.putStringArrayList(KEY_LIST_NAME, listName);
         frag.setArguments(args);
         return frag;
     }
@@ -72,7 +74,7 @@ public class DialogCreateNewList extends DialogFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        listName = getArguments().getStringArrayList("list_name");
+        listName = getArguments().getStringArrayList(KEY_LIST_NAME);
     }
 
     @Nullable

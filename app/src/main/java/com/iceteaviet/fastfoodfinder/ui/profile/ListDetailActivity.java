@@ -14,10 +14,10 @@ import com.iceteaviet.fastfoodfinder.App;
 import com.iceteaviet.fastfoodfinder.R;
 import com.iceteaviet.fastfoodfinder.data.DataManager;
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store;
+import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList;
 import com.iceteaviet.fastfoodfinder.ui.storelist.StoreListAdapter;
 import com.iceteaviet.fastfoodfinder.utils.Constant;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -45,6 +45,8 @@ public class ListDetailActivity extends AppCompatActivity {
     private StoreListAdapter mAdapter;
 
     private DataManager dataManager;
+    private UserStoreList userStoreList;
+    private String photoUrl;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,34 +55,32 @@ public class ListDetailActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         dataManager = App.getDataManager();
+
+        userStoreList = loadData(getIntent());
+        setupUI();
+    }
+
+    private void setupUI() {
         mAdapter = new StoreListAdapter();
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         rvStoreList.setAdapter(mAdapter);
         rvStoreList.setLayoutManager(layoutManager);
         RecyclerView.ItemDecoration decoration = new DividerItemDecoration(getApplicationContext(), DividerItemDecoration.VERTICAL);
         rvStoreList.addItemDecoration(decoration);
-        getData();
+
+        tvListName.setText(userStoreList.getListName());
+        cvIconList.setImageResource(userStoreList.getIconId());
+        Glide.with(getApplicationContext())
+                .load(photoUrl)
+                .into(avatar);
     }
 
-    void getData() {
-        Intent intent = getIntent();
-
-        //list name
-        tvListName.setText(intent.getStringExtra(Constant.KEY_NAME));
-        //icon of list
-        cvIconList.setImageResource(intent.getIntExtra(Constant.KEY_IDICON, 0));
-
-        Glide.with(getApplicationContext())
-                .load(intent.getStringExtra(Constant.KEY_URL))
-                .into(avatar);
-
-        //id of list
-        //int id = intent.getIntExtra(Constant.KEY_ID, 0);
-        //list id of store
-        ArrayList<Integer> ids = intent.getIntegerArrayListExtra(Constant.KEY_STORE);
+    private UserStoreList loadData(Intent intent) {
+        UserStoreList userStoreList = intent.getParcelableExtra(Constant.KEY_USER_STORE_LIST);
+        photoUrl = intent.getStringExtra(Constant.KEY_USER_PHOTO_URL);
 
         //add list store to mAdapter here
-        dataManager.getLocalStoreDataSource().findStoresByIds(ids)
+        dataManager.getLocalStoreDataSource().findStoresByIds(userStoreList.getStoreIdList())
                 .subscribe(new SingleObserver<List<Store>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
@@ -97,5 +97,7 @@ public class ListDetailActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 });
+
+        return userStoreList;
     }
 }

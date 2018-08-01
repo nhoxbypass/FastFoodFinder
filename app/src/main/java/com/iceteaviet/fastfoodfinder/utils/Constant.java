@@ -12,11 +12,8 @@ final public class Constant {
     //Keys
     public static final String KEY_ROUTE_LIST = "route_list";
     public static final String KEY_DES_STORE = "des_store";
-    public static final String KEY_NAME = "name";
-    public static final String KEY_ID = "id";
-    public static final String KEY_IDICON = "idicon";
-    public static final String KEY_STORE = "store";
-    public static final String KEY_URL = "url";
+    public static final String KEY_USER_STORE_LIST = "store";
+    public static final String KEY_USER_PHOTO_URL = "url";
     public static final String COMMENT = "comment";
     public static final String STORE = "ic_store";
 

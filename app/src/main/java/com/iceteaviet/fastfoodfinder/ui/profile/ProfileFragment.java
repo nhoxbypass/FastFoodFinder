@@ -264,14 +264,8 @@ public class ProfileFragment extends Fragment {
 
     void sendToDetailListActivity(UserStoreList userStoreList) {
         Intent intent = new Intent(getContext(), ListDetailActivity.class);
-        intent.putExtra(Constant.KEY_URL, dataManager.getCurrentUser().getPhotoUrl());
-        intent.putExtra(Constant.KEY_NAME, userStoreList.getListName());
-        intent.putExtra(Constant.KEY_ID, userStoreList.getId());
-        intent.putExtra(Constant.KEY_IDICON, userStoreList.getIconId());
-        Bundle bundle = new Bundle();
-        ArrayList<Integer> tmp = new ArrayList<>(userStoreList.getStoreIdList());
-        bundle.putIntegerArrayList(Constant.KEY_STORE, tmp);
-        intent.putExtras(bundle);
+        intent.putExtra(Constant.KEY_USER_PHOTO_URL, dataManager.getCurrentUser().getPhotoUrl());
+        intent.putExtra(Constant.KEY_USER_STORE_LIST, userStoreList);
         startActivity(intent);
     }
 }
