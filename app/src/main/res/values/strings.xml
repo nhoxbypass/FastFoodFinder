@@ -98,6 +98,7 @@
     <string name="splash_footer">Fastfood Finder 2016</string>
     <string name="unregistered_user">Unregistered User</string>
     <string name="unregistered_email" translatable="false">anonymous@fastfoodfinder.com</string>
+    <string name="gps_is_loading">GPS is loading...</string>
 
 </resources>
 

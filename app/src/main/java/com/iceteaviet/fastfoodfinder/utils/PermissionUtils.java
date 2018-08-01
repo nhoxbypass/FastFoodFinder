@@ -14,6 +14,7 @@ import android.support.v4.content.ContextCompat;
 public final class PermissionUtils {
     public static final int REQUEST_LOCATION = 1001;
     public static final int REQUEST_CALL_PHONE = 1002;
+    public static final int REQUEST_CAMERA = 1003;
 
     private PermissionUtils() {
 
@@ -46,5 +47,15 @@ public final class PermissionUtils {
 
     public static boolean isCallPhonePermissionGranted(Context context) {
         return ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    public static void requestCameraPermission(Activity activity) {
+        ActivityCompat.requestPermissions(activity, new String[]{
+                        Manifest.permission.CAMERA},
+                REQUEST_CAMERA);
+    }
+
+    public static boolean isCameraPermissionGranted(Context context) {
+        return ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
     }
 }

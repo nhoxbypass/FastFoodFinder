@@ -33,18 +33,14 @@ public class ARCamera extends ViewGroup implements SurfaceHolder.Callback {
     private int cameraHeight;
 
     public ARCamera(Context context, SurfaceView surfaceView) {
-        this(context);
-        this.surfaceView = surfaceView;
-    }
-
-    public ARCamera(Context context) {
         super(context);
-
         this.activity = (Activity) context;
-        SurfaceHolder surfaceHolder = this.surfaceView.getHolder();
+        this.surfaceView = surfaceView;
+        SurfaceHolder surfaceHolder = surfaceView.getHolder();
         surfaceHolder.addCallback(this);
         surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
     }
+
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {

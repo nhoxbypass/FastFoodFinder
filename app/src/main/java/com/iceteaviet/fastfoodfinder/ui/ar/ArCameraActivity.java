@@ -1,6 +1,5 @@
 package com.iceteaviet.fastfoodfinder.ui.ar;
 
-import android.Manifest;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.hardware.Sensor;
@@ -13,6 +12,7 @@ import android.location.LocationManager;
 import android.opengl.Matrix;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.SurfaceView;
@@ -30,6 +30,7 @@ import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store;
 import com.iceteaviet.fastfoodfinder.ui.base.BaseActivity;
 import com.iceteaviet.fastfoodfinder.ui.custom.ar.ARCamera;
 import com.iceteaviet.fastfoodfinder.ui.custom.ar.AROverlayView;
+import com.iceteaviet.fastfoodfinder.utils.PermissionUtils;
 import com.iceteaviet.fastfoodfinder.utils.ui.UiUtils;
 
 import java.util.List;
@@ -40,11 +41,9 @@ import io.reactivex.schedulers.Schedulers;
 
 public class ArCameraActivity extends BaseActivity implements SensorEventListener, LocationListener {
 
-    public static final int REQUEST_LOCATION_PERMISSIONS_CODE = 0;
     private final static String TAG = ArCameraActivity.class.getSimpleName();
-    private final static int REQUEST_CAMERA_PERMISSIONS_CODE = 11;
-    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 0; // 10 meters
-    private static final long MIN_TIME_BW_UPDATES = 0; //1000 * 60 * 1; // 1 minute
+    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10; // 10 meters
+    private static final long MIN_TIME_BW_UPDATES = 1000 * 30; // 30 seconds
     private static final double RADIUS = 0.005;
 
     private Location location;
@@ -74,8 +73,8 @@ public class ArCameraActivity extends BaseActivity implements SensorEventListene
     @Override
     protected void onResume() {
         super.onResume();
-        requestLocationPermission();
-        requestCameraPermission();
+        checkLocationPermission();
+        checkCameraPermission();
         registerSensors();
         initAROverlayView();
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
@@ -91,6 +90,37 @@ public class ArCameraActivity extends BaseActivity implements SensorEventListene
     protected void onDestroy() {
         arOverlayView.destroy();
         super.onDestroy();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        switch (requestCode) {
+            case PermissionUtils.REQUEST_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    initLocationService();
+                } else {
+                    Toast.makeText(this, R.string.permission_denied, Toast.LENGTH_SHORT).show();
+                }
+                break;
+            }
+
+            case PermissionUtils.REQUEST_CAMERA: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    initARCameraView();
+                } else {
+                    Toast.makeText(this, R.string.permission_denied, Toast.LENGTH_SHORT).show();
+                }
+                break;
+            }
+
+            default:
+                break;
+        }
     }
 
     @Override
@@ -145,8 +175,6 @@ public class ArCameraActivity extends BaseActivity implements SensorEventListene
                         e.printStackTrace();
                     }
                 });
-
-        //Toast.makeText(ArCameraActivity.this, "onLocationChanged", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -169,19 +197,19 @@ public class ArCameraActivity extends BaseActivity implements SensorEventListene
         return R.layout.activity_ar_camera;
     }
 
-    public void requestCameraPermission() {
+    public void checkCameraPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
-                this.checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            this.requestPermissions(new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSIONS_CODE);
+                !PermissionUtils.isCameraPermissionGranted(this)) {
+            PermissionUtils.requestCameraPermission(this);
         } else {
             initARCameraView();
         }
     }
 
-    public void requestLocationPermission() {
+    public void checkLocationPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
-                this.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            this.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_PERMISSIONS_CODE);
+                !PermissionUtils.isLocationPermissionGranted(this)) {
+            PermissionUtils.requestLocationPermission(this);
         } else {
             initLocationService();
         }
