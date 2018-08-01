@@ -8,6 +8,7 @@ import com.iceteaviet.fastfoodfinder.data.local.user.model.UserStoreListEntity;
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User;
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreEvent;
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList;
+import com.iceteaviet.fastfoodfinder.utils.exception.EmptyParamsException;
 
 import java.util.List;
 
@@ -79,7 +80,7 @@ public class LocalUserRepository implements UserDataSource {
             @Override
             public void subscribe(SingleEmitter<User> emitter) {
                 if (uid == null)
-                    emitter.onSuccess(null);
+                    emitter.onError(new EmptyParamsException());
 
                 Realm realm = Realm.getDefaultInstance();
 

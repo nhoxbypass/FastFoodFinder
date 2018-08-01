@@ -153,7 +153,13 @@ public class AppDataManager implements DataManager {
 
     @Override
     public String getCurrentUserUid() {
-        String uid = clientAuth.getCurrentUserUid();
+        String uid = null;
+        if (currentUser != null)
+            uid = currentUser.getUid();
+
+        if (uid == null || uid.isEmpty())
+            uid = clientAuth.getCurrentUserUid();
+
         if (uid == null || uid.isEmpty())
             uid = preferencesHelper.getCurrentUserUid();
 
@@ -168,6 +174,7 @@ public class AppDataManager implements DataManager {
     @Override
     public void signOut() {
         clientAuth.signOut();
+        setCurrentUser(null);
     }
 
     @Override
@@ -182,9 +189,12 @@ public class AppDataManager implements DataManager {
 
     @Override
     public User getCurrentUser() {
-        if (currentUser == null)
-            currentUser = localUserDataSource.getUser(getCurrentUserUid())
-                    .blockingGet();
+        if (currentUser == null) {
+            String uid = getCurrentUserUid();
+            if (uid != null)
+                currentUser = localUserDataSource.getUser(uid)
+                        .blockingGet();
+        }
 
         return currentUser;
     }
@@ -192,7 +202,11 @@ public class AppDataManager implements DataManager {
     @Override
     public void setCurrentUser(User user) {
         currentUser = user;
-        preferencesHelper.setCurrentUserUid(user.getUid());
-        localUserDataSource.insertOrUpdate(user);
+        if (user != null) {
+            preferencesHelper.setCurrentUserUid(user.getUid());
+            localUserDataSource.insertOrUpdate(user);
+        } else {
+            preferencesHelper.setCurrentUserUid(null);
+        }
     }
 }
