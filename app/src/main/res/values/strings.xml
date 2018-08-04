@@ -98,7 +98,15 @@
     <string name="splash_footer">Fastfood Finder 2016</string>
     <string name="unregistered_user">Unregistered User</string>
     <string name="unregistered_email" translatable="false">anonymous@fastfoodfinder.com</string>
-    <string name="gps_is_loading">GPS is loading...</string>
+    <string name="gps_is_loading">GPS is loading…</string>
+    <string name="fav_stores_added">Added to favourite stores</string>
+    <string name="store_no_phone_numb">This store doesn\'t have number phone!</string>
+    <string name="cannot_connect_location_service">Cannot connect to location service</string>
+    <string name="cannot_get_curr_location">Cannot get current location!</string>
+    <string name="get_store_data_failed">Failed to get stores data!</string>
+    <string name="add_comment_or_photo">Add comment or photo</string>
+    <string name="cannot_post_comment">Can not post the tweet. Your content is more %d characters.</string>
+    <string name="close_comment_editor">Close comment editor?</string>
 
 </resources>
 

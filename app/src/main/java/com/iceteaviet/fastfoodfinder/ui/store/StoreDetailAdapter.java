@@ -2,6 +2,7 @@ package com.iceteaviet.fastfoodfinder.ui.store;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.support.annotation.NonNull;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.widget.CardView;
@@ -32,10 +33,10 @@ import butterknife.ButterKnife;
 
 public class StoreDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private final int HEADER = 0;
-    private final int INFO = 1;
-    private final int TITLE = 2;
-    private final int ITEM = 3;
+    private static final int HEADER = 0;
+    private static final int INFO = 1;
+    private static final int TITLE = 2;
+    private static final int ITEM = 3;
 
     private Store mStore;
     private List<Comment> mComments;
@@ -57,7 +58,7 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         switch (viewType) {
             case HEADER:
                 return new HeaderViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_store_action, parent, false), mListener);
@@ -71,7 +72,7 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         switch (getItemViewType(position)) {
             case HEADER:
                 ((HeaderViewHolder) holder).bind(mStore);

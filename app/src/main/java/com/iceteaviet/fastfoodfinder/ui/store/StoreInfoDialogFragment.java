@@ -97,7 +97,7 @@ public class StoreInfoDialogFragment extends DialogFragment {
                     else
                         PermissionUtils.requestCallPhonePermission(StoreInfoDialogFragment.this);
                 } else {
-                    Toast.makeText(getActivity(), "The store doesn't have number phone!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), R.string.store_no_phone_numb, Toast.LENGTH_SHORT).show();
                 }
             }
         });

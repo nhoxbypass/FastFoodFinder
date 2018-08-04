@@ -1,6 +1,5 @@
 package com.iceteaviet.fastfoodfinder.ui.store;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -31,7 +30,7 @@ import butterknife.ButterKnife;
 
 public class CommentActivity extends AppCompatActivity implements NoticeDialog.NoticeDialogListener {
 
-    private final int MAX_CHAR = 500;
+    private final int MAX_CHAR = 140;
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -41,11 +40,6 @@ public class CommentActivity extends AppCompatActivity implements NoticeDialog.N
     TextView tvRemainChar;
     @BindView(R.id.btn_post)
     Button btnPost;
-
-    public static Intent getIntent(Context context) {
-        Intent intent = new Intent(context, CommentActivity.class);
-        return intent;
-    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,7 +55,7 @@ public class CommentActivity extends AppCompatActivity implements NoticeDialog.N
         setSupportActionBar(mToolbar);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_all_close);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Add comment or photo");
+        getSupportActionBar().setTitle(R.string.add_comment_or_photo);
     }
 
     private void setupViews() {
@@ -98,7 +92,7 @@ public class CommentActivity extends AppCompatActivity implements NoticeDialog.N
             public void onClick(View v) {
                 if (etComment.getText().length() > MAX_CHAR) {
                     Toast.makeText(CommentActivity.this,
-                            "Can not post the tweet. Your content is more " + MAX_CHAR + " characters.",
+                            getString(R.string.cannot_post_comment, MAX_CHAR),
                             Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -114,7 +108,7 @@ public class CommentActivity extends AppCompatActivity implements NoticeDialog.N
     private void checkClose() {
         if (!etComment.getText().toString().isEmpty()) {
             FragmentManager fragmentManager = getSupportFragmentManager();
-            NoticeDialog noticeDialog = NoticeDialog.newInstance("Are you sure?");
+            NoticeDialog noticeDialog = NoticeDialog.newInstance(getString(R.string.close_comment_editor));
             noticeDialog.show(fragmentManager, "notice_dialog");
         } else {
             finish();

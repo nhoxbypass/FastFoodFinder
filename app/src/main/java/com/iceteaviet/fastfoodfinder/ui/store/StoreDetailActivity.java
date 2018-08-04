@@ -39,6 +39,7 @@ import com.iceteaviet.fastfoodfinder.utils.Constant;
 import com.iceteaviet.fastfoodfinder.utils.FormatUtils;
 import com.iceteaviet.fastfoodfinder.utils.LocationUtils;
 import com.iceteaviet.fastfoodfinder.utils.PermissionUtils;
+import com.iceteaviet.fastfoodfinder.utils.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -55,6 +56,7 @@ import io.reactivex.disposables.Disposable;
 public class StoreDetailActivity extends AppCompatActivity implements StoreDetailAdapter.StoreActionListener, GoogleApiClient.ConnectionCallbacks {
 
     public static final int REQUEST_COMMENT = 113;
+    private static final String TAG = StoreDetailActivity.class.getSimpleName();
 
     @BindView(R.id.appbar)
     AppBarLayout appbar;
@@ -111,7 +113,7 @@ public class StoreDetailActivity extends AppCompatActivity implements StoreDetai
                 .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
                     @Override
                     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                        Log.e("MAPP", "Failed to get current location");
+                        Log.e(TAG, getString(R.string.cannot_get_curr_location));
                     }
                 })
                 .addApi(LocationServices.API)
@@ -165,15 +167,15 @@ public class StoreDetailActivity extends AppCompatActivity implements StoreDetai
 
     @Override
     public void onShowComment() {
-        startActivityForResult(CommentActivity.getIntent(this), REQUEST_COMMENT);
+        startActivityForResult(new Intent(this, CommentActivity.class), REQUEST_COMMENT);
     }
 
     @Override
     public void onCall(String tel) {
-        if (tel != null && !tel.equals("")) {
+        if (!StringUtils.isEmpty(tel)) {
             startActivity(FormatUtils.getCallIntent(tel));
         } else {
-            Toast.makeText(this, "The ic_store doesn't have number phone!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.store_no_phone_numb, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -212,13 +214,12 @@ public class StoreDetailActivity extends AppCompatActivity implements StoreDetai
     @Override
     public void onAddToFavorite(int storeId) {
         //TODO gọi hàm lưu vào danh sách yêu thích
-        Toast.makeText(this, "add to favorite " + storeId, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.fav_stores_added) + storeId, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onCheckIn(int storeId) {
         //TODO gọi hàm check in
-        Toast.makeText(this, "check in " + storeId, Toast.LENGTH_SHORT).show();
     }
 
     @SuppressWarnings("MissingPermission")
@@ -233,7 +234,7 @@ public class StoreDetailActivity extends AppCompatActivity implements StoreDetai
 
     @Override
     public void onConnectionSuspended(int i) {
-        Toast.makeText(this, "Cannot connect to Location service", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.cannot_connect_location_service, Toast.LENGTH_SHORT).show();
     }
 
     @SuppressLint("MissingPermission")
@@ -250,6 +251,6 @@ public class StoreDetailActivity extends AppCompatActivity implements StoreDetai
         if (lastLocation != null) {
             currLocation = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
         } else
-            Toast.makeText(StoreDetailActivity.this, "Cannot get current location!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(StoreDetailActivity.this, R.string.cannot_get_curr_location, Toast.LENGTH_SHORT).show();
     }
 }
