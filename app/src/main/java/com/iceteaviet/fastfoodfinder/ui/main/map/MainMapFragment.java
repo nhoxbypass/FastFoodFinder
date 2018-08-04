@@ -76,6 +76,8 @@ import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
 
+import static com.iceteaviet.fastfoodfinder.utils.Constant.DEFAULT_ZOOM_LEVEL;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -203,7 +205,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
             currLocation = getLastLocation();
 
             // Showing the current location in Google Map
-            mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currLocation, 16f));
+            mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currLocation, DEFAULT_ZOOM_LEVEL));
         } else {
             PermissionUtils.requestLocationPermission(this);
         }
@@ -280,7 +282,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
 
                                 addMarkersToMap(mStoreList, mGoogleMap);
 
-                                mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mStoreList.get(0).getPosition(), 16f));
+                                mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mStoreList.get(0).getPosition(), DEFAULT_ZOOM_LEVEL));
 
                                 mAdapter.setCurrCameraPosition(mGoogleMap.getCameraPosition().target);
                                 visibleStores = getVisibleStore(mStoreList, mGoogleMap.getProjection().getVisibleRegion().latLngBounds);
@@ -319,7 +321,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
                         });
 
                 if (currLocation != null)
-                    mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currLocation, 16f));
+                    mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currLocation, DEFAULT_ZOOM_LEVEL));
                 break;
 
             default:
@@ -622,7 +624,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
 
         if (!isZoomToUser) {
             // Zoom and show current location in the Google Map
-            mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currLocation, 16f));
+            mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currLocation, DEFAULT_ZOOM_LEVEL));
 
             isZoomToUser = true;
         }

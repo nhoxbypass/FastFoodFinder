@@ -1,5 +1,6 @@
 package com.iceteaviet.fastfoodfinder.ui.routing;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.Spanned;
@@ -55,14 +56,14 @@ public class RoutingAdapter extends RecyclerView.Adapter<RoutingAdapter.ViewHold
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_routing, parent, false);
         return new ViewHolder(convertView, mListener);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.setData(mStepList.get(position), mType);
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        holder.bindData(mStepList.get(position), mType);
     }
 
     @Override
@@ -99,9 +100,8 @@ public class RoutingAdapter extends RecyclerView.Adapter<RoutingAdapter.ViewHold
             });
         }
 
-        public void setData(Step step, int type) {
+        public void bindData(Step step, int type) {
             int imgResId = UiUtils.getDirectionImage(step.getDirection());
-            routingImageView.setImageResource(imgResId);
             Spanned instruction;
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                 instruction = Html.fromHtml(step.getInstruction(), Html.FROM_HTML_MODE_COMPACT);
@@ -109,6 +109,7 @@ public class RoutingAdapter extends RecyclerView.Adapter<RoutingAdapter.ViewHold
                 instruction = Html.fromHtml(step.getInstruction());
             }
 
+            routingImageView.setImageResource(imgResId);
             if (type == TYPE_FULL)
                 routingGuide.setText(FormatUtils.trimWhitespace(instruction));
             else if (type == TYPE_SHORT)

@@ -40,6 +40,9 @@ final public class Constant {
     public static final String PARAM_DESTINATION = "destination";
     public static final String PARAM_ORIGIN = "origin";
 
+    public static final float DEFAULT_ZOOM_LEVEL = 16;
+    public static final float DETAILED_ZOOM_LEVEL = 18;
+
     private Constant() {
 
     }

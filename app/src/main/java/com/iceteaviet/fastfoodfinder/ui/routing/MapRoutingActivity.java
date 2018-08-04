@@ -43,6 +43,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.iceteaviet.fastfoodfinder.utils.Constant.DEFAULT_ZOOM_LEVEL;
+import static com.iceteaviet.fastfoodfinder.utils.Constant.DETAILED_ZOOM_LEVEL;
+
 public class MapRoutingActivity extends AppCompatActivity {
 
     @BindView(R.id.toolbar)
@@ -88,32 +91,16 @@ public class MapRoutingActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        mStepList = new ArrayList<>();
-        mGeoPointList = new ArrayList<>();
+        setupData();
 
-        mBottomSheetBehavior = BottomSheetBehavior.from(mBottomSheetContainer);
+        setupUI();
 
-        getExtrasBundle();
+        setupEventListeners();
 
-        setupToolbar(mToolbar);
+        setUpMapIfNeeded();
+    }
 
-        mStepList = mMapsDirection.getRouteList().get(0).getLegList().get(0).getStepList();
-        mCurrLocation = mStepList.get(0).getStartMapCoordination().getLocation();
-        mGeoPointList = PolyUtil.decode(mMapsDirection.getRouteList().get(0).getEncodedPolylineString());
-
-
-        mBottomRoutingAdapter = new RoutingAdapter(mStepList, RoutingAdapter.TYPE_FULL);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(MapRoutingActivity.this);
-        bottomRecyclerView.setLayoutManager(layoutManager);
-        bottomRecyclerView.setAdapter(mBottomRoutingAdapter);
-
-        mTopRoutingAdapter = new RoutingAdapter(mStepList, RoutingAdapter.TYPE_SHORT);
-        final LinearLayoutManager topLayoutManager = new LinearLayoutManager(MapRoutingActivity.this, LinearLayoutManager.HORIZONTAL, false);
-        topRecyclerView.setLayoutManager(topLayoutManager);
-        topRecyclerView.setAdapter(mTopRoutingAdapter);
-        SnapHelper snapHelper = new LinearSnapHelper();
-        snapHelper.attachToRecyclerView(topRecyclerView);
-
+    private void setupEventListeners() {
         mListener = new RoutingAdapter.OnNavigationItemClickListener() {
             @Override
             public void onClick(int index) {
@@ -148,17 +135,42 @@ public class MapRoutingActivity extends AppCompatActivity {
                 }
             }
         });
-
-
-        setUpMapIfNeeded();
     }
 
-    private void showDirectionAt(int currDirectionIndex) {
-        mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mBottomRoutingAdapter.getDirectionLocationAt(currDirectionIndex), 18));
+    private void setupUI() {
+        mBottomSheetBehavior = BottomSheetBehavior.from(mBottomSheetContainer);
+
+        setSupportActionBar(mToolbar);
+        // add back arrow to mToolbar
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setTitle(mCurrStore.getTitle());
+        }
+
+        mBottomRoutingAdapter = new RoutingAdapter(mStepList, RoutingAdapter.TYPE_FULL);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(MapRoutingActivity.this);
+        bottomRecyclerView.setLayoutManager(layoutManager);
+        bottomRecyclerView.setAdapter(mBottomRoutingAdapter);
+
+        mTopRoutingAdapter = new RoutingAdapter(mStepList, RoutingAdapter.TYPE_SHORT);
+        final LinearLayoutManager topLayoutManager = new LinearLayoutManager(MapRoutingActivity.this, LinearLayoutManager.HORIZONTAL, false);
+        topRecyclerView.setLayoutManager(topLayoutManager);
+        topRecyclerView.setAdapter(mTopRoutingAdapter);
+        SnapHelper snapHelper = new LinearSnapHelper();
+        snapHelper.attachToRecyclerView(topRecyclerView);
     }
 
-    private void getExtrasBundle() {
+    private void setupData() {
+        mStepList = new ArrayList<>();
+        mGeoPointList = new ArrayList<>();
+
         Bundle extras = getIntent().getExtras();
+        if (extras == null) {
+            finish();
+            return;
+        }
+
         mMapsDirection = extras.getParcelable(Constant.KEY_ROUTE_LIST);
         mCurrStore = extras.getParcelable(Constant.KEY_DES_STORE);
 
@@ -166,17 +178,14 @@ public class MapRoutingActivity extends AppCompatActivity {
             Toast.makeText(MapRoutingActivity.this, "Failed to open Routing screen!", Toast.LENGTH_SHORT).show();
             finish();
         }
+
+        mStepList = mMapsDirection.getRouteList().get(0).getLegList().get(0).getStepList();
+        mCurrLocation = mStepList.get(0).getStartMapCoordination().getLocation();
+        mGeoPointList = PolyUtil.decode(mMapsDirection.getRouteList().get(0).getEncodedPolylineString());
     }
 
-    private void setupToolbar(Toolbar toolbar) {
-        setSupportActionBar(toolbar);
-
-        // add back arrow to mToolbar
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-            getSupportActionBar().setTitle(mCurrStore.getTitle());
-        }
+    private void showDirectionAt(int currDirectionIndex) {
+        mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mBottomRoutingAdapter.getDirectionLocationAt(currDirectionIndex), DETAILED_ZOOM_LEVEL));
     }
 
     @Override
@@ -215,7 +224,7 @@ public class MapRoutingActivity extends AppCompatActivity {
         if (googleMap != null) {
             // ... use map here
             mGoogleMap = googleMap;
-            mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mCurrLocation, 16));
+            mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mCurrLocation, DEFAULT_ZOOM_LEVEL));
 
             googleMap.addMarker(new MarkerOptions().position(mCurrLocation)
                     .title("Your location")
@@ -234,7 +243,7 @@ public class MapRoutingActivity extends AppCompatActivity {
 
             txtTravelTime.setText(mMapsDirection.getRouteList().get(0).getLegList().get(0).getDuration());
             txtTravelDistance.setText(mMapsDirection.getRouteList().get(0).getLegList().get(0).getDistance());
-            txtTravelOverview.setText("Via " + mMapsDirection.getRouteList().get(0).getSummary());
+            txtTravelOverview.setText(String.format("Via %s", mMapsDirection.getRouteList().get(0).getSummary()));
 
 
             mBottomRoutingAdapter.setOnNavigationItemClickListener(mListener);
