@@ -354,7 +354,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
         SupportMapFragment mapFragment = (SupportMapFragment) fragmentManager.findFragmentById(R.id.maps_container);
         if (mapFragment == null) {
             CameraPosition cameraPosition = CameraPosition.builder()
-                    .target(new LatLng(10.7473821, 106.6805755))
+                    .target(Constant.DEFAULT_MAP_TARGET)
                     .zoom(16)
                     .build();
             GoogleMapOptions options = new GoogleMapOptions();

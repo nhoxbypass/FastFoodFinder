@@ -30,8 +30,6 @@
         android:layout_below="@id/toolbar"
         android:layout_marginBottom="40dp"
         android:layout_marginTop="56dp"
-        map:cameraTargetLat="10.7496203"
-        map:cameraTargetLng="106.6813297"
         map:cameraTilt="30"
         map:cameraZoom="13"
         map:mapType="normal"

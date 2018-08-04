@@ -1,5 +1,7 @@
 package com.iceteaviet.fastfoodfinder.utils;
 
+import com.google.android.gms.maps.model.LatLng;
+
 /**
  * Use class instead of interface for constant class to avoid Constant Interface Antipattern
  *
@@ -42,6 +44,7 @@ final public class Constant {
 
     public static final float DEFAULT_ZOOM_LEVEL = 16;
     public static final float DETAILED_ZOOM_LEVEL = 18;
+    public static final LatLng DEFAULT_MAP_TARGET = new LatLng(10.773996, 106.6898035);
 
     private Constant() {
 
