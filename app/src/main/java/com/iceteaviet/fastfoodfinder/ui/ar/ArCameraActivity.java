@@ -244,7 +244,7 @@ public class ArCameraActivity extends BaseActivity implements SensorEventListene
                 camera.startPreview();
                 arCamera.setCamera(camera);
             } catch (RuntimeException ex) {
-                Toast.makeText(this, "Camera not found", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, R.string.camera_not_found, Toast.LENGTH_LONG).show();
             }
         }
     }

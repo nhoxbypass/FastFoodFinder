@@ -14,10 +14,10 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.model.LatLng;
 import com.iceteaviet.fastfoodfinder.R;
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store;
+import com.iceteaviet.fastfoodfinder.utils.FormatUtils;
 import com.iceteaviet.fastfoodfinder.utils.LocationUtils;
 import com.iceteaviet.fastfoodfinder.utils.ui.UiUtils;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -119,7 +119,7 @@ public class NearByStoreListAdapter extends ListAdapter<Store, NearByStoreListAd
                     .into(logo);
             storeName.setText(store.getTitle());
             storeAddress.setText(store.getAddress());
-            storeDistance.setText(new DecimalFormat("##.## Km").format(distance));
+            storeDistance.setText(FormatUtils.formatDistance(distance));
         }
     }
 }

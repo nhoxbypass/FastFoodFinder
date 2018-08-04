@@ -1,4 +1,6 @@
 <resources>
+    <string name="app_name">FastFoodFinder</string>
+
     <string name="share_app">Share app</string>
     <string name="general">General</string>
     <string name="english">English</string>
@@ -6,22 +8,18 @@
     <string name="notifications">Notifications</string>
     <string name="your_places">Your places</string>
 
-    <string name="app_name">FastFoodFinder</string>
-
     <!-- TODO: Remove or change this all_placeholder text -->
-    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
-    <string name="drawer_open">Open navigation drawer</string>
-    <string name="drawer_close">Close navigation drawer</string>
-    <string name="ipsum">Jarlsberg lancashire edam. Dolcelatte hard cheese brie st. agur blue
+    <string name="drawer_open" translatable="false">Open navigation drawer</string>
+    <string name="drawer_close" translatable="false">Close navigation drawer</string>
+    <string name="ipsum" translatable="false">Jarlsberg lancashire edam. Dolcelatte hard cheese brie st. agur blue
     cheese caerphilly bavarian bergkase cheese and biscuits mascarpone. Cheeseburger swiss bavarian
     bergkase cream cheese fromage frais cheesy feet port-salut airedale. St. agur blue cheese rubber
     cheese caerphilly cheddar cheesecake cream cheese manchego lancashire. Roquefort squirty cheese
     the big cheese.</string>
-    <string name="name_of_app">Fast food Finder</string>
     <string name="share_app_with_friends">Share app with friends</string>
     <string name="use_metric_units">Use metric units</string>
-    <string name="skip">SKIP</string>
-    <string name="join_now">JOIN NOW</string>
+    <string name="skip">Skip</string>
+    <string name="join_now">Join now</string>
     <string name="edit_your_profile">Edit your profile</string>
     <string name="change_your_password">Change your password</string>
     <string name="change_your_email">Change your email</string>
@@ -35,12 +33,10 @@
     <string name="sign_out">Sign Out</string>
     <string name="choose_a_image">Choose a image:</string>
     <string name="choose_from_your_device">Choose From your Device</string>
-    <string name="browser">BROWSER</string>
     <string name="image_you_choose">Image you choose:</string>
-    <string name="done">DONE</string>
+    <string name="done">Done</string>
     <string name="cancel">Cancel</string>
     <string name="update_cover_image">Update cover image</string>
-    <string name="my_list">My List</string>
     <string name="_3_lists">3 lists</string>
     <string name="my_save_places">My Save Places</string>
     <string name="_3_places">3 Places</string>
@@ -54,8 +50,6 @@
     <string name="top_picks">Top Picks</string>
     <string name="nearest">Nearest</string>
     <string name="trending">Trending</string>
-    <string name="convinience_stores">Convinience Stores</string>
-    <string name="bs_mart_ng_c_trinh">Bs\'mart Ngọc Trinh</string>
     <string name="convenience_store">Convenience store</string>
     <string name="add_to_my_favorite">Add to my favorite</string>
     <string name="view_more_detail">View More Detail</string>
@@ -65,22 +59,20 @@
     <string name="checked_in">Checked in</string>
     <string name="rate_it">Rate it</string>
     <string name="comment">Comment</string>
-    <string name="now_open">NOW OPEN</string>
     <string name="tips_from_people_who_has_been_here">Tips from people who has been here…</string>
     <string name="map">MAP</string>
     <string name="sign_in">Sign In</string>
     <string name="sign_in_successfully">Sign In Successfully!</string>
-    <string name="authentication_failed">Authentication failed.</string>
+    <string name="authentication_failed">Authentication failed</string>
     <string name="search_error">Search error!</string>
     <string name="type_name_store">Type name of store…</string>
     <string name="update_database_successfull">Update database successfully</string>
     <string name="update_database_failed">"Update database failed: "</string>
-    <string name="do_you_want_undo">Undo?</string>
+    <string name="want_undo">Undo?</string>
     <string name="undo">UNDO</string>
     <string name="delete_favourite_location">Delete Favourite Destination</string>
     <string name="are_you_sure">Are you sure you want to delete this destiantion?</string>
     <string name="favourite">Favourite</string>
-    <string name="_recently">Recently</string>
     <string name="tip_from_people">Tips from people who has been here</string>
     <string name="persional">Persional</string>
     <string name="ar">Live sight</string>
@@ -90,12 +82,11 @@
     <string name="about_author">About Author</string>
     <string name="my_moment">My moment</string>
     <string name="vietnamese">Vietnamese</string>
-    <string name="_0_places">0 Places</string>
     <string name="list_you_create">List you created</string>
     <string name="subscription">Receive discount</string>
     <string name="update_db">Update store database</string>
     <string name="permission_denied">Permission denied!</string>
-    <string name="splash_footer">Fastfood Finder 2016</string>
+    <string name="splash_footer" translatable="false">Fastfood Finder 2016</string>
     <string name="unregistered_user">Unregistered User</string>
     <string name="unregistered_email" translatable="false">anonymous@fastfoodfinder.com</string>
     <string name="gps_is_loading">GPS is loading…</string>
@@ -105,8 +96,13 @@
     <string name="cannot_get_curr_location">Cannot get current location!</string>
     <string name="get_store_data_failed">Failed to get stores data!</string>
     <string name="add_comment_or_photo">Add comment or photo</string>
-    <string name="cannot_post_comment">Can not post the tweet. Your content is more %d characters.</string>
+    <string name="cannot_post_comment">Can not post the tweet. Your content is more %d characters</string>
     <string name="close_comment_editor">Close comment editor?</string>
+    <string name="camera_not_found">Camera not found</string>
+    <string name="list_name_cannot_empty">List name cannot be empty!</string>
+    <string name="list_name_already_exists">List name is already created, try a new one!</string>
+    <string name="get_map_direction_failed">Failed to get map direction!</string>
+    <string name="successfully">Successfully</string>
 
 </resources>
 

@@ -175,7 +175,7 @@ public class MapRoutingActivity extends AppCompatActivity {
         mCurrStore = extras.getParcelable(Constant.KEY_DES_STORE);
 
         if (mMapsDirection == null || mCurrStore == null || mMapsDirection.getRouteList().size() <= 0) {
-            Toast.makeText(MapRoutingActivity.this, "Failed to open Routing screen!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MapRoutingActivity.this, R.string.get_map_direction_failed, Toast.LENGTH_SHORT).show();
             finish();
         }
 

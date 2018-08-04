@@ -99,12 +99,12 @@ public class DialogCreateNewList extends DialogFragment {
             @Override
             public void onClick(View view) {
                 if (edtName.getText().length() < 1) {
-                    Toast.makeText(getContext(), "Name is not empty!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), R.string.list_name_cannot_empty, Toast.LENGTH_SHORT).show();
                 } else {
                     boolean check = true;
                     for (int i = 0; i < listName.size(); i++) {
                         if (edtName.getText().toString().equals(listName.get(i))) {
-                            Toast.makeText(getContext(), "Name is already created, try a new one!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), R.string.list_name_already_exists, Toast.LENGTH_SHORT).show();
                             check = false;
                         }
                     }

@@ -126,7 +126,7 @@ public class StoreFilterDialogFragment extends DialogFragment {
                     animator.addListener(new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationStart(Animator animation) {
-                            Toast.makeText(getContext(), "Successfully", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), R.string.successfully, Toast.LENGTH_SHORT).show();
                         }
                     });
                     animator.start();

@@ -66,7 +66,7 @@ public class ARCamera extends ViewGroup implements SurfaceHolder.Callback {
                 camera.setPreviewDisplay(holder);
             }
         } catch (IOException exception) {
-            Log.e(TAG, "IOException caused by setPreviewDisplay()", exception);
+            Log.e(TAG, exception.getMessage());
         }
     }
 

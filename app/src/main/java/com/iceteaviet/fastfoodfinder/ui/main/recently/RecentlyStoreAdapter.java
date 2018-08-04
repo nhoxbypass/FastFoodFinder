@@ -59,7 +59,7 @@ public class RecentlyStoreAdapter extends RecyclerView.Adapter<RecentlyStoreAdap
         mStoreList.remove(position);
         //notifyDataSetChanged();
         notifyItemRemoved(position);
-        Snackbar.make(mContainerView, R.string.do_you_want_undo, Snackbar.LENGTH_LONG)
+        Snackbar.make(mContainerView, R.string.want_undo, Snackbar.LENGTH_LONG)
                 .setAction(R.string.undo, new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

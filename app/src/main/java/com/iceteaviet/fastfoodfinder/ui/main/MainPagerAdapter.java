@@ -14,7 +14,7 @@ import com.iceteaviet.fastfoodfinder.ui.main.recently.MainRecentlyFragment;
  */
 public class MainPagerAdapter extends FragmentPagerAdapter {
 
-    private final int PAGE_COUNT = 3;
+    private static final int PAGE_COUNT = 3;
     private String pageTitles[] = new String[]{String.valueOf(R.string.map), String.valueOf(R.string.recently), String.valueOf(R.string.favourite)};
     private int[] imageResId = {R.drawable.ic_main_map, R.drawable.ic_main_clock_red, R.drawable.ic_main_star_red};
 

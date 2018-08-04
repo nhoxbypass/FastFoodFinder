@@ -213,7 +213,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
 
     @Override
     public void onConnectionSuspended(int i) {
-
+        Toast.makeText(getActivity(), R.string.cannot_connect_location_service, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -249,7 +249,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
                             public void onSuccess(List<Store> storeList) {
                                 mStoreList = storeList;
                                 if (mStoreList == null || mStoreList.size() <= 0)
-                                    Toast.makeText(getContext(), "Failed to get stores data!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getContext(), R.string.get_store_data_failed, Toast.LENGTH_SHORT).show();
 
                                 addMarkersToMap(mStoreList, mGoogleMap);
                                 mAdapter.setCurrCameraPosition(mGoogleMap.getCameraPosition().target);
@@ -259,7 +259,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
 
                             @Override
                             public void onError(Throwable e) {
-                                Toast.makeText(getContext(), "Failed to get stores data!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), R.string.get_store_data_failed, Toast.LENGTH_SHORT).show();
                             }
                         });
                 break;
@@ -278,7 +278,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
                             public void onSuccess(List<Store> storeList) {
                                 mStoreList = storeList;
                                 if (mStoreList == null || mStoreList.size() <= 0)
-                                    Toast.makeText(getContext(), "Failed to get stores data!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getContext(), R.string.get_store_data_failed, Toast.LENGTH_SHORT).show();
 
                                 addMarkersToMap(mStoreList, mGoogleMap);
 
@@ -291,7 +291,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
 
                             @Override
                             public void onError(Throwable e) {
-                                Toast.makeText(getContext(), "Failed to get stores data!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), R.string.get_store_data_failed, Toast.LENGTH_SHORT).show();
                             }
                         });
                 break;
@@ -310,13 +310,13 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
                             public void onSuccess(List<Store> storeList) {
                                 mStoreList = storeList;
                                 if (mStoreList == null || mStoreList.size() <= 0)
-                                    Toast.makeText(getContext(), "Failed to get stores data!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getContext(), R.string.get_store_data_failed, Toast.LENGTH_SHORT).show();
                                 addMarkersToMap(mStoreList, mGoogleMap);
                             }
 
                             @Override
                             public void onError(Throwable e) {
-                                Toast.makeText(getContext(), "Failed to get stores data!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), R.string.get_store_data_failed, Toast.LENGTH_SHORT).show();
                             }
                         });
 
@@ -388,7 +388,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
                 .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
                     @Override
                     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                        Log.e(TAG, "Failed to get current location");
+                        Log.e(TAG, getString(R.string.cannot_get_curr_location));
                     }
                 })
                 .addApi(LocationServices.API)
@@ -409,12 +409,12 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
                     public void onSuccess(List<Store> storeList) {
                         mStoreList = storeList;
                         if (mStoreList == null || mStoreList.size() <= 0)
-                            Toast.makeText(getContext(), "Failed to get stores data!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), R.string.get_store_data_failed, Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Toast.makeText(getContext(), "Failed to get stores data!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), R.string.get_store_data_failed, Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -599,7 +599,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
             @Override
             public void onAddToFavorite(int storeId) {
                 //TODO lưu vào danh sách yêu thích
-                Toast.makeText(getActivity(), "add to favorite " + storeId, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), R.string.fav_stores_added, Toast.LENGTH_SHORT).show();
             }
         });
         dialog.show(fm, "dialog-info");
@@ -635,7 +635,9 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
         Location lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
         if (lastLocation != null) {
             return new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
-        } else
+        } else {
+            Toast.makeText(getActivity(), R.string.cannot_get_curr_location, Toast.LENGTH_SHORT).show();
             return mGoogleMap.getCameraPosition().target;
+        }
     }
 }

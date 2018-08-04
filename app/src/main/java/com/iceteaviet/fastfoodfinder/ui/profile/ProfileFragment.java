@@ -29,6 +29,7 @@ import com.iceteaviet.fastfoodfinder.utils.Constant;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -126,7 +127,7 @@ public class ProfileFragment extends Fragment {
                 mAdapter.addListPacket(currentUser.getUserStoreLists().get(i));
             }
         }
-        tvNumberList.setText("(" + String.valueOf(mAdapter.getItemCount()) + ")");
+        tvNumberList.setText(String.format("(%s)", String.valueOf(mAdapter.getItemCount())));
     }
 
     public DialogUpdateCoverImage showDialog() {
@@ -174,7 +175,7 @@ public class ProfileFragment extends Fragment {
                         for (int i = 0; i < user.getUserStoreLists().size(); i++) {
                             listName.add(user.getUserStoreLists().get(i).getListName());
                         }
-                        tvFavItemsCount.setText(user.getFavouriteStoreList().getStoreIdList().size() + " nơi");
+                        tvFavItemsCount.setText(String.format(Locale.getDefault(), "%d nơi", user.getFavouriteStoreList().getStoreIdList().size()));
                         onListener();
                     }
 
@@ -215,7 +216,7 @@ public class ProfileFragment extends Fragment {
                         mAdapter.addListPacket(list);
                         currentUser.addStoreList(list);
                         dataManager.getRemoteUserDataSource().updateStoreListForUser(currentUser.getUid(), currentUser.getUserStoreLists());
-                        tvNumberList.setText("(" + String.valueOf(mAdapter.getItemCount()) + ")");
+                        tvNumberList.setText(String.format("(%s)", String.valueOf(mAdapter.getItemCount())));
                     }
                 });
             }
@@ -246,7 +247,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(int position) {
                 User currentUser = dataManager.getCurrentUser();
-                tvNumberList.setText("(" + String.valueOf(mAdapter.getItemCount()) + ")");
+                tvNumberList.setText(String.format("(%s)", String.valueOf(mAdapter.getItemCount())));
                 currentUser.removeStoreList(position);
                 dataManager.getRemoteUserDataSource().updateStoreListForUser(currentUser.getUid(), currentUser.getUserStoreLists());
             }

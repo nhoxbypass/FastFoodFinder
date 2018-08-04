@@ -4,10 +4,14 @@ import android.content.Intent;
 import android.net.Uri;
 import android.text.SpannableStringBuilder;
 
+import java.text.DecimalFormat;
+
 /**
  * Created by tom on 7/10/18.
  */
 public final class FormatUtils {
+    private static final DecimalFormat distanceFormat = new DecimalFormat("##.## Km");
+
     private FormatUtils() {
 
     }
@@ -66,5 +70,9 @@ public final class FormatUtils {
         Intent callIntent = new Intent(Intent.ACTION_CALL);
         callIntent.setData(Uri.parse("tel:08" + normalizedTel));
         return callIntent;
+    }
+
+    public static String formatDistance(double distance) {
+        return distanceFormat.format(distance);
     }
 }

@@ -214,7 +214,7 @@ public class StoreDetailActivity extends AppCompatActivity implements StoreDetai
     @Override
     public void onAddToFavorite(int storeId) {
         //TODO gọi hàm lưu vào danh sách yêu thích
-        Toast.makeText(this, getString(R.string.fav_stores_added) + storeId, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.fav_stores_added, Toast.LENGTH_SHORT).show();
     }
 
     @Override

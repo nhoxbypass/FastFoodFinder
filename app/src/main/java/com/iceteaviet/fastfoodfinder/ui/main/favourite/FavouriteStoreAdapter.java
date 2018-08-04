@@ -54,7 +54,7 @@ public class FavouriteStoreAdapter extends RecyclerView.Adapter<FavouriteStoreAd
     public boolean onItemMove(final int fromPosition, final int toPosition) {
         Collections.swap(mStoreList, fromPosition, toPosition);
         notifyItemMoved(fromPosition, toPosition);
-        Snackbar.make(mContainerView, R.string.do_you_want_undo, Snackbar.LENGTH_LONG)
+        Snackbar.make(mContainerView, R.string.want_undo, Snackbar.LENGTH_LONG)
                 .setAction(R.string.undo, new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -73,7 +73,7 @@ public class FavouriteStoreAdapter extends RecyclerView.Adapter<FavouriteStoreAd
         mStoreList.remove(position);
         notifyDataSetChanged();
         notifyItemRemoved(position);
-        Snackbar.make(mContainerView, R.string.do_you_want_undo, Snackbar.LENGTH_LONG)
+        Snackbar.make(mContainerView, R.string.want_undo, Snackbar.LENGTH_LONG)
                 .setAction(R.string.undo, new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

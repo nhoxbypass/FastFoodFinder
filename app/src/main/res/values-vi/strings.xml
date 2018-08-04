@@ -2,14 +2,6 @@
     <string name="app_name">FastFoodFinder</string>
 
     <!-- TODO: Remove or change this all_placeholder text -->
-    <string name="drawer_open">Open navigation drawer</string>
-    <string name="drawer_close">Close navigation drawer</string>
-    <string name="ipsum">Jarlsberg lancashire edam. Dolcelatte hard cheese brie st. agur blue
-    cheese caerphilly bavarian bergkase cheese and biscuits mascarpone. Cheeseburger swiss bavarian
-    bergkase cream cheese fromage frais cheesy feet port-salut airedale. St. agur blue cheese rubber
-    cheese caerphilly cheddar cheesecake cream cheese manchego lancashire. Roquefort squirty cheese
-    the big cheese.</string>
-    <string name="name_of_app">Fast food Finder</string>
     <string name="share_app_with_friends">Chia sẻ với bạn bè</string>
     <string name="use_metric_units">Sử dụng đơn vị mét</string>
     <string name="skip">Bỏ qua</string>
@@ -27,12 +19,10 @@
     <string name="sign_out">Đăng xuất</string>
     <string name="choose_a_image">Chọn một ảnh ở đây:</string>
     <string name="choose_from_your_device">Chọn từ thiết bị của bạn</string>
-    <string name="browser">BROWSER</string>
     <string name="image_you_choose">Ảnh bạn đã chọn:</string>
     <string name="done">Hoàn tất</string>
     <string name="cancel">Hủy bỏ</string>
     <string name="update_cover_image">Cập nhật ảnh bìa</string>
-    <string name="my_list">Danh sách của tôi</string>
     <string name="_3_lists">3 danh sách</string>
     <string name="my_save_places">Danh sách đã lưu</string>
     <string name="_3_places">3 Nơi</string>
@@ -46,8 +36,6 @@
     <string name="top_picks">Lựa chọn tiêu chuẩn</string>
     <string name="nearest">Gần nhất</string>
     <string name="trending">Hướng</string>
-    <string name="convinience_stores">Cửa hàng tiện lợi</string>
-    <string name="bs_mart_ng_c_trinh">Bs\'mart Ngọc Trinh</string>
     <string name="convenience_store">Cửa hàng tiện lợi</string>
     <string name="add_to_my_favorite">Thêm vào mục yêu thích</string>
     <string name="view_more_detail">Xem chi tiết hơn</string>
@@ -57,27 +45,25 @@
     <string name="checked_in">Đánh dấu</string>
     <string name="rate_it">Đánh giá nó</string>
     <string name="comment">Bình luận</string>
-    <string name="now_open">Mở</string>
     <string name="tips_from_people_who_has_been_here">Lưu ý từ những người đã từng đi…</string>
     <string name="map">Bản đồ</string>
     <string name="sign_in">Đăng nhập</string>
     <string name="sign_in_successfully">Đăng nhập thành công!</string>
-    <string name="authentication_failed">Authentication failed.</string>
+    <string name="authentication_failed">Đăng nhập thất bại</string>
     <string name="search_error">Lỗi tìm kiếm!</string>
     <string name="type_name_store">Nhập tên cửa hàng…</string>
     <string name="update_database_successfull">Cập nhật dữ liệu thành công</string>
     <string name="update_database_failed">"Cập nhật dữ liệu thất bại: "</string>
-    <string name="do_you_want_undo">Phục hồi?</string>
+    <string name="want_undo">Phục hồi?</string>
     <string name="undo">Phục hồi</string>
-    <string name="delete_favourite_location">Xóa Địa điểm</string>
+    <string name="delete_favourite_location">Xóa địa điểm</string>
     <string name="are_you_sure">Bạn có thật sự muốn xóa?</string>
     <string name="favourite">Yêu thích</string>
-    <string name="_recently">Gần đây</string>
     <string name="tip_from_people">Lưu ý từ những người đã từng đi</string>
     <string name="share_app">Chia sẻ ứng dụng </string>
     <string name="general">Chung</string>
     <string name="english">Tiếng Anh</string>
-    <string name="profile">Hồ sơ cá nhân</string>
+    <string name="profile">Cá nhân</string>
     <string name="notifications">Thông báo</string>
     <string name="your_places">Danh sách địa điểm của bạn</string>
     <string name="persional">Cá nhân</string>
@@ -90,9 +76,22 @@
     <string name="subscription">Hóng khuyến mãi</string>
     <string name="update_db">Cập nhật dữ liệu cửa hàng</string>
     <string name="ar">Trực quan</string>
-    <string name="_0_places">0 địa </string>
     <string name="list_you_create">Danh sách bạn đã </string>
     <string name="permission_denied">Quyền truy cập bị từ chối!</string>
     <string name="unregistered_user">Người dùng chưa đăng ký</string>
+    <string name="gps_is_loading">GPS đang tải...</string>
+    <string name="fav_stores_added">Đã thêm vào danh sách cửa hàng yêu thích</string>
+    <string name="store_no_phone_numb">Cửa hàng này không có số điện thoại!</string>
+    <string name="cannot_connect_location_service">Không thể kết nối đến dịch vụ vị trí</string>
+    <string name="cannot_get_curr_location">Không thể lấy vị trí hiện tại!</string>
+    <string name="get_store_data_failed">Không thể lấy thông tin cửa hàng!</string>
+    <string name="add_comment_or_photo">Thêm bình luận hoặc hình ảnh</string>
+    <string name="cannot_post_comment">Không để post tweet. Nội dung dài hơn %d ký tự</string>
+    <string name="close_comment_editor">Đóng trình soạn thảo bình luận?</string>
+    <string name="camera_not_found">Không tìm thấy máy ảnh</string>
+    <string name="list_name_cannot_empty">Tên danh sách không thể rỗng!</string>
+    <string name="list_name_already_exists">Tên danh sách đã được tạo, thử một tên mới!</string>
+    <string name="get_map_direction_failed">Không thể lấy đường đi!</string>
+    <string name="successfully">Thành công</string>
 
 </resources>
