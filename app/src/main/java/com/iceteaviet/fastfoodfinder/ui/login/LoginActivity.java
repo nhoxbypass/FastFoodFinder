@@ -31,11 +31,9 @@ import com.iceteaviet.fastfoodfinder.App;
 import com.iceteaviet.fastfoodfinder.R;
 import com.iceteaviet.fastfoodfinder.data.DataManager;
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User;
-import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList;
 import com.iceteaviet.fastfoodfinder.ui.main.MainActivity;
 import com.iceteaviet.fastfoodfinder.utils.Constant;
-
-import java.util.ArrayList;
+import com.iceteaviet.fastfoodfinder.utils.DataUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -193,7 +191,7 @@ public class LoginActivity extends AppCompatActivity {
             photoUrl = firebaseUser.getPhotoUrl().toString();
         }
 
-        User user = new User(firebaseUser.getDisplayName(), firebaseUser.getEmail(), photoUrl, firebaseUser.getUid(), new ArrayList<UserStoreList>());
+        User user = new User(firebaseUser.getDisplayName(), firebaseUser.getEmail(), photoUrl, firebaseUser.getUid(), DataUtils.getDefaultUserStoreLists());
         dataManager.getRemoteUserDataSource().insertOrUpdate(user);
         dataManager.setCurrentUser(user);
     }

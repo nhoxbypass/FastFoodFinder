@@ -1,6 +1,8 @@
 package com.iceteaviet.fastfoodfinder.utils;
 
+import com.iceteaviet.fastfoodfinder.R;
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Comment;
+import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -19,6 +21,16 @@ import java.util.Random;
 final public class DataUtils {
     private DataUtils() {
 
+    }
+
+    public static List<UserStoreList> getDefaultUserStoreLists() {
+        List<UserStoreList> userStoreLists = new ArrayList<>();
+
+        userStoreLists.add(new UserStoreList(0, new ArrayList<Integer>(), R.drawable.ic_profile_saved, "My Saved Places"));
+        userStoreLists.add(new UserStoreList(1, new ArrayList<Integer>(), R.drawable.ic_profile_favourite, "My Favourite Places"));
+        userStoreLists.add(new UserStoreList(2, new ArrayList<Integer>(), R.drawable.ic_profile_checkin, "My Checked in Places"));
+
+        return userStoreLists;
     }
 
     public static List<Comment> getComments() {

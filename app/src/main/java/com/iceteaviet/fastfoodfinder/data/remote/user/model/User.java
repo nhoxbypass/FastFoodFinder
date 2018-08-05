@@ -2,7 +2,6 @@ package com.iceteaviet.fastfoodfinder.data.remote.user.model;
 
 import android.util.Log;
 
-import com.iceteaviet.fastfoodfinder.R;
 import com.iceteaviet.fastfoodfinder.data.local.user.model.UserEntity;
 import com.iceteaviet.fastfoodfinder.data.local.user.model.UserStoreListEntity;
 
@@ -27,27 +26,7 @@ public class User {
         this.email = email;
         this.uid = uid;
         this.photoUrl = photoUrl;
-
-        if (storeLists == null || storeLists.isEmpty()) {
-            this.userStoreLists = new ArrayList<>();
-
-            List<Integer> storeIdList = new ArrayList<>();
-            storeIdList.add(5);
-            storeIdList.add(25);
-            storeIdList.add(115);
-            storeIdList.add(255);
-            storeIdList.add(344);
-            userStoreLists.add(new UserStoreList(0, storeIdList, R.drawable.ic_profile_saved, "My Saved Places"));
-
-            storeIdList = new ArrayList<>();
-            storeIdList.add(5);
-            storeIdList.add(115);
-            storeIdList.add(344);
-
-            userStoreLists.add(new UserStoreList(1, storeIdList, R.drawable.ic_profile_favourite, "My Favourite Places"));
-            userStoreLists.add(new UserStoreList(2, storeIdList, R.drawable.ic_profile_checkin, "My Checked in Places"));
-        } else
-            this.userStoreLists = storeLists;
+        this.userStoreLists = storeLists;
     }
 
     public User(UserEntity entity) {
