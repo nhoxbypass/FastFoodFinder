@@ -1,5 +1,6 @@
 package com.iceteaviet.fastfoodfinder.ui.storelist;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,14 +32,14 @@ public class StoreListAdapter extends RecyclerView.Adapter<StoreListAdapter.Stor
     }
 
     @Override
-    public StoreListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public StoreListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_list_store, parent, false);
         return new StoreListViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(StoreListViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull StoreListViewHolder holder, int position) {
         Store store = mStoreList.get(position);
         holder.setData(store);
     }
@@ -67,7 +68,7 @@ public class StoreListAdapter extends RecyclerView.Adapter<StoreListAdapter.Stor
         @BindView(R.id.btnRate)
         Button btnRate;
 
-        public StoreListViewHolder(View itemView) {
+        StoreListViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }

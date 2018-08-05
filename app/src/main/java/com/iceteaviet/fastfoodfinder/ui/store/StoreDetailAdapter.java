@@ -42,9 +42,9 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private List<Comment> mComments;
     private StoreActionListener mListener;
 
-    public StoreDetailAdapter(Store store) {
+    StoreDetailAdapter(Store store) {
         mStore = store;
-        mComments = DataUtils.getComments();
+        mComments = DataUtils.getFakeComments();
     }
 
     public void setListener(StoreActionListener listener) {
@@ -137,7 +137,7 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         private Store mStore;
         private StoreActionListener listener;
 
-        public HeaderViewHolder(View itemView, StoreActionListener listener) {
+        HeaderViewHolder(View itemView, StoreActionListener listener) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             this.listener = listener;
@@ -191,7 +191,7 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         private StoreActionListener listener;
 
-        public InfoViewHolder(View itemView, StoreActionListener listener) {
+        InfoViewHolder(View itemView, StoreActionListener listener) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             cdvh = new CallDirectionViewHolder(vCallDirection);
@@ -223,7 +223,7 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         @BindView(R.id.content)
         TextView content;
 
-        public TitleViewHolder(View itemView) {
+        TitleViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             context = itemView.getContext();
@@ -249,7 +249,7 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         @BindView(R.id.media)
         ImageView ivMedia;
 
-        public CommentViewHolder(View itemView) {
+        CommentViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
@@ -291,8 +291,7 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         @BindView(R.id.direction)
         public FrameLayout btnDirection;
 
-
-        public CallDirectionViewHolder(View itemView) {
+        CallDirectionViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }

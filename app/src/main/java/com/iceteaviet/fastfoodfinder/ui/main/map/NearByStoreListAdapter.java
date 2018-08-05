@@ -29,7 +29,7 @@ import butterknife.ButterKnife;
  */
 public class NearByStoreListAdapter extends ListAdapter<Store, NearByStoreListAdapter.StoreViewHolder> {
 
-    public static final DiffUtil.ItemCallback<Store> DIFF_CALLBACK =
+    private static final DiffUtil.ItemCallback<Store> DIFF_CALLBACK =
             new DiffUtil.ItemCallback<Store>() {
                 @Override
                 public boolean areItemsTheSame(Store oldItem, Store newItem) {
@@ -46,11 +46,11 @@ public class NearByStoreListAdapter extends ListAdapter<Store, NearByStoreListAd
     private List<Store> mListStore;
     private StoreListListener listener;
 
-    public NearByStoreListAdapter() {
+    NearByStoreListAdapter() {
         this(DIFF_CALLBACK);
     }
 
-    protected NearByStoreListAdapter(@NonNull DiffUtil.ItemCallback<Store> diffCallback) {
+    NearByStoreListAdapter(@NonNull DiffUtil.ItemCallback<Store> diffCallback) {
         super(diffCallback);
 
         mListStore = new ArrayList<>();
@@ -99,8 +99,7 @@ public class NearByStoreListAdapter extends ListAdapter<Store, NearByStoreListAd
         @BindView(R.id.tv_item_distance)
         TextView storeDistance;
 
-
-        public StoreViewHolder(View itemView, final StoreListListener listener, final List<Store> storeList) {
+        StoreViewHolder(View itemView, final StoreListListener listener, final List<Store> storeList) {
             super(itemView);
             ButterKnife.bind(this, itemView);
 
@@ -113,7 +112,7 @@ public class NearByStoreListAdapter extends ListAdapter<Store, NearByStoreListAd
             });
         }
 
-        public void setData(Store store, double distance) {
+        void setData(Store store, double distance) {
             Glide.with(logo.getContext())
                     .load(UiUtils.getStoreLogoDrawableId(store.getType()))
                     .into(logo);

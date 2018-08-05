@@ -37,7 +37,7 @@ public class FavouriteStoreAdapter extends RecyclerView.Adapter<FavouriteStoreAd
     private List<Store> mStoreList;
     private OnItemClickListener mOnItemClickListener;
 
-    public FavouriteStoreAdapter(OnStartDragListener onStartDragListener, FrameLayout view) {
+    FavouriteStoreAdapter(OnStartDragListener onStartDragListener, FrameLayout view) {
         mStoreList = new ArrayList<>();
         mDragStartListener = onStartDragListener;
         mContainerView = view;

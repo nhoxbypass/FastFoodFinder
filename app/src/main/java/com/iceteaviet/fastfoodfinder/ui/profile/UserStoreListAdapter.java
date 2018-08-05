@@ -28,7 +28,7 @@ public class UserStoreListAdapter extends RecyclerView.Adapter<UserStoreListAdap
     private OnItemClickListener mListener;
     private OnItemLongClickListener mOnItemLongClickListener;
 
-    public UserStoreListAdapter() {
+    UserStoreListAdapter() {
         mListPackets = new ArrayList<>();
     }
 
@@ -78,7 +78,7 @@ public class UserStoreListAdapter extends RecyclerView.Adapter<UserStoreListAdap
         @BindView(R.id.iconNewList)
         CircleImageView cvIcon;
 
-        public ListViewHolder(final View itemView) {
+        ListViewHolder(final View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
 

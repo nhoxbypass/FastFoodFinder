@@ -30,7 +30,7 @@ import butterknife.ButterKnife;
 public class CommentActivity extends AppCompatActivity implements NoticeDialog.NoticeDialogListener {
 
     public static final String KEY_COMMENT = "comment";
-    private final int MAX_CHAR = 140;
+    private static final int MAX_CHAR = 140;
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -53,9 +53,11 @@ public class CommentActivity extends AppCompatActivity implements NoticeDialog.N
 
     private void setupToolbar() {
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_all_close);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(R.string.add_comment_or_photo);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_all_close);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle(R.string.add_comment_or_photo);
+        }
     }
 
     private void setupViews() {

@@ -93,5 +93,6 @@
     <string name="list_name_already_exists">Tên danh sách đã được tạo, thử một tên mới!</string>
     <string name="get_map_direction_failed">Không thể lấy đường đi!</string>
     <string name="successfully">Thành công</string>
+    <string name="ok">Ok</string>
 
 </resources>

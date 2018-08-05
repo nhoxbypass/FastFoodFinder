@@ -2,6 +2,7 @@ package com.iceteaviet.fastfoodfinder.ui.main.recently;
 
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v7.app.AlertDialog;
@@ -35,14 +36,14 @@ public class RecentlyStoreAdapter extends RecyclerView.Adapter<RecentlyStoreAdap
     private View mContainerView;
     private OnItemClickListener mOnItemClickListener;
 
-    public RecentlyStoreAdapter(OnStartDragListener onStartDragListener, FrameLayout frameLayout) {
+    RecentlyStoreAdapter(OnStartDragListener onStartDragListener, FrameLayout frameLayout) {
         mStoreList = new ArrayList<>();
         mContainerView = frameLayout;
         mDragStartListener = onStartDragListener;
     }
 
     @Override
-    public RecentlyStoreViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecentlyStoreViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_recently_location, parent, false);
         return new RecentlyStoreViewHolder(itemView);

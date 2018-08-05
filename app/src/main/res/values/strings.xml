@@ -103,6 +103,7 @@
     <string name="list_name_already_exists">List name is already created, try a new one!</string>
     <string name="get_map_direction_failed">Failed to get map direction!</string>
     <string name="successfully">Successfully</string>
+    <string name="ok">Ok</string>
 
 </resources>
 

@@ -33,12 +33,12 @@ public class RoutingAdapter extends RecyclerView.Adapter<RoutingAdapter.ViewHold
     private OnNavigationItemClickListener mListener;
     private int mType;
 
-    public RoutingAdapter() {
+    RoutingAdapter() {
         super();
         mStepList = new ArrayList<>();
     }
 
-    public RoutingAdapter(List<Step> steps, int type) {
+    RoutingAdapter(List<Step> steps, int type) {
         super();
         this.mStepList = steps;
         mType = type;
@@ -100,7 +100,7 @@ public class RoutingAdapter extends RecyclerView.Adapter<RoutingAdapter.ViewHold
             });
         }
 
-        public void bindData(Step step, int type) {
+        void bindData(Step step, int type) {
             int imgResId = UiUtils.getDirectionImage(step.getDirection());
             Spanned instruction;
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {

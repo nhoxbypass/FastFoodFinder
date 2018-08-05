@@ -76,7 +76,9 @@ public class StoreInfoDialogFragment extends DialogFragment {
         ButterKnife.bind(this, view);
         cdvh = new StoreDetailAdapter.CallDirectionViewHolder(vCallDirection);
 
-        store = getArguments().getParcelable(KEY_STORE);
+        if (getArguments() != null)
+            store = getArguments().getParcelable(KEY_STORE);
+
         if (store == null)
             return;
 
@@ -156,7 +158,6 @@ public class StoreInfoDialogFragment extends DialogFragment {
                 } else {
                     Toast.makeText(getContext(), R.string.permission_denied, Toast.LENGTH_SHORT).show();
                 }
-                return;
             }
         }
     }

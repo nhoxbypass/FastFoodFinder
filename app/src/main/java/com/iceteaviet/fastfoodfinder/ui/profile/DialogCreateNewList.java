@@ -74,7 +74,8 @@ public class DialogCreateNewList extends DialogFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        listName = getArguments().getStringArrayList(KEY_LIST_NAME);
+        if (getArguments() != null)
+            listName = getArguments().getStringArrayList(KEY_LIST_NAME);
     }
 
     @Nullable

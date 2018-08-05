@@ -35,7 +35,7 @@ public class MainRecentlyFragment extends Fragment implements OnStartDragListene
 
     private RecentlyStoreAdapter mRecentlyAdapter;
     private ItemTouchHelper mItemTouchHelper;
-    private boolean isFABChangeClicked = false;
+    private boolean isFABChangeClicked = false; // TODO: Check usage of this
 
 
     public static MainRecentlyFragment newInstance() {

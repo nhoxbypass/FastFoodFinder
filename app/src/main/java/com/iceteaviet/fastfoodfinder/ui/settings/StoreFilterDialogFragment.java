@@ -114,7 +114,7 @@ public class StoreFilterDialogFragment extends DialogFragment {
         @BindView(R.id.tag)
         TextView tvTag;
 
-        public TagViewHolder(View view) {
+        TagViewHolder(View view) {
             itemView = view;
             ButterKnife.bind(this, view);
             tvTag.setOnClickListener(new View.OnClickListener() {

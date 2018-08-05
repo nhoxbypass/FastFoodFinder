@@ -26,6 +26,10 @@ import butterknife.ButterKnife;
 
 /**
  * Created by Genius Doan on 11/9/2016.
+ *
+ * @deprecated due to the publish of ListAdapter
+ *
+ * @see android.support.v7.recyclerview.extensions.ListAdapter
  */
 
 @Deprecated
@@ -98,7 +102,7 @@ public class NearByStoreAdapter extends RecyclerView.Adapter<NearByStoreAdapter.
         TextView storeDistance;
 
 
-        public StoreViewHolder(View itemView, final StoreListListener listener, final List<Store> storeList) {
+        StoreViewHolder(View itemView, final StoreListListener listener, final List<Store> storeList) {
             super(itemView);
             ButterKnife.bind(this, itemView);
 
@@ -110,7 +114,7 @@ public class NearByStoreAdapter extends RecyclerView.Adapter<NearByStoreAdapter.
             });
         }
 
-        public void setData(Store store, double distance) {
+        void setData(Store store, double distance) {
             Glide.with(logo.getContext())
                     .load(UiUtils.getStoreLogoDrawableId(store.getType()))
                     .into(logo);

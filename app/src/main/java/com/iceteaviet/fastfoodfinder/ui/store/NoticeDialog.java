@@ -7,6 +7,8 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 
+import com.iceteaviet.fastfoodfinder.R;
+
 /**
  * Created by taq on 3/11/2016.
  */
@@ -27,10 +29,14 @@ public class NoticeDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        String message = getArguments().getString(MESSAGE);
+        String message = "";
+
+        if (getArguments() != null)
+            message = getArguments().getString(MESSAGE);
+
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
         alertDialogBuilder.setMessage(message);
-        alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 NoticeDialogListener listener = (NoticeDialogListener) getActivity();
@@ -39,7 +45,7 @@ public class NoticeDialog extends DialogFragment {
                 }
             }
         });
-        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();

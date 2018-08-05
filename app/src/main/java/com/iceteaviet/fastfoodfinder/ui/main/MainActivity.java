@@ -49,8 +49,7 @@ import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity {
-
-
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     @BindView(R.id.nav_view)
     NavigationView mNavigationView;
@@ -58,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
     DrawerLayout mDrawerLayout;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    private View mHeaderLayout;
     private SearchView mSearchView;
     private LinearLayout mNavHeaderContainer;
     private CircleImageView mNavHeaderAvatar;
@@ -191,17 +189,19 @@ public class MainActivity extends AppCompatActivity {
 
 
     public SearchView initSearchView(Menu menu) {
-        SearchView searchView = null;
+        SearchView searchView;
 
         getMenuInflater().inflate(R.menu.menu_main, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
 
+        if (searchItem == null)
+            return null;
+
         SearchManager searchManager =
                 (SearchManager) MainActivity.this.getSystemService(Context.SEARCH_SERVICE);
 
-        if (searchItem != null) {
-            searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-        }
+        searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+
         if (searchView != null) {
             searchView.setSearchableInfo(searchManager.getSearchableInfo(MainActivity.this.getComponentName()));
 
@@ -210,38 +210,37 @@ public class MainActivity extends AppCompatActivity {
             mSearchInput = searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
             mSearchInput.setHintTextColor(ContextCompat.getColor(MainActivity.this, R.color.colorHintText));
             mSearchInput.setTextColor(Color.WHITE);
+
+            // Set on search query submit
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    EventBus.getDefault().post(new SearchEventResult(SearchEventResult.SEARCH_ACTION_QUERY_SUBMIT, query));
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    return false;
+                }
+            });
+
+            //Set event expand search view
+            MenuItemCompat.setOnActionExpandListener(searchItem, new MenuItemCompat.OnActionExpandListener() {
+                @Override
+                public boolean onMenuItemActionExpand(MenuItem menuItem) {
+                    showSearchFragment();
+                    return true;
+                }
+
+                @Override
+                public boolean onMenuItemActionCollapse(MenuItem menuItem) {
+                    EventBus.getDefault().post(new SearchEventResult(SearchEventResult.SEARCH_ACTION_COLLAPSE));
+                    removeSearchFragment();
+                    return true;
+                }
+            });
         }
-
-
-        //Set on search query submit
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                EventBus.getDefault().post(new SearchEventResult(SearchEventResult.SEARCH_ACTION_QUERY_SUBMIT, query));
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-        });
-
-        //Set event expand search view
-        MenuItemCompat.setOnActionExpandListener(searchItem, new MenuItemCompat.OnActionExpandListener() {
-            @Override
-            public boolean onMenuItemActionExpand(MenuItem menuItem) {
-                showSearchFragment();
-                return true;
-            }
-
-            @Override
-            public boolean onMenuItemActionCollapse(MenuItem menuItem) {
-                EventBus.getDefault().post(new SearchEventResult(SearchEventResult.SEARCH_ACTION_COLLAPSE));
-                removeSearchFragment();
-                return true;
-            }
-        });
 
         return searchView;
     }
@@ -279,12 +278,12 @@ public class MainActivity extends AppCompatActivity {
     private void setupAllViews() {
         mDrawerToggle = setupDrawerToggle();
 
-        mHeaderLayout = mNavigationView.getHeaderView(0);
-        mNavHeaderContainer = mHeaderLayout.findViewById(R.id.nav_header_container);
-        mNavHeaderAvatar = mHeaderLayout.findViewById(R.id.iv_nav_header_avatar);
-        mNavHeaderName = mHeaderLayout.findViewById(R.id.tv_nav_header_name);
-        mNavHeaderScreenName = mHeaderLayout.findViewById(R.id.tv_nav_header_screenname);
-        mNavHeaderSignIn = mHeaderLayout.findViewById(R.id.btn_nav_header_signin);
+        View headerLayout = mNavigationView.getHeaderView(0);
+        mNavHeaderContainer = headerLayout.findViewById(R.id.nav_header_container);
+        mNavHeaderAvatar = headerLayout.findViewById(R.id.iv_nav_header_avatar);
+        mNavHeaderName = headerLayout.findViewById(R.id.tv_nav_header_name);
+        mNavHeaderScreenName = headerLayout.findViewById(R.id.tv_nav_header_screenname);
+        mNavHeaderSignIn = headerLayout.findViewById(R.id.btn_nav_header_signin);
 
         // Tie DrawerLayout events to the ActionBarToggle
         mDrawerLayout.addDrawerListener(mDrawerToggle);

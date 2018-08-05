@@ -172,7 +172,7 @@ public class DialogUpdateCoverImage extends android.support.v4.app.DialogFragmen
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case RESULT_LOAD_IMAGE:
-                if (resultCode == Activity.RESULT_OK && data != null) {
+                if (resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
                     Uri selectedImage = data.getData();
                     String[] filePathColumn = {MediaStore.Images.Media.DATA};
 

@@ -101,7 +101,8 @@ public class StoreDetailActivity extends AppCompatActivity implements StoreDetai
         rvContent.setLayoutManager(new LinearLayoutManager(this));
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null)
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         collapsingToolbar.setTitle(currentStore.getTitle());
 

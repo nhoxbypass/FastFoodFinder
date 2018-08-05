@@ -18,7 +18,7 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
     private String pageTitles[] = new String[]{String.valueOf(R.string.map), String.valueOf(R.string.recently), String.valueOf(R.string.favourite)};
     private int[] imageResId = {R.drawable.ic_main_map, R.drawable.ic_main_clock_red, R.drawable.ic_main_star_red};
 
-    public MainPagerAdapter(FragmentManager fm) {
+    MainPagerAdapter(FragmentManager fm) {
         super(fm);
     }
 
