@@ -55,7 +55,6 @@ public class ArCameraActivity extends BaseActivity implements SensorEventListene
     private ARCamera arCamera;
     private TextView tvCurrentLocation;
     private SensorManager sensorManager;
-    private LocationManager locationManager;
     private DataManager dataManager;
 
     @Override
@@ -274,7 +273,12 @@ public class ArCameraActivity extends BaseActivity implements SensorEventListene
     @SuppressLint("MissingPermission")
     private void initLocationService() {
         try {
-            this.locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
+            LocationManager locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
+
+            if (locationManager == null) {
+                Toast.makeText(this, R.string.cannot_connect_location_service, Toast.LENGTH_SHORT).show();
+                return;
+            }
 
             // Get GPS and network status
             boolean isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
@@ -284,10 +288,8 @@ public class ArCameraActivity extends BaseActivity implements SensorEventListene
                 locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
                         MIN_TIME_BW_UPDATES,
                         MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
-                if (locationManager != null) {
-                    location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                    updateLatestLocation();
-                }
+                location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                updateLatestLocation();
             }
 
             if (isGPSEnabled) {
@@ -295,10 +297,8 @@ public class ArCameraActivity extends BaseActivity implements SensorEventListene
                         MIN_TIME_BW_UPDATES,
                         MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
 
-                if (locationManager != null) {
-                    location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                    updateLatestLocation();
-                }
+                location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                updateLatestLocation();
             }
         } catch (Exception ex) {
             Log.e(TAG, ex.getMessage());
