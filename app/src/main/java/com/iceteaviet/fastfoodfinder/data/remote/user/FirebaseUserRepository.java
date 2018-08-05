@@ -14,7 +14,6 @@ import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store;
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User;
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreEvent;
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList;
-import com.iceteaviet.fastfoodfinder.utils.Constant;
 
 import java.util.List;
 
@@ -28,13 +27,15 @@ import io.reactivex.SingleOnSubscribe;
 /**
  * Created by tom on 7/15/18.
  */
-public class UserRepository implements UserDataSource {
-    private static final String TAG = UserRepository.class.getSimpleName();
+public class FirebaseUserRepository implements UserDataSource {
+    private static final String TAG = FirebaseUserRepository.class.getSimpleName();
+    private static final String CHILD_USERS = "users";
+    private static final String CHILD_USERS_STORE_LIST = "userStoreLists";
 
     private DatabaseReference databaseRef;
     private LocalStoreRepository localStoreRepository;
 
-    public UserRepository(DatabaseReference reference, LocalStoreRepository localStoreRepository) {
+    public FirebaseUserRepository(DatabaseReference reference, LocalStoreRepository localStoreRepository) {
         databaseRef = reference;
         this.localStoreRepository = localStoreRepository;
     }
@@ -48,16 +49,16 @@ public class UserRepository implements UserDataSource {
 
     @Override
     public void insertOrUpdate(User user) {
-        databaseRef.child(Constant.CHILD_USERS)
+        databaseRef.child(CHILD_USERS)
                 .child(user.getUid())
                 .setValue(user);
     }
 
     @Override
     public void updateStoreListForUser(String uid, List<UserStoreList> storeList) {
-        databaseRef.child(Constant.CHILD_USERS)
+        databaseRef.child(CHILD_USERS)
                 .child(uid)
-                .child(Constant.CHILD_USERS_STORE_LIST)
+                .child(CHILD_USERS_STORE_LIST)
                 .setValue(storeList);
     }
 
@@ -69,7 +70,7 @@ public class UserRepository implements UserDataSource {
                 if (uid == null)
                     emitter.onSuccess(null);
 
-                databaseRef.child(Constant.CHILD_USERS).child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+                databaseRef.child(CHILD_USERS).child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if (dataSnapshot.exists()) {
@@ -93,7 +94,7 @@ public class UserRepository implements UserDataSource {
         return Single.create(new SingleOnSubscribe<Boolean>() {
             @Override
             public void subscribe(final SingleEmitter<Boolean> emitter) {
-                databaseRef.child(Constant.CHILD_USERS).addListenerForSingleValueEvent(new ValueEventListener() {
+                databaseRef.child(CHILD_USERS).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if (!dataSnapshot.exists() || !dataSnapshot.hasChild(uid)) {
@@ -118,9 +119,9 @@ public class UserRepository implements UserDataSource {
         return Observable.create(new ObservableOnSubscribe<UserStoreEvent>() {
             @Override
             public void subscribe(final ObservableEmitter<UserStoreEvent> emitter) {
-                databaseRef.child(Constant.CHILD_USERS)
+                databaseRef.child(CHILD_USERS)
                         .child(uid)
-                        .child(Constant.CHILD_USERS_STORE_LIST)
+                        .child(CHILD_USERS_STORE_LIST)
                         .child(String.valueOf(UserStoreList.ID_FAVOURITE))
                         .child("storeIdList").addChildEventListener(new ChildEventListener() {
                     @Override
@@ -156,6 +157,7 @@ public class UserRepository implements UserDataSource {
         });
     }
 
+    // TODO: Fix SRP issue
     private Store getStoreFrom(Integer storeId) {
         Store store = null;
 

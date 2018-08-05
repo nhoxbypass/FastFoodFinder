@@ -22,6 +22,10 @@ import retrofit2.Response;
  */
 public class GoogleMapsRoutingApiHelper implements MapsRoutingApiHelper {
     private static final String TAG = GoogleMapsRoutingApiHelper.class.getSimpleName();
+
+    public static final String PARAM_DESTINATION = "destination";
+    public static final String PARAM_ORIGIN = "origin";
+
     private MapsRoutingApi mMapDirectionApi;
 
     public GoogleMapsRoutingApiHelper(String googleMapBrowserKey) {

@@ -33,7 +33,6 @@ import com.iceteaviet.fastfoodfinder.R;
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection;
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.Step;
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store;
-import com.iceteaviet.fastfoodfinder.utils.Constant;
 import com.iceteaviet.fastfoodfinder.utils.DisplayUtils;
 import com.iceteaviet.fastfoodfinder.utils.ui.UiUtils;
 
@@ -47,6 +46,8 @@ import static com.iceteaviet.fastfoodfinder.utils.Constant.DEFAULT_ZOOM_LEVEL;
 import static com.iceteaviet.fastfoodfinder.utils.Constant.DETAILED_ZOOM_LEVEL;
 
 public class MapRoutingActivity extends AppCompatActivity {
+    public static final String KEY_ROUTE_LIST = "route_list";
+    public static final String KEY_DES_STORE = "des_store";
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -171,8 +172,8 @@ public class MapRoutingActivity extends AppCompatActivity {
             return;
         }
 
-        mMapsDirection = extras.getParcelable(Constant.KEY_ROUTE_LIST);
-        mCurrStore = extras.getParcelable(Constant.KEY_DES_STORE);
+        mMapsDirection = extras.getParcelable(KEY_ROUTE_LIST);
+        mCurrStore = extras.getParcelable(KEY_DES_STORE);
 
         if (mMapsDirection == null || mCurrStore == null || mMapsDirection.getRouteList().size() <= 0) {
             Toast.makeText(MapRoutingActivity.this, R.string.get_map_direction_failed, Toast.LENGTH_SHORT).show();

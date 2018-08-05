@@ -23,7 +23,6 @@ public class ARCamera extends ViewGroup implements SurfaceHolder.Callback {
     private final static float Z_FAR = 2000;
     private final String TAG = ARCamera.class.getSimpleName();
 
-    private SurfaceView surfaceView;
     private Camera.Size previewSize;
     private List<Camera.Size> supportedPreviewSizes;
     private Camera camera;
@@ -35,7 +34,6 @@ public class ARCamera extends ViewGroup implements SurfaceHolder.Callback {
     public ARCamera(Context context, SurfaceView surfaceView) {
         super(context);
         this.activity = (Activity) context;
-        this.surfaceView = surfaceView;
         SurfaceHolder surfaceHolder = surfaceView.getHolder();
         surfaceHolder.addCallback(this);
         surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
@@ -44,7 +42,7 @@ public class ARCamera extends ViewGroup implements SurfaceHolder.Callback {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        //super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         final int width = resolveSize(getSuggestedMinimumWidth(), widthMeasureSpec);
         final int height = resolveSize(getSuggestedMinimumHeight(), heightMeasureSpec);
         setMeasuredDimension(width, height);

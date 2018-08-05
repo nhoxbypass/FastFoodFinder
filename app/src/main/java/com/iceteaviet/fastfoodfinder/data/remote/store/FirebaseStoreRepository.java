@@ -9,7 +9,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.iceteaviet.fastfoodfinder.data.domain.store.StoreDataSource;
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store;
-import com.iceteaviet.fastfoodfinder.utils.Constant;
 import com.iceteaviet.fastfoodfinder.utils.DataUtils;
 
 import java.util.ArrayList;
@@ -22,12 +21,14 @@ import io.reactivex.SingleOnSubscribe;
 /**
  * Created by tom on 7/17/18.
  */
-public class RemoteStoreRepository implements StoreDataSource {
-    private static final String TAG = RemoteStoreRepository.class.getSimpleName();
+public class FirebaseStoreRepository implements StoreDataSource {
+    private static final String TAG = FirebaseStoreRepository.class.getSimpleName();
+    private static final String CHILD_STORES_LOCATION = "stores_location";
+    private static final String CHILD_MARKERS_ADD = "markers_add";
 
     private DatabaseReference databaseRef;
 
-    public RemoteStoreRepository(DatabaseReference reference) {
+    public FirebaseStoreRepository(DatabaseReference reference) {
         databaseRef = reference;
     }
 
@@ -41,7 +42,7 @@ public class RemoteStoreRepository implements StoreDataSource {
         return Single.create(new SingleOnSubscribe<List<Store>>() {
             @Override
             public void subscribe(final SingleEmitter<List<Store>> emitter) {
-                databaseRef.child(Constant.CHILD_STORES_LOCATION).addListenerForSingleValueEvent(new ValueEventListener() {
+                databaseRef.child(CHILD_STORES_LOCATION).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         emitter.onSuccess(parseDataFromFirebase(dataSnapshot));
@@ -100,7 +101,7 @@ public class RemoteStoreRepository implements StoreDataSource {
     private List<Store> parseDataFromFirebase(DataSnapshot dataSnapshot) {
         List<Store> storeList = new ArrayList<>();
         for (DataSnapshot child : dataSnapshot.getChildren()) {
-            for (DataSnapshot storeLocation : child.child(Constant.CHILD_MARKERS_ADD).getChildren()) {
+            for (DataSnapshot storeLocation : child.child(CHILD_MARKERS_ADD).getChildren()) {
                 Store store = storeLocation.getValue(Store.class);
                 store.setType(DataUtils.getStoreType(child.getKey()));
                 storeList.add(store);

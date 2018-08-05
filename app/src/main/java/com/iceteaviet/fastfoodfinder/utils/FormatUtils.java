@@ -11,6 +11,10 @@ import java.text.DecimalFormat;
  */
 public final class FormatUtils {
     private static final DecimalFormat distanceFormat = new DecimalFormat("##.## Km");
+    private static final DecimalFormat oneDecimalFormat = new DecimalFormat("#.#");
+    private static final DecimalFormat twoDecimalFormat = new DecimalFormat("#.##");
+    private static final DecimalFormat threeDecimalFormat = new DecimalFormat("#.###");
+    private static final DecimalFormat fourDecimalFormat = new DecimalFormat("#.####");
 
     private FormatUtils() {
 
@@ -72,7 +76,28 @@ public final class FormatUtils {
         return callIntent;
     }
 
+
     public static String formatDistance(double distance) {
         return distanceFormat.format(distance);
+    }
+
+
+    public static String formatDecimal(double decimal, int numbOfDecimalPlates) {
+        switch (numbOfDecimalPlates) {
+            case 1:
+                return oneDecimalFormat.format(decimal);
+
+            case 2:
+                return twoDecimalFormat.format(decimal);
+
+            case 3:
+                return threeDecimalFormat.format(decimal);
+
+            case 4:
+                return fourDecimalFormat.format(decimal);
+
+            default:
+                return String.valueOf(decimal);
+        }
     }
 }

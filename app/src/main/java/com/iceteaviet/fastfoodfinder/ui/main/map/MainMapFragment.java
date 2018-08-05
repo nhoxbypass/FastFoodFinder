@@ -76,6 +76,10 @@ import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
 
+import static com.iceteaviet.fastfoodfinder.data.remote.routing.GoogleMapsRoutingApiHelper.PARAM_DESTINATION;
+import static com.iceteaviet.fastfoodfinder.data.remote.routing.GoogleMapsRoutingApiHelper.PARAM_ORIGIN;
+import static com.iceteaviet.fastfoodfinder.ui.routing.MapRoutingActivity.KEY_DES_STORE;
+import static com.iceteaviet.fastfoodfinder.ui.routing.MapRoutingActivity.KEY_ROUTE_LIST;
 import static com.iceteaviet.fastfoodfinder.utils.Constant.DEFAULT_ZOOM_LEVEL;
 
 
@@ -457,7 +461,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
                 });
 
                 cameraPositionPublisher
-                        .debounce(1500, TimeUnit.MILLISECONDS)
+                        .debounce(350, TimeUnit.MILLISECONDS)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Observer<CameraPosition>() {
                             @Override
@@ -543,8 +547,8 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
         LatLng storeLocation = store.getPosition();
         Map<String, String> queries = new HashMap<>();
 
-        queries.put(Constant.PARAM_ORIGIN, LocationUtils.getLatLngString(currLocation));
-        queries.put(Constant.PARAM_DESTINATION, LocationUtils.getLatLngString(storeLocation));
+        queries.put(PARAM_ORIGIN, LocationUtils.getLatLngString(currLocation));
+        queries.put(PARAM_DESTINATION, LocationUtils.getLatLngString(storeLocation));
 
         dataManager.getMapsRoutingApiHelper().getMapsDirection(queries, store)
                 .subscribe(new SingleObserver<MapsDirection>() {
@@ -557,8 +561,8 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
                     public void onSuccess(MapsDirection mapsDirection) {
                         Intent intent = new Intent(getActivity(), MapRoutingActivity.class);
                         Bundle extras = new Bundle();
-                        extras.putParcelable(Constant.KEY_ROUTE_LIST, mapsDirection);
-                        extras.putParcelable(Constant.KEY_DES_STORE, store);
+                        extras.putParcelable(KEY_ROUTE_LIST, mapsDirection);
+                        extras.putParcelable(KEY_DES_STORE, store);
                         intent.putExtras(extras);
                         startActivity(intent);
                     }

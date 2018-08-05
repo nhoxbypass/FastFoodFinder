@@ -1,5 +1,6 @@
 package com.iceteaviet.fastfoodfinder.ui.ar;
 
+import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.hardware.Sensor;
@@ -13,7 +14,6 @@ import android.opengl.Matrix;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.SurfaceView;
 import android.view.View;
@@ -30,6 +30,7 @@ import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store;
 import com.iceteaviet.fastfoodfinder.ui.base.BaseActivity;
 import com.iceteaviet.fastfoodfinder.ui.custom.ar.ARCamera;
 import com.iceteaviet.fastfoodfinder.ui.custom.ar.AROverlayView;
+import com.iceteaviet.fastfoodfinder.utils.FormatUtils;
 import com.iceteaviet.fastfoodfinder.utils.PermissionUtils;
 import com.iceteaviet.fastfoodfinder.utils.ui.UiUtils;
 
@@ -73,7 +74,12 @@ public class ArCameraActivity extends BaseActivity implements SensorEventListene
     @Override
     protected void onResume() {
         super.onResume();
-        checkLocationPermission();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
+                !PermissionUtils.isLocationPermissionGranted(this)) {
+            PermissionUtils.requestLocationPermission(this);
+        } else {
+            initLocationService();
+        }
         checkCameraPermission();
         registerSensors();
         initAROverlayView();
@@ -206,14 +212,6 @@ public class ArCameraActivity extends BaseActivity implements SensorEventListene
         }
     }
 
-    public void checkLocationPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
-                !PermissionUtils.isLocationPermissionGranted(this)) {
-            PermissionUtils.requestLocationPermission(this);
-        } else {
-            initLocationService();
-        }
-    }
 
     public void initAROverlayView() {
         if (arOverlayView.getParent() != null) {
@@ -273,12 +271,8 @@ public class ArCameraActivity extends BaseActivity implements SensorEventListene
                 SensorManager.SENSOR_DELAY_FASTEST);
     }
 
+    @SuppressLint("MissingPermission")
     private void initLocationService() {
-        if (Build.VERSION.SDK_INT >= 23 &&
-                ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-
         try {
             this.locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
 
@@ -315,8 +309,10 @@ public class ArCameraActivity extends BaseActivity implements SensorEventListene
     private void updateLatestLocation() {
         if (arOverlayView != null) {
             arOverlayView.updateCurrentLocation(location);
-            tvCurrentLocation.setText(String.format("lat: %s \nlon: %s \naltitude: %s \n",
-                    location.getLatitude(), location.getLongitude(), location.getAltitude()));
+            tvCurrentLocation.setText(String.format("lat: %s \nlon: %s \nalt: %s \n",
+                    FormatUtils.formatDecimal(location.getLatitude(), 4),
+                    FormatUtils.formatDecimal(location.getLongitude(), 4),
+                    FormatUtils.formatDecimal(location.getAltitude(), 4)));
         }
     }
 }

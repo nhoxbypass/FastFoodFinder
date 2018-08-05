@@ -20,13 +20,14 @@ import android.widget.Toast;
 
 import com.iceteaviet.fastfoodfinder.R;
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store;
-import com.iceteaviet.fastfoodfinder.utils.Constant;
 import com.iceteaviet.fastfoodfinder.utils.FormatUtils;
 import com.iceteaviet.fastfoodfinder.utils.PermissionUtils;
 import com.iceteaviet.fastfoodfinder.utils.StringUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.iceteaviet.fastfoodfinder.ui.store.StoreDetailActivity.KEY_STORE;
 
 /**
  * Created by taq on 26/11/2016.
@@ -53,7 +54,7 @@ public class StoreInfoDialogFragment extends DialogFragment {
 
     public static StoreInfoDialogFragment newInstance(Store store) {
         Bundle args = new Bundle();
-        args.putParcelable(Constant.STORE, store);
+        args.putParcelable(KEY_STORE, store);
         StoreInfoDialogFragment fragment = new StoreInfoDialogFragment();
         fragment.setArguments(args);
         return fragment;
@@ -75,7 +76,7 @@ public class StoreInfoDialogFragment extends DialogFragment {
         ButterKnife.bind(this, view);
         cdvh = new StoreDetailAdapter.CallDirectionViewHolder(vCallDirection);
 
-        store = getArguments().getParcelable(Constant.STORE);
+        store = getArguments().getParcelable(KEY_STORE);
         if (store == null)
             return;
 

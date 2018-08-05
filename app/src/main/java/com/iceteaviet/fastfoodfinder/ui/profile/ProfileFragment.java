@@ -37,6 +37,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.SingleObserver;
 import io.reactivex.disposables.Disposable;
 
+import static com.iceteaviet.fastfoodfinder.ui.profile.ListDetailActivity.KEY_USER_PHOTO_URL;
+import static com.iceteaviet.fastfoodfinder.ui.profile.ListDetailActivity.KEY_USER_STORE_LIST;
+
 
 public class ProfileFragment extends Fragment {
     @BindView(R.id.ivCoverImage)
@@ -265,8 +268,8 @@ public class ProfileFragment extends Fragment {
 
     void sendToDetailListActivity(UserStoreList userStoreList) {
         Intent intent = new Intent(getContext(), ListDetailActivity.class);
-        intent.putExtra(Constant.KEY_USER_PHOTO_URL, dataManager.getCurrentUser().getPhotoUrl());
-        intent.putExtra(Constant.KEY_USER_STORE_LIST, userStoreList);
+        intent.putExtra(KEY_USER_PHOTO_URL, dataManager.getCurrentUser().getPhotoUrl());
+        intent.putExtra(KEY_USER_STORE_LIST, userStoreList);
         startActivity(intent);
     }
 }

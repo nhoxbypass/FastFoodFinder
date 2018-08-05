@@ -16,7 +16,6 @@ import com.iceteaviet.fastfoodfinder.data.DataManager;
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store;
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList;
 import com.iceteaviet.fastfoodfinder.ui.storelist.StoreListAdapter;
-import com.iceteaviet.fastfoodfinder.utils.Constant;
 
 import java.util.List;
 
@@ -30,6 +29,9 @@ import io.reactivex.disposables.Disposable;
  * Created by MyPC on 12/6/2016.
  */
 public class ListDetailActivity extends AppCompatActivity {
+
+    public static final String KEY_USER_STORE_LIST = "store";
+    public static final String KEY_USER_PHOTO_URL = "url";
 
     @BindView(R.id.rvList)
     RecyclerView rvStoreList;
@@ -76,8 +78,8 @@ public class ListDetailActivity extends AppCompatActivity {
     }
 
     private UserStoreList loadData(Intent intent) {
-        UserStoreList userStoreList = intent.getParcelableExtra(Constant.KEY_USER_STORE_LIST);
-        photoUrl = intent.getStringExtra(Constant.KEY_USER_PHOTO_URL);
+        UserStoreList userStoreList = intent.getParcelableExtra(KEY_USER_STORE_LIST);
+        photoUrl = intent.getStringExtra(KEY_USER_PHOTO_URL);
 
         //add list store to mAdapter here
         dataManager.getLocalStoreDataSource().findStoresByIds(userStoreList.getStoreIdList())

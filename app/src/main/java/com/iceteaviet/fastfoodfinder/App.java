@@ -15,8 +15,8 @@ import com.iceteaviet.fastfoodfinder.data.remote.ClientAuth;
 import com.iceteaviet.fastfoodfinder.data.remote.FirebaseClientAuth;
 import com.iceteaviet.fastfoodfinder.data.remote.routing.GoogleMapsRoutingApiHelper;
 import com.iceteaviet.fastfoodfinder.data.remote.routing.MapsRoutingApiHelper;
-import com.iceteaviet.fastfoodfinder.data.remote.store.RemoteStoreRepository;
-import com.iceteaviet.fastfoodfinder.data.remote.user.UserRepository;
+import com.iceteaviet.fastfoodfinder.data.remote.store.FirebaseStoreRepository;
+import com.iceteaviet.fastfoodfinder.data.remote.user.FirebaseUserRepository;
 
 import io.realm.Realm;
 
@@ -40,10 +40,10 @@ public class App extends MultiDexApplication {
         PACKAGE_NAME = getApplicationContext().getPackageName();
 
         LocalStoreRepository localStoreDataSource = new LocalStoreRepository();
-        StoreDataSource remoteStoreDataSource = new RemoteStoreRepository(FirebaseDatabase.getInstance().getReference());
+        StoreDataSource remoteStoreDataSource = new FirebaseStoreRepository(FirebaseDatabase.getInstance().getReference());
 
         UserDataSource localUserDataSource = new LocalUserRepository();
-        UserDataSource remoteUserDataSource = new UserRepository(FirebaseDatabase.getInstance().getReference(), localStoreDataSource);
+        UserDataSource remoteUserDataSource = new FirebaseUserRepository(FirebaseDatabase.getInstance().getReference(), localStoreDataSource);
 
         MapsRoutingApiHelper mapsRoutingApiHelper = new GoogleMapsRoutingApiHelper(getString(R.string.google_maps_browser_key));
         ClientAuth clientAuth = new FirebaseClientAuth();

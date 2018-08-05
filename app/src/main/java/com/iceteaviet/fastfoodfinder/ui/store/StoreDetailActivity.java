@@ -35,7 +35,6 @@ import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection;
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Comment;
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store;
 import com.iceteaviet.fastfoodfinder.ui.routing.MapRoutingActivity;
-import com.iceteaviet.fastfoodfinder.utils.Constant;
 import com.iceteaviet.fastfoodfinder.utils.FormatUtils;
 import com.iceteaviet.fastfoodfinder.utils.LocationUtils;
 import com.iceteaviet.fastfoodfinder.utils.PermissionUtils;
@@ -49,12 +48,17 @@ import butterknife.ButterKnife;
 import io.reactivex.SingleObserver;
 import io.reactivex.disposables.Disposable;
 
+import static com.iceteaviet.fastfoodfinder.ui.routing.MapRoutingActivity.KEY_DES_STORE;
+import static com.iceteaviet.fastfoodfinder.ui.routing.MapRoutingActivity.KEY_ROUTE_LIST;
+import static com.iceteaviet.fastfoodfinder.ui.store.CommentActivity.KEY_COMMENT;
+
 /**
  * Created by taq on 18/11/2016.
  */
 
 public class StoreDetailActivity extends AppCompatActivity implements StoreDetailAdapter.StoreActionListener, GoogleApiClient.ConnectionCallbacks {
 
+    public static final String KEY_STORE = "key_store";
     public static final int REQUEST_COMMENT = 113;
     private static final String TAG = StoreDetailActivity.class.getSimpleName();
 
@@ -80,7 +84,7 @@ public class StoreDetailActivity extends AppCompatActivity implements StoreDetai
 
     public static Intent getIntent(Context context, Store store) {
         Intent intent = new Intent(context, StoreDetailActivity.class);
-        intent.putExtra(Constant.STORE, store);
+        intent.putExtra(KEY_STORE, store);
         return intent;
     }
 
@@ -90,7 +94,7 @@ public class StoreDetailActivity extends AppCompatActivity implements StoreDetai
         setContentView(R.layout.activity_store_detail);
         ButterKnife.bind(this);
 
-        currentStore = getIntent().getParcelableExtra(Constant.STORE);
+        currentStore = getIntent().getParcelableExtra(KEY_STORE);
         mStoreDetailAdapter = new StoreDetailAdapter(currentStore);
         mStoreDetailAdapter.setListener(this);
         rvContent.setAdapter(mStoreDetailAdapter);
@@ -135,7 +139,7 @@ public class StoreDetailActivity extends AppCompatActivity implements StoreDetai
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK && requestCode == REQUEST_COMMENT) {
-            Comment comment = (Comment) data.getSerializableExtra(Constant.COMMENT);
+            Comment comment = (Comment) data.getSerializableExtra(KEY_COMMENT);
             if (comment != null) {
                 mStoreDetailAdapter.addComment(comment);
                 appbar.setExpanded(false);
@@ -198,8 +202,8 @@ public class StoreDetailActivity extends AppCompatActivity implements StoreDetai
                     public void onSuccess(MapsDirection mapsDirection) {
                         Intent intent = new Intent(StoreDetailActivity.this, MapRoutingActivity.class);
                         Bundle extras = new Bundle();
-                        extras.putParcelable(Constant.KEY_ROUTE_LIST, mapsDirection);
-                        extras.putParcelable(Constant.KEY_DES_STORE, currentStore);
+                        extras.putParcelable(KEY_ROUTE_LIST, mapsDirection);
+                        extras.putParcelable(KEY_DES_STORE, currentStore);
                         intent.putExtras(extras);
                         startActivity(intent);
                     }

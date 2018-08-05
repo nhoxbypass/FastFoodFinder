@@ -18,7 +18,6 @@ import android.widget.Toast;
 
 import com.iceteaviet.fastfoodfinder.R;
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Comment;
-import com.iceteaviet.fastfoodfinder.utils.Constant;
 import com.iceteaviet.fastfoodfinder.utils.DataUtils;
 
 import butterknife.BindView;
@@ -30,6 +29,7 @@ import butterknife.ButterKnife;
 
 public class CommentActivity extends AppCompatActivity implements NoticeDialog.NoticeDialogListener {
 
+    public static final String KEY_COMMENT = "comment";
     private final int MAX_CHAR = 140;
 
     @BindView(R.id.toolbar)
@@ -98,7 +98,7 @@ public class CommentActivity extends AppCompatActivity implements NoticeDialog.N
                 }
                 Comment comment = DataUtils.createUserComment(etComment.getText().toString());
                 Intent data = new Intent();
-                data.putExtra(Constant.COMMENT, comment);
+                data.putExtra(KEY_COMMENT, comment);
                 setResult(RESULT_OK, data);
                 finish();
             }

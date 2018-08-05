@@ -19,8 +19,8 @@ final public class LocationUtils {
 
     public static LocationRequest createLocationRequest() {
         LocationRequest mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(Constant.INTERVAL);
-        mLocationRequest.setFastestInterval(Constant.FASTEST_INTERVAL);
+        mLocationRequest.setInterval(Constant.MAPS_INTERVAL);
+        mLocationRequest.setFastestInterval(Constant.MAPS_FASTEST_INTERVAL);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
         return mLocationRequest;
