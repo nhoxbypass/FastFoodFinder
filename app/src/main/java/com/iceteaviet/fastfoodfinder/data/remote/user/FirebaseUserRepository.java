@@ -2,6 +2,7 @@ package com.iceteaviet.fastfoodfinder.data.remote.user;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.util.Pair;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -9,8 +10,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.iceteaviet.fastfoodfinder.data.domain.user.UserDataSource;
-import com.iceteaviet.fastfoodfinder.data.local.store.LocalStoreRepository;
-import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store;
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User;
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreEvent;
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList;
@@ -31,13 +30,12 @@ public class FirebaseUserRepository implements UserDataSource {
     private static final String TAG = FirebaseUserRepository.class.getSimpleName();
     private static final String CHILD_USERS = "users";
     private static final String CHILD_USERS_STORE_LIST = "userStoreLists";
+    private static final String CHILD_STORE_ID_LIST = "storeIdList";
 
     private DatabaseReference databaseRef;
-    private LocalStoreRepository localStoreRepository;
 
-    public FirebaseUserRepository(DatabaseReference reference, LocalStoreRepository localStoreRepository) {
+    public FirebaseUserRepository(DatabaseReference reference) {
         databaseRef = reference;
-        this.localStoreRepository = localStoreRepository;
     }
 
     @Override
@@ -115,37 +113,37 @@ public class FirebaseUserRepository implements UserDataSource {
     }
 
     @Override
-    public Observable<UserStoreEvent> subscribeFavouriteStoresOfUser(final String uid) {
-        return Observable.create(new ObservableOnSubscribe<UserStoreEvent>() {
+    public Observable<Pair<Integer, Integer>> subscribeFavouriteStoresOfUser(final String uid) {
+        return Observable.create(new ObservableOnSubscribe<Pair<Integer, Integer>>() {
             @Override
-            public void subscribe(final ObservableEmitter<UserStoreEvent> emitter) {
+            public void subscribe(final ObservableEmitter<Pair<Integer, Integer>> emitter) {
                 databaseRef.child(CHILD_USERS)
                         .child(uid)
                         .child(CHILD_USERS_STORE_LIST)
                         .child(String.valueOf(UserStoreList.ID_FAVOURITE))
-                        .child("storeIdList").addChildEventListener(new ChildEventListener() {
+                        .child(CHILD_STORE_ID_LIST).addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, String s) {
                         if (dataSnapshot.exists())
-                            emitter.onNext(new UserStoreEvent(getStoreFrom(dataSnapshot.getValue(Integer.class)), UserStoreEvent.ACTION_ADDED));
+                            emitter.onNext(new Pair<>(dataSnapshot.getValue(Integer.class), UserStoreEvent.ACTION_ADDED));
                     }
 
                     @Override
                     public void onChildChanged(@NonNull DataSnapshot dataSnapshot, String s) {
                         if (dataSnapshot.exists())
-                            emitter.onNext(new UserStoreEvent(getStoreFrom(dataSnapshot.getValue(Integer.class)), UserStoreEvent.ACTION_CHANGED));
+                            emitter.onNext(new Pair<>(dataSnapshot.getValue(Integer.class), UserStoreEvent.ACTION_CHANGED));
                     }
 
                     @Override
                     public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
                         if (dataSnapshot.exists())
-                            emitter.onNext(new UserStoreEvent(getStoreFrom(dataSnapshot.getValue(Integer.class)), UserStoreEvent.ACTION_REMOVED));
+                            emitter.onNext(new Pair<>(dataSnapshot.getValue(Integer.class), UserStoreEvent.ACTION_REMOVED));
                     }
 
                     @Override
                     public void onChildMoved(@NonNull DataSnapshot dataSnapshot, String s) {
                         if (dataSnapshot.exists())
-                            emitter.onNext(new UserStoreEvent(getStoreFrom(dataSnapshot.getValue(Integer.class)), UserStoreEvent.ACTION_MOVED));
+                            emitter.onNext(new Pair<>(dataSnapshot.getValue(Integer.class), UserStoreEvent.ACTION_MOVED));
                     }
 
                     @Override
@@ -155,18 +153,5 @@ public class FirebaseUserRepository implements UserDataSource {
                 });
             }
         });
-    }
-
-    // TODO: Fix SRP issue
-    private Store getStoreFrom(Integer storeId) {
-        Store store = null;
-
-        if (storeId != null) {
-            store = localStoreRepository.findStoresById(storeId)
-                    .blockingGet()
-                    .get(0);
-        }
-
-        return store;
     }
 }

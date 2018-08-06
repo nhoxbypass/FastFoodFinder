@@ -1,12 +1,12 @@
 package com.iceteaviet.fastfoodfinder.data.local.user;
 
 import android.support.annotation.NonNull;
+import android.util.Pair;
 
 import com.iceteaviet.fastfoodfinder.data.domain.user.UserDataSource;
 import com.iceteaviet.fastfoodfinder.data.local.user.model.UserEntity;
 import com.iceteaviet.fastfoodfinder.data.local.user.model.UserStoreListEntity;
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User;
-import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreEvent;
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList;
 import com.iceteaviet.fastfoodfinder.utils.exception.EmptyParamsException;
 
@@ -118,10 +118,10 @@ public class LocalUserRepository implements UserDataSource {
 
     @Deprecated
     @Override
-    public Observable<UserStoreEvent> subscribeFavouriteStoresOfUser(final String uid) {
-        return Observable.create(new ObservableOnSubscribe<UserStoreEvent>() {
+    public Observable<Pair<Integer, Integer>> subscribeFavouriteStoresOfUser(final String uid) {
+        return Observable.create(new ObservableOnSubscribe<Pair<Integer, Integer>>() {
             @Override
-            public void subscribe(ObservableEmitter<UserStoreEvent> emitter) {
+            public void subscribe(ObservableEmitter<Pair<Integer, Integer>> emitter) {
                 Realm realm = Realm.getDefaultInstance();
 
                 realm.where(UserEntity.class)

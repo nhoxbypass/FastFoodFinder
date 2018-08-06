@@ -43,7 +43,7 @@ public class App extends MultiDexApplication {
         StoreDataSource remoteStoreDataSource = new FirebaseStoreRepository(FirebaseDatabase.getInstance().getReference());
 
         UserDataSource localUserDataSource = new LocalUserRepository();
-        UserDataSource remoteUserDataSource = new FirebaseUserRepository(FirebaseDatabase.getInstance().getReference(), localStoreDataSource);
+        UserDataSource remoteUserDataSource = new FirebaseUserRepository(FirebaseDatabase.getInstance().getReference());
 
         MapsRoutingApiHelper mapsRoutingApiHelper = new GoogleMapsRoutingApiHelper(getString(R.string.google_maps_browser_key));
         ClientAuth clientAuth = new FirebaseClientAuth();

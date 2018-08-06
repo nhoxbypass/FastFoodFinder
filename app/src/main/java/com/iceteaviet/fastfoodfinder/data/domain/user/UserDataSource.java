@@ -1,7 +1,8 @@
 package com.iceteaviet.fastfoodfinder.data.domain.user;
 
+import android.util.Pair;
+
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User;
-import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreEvent;
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList;
 
 import java.util.List;
@@ -23,5 +24,5 @@ public interface UserDataSource {
 
     Single<Boolean> isUserExists(String uid);
 
-    Observable<UserStoreEvent> subscribeFavouriteStoresOfUser(String uid);
+    Observable<Pair<Integer, Integer>> subscribeFavouriteStoresOfUser(String uid);
 }

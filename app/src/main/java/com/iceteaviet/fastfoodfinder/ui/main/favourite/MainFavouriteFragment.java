@@ -9,6 +9,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,7 @@ import butterknife.ButterKnife;
 import io.reactivex.Observer;
 import io.reactivex.SingleObserver;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
 
 /**
  * Created by MyPC on 11/16/2016.
@@ -134,6 +136,12 @@ public class MainFavouriteFragment extends Fragment implements OnStartDragListen
 
 
             dataManager.getRemoteUserDataSource().subscribeFavouriteStoresOfUser(dataManager.getCurrentUserUid())
+                    .map(new Function<Pair<Integer, Integer>, UserStoreEvent>() {
+                        @Override
+                        public UserStoreEvent apply(Pair<Integer, Integer> storeIdPair) throws Exception {
+                            return null;
+                        }
+                    })
                     .subscribe(new Observer<UserStoreEvent>() {
                         @Override
                         public void onSubscribe(Disposable d) {

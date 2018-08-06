@@ -8,7 +8,6 @@
     <string name="notifications">Notifications</string>
     <string name="your_places">Your places</string>
 
-    <!-- TODO: Remove or change this all_placeholder text -->
     <string name="drawer_open" translatable="false">Open navigation drawer</string>
     <string name="drawer_close" translatable="false">Close navigation drawer</string>
     <string name="ipsum" translatable="false">Jarlsberg lancashire edam. Dolcelatte hard cheese brie st. agur blue
