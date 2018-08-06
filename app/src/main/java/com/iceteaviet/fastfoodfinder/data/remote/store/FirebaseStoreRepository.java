@@ -98,6 +98,11 @@ public class FirebaseStoreRepository implements StoreDataSource {
         return null;
     }
 
+    @Override
+    public void deleteAllStores() {
+        // TODO: Clear all stores
+    }
+
     private List<Store> parseDataFromFirebase(DataSnapshot dataSnapshot) {
         List<Store> storeList = new ArrayList<>();
         for (DataSnapshot child : dataSnapshot.getChildren()) {

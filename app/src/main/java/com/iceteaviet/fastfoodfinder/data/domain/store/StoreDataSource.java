@@ -29,4 +29,6 @@ public interface StoreDataSource {
     Single<List<Store>> findStoresById(int id);
 
     Single<List<Store>> findStoresByIds(List<Integer> ids);
+
+    void deleteAllStores();
 }

@@ -33,7 +33,7 @@ public class LocalStoreRepository implements StoreDataSource {
 
     @Override
     public void setStores(final List<Store> storeList) {
-        if (storeList != null) {
+        if (storeList != null && !storeList.isEmpty()) {
             // Cache
             cachedStores = storeList;
 
@@ -73,8 +73,11 @@ public class LocalStoreRepository implements StoreDataSource {
                         .where(StoreEntity.class)
                         .findAll();
 
+                cachedStores = new ArrayList<>();
                 for (int i = 0; i < results.size(); i++) {
-                    cachedStores.add(new Store(results.get(i)));
+                    StoreEntity storeEntity = results.get(i);
+                    if (storeEntity != null)
+                        cachedStores.add(new Store(storeEntity));
                 }
 
                 realm.close();
@@ -87,7 +90,7 @@ public class LocalStoreRepository implements StoreDataSource {
     public Single<List<Store>> getStoreInBounds(final double minLat, final double minLng, final double maxLat, final double maxLng) {
         return Single.create(new SingleOnSubscribe<List<Store>>() {
             @Override
-            public void subscribe(SingleEmitter<List<Store>> emitter) throws Exception {
+            public void subscribe(SingleEmitter<List<Store>> emitter) {
                 Realm realm = Realm.getDefaultInstance();
                 List<Store> storeList = new ArrayList<>();
                 // Build the query looking at all users:
@@ -98,11 +101,14 @@ public class LocalStoreRepository implements StoreDataSource {
                 query.between("longitude", minLng, maxLng);
 
                 // Execute the query:
-                RealmResults<StoreEntity> result = query.findAll();
+                RealmResults<StoreEntity> results = query.findAll();
 
-                for (int i = 0; i < result.size(); i++) {
-                    Store store = new Store(result.get(i));
-                    storeList.add(store);
+                for (int i = 0; i < results.size(); i++) {
+                    StoreEntity storeEntity = results.get(i);
+                    if (storeEntity != null) {
+                        Store store = new Store(storeEntity);
+                        storeList.add(store);
+                    }
                 }
 
                 realm.close();
@@ -135,7 +141,7 @@ public class LocalStoreRepository implements StoreDataSource {
     public Single<List<Store>> findStoresByCustomAddress(final List<String> customQuerySearch) {
         return Single.create(new SingleOnSubscribe<List<Store>>() {
             @Override
-            public void subscribe(SingleEmitter<List<Store>> emitter) throws Exception {
+            public void subscribe(SingleEmitter<List<Store>> emitter) {
                 Realm realm = Realm.getDefaultInstance();
                 List<Store> storeList = new ArrayList<>();
 
@@ -154,8 +160,11 @@ public class LocalStoreRepository implements StoreDataSource {
 
                     int size = results.size();
                     for (int i = 0; i < size; i++) {
-                        Store store = new Store(results.get(i));
-                        storeList.add(store);
+                        StoreEntity storeEntity = results.get(i);
+                        if (storeEntity != null) {
+                            Store store = new Store(storeEntity);
+                            storeList.add(store);
+                        }
                     }
                 }
 
@@ -170,7 +179,7 @@ public class LocalStoreRepository implements StoreDataSource {
     public Single<List<Store>> findStoresBy(final String key, final int value) {
         return Single.create(new SingleOnSubscribe<List<Store>>() {
             @Override
-            public void subscribe(SingleEmitter<List<Store>> emitter) throws Exception {
+            public void subscribe(SingleEmitter<List<Store>> emitter) {
                 Realm realm = Realm.getDefaultInstance();
                 List<Store> storeList = new ArrayList<>();
 
@@ -182,8 +191,11 @@ public class LocalStoreRepository implements StoreDataSource {
 
                 int size = results.size();
                 for (int i = 0; i < size; i++) {
-                    Store store = new Store(results.get(i));
-                    storeList.add(store);
+                    StoreEntity storeEntity = results.get(i);
+                    if (storeEntity != null) {
+                        Store store = new Store(storeEntity);
+                        storeList.add(store);
+                    }
                 }
 
                 realm.close();
@@ -215,8 +227,11 @@ public class LocalStoreRepository implements StoreDataSource {
 
                 int size = results.size();
                 for (int i = 0; i < size; i++) {
-                    Store store = new Store(results.get(i));
-                    storeList.add(store);
+                    StoreEntity storeEntity = results.get(i);
+                    if (storeEntity != null) {
+                        Store store = new Store(storeEntity);
+                        storeList.add(store);
+                    }
                 }
 
                 realm.close();
@@ -241,8 +256,17 @@ public class LocalStoreRepository implements StoreDataSource {
         return findStoresBy("id", ids);
     }
 
+    @Override
+    public void deleteAllStores() {
+        cachedStores.clear();
+        Realm realm = Realm.getDefaultInstance();
+        realm.where(StoreEntity.class)
+                .findAll()
+                .deleteAllFromRealm();
+    }
+
     public void clearCache() {
-        cachedStores = new ArrayList<>();
+        cachedStores.clear();
     }
 
     private boolean isCircleKQuery(String query) {
