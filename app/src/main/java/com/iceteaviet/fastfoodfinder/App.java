@@ -18,8 +18,6 @@ import com.iceteaviet.fastfoodfinder.data.remote.routing.MapsRoutingApiHelper;
 import com.iceteaviet.fastfoodfinder.data.remote.store.FirebaseStoreRepository;
 import com.iceteaviet.fastfoodfinder.data.remote.user.FirebaseUserRepository;
 
-import io.realm.Realm;
-
 /**
  * Created by tom on 7/15/18.
  */
@@ -36,7 +34,6 @@ public class App extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
 
-        Realm.init(this);
         PACKAGE_NAME = getApplicationContext().getPackageName();
 
         LocalStoreRepository localStoreDataSource = new LocalStoreRepository();
@@ -49,7 +46,7 @@ public class App extends MultiDexApplication {
         ClientAuth clientAuth = new FirebaseClientAuth();
         PreferencesHelper preferencesHelper = new AppPreferencesHelper(this);
 
-        dataManager = new AppDataManager(localStoreDataSource, remoteStoreDataSource, clientAuth,
+        dataManager = new AppDataManager(this, localStoreDataSource, remoteStoreDataSource, clientAuth,
                 localUserDataSource, remoteUserDataSource,
                 mapsRoutingApiHelper, preferencesHelper);
     }

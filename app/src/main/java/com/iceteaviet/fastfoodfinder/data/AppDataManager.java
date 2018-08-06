@@ -1,6 +1,7 @@
 package com.iceteaviet.fastfoodfinder.data;
 
 import android.app.Activity;
+import android.content.Context;
 import android.util.Log;
 
 import com.google.firebase.auth.AuthCredential;
@@ -21,6 +22,8 @@ import io.reactivex.SingleEmitter;
 import io.reactivex.SingleObserver;
 import io.reactivex.SingleOnSubscribe;
 import io.reactivex.disposables.Disposable;
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 
 /**
  * Created by tom on 7/9/18.
@@ -40,7 +43,7 @@ public class AppDataManager implements DataManager {
 
     private User currentUser;
 
-    public AppDataManager(StoreDataSource storeDataSource, StoreDataSource remoteStoreDataSource,
+    public AppDataManager(Context context, StoreDataSource storeDataSource, StoreDataSource remoteStoreDataSource,
                           ClientAuth clientAuth,
                           UserDataSource userDataSource, UserDataSource remoteUserDataSource,
                           MapsRoutingApiHelper mapsRoutingApiHelper, PreferencesHelper preferencesHelper) {
@@ -51,6 +54,12 @@ public class AppDataManager implements DataManager {
         this.remoteUserDataSource = remoteUserDataSource;
         this.mapsRoutingApiHelper = mapsRoutingApiHelper;
         this.preferencesHelper = preferencesHelper;
+
+        Realm.init(context);
+        RealmConfiguration config = new RealmConfiguration.Builder()
+                .deleteRealmIfMigrationNeeded()
+                .build();
+        Realm.setDefaultConfiguration(config);
     }
 
     @Override
