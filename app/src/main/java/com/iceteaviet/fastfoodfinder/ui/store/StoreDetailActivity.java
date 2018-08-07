@@ -14,7 +14,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -35,6 +34,7 @@ import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection;
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Comment;
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store;
 import com.iceteaviet.fastfoodfinder.ui.routing.MapRoutingActivity;
+import com.iceteaviet.fastfoodfinder.utils.AppLogger;
 import com.iceteaviet.fastfoodfinder.utils.FormatUtils;
 import com.iceteaviet.fastfoodfinder.utils.LocationUtils;
 import com.iceteaviet.fastfoodfinder.utils.PermissionUtils;
@@ -118,7 +118,7 @@ public class StoreDetailActivity extends AppCompatActivity implements StoreDetai
                 .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
                     @Override
                     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                        Log.e(TAG, getString(R.string.cannot_get_curr_location));
+                        AppLogger.e(TAG, getString(R.string.cannot_get_curr_location));
                     }
                 })
                 .addApi(LocationServices.API)

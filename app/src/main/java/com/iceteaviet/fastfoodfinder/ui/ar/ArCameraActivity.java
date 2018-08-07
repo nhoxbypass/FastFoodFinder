@@ -14,7 +14,6 @@ import android.opengl.Matrix;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +29,7 @@ import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store;
 import com.iceteaviet.fastfoodfinder.ui.base.BaseActivity;
 import com.iceteaviet.fastfoodfinder.ui.custom.ar.ARCamera;
 import com.iceteaviet.fastfoodfinder.ui.custom.ar.AROverlayView;
+import com.iceteaviet.fastfoodfinder.utils.AppLogger;
 import com.iceteaviet.fastfoodfinder.utils.FormatUtils;
 import com.iceteaviet.fastfoodfinder.utils.PermissionUtils;
 import com.iceteaviet.fastfoodfinder.utils.ui.UiUtils;
@@ -301,7 +301,7 @@ public class ArCameraActivity extends BaseActivity implements SensorEventListene
                 updateLatestLocation();
             }
         } catch (Exception ex) {
-            Log.e(TAG, ex.getMessage());
+            AppLogger.e(TAG, ex.getMessage());
 
         }
     }

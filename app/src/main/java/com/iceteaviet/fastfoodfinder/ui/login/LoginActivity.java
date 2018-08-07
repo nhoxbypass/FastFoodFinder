@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -32,6 +31,7 @@ import com.iceteaviet.fastfoodfinder.R;
 import com.iceteaviet.fastfoodfinder.data.DataManager;
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User;
 import com.iceteaviet.fastfoodfinder.ui.main.MainActivity;
+import com.iceteaviet.fastfoodfinder.utils.AppLogger;
 import com.iceteaviet.fastfoodfinder.utils.Constant;
 import com.iceteaviet.fastfoodfinder.utils.DataUtils;
 
@@ -70,10 +70,10 @@ public class LoginActivity extends AppCompatActivity {
         if (dataManager.isSignedIn()) {
             // User is signed in
             this.finish();
-            Log.d(TAG, "onAuthStateChanged:signed_in:" + dataManager.getCurrentUserUid());
+            AppLogger.d(TAG, "onAuthStateChanged:signed_in:" + dataManager.getCurrentUserUid());
         } else {
             // User is signed out
-            Log.d(TAG, "onAuthStateChanged:signed_out");
+            AppLogger.d(TAG, "onAuthStateChanged:signed_out");
         }
 
         mGoogleApiClient = setupGoogleSignIn();
@@ -115,9 +115,9 @@ public class LoginActivity extends AppCompatActivity {
                 if (account != null)
                     authWithGoogle(account);
                 else
-                    Log.e(TAG, "Login failed with google");
+                    AppLogger.e(TAG, "Login failed with google");
             } else {
-                Log.e(TAG, "Login failed with google");
+                AppLogger.e(TAG, "Login failed with google");
             }
         } else {
             // Pass the activity result back to the Facebook SDK
@@ -143,19 +143,19 @@ public class LoginActivity extends AppCompatActivity {
         fbSignInButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                Log.d(TAG, "facebook:onSuccess: " + loginResult);
+                AppLogger.d(TAG, "facebook:onSuccess: " + loginResult);
                 handleFacebookAccessToken(loginResult.getAccessToken());
             }
 
             @Override
             public void onCancel() {
-                Log.d(TAG, "facebook:onCancel");
+                AppLogger.d(TAG, "facebook:onCancel");
                 // ...
             }
 
             @Override
             public void onError(FacebookException error) {
-                Log.d(TAG, "facebook:onError", error);
+                AppLogger.d(TAG, "facebook:onError", error);
                 // ...
             }
         });
@@ -174,7 +174,7 @@ public class LoginActivity extends AppCompatActivity {
                 .enableAutoManage(LoginActivity.this, new GoogleApiClient.OnConnectionFailedListener() {
                     @Override
                     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                        Log.e(TAG, "google connect failed");
+                        AppLogger.e(TAG, "google connect failed");
                     }
                 })
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
@@ -218,7 +218,7 @@ public class LoginActivity extends AppCompatActivity {
                             saveUserIfNotExists(firebaseUser);
                             startMainActivity();
                         } else {
-                            Log.w(TAG, "signInWithCredential");
+                            AppLogger.w(TAG, "signInWithCredential");
                             Toast.makeText(LoginActivity.this, R.string.authentication_failed,
                                     Toast.LENGTH_SHORT).show();
                         }
@@ -226,7 +226,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.w(TAG, "signInWithCredential", e);
+                        AppLogger.w(TAG, "signInWithCredential", e);
                         Toast.makeText(LoginActivity.this, R.string.authentication_failed,
                                 Toast.LENGTH_SHORT).show();
                     }
@@ -254,7 +254,7 @@ public class LoginActivity extends AppCompatActivity {
                             saveUserIfNotExists(firebaseUser);
                             startMainActivity();
                         } else {
-                            Log.w(TAG, "signInWithCredential");
+                            AppLogger.w(TAG, "signInWithCredential");
                             Toast.makeText(LoginActivity.this, R.string.authentication_failed,
                                     Toast.LENGTH_SHORT).show();
                         }
@@ -262,7 +262,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.w(TAG, "signInWithCredential", e);
+                        AppLogger.w(TAG, "signInWithCredential", e);
                         Toast.makeText(LoginActivity.this, R.string.authentication_failed,
                                 Toast.LENGTH_SHORT).show();
                     }

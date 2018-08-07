@@ -16,7 +16,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.util.Pair;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -50,6 +49,7 @@ import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store;
 import com.iceteaviet.fastfoodfinder.data.transport.model.SearchEventResult;
 import com.iceteaviet.fastfoodfinder.ui.routing.MapRoutingActivity;
 import com.iceteaviet.fastfoodfinder.ui.store.StoreInfoDialogFragment;
+import com.iceteaviet.fastfoodfinder.utils.AppLogger;
 import com.iceteaviet.fastfoodfinder.utils.Constant;
 import com.iceteaviet.fastfoodfinder.utils.LocationUtils;
 import com.iceteaviet.fastfoodfinder.utils.PermissionUtils;
@@ -392,7 +392,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
                 .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
                     @Override
                     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                        Log.e(TAG, getString(R.string.cannot_get_curr_location));
+                        AppLogger.e(TAG, getString(R.string.cannot_get_curr_location));
                     }
                 })
                 .addApi(LocationServices.API)

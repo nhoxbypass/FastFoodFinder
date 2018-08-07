@@ -1,11 +1,11 @@
 package com.iceteaviet.fastfoodfinder.data.remote.routing;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.iceteaviet.fastfoodfinder.data.remote.ApiEndPoint;
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection;
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store;
+import com.iceteaviet.fastfoodfinder.utils.AppLogger;
 import com.iceteaviet.fastfoodfinder.utils.RetrofitUtils;
 
 import java.util.Map;
@@ -45,7 +45,7 @@ public class GoogleMapsRoutingApiHelper implements MapsRoutingApiHelper {
 
                     @Override
                     public void onFailure(@NonNull Call<MapsDirection> call, @NonNull Throwable t) {
-                        Log.e(TAG, "Get direction failed");
+                        AppLogger.e(TAG, "Get direction failed");
                         emitter.onError(t);
                     }
                 });

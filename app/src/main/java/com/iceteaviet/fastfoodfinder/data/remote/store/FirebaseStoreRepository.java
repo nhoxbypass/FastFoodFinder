@@ -1,7 +1,6 @@
 package com.iceteaviet.fastfoodfinder.data.remote.store;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -9,6 +8,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.iceteaviet.fastfoodfinder.data.domain.store.StoreDataSource;
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store;
+import com.iceteaviet.fastfoodfinder.utils.AppLogger;
 import com.iceteaviet.fastfoodfinder.utils.DataUtils;
 
 import java.util.ArrayList;
@@ -50,7 +50,7 @@ public class FirebaseStoreRepository implements StoreDataSource {
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-                        Log.w(TAG, "The read failed: " + databaseError.getMessage());
+                        AppLogger.w(TAG, "The read failed: " + databaseError.getMessage());
                         emitter.onError(databaseError.toException());
                     }
                 });

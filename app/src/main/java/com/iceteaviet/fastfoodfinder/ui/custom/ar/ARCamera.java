@@ -4,12 +4,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.hardware.Camera;
 import android.opengl.Matrix;
-import android.util.Log;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.iceteaviet.fastfoodfinder.utils.AppLogger;
 
 import java.io.IOException;
 import java.util.List;
@@ -64,7 +65,7 @@ public class ARCamera extends ViewGroup implements SurfaceHolder.Callback {
                 camera.setPreviewDisplay(holder);
             }
         } catch (IOException exception) {
-            Log.e(TAG, exception.getMessage());
+            AppLogger.e(TAG, exception.getMessage());
         }
     }
 

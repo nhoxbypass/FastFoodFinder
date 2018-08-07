@@ -1,9 +1,8 @@
 package com.iceteaviet.fastfoodfinder.data.remote.user.model;
 
-import android.util.Log;
-
 import com.iceteaviet.fastfoodfinder.data.local.user.model.UserEntity;
 import com.iceteaviet.fastfoodfinder.data.local.user.model.UserStoreListEntity;
+import com.iceteaviet.fastfoodfinder.utils.AppLogger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +47,7 @@ public class User {
             }
         }
 
-        Log.wtf(User.class.getName(), "Cannot find favourite list !!!");
+        AppLogger.wtf(User.class.getName(), "Cannot find favourite list !!!");
         return null;
     }
 

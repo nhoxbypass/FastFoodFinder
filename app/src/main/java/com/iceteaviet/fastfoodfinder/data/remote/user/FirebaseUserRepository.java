@@ -1,7 +1,6 @@
 package com.iceteaviet.fastfoodfinder.data.remote.user;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.util.Pair;
 
 import com.google.firebase.database.ChildEventListener;
@@ -13,6 +12,7 @@ import com.iceteaviet.fastfoodfinder.data.domain.user.UserDataSource;
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User;
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreEvent;
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList;
+import com.iceteaviet.fastfoodfinder.utils.AppLogger;
 
 import java.util.List;
 
@@ -79,7 +79,7 @@ public class FirebaseUserRepository implements UserDataSource {
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-                        Log.e(TAG, "Failed to get user data");
+                        AppLogger.e(TAG, "Failed to get user data");
                         emitter.onError(databaseError.toException());
                     }
                 });
@@ -105,7 +105,7 @@ public class FirebaseUserRepository implements UserDataSource {
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-                        Log.e(TAG, "Error checking user exists");
+                        AppLogger.e(TAG, "Error checking user exists");
                     }
                 });
             }

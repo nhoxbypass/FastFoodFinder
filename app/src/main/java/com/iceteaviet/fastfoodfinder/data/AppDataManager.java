@@ -2,7 +2,6 @@ package com.iceteaviet.fastfoodfinder.data;
 
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseUser;
@@ -13,6 +12,7 @@ import com.iceteaviet.fastfoodfinder.data.remote.ClientAuth;
 import com.iceteaviet.fastfoodfinder.data.remote.routing.MapsRoutingApiHelper;
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store;
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User;
+import com.iceteaviet.fastfoodfinder.utils.AppLogger;
 import com.iceteaviet.fastfoodfinder.utils.Constant;
 
 import java.util.List;
@@ -132,7 +132,7 @@ public class AppDataManager implements DataManager {
 
                                 @Override
                                 public void onError(Throwable e) {
-                                    Log.w(TAG, "Sign In to Get data ", e);
+                                    AppLogger.w(TAG, "Sign In to Get data ", e);
                                     emitter.onError(e);
                                 }
                             });
