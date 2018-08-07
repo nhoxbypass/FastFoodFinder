@@ -28,6 +28,8 @@ import io.realm.RealmResults;
  * Created by tom on 7/25/18.
  */
 public class LocalUserRepository implements UserDataSource {
+    private static final String PARAM_UID = "uid";
+
     @Override
     public void insertOrUpdate(String name, String email, String photoUrl, String uid, List<UserStoreList> storeLists) {
         insertOrUpdate(new User(name, email, photoUrl, uid, storeLists));
@@ -104,7 +106,7 @@ public class LocalUserRepository implements UserDataSource {
                 Realm realm = Realm.getDefaultInstance();
 
                 long count = realm.where(UserEntity.class)
-                        .equalTo("uid", uid)
+                        .equalTo(PARAM_UID, uid)
                         .count();
                 if (count > 0)
                     emitter.onSuccess(true);
@@ -125,7 +127,7 @@ public class LocalUserRepository implements UserDataSource {
                 Realm realm = Realm.getDefaultInstance();
 
                 realm.where(UserEntity.class)
-                        .equalTo("uid", uid)
+                        .equalTo(PARAM_UID, uid)
                         .findAll()
                         .addChangeListener(new OrderedRealmCollectionChangeListener<RealmResults<UserEntity>>() {
                             @Override

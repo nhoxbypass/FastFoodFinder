@@ -158,7 +158,11 @@ public class StoreInfoDialogFragment extends DialogFragment {
                 } else {
                     Toast.makeText(getContext(), R.string.permission_denied, Toast.LENGTH_SHORT).show();
                 }
+                break;
             }
+
+            default:
+                break;
         }
     }
 

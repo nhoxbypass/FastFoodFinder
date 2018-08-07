@@ -184,17 +184,17 @@ public class ArCameraActivity extends BaseActivity implements SensorEventListene
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
-
+        AppLogger.d(TAG, "Provider: " + provider + ". Status: " + status);
     }
 
     @Override
     public void onProviderEnabled(String provider) {
-
+        AppLogger.d(TAG, "onProviderEnabled" + provider);
     }
 
     @Override
     public void onProviderDisabled(String provider) {
-
+        AppLogger.d(TAG, "onProviderDisabled" + provider);
     }
 
     @Override

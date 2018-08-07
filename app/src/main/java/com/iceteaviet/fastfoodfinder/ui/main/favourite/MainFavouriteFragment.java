@@ -139,7 +139,8 @@ public class MainFavouriteFragment extends Fragment implements OnStartDragListen
                     .map(new Function<Pair<Integer, Integer>, UserStoreEvent>() {
                         @Override
                         public UserStoreEvent apply(Pair<Integer, Integer> storeIdPair) throws Exception {
-                            return null;
+                            Store store = dataManager.getLocalStoreDataSource().findStoresById(storeIdPair.first).blockingGet().get(0);
+                            return new UserStoreEvent(store, storeIdPair.second);
                         }
                     })
                     .subscribe(new Observer<UserStoreEvent>() {

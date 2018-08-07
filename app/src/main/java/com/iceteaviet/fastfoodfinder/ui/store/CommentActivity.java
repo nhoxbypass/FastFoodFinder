@@ -69,12 +69,6 @@ public class CommentActivity extends AppCompatActivity implements NoticeDialog.N
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                btnPost.setEnabled(etComment.getText().toString().length() > 0);
                 int remainChars = MAX_CHAR - etComment.getText().length();
                 tvRemainChar.setText(String.valueOf(remainChars));
                 if (remainChars < 0) {
@@ -84,6 +78,11 @@ public class CommentActivity extends AppCompatActivity implements NoticeDialog.N
                     etComment.setTextColor(Color.BLACK);
                     tvRemainChar.setTextColor(Color.BLACK);
                 }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                btnPost.setEnabled(etComment.getText().toString().length() > 0);
             }
         });
 

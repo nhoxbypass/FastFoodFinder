@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.iceteaviet.fastfoodfinder.R;
+import com.iceteaviet.fastfoodfinder.utils.AppLogger;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,7 +25,7 @@ import butterknife.ButterKnife;
  * A simple {@link Fragment} subclass.
  */
 public class MainFragment extends Fragment {
-
+    private static final String TAG = MainFragment.class.getSimpleName();
 
     @BindView(R.id.tab_layout)
     TabLayout mTabLayout;
@@ -87,7 +88,7 @@ public class MainFragment extends Fragment {
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
+                AppLogger.d(TAG, "onTabReselected");
             }
         });
 

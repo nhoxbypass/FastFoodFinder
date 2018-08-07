@@ -26,7 +26,6 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +38,7 @@ import com.iceteaviet.fastfoodfinder.ui.ar.ArCameraActivity;
 import com.iceteaviet.fastfoodfinder.ui.login.LoginActivity;
 import com.iceteaviet.fastfoodfinder.ui.profile.ProfileFragment;
 import com.iceteaviet.fastfoodfinder.ui.settings.SettingActivity;
+import com.iceteaviet.fastfoodfinder.utils.AppLogger;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -58,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     private SearchView mSearchView;
-    private LinearLayout mNavHeaderContainer;
     private CircleImageView mNavHeaderAvatar;
     private TextView mNavHeaderName;
     private TextView mNavHeaderScreenName;
@@ -279,7 +278,6 @@ public class MainActivity extends AppCompatActivity {
         mDrawerToggle = setupDrawerToggle();
 
         View headerLayout = mNavigationView.getHeaderView(0);
-        mNavHeaderContainer = headerLayout.findViewById(R.id.nav_header_container);
         mNavHeaderAvatar = headerLayout.findViewById(R.id.iv_nav_header_avatar);
         mNavHeaderName = headerLayout.findViewById(R.id.tv_nav_header_name);
         mNavHeaderScreenName = headerLayout.findViewById(R.id.tv_nav_header_screenname);
@@ -331,6 +329,7 @@ public class MainActivity extends AppCompatActivity {
                 return;
             default:
                 fragmentClass = MainFragment.class;
+                AppLogger.e(TAG, "Wrong menu item id");
                 break;
         }
 

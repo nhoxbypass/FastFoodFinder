@@ -24,5 +24,5 @@ public interface UserDataSource {
 
     Single<Boolean> isUserExists(String uid);
 
-    Observable<Pair<Integer, Integer>> subscribeFavouriteStoresOfUser(String uid);
+    Observable<Pair<Integer, Integer>> subscribeFavouriteStoresOfUser(String uid); // Pair <StoreId, Event code>
 }

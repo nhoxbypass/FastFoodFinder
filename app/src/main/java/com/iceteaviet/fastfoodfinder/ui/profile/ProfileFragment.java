@@ -133,24 +133,6 @@ public class ProfileFragment extends Fragment {
         tvNumberList.setText(String.format("(%s)", String.valueOf(mAdapter.getItemCount())));
     }
 
-    public DialogUpdateCoverImage showDialog() {
-        DialogUpdateCoverImage dialog = DialogUpdateCoverImage.newInstance();
-        dialog.show(getFragmentManager(), "");
-        dialog.setOnButtonClickListener(new DialogUpdateCoverImage.OnButtonClickListener() {
-            @Override
-            public void onButtonClickListener(int Id, Bitmap bitmap) {
-                if (Id != 0)
-                    if (Id == -1) {
-                        ivCoverImage.setImageBitmap(bitmap);
-                    } else {
-                        ivCoverImage.setImageResource(Id);
-                    }
-            }
-        });
-
-        return dialog;
-    }
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
@@ -200,7 +182,20 @@ public class ProfileFragment extends Fragment {
         btnUpdateCoverImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mDialog = showDialog();
+                mDialog = DialogUpdateCoverImage.newInstance();
+                mDialog.setOnButtonClickListener(new DialogUpdateCoverImage.OnButtonClickListener() {
+                    @Override
+                    public void onButtonClickListener(int Id, Bitmap bitmap) {
+                        if (Id != 0)
+                            if (Id == -1) {
+                                ivCoverImage.setImageBitmap(bitmap);
+                            } else {
+                                ivCoverImage.setImageResource(Id);
+                            }
+                    }
+                });
+                mDialog.show(getFragmentManager(), "");
+
                 btnUpdateCoverImage.setVisibility(View.GONE);
             }
         });

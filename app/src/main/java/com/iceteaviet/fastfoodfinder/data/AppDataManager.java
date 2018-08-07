@@ -126,13 +126,14 @@ public class AppDataManager implements DataManager {
                                                     }
                                                 });
                                     } else {
-
+                                        // Do nothing
+                                        AppLogger.w(TAG, "Sign In failed ");
                                     }
                                 }
 
                                 @Override
                                 public void onError(Throwable e) {
-                                    AppLogger.w(TAG, "Sign In to Get data ", e);
+                                    AppLogger.w(TAG, "Sign In failed ", e.getMessage());
                                     emitter.onError(e);
                                 }
                             });

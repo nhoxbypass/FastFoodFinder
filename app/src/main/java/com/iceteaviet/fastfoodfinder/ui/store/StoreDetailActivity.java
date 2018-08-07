@@ -24,8 +24,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.iceteaviet.fastfoodfinder.App;
 import com.iceteaviet.fastfoodfinder.R;
@@ -77,8 +75,8 @@ public class StoreDetailActivity extends AppCompatActivity implements StoreDetai
     private LocationRequest mLocationRequest;
     private Store currentStore;
     private GoogleApiClient googleApiClient;
-    private SupportMapFragment mMapFragment;
-    private GoogleMap mGoogleMap;
+    //private SupportMapFragment mMapFragment;
+    //private GoogleMap mGoogleMap;
     private StoreDetailAdapter mStoreDetailAdapter;
     private DataManager dataManager;
 
