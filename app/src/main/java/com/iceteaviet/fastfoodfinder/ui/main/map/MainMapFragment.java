@@ -90,7 +90,6 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
     private static final String TAG = MainMapFragment.class.getSimpleName();
     private static final Hashtable<Integer, Bitmap> CACHE = new Hashtable<>();
 
-    LocationRequest mLocationRequest;
     @BindView(R.id.rv_bottom_sheet)
     RecyclerView mNearStoreRecyclerView;
     @BindView(R.id.maps_container)
@@ -98,6 +97,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
     @BindView(R.id.ll_bottom_sheet)
     LinearLayout mBottomSheetContainer;
 
+    private LocationRequest mLocationRequest;
     private LatLng currLocation;
     private List<Store> mStoreList;
     private List<Store> visibleStores;
@@ -525,7 +525,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
     }
 
 
-    void addMarkersToMap(List<Store> storeList, GoogleMap googleMap) {
+    private void addMarkersToMap(List<Store> storeList, GoogleMap googleMap) {
         if (googleMap == null)
             return;
 

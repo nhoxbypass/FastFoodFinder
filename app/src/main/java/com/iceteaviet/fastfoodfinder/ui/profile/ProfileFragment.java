@@ -140,7 +140,7 @@ public class ProfileFragment extends Fragment {
         item.setVisible(false);
     }
 
-    void getCurrentUserData() {
+    private void getCurrentUserData() {
         dataManager.getRemoteUserDataSource().getUser(dataManager.getCurrentUserUid())
                 .subscribe(new SingleObserver<User>() {
                     @Override
@@ -261,7 +261,7 @@ public class ProfileFragment extends Fragment {
     }
 
 
-    void sendToDetailListActivity(UserStoreList userStoreList) {
+    private void sendToDetailListActivity(UserStoreList userStoreList) {
         Intent intent = new Intent(getContext(), ListDetailActivity.class);
         intent.putExtra(KEY_USER_PHOTO_URL, dataManager.getCurrentUser().getPhotoUrl());
         intent.putExtra(KEY_USER_STORE_LIST, userStoreList);

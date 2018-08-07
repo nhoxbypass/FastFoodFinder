@@ -44,7 +44,8 @@ public class MainFavouriteFragment extends Fragment implements OnStartDragListen
     FrameLayout containerLayout;
     @BindView(R.id.fab_change)
     FloatingActionButton fabChangePosition;
-    boolean isFABChangeClicked = false;
+
+    private boolean isFABChangeClicked = false;
     private FavouriteStoreAdapter mFavouriteAdapter;
     private ItemTouchHelper mItemTouchHelper;
     private DataManager dataManager;

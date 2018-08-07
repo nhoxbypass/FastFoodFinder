@@ -110,7 +110,7 @@ public class StoreFilterDialogFragment extends DialogFragment {
 
     public class TagViewHolder {
 
-        View itemView;
+        private View itemView;
         @BindView(R.id.tag)
         TextView tvTag;
 

@@ -54,7 +54,8 @@ public class DialogCreateNewList extends DialogFragment {
     CircleImageView icon9;
     @BindView(R.id.icon10)
     CircleImageView icon10;
-    ArrayList<String> listName;
+
+    private ArrayList<String> listName;
     private OnCreateListListener mListener;
     private int idIconSource = R.drawable.ic_profile_list_1;
 

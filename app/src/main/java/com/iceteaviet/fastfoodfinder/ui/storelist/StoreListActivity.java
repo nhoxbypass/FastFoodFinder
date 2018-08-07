@@ -40,7 +40,7 @@ public class StoreListActivity extends AppCompatActivity {
     }
 
 
-    void loadData() {
+    private void loadData() {
         adapter.setStores(DataUtils.getFakeStoreList());
     }
 }

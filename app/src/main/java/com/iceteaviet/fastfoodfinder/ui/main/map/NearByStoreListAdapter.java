@@ -112,7 +112,7 @@ public class NearByStoreListAdapter extends ListAdapter<Store, NearByStoreListAd
             });
         }
 
-        void setData(Store store, double distance) {
+        private void setData(Store store, double distance) {
             Glide.with(logo.getContext())
                     .load(UiUtils.getStoreLogoDrawableId(store.getType()))
                     .into(logo);

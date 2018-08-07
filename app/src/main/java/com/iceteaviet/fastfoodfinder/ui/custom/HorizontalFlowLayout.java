@@ -147,11 +147,11 @@ public class HorizontalFlowLayout extends RelativeLayout {
      * @param width the width available to this view.
      * @return the height required by this view.
      */
-    int measureRequiredHeight(int width,
-                              int paddingTop,
-                              int paddingBottom,
-                              int paddingLeft,
-                              int paddingRight) {
+    private int measureRequiredHeight(int width,
+                                      int paddingTop,
+                                      int paddingBottom,
+                                      int paddingLeft,
+                                      int paddingRight) {
         // increment the x position as we progress through a line
         int xpos = paddingLeft;
         // increment the y position as we progress through the lines

@@ -181,7 +181,7 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     static class InfoViewHolder extends RecyclerView.ViewHolder {
 
-        CallDirectionViewHolder cdvh;
+        private CallDirectionViewHolder cdvh;
         @BindView(R.id.store_name)
         TextView tvName;
         @BindView(R.id.store_address)

@@ -31,7 +31,8 @@ public class MainFragment extends Fragment {
     TabLayout mTabLayout;
     @BindView(R.id.view_pager)
     ViewPager mViewPager;
-    MainPagerAdapter mPagerAdapter;
+
+    private MainPagerAdapter mPagerAdapter;
 
     public static MainFragment newInstance() {
 

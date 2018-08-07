@@ -252,7 +252,7 @@ public class MapRoutingActivity extends AppCompatActivity {
         }
     }
 
-    void drawPolylines(List<LatLng> geoPointList, GoogleMap googleMap) {
+    private void drawPolylines(List<LatLng> geoPointList, GoogleMap googleMap) {
         //Add position to viewBounds
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
         builder.include(mCurrLocation);

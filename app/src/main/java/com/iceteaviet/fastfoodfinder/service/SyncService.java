@@ -16,7 +16,7 @@ public class SyncService extends Service {
 
     private static final String TAG = "SyncService";
 
-    DataManager dataManager;
+    private DataManager dataManager;
 
     public static Intent getStartIntent(Context context) {
         return new Intent(context, SyncService.class);

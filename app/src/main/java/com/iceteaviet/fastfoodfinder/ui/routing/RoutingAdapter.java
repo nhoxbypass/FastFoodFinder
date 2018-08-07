@@ -84,12 +84,9 @@ public class RoutingAdapter extends RecyclerView.Adapter<RoutingAdapter.ViewHold
         @BindView(R.id.iv_routing)
         ImageView routingImageView;
 
-        OnNavigationItemClickListener listener;
-
         public ViewHolder(View itemView, final OnNavigationItemClickListener listener) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            this.listener = listener;
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -100,7 +97,7 @@ public class RoutingAdapter extends RecyclerView.Adapter<RoutingAdapter.ViewHold
             });
         }
 
-        void bindData(Step step, int type) {
+        private void bindData(Step step, int type) {
             int imgResId = UiUtils.getDirectionImage(step.getDirection());
             Spanned instruction;
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
