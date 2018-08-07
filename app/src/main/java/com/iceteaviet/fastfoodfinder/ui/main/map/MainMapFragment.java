@@ -91,7 +91,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
     private static final Hashtable<Integer, Bitmap> CACHE = new Hashtable<>();
 
     @BindView(R.id.rv_bottom_sheet)
-    RecyclerView mNearStoreRecyclerView;
+    protected RecyclerView mNearStoreRecyclerView;
     @BindView(R.id.maps_container)
     CoordinatorLayout mCoordinatorLayoutContainer;
     @BindView(R.id.ll_bottom_sheet)

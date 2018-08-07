@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
-import com.iceteaviet.fastfoodfinder.data.DataManager;
 import com.iceteaviet.fastfoodfinder.utils.AppLogger;
 
 /**
@@ -16,7 +15,7 @@ public class SyncService extends Service {
 
     private static final String TAG = "SyncService";
 
-    private DataManager dataManager;
+    //private DataManager dataManager;
 
     public static Intent getStartIntent(Context context) {
         return new Intent(context, SyncService.class);
