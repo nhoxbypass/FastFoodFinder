@@ -29,7 +29,6 @@ import io.realm.RealmConfiguration;
  * Created by tom on 7/9/18.
  */
 
-// TODO: Migration realm
 public class AppDataManager implements DataManager {
     private static final String TAG = AppDataManager.class.getSimpleName();
 

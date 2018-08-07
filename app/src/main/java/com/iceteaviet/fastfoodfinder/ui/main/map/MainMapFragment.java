@@ -461,7 +461,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
                 });
 
                 cameraPositionPublisher
-                        .debounce(350, TimeUnit.MILLISECONDS)
+                        .debounce(200, TimeUnit.MILLISECONDS)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Observer<CameraPosition>() {
                             @Override

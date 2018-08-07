@@ -34,7 +34,7 @@ public class FirebaseStoreRepository implements StoreDataSource {
 
     @Override
     public void setStores(List<Store> storeList) {
-
+        databaseRef.child(CHILD_STORES_LOCATION).setValue(storeList);
     }
 
     @Override
@@ -100,7 +100,7 @@ public class FirebaseStoreRepository implements StoreDataSource {
 
     @Override
     public void deleteAllStores() {
-        // TODO: Clear all stores
+        databaseRef.child(CHILD_STORES_LOCATION).removeValue();
     }
 
     private List<Store> parseDataFromFirebase(DataSnapshot dataSnapshot) {

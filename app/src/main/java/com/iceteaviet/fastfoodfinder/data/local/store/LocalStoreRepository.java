@@ -25,6 +25,13 @@ import io.realm.RealmResults;
  */
 public class LocalStoreRepository implements StoreDataSource {
 
+    private static final String PARAM_ID = "id";
+    private static final String PARAM_TYPE = "type";
+    private static final String PARAM_LAT = "latitude";
+    private static final String PARAM_LNG = "longitude";
+    private static final String PARAM_TITLE = "title";
+    private static final String PARAM_ADDRESS = "address";
+
     private List<Store> cachedStores;
 
     public LocalStoreRepository() {
@@ -97,8 +104,8 @@ public class LocalStoreRepository implements StoreDataSource {
                 RealmQuery<StoreEntity> query = realm.where(StoreEntity.class);
 
                 // Add query conditions:
-                query.between("latitude", minLat, maxLat);
-                query.between("longitude", minLng, maxLng);
+                query.between(PARAM_LAT, minLat, maxLat);
+                query.between(PARAM_LNG, minLng, maxLng);
 
                 // Execute the query:
                 RealmResults<StoreEntity> results = query.findAll();
@@ -148,12 +155,12 @@ public class LocalStoreRepository implements StoreDataSource {
                 RealmQuery<StoreEntity> query = realm.where(StoreEntity.class);
 
                 if (!customQuerySearch.isEmpty()) {
-                    query.contains("title", customQuerySearch.get(0), Case.INSENSITIVE);
-                    query.or().contains("address", customQuerySearch.get(0), Case.INSENSITIVE);
+                    query.contains(PARAM_TITLE, customQuerySearch.get(0), Case.INSENSITIVE);
+                    query.or().contains(PARAM_ADDRESS, customQuerySearch.get(0), Case.INSENSITIVE);
 
                     for (int i = 1; i < customQuerySearch.size(); i++) {
-                        query.or().contains("title", customQuerySearch.get(i), Case.INSENSITIVE);
-                        query.or().contains("address", customQuerySearch.get(i), Case.INSENSITIVE);
+                        query.or().contains(PARAM_TITLE, customQuerySearch.get(i), Case.INSENSITIVE);
+                        query.or().contains(PARAM_ADDRESS, customQuerySearch.get(i), Case.INSENSITIVE);
                     }
 
                     RealmResults<StoreEntity> results = query.findAll();
@@ -242,18 +249,18 @@ public class LocalStoreRepository implements StoreDataSource {
 
     @Override
     public Single<List<Store>> findStoresByType(int type) {
-        return findStoresBy("type", type);
+        return findStoresBy(PARAM_TYPE, type);
     }
 
 
     @Override
     public Single<List<Store>> findStoresById(int id) {
-        return findStoresBy("id", id);
+        return findStoresBy(PARAM_ID, id);
     }
 
     @Override
     public Single<List<Store>> findStoresByIds(List<Integer> ids) {
-        return findStoresBy("id", ids);
+        return findStoresBy(PARAM_ID, ids);
     }
 
     @Override
