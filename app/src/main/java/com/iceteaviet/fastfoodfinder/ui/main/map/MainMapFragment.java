@@ -543,7 +543,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
         }
     }
 
-    void getDirection(final Store store) {
+    private void getDirection(final Store store) {
         LatLng storeLocation = store.getPosition();
         Map<String, String> queries = new HashMap<>();
 
