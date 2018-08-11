@@ -91,7 +91,7 @@
                 android:layout_marginTop="32dp"
                 android:text="@string/_3_lists" />
 
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                 android:id="@+id/cv_saved_places"
                 style="@style/RippleEffect"
                 android:layout_width="160dp"
@@ -174,10 +174,10 @@
                     android:layout_marginTop="104dp"
                     android:text="@string/_3_places" />
 
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
 
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                 android:id="@+id/cv_favourite_places"
                 android:layout_width="160dp"
                 android:layout_height="wrap_content"
@@ -262,10 +262,10 @@
                     android:layout_marginTop="104dp"
                     android:text="@string/_2_places" />
 
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
 
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                 android:id="@+id/cv_checkin_places"
                 style="@style/RippleEffect"
                 android:layout_width="160dp"
@@ -350,9 +350,9 @@
                     android:layout_marginTop="104dp"
                     android:text="@string/_2_places" />
 
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                 android:id="@+id/cvCreateNew"
                 style="@style/RippleEffect"
                 android:layout_width="160dp"
@@ -385,7 +385,7 @@
                     android:textColor="#304FFE"
                     android:textSize="@dimen/medium_textsize"
                     android:textStyle="bold" />
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
             <LinearLayout
                 android:id="@+id/textId"
@@ -413,7 +413,7 @@
                     android:textSize="18sp" />
             </LinearLayout>
 
-            <android.support.v7.widget.RecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvListPacket"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -1,6 +1,5 @@
 package com.iceteaviet.fastfoodfinder.data.local.user;
 
-import android.support.annotation.NonNull;
 import android.util.Pair;
 
 import com.iceteaviet.fastfoodfinder.data.domain.user.UserDataSource;
@@ -12,6 +11,7 @@ import com.iceteaviet.fastfoodfinder.utils.exception.EmptyParamsException;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;

@@ -1,7 +1,5 @@
 package com.iceteaviet.fastfoodfinder;
 
-import android.support.multidex.MultiDexApplication;
-
 import com.google.firebase.database.FirebaseDatabase;
 import com.iceteaviet.fastfoodfinder.data.AppDataManager;
 import com.iceteaviet.fastfoodfinder.data.DataManager;
@@ -17,6 +15,8 @@ import com.iceteaviet.fastfoodfinder.data.remote.routing.GoogleMapsRoutingApiHel
 import com.iceteaviet.fastfoodfinder.data.remote.routing.MapsRoutingApiHelper;
 import com.iceteaviet.fastfoodfinder.data.remote.store.FirebaseStoreRepository;
 import com.iceteaviet.fastfoodfinder.data.remote.user.FirebaseUserRepository;
+
+import androidx.multidex.MultiDexApplication;
 
 /**
  * Created by tom on 7/15/18.

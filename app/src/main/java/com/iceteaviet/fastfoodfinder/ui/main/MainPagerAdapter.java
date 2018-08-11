@@ -1,13 +1,13 @@
 package com.iceteaviet.fastfoodfinder.ui.main;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-
 import com.iceteaviet.fastfoodfinder.R;
 import com.iceteaviet.fastfoodfinder.ui.main.favourite.MainFavouriteFragment;
 import com.iceteaviet.fastfoodfinder.ui.main.map.MainMapFragment;
 import com.iceteaviet.fastfoodfinder.ui.main.recently.MainRecentlyFragment;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 
 /**
  * Created by Genius Doan on 11/8/2016.

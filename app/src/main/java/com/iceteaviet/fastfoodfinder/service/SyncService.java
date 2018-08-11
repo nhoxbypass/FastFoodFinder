@@ -4,9 +4,10 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
-import android.support.annotation.Nullable;
 
 import com.iceteaviet.fastfoodfinder.utils.AppLogger;
+
+import androidx.annotation.Nullable;
 
 /**
  * Created by tom on 8/7/18.

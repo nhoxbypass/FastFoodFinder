@@ -1,7 +1,5 @@
 package com.iceteaviet.fastfoodfinder.ui.routing;
 
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.Spanned;
 import android.view.LayoutInflater;
@@ -19,6 +17,8 @@ import com.iceteaviet.fastfoodfinder.utils.ui.UiUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 

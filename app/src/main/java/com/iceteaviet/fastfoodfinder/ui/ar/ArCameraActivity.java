@@ -13,7 +13,6 @@ import android.location.LocationManager;
 import android.opengl.Matrix;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +35,7 @@ import com.iceteaviet.fastfoodfinder.utils.ui.UiUtils;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import io.reactivex.SingleObserver;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;

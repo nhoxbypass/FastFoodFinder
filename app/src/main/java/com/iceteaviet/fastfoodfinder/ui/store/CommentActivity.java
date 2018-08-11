@@ -3,10 +3,6 @@ package com.iceteaviet.fastfoodfinder.ui.store;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
@@ -20,6 +16,10 @@ import com.iceteaviet.fastfoodfinder.R;
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Comment;
 import com.iceteaviet.fastfoodfinder.utils.DataUtils;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentManager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 

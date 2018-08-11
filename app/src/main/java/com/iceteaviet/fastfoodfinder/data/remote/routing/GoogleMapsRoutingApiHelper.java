@@ -1,7 +1,5 @@
 package com.iceteaviet.fastfoodfinder.data.remote.routing;
 
-import android.support.annotation.NonNull;
-
 import com.iceteaviet.fastfoodfinder.data.remote.ApiEndPoint;
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection;
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store;
@@ -10,6 +8,7 @@ import com.iceteaviet.fastfoodfinder.utils.RetrofitUtils;
 
 import java.util.Map;
 
+import androidx.annotation.NonNull;
 import io.reactivex.Single;
 import io.reactivex.SingleEmitter;
 import io.reactivex.SingleOnSubscribe;

@@ -1,10 +1,10 @@
 package com.iceteaviet.fastfoodfinder.ui.main;
 
-import android.support.v7.util.DiffUtil;
-
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store;
 
 import java.util.List;
+
+import androidx.recyclerview.widget.DiffUtil;
 
 /**
  * Created by tom on 7/21/18.

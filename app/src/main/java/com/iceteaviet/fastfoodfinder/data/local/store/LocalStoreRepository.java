@@ -1,7 +1,5 @@
 package com.iceteaviet.fastfoodfinder.data.local.store;
 
-import android.support.annotation.NonNull;
-
 import com.iceteaviet.fastfoodfinder.data.domain.store.StoreDataSource;
 import com.iceteaviet.fastfoodfinder.data.local.store.model.StoreEntity;
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store;
@@ -12,6 +10,7 @@ import com.iceteaviet.fastfoodfinder.utils.exception.EmptyParamsException;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import io.reactivex.Single;
 import io.reactivex.SingleEmitter;
 import io.reactivex.SingleOnSubscribe;

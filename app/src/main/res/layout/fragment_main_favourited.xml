@@ -6,14 +6,14 @@
     android:layout_height="match_parent"
     tools:context=".ui.main.favourite.MainFavouriteFragment">
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_favourite_stores"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="50dp"
         android:clipToPadding="false" />
 
-    <android.support.design.widget.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_change"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

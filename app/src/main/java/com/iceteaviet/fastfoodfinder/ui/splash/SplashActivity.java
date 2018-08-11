@@ -2,7 +2,6 @@ package com.iceteaviet.fastfoodfinder.ui.splash;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.iceteaviet.fastfoodfinder.App;
@@ -15,6 +14,7 @@ import com.iceteaviet.fastfoodfinder.ui.main.MainActivity;
 
 import java.util.List;
 
+import androidx.appcompat.app.AppCompatActivity;
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;

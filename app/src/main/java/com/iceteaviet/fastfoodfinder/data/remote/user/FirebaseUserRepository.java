@@ -1,6 +1,5 @@
 package com.iceteaviet.fastfoodfinder.data.remote.user;
 
-import android.support.annotation.NonNull;
 import android.util.Pair;
 
 import com.google.firebase.database.ChildEventListener;
@@ -16,6 +15,7 @@ import com.iceteaviet.fastfoodfinder.utils.AppLogger;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;

@@ -1,7 +1,8 @@
 package com.iceteaviet.fastfoodfinder.data.local.poi.model;
 
 import android.location.Location;
-import android.support.annotation.DrawableRes;
+
+import androidx.annotation.DrawableRes;
 
 /**
  * Created by Genius Doan on 20/07/2017.
