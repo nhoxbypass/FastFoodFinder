@@ -358,7 +358,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
         SupportMapFragment mapFragment = (SupportMapFragment) fragmentManager.findFragmentById(R.id.maps_container);
         if (mapFragment == null) {
             CameraPosition cameraPosition = CameraPosition.builder()
-                    .target(Constant.DEFAULT_MAP_TARGET)
+                    .target(Constant.getDEFAULT_MAP_TARGET())
                     .zoom(16)
                     .build();
             GoogleMapOptions options = new GoogleMapOptions();
@@ -628,7 +628,7 @@ public class MainMapFragment extends Fragment implements GoogleApiClient.Connect
 
         if (!isZoomToUser) {
             // Zoom and show current location in the Google Map
-            mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currLocation, DEFAULT_ZOOM_LEVEL));
+            mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currLocation, Constant.DEFAULT_ZOOM_LEVEL));
 
             isZoomToUser = true;
         }
