@@ -29,6 +29,10 @@
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="@string/google_maps_api_key" />
 
+        <service
+            android:name=".service.SyncService"
+            android:enabled="true" />
+
         <activity
             android:name=".ui.main.MainActivity"
             android:theme="@style/AppTheme.NoActionBar.TranslucentStatus" />
