@@ -61,7 +61,6 @@ fun getTrimmedShortInstruction(source: CharSequence?): CharSequence {
     var newLen = 0
 
     // loop back to the first non-whitespace character
-    i = 0
     while (i < source.length - 1) {
         if (Character.isWhitespace(source[i]) && Character.isWhitespace(source[i + 1])) {
             newLen = i

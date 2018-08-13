@@ -55,6 +55,7 @@ fun convertDpToPx(displayMetrics: DisplayMetrics, dp: Int): Int {
 fun resizeMarkerIcon(imageBitmap: Bitmap, width: Int, height: Int): Bitmap {
     var width = width
     var height = height
+
     if (width > 100)
         width = 200 - width
     if (height > 100)
