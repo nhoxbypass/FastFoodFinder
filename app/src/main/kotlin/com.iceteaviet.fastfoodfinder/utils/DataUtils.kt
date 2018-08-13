@@ -93,7 +93,9 @@ fun createFakeUserComment(content: String): Comment {
             getRandomInt(0, 4))
 }
 
-// Get random Integer
+/**
+ * Get random Integer
+ */
 fun getRandomInt(min: Int, max: Int): Int {
     val rand = Random()
     return rand.nextInt(max - min + 1) + min
