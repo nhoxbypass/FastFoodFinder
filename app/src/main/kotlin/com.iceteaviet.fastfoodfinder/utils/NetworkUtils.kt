@@ -10,6 +10,9 @@ import java.io.IOException
  * Created by Genius Doan on 22/07/2017.
  */
 
+/**
+ * Check internet connection access
+ */
 val isInternetConnected: Boolean
     get() {
         val command = "ping -c 1 google.com"
@@ -25,6 +28,9 @@ val isInternetConnected: Boolean
 
     }
 
+/**
+ * Check connected to any network (but don't need to have Internet access)
+ */
 fun isNetworkReachable(context: Context): Boolean {
     val conMgr = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     val networkInfo = conMgr.activeNetworkInfo

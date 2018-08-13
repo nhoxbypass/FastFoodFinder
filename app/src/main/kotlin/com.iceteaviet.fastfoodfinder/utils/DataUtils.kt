@@ -79,7 +79,10 @@ val fakeStoreList: List<Store>
         return stores
     }
 
-fun createUserComment(content: String): Comment {
+/**
+ * Create fake user comment
+ */
+fun createFakeUserComment(content: String): Comment {
     val dfDateTime = SimpleDateFormat("EEE MMM dd HH:mm:ss ZZZZZ yyyy", Locale.getDefault())
     val date = dfDateTime.format(Date())
     return Comment("Tam Doan",
@@ -90,11 +93,17 @@ fun createUserComment(content: String): Comment {
             getRandomInt(0, 4))
 }
 
+/**
+ * Get random Integer
+ */
 fun getRandomInt(min: Int, max: Int): Int {
     val rand = Random()
     return rand.nextInt(max - min + 1) + min
 }
 
+/**
+ * Get relative time in the past
+ */
 fun getRelativeTimeAgo(rawJsonDate: String): String {
     val twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy"
     var sf = SimpleDateFormat(twitterFormat, Locale.ENGLISH)
@@ -129,6 +138,9 @@ fun getRelativeTimeAgo(rawJsonDate: String): String {
     return "unknown"
 }
 
+/**
+ * Get store type by keyword
+ */
 fun getStoreType(key: String): Int {
     return if (key == "circle_k")
         Constant.TYPE_CIRCLE_K
@@ -144,6 +156,9 @@ fun getStoreType(key: String): Int {
         Constant.TYPE_CIRCLE_K
 }
 
+/**
+ * Normalize district query string
+ */
 fun normalizeDistrictQuery(queryString: String): List<String> {
     val result = ArrayList<String>()
     val trimmedQuery = queryString.toLowerCase().trim { it <= ' ' }

@@ -16,6 +16,9 @@ import com.iceteaviet.fastfoodfinder.utils.resizeMarkerIcon
  * Created by tom on 7/10/18.
  */
 
+/**
+ * Get resource id of store logo drawable
+ */
 fun getStoreLogoDrawableId(type: Int): Int {
     when (type) {
         Constant.TYPE_CIRCLE_K -> return R.drawable.logo_circlek_50
@@ -27,6 +30,9 @@ fun getStoreLogoDrawableId(type: Int): Int {
     }
 }
 
+/**
+ * Get direction image
+ */
 fun getDirectionImage(direction: String?): Int {
     if (direction == null)
         return R.drawable.ic_routing_up
@@ -44,6 +50,9 @@ fun getDirectionImage(direction: String?): Int {
     }
 }
 
+/**
+ * Animate marker icon
+ */
 fun animateMarker(bitmap: Bitmap, marker: Marker?) {
     if (marker == null)
         return

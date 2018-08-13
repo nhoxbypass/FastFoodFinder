@@ -14,6 +14,9 @@ import com.google.android.gms.maps.model.LatLng
 private val WGS84_A = 6378137.0                  // WGS 84 semi-major axis constant in meters
 private val WGS84_E2 = 0.00669437999014          // square of WGS 84 eccentricity
 
+/**
+ * Create location request with high accuracy
+ */
 fun createLocationRequest(): LocationRequest {
     val mLocationRequest = LocationRequest()
     mLocationRequest.interval = Constant.MAPS_INTERVAL
@@ -23,6 +26,9 @@ fun createLocationRequest(): LocationRequest {
     return mLocationRequest
 }
 
+/**
+ * Format LatLng string
+ */
 fun getLatLngString(latLng: LatLng?): String? {
     return if (latLng != null)
         latLng.latitude.toString() + "," + latLng.longitude.toString()
@@ -30,6 +36,9 @@ fun getLatLngString(latLng: LatLng?): String? {
         null
 }
 
+/**
+ * Calculate distance between
+ */
 fun calcDistance(startPosition: LatLng, endPosition: LatLng): Double {
     //
     val start = Location("pointA")
@@ -42,6 +51,9 @@ fun calcDistance(startPosition: LatLng, endPosition: LatLng): Double {
     return start.distanceTo(end) / 1000.0
 }
 
+/**
+ * Convert WSG84 to ECEF location array
+ */
 fun convertWSG84toECEF(location: Location): FloatArray {
     val radLat = Math.toRadians(location.latitude)
     val radLon = Math.toRadians(location.longitude)
@@ -60,6 +72,9 @@ fun convertWSG84toECEF(location: Location): FloatArray {
     return floatArrayOf(x, y, z)
 }
 
+/**
+ * Convert ECEF to ENU location array
+ */
 fun convertECEFtoENU(currentLocation: Location, ecefCurrentLocation: FloatArray, ecefPOI: FloatArray): FloatArray {
     val radLat = Math.toRadians(currentLocation.latitude)
     val radLon = Math.toRadians(currentLocation.longitude)

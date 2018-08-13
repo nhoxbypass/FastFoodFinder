@@ -19,6 +19,9 @@ import android.util.DisplayMetrics
 private const val BITMAP_SCALE = 0.4f
 private const val BLUR_RADIUS = 7.5f
 
+/**
+ * Blur image
+ */
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
 fun blur(context: Context, image: Bitmap): Bitmap {
     val width = Math.round(image.width * BITMAP_SCALE)
@@ -39,10 +42,16 @@ fun blur(context: Context, image: Bitmap): Bitmap {
     return outputBitmap
 }
 
+/**
+ * Convert Dpi to Px
+ */
 fun convertDpToPx(displayMetrics: DisplayMetrics, dp: Int): Int {
     return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT))
 }
 
+/**
+ * Resize marker icon
+ */
 fun resizeMarkerIcon(imageBitmap: Bitmap, width: Int, height: Int): Bitmap {
     var width = width
     var height = height

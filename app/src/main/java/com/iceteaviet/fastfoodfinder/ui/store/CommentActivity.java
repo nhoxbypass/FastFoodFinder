@@ -97,7 +97,7 @@ public class CommentActivity extends AppCompatActivity implements NoticeDialog.N
                             Toast.LENGTH_SHORT).show();
                     return;
                 }
-                Comment comment = DataUtils.createUserComment(etComment.getText().toString());
+                Comment comment = DataUtils.createFakeUserComment(etComment.getText().toString());
                 Intent data = new Intent();
                 data.putExtra(KEY_COMMENT, comment);
                 setResult(RESULT_OK, data);

@@ -18,6 +18,9 @@ private val twoDecimalFormat = DecimalFormat("#.##")
 private val threeDecimalFormat = DecimalFormat("#.###")
 private val fourDecimalFormat = DecimalFormat("#.####")
 
+/**
+ * Trim all whitespace
+ */
 fun trimWhitespace(source: CharSequence?): CharSequence {
     if (source == null)
         return ""
@@ -46,6 +49,9 @@ fun trimWhitespace(source: CharSequence?): CharSequence {
     return builder.subSequence(0, builder.length)
 }
 
+/**
+ * Trim instruction
+ */
 fun getTrimmedShortInstruction(source: CharSequence?): CharSequence {
 
     if (source == null)
@@ -70,6 +76,9 @@ fun getTrimmedShortInstruction(source: CharSequence?): CharSequence {
     return source.subSequence(0, newLen)
 }
 
+/**
+ * Get phone call Intent
+ */
 fun getCallIntent(tel: String): Intent {
     val normalizedTel = tel.replace("\\s".toRegex(), "")
     val callIntent = Intent(Intent.ACTION_CALL)
@@ -77,12 +86,16 @@ fun getCallIntent(tel: String): Intent {
     return callIntent
 }
 
-
+/**
+ * Format distance with Km unit
+ */
 fun formatDistance(distance: Double): String {
     return distanceFormat.format(distance)
 }
 
-
+/**
+ * Format decimal number to specific decimal plates
+ */
 fun formatDecimal(decimal: Double, numbOfDecimalPlates: Int): String {
     when (numbOfDecimalPlates) {
         1 -> return oneDecimalFormat.format(decimal)
