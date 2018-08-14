@@ -11,7 +11,7 @@ import com.google.android.gms.maps.model.LatLng
  * Created by Genius Doan on 11/11/2016.
  */
 
-object Constant {
+public object Constant {
     //Type
     const val TYPE_CIRCLE_K = 0
     const val TYPE_MINI_STOP = 1

@@ -33,7 +33,7 @@ class Store : Parcelable {
     @set:PropertyName("tel")
     var tel: String? = null
     @Exclude
-    private lateinit var position: LatLng
+    private var position: LatLng
 
     constructor() {}
 
