@@ -11,7 +11,7 @@ import java.util.*
 class User {
     var name: String? = null
     var email: String? = null
-    var uid: String? = null
+    var uid: String = ""
     var photoUrl: String? = null
     private var userStoreLists: MutableList<UserStoreList>? = null
 

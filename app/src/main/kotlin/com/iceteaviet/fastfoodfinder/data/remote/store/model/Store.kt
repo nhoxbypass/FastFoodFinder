@@ -33,7 +33,7 @@ class Store : Parcelable {
     @set:PropertyName("tel")
     var tel: String? = null
     @Exclude
-    private var position: LatLng
+    private lateinit var position: LatLng
 
     constructor() {}
 
@@ -45,32 +45,14 @@ class Store : Parcelable {
         this.lng = lng
         this.tel = tel
         this.type = type
-    }
 
-    constructor(entity: StoreEntity) {
-        id = entity.id
-        title = entity.title
-        address = entity.address
-        lat = entity.latitude.toString()
-        lng = entity.longitude.toString()
-        tel = entity.telephone
-        type = entity.type
-    }
-
-
-    protected constructor(`in`: Parcel) {
-        type = `in`.readInt()
-        id = `in`.readInt()
-        title = `in`.readString()
-        address = `in`.readString()
-        lat = `in`.readString()
-        lng = `in`.readString()
-        tel = `in`.readString()
-    }
-
-    init {
         position = LatLng(java.lang.Double.valueOf(lat)!!, java.lang.Double.valueOf(lng)!!)
     }
+
+    constructor(entity: StoreEntity) : this(entity.id, entity.title, entity.address, entity.latitude.toString(), entity.longitude.toString(), entity.telephone, entity.type)
+
+    protected constructor(`in`: Parcel) : this(`in`.readInt(), `in`.readString(), `in`.readString(), `in`.readString(), `in`.readString(), `in`.readString(), `in`.readInt())
+
 
     @Exclude
     fun getPosition(): LatLng {
