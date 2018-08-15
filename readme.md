@@ -1,4 +1,4 @@
-# Final Project - *Fastfood Finder*
+# CoderSchool Final Project - *Fastfood Finder*
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/5ae8369fb08c4d009d6fd95ce752b23c)](https://www.codacy.com/app/nhoxbypass/FastFoodFinder?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=HCMUS-AssignmentWarehouse/FastFoodFinder&amp;utm_campaign=Badge_Grade)
 
