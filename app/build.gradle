@@ -1,7 +1,10 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'io.fabric'
 apply plugin: 'com.google.firebase.firebase-perf'
+apply plugin: 'kotlin-android'
 apply plugin: 'realm-android'
 
 android {
@@ -35,14 +38,12 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    //Butter Knife
-    implementation 'com.jakewharton:butterknife:9.0.0-SNAPSHOT'
-
     // FirebaseUI Auth only
     implementation 'androidx.appcompat:appcompat:1.0.0-rc01'
     implementation 'com.google.android.material:material:1.0.0-rc01'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0-rc01'
     implementation 'androidx.cardview:cardview:1.0.0-rc01'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.2'
 
     implementation 'com.google.maps.android:android-maps-utils:0.5'
     implementation 'com.google.android.gms:play-services-maps:15.0.1'
@@ -76,9 +77,10 @@ dependencies {
     implementation 'com.google.firebase:firebase-perf:16.0.0'
 
     implementation 'com.jakewharton.timber:timber:4.7.1'
+}
 
-    annotationProcessor 'com.jakewharton:butterknife-compiler:9.0.0-SNAPSHOT'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.7.1'
+kapt {
+    generateStubs = true
 }
 
 apply plugin: 'com.google.gms.google-services'

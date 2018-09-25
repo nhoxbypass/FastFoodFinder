@@ -2,6 +2,7 @@ package com.iceteaviet.fastfoodfinder.data.remote.user.model
 
 import com.iceteaviet.fastfoodfinder.data.local.user.model.UserEntity
 import com.iceteaviet.fastfoodfinder.data.local.user.model.UserStoreListEntity
+import com.iceteaviet.fastfoodfinder.utils.realmListToList
 import com.iceteaviet.fastfoodfinder.utils.wtf
 import java.util.*
 
@@ -44,7 +45,7 @@ class User {
         this.photoUrl = entity.photoUrl
         this.userStoreLists = ArrayList()
 
-        val userStoreListEntities: List<UserStoreListEntity> = entity.userStoreLists
+        val userStoreListEntities: List<UserStoreListEntity> = realmListToList(entity.userStoreLists!!)
         for (i in userStoreListEntities.indices) {
             this.userStoreLists!!.add(UserStoreList(userStoreListEntities[i]))
         }

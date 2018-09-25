@@ -14,70 +14,66 @@ import java.util.*
  * Created by binhlt on 23/11/2016.
  */
 
-val defaultUserStoreLists: List<UserStoreList>
-    get() {
-        val userStoreLists = ArrayList<UserStoreList>()
+fun getDefaultUserStoreLists(): List<UserStoreList> {
+    val userStoreLists = ArrayList<UserStoreList>()
 
-        userStoreLists.add(UserStoreList(0, ArrayList(), R.drawable.ic_profile_saved, "My Saved Places"))
-        userStoreLists.add(UserStoreList(1, ArrayList(), R.drawable.ic_profile_favourite, "My Favourite Places"))
-        userStoreLists.add(UserStoreList(2, ArrayList(), R.drawable.ic_profile_checkin, "My Checked in Places"))
+    userStoreLists.add(UserStoreList(0, ArrayList(), R.drawable.ic_profile_saved, "My Saved Places"))
+    userStoreLists.add(UserStoreList(1, ArrayList(), R.drawable.ic_profile_favourite, "My Favourite Places"))
+    userStoreLists.add(UserStoreList(2, ArrayList(), R.drawable.ic_profile_checkin, "My Checked in Places"))
 
-        return userStoreLists
+    return userStoreLists
+}
+
+fun getFakeComments(): List<Comment> {
+    val names = arrayOf("Scarlett", "Bà Tưng", "Ngọc Trinh", "Chi Pu", "Trâm Anh")
+
+    val avatars = arrayOf("http://i.imgur.com/u9mpkNC.jpg", "http://i.imgur.com/qQxDOZT.jpg", "http://i.imgur.com/VJ3FAB2.jpg", "http://i.imgur.com/31vADfq.jpg", "http://i.imgur.com/XUem99n.jpg")
+
+    val contents = arrayOf("Octopus salad with bacon, sundries tomatoes, potatoes and some other magic ingredients was absolutely or of this world delicious. I loved it so much I forgot to snap an Instagram photo.", "Loved it here. Great atmosphere, was packed during lunch time. The smoked salmon eggs on bread and salted caramel cupcake were really good. The sunrise drink was like a lukewarm smoothie though.", "Perfect place to work, delicious food and coffee, little bit expensive but staff let you work peacefully. Quite busy/noisy but a wonderful place to discover. Hey, they make their own cupcakes :)", "Great atmosphere, very nice place for a quick snack or a meal. Ask for the meat pies. The lasagna is great too. And always check out the specials on the blackboard", "Very friendly stuff, the fruit juices and food are super good! Very trendy and the shop has nice quality things ! Happy to stumble into this cafeteria :D")
+
+    val mediaUrls = arrayOf("http://i.imgur.com/RHdsWRW.jpg", "http://i.imgur.com/IsfQQhd.jpg", "", "http://i.imgur.com/tNu5G5D.jpg", "http://i.imgur.com/QruogAF.jpg")
+
+    val comments = ArrayList<Comment>()
+    for (i in 0 until getRandomInt(3, 5)) {
+        val index = getRandomInt(0, 4)
+        comments.add(Comment(names[index],
+                avatars[index],
+                contents[getRandomInt(0, 4)],
+                mediaUrls[getRandomInt(0, 4)],
+                getRandomDate(),
+                getRandomInt(0, 4)))
     }
+    return comments
+}
 
-val fakeComments: List<Comment>
-    get() {
-        val names = arrayOf("Scarlett", "Bà Tưng", "Ngọc Trinh", "Chi Pu", "Trâm Anh")
+fun getRandomDate(): String {
+    val dfDateTime = SimpleDateFormat("EEE MMM dd HH:mm:ss ZZZZZ yyyy", Locale.getDefault())
+    val year = getRandomInt(2015, 2016)
+    val month = getRandomInt(0, 11)
+    val hour = getRandomInt(9, 22)
+    val min = getRandomInt(0, 59)
+    val sec = getRandomInt(0, 59)
+    val gc = GregorianCalendar(year, month, 1)
+    val day = getRandomInt(1, gc.getActualMaximum(GregorianCalendar.DAY_OF_MONTH))
+    gc.set(year, month, day, hour, min, sec)
+    return dfDateTime.format(gc.time)
+}
 
-        val avatars = arrayOf("http://i.imgur.com/u9mpkNC.jpg", "http://i.imgur.com/qQxDOZT.jpg", "http://i.imgur.com/VJ3FAB2.jpg", "http://i.imgur.com/31vADfq.jpg", "http://i.imgur.com/XUem99n.jpg")
+fun getFakeStoreList(): List<Store> {
+    val stores = ArrayList<Store>()
+    stores.add(Store(1, "Circle K Le Thi Rieng", "148 Le Thi Rieng, Ben Thanh Ward, District 1, Ho Chi Minh, Vietnam", "10.770379", "106.68912279999995", "3925 6620", Constant.TYPE_CIRCLE_K))
+    stores.add(Store(2, "FamilyMart - Hậu Giang", "973 Hậu Giang, P. 11, Quận 6, TP. HCM", "10.7457782220847", "106.6261117905378", "3755 0439", Constant.TYPE_FAMILY_MART))
+    stores.add(Store(3, "FamilyMart - Nguyễn Lương Bằng", "180 Nguyễn Lương Bằng, P. Tân Phú, Quận 7, TP. HCM", "10.727042", "106.722703", "5417 3390", Constant.TYPE_FAMILY_MART))
+    stores.add(Store(4, "Family Mart - Tạ Quang Bửu", "811 Tạ Quang Bửu, P. 5, Quận 8, TP. HCM", "10.736488", "106.670374", "3835 3193", Constant.TYPE_FAMILY_MART))
+    stores.add(Store(5, "Family Mart - Nguyễn Văn Công", "534 Nguyễn Văn Công, Phường 3, Quận Gò Vấp, TP. HCM", "10.819417", "106.674821", "3835 3193", Constant.TYPE_FAMILY_MART))
+    stores.add(Store(6, "Shop & Go - Phan Đình Phùng", "180 Phan Đình Phùng, P. 2, Quận Phú Nhuận, TP. HCM", "10.7955070000000", "106.6825610000000", "38 353 193", Constant.TYPE_SHOP_N_GO))
+    stores.add(Store(7, "Circle K Ly Tu Trong", "238 Ly Tu Trong, Ben Thanh Ward, District 1, Ho Chi Minh, Vietnam", "10.7721924", "106.69433409999999", "3822 7403", Constant.TYPE_CIRCLE_K))
+    stores.add(Store(8, "Familymart - Đường D2", "39 Đường D2, P. 25, Quận Bình Thạnh, TP. HCM", "10.80252", "106.715622", "35 126 283", Constant.TYPE_FAMILY_MART))
+    stores.add(Store(9, "FamilyMart - 123 Nguyễn Đình Chiểu", "123 Nguyễn Đình Chiểu, Phường 6, Quận 3, TP. HCM", "10.7775462", "106.6892408999999", "3835 3193", Constant.TYPE_FAMILY_MART))
+    stores.add(Store(10, "FamilyMart - Tôn Dật Tiến", "Tôn Dật Tiên, Quận 7, TP. HCM", "10.723322", "106.71498", "3835 3193", Constant.TYPE_FAMILY_MART))
 
-        val contents = arrayOf("Octopus salad with bacon, sundries tomatoes, potatoes and some other magic ingredients was absolutely or of this world delicious. I loved it so much I forgot to snap an Instagram photo.", "Loved it here. Great atmosphere, was packed during lunch time. The smoked salmon eggs on bread and salted caramel cupcake were really good. The sunrise drink was like a lukewarm smoothie though.", "Perfect place to work, delicious food and coffee, little bit expensive but staff let you work peacefully. Quite busy/noisy but a wonderful place to discover. Hey, they make their own cupcakes :)", "Great atmosphere, very nice place for a quick snack or a meal. Ask for the meat pies. The lasagna is great too. And always check out the specials on the blackboard", "Very friendly stuff, the fruit juices and food are super good! Very trendy and the shop has nice quality things ! Happy to stumble into this cafeteria :D")
-
-        val mediaUrls = arrayOf("http://i.imgur.com/RHdsWRW.jpg", "http://i.imgur.com/IsfQQhd.jpg", "", "http://i.imgur.com/tNu5G5D.jpg", "http://i.imgur.com/QruogAF.jpg")
-
-        val comments = ArrayList<Comment>()
-        for (i in 0 until getRandomInt(3, 5)) {
-            val index = getRandomInt(0, 4)
-            comments.add(Comment(names[index],
-                    avatars[index],
-                    contents[getRandomInt(0, 4)],
-                    mediaUrls[getRandomInt(0, 4)],
-                    randomDate,
-                    getRandomInt(0, 4)))
-        }
-        return comments
-    }
-
-val randomDate: String
-    get() {
-        val dfDateTime = SimpleDateFormat("EEE MMM dd HH:mm:ss ZZZZZ yyyy", Locale.getDefault())
-        val year = getRandomInt(2015, 2016)
-        val month = getRandomInt(0, 11)
-        val hour = getRandomInt(9, 22)
-        val min = getRandomInt(0, 59)
-        val sec = getRandomInt(0, 59)
-        val gc = GregorianCalendar(year, month, 1)
-        val day = getRandomInt(1, gc.getActualMaximum(GregorianCalendar.DAY_OF_MONTH))
-        gc.set(year, month, day, hour, min, sec)
-        return dfDateTime.format(gc.time)
-    }
-
-val fakeStoreList: List<Store>
-    get() {
-        val stores = ArrayList<Store>()
-        stores.add(Store(1, "Circle K Le Thi Rieng", "148 Le Thi Rieng, Ben Thanh Ward, District 1, Ho Chi Minh, Vietnam", "10.770379", "106.68912279999995", "3925 6620", Constant.TYPE_CIRCLE_K))
-        stores.add(Store(2, "FamilyMart - Hậu Giang", "973 Hậu Giang, P. 11, Quận 6, TP. HCM", "10.7457782220847", "106.6261117905378", "3755 0439", Constant.TYPE_FAMILY_MART))
-        stores.add(Store(3, "FamilyMart - Nguyễn Lương Bằng", "180 Nguyễn Lương Bằng, P. Tân Phú, Quận 7, TP. HCM", "10.727042", "106.722703", "5417 3390", Constant.TYPE_FAMILY_MART))
-        stores.add(Store(4, "Family Mart - Tạ Quang Bửu", "811 Tạ Quang Bửu, P. 5, Quận 8, TP. HCM", "10.736488", "106.670374", "3835 3193", Constant.TYPE_FAMILY_MART))
-        stores.add(Store(5, "Family Mart - Nguyễn Văn Công", "534 Nguyễn Văn Công, Phường 3, Quận Gò Vấp, TP. HCM", "10.819417", "106.674821", "3835 3193", Constant.TYPE_FAMILY_MART))
-        stores.add(Store(6, "Shop & Go - Phan Đình Phùng", "180 Phan Đình Phùng, P. 2, Quận Phú Nhuận, TP. HCM", "10.7955070000000", "106.6825610000000", "38 353 193", Constant.TYPE_SHOP_N_GO))
-        stores.add(Store(7, "Circle K Ly Tu Trong", "238 Ly Tu Trong, Ben Thanh Ward, District 1, Ho Chi Minh, Vietnam", "10.7721924", "106.69433409999999", "3822 7403", Constant.TYPE_CIRCLE_K))
-        stores.add(Store(8, "Familymart - Đường D2", "39 Đường D2, P. 25, Quận Bình Thạnh, TP. HCM", "10.80252", "106.715622", "35 126 283", Constant.TYPE_FAMILY_MART))
-        stores.add(Store(9, "FamilyMart - 123 Nguyễn Đình Chiểu", "123 Nguyễn Đình Chiểu, Phường 6, Quận 3, TP. HCM", "10.7775462", "106.6892408999999", "3835 3193", Constant.TYPE_FAMILY_MART))
-        stores.add(Store(10, "FamilyMart - Tôn Dật Tiến", "Tôn Dật Tiên, Quận 7, TP. HCM", "10.723322", "106.71498", "3835 3193", Constant.TYPE_FAMILY_MART))
-
-        return stores
-    }
+    return stores
+}
 
 /**
  * Create fake user comment

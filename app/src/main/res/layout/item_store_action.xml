@@ -85,7 +85,7 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/call"
+            android:id="@+id/btn_call"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"

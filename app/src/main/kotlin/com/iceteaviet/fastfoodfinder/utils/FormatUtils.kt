@@ -96,15 +96,15 @@ fun formatDistance(distance: Double): String {
  * Format decimal number to specific decimal plates
  */
 fun formatDecimal(decimal: Double, numbOfDecimalPlates: Int): String {
-    when (numbOfDecimalPlates) {
-        1 -> return oneDecimalFormat.format(decimal)
+    return when (numbOfDecimalPlates) {
+        1 -> oneDecimalFormat.format(decimal)
 
-        2 -> return twoDecimalFormat.format(decimal)
+        2 -> twoDecimalFormat.format(decimal)
 
-        3 -> return threeDecimalFormat.format(decimal)
+        3 -> threeDecimalFormat.format(decimal)
 
-        4 -> return fourDecimalFormat.format(decimal)
+        4 -> fourDecimalFormat.format(decimal)
 
-        else -> return decimal.toString()
+        else -> decimal.toString()
     }
 }

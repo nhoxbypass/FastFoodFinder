@@ -12,7 +12,7 @@ import java.util.*
  */
 class UserStoreList : Parcelable {
     var id: Int = 0
-    var listName: String? = null
+    var listName: String = ""
     var iconId: Int = 0
     @PropertyName("storeIdList")
     private var storeIdList: MutableList<Int>? = null
@@ -46,7 +46,7 @@ class UserStoreList : Parcelable {
         this.storeIdList = userStoreListEntity.storeIdList
     }
 
-    fun getStoreIdList(): List<Int>? {
+    fun getStoreIdList(): MutableList<Int>? {
         return storeIdList
     }
 

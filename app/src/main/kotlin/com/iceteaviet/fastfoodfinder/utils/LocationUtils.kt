@@ -11,8 +11,8 @@ import com.google.android.gms.maps.model.LatLng
  * Created by Genius Doan on 20/07/2017.
  */
 
-private val WGS84_A = 6378137.0                  // WGS 84 semi-major axis constant in meters
-private val WGS84_E2 = 0.00669437999014          // square of WGS 84 eccentricity
+private const val WGS84_A = 6378137.0                  // WGS 84 semi-major axis constant in meters
+private const val WGS84_E2 = 0.00669437999014          // square of WGS 84 eccentricity
 
 /**
  * Create location request with high accuracy

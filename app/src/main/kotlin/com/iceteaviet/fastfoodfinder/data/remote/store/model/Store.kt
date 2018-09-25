@@ -37,7 +37,7 @@ class Store : Parcelable {
 
     constructor() {}
 
-    constructor(id: Int, title: String, address: String, lat: String, lng: String, tel: String, type: Int) {
+    constructor(id: Int, title: String?, address: String?, lat: String, lng: String, tel: String?, type: Int) {
         this.id = id
         this.title = title
         this.address = address
