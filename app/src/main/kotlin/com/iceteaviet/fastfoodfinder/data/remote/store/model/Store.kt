@@ -38,15 +38,19 @@ class Store : Parcelable {
     constructor()
 
     constructor(id: Int, title: String?, address: String?, lat: String, lng: String, tel: String?, type: Int) {
-        this.id = id
-        this.title = title
-        this.address = address
-        this.lat = lat
-        this.lng = lng
-        this.tel = tel
-        this.type = type
+        try {
+            this.id = id
+            this.title = title
+            this.address = address
+            this.lat = lat
+            this.lng = lng
+            this.tel = tel
+            this.type = type
 
-        position = LatLng(java.lang.Double.valueOf(lat)!!, java.lang.Double.valueOf(lng)!!)
+            position = LatLng(java.lang.Double.valueOf(lat)!!, java.lang.Double.valueOf(lng)!!)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     constructor(entity: StoreEntity) : this(entity.id, entity.title, entity.address, entity.latitude.toString(), entity.longitude.toString(), entity.telephone, entity.type)
@@ -71,13 +75,13 @@ class Store : Parcelable {
     }
 
     override fun writeToParcel(parcel: Parcel, i: Int) {
-        parcel.writeInt(type)
         parcel.writeInt(id)
         parcel.writeString(title)
         parcel.writeString(address)
         parcel.writeString(lat)
         parcel.writeString(lng)
         parcel.writeString(tel)
+        parcel.writeInt(type)
     }
 
     override fun hashCode(): Int {
