@@ -107,14 +107,14 @@ class ProfileFragment : Fragment() {
                         dataManager!!.setCurrentUser(user)
                         Glide.with(context!!)
                                 .load(user.photoUrl)
-                                .into(ivAvatarProfile!!)
+                                .into(ivAvatarProfile)
                         tvName!!.text = user.name
                         tvEmail!!.text = user.email
                         loadUserList()
                         for (i in 0 until user.getUserStoreLists()!!.size) {
                             listName.add(user.getUserStoreLists()!![i].listName)
                         }
-                        tvFavItemsCount!!.text = String.format(Locale.getDefault(), "%d nơi", user.favouriteStoreList!!.getStoreIdList()!!.size)
+                        tvFavItemsCount.text = String.format(Locale.getDefault(), "%d nơi", user.favouriteStoreList!!.getStoreIdList()!!.size)
                         onListener()
                     }
 
@@ -160,9 +160,9 @@ class ProfileFragment : Fragment() {
                 })
             }
 
-            cvSavePlace!!.setOnClickListener { sendToDetailListActivity(defaultList[UserStoreList.ID_SAVED]) }
-            cvFavouritePlace!!.setOnClickListener { sendToDetailListActivity(defaultList[UserStoreList.ID_FAVOURITE]) }
-            cvCheckinPlace!!.setOnClickListener { sendToDetailListActivity(defaultList[UserStoreList.ID_CHECKED_IN]) }
+            cvSavePlace.setOnClickListener { sendToDetailListActivity(defaultList[UserStoreList.ID_SAVED]) }
+            cvFavouritePlace.setOnClickListener { sendToDetailListActivity(defaultList[UserStoreList.ID_FAVOURITE]) }
+            cvCheckinPlace.setOnClickListener { sendToDetailListActivity(defaultList[UserStoreList.ID_CHECKED_IN]) }
 
             mAdapter!!.setOnItemLongClickListener(object : UserStoreListAdapter.OnItemLongClickListener {
                 override fun onClick(position: Int) {

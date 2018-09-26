@@ -289,9 +289,9 @@ class ArCameraActivity : BaseActivity(), SensorEventListener, LocationListener {
         if (arOverlayView != null) {
             arOverlayView!!.updateCurrentLocation(location)
             tvCurrentLocation!!.text = String.format("lat: %s \nlon: %s \nalt: %s \n",
-                    formatDecimal(location!!.latitude, 4),
-                    formatDecimal(location!!.longitude, 4),
-                    formatDecimal(location!!.altitude, 4))
+                    formatDecimal(location.latitude, 4),
+                    formatDecimal(location.longitude, 4),
+                    formatDecimal(location.altitude, 4))
         }
     }
 

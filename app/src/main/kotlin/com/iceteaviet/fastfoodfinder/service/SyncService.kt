@@ -12,10 +12,6 @@ import com.iceteaviet.fastfoodfinder.utils.d
  */
 class SyncService : Service() {
 
-    override fun onCreate() {
-        super.onCreate()
-    }
-
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         d(TAG, "SyncService started")
         return Service.START_STICKY

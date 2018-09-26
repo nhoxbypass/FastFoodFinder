@@ -142,8 +142,8 @@ class RecentlyStoreAdapter internal constructor(private val mDragStartListener: 
         }
 
         fun setData(store: Store) {
-            txtTitle!!.text = store.title
-            txtAddress!!.text = store.address
+            txtTitle.text = store.title
+            txtAddress.text = store.address
         }
     }
 

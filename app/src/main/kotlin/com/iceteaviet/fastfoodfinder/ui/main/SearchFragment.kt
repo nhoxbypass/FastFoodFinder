@@ -40,10 +40,6 @@ class SearchFragment : Fragment() {
     private var isLoadmoreVisible: Boolean = false
     private var searchString: String? = null
 
-    override fun onCreate(@Nullable savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(@NonNull inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
         // Inflate the layout for this fragment

@@ -82,15 +82,10 @@ class SettingActivity : AppCompatActivity() {
         }
         // Initialize Firebase Auth
         if (!dataManager!!.isSignedIn()) {
-            txtSignOut!!.isEnabled = false
+            txtSignOut.isEnabled = false
         }
 
         setupEventListeners(pref)
-    }
-
-    override fun onConfigurationChanged(newConfig: Configuration) {
-        // refresh your views here
-        super.onConfigurationChanged(newConfig)
     }
 
     fun loadLanguage(languageToLoad: String) {
@@ -119,24 +114,24 @@ class SettingActivity : AppCompatActivity() {
     }
 
     fun changeLanguage() {
-        txtShareApp!!.setText(R.string.share_app_with_friends)
-        txtChangeMetric!!.setText(R.string.use_metric_units)
-        txtEditProfile!!.setText(R.string.edit_your_profile)
-        txtChangePassword!!.setText(R.string.change_your_password)
-        txtChangeEmail!!.setText(R.string.change_your_email)
-        txtSetNotification!!.setText(R.string.set_notifications)
+        txtShareApp.setText(R.string.share_app_with_friends)
+        txtChangeMetric.setText(R.string.use_metric_units)
+        txtEditProfile.setText(R.string.edit_your_profile)
+        txtChangePassword.setText(R.string.change_your_password)
+        txtChangeEmail.setText(R.string.change_your_email)
+        txtSetNotification.setText(R.string.set_notifications)
         tvSettingLanguage.setText(R.string.english)
-        txtAboutApp!!.setText(R.string.about_fastfood_finder)
-        txtRateApp!!.setText(R.string.rate_app)
-        txtFeedBack!!.setText(R.string.send_feedback)
-        txtPrivacyPolicy!!.setText(R.string.privacy_policy)
-        txtTermOfUse!!.setText(R.string.terms_of_use)
-        txtSignOut!!.setText(R.string.sign_out)
+        txtAboutApp.setText(R.string.about_fastfood_finder)
+        txtRateApp.setText(R.string.rate_app)
+        txtFeedBack.setText(R.string.send_feedback)
+        txtPrivacyPolicy.setText(R.string.privacy_policy)
+        txtTermOfUse.setText(R.string.terms_of_use)
+        txtSignOut.setText(R.string.sign_out)
 
     }
 
     private fun setupEventListeners(pref: SharedPreferences) {
-        txtSignOut!!.setOnClickListener {
+        txtSignOut.setOnClickListener {
             App.getDataManager().signOut()
             val intent = Intent(this@SettingActivity, LoginActivity::class.java)
             startActivity(intent)

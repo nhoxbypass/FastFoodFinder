@@ -63,16 +63,16 @@ class LoginActivity : AppCompatActivity() {
         mGoogleApiClient = setupGoogleSignIn()
         mCallBackManager = setupFacebookSignIn()
 
-        skipButton!!.setOnClickListener {
+        skipButton.setOnClickListener {
             // Anonymous mode
             startMainActivity()
         }
 
-        joinNowButton!!.setOnClickListener {
+        joinNowButton.setOnClickListener {
             // TODO: Support email login
         }
 
-        googleSignInButton!!.setOnClickListener { signIntWithGoogle(mGoogleApiClient) }
+        googleSignInButton.setOnClickListener { signIntWithGoogle(mGoogleApiClient) }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -97,19 +97,11 @@ class LoginActivity : AppCompatActivity() {
     }
 
 
-    override fun onStart() {
-        super.onStart()
-    }
-
-    override fun onStop() {
-        super.onStop()
-    }
-
     private fun setupFacebookSignIn(): CallbackManager {
         val callbackManager = CallbackManager.Factory.create()
-        fbSignInButton!!.setReadPermissions("email", "public_profile")
+        fbSignInButton.setReadPermissions("email", "public_profile")
 
-        fbSignInButton!!.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
+        fbSignInButton.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
             override fun onSuccess(loginResult: LoginResult) {
                 d(TAG, "facebook:onSuccess: $loginResult")
                 handleFacebookAccessToken(loginResult.accessToken)

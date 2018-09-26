@@ -24,7 +24,7 @@ class FirebaseUserRepository(private val databaseRef: DatabaseReference) : UserD
 
     override fun insertOrUpdate(user: User) {
         databaseRef.child(CHILD_USERS)
-                .child(user.uid!!)
+                .child(user.uid)
                 .setValue(user)
     }
 

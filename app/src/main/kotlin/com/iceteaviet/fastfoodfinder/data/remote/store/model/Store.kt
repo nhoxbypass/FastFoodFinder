@@ -35,7 +35,7 @@ class Store : Parcelable {
     @Exclude
     private lateinit var position: LatLng
 
-    constructor() {}
+    constructor()
 
     constructor(id: Int, title: String?, address: String?, lat: String, lng: String, tel: String?, type: Int) {
         this.id = id

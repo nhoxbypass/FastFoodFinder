@@ -25,7 +25,7 @@ class UserStoreList : Parcelable {
         `in`.readList(storeIdList, Int::class.java.classLoader)
     }
 
-    constructor() {}
+    constructor()
 
 
     constructor(id: Int, storeIdList: MutableList<Int>?, iconId: Int, listName: String) {

@@ -74,12 +74,12 @@ class RoutingAdapter internal constructor(steps: List<Step>, type: Int) : Recycl
                 instruction = Html.fromHtml(step.instruction)
             }
 
-            routingImageView!!.setImageResource(imgResId)
+            routingImageView.setImageResource(imgResId)
             if (type == TYPE_FULL)
-                routingGuide!!.text = trimWhitespace(instruction)
+                routingGuide.text = trimWhitespace(instruction)
             else if (type == TYPE_SHORT)
-                routingGuide!!.text = getTrimmedShortInstruction(instruction)
-            routingDistance!!.text = step.getDistance()
+                routingGuide.text = getTrimmedShortInstruction(instruction)
+            routingDistance.text = step.getDistance()
         }
     }
 

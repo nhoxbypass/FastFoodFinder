@@ -75,12 +75,12 @@ class StoreDetailActivity : AppCompatActivity(), StoreDetailAdapter.StoreActionL
         if (supportActionBar != null)
             supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        collapsingToolbar!!.title = currentStore!!.title
+        collapsingToolbar.title = currentStore!!.title
 
         Glide.with(this)
                 .load(R.drawable.detail_sample_circlekcover)
                 .apply(RequestOptions().centerCrop())
-                .into(ivBackdrop!!)
+                .into(ivBackdrop)
 
         dataManager = App.getDataManager()
         mLocationRequest = createLocationRequest()
@@ -101,7 +101,7 @@ class StoreDetailActivity : AppCompatActivity(), StoreDetailAdapter.StoreActionL
         googleApiClient!!.disconnect()
     }
 
-    protected override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == RESULT_OK && requestCode == REQUEST_COMMENT && data != null) {
             val comment = data.getSerializableExtra(KEY_COMMENT) as Comment
             if (comment != null) {

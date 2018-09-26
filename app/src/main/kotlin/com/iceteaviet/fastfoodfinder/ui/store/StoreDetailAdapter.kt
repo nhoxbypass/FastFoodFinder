@@ -103,15 +103,15 @@ class StoreDetailAdapter internal constructor(private val mStore: Store) : Recyc
         fun bind(store: Store) {
             mStore = store
 
-            save!!.setOnClickListener(this)
-            check!!.setOnClickListener(this)
-            rate!!.setOnClickListener(this)
-            comment!!.setOnClickListener {
+            save.setOnClickListener(this)
+            check.setOnClickListener(this)
+            rate.setOnClickListener(this)
+            comment.setOnClickListener {
                 if (listener != null) {
                     listener.onShowComment()
                 }
             }
-            btnCall!!.setOnClickListener {
+            btnCall.setOnClickListener {
                 if (listener != null) {
                     listener.onCall(mStore!!.tel)
                 }
@@ -141,19 +141,19 @@ class StoreDetailAdapter internal constructor(private val mStore: Store) : Recyc
         var vCallDirection: View = itemView.call_direction
 
         init {
-            cdvh = CallDirectionViewHolder(vCallDirection!!) //TODO: Check this !!
+            cdvh = CallDirectionViewHolder(vCallDirection) //TODO: Check this !!
         }
 
         fun bind(mStore: Store) {
-            tvName!!.text = mStore.title
-            tvAddress!!.text = mStore.address
+            tvName.text = mStore.title
+            tvAddress.text = mStore.address
 
-            cdvh.btnCall!!.setOnClickListener {
+            cdvh.btnCall.setOnClickListener {
                 if (listener != null) {
                     listener.onCall(mStore.tel)
                 }
             }
-            cdvh.btnDirection!!.setOnClickListener {
+            cdvh.btnDirection.setOnClickListener {
                 if (listener != null) {
                     listener.onDirect()
                 }
@@ -171,7 +171,7 @@ class StoreDetailAdapter internal constructor(private val mStore: Store) : Recyc
         }
 
         fun bind(title: String) {
-            content!!.text = title
+            content.text = title
         }
     }
 
@@ -185,31 +185,31 @@ class StoreDetailAdapter internal constructor(private val mStore: Store) : Recyc
         var ivMedia: ImageView = itemView.media
 
         fun bind(comment: Comment) {
-            val context = ivProfile!!.context
+            val context = ivProfile.context
             Glide.with(context)
                     .asBitmap()
                     .load(comment.avatar)
-                    .into<BitmapImageViewTarget>(object : BitmapImageViewTarget(ivProfile!!) {
+                    .into<BitmapImageViewTarget>(object : BitmapImageViewTarget(ivProfile) {
                         override fun setResource(resource: Bitmap?) {
                             val bitmap = RoundedBitmapDrawableFactory.create(context.resources, resource)
                             bitmap.cornerRadius = 5f
-                            ivProfile!!.setImageDrawable(bitmap)
+                            ivProfile.setImageDrawable(bitmap)
                         }
                     })
 
             val mediaUrl = comment.mediaUrl
             if (!mediaUrl!!.isEmpty()) {
-                container!!.visibility = View.VISIBLE
+                container.visibility = View.VISIBLE
                 Glide.with(context)
                         .load(mediaUrl)
-                        .into(ivMedia!!)
+                        .into(ivMedia)
             } else {
-                container!!.visibility = View.GONE
+                container.visibility = View.GONE
             }
 
-            tvUserName!!.text = comment.userName
-            tvContent!!.text = comment.content
-            tvTime!!.text = getRelativeTimeAgo(comment.date!!)
+            tvUserName.text = comment.userName
+            tvContent.text = comment.content
+            tvTime.text = getRelativeTimeAgo(comment.date!!)
         }
     }
 

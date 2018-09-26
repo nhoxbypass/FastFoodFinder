@@ -118,7 +118,7 @@ class MapRoutingActivity : AppCompatActivity() {
         if (supportActionBar != null) {
             supportActionBar!!.setDisplayHomeAsUpEnabled(true)
             supportActionBar!!.setDisplayShowHomeEnabled(true)
-            supportActionBar!!.setTitle(mCurrStore!!.title)
+            supportActionBar!!.title = mCurrStore!!.title
         }
 
         mBottomRoutingAdapter = RoutingAdapter(mStepList, RoutingAdapter.TYPE_FULL)
@@ -257,7 +257,7 @@ class MapRoutingActivity : AppCompatActivity() {
     }
 
     private fun enterPreviewMode() {
-        routingButtonContainer!!.visibility = View.VISIBLE
+        routingButtonContainer.visibility = View.VISIBLE
         topRecyclerView.visibility = View.VISIBLE
         mBottomSheetBehavior!!.isHideable = true
         mBottomSheetBehavior!!.state = BottomSheetBehavior.STATE_HIDDEN
@@ -265,7 +265,7 @@ class MapRoutingActivity : AppCompatActivity() {
     }
 
     private fun exitPreviewMode() {
-        routingButtonContainer!!.visibility = View.GONE
+        routingButtonContainer.visibility = View.GONE
         topRecyclerView.visibility = View.GONE
         mBottomSheetBehavior!!.isHideable = false
         mBottomSheetBehavior!!.state = BottomSheetBehavior.STATE_COLLAPSED

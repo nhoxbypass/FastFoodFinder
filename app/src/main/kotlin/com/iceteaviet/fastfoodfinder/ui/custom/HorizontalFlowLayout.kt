@@ -26,17 +26,17 @@ class HorizontalFlowLayout : RelativeLayout {
     /**
      * Constructor to use when creating the view from code.
      */
-    constructor(context: Context) : super(context) {}
+    constructor(context: Context) : super(context)
 
     /**
      * Constructor that is called when inflating the view from XML.
      */
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {}
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
 
     /**
      * Perform inflation from XML and apply a class-specific base style from a theme attribute.
      */
-    constructor(context: Context, attrs: AttributeSet, defStyle: Int) : super(context, attrs, defStyle) {}
+    constructor(context: Context, attrs: AttributeSet, defStyle: Int) : super(context, attrs, defStyle)
 
     //    /**
     //     * Perform inflation from XML and apply a class-specific base style from a theme attribute or style resource.

@@ -51,7 +51,7 @@ class StoreFilterDialogFragment : DialogFragment() {
             val view = inflater.inflate(R.layout.view_store_tag, tagContainer, false)
             val holder = TagViewHolder(view)
             holder.setName(getStoreName(key))
-            tagContainer!!.addView(view)
+            tagContainer.addView(view)
         }
     }
 
@@ -70,7 +70,7 @@ class StoreFilterDialogFragment : DialogFragment() {
         val tag: TextView = itemView.tv_tag
 
         init {
-            tag!!.setOnClickListener { v ->
+            tag.setOnClickListener { v ->
                 val animator = AnimatorInflater.loadAnimator(context, R.animator.zoom_in_out)
                 animator.setTarget(itemView)
                 animator.duration = 100
@@ -85,7 +85,7 @@ class StoreFilterDialogFragment : DialogFragment() {
         }
 
         fun setName(name: String) {
-            tag!!.text = name
+            tag.text = name
         }
     }
 

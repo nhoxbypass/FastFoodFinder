@@ -48,38 +48,38 @@ class CommentActivity : AppCompatActivity(), NoticeDialog.NoticeDialogListener {
     }
 
     private fun setupViews() {
-        etComment!!.addTextChangedListener(object : TextWatcher {
+        etComment.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
 
             }
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                val remainChars = MAX_CHAR - etComment!!.text.length
-                tvRemainChar!!.text = remainChars.toString()
+                val remainChars = MAX_CHAR - etComment.text.length
+                tvRemainChar.text = remainChars.toString()
                 if (remainChars < 0) {
-                    etComment!!.setTextColor(Color.RED)
-                    tvRemainChar!!.setTextColor(Color.RED)
+                    etComment.setTextColor(Color.RED)
+                    tvRemainChar.setTextColor(Color.RED)
                 } else {
-                    etComment!!.setTextColor(Color.BLACK)
-                    tvRemainChar!!.setTextColor(Color.BLACK)
+                    etComment.setTextColor(Color.BLACK)
+                    tvRemainChar.setTextColor(Color.BLACK)
                 }
             }
 
             override fun afterTextChanged(s: Editable) {
-                btnPost!!.isEnabled = etComment!!.text.toString().isNotEmpty()
+                btnPost.isEnabled = etComment.text.toString().isNotEmpty()
             }
         })
 
-        tvRemainChar!!.text = MAX_CHAR.toString()
-        btnPost!!.isEnabled = false
-        btnPost!!.setOnClickListener(View.OnClickListener {
-            if (etComment!!.text.length > MAX_CHAR) {
+        tvRemainChar.text = MAX_CHAR.toString()
+        btnPost.isEnabled = false
+        btnPost.setOnClickListener(View.OnClickListener {
+            if (etComment.text.length > MAX_CHAR) {
                 Toast.makeText(this@CommentActivity,
                         getString(R.string.cannot_post_comment, MAX_CHAR),
                         Toast.LENGTH_SHORT).show()
                 return@OnClickListener
             }
-            val comment = createFakeUserComment(etComment!!.text.toString())
+            val comment = createFakeUserComment(etComment.text.toString())
             val data = Intent()
             data.putExtra(KEY_COMMENT, comment)
             setResult(RESULT_OK, data)
@@ -88,7 +88,7 @@ class CommentActivity : AppCompatActivity(), NoticeDialog.NoticeDialogListener {
     }
 
     private fun checkClose() {
-        if (!etComment!!.text.toString().isEmpty()) {
+        if (!etComment.text.toString().isEmpty()) {
             val fragmentManager = supportFragmentManager
             val noticeDialog = NoticeDialog.newInstance(getString(R.string.close_comment_editor))
             noticeDialog.show(fragmentManager, "notice_dialog")

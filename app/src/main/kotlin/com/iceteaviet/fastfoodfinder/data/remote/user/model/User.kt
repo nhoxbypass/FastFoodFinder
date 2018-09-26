@@ -28,7 +28,7 @@ class User {
             return null
         }
 
-    constructor() {}
+    constructor()
 
     constructor(name: String, email: String, photoUrl: String, uid: String, storeLists: MutableList<UserStoreList>) {
         this.name = name

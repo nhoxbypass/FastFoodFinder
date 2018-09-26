@@ -56,12 +56,12 @@ class StoreListAdapter : RecyclerView.Adapter<StoreListAdapter.StoreListViewHold
         var btnRate: Button = itemView.btnRate
 
         fun setData(store: Store) {
-            tvStoreName!!.text = store.title
-            tvStoreAddress!!.text = store.address
-            tvTel!!.text = store.tel
-            Glide.with(ivStoreImage!!.context)
+            tvStoreName.text = store.title
+            tvStoreAddress.text = store.address
+            tvTel.text = store.tel
+            Glide.with(ivStoreImage.context)
                     .load(getStoreLogoDrawableId(store.type))
-                    .into(ivStoreImage!!)
+                    .into(ivStoreImage)
         }
     }
 }

@@ -61,10 +61,10 @@ class MainFavouriteFragment : Fragment(), OnStartDragListener {
         fabChangePosition.setOnClickListener {
             if (isFABChangeClicked) {
                 isFABChangeClicked = false
-                fabChangePosition!!.setImageResource(R.drawable.ic_main_swap)
+                fabChangePosition.setImageResource(R.drawable.ic_main_swap)
             } else {
                 isFABChangeClicked = true
-                fabChangePosition!!.setImageResource(R.drawable.ic_main_swap_selected)
+                fabChangePosition.setImageResource(R.drawable.ic_main_swap_selected)
             }
         }
 
@@ -72,7 +72,7 @@ class MainFavouriteFragment : Fragment(), OnStartDragListener {
     }
 
     private fun setupRecyclerView(rv: RecyclerView) {
-        mFavouriteAdapter = FavouriteStoreAdapter(this, containerLayout!!)
+        mFavouriteAdapter = FavouriteStoreAdapter(this, containerLayout)
 
         mFavouriteAdapter!!.setOnItemClickListener(object : FavouriteStoreAdapter.OnItemClickListener {
             override fun onClick(des: Store) {

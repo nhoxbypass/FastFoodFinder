@@ -106,7 +106,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
-                mDrawerLayout!!.openDrawer(GravityCompat.START)
+                mDrawerLayout.openDrawer(GravityCompat.START)
                 return true
             }
 
@@ -266,7 +266,7 @@ class MainActivity : AppCompatActivity() {
             finish()
         }
 
-        mNavigationView!!.setNavigationItemSelectedListener { item ->
+        mNavigationView.setNavigationItemSelectedListener { item ->
             selectDrawerItem(item)
             true
         }
@@ -313,7 +313,7 @@ class MainActivity : AppCompatActivity() {
             // Set action bar title
             title = menuItem.title
             // Close the ic_search_navigation drawer
-            mDrawerLayout!!.closeDrawers()
+            mDrawerLayout.closeDrawers()
         } catch (e: Exception) {
             e.printStackTrace()
         }

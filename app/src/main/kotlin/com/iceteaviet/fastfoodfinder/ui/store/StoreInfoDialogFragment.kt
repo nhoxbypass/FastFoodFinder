@@ -52,7 +52,7 @@ class StoreInfoDialogFragment : DialogFragment() {
         vCallDirection = call_direction
         btnAddToFavorite = save_this
 
-        cdvh = StoreDetailAdapter.CallDirectionViewHolder(vCallDirection!!) // TODO: Check this !!
+        cdvh = StoreDetailAdapter.CallDirectionViewHolder(vCallDirection) // TODO: Check this !!
 
         if (arguments != null)
             arguments?.let { store = it.getParcelable(KEY_STORE) }
@@ -60,13 +60,13 @@ class StoreInfoDialogFragment : DialogFragment() {
         if (store == null)
             return
 
-        tvStoreName!!.text = store!!.title
-        tvStoreAddress!!.text = store!!.address
-        tvViewDetail!!.setOnClickListener {
+        tvStoreName.text = store!!.title
+        tvStoreAddress.text = store!!.address
+        tvViewDetail.setOnClickListener {
             store?.let { activity?.startActivity(StoreDetailActivity.getIntent(context!!, it)) }
         }
 
-        cdvh.btnCall!!.setOnClickListener {
+        cdvh.btnCall.setOnClickListener {
             if (!isEmpty(store!!.tel)) {
                 if (isCallPhonePermissionGranted(context!!))
                     startActivity(getCallIntent(store!!.tel!!))
@@ -76,9 +76,9 @@ class StoreInfoDialogFragment : DialogFragment() {
                 Toast.makeText(activity, R.string.store_no_phone_numb, Toast.LENGTH_SHORT).show()
             }
         }
-        cdvh.btnDirection!!.setOnClickListener { mListener!!.onDirection(store) }
+        cdvh.btnDirection.setOnClickListener { mListener!!.onDirection(store) }
 
-        btnAddToFavorite!!.setOnClickListener {
+        btnAddToFavorite.setOnClickListener {
             mListener!!.onAddToFavorite(store!!.id)
             dismiss()
         }
@@ -112,7 +112,7 @@ class StoreInfoDialogFragment : DialogFragment() {
         when (requestCode) {
             REQUEST_CALL_PHONE -> {
                 // If request is cancelled, the result arrays are empty.
-                if (grantResults!!.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     startActivity(getCallIntent(store!!.tel!!))
                 } else {
                     Toast.makeText(context, R.string.permission_denied, Toast.LENGTH_SHORT).show()

@@ -26,10 +26,10 @@ class StoreListActivity : AppCompatActivity() {
 
         adapter = StoreListAdapter()
         val layoutManager = LinearLayoutManager(applicationContext)
-        recyclerView!!.layoutManager = layoutManager
-        recyclerView!!.adapter = adapter
+        recyclerView.layoutManager = layoutManager
+        recyclerView.adapter = adapter
         val decoration = DividerItemDecoration(applicationContext, DividerItemDecoration.VERTICAL)
-        recyclerView!!.addItemDecoration(decoration)
+        recyclerView.addItemDecoration(decoration)
         loadData()
     }
 

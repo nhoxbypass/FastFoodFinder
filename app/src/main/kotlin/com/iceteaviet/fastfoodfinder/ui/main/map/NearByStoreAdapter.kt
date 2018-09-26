@@ -95,12 +95,12 @@ class NearByStoreAdapter : RecyclerView.Adapter<NearByStoreAdapter.StoreViewHold
         }
 
         fun setData(store: Store, distance: Double) {
-            Glide.with(logo!!.context)
+            Glide.with(logo.context)
                     .load(getStoreLogoDrawableId(store.type))
-                    .into(logo!!)
-            storeName!!.text = store.title
-            storeAddress!!.text = store.address
-            storeDistance!!.text = formatDistance(distance)
+                    .into(logo)
+            storeName.text = store.title
+            storeAddress.text = store.address
+            storeDistance.text = formatDistance(distance)
         }
     }
 }
