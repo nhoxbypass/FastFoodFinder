@@ -47,7 +47,11 @@ class SearchFragment : Fragment() {
     override fun onCreateView(@NonNull inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
         // Inflate the layout for this fragment
-        val root = inflater.inflate(R.layout.fragment_search, container, false)
+        return inflater.inflate(R.layout.fragment_search, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         quickSearchCircleK = btn_search_circle_k
         quickSearchFamilyMart = btn_search_family_mart
@@ -60,8 +64,6 @@ class SearchFragment : Fragment() {
         searchContainer = sv_search_container
 
         setupQuickSearchBar()
-
-        return root
     }
 
     private fun setupQuickSearchBar() {

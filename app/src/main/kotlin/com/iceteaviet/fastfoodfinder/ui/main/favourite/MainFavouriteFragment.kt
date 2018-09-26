@@ -48,16 +48,14 @@ class MainFavouriteFragment : Fragment(), OnStartDragListener {
 
     @Nullable
     override fun onCreateView(@NonNull inflater: LayoutInflater, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View {
-        val rootView = inflater.inflate(R.layout.fragment_main_favourited, container, false)
+        return inflater.inflate(R.layout.fragment_main_favourited, container, false)
+    }
 
+    override fun onViewCreated(@NonNull view: View, @Nullable savedInstanceState: Bundle?) {
         recyclerView = rv_favourite_stores
         containerLayout = fl_container
         fabChangePosition = fab_change
 
-        return rootView
-    }
-
-    override fun onViewCreated(@NonNull view: View, @Nullable savedInstanceState: Bundle?) {
         setupRecyclerView(recyclerView)
         //client = TwitterApplication.getRestClient();
         fabChangePosition.setOnClickListener {

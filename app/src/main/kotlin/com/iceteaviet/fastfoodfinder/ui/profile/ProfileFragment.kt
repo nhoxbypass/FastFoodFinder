@@ -51,19 +51,18 @@ class ProfileFragment : Fragment() {
 
     @Nullable
     override fun onCreateView(@NonNull inflater: LayoutInflater, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View {
-        val rootView = inflater.inflate(R.layout.fragment_profile, container, false)
+        return inflater.inflate(R.layout.fragment_profile, container, false)
+    }
 
+    override fun onViewCreated(@NonNull view: View, @Nullable savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        
         ivAvatarProfile = iv_profile_avatar
         cvSavePlace = cv_saved_places
         cvCheckinPlace = cv_checkin_places
         cvFavouritePlace = cv_favourite_places
         tvFavItemsCount = fav_list_items_count
 
-        return rootView
-    }
-
-    override fun onViewCreated(@NonNull view: View, @Nullable savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         mAdapter = UserStoreListAdapter()
         val mLayoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         rvListPacket!!.adapter = mAdapter

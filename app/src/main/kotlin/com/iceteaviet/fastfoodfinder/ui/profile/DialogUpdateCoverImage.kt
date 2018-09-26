@@ -34,7 +34,6 @@ class DialogUpdateCoverImage : DialogFragment() {
 
     @Nullable
     override fun onCreateView(@NonNull inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-
         return inflater.inflate(R.layout.dialog_choose_image, container, false)
     }
 

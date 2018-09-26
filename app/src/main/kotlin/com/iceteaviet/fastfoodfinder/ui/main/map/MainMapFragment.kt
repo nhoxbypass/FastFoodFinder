@@ -111,8 +111,7 @@ class MainMapFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, Locatio
     @Nullable
     override fun onCreateView(@NonNull inflater: LayoutInflater, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View {
         // Inflate the layout for this fragment
-        val rootView = inflater.inflate(R.layout.fragment_main_map, container, false)
-        return rootView
+        return inflater.inflate(R.layout.fragment_main_map, container, false)
     }
 
     override fun onViewCreated(view: View, @Nullable savedInstanceState: Bundle?) {
@@ -306,8 +305,10 @@ class MainMapFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, Locatio
 
     fun inflateSupportMapFragment(): SupportMapFragment? {
         val fragmentManager = childFragmentManager
-        var mapFragment: SupportMapFragment? = fragmentManager.findFragmentById(R.id.maps_container) as SupportMapFragment
-        if (mapFragment === null) {
+        var fragment = fragmentManager.findFragmentById(R.id.maps_container)
+        var mapFragment: SupportMapFragment?
+
+        if (fragment === null) {
             val cameraPosition = CameraPosition.builder()
                     .target(Constant.DEFAULT_MAP_TARGET)
                     .zoom(16f)
@@ -322,6 +323,8 @@ class MainMapFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, Locatio
             mapFragment = SupportMapFragment.newInstance(options)
             fragmentManager.beginTransaction().replace(R.id.map_placeholder, mapFragment as Fragment).commit() // TODO: Check
             fragmentManager.executePendingTransactions()
+        } else {
+            mapFragment = fragment as SupportMapFragment
         }
 
         return mapFragment

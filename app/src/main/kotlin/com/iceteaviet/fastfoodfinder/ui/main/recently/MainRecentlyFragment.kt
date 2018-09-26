@@ -33,21 +33,19 @@ class MainRecentlyFragment : Fragment(), OnStartDragListener {
 
     @Nullable
     override fun onCreateView(@NonNull inflater: LayoutInflater, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View {
-        val rootView = inflater.inflate(R.layout.fragment_main_recently, container, false)
-
-        recyclerView = rv_recently_stores
-        containerLayout = fl_container
-
-        return rootView
+        return inflater.inflate(R.layout.fragment_main_recently, container, false)
     }
 
     override fun onViewCreated(@NonNull view: View, @Nullable savedInstanceState: Bundle?) {
+        recyclerView = rv_recently_stores
+        containerLayout = fl_container
+
         setupRecyclerView(recyclerView)
         loadData()
     }
 
     private fun setupRecyclerView(rv: RecyclerView) {
-        mRecentlyAdapter = RecentlyStoreAdapter(this, containerLayout!!)
+        mRecentlyAdapter = RecentlyStoreAdapter(this, containerLayout)
 
         mRecentlyAdapter!!.setOnItemClickListener(object : RecentlyStoreAdapter.OnItemClickListener {
             override fun onClick(store: Store) {

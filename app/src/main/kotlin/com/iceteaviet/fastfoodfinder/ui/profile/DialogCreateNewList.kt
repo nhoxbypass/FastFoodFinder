@@ -35,8 +35,7 @@ class DialogCreateNewList : DialogFragment() {
 
     @Nullable
     override fun onCreateView(@NonNull inflater: LayoutInflater, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View {
-        val rootView = inflater.inflate(R.layout.dialog_create_newlist, container, false)
-        return rootView
+        return inflater.inflate(R.layout.dialog_create_newlist, container, false)
     }
 
     override fun onViewCreated(@NonNull view: View, @Nullable savedInstanceState: Bundle?) {
