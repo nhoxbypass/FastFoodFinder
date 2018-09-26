@@ -80,6 +80,18 @@ class Store : Parcelable {
         parcel.writeString(tel)
     }
 
+    override fun hashCode(): Int {
+        var result = type
+        result = 31 * result + id
+        result = 31 * result + (title?.hashCode() ?: 0)
+        result = 31 * result + (address?.hashCode() ?: 0)
+        result = 31 * result + (lat?.hashCode() ?: 0)
+        result = 31 * result + (lng?.hashCode() ?: 0)
+        result = 31 * result + (tel?.hashCode() ?: 0)
+        result = 31 * result + position.hashCode()
+        return result
+    }
+
     companion object CREATOR : Parcelable.Creator<Store> {
         // Type
         // 0: circle_k
