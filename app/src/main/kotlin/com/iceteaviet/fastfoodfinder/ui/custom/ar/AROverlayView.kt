@@ -65,8 +65,8 @@ class AROverlayView(context: Context) : View(context) {
             // cameraCoordinateVector[2] is z, that always less than 0 to display on right position
             // if z > 0, the point will display on the opposite
             if (cameraCoordinateVector[2] < 0) {
-                val x = (0.5f + cameraCoordinateVector[0] / cameraCoordinateVector[3]) * canvas.width
-                val y = (0.5f - cameraCoordinateVector[1] / cameraCoordinateVector[3]) * canvas.height
+                val x = (0.5f + cameraCoordinateVector[0] / cameraCoordinateVector[3]) * width
+                val y = (0.5f - cameraCoordinateVector[1] / cameraCoordinateVector[3]) * height
 
                 canvas.drawBitmap(arBitmaps[i], x, y, paint)
                 canvas.drawText(arPoints[i].name, x - 30 * arPoints[i].name.length / 2, y - 80, paint)

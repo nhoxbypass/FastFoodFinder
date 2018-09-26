@@ -219,7 +219,9 @@ class StoreDetailActivity : AppCompatActivity(), StoreDetailAdapter.StoreActionL
 
         fun getIntent(context: Context, store: Store): Intent {
             val intent = Intent(context, StoreDetailActivity::class.java)
-            intent.putExtra(KEY_STORE, store)
+            val args = Bundle()
+            args.putParcelable(KEY_STORE, store)
+            intent.putExtras(args)
             return intent
         }
     }

@@ -132,8 +132,6 @@ class StoreInfoDialogFragment : DialogFragment() {
     }
 
     companion object {
-
-
         fun newInstance(store: Store): StoreInfoDialogFragment {
             val args = Bundle()
             args.putParcelable(KEY_STORE, store)

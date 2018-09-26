@@ -1,4 +1,0 @@
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@color/pressing_bg" android:state_pressed="true" />
-    <item android:drawable="@android:color/white" />
-</selector>
