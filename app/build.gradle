@@ -17,6 +17,8 @@ android {
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -27,6 +29,7 @@ android {
         debug {
         }
     }
+
     aaptOptions {
         cruncherEnabled = false
     }
@@ -34,7 +37,12 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+
     testImplementation 'junit:junit:4.12'
+    testImplementation 'org.mockito:mockito-core:2.22.0'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test:rules:1.0.2'
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
