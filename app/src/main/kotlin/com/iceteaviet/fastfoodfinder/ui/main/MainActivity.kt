@@ -74,8 +74,8 @@ class MainActivity : AppCompatActivity() {
         initAuth()
 
         //Inflate Map fragment
-        mNavigationView!!.menu.getItem(0).isChecked = true
-        mNavigationView!!.setCheckedItem(R.id.menu_action_map)
+        mNavigationView.menu.getItem(0).isChecked = true
+        mNavigationView.setCheckedItem(R.id.menu_action_map)
         val fragmentManager = supportFragmentManager
         fragmentManager.beginTransaction().replace(R.id.fl_fragment_placeholder, MainFragment.newInstance()).commit()
     }
@@ -247,16 +247,16 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun setupAllViews() {
-        setupDrawerToggle()
+        mDrawerToggle = setupDrawerToggle()
 
-        val headerLayout = mNavigationView!!.getHeaderView(0)
+        val headerLayout = mNavigationView.getHeaderView(0)
         mNavHeaderAvatar = headerLayout.findViewById(R.id.iv_nav_header_avatar)
         mNavHeaderName = headerLayout.findViewById(R.id.tv_nav_header_name)
         mNavHeaderScreenName = headerLayout.findViewById(R.id.tv_nav_header_screenname)
         mNavHeaderSignIn = headerLayout.findViewById(R.id.btn_nav_header_signin)
 
         // Tie DrawerLayout events to the ActionBarToggle
-        mDrawerToggle?.let { mDrawerLayout!!.addDrawerListener(it) }
+        mDrawerToggle?.let { mDrawerLayout.addDrawerListener(it) }
     }
 
     private fun setupEventListeners() {

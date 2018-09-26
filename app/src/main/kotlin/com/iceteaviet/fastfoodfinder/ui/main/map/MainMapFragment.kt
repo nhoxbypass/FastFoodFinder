@@ -112,16 +112,14 @@ class MainMapFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, Locatio
     override fun onCreateView(@NonNull inflater: LayoutInflater, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View {
         // Inflate the layout for this fragment
         val rootView = inflater.inflate(R.layout.fragment_main_map, container, false)
-
-        mNearStoreRecyclerView = rv_bottom_sheet
-        mBottomSheetContainer = ll_bottom_sheet
-
-        BottomSheetBehavior.from(mBottomSheetContainer)
         return rootView
     }
 
     override fun onViewCreated(view: View, @Nullable savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        mNearStoreRecyclerView = rv_bottom_sheet
+        mBottomSheetContainer = ll_bottom_sheet
+
         initBottomSheet()
     }
 
@@ -370,6 +368,7 @@ class MainMapFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, Locatio
 
 
     private fun initBottomSheet() {
+        BottomSheetBehavior.from(mBottomSheetContainer)
         mNearStoreRecyclerView.adapter = mAdapter
         mNearStoreRecyclerView.layoutManager = LinearLayoutManager(context)
 

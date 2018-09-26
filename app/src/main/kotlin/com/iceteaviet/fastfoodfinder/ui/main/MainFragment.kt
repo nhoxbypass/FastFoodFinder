@@ -29,15 +29,14 @@ class MainFragment : Fragment() {
                               savedInstanceState: Bundle?): View {
         // Inflate the layout for this fragment
         val rootView = inflater.inflate(R.layout.fragment_main, container, false)
-
-        mTabLayout = tab_layout
-        mViewPager = view_pager
-
         return rootView
     }
 
     override fun onViewCreated(@NonNull view: View, @Nullable savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        mTabLayout = tab_layout
+        mViewPager = view_pager
+
         val mPagerAdapter = MainPagerAdapter(childFragmentManager)
         mViewPager.adapter = mPagerAdapter
         mViewPager.offscreenPageLimit = 2

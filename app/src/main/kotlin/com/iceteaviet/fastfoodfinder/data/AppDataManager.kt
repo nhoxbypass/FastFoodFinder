@@ -121,7 +121,7 @@ class AppDataManager(context: Context, private val localStoreDataSource: StoreDa
     }
 
     override fun getCurrentUserUid(): String {
-        var uid: String = ""
+        var uid = ""
         if (currentUser != null)
             uid = currentUser!!.uid
 
@@ -154,7 +154,7 @@ class AppDataManager(context: Context, private val localStoreDataSource: StoreDa
     override fun getCurrentUser(): User? {
         if (currentUser == null) {
             val uid = getCurrentUserUid()
-            if (!uid.isEmpty())
+            if (!uid.isBlank() && uid != "null")
                 currentUser = localUserDataSource.getUser(uid)
                         .blockingGet()
         }
