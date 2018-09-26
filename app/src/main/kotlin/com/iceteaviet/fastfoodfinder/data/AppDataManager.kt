@@ -83,6 +83,7 @@ class AppDataManager(context: Context, private val localStoreDataSource: StoreDa
                                                 }
 
                                                 override fun onSuccess(storeList: List<Store>) {
+                                                    signOut()
                                                     emitter.onSuccess(storeList)
                                                 }
 

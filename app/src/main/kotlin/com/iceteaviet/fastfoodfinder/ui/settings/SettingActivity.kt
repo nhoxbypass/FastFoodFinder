@@ -78,7 +78,7 @@ class SettingActivity : AppCompatActivity() {
         isVietnamese = pref.getBoolean(KEY_LANGUAGE, false)
 
         if (!isVietnamese) {
-            swChangeLanguage!!.isChecked = true
+            swChangeLanguage.isChecked = true
         }
         // Initialize Firebase Auth
         if (!dataManager!!.isSignedIn()) {
@@ -125,7 +125,7 @@ class SettingActivity : AppCompatActivity() {
         txtChangePassword!!.setText(R.string.change_your_password)
         txtChangeEmail!!.setText(R.string.change_your_email)
         txtSetNotification!!.setText(R.string.set_notifications)
-        tvSettingLanguage!!.setText(R.string.english)
+        tvSettingLanguage.setText(R.string.english)
         txtAboutApp!!.setText(R.string.about_fastfood_finder)
         txtRateApp!!.setText(R.string.rate_app)
         txtFeedBack!!.setText(R.string.send_feedback)
@@ -143,15 +143,15 @@ class SettingActivity : AppCompatActivity() {
             finish()
         }
 
-        swChangeLanguage!!.setOnClickListener {
+        swChangeLanguage.setOnClickListener {
             if (isVietnamese) {
-                swChangeLanguage!!.isChecked = true
+                swChangeLanguage.isChecked = true
                 isVietnamese = false
                 loadLanguage("vi")
 
             } else {
                 loadLanguage("en")
-                swChangeLanguage!!.isChecked = false
+                swChangeLanguage.isChecked = false
                 isVietnamese = true
             }
 
@@ -160,44 +160,44 @@ class SettingActivity : AppCompatActivity() {
             editor.apply()
         }
 
-        tvSettingLanguage!!.setOnClickListener {
-            swChangeLanguage!!.isChecked = true
+        tvSettingLanguage.setOnClickListener {
+            swChangeLanguage.isChecked = true
             if (isVietnamese) {
-                swChangeLanguage!!.isChecked = true
+                swChangeLanguage.isChecked = true
                 isVietnamese = false
                 loadLanguage("vi")
             } else {
                 loadLanguage("en")
-                swChangeLanguage!!.isChecked = false
+                swChangeLanguage.isChecked = false
                 isVietnamese = true
             }
         }
 
-        txtSetNotification!!.setOnClickListener {
+        txtSetNotification.setOnClickListener {
             val fm = supportFragmentManager
             val dlg = StoreFilterDialogFragment.newInstance()
             dlg.show(fm, "dialog-filter")
         }
 
-        layoutUpdateDb!!.setOnClickListener {
+        layoutUpdateDb.setOnClickListener {
             App.getDataManager().loadStoresFromServer(this@SettingActivity)
                     .subscribe(object : SingleObserver<List<Store>> {
                         override fun onSubscribe(d: Disposable) {
-                            imageUpdateDb!!.visibility = View.GONE
-                            progressBarUpdateDb!!.visibility = View.VISIBLE
+                            imageUpdateDb.visibility = View.GONE
+                            progressBarUpdateDb.visibility = View.VISIBLE
                         }
 
                         override fun onSuccess(storeList: List<Store>) {
                             dataManager!!.getLocalStoreDataSource().setStores(storeList)
                             Toast.makeText(this@SettingActivity, R.string.update_database_successfull, Toast.LENGTH_SHORT).show()
-                            imageUpdateDb!!.visibility = View.VISIBLE
-                            progressBarUpdateDb!!.visibility = View.GONE
+                            imageUpdateDb.visibility = View.VISIBLE
+                            progressBarUpdateDb.visibility = View.GONE
                         }
 
                         override fun onError(e: Throwable) {
                             Toast.makeText(this@SettingActivity, getString(R.string.update_database_failed) + e.message, Toast.LENGTH_SHORT).show()
-                            imageUpdateDb!!.visibility = View.VISIBLE
-                            progressBarUpdateDb!!.visibility = View.GONE
+                            imageUpdateDb.visibility = View.VISIBLE
+                            progressBarUpdateDb.visibility = View.GONE
                         }
                     })
         }

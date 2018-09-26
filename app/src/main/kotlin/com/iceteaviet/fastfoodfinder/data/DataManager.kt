@@ -31,5 +31,6 @@ interface DataManager : ClientAuth {
     fun getCurrentUser(): User?
 
     fun loadStoresFromServer(activity: Activity): Single<List<Store>>
+
     fun setCurrentUser(user: User?)
 }

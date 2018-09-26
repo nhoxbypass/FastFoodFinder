@@ -36,8 +36,6 @@ class SplashActivity : AppCompatActivity() {
                         }
 
                         override fun onSuccess(storeList: List<Store>) {
-                            dataManager!!.signOut()
-
                             dataManager!!.getPreferencesHelper().setAppLaunchFirstTime(false)
                             dataManager!!.getPreferencesHelper().setNumberOfStores(storeList.size)
                             dataManager!!.getLocalStoreDataSource().setStores(storeList)
