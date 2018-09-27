@@ -60,12 +60,14 @@ class Store : Parcelable {
 
     @Exclude
     fun getPosition(): LatLng {
+        if (!::position.isInitialized)
+            position = LatLng(java.lang.Double.valueOf(lat)!!, java.lang.Double.valueOf(lng)!!)
         return position
     }
 
-    override fun equals(obj: Any?): Boolean {
-        return if (obj is Store) {
-            this.id == obj.id && this.title == obj.title
+    override fun equals(other: Any?): Boolean {
+        return if (other is Store) {
+            this.id == other.id && this.title == other.title
         } else false
 
     }

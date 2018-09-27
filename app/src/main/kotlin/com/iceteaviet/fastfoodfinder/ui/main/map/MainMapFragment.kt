@@ -453,13 +453,13 @@ class MainMapFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, Locatio
 
 
     private fun addMarkersToMap(storeList: List<Store>?, googleMap: GoogleMap?) {
-        if (googleMap == null)
+        if (googleMap == null || storeList == null)
             return
 
         googleMap.clear()
 
         // Set icons of the store marker to green
-        for (i in storeList!!.indices) {
+        for (i in storeList.indices) {
             val store = storeList[i]
             val marker = googleMap.addMarker(MarkerOptions().position(store.getPosition())
                     .title(store.title)
