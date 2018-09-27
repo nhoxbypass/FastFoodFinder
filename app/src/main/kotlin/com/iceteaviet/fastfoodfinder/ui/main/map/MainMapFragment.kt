@@ -82,7 +82,7 @@ class MainMapFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, Locatio
 
     private var newVisibleStorePublisher: PublishSubject<Store>? = null
     private var cameraPositionPublisher: PublishSubject<CameraPosition>? = null
-    private var dataManager: DataManager? = null
+    private lateinit var dataManager: DataManager
 
     private val lastLocation: LatLng
         @SuppressLint("MissingPermission")
@@ -202,7 +202,7 @@ class MainMapFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, Locatio
                 mStoreList!!.clear()
                 mGoogleMap!!.clear()
 
-                dataManager!!.getLocalStoreDataSource()
+                dataManager.getLocalStoreDataSource()
                         .findStoresByType(searchEventResult.storeType)
                         .subscribe(object : SingleObserver<List<Store>> {
                             override fun onSubscribe(d: Disposable) {
@@ -228,7 +228,7 @@ class MainMapFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, Locatio
             SearchEventResult.SEARCH_ACTION_QUERY_SUBMIT -> {
                 mStoreList!!.clear()
                 mGoogleMap!!.clear()
-                dataManager!!.getLocalStoreDataSource()
+                dataManager.getLocalStoreDataSource()
                         .findStores(searchEventResult.searchString!!)
                         .subscribe(object : SingleObserver<List<Store>> {
                             override fun onSubscribe(d: Disposable) {
@@ -258,7 +258,7 @@ class MainMapFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, Locatio
             SearchEventResult.SEARCH_ACTION_COLLAPSE -> {
                 mStoreList!!.clear()
                 mGoogleMap!!.clear()
-                dataManager!!.getLocalStoreDataSource().getAllStores()
+                dataManager.getLocalStoreDataSource().getAllStores()
                         .subscribe(object : SingleObserver<List<Store>> {
                             override fun onSubscribe(d: Disposable) {
 
@@ -351,7 +351,7 @@ class MainMapFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, Locatio
     }
 
     private fun initStoreData() {
-        dataManager!!.getLocalStoreDataSource().getAllStores()
+        dataManager.getLocalStoreDataSource().getAllStores()
                 .subscribe(object : SingleObserver<List<Store>> {
                     override fun onSubscribe(d: Disposable) {
 
@@ -483,7 +483,7 @@ class MainMapFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, Locatio
         queries[PARAM_ORIGIN] = origin
         queries[PARAM_DESTINATION] = destination
 
-        dataManager!!.getMapsRoutingApiHelper().getMapsDirection(queries, store)
+        dataManager.getMapsRoutingApiHelper().getMapsDirection(queries, store)
                 .subscribe(object : SingleObserver<MapsDirection> {
                     override fun onSubscribe(d: Disposable) {
 

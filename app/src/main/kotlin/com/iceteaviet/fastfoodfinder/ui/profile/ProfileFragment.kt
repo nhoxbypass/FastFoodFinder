@@ -39,7 +39,7 @@ class ProfileFragment : Fragment() {
     private var defaultList: MutableList<UserStoreList> = ArrayList()
     private var listName: ArrayList<String> = ArrayList()
 
-    private var dataManager: DataManager? = null
+    private lateinit var dataManager: DataManager
 
 
     override fun onCreate(@Nullable savedInstanceState: Bundle?) {
@@ -70,21 +70,21 @@ class ProfileFragment : Fragment() {
 
         tvName!!.setText(R.string.unregistered_user)
         tvEmail!!.setText(R.string.unregistered_email)
-        if (dataManager!!.getCurrentUser() == null)
-            dataManager!!.setCurrentUser(User(getString(R.string.unregistered_user), getString(R.string.unregistered_email), Constant.NO_AVATAR_PLACEHOLDER_URL, "null", ArrayList()))
+        if (dataManager.getCurrentUser() == null)
+            dataManager.setCurrentUser(User(getString(R.string.unregistered_user), getString(R.string.unregistered_email), Constant.NO_AVATAR_PLACEHOLDER_URL, "null", ArrayList()))
 
-        if (dataManager!!.isSignedIn()) {
+        if (dataManager.isSignedIn()) {
             getCurrentUserData()
         }
     }
 
     fun loadUserList() {
-        val currentUser = dataManager!!.getCurrentUser()
-        for (i in 0 until currentUser!!.getUserStoreLists()!!.size) {
+        val currentUser = dataManager.getCurrentUser()
+        for (i in 0 until currentUser!!.getUserStoreLists().size) {
             if (i <= 2) {
-                defaultList.add(currentUser.getUserStoreLists()!![i])
+                defaultList.add(currentUser.getUserStoreLists()[i])
             } else {
-                mAdapter!!.addListPacket(currentUser.getUserStoreLists()!![i])
+                mAdapter!!.addListPacket(currentUser.getUserStoreLists()[i])
             }
         }
         tvNumberList!!.text = String.format("(%s)", mAdapter!!.itemCount.toString())
@@ -97,24 +97,24 @@ class ProfileFragment : Fragment() {
     }
 
     private fun getCurrentUserData() {
-        dataManager!!.getRemoteUserDataSource().getUser(dataManager!!.getCurrentUserUid())
+        dataManager.getRemoteUserDataSource().getUser(dataManager.getCurrentUserUid())
                 .subscribe(object : SingleObserver<User> {
                     override fun onSubscribe(d: Disposable) {
 
                     }
 
                     override fun onSuccess(user: User) {
-                        dataManager!!.setCurrentUser(user)
+                        dataManager.setCurrentUser(user)
                         Glide.with(context!!)
                                 .load(user.photoUrl)
                                 .into(ivAvatarProfile)
                         tvName!!.text = user.name
                         tvEmail!!.text = user.email
                         loadUserList()
-                        for (i in 0 until user.getUserStoreLists()!!.size) {
-                            listName.add(user.getUserStoreLists()!![i].listName)
+                        for (i in 0 until user.getUserStoreLists().size) {
+                            listName.add(user.getUserStoreLists()[i].listName)
                         }
-                        tvFavItemsCount.text = String.format(Locale.getDefault(), "%d nơi", user.favouriteStoreList!!.getStoreIdList()!!.size)
+                        tvFavItemsCount.text = String.format(Locale.getDefault(), "%d nơi", user.favouriteStoreList.getStoreIdList()!!.size)
                         onListener()
                     }
 
@@ -149,12 +149,12 @@ class ProfileFragment : Fragment() {
                 mDialogCreate!!.show(fragmentManager, "")
                 mDialogCreate!!.setOnButtonClickListener(object : DialogCreateNewList.OnCreateListListener {
                     override fun onButtonClick(name: String, idIconSource: Int) {
-                        val currentUser = dataManager!!.getCurrentUser()
-                        val id = currentUser!!.getUserStoreLists()!!.size //New id = current size
+                        val currentUser = dataManager.getCurrentUser()
+                        val id = currentUser!!.getUserStoreLists().size //New id = current size
                         val list = UserStoreList(id, ArrayList(), idIconSource, name)
                         mAdapter!!.addListPacket(list)
                         currentUser.addStoreList(list)
-                        dataManager!!.getRemoteUserDataSource().updateStoreListForUser(currentUser.uid, currentUser.getUserStoreLists()!!)
+                        dataManager.getRemoteUserDataSource().updateStoreListForUser(currentUser.uid, currentUser.getUserStoreLists())
                         tvNumberList!!.text = String.format("(%s)", mAdapter!!.itemCount.toString())
                     }
                 })
@@ -166,10 +166,10 @@ class ProfileFragment : Fragment() {
 
             mAdapter!!.setOnItemLongClickListener(object : UserStoreListAdapter.OnItemLongClickListener {
                 override fun onClick(position: Int) {
-                    val currentUser = dataManager!!.getCurrentUser()
+                    val currentUser = dataManager.getCurrentUser()
                     tvNumberList!!.text = String.format("(%s)", mAdapter!!.itemCount.toString())
                     currentUser!!.removeStoreList(position)
-                    dataManager!!.getRemoteUserDataSource().updateStoreListForUser(currentUser.uid, currentUser.getUserStoreLists()!!)
+                    dataManager.getRemoteUserDataSource().updateStoreListForUser(currentUser.uid, currentUser.getUserStoreLists())
                 }
             })
 
@@ -183,7 +183,7 @@ class ProfileFragment : Fragment() {
 
     fun sendToDetailListActivity(userStoreList: UserStoreList) {
         val intent = Intent(context, ListDetailActivity::class.java)
-        intent.putExtra(KEY_USER_PHOTO_URL, dataManager!!.getCurrentUser()!!.photoUrl)
+        intent.putExtra(KEY_USER_PHOTO_URL, dataManager.getCurrentUser()!!.photoUrl)
         intent.putExtra(KEY_USER_STORE_LIST, userStoreList)
         startActivity(intent)
     }

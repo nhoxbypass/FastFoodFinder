@@ -17,7 +17,7 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
 class SplashActivity : AppCompatActivity() {
-    private var dataManager: DataManager? = null
+    private lateinit var dataManager: DataManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,9 +25,9 @@ class SplashActivity : AppCompatActivity() {
 
         dataManager = App.getDataManager()
 
-        if (dataManager!!.getPreferencesHelper().getAppLaunchFirstTime()!! || dataManager!!.getPreferencesHelper().getNumberOfStores() == 0) {
+        if (dataManager.getPreferencesHelper().getAppLaunchFirstTime()!! || dataManager.getPreferencesHelper().getNumberOfStores() == 0) {
             // Download data from Firebase and store in Realm
-            dataManager!!.loadStoresFromServer(this)
+            dataManager.loadStoresFromServer(this)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(object : SingleObserver<List<Store>> {
@@ -36,24 +36,24 @@ class SplashActivity : AppCompatActivity() {
                         }
 
                         override fun onSuccess(storeList: List<Store>) {
-                            dataManager!!.getPreferencesHelper().setAppLaunchFirstTime(false)
-                            dataManager!!.getPreferencesHelper().setNumberOfStores(storeList.size)
-                            dataManager!!.getLocalStoreDataSource().setStores(storeList)
+                            dataManager.getPreferencesHelper().setAppLaunchFirstTime(false)
+                            dataManager.getPreferencesHelper().setNumberOfStores(storeList.size)
+                            dataManager.getLocalStoreDataSource().setStores(storeList)
 
                             Toast.makeText(this@SplashActivity, R.string.update_database_successfull, Toast.LENGTH_SHORT).show()
                             startMyActivity(LoginActivity::class.java)
                         }
 
                         override fun onError(e: Throwable) {
-                            dataManager!!.signOut()
+                            dataManager.signOut()
                             e.printStackTrace()
                             startMyActivity(MainActivity::class.java)
                         }
                     })
         } else {
-            if (dataManager!!.isSignedIn()) {
+            if (dataManager.isSignedIn()) {
                 // User still signed in
-                dataManager!!.getRemoteUserDataSource().getUser(dataManager!!.getCurrentUserUid())
+                dataManager.getRemoteUserDataSource().getUser(dataManager.getCurrentUserUid())
                         .subscribeOn(Schedulers.io())
                         .observeOn(Schedulers.io())
                         .subscribe(object : SingleObserver<User> {
@@ -62,7 +62,7 @@ class SplashActivity : AppCompatActivity() {
                             }
 
                             override fun onSuccess(user: User) {
-                                dataManager!!.setCurrentUser(user)
+                                dataManager.setCurrentUser(user)
                             }
 
                             override fun onError(e: Throwable) {

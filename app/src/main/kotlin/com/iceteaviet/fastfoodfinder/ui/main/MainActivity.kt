@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity() {
     private var mNavHeaderSignIn: Button? = null
     private var mDrawerToggle: ActionBarDrawerToggle? = null
 
-    private var dataManager: DataManager? = null
+    private lateinit var dataManager: DataManager
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -153,16 +153,16 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun initAuth() {
-        if (dataManager!!.getCurrentUser() == null) {
+        if (dataManager.getCurrentUser() == null) {
             mNavHeaderName!!.visibility = View.GONE
             mNavHeaderScreenName!!.visibility = View.GONE
             mNavHeaderSignIn!!.visibility = View.VISIBLE
         } else {
             Glide.with(this@MainActivity)
-                    .load(dataManager!!.getCurrentUser()!!.photoUrl)
+                    .load(dataManager.getCurrentUser()!!.photoUrl)
                     .into(mNavHeaderAvatar!!)
-            mNavHeaderName!!.text = dataManager!!.getCurrentUser()!!.name
-            mNavHeaderScreenName!!.text = dataManager!!.getCurrentUser()!!.email
+            mNavHeaderName!!.text = dataManager.getCurrentUser()!!.name
+            mNavHeaderScreenName!!.text = dataManager.getCurrentUser()!!.email
         }
     }
 

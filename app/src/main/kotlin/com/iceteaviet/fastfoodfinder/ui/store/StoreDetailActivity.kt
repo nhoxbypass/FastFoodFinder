@@ -53,7 +53,7 @@ class StoreDetailActivity : AppCompatActivity(), StoreDetailAdapter.StoreActionL
     //private SupportMapFragment mMapFragment;
     //private GoogleMap mGoogleMap;
     private var mStoreDetailAdapter: StoreDetailAdapter? = null
-    private var dataManager: DataManager? = null
+    private lateinit var dataManager: DataManager
 
     override fun onCreate(@Nullable savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -156,7 +156,7 @@ class StoreDetailActivity : AppCompatActivity(), StoreDetailAdapter.StoreActionL
         queries[GoogleMapsRoutingApiHelper.PARAM_ORIGIN] = origin
         queries[GoogleMapsRoutingApiHelper.PARAM_DESTINATION] = destination
 
-        dataManager!!.getMapsRoutingApiHelper().getMapsDirection(queries, currentStore!!)
+        dataManager.getMapsRoutingApiHelper().getMapsDirection(queries, currentStore!!)
                 .subscribe(object : SingleObserver<MapsDirection> {
                     override fun onSubscribe(d: Disposable) {
 

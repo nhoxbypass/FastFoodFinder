@@ -35,7 +35,7 @@ class LoginActivity : AppCompatActivity() {
 
     private var mGoogleApiClient: GoogleApiClient? = null
     private var mCallBackManager: CallbackManager? = null
-    private var dataManager: DataManager? = null
+    private lateinit var dataManager: DataManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,10 +51,10 @@ class LoginActivity : AppCompatActivity() {
         dataManager = App.getDataManager()
 
         // Initialize Firebase Auth
-        if (dataManager!!.isSignedIn()) {
+        if (dataManager.isSignedIn()) {
             // User is signed in
             this.finish()
-            d(TAG, "onAuthStateChanged:signed_in:" + dataManager!!.getCurrentUserUid())
+            d(TAG, "onAuthStateChanged:signed_in:" + dataManager.getCurrentUserUid())
         } else {
             // User is signed out
             d(TAG, "onAuthStateChanged:signed_out")
@@ -145,8 +145,8 @@ class LoginActivity : AppCompatActivity() {
         }
 
         val user = User(firebaseUser.displayName!!, firebaseUser.email!!, photoUrl, firebaseUser.uid, getDefaultUserStoreLists().toMutableList())
-        dataManager!!.getRemoteUserDataSource().insertOrUpdate(user)
-        dataManager!!.setCurrentUser(user)
+        dataManager.getRemoteUserDataSource().insertOrUpdate(user)
+        dataManager.setCurrentUser(user)
     }
 
     private fun startMainActivity() {
@@ -157,7 +157,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun authWithGoogle(acct: GoogleSignInAccount) {
         val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
-        dataManager!!.signInWithCredential(credential)
+        dataManager.signInWithCredential(credential)
                 .subscribe(object : SingleObserver<FirebaseUser> {
                     override fun onSubscribe(d: Disposable) {
 
@@ -190,7 +190,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun handleFacebookAccessToken(token: AccessToken) {
         val credential = FacebookAuthProvider.getCredential(token.token)
-        dataManager!!.signInWithCredential(credential)
+        dataManager.signInWithCredential(credential)
                 .subscribe(object : SingleObserver<FirebaseUser> {
                     override fun onSubscribe(d: Disposable) {
 

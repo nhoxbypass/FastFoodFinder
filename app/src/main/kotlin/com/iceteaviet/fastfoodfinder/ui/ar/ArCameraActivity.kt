@@ -31,6 +31,7 @@ import com.iceteaviet.fastfoodfinder.utils.ui.getStoreLogoDrawableId
 import io.reactivex.SingleObserver
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.activity_ar_camera.*
 
 class ArCameraActivity : BaseActivity(), SensorEventListener, LocationListener {
 
@@ -42,7 +43,7 @@ class ArCameraActivity : BaseActivity(), SensorEventListener, LocationListener {
     private var arCamera: ARCamera? = null
     private var tvCurrentLocation: TextView? = null
     private var sensorManager: SensorManager? = null
-    private var dataManager: DataManager? = null
+    private lateinit var dataManager: DataManager
 
     override val layoutId: Int
         get() = R.layout.activity_ar_camera
@@ -51,9 +52,9 @@ class ArCameraActivity : BaseActivity(), SensorEventListener, LocationListener {
         super.onCreate(savedInstanceState)
 
         sensorManager = this.getSystemService(Context.SENSOR_SERVICE) as SensorManager
-        cameraContainerLayout = findViewById(R.id.camera_container_layout)
-        surfaceView = findViewById(R.id.surface_view)
-        tvCurrentLocation = findViewById(R.id.tv_current_location)
+        cameraContainerLayout = camera_container_layout
+        surfaceView = surface_view
+        tvCurrentLocation = tv_current_location
         arOverlayView = AROverlayView(this)
 
         dataManager = App.getDataManager()
@@ -130,7 +131,7 @@ class ArCameraActivity : BaseActivity(), SensorEventListener, LocationListener {
     }
 
     override fun onLocationChanged(location: Location) {
-        dataManager!!.getLocalStoreDataSource().getStoreInBounds(location.latitude - RADIUS,
+        dataManager.getLocalStoreDataSource().getStoreInBounds(location.latitude - RADIUS,
                 location.longitude - RADIUS,
                 location.latitude + RADIUS,
                 location.longitude + RADIUS)

@@ -9,11 +9,11 @@ import io.realm.RealmObject
  */
 open class UserEntity : RealmObject() {
 
-    var name: String? = null
-    var email: String? = null
-    var uid: String = ""
-    var photoUrl: String? = null
-    var userStoreLists: RealmList<UserStoreListEntity>? = null
+    lateinit var name: String
+    lateinit var email: String
+    lateinit var uid: String
+    lateinit var photoUrl: String
+    lateinit var userStoreLists: RealmList<UserStoreListEntity>
 
     fun map(user: User) {
         name = user.name
@@ -24,7 +24,7 @@ open class UserEntity : RealmObject() {
         val userStoreLists = user.getUserStoreLists()
         if (userStoreLists != null) {
             for (i in userStoreLists.indices) {
-                this.userStoreLists!!.add(UserStoreListEntity(userStoreLists.get(i)))
+                this.userStoreLists.add(UserStoreListEntity(userStoreLists.get(i)))
             }
         }
     }

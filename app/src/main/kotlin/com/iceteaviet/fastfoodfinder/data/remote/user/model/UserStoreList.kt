@@ -12,10 +12,10 @@ import java.util.*
  */
 class UserStoreList : Parcelable {
     var id: Int = 0
-    var listName: String = ""
+    lateinit var listName: String
     var iconId: Int = 0
     @PropertyName("storeIdList")
-    private var storeIdList: MutableList<Int>? = null
+    private lateinit var storeIdList: MutableList<Int>
 
     protected constructor(`in`: Parcel) {
         id = `in`.readInt()
@@ -56,15 +56,15 @@ class UserStoreList : Parcelable {
     }
 
     fun addStore(store: Store) {
-        storeIdList!!.add(store.id)
+        storeIdList.add(store.id)
     }
 
     fun addStore(storeId: Int) {
-        storeIdList!!.add(storeId)
+        storeIdList.add(storeId)
     }
 
     fun removeStore(storeId: Int) {
-        storeIdList!!.remove(Integer.valueOf(storeId))
+        storeIdList.remove(Integer.valueOf(storeId))
     }
 
     override fun describeContents(): Int {

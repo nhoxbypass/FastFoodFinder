@@ -10,9 +10,9 @@ import io.realm.RealmObject
  */
 open class UserStoreListEntity : RealmObject {
     var id: Int = 0
-    var listName: String = ""
+    lateinit var listName: String
     var iconId: Int = 0
-    var storeIdList: RealmList<Int>? = null
+    lateinit var storeIdList: RealmList<Int>
 
     constructor() {
         // Realm required
@@ -27,6 +27,6 @@ open class UserStoreListEntity : RealmObject {
         listName = userStoreList.listName
         iconId = userStoreList.iconId
         storeIdList = RealmList()
-        storeIdList!!.addAll(userStoreList.getStoreIdList()!!)
+        storeIdList.addAll(userStoreList.getStoreIdList()!!)
     }
 }

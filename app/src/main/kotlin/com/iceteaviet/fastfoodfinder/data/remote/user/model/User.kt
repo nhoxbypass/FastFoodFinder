@@ -4,28 +4,27 @@ import com.iceteaviet.fastfoodfinder.data.local.user.model.UserEntity
 import com.iceteaviet.fastfoodfinder.data.local.user.model.UserStoreListEntity
 import com.iceteaviet.fastfoodfinder.utils.realmListToList
 import com.iceteaviet.fastfoodfinder.utils.wtf
-import java.util.*
 
 /**
  * Created by Genius Doan on 11/24/2016.
  */
 class User {
-    var name: String? = null
-    var email: String? = null
-    var uid: String = ""
-    var photoUrl: String? = null
-    private var userStoreLists: MutableList<UserStoreList>? = null
+    lateinit var name: String
+    lateinit var email: String
+    lateinit var uid: String
+    lateinit var photoUrl: String
+    private lateinit var userStoreLists: MutableList<UserStoreList>
 
-    val favouriteStoreList: UserStoreList?
+    val favouriteStoreList: UserStoreList
         get() {
-            for (i in userStoreLists!!.indices) {
-                if (userStoreLists!![i].id == UserStoreList.ID_FAVOURITE) {
-                    return userStoreLists!![i]
+            for (i in userStoreLists.indices) {
+                if (userStoreLists[i].id == UserStoreList.ID_FAVOURITE) {
+                    return userStoreLists[i]
                 }
             }
 
             wtf(User::class.java.name, "Cannot find favourite list !!!")
-            return null
+            return UserStoreList()
         }
 
     constructor()
@@ -45,13 +44,13 @@ class User {
         this.photoUrl = entity.photoUrl
         this.userStoreLists = ArrayList()
 
-        val userStoreListEntities: List<UserStoreListEntity> = realmListToList(entity.userStoreLists!!)
+        val userStoreListEntities: List<UserStoreListEntity> = realmListToList(entity.userStoreLists)
         for (i in userStoreListEntities.indices) {
-            this.userStoreLists!!.add(UserStoreList(userStoreListEntities[i]))
+            this.userStoreLists.add(UserStoreList(userStoreListEntities[i]))
         }
     }
 
-    fun getUserStoreLists(): List<UserStoreList>? {
+    fun getUserStoreLists(): List<UserStoreList> {
         return userStoreLists
     }
 
@@ -60,10 +59,10 @@ class User {
     }
 
     fun addStoreList(list: UserStoreList) {
-        userStoreLists!!.add(list)
+        userStoreLists.add(list)
     }
 
     fun removeStoreList(position: Int) {
-        userStoreLists!!.removeAt(position)
+        userStoreLists.removeAt(position)
     }
 }

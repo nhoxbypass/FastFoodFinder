@@ -38,7 +38,7 @@ class MainFavouriteFragment : Fragment(), OnStartDragListener {
     private var isFABChangeClicked = false
     private var mFavouriteAdapter: FavouriteStoreAdapter? = null
     private var mItemTouchHelper: ItemTouchHelper? = null
-    private var dataManager: DataManager? = null
+    private lateinit var dataManager: DataManager
 
     override fun onCreate(@Nullable savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -95,9 +95,10 @@ class MainFavouriteFragment : Fragment(), OnStartDragListener {
 
 
     private fun loadData() {
-        if (dataManager!!.getCurrentUser() != null) {
-            dataManager!!.getLocalStoreDataSource()
-                    .findStoresByIds(dataManager!!.getCurrentUser()!!.favouriteStoreList!!.getStoreIdList()!!)
+        val currUser = dataManager.getCurrentUser()
+        if (currUser != null) {
+            dataManager.getLocalStoreDataSource()
+                    .findStoresByIds(currUser.favouriteStoreList.getStoreIdList()!!)
                     .subscribe(object : SingleObserver<List<Store>> {
                         override fun onSubscribe(d: Disposable) {
 
@@ -113,9 +114,9 @@ class MainFavouriteFragment : Fragment(), OnStartDragListener {
                     })
 
 
-            dataManager!!.getRemoteUserDataSource().subscribeFavouriteStoresOfUser(dataManager!!.getCurrentUserUid())
+            dataManager.getRemoteUserDataSource().subscribeFavouriteStoresOfUser(dataManager.getCurrentUserUid())
                     .map { storeIdPair ->
-                        val store = dataManager!!.getLocalStoreDataSource().findStoresById(storeIdPair.first).blockingGet()[0]
+                        val store = dataManager.getLocalStoreDataSource().findStoresById(storeIdPair.first).blockingGet()[0]
                         UserStoreEvent(store, storeIdPair.second)
                     }
                     .subscribe(object : Observer<UserStoreEvent> {
@@ -126,18 +127,18 @@ class MainFavouriteFragment : Fragment(), OnStartDragListener {
                         override fun onNext(userStoreEvent: UserStoreEvent) {
                             val store = userStoreEvent.store
                             when (userStoreEvent.eventActionCode) {
-                                UserStoreEvent.ACTION_ADDED -> if (!dataManager!!.getCurrentUser()!!.favouriteStoreList!!.getStoreIdList()!!.contains(store.id)) {
+                                UserStoreEvent.ACTION_ADDED -> if (!dataManager.getCurrentUser()!!.favouriteStoreList.getStoreIdList()!!.contains(store.id)) {
                                     mFavouriteAdapter!!.addStore(store)
-                                    dataManager!!.getCurrentUser()!!.favouriteStoreList!!.getStoreIdList()!!.add(store.id)
+                                    dataManager.getCurrentUser()!!.favouriteStoreList.getStoreIdList()!!.add(store.id)
                                 }
 
-                                UserStoreEvent.ACTION_CHANGED -> if (dataManager!!.getCurrentUser()!!.favouriteStoreList!!.getStoreIdList()!!.contains(store.id)) {
+                                UserStoreEvent.ACTION_CHANGED -> if (dataManager.getCurrentUser()!!.favouriteStoreList.getStoreIdList()!!.contains(store.id)) {
                                     mFavouriteAdapter!!.updateStore(store)
                                 }
 
-                                UserStoreEvent.ACTION_REMOVED -> if (dataManager!!.getCurrentUser()!!.favouriteStoreList!!.getStoreIdList()!!.contains(store.id)) {
+                                UserStoreEvent.ACTION_REMOVED -> if (dataManager.getCurrentUser()!!.favouriteStoreList.getStoreIdList()!!.contains(store.id)) {
                                     mFavouriteAdapter!!.removeStore(store)
-                                    dataManager!!.getCurrentUser()!!.favouriteStoreList!!.removeStore(store.id)
+                                    dataManager.getCurrentUser()!!.favouriteStoreList.removeStore(store.id)
                                 }
 
                                 UserStoreEvent.ACTION_MOVED -> {

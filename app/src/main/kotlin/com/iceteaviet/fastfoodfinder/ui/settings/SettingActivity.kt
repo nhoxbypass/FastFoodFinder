@@ -45,7 +45,7 @@ class SettingActivity : AppCompatActivity() {
 
     private var isVietnamese = true
 
-    private var dataManager: DataManager? = null
+    private lateinit var dataManager: DataManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,7 +81,7 @@ class SettingActivity : AppCompatActivity() {
             swChangeLanguage.isChecked = true
         }
         // Initialize Firebase Auth
-        if (!dataManager!!.isSignedIn()) {
+        if (!dataManager.isSignedIn()) {
             txtSignOut.isEnabled = false
         }
 
@@ -132,7 +132,7 @@ class SettingActivity : AppCompatActivity() {
 
     private fun setupEventListeners(pref: SharedPreferences) {
         txtSignOut.setOnClickListener {
-            App.getDataManager().signOut()
+            dataManager.signOut()
             val intent = Intent(this@SettingActivity, LoginActivity::class.java)
             startActivity(intent)
             finish()
@@ -175,7 +175,7 @@ class SettingActivity : AppCompatActivity() {
         }
 
         layoutUpdateDb.setOnClickListener {
-            App.getDataManager().loadStoresFromServer(this@SettingActivity)
+            dataManager.loadStoresFromServer(this@SettingActivity)
                     .subscribe(object : SingleObserver<List<Store>> {
                         override fun onSubscribe(d: Disposable) {
                             imageUpdateDb.visibility = View.GONE
@@ -183,7 +183,7 @@ class SettingActivity : AppCompatActivity() {
                         }
 
                         override fun onSuccess(storeList: List<Store>) {
-                            dataManager!!.getLocalStoreDataSource().setStores(storeList)
+                            dataManager.getLocalStoreDataSource().setStores(storeList)
                             Toast.makeText(this@SettingActivity, R.string.update_database_successfull, Toast.LENGTH_SHORT).show()
                             imageUpdateDb.visibility = View.VISIBLE
                             progressBarUpdateDb.visibility = View.GONE
