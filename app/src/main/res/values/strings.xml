@@ -85,7 +85,7 @@
     <string name="subscription">Receive discount</string>
     <string name="update_db">Update store database</string>
     <string name="permission_denied">Permission denied!</string>
-    <string name="splash_footer" translatable="false">Fastfood Finder 2016</string>
+    <string name="splash_footer" translatable="false">Store Finder 2016</string>
     <string name="unregistered_user">Unregistered User</string>
     <string name="unregistered_email" translatable="false">anonymous@fastfoodfinder.com</string>
     <string name="gps_is_loading">GPS is loading…</string>

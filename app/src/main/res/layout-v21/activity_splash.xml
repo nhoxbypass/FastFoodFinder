@@ -19,7 +19,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="8dp"
-        android:text="Fastfood Finder 2016"
+        android:text="@string/splash_footer"
         android:textColor="@color/colorWhite"
         android:textSize="16sp" />
 
