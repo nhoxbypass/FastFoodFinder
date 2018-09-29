@@ -5,6 +5,14 @@
 #   public *;
 #}
 
+# Crashlytic
+-keepattributes *Annotation*
+-keepattributes SourceFile,LineNumberTable
+-keep public class * extends java.lang.Exception
+
+-keep class com.crashlytics.** { *; }
+-dontwarn com.crashlytics.**
+
 # Retrofit & Okhttp3
 
 # Retrofit does reflection on generic parameters and InnerClass is required to use Signature.
@@ -32,3 +40,21 @@
 
 # OkHttp platform used only on JVM and when Conscrypt dependency is available.
 -dontwarn okhttp3.internal.platform.ConscryptPlatform
+
+#-dontwarn okhttp3.**
+#-dontwarn okio.**
+
+
+# GreenRobot EventBus
+
+-keepattributes *Annotation*
+
+-keepclassmembers class * {
+    @org.greenrobot.eventbus.Subscribe <methods>;
+}
+-keep enum org.greenrobot.eventbus.ThreadMode { *; }
+
+# Only required if you use AsyncExecutor
+-keepclassmembers class * extends org.greenrobot.eventbus.util.ThrowableFailureEvent {
+    <init>(java.lang.Throwable);
+}
