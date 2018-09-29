@@ -58,3 +58,20 @@
 -keepclassmembers class * extends org.greenrobot.eventbus.util.ThrowableFailureEvent {
     <init>(java.lang.Throwable);
 }
+
+# Firebase
+
+# This rule will properly ProGuard all the model classes in
+# the package com.yourcompany.models. Modify to fit the structure
+# of your app.
+-keepclassmembers class com.iceteaviet.fastfoodfinder.data.remote.store.model.** {
+  *;
+}
+
+-keepclassmembers class com.iceteaviet.fastfoodfinder.data.remote.routing.model.** {
+  *;
+}
+
+-keepclassmembers class com.iceteaviet.fastfoodfinder.data.remote.user.model.** {
+  *;
+}
