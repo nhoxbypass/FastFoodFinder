@@ -55,8 +55,10 @@ class AROverlayView(context: Context) : View(context) {
         if (currentLocation == null) {
             return
         }
-        for (i in arPoints.indices) {
-            val currentLocationInECEF = convertWSG84toECEF(currentLocation!!)
+
+        val currentLocationInECEF = convertWSG84toECEF(currentLocation!!)
+        var i = 0
+        while (i < arPoints.size && i < arBitmaps.size) {
             val pointInECEF = convertWSG84toECEF(arPoints[i].location)
             val pointInENU = convertECEFtoENU(currentLocation!!, currentLocationInECEF, pointInECEF)
 
@@ -71,6 +73,8 @@ class AROverlayView(context: Context) : View(context) {
                 canvas.drawBitmap(arBitmaps[i], x, y, paint)
                 canvas.drawText(arPoints[i].name, x - 30 * arPoints[i].name.length / 2, y - 80, paint)
             }
+
+            i++
         }
     }
 
