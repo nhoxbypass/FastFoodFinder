@@ -5,7 +5,6 @@ import android.os.Parcelable
 import com.google.firebase.database.PropertyName
 import com.iceteaviet.fastfoodfinder.data.local.user.model.UserStoreListEntity
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
-import java.util.*
 
 /**
  * Created by Genius Doan on 12/6/2016.
@@ -14,7 +13,6 @@ class UserStoreList : Parcelable {
     var id: Int = 0
     lateinit var listName: String
     var iconId: Int = 0
-    @PropertyName("storeIdList")
     private lateinit var storeIdList: MutableList<Int>
 
     protected constructor(`in`: Parcel) {
@@ -47,6 +45,8 @@ class UserStoreList : Parcelable {
     }
 
     fun getStoreIdList(): MutableList<Int>? {
+        if (!::storeIdList.isInitialized)
+            storeIdList = ArrayList()
         return storeIdList
     }
 
