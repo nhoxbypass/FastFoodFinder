@@ -14,8 +14,8 @@ android {
         applicationId "com.iceteaviet.fastfoodfinder"
         minSdkVersion 16
         targetSdkVersion 28
-        versionCode 5
-        versionName "1.04"
+        versionCode 6
+        versionName "1.05"
         multiDexEnabled true
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
