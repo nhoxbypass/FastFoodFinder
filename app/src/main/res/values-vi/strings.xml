@@ -93,5 +93,6 @@
     <string name="get_map_direction_failed">Không thể lấy đường đi!</string>
     <string name="successfully">Thành công</string>
     <string name="ok">Ok</string>
+    <string name="store_not_found">Không tìm thấy cửa hàng!</string>
 
 </resources>

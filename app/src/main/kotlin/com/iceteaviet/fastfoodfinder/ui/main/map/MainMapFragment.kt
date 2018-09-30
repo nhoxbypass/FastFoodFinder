@@ -236,9 +236,11 @@ class MainMapFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, Locatio
                             }
 
                             override fun onSuccess(storeList: List<Store>) {
+                                if (storeList.isEmpty()) {
+                                    Toast.makeText(context, R.string.store_not_found, Toast.LENGTH_SHORT).show()
+                                }
+
                                 mStoreList = storeList.toMutableList()
-                                if (mStoreList == null || mStoreList!!.size <= 0)
-                                    Toast.makeText(context, R.string.get_store_data_failed, Toast.LENGTH_SHORT).show()
 
                                 addMarkersToMap(mStoreList, mGoogleMap)
 

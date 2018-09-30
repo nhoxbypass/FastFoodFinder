@@ -103,6 +103,7 @@
     <string name="get_map_direction_failed">Failed to get map direction!</string>
     <string name="successfully">Successfully</string>
     <string name="ok">Ok</string>
+    <string name="store_not_found">Store not found!</string>
 
 </resources>
 

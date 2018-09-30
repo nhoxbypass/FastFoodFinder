@@ -99,20 +99,15 @@ class LocalStoreRepository : StoreDataSource {
 
     override fun findStores(queryString: String): Single<MutableList<Store>> {
         val trimmedQuery = queryString.toLowerCase().trim { it <= ' ' }
-        return if (isCircleKQuery(trimmedQuery)) {
-            findStoresByType(Constant.TYPE_CIRCLE_K)
-        } else if (isMinisStopQuery(trimmedQuery)) {
-            findStoresByType(Constant.TYPE_MINI_STOP)
-        } else if (isFamilyMartQuery(trimmedQuery)) {
-            findStoresByType(Constant.TYPE_FAMILY_MART)
-        } else if (isShopnGoQuery(trimmedQuery)) {
-            findStoresByType(Constant.TYPE_SHOP_N_GO)
-        } else if (isBsMartQuery(trimmedQuery)) {
-            findStoresByType(Constant.TYPE_BSMART)
-        } else {
-            // Cant determine
-            // Quite hard to implement
-            findStoresByCustomAddress(normalizeDistrictQuery(queryString))
+        return when {
+            isCircleKQuery(trimmedQuery) -> findStoresByType(Constant.TYPE_CIRCLE_K)
+            isMinisStopQuery(trimmedQuery) -> findStoresByType(Constant.TYPE_MINI_STOP)
+            isFamilyMartQuery(trimmedQuery) -> findStoresByType(Constant.TYPE_FAMILY_MART)
+            isShopnGoQuery(trimmedQuery) -> findStoresByType(Constant.TYPE_SHOP_N_GO)
+            isBsMartQuery(trimmedQuery) -> findStoresByType(Constant.TYPE_BSMART)
+            else -> // Cant determine
+                // Quite hard to implement
+                findStoresByCustomAddress(normalizeDistrictQuery(queryString))
         }
     }
 
