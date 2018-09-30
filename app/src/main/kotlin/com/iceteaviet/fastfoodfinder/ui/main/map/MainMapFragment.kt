@@ -199,9 +199,6 @@ class MainMapFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, Locatio
         val resultCode = searchEventResult.resultCode
         when (resultCode) {
             SearchEventResult.SEARCH_ACTION_QUICK -> {
-                mStoreList!!.clear()
-                mGoogleMap!!.clear()
-
                 dataManager.getLocalStoreDataSource()
                         .findStoresByType(searchEventResult.storeType)
                         .subscribe(object : SingleObserver<List<Store>> {
@@ -210,10 +207,12 @@ class MainMapFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, Locatio
                             }
 
                             override fun onSuccess(storeList: List<Store>) {
-                                mStoreList = storeList.toMutableList()
-                                if (mStoreList == null || mStoreList!!.size <= 0)
-                                    Toast.makeText(context, R.string.get_store_data_failed, Toast.LENGTH_SHORT).show()
+                                if (storeList.isEmpty()) {
+                                    Toast.makeText(context, R.string.store_not_found, Toast.LENGTH_SHORT).show()
+                                    return
+                                }
 
+                                mStoreList = storeList.toMutableList()
                                 addMarkersToMap(mStoreList, mGoogleMap)
                                 mAdapter!!.setCurrCameraPosition(mGoogleMap!!.cameraPosition.target)
                                 visibleStores = getVisibleStore(mStoreList!!, mGoogleMap!!.projection.visibleRegion.latLngBounds)
@@ -226,8 +225,6 @@ class MainMapFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, Locatio
                         })
             }
             SearchEventResult.SEARCH_ACTION_QUERY_SUBMIT -> {
-                mStoreList!!.clear()
-                mGoogleMap!!.clear()
                 dataManager.getLocalStoreDataSource()
                         .findStores(searchEventResult.searchString!!)
                         .subscribe(object : SingleObserver<List<Store>> {
@@ -238,14 +235,13 @@ class MainMapFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, Locatio
                             override fun onSuccess(storeList: List<Store>) {
                                 if (storeList.isEmpty()) {
                                     Toast.makeText(context, R.string.store_not_found, Toast.LENGTH_SHORT).show()
+                                    return
                                 }
 
                                 mStoreList = storeList.toMutableList()
-
                                 addMarkersToMap(mStoreList, mGoogleMap)
 
                                 mGoogleMap!!.animateCamera(CameraUpdateFactory.newLatLngZoom(mStoreList!![0].getPosition(), DEFAULT_ZOOM_LEVEL))
-
                                 mAdapter!!.setCurrCameraPosition(mGoogleMap!!.cameraPosition.target)
                                 visibleStores = getVisibleStore(mStoreList!!, mGoogleMap!!.projection.visibleRegion.latLngBounds)
                                 visibleStores?.let { mAdapter!!.setStores(it) }
@@ -258,8 +254,6 @@ class MainMapFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, Locatio
             }
 
             SearchEventResult.SEARCH_ACTION_COLLAPSE -> {
-                mStoreList!!.clear()
-                mGoogleMap!!.clear()
                 dataManager.getLocalStoreDataSource().getAllStores()
                         .subscribe(object : SingleObserver<List<Store>> {
                             override fun onSubscribe(d: Disposable) {
@@ -267,9 +261,12 @@ class MainMapFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, Locatio
                             }
 
                             override fun onSuccess(storeList: List<Store>) {
-                                mStoreList = storeList.toMutableList()
-                                if (mStoreList == null || mStoreList!!.size <= 0)
+                                if (storeList.isEmpty()) {
                                     Toast.makeText(context, R.string.get_store_data_failed, Toast.LENGTH_SHORT).show()
+                                    return
+                                }
+
+                                mStoreList = storeList.toMutableList()
                                 addMarkersToMap(mStoreList, mGoogleMap)
                             }
 
