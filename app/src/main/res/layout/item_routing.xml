@@ -25,7 +25,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/colorGrey" />
+            android:background="@color/material_gray_500" />
 
         <TextView
             android:id="@+id/tv_routing_guide"

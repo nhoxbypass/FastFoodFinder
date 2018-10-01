@@ -65,5 +65,5 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_above="@id/rl_footer"
-        android:background="@color/colorGrey" />
+        android:background="@color/material_gray_500" />
 </RelativeLayout>

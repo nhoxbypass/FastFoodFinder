@@ -54,7 +54,7 @@
         android:layout_width="wrap_content"
         android:layout_height="1dp"
         android:layout_marginBottom="40dp"
-        android:background="@color/colorGrey" />
+        android:background="@color/material_gray_500" />
 
     <LinearLayout
         android:id="@+id/ll_bottom_sheet"

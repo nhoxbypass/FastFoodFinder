@@ -177,41 +177,39 @@ class MainActivity : AppCompatActivity() {
 
         searchView = MenuItemCompat.getActionView(searchItem) as SearchView
 
-        if (searchView != null) {
-            searchView.setSearchableInfo(searchManager.getSearchableInfo(this@MainActivity.componentName))
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(this@MainActivity.componentName))
 
-            searchView.queryHint = getString(R.string.type_name_store)
-            searchView.setBackgroundColor(ContextCompat.getColor(this, R.color.material_red_600))
-            mSearchInput = searchView.findViewById(androidx.appcompat.R.id.search_src_text)
-            mSearchInput!!.setHintTextColor(ContextCompat.getColor(this@MainActivity, R.color.colorHintText))
-            mSearchInput!!.setTextColor(Color.WHITE)
+        searchView.queryHint = getString(R.string.type_name_store)
+        searchView.setBackgroundColor(ContextCompat.getColor(this, R.color.material_red_600))
+        mSearchInput = searchView.findViewById(androidx.appcompat.R.id.search_src_text)
+        mSearchInput!!.setHintTextColor(ContextCompat.getColor(this@MainActivity, R.color.colorHintText))
+        mSearchInput!!.setTextColor(Color.WHITE)
 
-            // Set on search query submit
-            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(query: String): Boolean {
-                    EventBus.getDefault().post(SearchEventResult(SearchEventResult.SEARCH_ACTION_QUERY_SUBMIT, query))
-                    return false
-                }
+        // Set on search query submit
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                EventBus.getDefault().post(SearchEventResult(SearchEventResult.SEARCH_ACTION_QUERY_SUBMIT, query))
+                return false
+            }
 
-                override fun onQueryTextChange(newText: String): Boolean {
-                    return false
-                }
-            })
+            override fun onQueryTextChange(newText: String): Boolean {
+                return false
+            }
+        })
 
-            //Set event expand search view
-            MenuItemCompat.setOnActionExpandListener(searchItem, object : MenuItemCompat.OnActionExpandListener {
-                override fun onMenuItemActionExpand(menuItem: MenuItem): Boolean {
-                    showSearchFragment()
-                    return true
-                }
+        //Set event expand search view
+        MenuItemCompat.setOnActionExpandListener(searchItem, object : MenuItemCompat.OnActionExpandListener {
+            override fun onMenuItemActionExpand(menuItem: MenuItem): Boolean {
+                showSearchFragment()
+                return true
+            }
 
-                override fun onMenuItemActionCollapse(menuItem: MenuItem): Boolean {
-                    EventBus.getDefault().post(SearchEventResult(SearchEventResult.SEARCH_ACTION_COLLAPSE))
-                    removeSearchFragment()
-                    return true
-                }
-            })
-        }
+            override fun onMenuItemActionCollapse(menuItem: MenuItem): Boolean {
+                EventBus.getDefault().post(SearchEventResult(SearchEventResult.SEARCH_ACTION_COLLAPSE))
+                removeSearchFragment()
+                return true
+            }
+        })
 
         return searchView
     }
@@ -223,8 +221,8 @@ class MainActivity : AppCompatActivity() {
 
         val searchFragment = SearchFragment.newInstance()
 
-        val fragment_placeholder = findViewById<View>(R.id.fragment_search_placeholder)
-        fragment_placeholder.visibility = View.VISIBLE
+        val fragmentPlaceHolder = findViewById<View>(R.id.fragment_search_placeholder)
+        fragmentPlaceHolder.visibility = View.VISIBLE
         ft.replace(R.id.fragment_search_placeholder, searchFragment, "blankFragment")
 
         // Start the animated transition.
