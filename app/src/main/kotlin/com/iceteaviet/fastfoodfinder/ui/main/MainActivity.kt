@@ -255,6 +255,8 @@ class MainActivity : AppCompatActivity() {
         mNavHeaderScreenName = headerLayout.findViewById(R.id.tv_nav_header_screenname)
         mNavHeaderSignIn = headerLayout.findViewById(R.id.btn_nav_header_signin)
 
+        mDrawerToggle?.let { mDrawerToggle!!.drawerArrowDrawable.color = Color.WHITE }
+
         // Tie DrawerLayout events to the ActionBarToggle
         mDrawerToggle?.let { mDrawerLayout.addDrawerListener(it) }
     }

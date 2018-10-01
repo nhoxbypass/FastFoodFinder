@@ -9,6 +9,6 @@
         android:id="@+id/rv_recently_stores"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="48dp"
         android:clipToPadding="false" />
 </FrameLayout>
