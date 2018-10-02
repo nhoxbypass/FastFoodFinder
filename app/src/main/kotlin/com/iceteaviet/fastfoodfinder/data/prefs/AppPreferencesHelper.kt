@@ -38,6 +38,16 @@ class AppPreferencesHelper(context: Context) : PreferencesHelper {
         return sharedPreferences.getBoolean(key, defaultValue!!)
     }
 
+    override fun setStringSet(key: String, set: MutableSet<String>) {
+        sharedPreferences.edit()
+                .putStringSet(key, set)
+                .apply()
+    }
+
+    override fun getStringSet(key: String, defaultValue: MutableSet<String>): MutableSet<String> {
+        return sharedPreferences.getStringSet(key, defaultValue)
+    }
+
     override fun getAppLaunchFirstTime(): Boolean? {
         return sharedPreferences.getBoolean(KEY_APP_LAUNCH_FIRST_TIME, true)
     }
@@ -68,10 +78,19 @@ class AppPreferencesHelper(context: Context) : PreferencesHelper {
                 .apply()
     }
 
+    override fun getSearchHistories(): MutableSet<String> {
+        return sharedPreferences.getStringSet(KEY_SEARCH_HISTORIES, HashSet())
+    }
+
+    override fun setSearchHistories(set: MutableSet<String>) {
+        setStringSet(KEY_SEARCH_HISTORIES, set)
+    }
+
     companion object {
         private const val PREFS_NAME = "english_now_android"
         private const val KEY_APP_LAUNCH_FIRST_TIME = "app_launch_first_time"
         private const val KEY_NUMBER_OF_STORES = "number_of_stores"
         private const val KEY_CURRENT_USER_UID = "current_user_uid"
+        private const val KEY_SEARCH_HISTORIES = "search_histories"
     }
 }

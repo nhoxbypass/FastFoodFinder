@@ -33,4 +33,8 @@ interface DataManager : ClientAuth {
     fun loadStoresFromServer(activity: Activity): Single<List<Store>>
 
     fun setCurrentUser(user: User?)
+
+    fun getSearchHistories(): MutableSet<String>
+
+    fun addSearchHistories(searchContent: String)
 }

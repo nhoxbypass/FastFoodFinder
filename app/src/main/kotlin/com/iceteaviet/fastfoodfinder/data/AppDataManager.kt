@@ -30,6 +30,7 @@ class AppDataManager(context: Context, private val localStoreDataSource: StoreDa
                      private val mapsRoutingApiHelper: MapsRoutingApiHelper, private val preferencesHelper: PreferencesHelper) : DataManager {
 
     private var currentUser: User? = null
+    private lateinit var searchHistory: MutableSet<String>
 
     init {
 
@@ -176,6 +177,20 @@ class AppDataManager(context: Context, private val localStoreDataSource: StoreDa
         } else {
             preferencesHelper.setCurrentUserUid("")
         }
+    }
+
+    override fun getSearchHistories(): MutableSet<String> {
+        if (!::searchHistory.isInitialized)
+            searchHistory = preferencesHelper.getSearchHistories()
+
+        return searchHistory
+    }
+
+    override fun addSearchHistories(searchContent: String) {
+        if (!::searchHistory.isInitialized)
+            searchHistory = preferencesHelper.getSearchHistories()
+
+        searchHistory.add(searchContent)
     }
 
     companion object {
