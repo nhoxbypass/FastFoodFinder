@@ -6,7 +6,7 @@ package com.iceteaviet.fastfoodfinder.data.transport.model
 class SearchEventResult {
     var resultCode: Int = 0
         private set
-    var searchString: String? = null
+    var searchString: String = ""
         private set
     var storeType: Int = 0
         private set

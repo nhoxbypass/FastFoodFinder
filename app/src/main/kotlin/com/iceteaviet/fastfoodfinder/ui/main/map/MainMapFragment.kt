@@ -225,8 +225,11 @@ class MainMapFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, Locatio
                         })
             }
             SearchEventResult.SEARCH_ACTION_QUERY_SUBMIT -> {
+                if (searchEventResult.searchString.isBlank())
+                    return
+
                 dataManager.getLocalStoreDataSource()
-                        .findStores(searchEventResult.searchString!!)
+                        .findStores(searchEventResult.searchString)
                         .subscribe(object : SingleObserver<List<Store>> {
                             override fun onSubscribe(d: Disposable) {
 

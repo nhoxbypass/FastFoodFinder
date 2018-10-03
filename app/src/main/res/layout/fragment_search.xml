@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:background="@color/material_gray_300"
         android:orientation="vertical"
-        tools:context=".ui.main.SearchFragment">
+        tools:context=".ui.main.search.SearchFragment">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_action_container"
@@ -139,17 +139,10 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                <include
-                    android:id="@+id/layout_recent_1"
-                    layout="@layout/item_recently_search" />
-
-                <include
-                    android:id="@+id/layout_recent_2"
-                    layout="@layout/item_recently_search" />
-
-                <include
-                    android:id="@+id/layout_recent_3"
-                    layout="@layout/item_recently_search" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_recently_stores"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
                 <Button
                     android:layout_width="match_parent"
@@ -182,17 +175,10 @@
                 android:padding="16dp"
                 android:paddingRight="16dp">
 
-                <include
-                    android:id="@+id/layout_suggestion_1"
-                    layout="@layout/item_search_suggestion" />
-
-                <include
-                    android:id="@+id/layout_suggestion_2"
-                    layout="@layout/item_search_suggestion" />
-
-                <include
-                    android:id="@+id/layout_suggestion_3"
-                    layout="@layout/item_search_suggestion" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_suggested_stores"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 

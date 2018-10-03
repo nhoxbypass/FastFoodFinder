@@ -32,6 +32,7 @@ import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.transport.model.SearchEventResult
 import com.iceteaviet.fastfoodfinder.ui.ar.ArCameraActivity
 import com.iceteaviet.fastfoodfinder.ui.login.LoginActivity
+import com.iceteaviet.fastfoodfinder.ui.main.search.SearchFragment
 import com.iceteaviet.fastfoodfinder.ui.profile.ProfileFragment
 import com.iceteaviet.fastfoodfinder.ui.settings.SettingActivity
 import com.iceteaviet.fastfoodfinder.utils.e
@@ -142,7 +143,11 @@ class MainActivity : AppCompatActivity() {
                     mSearchInput!!.clearFocus()
                 }
             }
-            SearchEventResult.SEARCH_ACTION_QUERY_SUBMIT -> removeSearchFragment()
+            SearchEventResult.SEARCH_ACTION_QUERY_SUBMIT -> {
+                removeSearchFragment()
+                if (!searchEventResult.searchString.isBlank())
+                    dataManager.addSearchHistories(searchEventResult.searchString)
+            }
 
             SearchEventResult.SEARCH_ACTION_COLLAPSE -> {
             }

@@ -1,4 +1,4 @@
-package com.iceteaviet.fastfoodfinder.ui.main
+package com.iceteaviet.fastfoodfinder.ui.main.search
 
 
 import android.content.Intent
@@ -10,9 +10,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ScrollView
 import androidx.annotation.NonNull
-import androidx.annotation.Nullable
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
+import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.transport.model.SearchEventResult
 import com.iceteaviet.fastfoodfinder.ui.storelist.StoreListActivity
 import com.iceteaviet.fastfoodfinder.utils.Constant
@@ -22,7 +25,9 @@ import org.greenrobot.eventbus.EventBus
 
 
 /**
- * A simple [Fragment] subclass.
+ * Search fragment
+ *
+ * TODO: Research & apply https://developer.android.com/guide/topics/search/
  */
 class SearchFragment : Fragment() {
 
@@ -37,8 +42,16 @@ class SearchFragment : Fragment() {
     lateinit var searchMoreLayout: ViewGroup
     lateinit var searchContainer: ScrollView
 
-    private var isLoadmoreVisible: Boolean = false
+    lateinit var rvRecentlyStores: RecyclerView
+    lateinit var rvSuggestedStores: RecyclerView
+
+    private var recentlySearchAdapter: RecentlySearchStoreAdapter? = null
+    private var suggestedSearchAdapter: SuggestedSearchStoreAdapter? = null
+
+    private var isLoadMoreVisible: Boolean = false
     private var searchString: String? = null
+
+    private lateinit var dataManager: DataManager
 
     override fun onCreateView(@NonNull inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
@@ -49,6 +62,8 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        dataManager = App.getDataManager()
+
         quickSearchCircleK = btn_search_circle_k
         quickSearchFamilyMart = btn_search_family_mart
         quickSearchMiniStop = btn_search_mini_stop
@@ -58,8 +73,22 @@ class SearchFragment : Fragment() {
         cardViewQuickSearch = cv_action_container
         searchMoreLayout = ll_load_more_container
         searchContainer = sv_search_container
+        rvRecentlyStores = rv_recently_stores
+        rvSuggestedStores = rv_suggested_stores
 
+        setupUI()
         setupQuickSearchBar()
+    }
+
+    private fun setupUI() {
+        recentlySearchAdapter = RecentlySearchStoreAdapter()
+        rvRecentlyStores.layoutManager = LinearLayoutManager(context)
+        rvRecentlyStores.adapter = recentlySearchAdapter
+        recentlySearchAdapter!!.setData(dataManager.getSearchHistories())
+
+        suggestedSearchAdapter = SuggestedSearchStoreAdapter()
+        rvSuggestedStores.layoutManager = LinearLayoutManager(context)
+        rvSuggestedStores.adapter = suggestedSearchAdapter
     }
 
     private fun setupQuickSearchBar() {
@@ -96,8 +125,8 @@ class SearchFragment : Fragment() {
         quickSearchLoadMore.setOnClickListener {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 TransitionManager.beginDelayedTransition(cardViewQuickSearch)
-                isLoadmoreVisible = !isLoadmoreVisible
-                searchMoreLayout.visibility = if (isLoadmoreVisible) View.VISIBLE else View.GONE
+                isLoadMoreVisible = !isLoadMoreVisible
+                searchMoreLayout.visibility = if (isLoadMoreVisible) View.VISIBLE else View.GONE
             }
         }
 

@@ -2,6 +2,7 @@ package com.iceteaviet.fastfoodfinder.data.prefs
 
 import android.content.Context
 import android.content.SharedPreferences
+import java.util.*
 
 /**
  * Created by tom on 7/24/18.
@@ -79,7 +80,7 @@ class AppPreferencesHelper(context: Context) : PreferencesHelper {
     }
 
     override fun getSearchHistories(): MutableSet<String> {
-        return sharedPreferences.getStringSet(KEY_SEARCH_HISTORIES, HashSet())
+        return sharedPreferences.getStringSet(KEY_SEARCH_HISTORIES, TreeSet())
     }
 
     override fun setSearchHistories(set: MutableSet<String>) {

@@ -191,6 +191,7 @@ class AppDataManager(context: Context, private val localStoreDataSource: StoreDa
             searchHistory = preferencesHelper.getSearchHistories()
 
         searchHistory.add(searchContent)
+        preferencesHelper.setSearchHistories(searchHistory)
     }
 
     companion object {
