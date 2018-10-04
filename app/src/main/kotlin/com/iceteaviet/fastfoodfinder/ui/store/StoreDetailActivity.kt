@@ -75,7 +75,8 @@ class StoreDetailActivity : AppCompatActivity(), StoreDetailAdapter.StoreActionL
         if (supportActionBar != null)
             supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        collapsingToolbar.title = currentStore!!.title
+        if (currentStore != null)
+            collapsingToolbar.title = currentStore!!.title
 
         Glide.with(this)
                 .load(R.drawable.detail_sample_circlekcover)
