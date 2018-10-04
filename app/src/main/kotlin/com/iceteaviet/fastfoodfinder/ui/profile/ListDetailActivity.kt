@@ -63,7 +63,9 @@ class ListDetailActivity : AppCompatActivity() {
     }
 
     private fun loadData(intent: Intent): UserStoreList {
-        val userStoreList = intent.getParcelableExtra<UserStoreList>(KEY_USER_STORE_LIST)
+        val userStoreList = UserStoreList()
+        if (intent.hasExtra(KEY_USER_STORE_LIST))
+            intent.getParcelableExtra<UserStoreList>(KEY_USER_STORE_LIST)
         photoUrl = intent.getStringExtra(KEY_USER_PHOTO_URL)
 
         //add list store to mAdapter here

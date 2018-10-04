@@ -10,9 +10,9 @@ import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
  * Created by Genius Doan on 12/6/2016.
  */
 class UserStoreList : Parcelable {
-    var id: Int = 0
-    lateinit var listName: String
-    var iconId: Int = 0
+    var id: Int = -1
+    var listName: String = ""
+    var iconId: Int = -1
     private lateinit var storeIdList: MutableList<Int>
 
     protected constructor(`in`: Parcel) {
