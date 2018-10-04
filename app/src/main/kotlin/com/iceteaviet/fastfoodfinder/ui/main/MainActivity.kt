@@ -53,6 +53,7 @@ class MainActivity : AppCompatActivity() {
     private var mSearchInput: EditText? = null
     private var mNavHeaderSignIn: Button? = null
     private var mDrawerToggle: ActionBarDrawerToggle? = null
+    private var searchFragment: SearchFragment? = null
 
     private lateinit var dataManager: DataManager
 
@@ -198,6 +199,18 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
+                if (!searchFragment!!.isVisible)
+                    return false
+
+                if (newText.isNotBlank()) {
+                    searchFragment!!.hideOptionsContainer()
+                    searchFragment!!.showSearchContainer()
+
+                    searchFragment!!.updateSearchList(newText)
+                } else {
+                    searchFragment!!.showOptionsContainer()
+                    searchFragment!!.hideSearchContainer()
+                }
                 return false
             }
         })
@@ -224,11 +237,12 @@ class MainActivity : AppCompatActivity() {
         val ft = supportFragmentManager.beginTransaction()
         ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
 
-        val searchFragment = SearchFragment.newInstance()
+        if (searchFragment == null)
+            searchFragment = SearchFragment.newInstance()
 
         val fragmentPlaceHolder = findViewById<View>(R.id.fragment_search_placeholder)
         fragmentPlaceHolder.visibility = View.VISIBLE
-        ft.replace(R.id.fragment_search_placeholder, searchFragment, "blankFragment")
+        ft.replace(R.id.fragment_search_placeholder, searchFragment!!, "blankFragment")
 
         // Start the animated transition.
         ft.commit()

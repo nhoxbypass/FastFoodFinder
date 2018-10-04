@@ -9,17 +9,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ScrollView
+import android.widget.TextView
 import androidx.annotation.NonNull
+import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.DataManager
+import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.data.transport.model.SearchEventResult
 import com.iceteaviet.fastfoodfinder.ui.storelist.StoreListActivity
 import com.iceteaviet.fastfoodfinder.utils.Constant
 import de.hdodenhof.circleimageview.CircleImageView
+import io.reactivex.SingleObserver
+import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_search.*
 import org.greenrobot.eventbus.EventBus
 
@@ -38,15 +43,26 @@ class SearchFragment : Fragment() {
     lateinit var quickSearchBsMart: CircleImageView
     lateinit var quickSearchShopNGo: CircleImageView
 
+    lateinit var cvActionContainer: CardView
+    lateinit var cvRecentlyContainer: CardView
+    lateinit var cvTimeSuggestionContainer: CardView
+    lateinit var cvSuggestionContainer: CardView
+    lateinit var cvSearchContainer: CardView
     lateinit var cardViewQuickSearch: ViewGroup
     lateinit var searchMoreLayout: ViewGroup
     lateinit var searchContainer: ScrollView
 
+    lateinit var tvRecently: TextView
+    lateinit var tvTimeSuggestion: TextView
+    lateinit var tvSuggestion: TextView
+
     lateinit var rvRecentlyStores: RecyclerView
     lateinit var rvSuggestedStores: RecyclerView
+    lateinit var rvSearch: RecyclerView
 
     private var recentlySearchAdapter: RecentlySearchStoreAdapter? = null
     private var suggestedSearchAdapter: SuggestedSearchStoreAdapter? = null
+    private var searchAdapter: RecentlySearchStoreAdapter? = null
 
     private var isLoadMoreVisible: Boolean = false
     private var searchString: String? = null
@@ -64,6 +80,14 @@ class SearchFragment : Fragment() {
 
         dataManager = App.getDataManager()
 
+        cvActionContainer = cv_action_container
+        cvRecentlyContainer = cv_recently_container
+        cvTimeSuggestionContainer = cv_time_suggestion_container
+        cvSuggestionContainer = cv_suggestion_container
+        cvSearchContainer = cv_search_container
+        tvRecently = tv_recently
+        tvTimeSuggestion = tv_time_suggestion
+        tvSuggestion = tv_suggestion
         quickSearchCircleK = btn_search_circle_k
         quickSearchFamilyMart = btn_search_family_mart
         quickSearchMiniStop = btn_search_mini_stop
@@ -75,9 +99,56 @@ class SearchFragment : Fragment() {
         searchContainer = sv_search_container
         rvRecentlyStores = rv_recently_stores
         rvSuggestedStores = rv_suggested_stores
+        rvSearch = rv_search
 
         setupUI()
         setupQuickSearchBar()
+    }
+
+    fun hideOptionsContainer() {
+        cvActionContainer.visibility = View.GONE
+        cvRecentlyContainer.visibility = View.GONE
+        cvTimeSuggestionContainer.visibility = View.GONE
+        cvSuggestionContainer.visibility = View.GONE
+        tvRecently.visibility = View.GONE
+        tvTimeSuggestion.visibility = View.GONE
+        tvSuggestion.visibility = View.GONE
+    }
+
+    fun showSearchContainer() {
+        cvSearchContainer.visibility = View.VISIBLE
+    }
+
+    fun showOptionsContainer() {
+        cvActionContainer.visibility = View.VISIBLE
+        cvRecentlyContainer.visibility = View.VISIBLE
+        cvTimeSuggestionContainer.visibility = View.VISIBLE
+        cvSuggestionContainer.visibility = View.VISIBLE
+        tvRecently.visibility = View.VISIBLE
+        tvTimeSuggestion.visibility = View.VISIBLE
+        tvSuggestion.visibility = View.VISIBLE
+    }
+
+    fun hideSearchContainer() {
+        cvSearchContainer.visibility = View.GONE
+    }
+
+    fun updateSearchList(searchText: String) {
+        dataManager.getLocalStoreDataSource()
+                .findStores(searchText)
+                .subscribe(object : SingleObserver<List<Store>> {
+                    override fun onSubscribe(d: Disposable) {
+
+                    }
+
+                    override fun onSuccess(storeList: List<Store>) {
+                        searchAdapter!!.setStores(storeList)
+                    }
+
+                    override fun onError(e: Throwable) {
+                        e.printStackTrace()
+                    }
+                })
     }
 
     private fun setupUI() {
@@ -89,6 +160,10 @@ class SearchFragment : Fragment() {
         suggestedSearchAdapter = SuggestedSearchStoreAdapter()
         rvSuggestedStores.layoutManager = LinearLayoutManager(context)
         rvSuggestedStores.adapter = suggestedSearchAdapter
+
+        searchAdapter = RecentlySearchStoreAdapter()
+        rvSearch.layoutManager = LinearLayoutManager(context)
+        rvSearch.adapter = searchAdapter
     }
 
     private fun setupQuickSearchBar() {
