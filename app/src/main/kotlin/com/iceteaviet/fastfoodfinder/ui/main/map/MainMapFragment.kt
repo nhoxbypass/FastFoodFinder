@@ -164,6 +164,14 @@ class MainMapFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, Locatio
 
     @SuppressLint("MissingPermission")
     override fun onConnected(@Nullable bundle: Bundle?) {
+        if (mStoreList == null || mStoreList!!.isEmpty()) {
+            Toast.makeText(context, R.string.store_not_found, Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        if (mGoogleMap == null)
+            return
+
         addMarkersToMap(mStoreList, mGoogleMap)
         setMarkersListener(mGoogleMap)
 
