@@ -144,7 +144,8 @@ class MapRoutingActivity : AppCompatActivity() {
         mMapsDirection = extras.getParcelable(KEY_ROUTE_LIST)
         mCurrStore = extras.getParcelable(KEY_DES_STORE)
 
-        if (mMapsDirection == null || mCurrStore == null || mMapsDirection!!.routeList.isEmpty()) {
+        if (mMapsDirection == null || mCurrStore == null
+                || mMapsDirection!!.routeList.isEmpty() || mMapsDirection!!.routeList[0].legList.isEmpty()) {
             Toast.makeText(this@MapRoutingActivity, R.string.get_map_direction_failed, Toast.LENGTH_SHORT).show()
             finish()
         }
