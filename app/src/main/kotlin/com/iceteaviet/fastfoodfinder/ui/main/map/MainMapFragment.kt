@@ -222,7 +222,9 @@ class MainMapFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, Locatio
                                 }
 
                                 mStoreList = storeList.toMutableList()
+
                                 addMarkersToMap(mStoreList, mGoogleMap)
+                                mGoogleMap!!.animateCamera(CameraUpdateFactory.newLatLngZoom(mStoreList!![0].getPosition(), DEFAULT_ZOOM_LEVEL))
                                 mAdapter!!.setCurrCameraPosition(mGoogleMap!!.cameraPosition.target)
                                 visibleStores = getVisibleStore(mStoreList!!, mGoogleMap!!.projection.visibleRegion.latLngBounds)
                                 visibleStores?.let { mAdapter!!.setStores(it) }
@@ -251,8 +253,8 @@ class MainMapFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, Locatio
                                 }
 
                                 mStoreList = storeList.toMutableList()
-                                addMarkersToMap(mStoreList, mGoogleMap)
 
+                                addMarkersToMap(mStoreList, mGoogleMap)
                                 mGoogleMap!!.animateCamera(CameraUpdateFactory.newLatLngZoom(mStoreList!![0].getPosition(), DEFAULT_ZOOM_LEVEL))
                                 mAdapter!!.setCurrCameraPosition(mGoogleMap!!.cameraPosition.target)
                                 visibleStores = getVisibleStore(mStoreList!!, mGoogleMap!!.projection.visibleRegion.latLngBounds)
@@ -295,8 +297,9 @@ class MainMapFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, Locatio
                 if (searchEventResult.store != null) {
                     mStoreList = ArrayList()
                     mStoreList!!.add(searchEventResult.store!!)
-                    addMarkersToMap(mStoreList, mGoogleMap)
 
+                    addMarkersToMap(mStoreList, mGoogleMap)
+                    mGoogleMap!!.animateCamera(CameraUpdateFactory.newLatLngZoom(searchEventResult.store!!.getPosition(), DEFAULT_ZOOM_LEVEL))
                     mAdapter!!.clearData()
 
                     showDialogStoreInfo(searchEventResult.store!!)

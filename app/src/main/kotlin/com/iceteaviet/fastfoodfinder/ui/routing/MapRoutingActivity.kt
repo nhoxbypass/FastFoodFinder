@@ -71,13 +71,14 @@ class MapRoutingActivity : AppCompatActivity() {
         nextInstruction = btn_next_instruction
         routingButtonContainer = ll_routing_button_container
 
-        setupData()
+        if (setupData()) {
 
-        setupUI()
+            setupUI()
 
-        setupEventListeners()
+            setupEventListeners()
 
-        setUpMapIfNeeded()
+            setUpMapIfNeeded()
+        }
     }
 
     private fun setupEventListeners() {
@@ -134,11 +135,11 @@ class MapRoutingActivity : AppCompatActivity() {
         snapHelper.attachToRecyclerView(topRecyclerView)
     }
 
-    private fun setupData() {
+    private fun setupData(): Boolean {
         val extras = intent.extras
         if (extras == null) {
             finish()
-            return
+            return false
         }
 
         mMapsDirection = extras.getParcelable(KEY_ROUTE_LIST)
@@ -148,12 +149,14 @@ class MapRoutingActivity : AppCompatActivity() {
                 || mMapsDirection!!.routeList.isEmpty() || mMapsDirection!!.routeList[0].legList.isEmpty()) {
             Toast.makeText(this@MapRoutingActivity, R.string.get_map_direction_failed, Toast.LENGTH_SHORT).show()
             finish()
-            return
+            return false
         }
 
         mStepList = mMapsDirection!!.routeList[0].legList[0].stepList
         mCurrLocation = mStepList[0].startMapCoordination.location
         mGeoPointList = PolyUtil.decode(mMapsDirection!!.routeList[0].encodedPolylineString)
+
+        return true
     }
 
     private fun showDirectionAt(currDirectionIndex: Int) {
