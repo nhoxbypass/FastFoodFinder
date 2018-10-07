@@ -33,4 +33,6 @@ object Constant {
 
     @JvmStatic
     val DEFAULT_MAP_TARGET = LatLng(10.773996, 106.6898035)
+
+    const val SEARCH_STORE_PREFIX = "$-"
 }

@@ -29,7 +29,6 @@ class NearByStoreListAdapter @JvmOverloads internal constructor(@NonNull diffCal
     private var listener: StoreListListener? = null
 
     init {
-
         mListStore = ArrayList()
     }
 
@@ -47,6 +46,11 @@ class NearByStoreListAdapter @JvmOverloads internal constructor(@NonNull diffCal
         mListStore.addAll(listStores)
 
         submitList(listStores) // DiffUtil takes care of the check
+    }
+
+    fun clearData() {
+        mListStore.clear()
+        submitList(mListStore)
     }
 
     @NonNull

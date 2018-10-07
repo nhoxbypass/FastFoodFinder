@@ -35,6 +35,7 @@ import com.iceteaviet.fastfoodfinder.ui.login.LoginActivity
 import com.iceteaviet.fastfoodfinder.ui.main.search.SearchFragment
 import com.iceteaviet.fastfoodfinder.ui.profile.ProfileFragment
 import com.iceteaviet.fastfoodfinder.ui.settings.SettingActivity
+import com.iceteaviet.fastfoodfinder.utils.Constant
 import com.iceteaviet.fastfoodfinder.utils.e
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_main.*
@@ -151,6 +152,16 @@ class MainActivity : AppCompatActivity() {
             }
 
             SearchEventResult.SEARCH_ACTION_COLLAPSE -> {
+            }
+
+            SearchEventResult.SEARCH_ACTION_STORE_CLICK -> {
+                if (searchEventResult.store != null) {
+                    mSearchView!!.isIconified = true
+                    mSearchView!!.setQuery(searchEventResult.store!!.title, false)
+                    removeSearchFragment()
+
+                    dataManager.addSearchHistories(Constant.SEARCH_STORE_PREFIX + searchEventResult.store!!.id)
+                }
             }
 
             else -> Toast.makeText(this@MainActivity, R.string.search_error, Toast.LENGTH_SHORT).show()

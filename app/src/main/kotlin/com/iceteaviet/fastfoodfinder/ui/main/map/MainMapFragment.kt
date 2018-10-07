@@ -59,6 +59,7 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.util.*
 import java.util.concurrent.TimeUnit
+import kotlin.collections.ArrayList
 
 
 /**
@@ -288,6 +289,18 @@ class MainMapFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, Locatio
 
                 if (currLocation != null)
                     mGoogleMap!!.animateCamera(CameraUpdateFactory.newLatLngZoom(currLocation, DEFAULT_ZOOM_LEVEL))
+            }
+
+            SearchEventResult.SEARCH_ACTION_STORE_CLICK -> {
+                if (searchEventResult.store != null) {
+                    mStoreList = ArrayList()
+                    mStoreList!!.add(searchEventResult.store!!)
+                    addMarkersToMap(mStoreList, mGoogleMap)
+
+                    mAdapter!!.clearData()
+
+                    showDialogStoreInfo(searchEventResult.store!!)
+                }
             }
 
             else -> Toast.makeText(context, R.string.search_error, Toast.LENGTH_SHORT).show()

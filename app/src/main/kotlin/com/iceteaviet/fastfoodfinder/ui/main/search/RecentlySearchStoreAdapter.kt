@@ -80,14 +80,6 @@ class RecentlySearchStoreAdapter internal constructor() : RecyclerView.Adapter<R
         notifyDataSetChanged()
     }
 
-    fun setData(data: MutableSet<String>) {
-        storeList.clear()
-        for (s in data) {
-            storeList.add(Store(-1, s, "", "", "", "", -1))
-        }
-        notifyDataSetChanged()
-    }
-
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder.itemViewType) {
             TYPE_SEARCH_TEXT -> {

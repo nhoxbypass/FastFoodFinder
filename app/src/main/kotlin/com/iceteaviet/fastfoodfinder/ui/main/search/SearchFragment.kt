@@ -155,7 +155,7 @@ class SearchFragment : Fragment() {
         recentlySearchAdapter = RecentlySearchStoreAdapter()
         rvRecentlyStores.layoutManager = LinearLayoutManager(context)
         rvRecentlyStores.adapter = recentlySearchAdapter
-        recentlySearchAdapter!!.setData(dataManager.getSearchHistories())
+        recentlySearchAdapter!!.setStores(processSearchHistory(dataManager.getSearchHistories()))
 
         suggestedSearchAdapter = SuggestedSearchStoreAdapter()
         rvSuggestedStores.layoutManager = LinearLayoutManager(context)
@@ -164,6 +164,25 @@ class SearchFragment : Fragment() {
         searchAdapter = RecentlySearchStoreAdapter()
         rvSearch.layoutManager = LinearLayoutManager(context)
         rvSearch.adapter = searchAdapter
+        searchAdapter!!.setOnItemClickListener(object : RecentlySearchStoreAdapter.OnItemClickListener {
+            override fun onClick(store: Store) {
+                EventBus.getDefault().post(SearchEventResult(SearchEventResult.SEARCH_ACTION_STORE_CLICK, store.title!!, store))
+            }
+        })
+    }
+
+    private fun processSearchHistory(searchHistories: MutableSet<String>): List<Store> {
+        val stores: MutableList<Store> = ArrayList()
+        for (s in searchHistories) {
+            if (s.contains(Constant.SEARCH_STORE_PREFIX)) {
+                stores.addAll(dataManager.getLocalStoreDataSource()
+                        .findStoresById(s.substring(2).toInt())
+                        .blockingGet())
+            } else
+                stores.add(Store(-1, s, "", "", "", "", -1))
+        }
+
+        return stores
     }
 
     private fun setupQuickSearchBar() {
