@@ -135,7 +135,6 @@ class MainActivity : AppCompatActivity() {
         when (resultCode) {
             SearchEventResult.SEARCH_ACTION_QUICK -> {
                 mSearchView!!.setQuery(searchEventResult.searchString, false)
-                mSearchView!!.isIconified = false
                 // Check if no view has focus:
                 val view = this.currentFocus
                 if (view != null) {
@@ -156,7 +155,6 @@ class MainActivity : AppCompatActivity() {
 
             SearchEventResult.SEARCH_ACTION_STORE_CLICK -> {
                 if (searchEventResult.store != null) {
-                    mSearchView!!.isIconified = true
                     mSearchView!!.setQuery(searchEventResult.store!!.title, false)
                     removeSearchFragment()
 
@@ -184,7 +182,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    fun initSearchView(menu: Menu): SearchView? {
+    private fun initSearchView(menu: Menu): SearchView? {
         val searchView: SearchView?
 
         menuInflater.inflate(R.menu.menu_main, menu)

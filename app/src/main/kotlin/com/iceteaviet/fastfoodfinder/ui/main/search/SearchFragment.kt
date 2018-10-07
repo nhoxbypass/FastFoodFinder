@@ -156,6 +156,12 @@ class SearchFragment : Fragment() {
         rvRecentlyStores.layoutManager = LinearLayoutManager(context)
         rvRecentlyStores.adapter = recentlySearchAdapter
         recentlySearchAdapter!!.setStores(processSearchHistory(dataManager.getSearchHistories()))
+        recentlySearchAdapter!!.setOnItemClickListener(object : RecentlySearchStoreAdapter.OnItemClickListener {
+            override fun onClick(store: Store) {
+                EventBus.getDefault().post(SearchEventResult(SearchEventResult.SEARCH_ACTION_STORE_CLICK, store.title!!, store))
+            }
+
+        })
 
         suggestedSearchAdapter = SuggestedSearchStoreAdapter()
         rvSuggestedStores.layoutManager = LinearLayoutManager(context)
