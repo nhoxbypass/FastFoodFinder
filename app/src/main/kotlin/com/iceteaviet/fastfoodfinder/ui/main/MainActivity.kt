@@ -224,6 +224,14 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
+        searchView.findViewById<View>(R.id.search_close_btn)
+                .setOnClickListener {
+                    if (!searchFragment!!.isVisible) {
+                        MenuItemCompat.collapseActionView(searchItem)
+                        EventBus.getDefault().post(SearchEventResult(SearchEventResult.SEARCH_ACTION_COLLAPSE))
+                    }
+                }
+
         //Set event expand search view
         MenuItemCompat.setOnActionExpandListener(searchItem, object : MenuItemCompat.OnActionExpandListener {
             override fun onMenuItemActionExpand(menuItem: MenuItem): Boolean {
