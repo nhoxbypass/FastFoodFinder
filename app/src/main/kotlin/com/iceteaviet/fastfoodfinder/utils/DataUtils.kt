@@ -228,3 +228,17 @@ fun normalizeDistrictQuery(queryString: String): List<String> {
 
     return result
 }
+
+
+fun filterInvalidData(stores: MutableList<Store>): MutableList<Store> {
+    for (i in 0 until stores.size) {
+        val store = stores.elementAt(i)
+        if (store.id < 0)
+            stores.removeAt(i)
+
+        if (store.lat.isNullOrBlank() || store.lng.isNullOrBlank())
+            stores.removeAt(i)
+    }
+
+    return stores
+}

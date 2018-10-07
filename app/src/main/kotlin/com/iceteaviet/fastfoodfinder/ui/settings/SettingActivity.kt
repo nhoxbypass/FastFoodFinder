@@ -18,6 +18,7 @@ import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.ui.login.LoginActivity
+import com.iceteaviet.fastfoodfinder.utils.filterInvalidData
 import io.reactivex.SingleObserver
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_setting.*
@@ -183,7 +184,7 @@ class SettingActivity : AppCompatActivity() {
                         }
 
                         override fun onSuccess(storeList: List<Store>) {
-                            dataManager.getLocalStoreDataSource().setStores(storeList)
+                            dataManager.getLocalStoreDataSource().setStores(filterInvalidData(storeList.toMutableList()))
                             Toast.makeText(this@SettingActivity, R.string.update_database_successfull, Toast.LENGTH_SHORT).show()
                             imageUpdateDb.visibility = View.VISIBLE
                             progressBarUpdateDb.visibility = View.GONE

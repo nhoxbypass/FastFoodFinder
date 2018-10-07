@@ -11,6 +11,7 @@ import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
 import com.iceteaviet.fastfoodfinder.ui.login.LoginActivity
 import com.iceteaviet.fastfoodfinder.ui.main.MainActivity
+import com.iceteaviet.fastfoodfinder.utils.filterInvalidData
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -38,7 +39,7 @@ class SplashActivity : AppCompatActivity() {
                         override fun onSuccess(storeList: List<Store>) {
                             dataManager.getPreferencesHelper().setAppLaunchFirstTime(false)
                             dataManager.getPreferencesHelper().setNumberOfStores(storeList.size)
-                            dataManager.getLocalStoreDataSource().setStores(storeList)
+                            dataManager.getLocalStoreDataSource().setStores(filterInvalidData(storeList.toMutableList()))
 
                             Toast.makeText(this@SplashActivity, R.string.update_database_successfull, Toast.LENGTH_SHORT).show()
                             startMyActivity(LoginActivity::class.java)
