@@ -43,6 +43,8 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
+//TODO: Check !! of SearchView
+
 class MainActivity : AppCompatActivity() {
     lateinit var mNavigationView: NavigationView
     lateinit var mDrawerLayout: DrawerLayout
@@ -146,8 +148,11 @@ class MainActivity : AppCompatActivity() {
             }
             SearchEventResult.SEARCH_ACTION_QUERY_SUBMIT -> {
                 removeSearchFragment()
-                if (!searchEventResult.searchString.isBlank())
+                if (!searchEventResult.searchString.isBlank()) {
                     dataManager.addSearchHistories(searchEventResult.searchString)
+                    mSearchView!!.setQuery(searchEventResult.searchString, false)
+                    mSearchView!!.clearFocus()
+                }
             }
 
             SearchEventResult.SEARCH_ACTION_COLLAPSE -> {
@@ -156,6 +161,8 @@ class MainActivity : AppCompatActivity() {
             SearchEventResult.SEARCH_ACTION_STORE_CLICK -> {
                 if (searchEventResult.store != null) {
                     mSearchView!!.setQuery(searchEventResult.store!!.title, false)
+                    mSearchView!!.clearFocus()
+
                     removeSearchFragment()
 
                     dataManager.addSearchHistories(Constant.SEARCH_STORE_PREFIX + searchEventResult.store!!.id)
