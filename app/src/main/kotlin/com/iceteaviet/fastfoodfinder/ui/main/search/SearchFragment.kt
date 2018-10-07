@@ -158,7 +158,10 @@ class SearchFragment : Fragment() {
         recentlySearchAdapter!!.setStores(processSearchHistory(dataManager.getSearchHistories()).asReversed())
         recentlySearchAdapter!!.setOnItemClickListener(object : RecentlySearchStoreAdapter.OnItemClickListener {
             override fun onClick(store: Store) {
-                EventBus.getDefault().post(SearchEventResult(SearchEventResult.SEARCH_ACTION_STORE_CLICK, store.title!!, store))
+                if (store.id == -1)
+                    EventBus.getDefault().post(SearchEventResult(SearchEventResult.SEARCH_ACTION_QUERY_SUBMIT, store.title!!, store))
+                else
+                    EventBus.getDefault().post(SearchEventResult(SearchEventResult.SEARCH_ACTION_STORE_CLICK, store.title!!, store))
             }
 
         })

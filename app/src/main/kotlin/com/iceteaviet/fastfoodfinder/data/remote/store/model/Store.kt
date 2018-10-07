@@ -60,6 +60,9 @@ class Store : Parcelable {
 
     @Exclude
     fun getPosition(): LatLng {
+        if (lat!!.isBlank() || lng!!.isBlank())
+            return position
+
         if (!::position.isInitialized)
             position = LatLng(java.lang.Double.valueOf(lat)!!, java.lang.Double.valueOf(lng)!!)
         return position
