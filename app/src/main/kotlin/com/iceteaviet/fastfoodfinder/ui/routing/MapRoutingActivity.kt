@@ -148,6 +148,7 @@ class MapRoutingActivity : AppCompatActivity() {
                 || mMapsDirection!!.routeList.isEmpty() || mMapsDirection!!.routeList[0].legList.isEmpty()) {
             Toast.makeText(this@MapRoutingActivity, R.string.get_map_direction_failed, Toast.LENGTH_SHORT).show()
             finish()
+            return
         }
 
         mStepList = mMapsDirection!!.routeList[0].legList[0].stepList
