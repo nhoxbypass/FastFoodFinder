@@ -41,6 +41,7 @@ class LocalUserRepository : UserDataSource {
 
         realm.executeTransactionAsync { realm ->
             val entity = realm.where(UserEntity::class.java)
+                    .equalTo(PARAM_UID, uid)
                     .findFirst()
             if (entity != null) {
                 val userStoreListEntities = RealmList<UserStoreListEntity>()
@@ -60,6 +61,7 @@ class LocalUserRepository : UserDataSource {
             val realm = Realm.getDefaultInstance()
 
             val entity = realm.where(UserEntity::class.java)
+                    .equalTo(PARAM_UID, uid)
                     .findFirst()
             if (entity != null)
                 emitter.onSuccess(User(entity))
