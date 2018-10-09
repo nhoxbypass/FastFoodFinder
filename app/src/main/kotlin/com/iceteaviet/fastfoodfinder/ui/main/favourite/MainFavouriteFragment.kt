@@ -98,7 +98,7 @@ class MainFavouriteFragment : Fragment(), OnStartDragListener {
         val currUser = dataManager.getCurrentUser()
         if (currUser != null) {
             dataManager.getLocalStoreDataSource()
-                    .findStoresByIds(currUser.favouriteStoreList.getStoreIdList()!!)
+                    .findStoresByIds(currUser.getFavouriteStoreList().getStoreIdList()!!)
                     .subscribe(object : SingleObserver<List<Store>> {
                         override fun onSubscribe(d: Disposable) {
 
@@ -127,18 +127,18 @@ class MainFavouriteFragment : Fragment(), OnStartDragListener {
                         override fun onNext(userStoreEvent: UserStoreEvent) {
                             val store = userStoreEvent.store
                             when (userStoreEvent.eventActionCode) {
-                                UserStoreEvent.ACTION_ADDED -> if (!dataManager.getCurrentUser()!!.favouriteStoreList.getStoreIdList()!!.contains(store.id)) {
+                                UserStoreEvent.ACTION_ADDED -> if (!dataManager.getCurrentUser()!!.getFavouriteStoreList().getStoreIdList()!!.contains(store.id)) {
                                     mFavouriteAdapter!!.addStore(store)
-                                    dataManager.getCurrentUser()!!.favouriteStoreList.getStoreIdList()!!.add(store.id)
+                                    dataManager.getCurrentUser()!!.getFavouriteStoreList().getStoreIdList()!!.add(store.id)
                                 }
 
-                                UserStoreEvent.ACTION_CHANGED -> if (dataManager.getCurrentUser()!!.favouriteStoreList.getStoreIdList()!!.contains(store.id)) {
+                                UserStoreEvent.ACTION_CHANGED -> if (dataManager.getCurrentUser()!!.getFavouriteStoreList().getStoreIdList()!!.contains(store.id)) {
                                     mFavouriteAdapter!!.updateStore(store)
                                 }
 
-                                UserStoreEvent.ACTION_REMOVED -> if (dataManager.getCurrentUser()!!.favouriteStoreList.getStoreIdList()!!.contains(store.id)) {
+                                UserStoreEvent.ACTION_REMOVED -> if (dataManager.getCurrentUser()!!.getFavouriteStoreList().getStoreIdList()!!.contains(store.id)) {
                                     mFavouriteAdapter!!.removeStore(store)
-                                    dataManager.getCurrentUser()!!.favouriteStoreList.removeStore(store.id)
+                                    dataManager.getCurrentUser()!!.getFavouriteStoreList().removeStore(store.id)
                                 }
 
                                 UserStoreEvent.ACTION_MOVED -> {

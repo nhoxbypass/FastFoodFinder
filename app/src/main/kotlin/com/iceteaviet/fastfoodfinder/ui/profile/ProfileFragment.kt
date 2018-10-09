@@ -114,7 +114,7 @@ class ProfileFragment : Fragment() {
                         for (i in 0 until user.getUserStoreLists().size) {
                             listName.add(user.getUserStoreLists()[i].listName)
                         }
-                        tvFavItemsCount.text = String.format(Locale.getDefault(), "%d nơi", user.favouriteStoreList.getStoreIdList()!!.size)
+                        tvFavItemsCount.text = String.format(Locale.getDefault(), "%d nơi", user.getFavouriteStoreList().getStoreIdList()!!.size)
                         onListener()
                     }
 

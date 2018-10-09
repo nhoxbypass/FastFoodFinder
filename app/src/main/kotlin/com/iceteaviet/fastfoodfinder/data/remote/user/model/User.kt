@@ -15,17 +15,16 @@ class User {
     lateinit var photoUrl: String
     private lateinit var userStoreLists: MutableList<UserStoreList>
 
-    val favouriteStoreList: UserStoreList
-        get() {
-            for (i in userStoreLists.indices) {
-                if (userStoreLists[i].id == UserStoreList.ID_FAVOURITE) {
-                    return userStoreLists[i]
-                }
+    fun getFavouriteStoreList(): UserStoreList {
+        for (i in userStoreLists.indices) {
+            if (userStoreLists[i].id == UserStoreList.ID_FAVOURITE) {
+                return userStoreLists[i]
             }
-
-            wtf(User::class.java.name, "Cannot find favourite list !!!")
-            return UserStoreList()
         }
+
+        wtf(User::class.java.name, "Cannot find favourite list !!!")
+        return UserStoreList()
+    }
 
     constructor()
 
