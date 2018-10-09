@@ -12,6 +12,7 @@ import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
 import com.iceteaviet.fastfoodfinder.ui.login.LoginActivity
 import com.iceteaviet.fastfoodfinder.ui.main.MainActivity
 import com.iceteaviet.fastfoodfinder.utils.filterInvalidData
+import com.iceteaviet.fastfoodfinder.utils.isValidUserUid
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -53,23 +54,26 @@ class SplashActivity : AppCompatActivity() {
                     })
         } else {
             if (dataManager.isSignedIn()) {
-                // User still signed in
-                dataManager.getRemoteUserDataSource().getUser(dataManager.getCurrentUserUid())
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(Schedulers.io())
-                        .subscribe(object : SingleObserver<User> {
-                            override fun onSubscribe(d: Disposable) {
+                val uid = dataManager.getCurrentUserUid()
+                if (isValidUserUid(uid)) {
+                    // User still signed in
+                    dataManager.getRemoteUserDataSource().getUser(uid)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(Schedulers.io())
+                            .subscribe(object : SingleObserver<User> {
+                                override fun onSubscribe(d: Disposable) {
 
-                            }
+                                }
 
-                            override fun onSuccess(user: User) {
-                                dataManager.setCurrentUser(user)
-                            }
+                                override fun onSuccess(user: User) {
+                                    dataManager.setCurrentUser(user)
+                                }
 
-                            override fun onError(e: Throwable) {
-                                e.printStackTrace()
-                            }
-                        })
+                                override fun onError(e: Throwable) {
+                                    e.printStackTrace()
+                                }
+                            })
+                }
 
                 startMyActivity(MainActivity::class.java)
             } else {

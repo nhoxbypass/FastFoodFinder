@@ -20,6 +20,7 @@ import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList
 import com.iceteaviet.fastfoodfinder.ui.profile.ListDetailActivity.Companion.KEY_USER_PHOTO_URL
 import com.iceteaviet.fastfoodfinder.ui.profile.ListDetailActivity.Companion.KEY_USER_STORE_LIST
 import com.iceteaviet.fastfoodfinder.utils.Constant
+import com.iceteaviet.fastfoodfinder.utils.isValidUserUid
 import io.reactivex.SingleObserver
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_profile.*
@@ -97,7 +98,11 @@ class ProfileFragment : Fragment() {
     }
 
     private fun getCurrentUserData() {
-        dataManager.getRemoteUserDataSource().getUser(dataManager.getCurrentUserUid())
+        val uid = dataManager.getCurrentUserUid()
+        if (!isValidUserUid(uid))
+            return
+
+        dataManager.getRemoteUserDataSource().getUser(uid)
                 .subscribe(object : SingleObserver<User> {
                     override fun onSubscribe(d: Disposable) {
 

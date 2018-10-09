@@ -13,6 +13,7 @@ import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
 import com.iceteaviet.fastfoodfinder.utils.Constant
 import com.iceteaviet.fastfoodfinder.utils.isEmpty
+import com.iceteaviet.fastfoodfinder.utils.isValidUserUid
 import com.iceteaviet.fastfoodfinder.utils.w
 import io.reactivex.Single
 import io.reactivex.SingleObserver
@@ -156,7 +157,7 @@ class AppDataManager(context: Context, private val localStoreDataSource: StoreDa
     override fun getCurrentUser(): User? {
         if (currentUser == null) {
             val uid = getCurrentUserUid()
-            if (!uid.isBlank() && uid != "null") {
+            if (isValidUserUid(uid)) {
                 try {
                     currentUser = localUserDataSource.getUser(uid)
                             .blockingGet()

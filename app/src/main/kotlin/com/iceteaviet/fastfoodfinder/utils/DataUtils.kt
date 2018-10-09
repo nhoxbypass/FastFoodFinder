@@ -242,3 +242,7 @@ fun filterInvalidData(stores: MutableList<Store>): MutableList<Store> {
 
     return stores
 }
+
+fun isValidUserUid(uid: String): Boolean {
+    return !uid.isBlank() && uid != "null"
+}
