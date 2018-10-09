@@ -115,7 +115,7 @@ class StoreInfoDialogFragment : DialogFragment() {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     startActivity(getCallIntent(store!!.tel!!))
                 } else {
-                    Toast.makeText(context, R.string.permission_denied, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(activity, R.string.permission_denied, Toast.LENGTH_SHORT).show()
                 }
             }
 

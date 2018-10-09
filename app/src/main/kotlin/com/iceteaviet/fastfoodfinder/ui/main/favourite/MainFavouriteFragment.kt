@@ -150,7 +150,8 @@ class MainFavouriteFragment : Fragment(), OnStartDragListener {
                         }
 
                         override fun onError(e: Throwable) {
-                            Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+                            if (isAdded)
+                                Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
                         }
 
                         override fun onComplete() {

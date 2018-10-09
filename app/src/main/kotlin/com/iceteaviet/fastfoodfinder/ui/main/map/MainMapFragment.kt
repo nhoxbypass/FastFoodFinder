@@ -216,7 +216,7 @@ class MainMapFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, Locatio
                             }
 
                             override fun onSuccess(storeList: List<Store>) {
-                                if (storeList.isEmpty()) {
+                                if (storeList.isEmpty() && isAdded) {
                                     Toast.makeText(context, R.string.store_not_found, Toast.LENGTH_SHORT).show()
                                     return
                                 }
@@ -231,7 +231,8 @@ class MainMapFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, Locatio
                             }
 
                             override fun onError(e: Throwable) {
-                                Toast.makeText(context, R.string.get_store_data_failed, Toast.LENGTH_SHORT).show()
+                                if (isAdded)
+                                    Toast.makeText(context, R.string.get_store_data_failed, Toast.LENGTH_SHORT).show()
                             }
                         })
             }
@@ -247,7 +248,7 @@ class MainMapFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, Locatio
                             }
 
                             override fun onSuccess(storeList: List<Store>) {
-                                if (storeList.isEmpty()) {
+                                if (storeList.isEmpty() && isAdded) {
                                     Toast.makeText(context, R.string.store_not_found, Toast.LENGTH_SHORT).show()
                                     return
                                 }
@@ -262,7 +263,8 @@ class MainMapFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, Locatio
                             }
 
                             override fun onError(e: Throwable) {
-                                Toast.makeText(context, R.string.get_store_data_failed, Toast.LENGTH_SHORT).show()
+                                if (isAdded)
+                                    Toast.makeText(context, R.string.get_store_data_failed, Toast.LENGTH_SHORT).show()
                             }
                         })
             }
@@ -275,7 +277,7 @@ class MainMapFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, Locatio
                             }
 
                             override fun onSuccess(storeList: List<Store>) {
-                                if (storeList.isEmpty()) {
+                                if (storeList.isEmpty() && isAdded) {
                                     Toast.makeText(context, R.string.get_store_data_failed, Toast.LENGTH_SHORT).show()
                                     return
                                 }
@@ -285,7 +287,8 @@ class MainMapFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, Locatio
                             }
 
                             override fun onError(e: Throwable) {
-                                Toast.makeText(context, R.string.get_store_data_failed, Toast.LENGTH_SHORT).show()
+                                if (isAdded)
+                                    Toast.makeText(context, R.string.get_store_data_failed, Toast.LENGTH_SHORT).show()
                             }
                         })
 
@@ -385,12 +388,13 @@ class MainMapFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, Locatio
 
                     override fun onSuccess(storeList: List<Store>) {
                         mStoreList = storeList.toMutableList()
-                        if (mStoreList == null || mStoreList!!.size <= 0)
+                        if ((mStoreList == null || mStoreList!!.size <= 0) && isAdded)
                             Toast.makeText(context, R.string.get_store_data_failed, Toast.LENGTH_SHORT).show()
                     }
 
                     override fun onError(e: Throwable) {
-                        Toast.makeText(context, R.string.get_store_data_failed, Toast.LENGTH_SHORT).show()
+                        if (isAdded)
+                            Toast.makeText(context, R.string.get_store_data_failed, Toast.LENGTH_SHORT).show()
                     }
                 })
     }
