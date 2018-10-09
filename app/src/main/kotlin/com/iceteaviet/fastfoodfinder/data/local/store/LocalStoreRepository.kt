@@ -172,32 +172,34 @@ class LocalStoreRepository : StoreDataSource {
     }
 
     override fun findStoresBy(key: String, values: List<Int>): Single<MutableList<Store>> {
-        return if (values.isEmpty()) Single.error(EmptyParamsException()) else Single.create { emitter ->
-            val realm = Realm.getDefaultInstance()
-            val storeList = ArrayList<Store>()
+        if (values.isEmpty())
+            return Single.error(EmptyParamsException())
+        else
+            return Single.create { emitter ->
+                val realm = Realm.getDefaultInstance()
+                val storeList = ArrayList<Store>()
 
-            val query = realm.where(StoreEntity::class.java)
+                val query = realm.where(StoreEntity::class.java)
 
-            query.equalTo(key, values[0])
-            for (i in 1 until values.size) {
-                query.or().equalTo(key, values[i])
-            }
-
-            val results = query.findAll()
-
-            val size = results.size
-            for (i in 0 until size) {
-                val storeEntity = results[i]
-                if (storeEntity != null) {
-                    val store = Store(storeEntity)
-                    storeList.add(store)
+                query.equalTo(key, values[0])
+                for (i in 1 until values.size) {
+                    query.or().equalTo(key, values[i])
                 }
+
+                val results = query.findAll()
+
+                val size = results.size
+                for (i in 0 until size) {
+                    val storeEntity = results[i]
+                    if (storeEntity != null) {
+                        val store = Store(storeEntity)
+                        storeList.add(store)
+                    }
+                }
+
+                realm.close()
+                emitter.onSuccess(storeList)
             }
-
-            realm.close()
-            emitter.onSuccess(storeList)
-        }
-
     }
 
     override fun findStoresByType(type: Int): Single<MutableList<Store>> {
@@ -219,6 +221,8 @@ class LocalStoreRepository : StoreDataSource {
         realm.where(StoreEntity::class.java)
                 .findAll()
                 .deleteAllFromRealm()
+
+        realm.close()
     }
 
     fun clearCache() {
