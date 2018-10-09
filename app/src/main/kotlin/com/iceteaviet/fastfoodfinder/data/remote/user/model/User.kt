@@ -41,9 +41,9 @@ class User {
         this.email = entity.email
         this.uid = entity.uid
         this.photoUrl = entity.photoUrl
-        this.userStoreLists = ArrayList()
 
         val userStoreListEntities: List<UserStoreListEntity> = realmListToList(entity.userStoreLists)
+        this.userStoreLists = ArrayList()
         for (i in userStoreListEntities.indices) {
             this.userStoreLists.add(UserStoreList(userStoreListEntities[i]))
         }
