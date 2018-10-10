@@ -45,7 +45,7 @@ import org.greenrobot.eventbus.ThreadMode
 
 //TODO: Check !! of SearchView
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), View.OnClickListener {
     lateinit var mNavigationView: NavigationView
     lateinit var mDrawerLayout: DrawerLayout
     lateinit var mToolbar: Toolbar
@@ -57,6 +57,9 @@ class MainActivity : AppCompatActivity() {
     private var mNavHeaderSignIn: Button? = null
     private var mDrawerToggle: ActionBarDrawerToggle? = null
     private var searchFragment: SearchFragment? = null
+
+    private var searchItem: MenuItem? = null
+    private var profileItem: MenuItem? = null
 
     private lateinit var dataManager: DataManager
 
@@ -173,6 +176,28 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onClick(view: View) {
+        when (view.id) {
+            R.id.search_close_btn -> {
+                if (!searchFragment!!.isVisible) {
+                    MenuItemCompat.collapseActionView(searchItem)
+                    EventBus.getDefault().post(SearchEventResult(SearchEventResult.SEARCH_ACTION_COLLAPSE))
+                }
+            }
+
+            R.id.btn_nav_header_signin -> {
+                val intent = Intent(this@MainActivity, LoginActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
+
+            R.id.iv_nav_header_avatar, R.id.tv_nav_header_name, R.id.tv_nav_header_screenname -> {
+                if (profileItem != null)
+                    replaceFragment(ProfileFragment::class.java, profileItem!!)
+            }
+        }
+    }
+
 
     private fun initAuth() {
         if (dataManager.getCurrentUser() == null) {
@@ -193,7 +218,7 @@ class MainActivity : AppCompatActivity() {
         val searchView: SearchView?
 
         menuInflater.inflate(R.menu.menu_main, menu)
-        val searchItem = menu.findItem(R.id.action_search) ?: return null
+        searchItem = menu.findItem(R.id.action_search) ?: return null
 
         val searchManager = this@MainActivity.getSystemService(Context.SEARCH_SERVICE) as SearchManager
 
@@ -231,13 +256,7 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        searchView.findViewById<View>(R.id.search_close_btn)
-                .setOnClickListener {
-                    if (!searchFragment!!.isVisible) {
-                        MenuItemCompat.collapseActionView(searchItem)
-                        EventBus.getDefault().post(SearchEventResult(SearchEventResult.SEARCH_ACTION_COLLAPSE))
-                    }
-                }
+        searchView.findViewById<View>(R.id.search_close_btn).setOnClickListener(this)
 
         //Set event expand search view
         MenuItemCompat.setOnActionExpandListener(searchItem, object : MenuItemCompat.OnActionExpandListener {
@@ -296,6 +315,8 @@ class MainActivity : AppCompatActivity() {
         mNavHeaderScreenName = headerLayout.findViewById(R.id.tv_nav_header_screenname)
         mNavHeaderSignIn = headerLayout.findViewById(R.id.btn_nav_header_signin)
 
+        profileItem = mNavigationView.menu.findItem(R.id.menu_action_profile)
+
         mDrawerToggle?.let { mDrawerToggle!!.drawerArrowDrawable.color = Color.WHITE }
 
         // Tie DrawerLayout events to the ActionBarToggle
@@ -303,11 +324,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupEventListeners() {
-        mNavHeaderSignIn!!.setOnClickListener {
-            val intent = Intent(this@MainActivity, LoginActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
+        mNavHeaderAvatar!!.setOnClickListener(this)
+        mNavHeaderName!!.setOnClickListener(this)
+        mNavHeaderScreenName!!.setOnClickListener(this)
+
+        mNavHeaderSignIn!!.setOnClickListener(this)
 
         mNavigationView.setNavigationItemSelectedListener { item ->
             selectDrawerItem(item)
@@ -318,13 +339,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun selectDrawerItem(menuItem: MenuItem) {
         // Create a new fragment and specify the fragment to show based on nav item clicked
-        var fragment: Fragment? = null
         val fragmentClass: Class<*>
 
         when (menuItem.itemId) {
             R.id.menu_action_profile -> {
                 fragmentClass = ProfileFragment::class.java
-                fragment = ProfileFragment.newInstance()
             }
             R.id.menu_action_map -> fragmentClass = MainFragment::class.java
             R.id.menu_action_ar -> {
@@ -344,8 +363,12 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        replaceFragment(fragmentClass, menuItem)
+    }
+
+    private fun replaceFragment(fragmentClass: Class<*>, menuItem: MenuItem) {
         try {
-            fragment = fragmentClass.newInstance() as Fragment
+            val fragment = fragmentClass.newInstance() as Fragment
 
             // Insert the fragment by replacing any existing fragment
             val fragmentManager = supportFragmentManager
