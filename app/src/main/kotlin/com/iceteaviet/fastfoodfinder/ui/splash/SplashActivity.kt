@@ -2,6 +2,8 @@ package com.iceteaviet.fastfoodfinder.ui.splash
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.iceteaviet.fastfoodfinder.App
@@ -19,11 +21,18 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
 class SplashActivity : AppCompatActivity() {
+
+    companion object {
+        const val SPLASH_DELAY_TIME = 500;
+    }
+
     private lateinit var dataManager: DataManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
+
+        val start = System.currentTimeMillis()
 
         dataManager = App.getDataManager()
 
@@ -49,7 +58,7 @@ class SplashActivity : AppCompatActivity() {
                         override fun onError(e: Throwable) {
                             dataManager.signOut()
                             e.printStackTrace()
-                            startMyActivity(MainActivity::class.java)
+                            waitAndStartActivity(start)
                         }
                     })
         } else {
@@ -75,10 +84,22 @@ class SplashActivity : AppCompatActivity() {
                             })
                 }
 
-                startMyActivity(MainActivity::class.java)
+                waitAndStartActivity(start)
             } else {
-                startMyActivity(MainActivity::class.java)
+                waitAndStartActivity(start)
             }
+        }
+    }
+
+    private fun waitAndStartActivity(start: Long) {
+        val remainTime = SPLASH_DELAY_TIME - (System.currentTimeMillis() - start)
+        if (remainTime > 0) {
+            Handler(Looper.getMainLooper())
+                    .postDelayed({
+                        startMyActivity(MainActivity::class.java)
+                    }, remainTime)
+        } else {
+            startMyActivity(MainActivity::class.java)
         }
     }
 
