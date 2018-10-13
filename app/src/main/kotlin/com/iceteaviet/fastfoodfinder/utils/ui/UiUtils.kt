@@ -85,7 +85,7 @@ fun getRandomStoreImages(numb: Int): List<Int> {
     val r = Random()
 
     for (i in 0..numb) {
-        val id = STORE_IMAGES[r.nextInt()]
+        val id = STORE_IMAGES[r.nextInt(4)]
         if (!res.contains(id))
             res.add(id)
     }

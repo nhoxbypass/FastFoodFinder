@@ -16,20 +16,24 @@ import kotlinx.android.synthetic.main.store_list.view.*
 /**
  * Created by tom on 10/12/18.
  */
-class StoreListView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = R.attr.cardViewStyle) : CardView(context, attrs, defStyleAttr) {
+class StoreListView constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : CardView(context, attrs, defStyleAttr) {
     companion object {
         const val DEFAULT_PADDING = 2
         const val DEFAULT_INFO_HEIGHT = 40
         const val DEFAULT_ICON_HEIGHT = 80
     }
 
-    var imageView1: ImageView
-    var imageView2: ImageView
-    var imageView3: ImageView
-    var imageView4: ImageView
-    var tvName: TextView
-    var tvCount: TextView
-    var ivIcon: CircleImageView
+    constructor(context: Context) : this(context, null)
+
+    constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, R.attr.cardViewStyle)
+
+    private var imageView1: ImageView
+    private var imageView2: ImageView
+    private var imageView3: ImageView
+    private var imageView4: ImageView
+    private var tvName: TextView
+    private var tvCount: TextView
+    private var ivIcon: CircleImageView
 
     init {
         if (width == LinearLayout.LayoutParams.WRAP_CONTENT && height == LinearLayout.LayoutParams.WRAP_CONTENT) {
