@@ -11,6 +11,8 @@ import com.google.android.gms.maps.model.Marker
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.utils.Constant
 import com.iceteaviet.fastfoodfinder.utils.resizeMarkerIcon
+import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * Created by tom on 7/10/18.
@@ -72,4 +74,27 @@ fun animateMarker(bitmap: Bitmap, marker: Marker?) {
         }
     }
     animator.start()
+}
+
+val STORE_IMAGES = arrayListOf(R.drawable.detail_sample_food_1, R.drawable.detail_sample_food_2,
+        R.drawable.detail_sample_food_3, R.drawable.detail_sample_food_4)
+
+fun getRandomStoreImages(numb: Int): List<Int> {
+    val res = ArrayList<Int>()
+
+    val r = Random()
+
+    for (i in 0..numb) {
+        val id = STORE_IMAGES[r.nextInt()]
+        if (!res.contains(id))
+            res.add(id)
+    }
+
+    if (res.size < numb) {
+        for (i in res.size..numb) {
+            res.add(R.drawable.all_placeholder)
+        }
+    }
+
+    return res
 }

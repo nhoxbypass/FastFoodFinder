@@ -104,6 +104,7 @@
     <string name="successfully">Successfully</string>
     <string name="ok">Ok</string>
     <string name="store_not_found">Store not found!</string>
+    <string name="count_places">%s places</string>
 
 </resources>
 

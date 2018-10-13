@@ -2,13 +2,14 @@ package com.iceteaviet.fastfoodfinder.ui.custom.store
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.annotation.DrawableRes
 import androidx.cardview.widget.CardView
 import com.iceteaviet.fastfoodfinder.R
+import com.iceteaviet.fastfoodfinder.utils.ui.getRandomStoreImages
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.store_list.view.*
 
@@ -31,7 +32,6 @@ class StoreListView @JvmOverloads constructor(context: Context, attrs: Attribute
     var ivIcon: CircleImageView
 
     init {
-        Log.e("Genius", "w: " + width + ", h: " + height)
         if (width == LinearLayout.LayoutParams.WRAP_CONTENT && height == LinearLayout.LayoutParams.WRAP_CONTENT) {
             View.inflate(context, R.layout.store_list, this)
 
@@ -77,16 +77,47 @@ class StoreListView @JvmOverloads constructor(context: Context, attrs: Attribute
             tvName = TextView(context)
             params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
             params.topMargin = width - DEFAULT_INFO_HEIGHT
-            tvName.text = context.getString(R.string.my_save_places)
 
             tvCount = TextView(context)
             params.topMargin = width - DEFAULT_INFO_HEIGHT + 16
-            tvCount.text = context.getString(R.string._3_places)
 
             ivIcon = CircleImageView(context)
             params = LinearLayout.LayoutParams(DEFAULT_ICON_HEIGHT, DEFAULT_ICON_HEIGHT)
             params.topMargin = imgHeight - DEFAULT_ICON_HEIGHT / 2
-            ivIcon.setImageResource(R.drawable.ic_profile_saved)
+
+            addView(tvName)
+            addView(tvCount)
+            addView(ivIcon)
         }
+
+        setupData()
+    }
+
+    private fun setupData() {
+        initRandomImages()
+        tvName.text = context.getString(R.string.my_save_places)
+        tvCount.text = context.getString(R.string._3_places)
+        ivIcon.setImageResource(R.drawable.ic_profile_saved)
+    }
+
+    private fun initRandomImages() {
+        val imgs = getRandomStoreImages(4)
+
+        imageView1.setImageResource(imgs[0])
+        imageView2.setImageResource(imgs[1])
+        imageView3.setImageResource(imgs[2])
+        imageView4.setImageResource(imgs[3])
+    }
+
+    fun setIcon(@DrawableRes resId: Int) {
+        ivIcon.setImageResource(resId)
+    }
+
+    fun setName(name: String) {
+        tvName.text = name
+    }
+
+    fun setCount(count: String) {
+        tvCount.text = String.format(context.getString(R.string.count_places), count)
     }
 }
