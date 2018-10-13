@@ -198,8 +198,8 @@ class ARCamera(context: Context, surfaceView: SurfaceView) : ViewGroup(context),
     }
 
     companion object {
-        private val Z_NEAR = 0.5f
-        private val Z_FAR = 2000f
+        private const val Z_NEAR = 0.5f
+        private const val Z_FAR = 2000f
     }
 
 }

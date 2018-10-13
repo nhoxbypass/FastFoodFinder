@@ -24,6 +24,7 @@ import com.iceteaviet.fastfoodfinder.utils.isValidUserUid
 import io.reactivex.SingleObserver
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_profile.*
+import kotlinx.android.synthetic.main.store_list.view.*
 import java.util.*
 
 
@@ -62,7 +63,7 @@ class ProfileFragment : Fragment() {
         cvSavePlace = cv_saved_places
         cvCheckinPlace = cv_checkin_places
         cvFavouritePlace = cv_favourite_places
-        tvFavItemsCount = fav_list_items_count
+        tvFavItemsCount = cvFavouritePlace.tv_list_count
 
         mAdapter = UserStoreListAdapter()
         val mLayoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
