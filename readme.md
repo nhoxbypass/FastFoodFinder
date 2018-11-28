@@ -1,6 +1,6 @@
 # CoderSchool Final Project - *Fastfood Finder*
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/5ae8369fb08c4d009d6fd95ce752b23c)](https://www.codacy.com/app/nhoxbypass/FastFoodFinder?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=HCMUS-AssignmentWarehouse/FastFoodFinder&amp;utm_campaign=Badge_Grade)
+[![Build Status](https://travis-ci.org/HCMUSAssignmentWarehouse/FastFoodFinder.svg?branch=master)](https://travis-ci.org/HCMUSAssignmentWarehouse/FastFoodFinder) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/5ae8369fb08c4d009d6fd95ce752b23c)](https://www.codacy.com/app/nhoxbypass/FastFoodFinder?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=HCMUS-AssignmentWarehouse/FastFoodFinder&amp;utm_campaign=Badge_Grade)
 
 **Fastfood Finder** is an awesome android app that allows a users to find some fast food stores or convinient stores around where their standing. And with this app he can do the other fantastic things.
 
