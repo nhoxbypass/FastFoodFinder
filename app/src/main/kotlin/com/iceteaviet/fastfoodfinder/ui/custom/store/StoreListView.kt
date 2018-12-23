@@ -61,7 +61,8 @@ class StoreListView constructor(context: Context, attrs: AttributeSet?, defStyle
                 .apply {
                     try {
                         tvName.text = getString(R.styleable.StoreListView_name)
-                        tvCount.text = getInteger(R.styleable.StoreListView_count, 0).toString()
+                        tvCount.text = String.format(context.getString(R.string.count_places),
+                                getInteger(R.styleable.StoreListView_count, 0).toString())
                         ivIcon.setImageDrawable(getDrawable(R.styleable.StoreListView_icon))
                     } finally {
                         recycle()
