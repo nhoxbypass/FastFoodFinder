@@ -15,17 +15,6 @@ class User {
     lateinit var photoUrl: String
     private lateinit var userStoreLists: MutableList<UserStoreList>
 
-    fun getFavouriteStoreList(): UserStoreList {
-        for (i in userStoreLists.indices) {
-            if (userStoreLists[i].id == UserStoreList.ID_FAVOURITE) {
-                return userStoreLists[i]
-            }
-        }
-
-        wtf(User::class.java.name, "Cannot find favourite list !!!")
-        return UserStoreList()
-    }
-
     constructor()
 
     constructor(name: String, email: String, photoUrl: String, uid: String, storeLists: MutableList<UserStoreList>) {
@@ -63,5 +52,27 @@ class User {
 
     fun removeStoreList(position: Int) {
         userStoreLists.removeAt(position)
+    }
+
+    fun getFavouriteStoreList(): UserStoreList {
+        for (i in userStoreLists.indices) {
+            if (userStoreLists[i].id == UserStoreList.ID_FAVOURITE) {
+                return userStoreLists[i]
+            }
+        }
+
+        wtf(User::class.java.name, "Cannot find favourite list !!!")
+        return UserStoreList()
+    }
+
+    fun getSavedStoreList(): UserStoreList {
+        for (i in userStoreLists.indices) {
+            if (userStoreLists[i].id == UserStoreList.ID_SAVED) {
+                return userStoreLists[i]
+            }
+        }
+
+        wtf(User::class.java.name, "Cannot find saved list !!!")
+        return UserStoreList()
     }
 }

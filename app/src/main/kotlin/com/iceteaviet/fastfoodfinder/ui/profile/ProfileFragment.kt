@@ -70,7 +70,7 @@ class ProfileFragment : Fragment() {
             dataManager.setCurrentUser(User(getString(R.string.unregistered_user), getString(R.string.unregistered_email), Constant.NO_AVATAR_PLACEHOLDER_URL, "null", ArrayList()))
 
         if (dataManager.isSignedIn()) {
-            getCurrentUserData()
+            loadCurrentUserData()
         }
     }
 
@@ -92,7 +92,7 @@ class ProfileFragment : Fragment() {
         item.isVisible = false
     }
 
-    private fun getCurrentUserData() {
+    private fun loadCurrentUserData() {
         val uid = dataManager.getCurrentUserUid()
         if (!isValidUserUid(uid))
             return
@@ -114,7 +114,9 @@ class ProfileFragment : Fragment() {
                         for (i in 0 until user.getUserStoreLists().size) {
                             listName.add(user.getUserStoreLists()[i].listName)
                         }
-                        cvFavouritePlace.setCount(String.format(Locale.getDefault(), "%d nơi", user.getFavouriteStoreList().getStoreIdList()!!.size))
+
+                        fillStoreListPreviewData(user)
+
                         onListener()
                     }
 
@@ -122,6 +124,11 @@ class ProfileFragment : Fragment() {
                         e.printStackTrace()
                     }
                 })
+    }
+
+    private fun fillStoreListPreviewData(user: User) {
+        cvSavePlace.setCount(user.getSavedStoreList().getStoreIdList()!!.size.toString())
+        cvFavouritePlace.setCount(user.getFavouriteStoreList().getStoreIdList()!!.size.toString())
     }
 
     fun onListener() {
