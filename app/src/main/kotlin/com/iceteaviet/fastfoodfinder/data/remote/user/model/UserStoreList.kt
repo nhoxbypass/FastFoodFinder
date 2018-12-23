@@ -82,7 +82,6 @@ class UserStoreList : Parcelable {
     companion object CREATOR : Parcelable.Creator<UserStoreList> {
         const val ID_SAVED = 0
         const val ID_FAVOURITE = 1
-        const val ID_CHECKED_IN = 2
 
         override fun createFromParcel(parcel: Parcel): UserStoreList {
             return UserStoreList(parcel)
