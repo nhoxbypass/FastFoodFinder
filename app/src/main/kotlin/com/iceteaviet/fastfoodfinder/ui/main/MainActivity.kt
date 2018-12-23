@@ -192,8 +192,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
 
             R.id.iv_nav_header_avatar, R.id.tv_nav_header_name, R.id.tv_nav_header_screenname -> {
-                if (profileItem != null)
+                if (profileItem != null) {
                     replaceFragment(ProfileFragment::class.java, profileItem!!)
+                    // Close the navigation drawer
+                    mDrawerLayout.closeDrawers()
+                }
             }
         }
     }
@@ -341,10 +344,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         when (menuItem.itemId) {
             R.id.menu_action_profile -> {
                 replaceFragment(ProfileFragment::class.java, menuItem)
+                // Close the navigation drawer
+                mDrawerLayout.closeDrawers()
                 return
             }
             R.id.menu_action_map -> {
                 replaceFragment(MainFragment::class.java, menuItem)
+                // Close the navigation drawer
+                mDrawerLayout.closeDrawers()
                 return
             }
             R.id.menu_action_ar -> {
@@ -375,8 +382,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             menuItem.isChecked = true
             // Set action bar title
             title = menuItem.title
-            // Close the ic_search_navigation drawer
-            mDrawerLayout.closeDrawers()
         } catch (e: Exception) {
             e.printStackTrace()
         }
