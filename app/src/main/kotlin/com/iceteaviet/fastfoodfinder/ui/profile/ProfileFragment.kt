@@ -88,6 +88,49 @@ class ProfileFragment : Fragment(), View.OnClickListener {
             R.id.cv_favourite_places -> {
                 return
             }
+
+            R.id.ivCoverImage -> {
+                btnUpdateCoverImage!!.visibility = View.VISIBLE
+                return
+            }
+
+            R.id.btnUpdateCoverImage -> {
+                mDialog = DialogUpdateCoverImage.newInstance()
+                mDialog!!.setOnButtonClickListener(object : DialogUpdateCoverImage.OnButtonClickListener {
+                    override fun onButtonClickListener(Id: Int, bmp: Bitmap?) {
+                        if (Id != 0)
+                            if (Id == -1) {
+                                ivCoverImage!!.setImageBitmap(bmp)
+                            } else {
+                                ivCoverImage!!.setImageResource(Id)
+                            }
+
+                        mDialog!!.show(fragmentManager, "")
+
+                        btnUpdateCoverImage!!.visibility = View.GONE
+                    }
+                })
+
+                cvSavePlace.setOnClickListener { sendToDetailListActivity(defaultList[UserStoreList.ID_SAVED]) }
+                cvFavouritePlace.setOnClickListener { sendToDetailListActivity(defaultList[UserStoreList.ID_FAVOURITE]) }
+
+                mAdapter!!.setOnItemLongClickListener(object : UserStoreListAdapter.OnItemLongClickListener {
+                    override fun onClick(position: Int) {
+                        val currentUser = dataManager.getCurrentUser()
+                        tvNumberList!!.text = String.format("(%s)", mAdapter!!.itemCount.toString())
+                        currentUser!!.removeStoreList(position)
+                        dataManager.getRemoteUserDataSource().updateStoreListForUser(currentUser.uid, currentUser.getUserStoreLists())
+                    }
+                })
+
+                mAdapter!!.setOnItemClickListener(object : UserStoreListAdapter.OnItemClickListener {
+                    override fun onClick(listPacket: UserStoreList) {
+                        sendToDetailListActivity(listPacket)
+                    }
+                })
+
+                return
+            }
         }
     }
 
@@ -106,6 +149,8 @@ class ProfileFragment : Fragment(), View.OnClickListener {
         btnCreateNew.setOnClickListener(this)
         cvSavePlace.setOnClickListener(this)
         cvFavouritePlace.setOnClickListener(this)
+        ivCoverImage.setOnClickListener(this)
+        btnUpdateCoverImage.setOnClickListener(this)
     }
 
     private fun setupUi() {
@@ -178,42 +223,9 @@ class ProfileFragment : Fragment(), View.OnClickListener {
     }
 
     fun onListener() {
-        ivCoverImage!!.setOnClickListener { btnUpdateCoverImage!!.visibility = View.VISIBLE }
 
         btnUpdateCoverImage!!.setOnClickListener {
-            mDialog = DialogUpdateCoverImage.newInstance()
-            mDialog!!.setOnButtonClickListener(object : DialogUpdateCoverImage.OnButtonClickListener {
-                override fun onButtonClickListener(Id: Int, bmp: Bitmap?) {
-                    if (Id != 0)
-                        if (Id == -1) {
-                            ivCoverImage!!.setImageBitmap(bmp)
-                        } else {
-                            ivCoverImage!!.setImageResource(Id)
-                        }
 
-                    mDialog!!.show(fragmentManager, "")
-
-                    btnUpdateCoverImage!!.visibility = View.GONE
-                }
-            })
-
-            cvSavePlace.setOnClickListener { sendToDetailListActivity(defaultList[UserStoreList.ID_SAVED]) }
-            cvFavouritePlace.setOnClickListener { sendToDetailListActivity(defaultList[UserStoreList.ID_FAVOURITE]) }
-
-            mAdapter!!.setOnItemLongClickListener(object : UserStoreListAdapter.OnItemLongClickListener {
-                override fun onClick(position: Int) {
-                    val currentUser = dataManager.getCurrentUser()
-                    tvNumberList!!.text = String.format("(%s)", mAdapter!!.itemCount.toString())
-                    currentUser!!.removeStoreList(position)
-                    dataManager.getRemoteUserDataSource().updateStoreListForUser(currentUser.uid, currentUser.getUserStoreLists())
-                }
-            })
-
-            mAdapter!!.setOnItemClickListener(object : UserStoreListAdapter.OnItemClickListener {
-                override fun onClick(listPacket: UserStoreList) {
-                    sendToDetailListActivity(listPacket)
-                }
-            })
         }
     }
 
