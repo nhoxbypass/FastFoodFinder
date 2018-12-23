@@ -65,6 +65,19 @@ class ProfileFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.cvCreateNew -> {
+                mDialogCreate = DialogCreateNewList.newInstance(listName)
+                mDialogCreate!!.show(fragmentManager, "")
+                mDialogCreate!!.setOnButtonClickListener(object : DialogCreateNewList.OnCreateListListener {
+                    override fun onButtonClick(name: String, idIconSource: Int) {
+                        val currentUser = dataManager.getCurrentUser()
+                        val id = currentUser!!.getUserStoreLists().size //New id = current size
+                        val list = UserStoreList(id, ArrayList(), idIconSource, name)
+                        mAdapter!!.addListPacket(list)
+                        currentUser.addStoreList(list)
+                        dataManager.getRemoteUserDataSource().updateStoreListForUser(currentUser.uid, currentUser.getUserStoreLists())
+                        tvNumberList!!.text = String.format("(%s)", mAdapter!!.itemCount.toString())
+                    }
+                })
                 return
             }
 
@@ -183,22 +196,6 @@ class ProfileFragment : Fragment(), View.OnClickListener {
                     btnUpdateCoverImage!!.visibility = View.GONE
                 }
             })
-
-            ivCreate!!.setOnClickListener {
-                mDialogCreate = DialogCreateNewList.newInstance(listName)
-                mDialogCreate!!.show(fragmentManager, "")
-                mDialogCreate!!.setOnButtonClickListener(object : DialogCreateNewList.OnCreateListListener {
-                    override fun onButtonClick(name: String, idIconSource: Int) {
-                        val currentUser = dataManager.getCurrentUser()
-                        val id = currentUser!!.getUserStoreLists().size //New id = current size
-                        val list = UserStoreList(id, ArrayList(), idIconSource, name)
-                        mAdapter!!.addListPacket(list)
-                        currentUser.addStoreList(list)
-                        dataManager.getRemoteUserDataSource().updateStoreListForUser(currentUser.uid, currentUser.getUserStoreLists())
-                        tvNumberList!!.text = String.format("(%s)", mAdapter!!.itemCount.toString())
-                    }
-                })
-            }
 
             cvSavePlace.setOnClickListener { sendToDetailListActivity(defaultList[UserStoreList.ID_SAVED]) }
             cvFavouritePlace.setOnClickListener { sendToDetailListActivity(defaultList[UserStoreList.ID_FAVOURITE]) }
