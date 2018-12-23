@@ -46,7 +46,7 @@ coveralls {
     jacocoReportPath = "${buildDir}/reports/jacoco/test/jacocoTestReport.xml"
 }
 
-task testProdDebugUnitTest { finalizedBy jacocoTestReport }
+task testProdUnitTest { finalizedBy jacocoTestReport }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
