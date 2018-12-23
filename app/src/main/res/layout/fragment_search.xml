@@ -105,7 +105,7 @@
                         android:layout_width="0dp"
                         android:layout_height="56dp"
                         android:layout_weight="1"
-                        android:src="@drawable/ic_profile_checkin"
+                        android:src="@drawable/ic_profile_saved"
                         app:civ_border_color="@color/googleRed"
                         app:civ_fill_color="@color/googleRed" />
 
