@@ -254,9 +254,9 @@ class MapRoutingActivity : AppCompatActivity() {
         val displayMetrics = resources.displayMetrics
 
         val width = displayMetrics.widthPixels
-        val height = displayMetrics.heightPixels - convertDpToPx(displayMetrics, 160)
+        val height = displayMetrics.heightPixels - convertDpToPx(160f)
         val padding = 24 // offset from edges of the map in pixels
-        val cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding)
+        val cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height.toInt(), padding)
 
         googleMap.animateCamera(cu)
     }

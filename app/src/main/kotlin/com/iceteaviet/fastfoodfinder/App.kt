@@ -1,5 +1,6 @@
 package com.iceteaviet.fastfoodfinder
 
+import android.content.Context
 import androidx.multidex.MultiDexApplication
 import com.google.firebase.database.FirebaseDatabase
 import com.iceteaviet.fastfoodfinder.data.AppDataManager
@@ -20,11 +21,17 @@ class App : MultiDexApplication() {
 
     companion object {
         private lateinit var dataManager: DataManager
+        private lateinit var context: Context
         lateinit var PACKAGE_NAME: String
 
         @JvmStatic
         fun getDataManager(): DataManager {
             return dataManager
+        }
+
+        @JvmStatic
+        fun getContext(): Context {
+            return context
         }
     }
 
@@ -32,6 +39,8 @@ class App : MultiDexApplication() {
         super.onCreate()
 
         PACKAGE_NAME = applicationContext.packageName
+        context = applicationContext
+
         initLogger()
 
         val localStoreDataSource = LocalStoreRepository()

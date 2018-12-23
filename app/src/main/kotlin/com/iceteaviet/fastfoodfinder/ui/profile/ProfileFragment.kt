@@ -5,10 +5,8 @@ import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
-import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.bumptech.glide.Glide
@@ -17,6 +15,7 @@ import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList
+import com.iceteaviet.fastfoodfinder.ui.custom.store.StoreListView
 import com.iceteaviet.fastfoodfinder.ui.profile.ListDetailActivity.Companion.KEY_USER_PHOTO_URL
 import com.iceteaviet.fastfoodfinder.ui.profile.ListDetailActivity.Companion.KEY_USER_STORE_LIST
 import com.iceteaviet.fastfoodfinder.utils.Constant
@@ -24,16 +23,14 @@ import com.iceteaviet.fastfoodfinder.utils.isValidUserUid
 import io.reactivex.SingleObserver
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_profile.*
-import kotlinx.android.synthetic.main.store_list.view.*
 import java.util.*
 
 
 class ProfileFragment : Fragment() {
     lateinit var ivAvatarProfile: ImageView
-    lateinit var cvSavePlace: CardView
-    lateinit var cvCheckinPlace: CardView
-    lateinit var cvFavouritePlace: CardView
-    lateinit var tvFavItemsCount: TextView
+    lateinit var cvSavePlace: StoreListView
+    lateinit var cvCheckinPlace: StoreListView
+    lateinit var cvFavouritePlace: StoreListView
 
     private var mDialog: DialogUpdateCoverImage? = null
     private var mDialogCreate: DialogCreateNewList? = null
@@ -63,7 +60,6 @@ class ProfileFragment : Fragment() {
         cvSavePlace = cv_saved_places
         cvCheckinPlace = cv_checkin_places
         cvFavouritePlace = cv_favourite_places
-        tvFavItemsCount = cvFavouritePlace.tv_list_count
 
         mAdapter = UserStoreListAdapter()
         val mLayoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
@@ -120,7 +116,7 @@ class ProfileFragment : Fragment() {
                         for (i in 0 until user.getUserStoreLists().size) {
                             listName.add(user.getUserStoreLists()[i].listName)
                         }
-                        tvFavItemsCount.text = String.format(Locale.getDefault(), "%d nơi", user.getFavouriteStoreList().getStoreIdList()!!.size)
+                        cvFavouritePlace.setCount(String.format(Locale.getDefault(), "%d nơi", user.getFavouriteStoreList().getStoreIdList()!!.size))
                         onListener()
                     }
 

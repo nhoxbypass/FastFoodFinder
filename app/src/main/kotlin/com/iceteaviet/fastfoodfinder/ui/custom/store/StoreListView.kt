@@ -2,26 +2,20 @@ package com.iceteaviet.fastfoodfinder.ui.custom.store
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.cardview.widget.CardView
 import com.iceteaviet.fastfoodfinder.R
+import com.iceteaviet.fastfoodfinder.utils.convertDpToPx
 import com.iceteaviet.fastfoodfinder.utils.ui.getRandomStoreImages
 import de.hdodenhof.circleimageview.CircleImageView
-import kotlinx.android.synthetic.main.store_list.view.*
 
 /**
  * Created by tom on 10/12/18.
  */
 class StoreListView constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : CardView(context, attrs, defStyleAttr) {
-    companion object {
-        const val DEFAULT_PADDING = 2
-        const val DEFAULT_INFO_HEIGHT = 40
-        const val DEFAULT_ICON_HEIGHT = 80
-    }
 
     constructor(context: Context) : this(context, null)
 
@@ -34,67 +28,84 @@ class StoreListView constructor(context: Context, attrs: AttributeSet?, defStyle
     private var tvName: TextView
     private var tvCount: TextView
     private var ivIcon: CircleImageView
+    private val DEFAULT_PADDING = convertDpToPx(2f).toInt()
+    private val DEFAULT_TEXT_PADDING_LEFT_RIGHT = convertDpToPx(8f).toInt()
+    private val DEFAULT_TEXT_PADDING_TOP_BOTTOM = convertDpToPx(4f).toInt()
 
     init {
-        if (width == LinearLayout.LayoutParams.WRAP_CONTENT && height == LinearLayout.LayoutParams.WRAP_CONTENT) {
-            View.inflate(context, R.layout.store_list, this)
+        imageView1 = ImageView(context)
+        imageView1.scaleType = ImageView.ScaleType.CENTER_CROP
+        imageView2 = ImageView(context)
+        imageView2.scaleType = ImageView.ScaleType.CENTER_CROP
+        imageView3 = ImageView(context)
+        imageView3.scaleType = ImageView.ScaleType.CENTER_CROP
+        imageView4 = ImageView(context)
+        imageView4.scaleType = ImageView.ScaleType.CENTER_CROP
 
-            imageView1 = iv_1
-            imageView2 = iv_2
-            imageView3 = iv_3
-            imageView4 = iv_4
+        tvName = TextView(context)
+        tvName.layoutParams = MarginLayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+        tvCount = TextView(context)
+        tvCount.layoutParams = MarginLayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
 
-            tvName = tv_list_name
-            tvCount = tv_list_count
+        ivIcon = CircleImageView(context)
 
-            ivIcon = iv_icon
-        } else {
-
-            imageView1 = ImageView(context)
-            imageView2 = ImageView(context)
-            imageView3 = ImageView(context)
-            imageView4 = ImageView(context)
-
-            val imgWidth = (width - DEFAULT_PADDING) / 2
-            val imgHeight = (height - DEFAULT_PADDING - DEFAULT_INFO_HEIGHT) / 2
-            var params = LinearLayout.LayoutParams(imgWidth, imgHeight)
-            imageView1.layoutParams = params
-
-            params = LinearLayout.LayoutParams(imgWidth, imgHeight)
-            params.leftMargin = imgWidth + DEFAULT_PADDING
-            imageView2.layoutParams = params
-
-            params = LinearLayout.LayoutParams(imgWidth, imgHeight)
-            params.topMargin = imgHeight + DEFAULT_PADDING
-            imageView3.layoutParams = params
-
-            params = LinearLayout.LayoutParams(imgWidth, imgHeight)
-            params.leftMargin = imgWidth + DEFAULT_PADDING
-            params.topMargin = imgHeight + DEFAULT_PADDING
-            imageView4.layoutParams = params
-
-            addView(imageView1)
-            addView(imageView2)
-            addView(imageView3)
-            addView(imageView4)
-
-            tvName = TextView(context)
-            params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
-            params.topMargin = width - DEFAULT_INFO_HEIGHT
-
-            tvCount = TextView(context)
-            params.topMargin = width - DEFAULT_INFO_HEIGHT + 16
-
-            ivIcon = CircleImageView(context)
-            params = LinearLayout.LayoutParams(DEFAULT_ICON_HEIGHT, DEFAULT_ICON_HEIGHT)
-            params.topMargin = imgHeight - DEFAULT_ICON_HEIGHT / 2
-
-            addView(tvName)
-            addView(tvCount)
-            addView(ivIcon)
-        }
+        addView(imageView1)
+        addView(imageView2)
+        addView(imageView3)
+        addView(imageView4)
+        addView(tvName)
+        addView(tvCount)
+        addView(ivIcon)
 
         setupData()
+    }
+
+    override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
+        super.onLayout(changed, left, top, right, bottom)
+
+        val infoHeight = tvName.height + tvCount.height + DEFAULT_TEXT_PADDING_TOP_BOTTOM * 3
+        val imgWidth = (width - DEFAULT_PADDING) / 2
+        val imgHeight = (height - DEFAULT_PADDING - infoHeight) / 2
+        val iconSize = imgWidth / 3
+
+        imageView1.layoutParams.width = imgWidth
+        imageView1.layoutParams.height = imgHeight
+
+        var params = imageView2.layoutParams as MarginLayoutParams
+        params.leftMargin = imgWidth + DEFAULT_PADDING
+        params.width = imgWidth
+        params.height = imgHeight
+        imageView2.layoutParams = params
+
+        params = imageView3.layoutParams as MarginLayoutParams
+        params.topMargin = imgHeight + DEFAULT_PADDING
+        params.width = imgWidth
+        params.height = imgHeight
+        imageView3.layoutParams = params
+
+        params = imageView4.layoutParams as MarginLayoutParams
+        params.leftMargin = imgWidth + DEFAULT_PADDING
+        params.topMargin = imgHeight + DEFAULT_PADDING
+        params.width = imgWidth
+        params.height = imgHeight
+        imageView4.layoutParams = params
+
+        params = tvName.layoutParams as MarginLayoutParams
+        params.topMargin = height - infoHeight + DEFAULT_TEXT_PADDING_TOP_BOTTOM
+        params.leftMargin = DEFAULT_TEXT_PADDING_LEFT_RIGHT
+        tvName.layoutParams = params
+
+        params = tvCount.layoutParams as MarginLayoutParams
+        params.topMargin = height - infoHeight + tvName.height + DEFAULT_TEXT_PADDING_TOP_BOTTOM * 2
+        params.leftMargin = DEFAULT_TEXT_PADDING_LEFT_RIGHT
+        tvCount.layoutParams = params
+
+        params = ivIcon.layoutParams as MarginLayoutParams
+        params.topMargin = imgHeight - iconSize / 2
+        params.leftMargin = imgWidth - iconSize / 2
+        params.width = iconSize
+        params.height = iconSize
+        ivIcon.layoutParams = params
     }
 
     private fun setupData() {
