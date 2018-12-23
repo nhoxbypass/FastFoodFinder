@@ -57,7 +57,18 @@ class StoreListView constructor(context: Context, attrs: AttributeSet?, defStyle
         addView(tvCount)
         addView(ivIcon)
 
-        setupData()
+        context.theme.obtainStyledAttributes(attrs, R.styleable.StoreListView, 0, 0)
+                .apply {
+                    try {
+                        tvName.text = getString(R.styleable.StoreListView_name)
+                        tvCount.text = getInteger(R.styleable.StoreListView_count, 0).toString()
+                        ivIcon.setImageDrawable(getDrawable(R.styleable.StoreListView_icon))
+                    } finally {
+                        recycle()
+                    }
+                }
+
+        initRandomImages()
     }
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
@@ -106,13 +117,6 @@ class StoreListView constructor(context: Context, attrs: AttributeSet?, defStyle
         params.width = iconSize
         params.height = iconSize
         ivIcon.layoutParams = params
-    }
-
-    private fun setupData() {
-        initRandomImages()
-        tvName.text = context.getString(R.string.my_save_places)
-        tvCount.text = context.getString(R.string._3_places)
-        ivIcon.setImageResource(R.drawable.ic_profile_saved)
     }
 
     private fun initRandomImages() {

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@android:color/white"
     tools:context=".ui.main.MainActivity">
 
@@ -107,7 +108,9 @@
                     android:layout_height="160dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginBottom="8dp"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    app:icon="@drawable/ic_profile_saved"
+                    app:name="@string/my_save_places" />
 
                 <com.iceteaviet.fastfoodfinder.ui.custom.store.StoreListView
                     android:id="@+id/cv_favourite_places"
@@ -116,7 +119,9 @@
                     android:layout_height="160dp"
                     android:layout_marginRight="16dp"
                     android:layout_marginBottom="8dp"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    app:icon="@drawable/ic_profile_favourite"
+                    app:name="@string/my_favourite_places" />
             </LinearLayout>
 
 
