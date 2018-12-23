@@ -338,14 +338,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
 
     private fun selectDrawerItem(menuItem: MenuItem) {
-        // Create a new fragment and specify the fragment to show based on nav item clicked
-        val fragmentClass: Class<*>
-
         when (menuItem.itemId) {
             R.id.menu_action_profile -> {
-                fragmentClass = ProfileFragment::class.java
+                replaceFragment(ProfileFragment::class.java, menuItem)
+                return
             }
-            R.id.menu_action_map -> fragmentClass = MainFragment::class.java
+            R.id.menu_action_map -> {
+                replaceFragment(MainFragment::class.java, menuItem)
+                return
+            }
             R.id.menu_action_ar -> {
                 val arIntent = Intent(this@MainActivity, ArCameraActivity::class.java)
                 startActivity(arIntent)
@@ -357,13 +358,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 return
             }
             else -> {
-                // Default
-                fragmentClass = MainFragment::class.java
                 e(TAG, "Wrong menu item id")
             }
         }
-
-        replaceFragment(fragmentClass, menuItem)
     }
 
     private fun replaceFragment(fragmentClass: Class<*>, menuItem: MenuItem) {
