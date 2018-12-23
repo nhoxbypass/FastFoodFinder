@@ -22,15 +22,6 @@
             android:text="@string/save_this" />
 
         <TextView
-            android:id="@+id/check_in"
-            style="@style/TextAction"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:drawableTop="@drawable/state_checkin_click"
-            android:text="@string/checked_in" />
-
-        <TextView
             android:id="@+id/rate_it"
             style="@style/TextAction"
             android:layout_width="0dp"
