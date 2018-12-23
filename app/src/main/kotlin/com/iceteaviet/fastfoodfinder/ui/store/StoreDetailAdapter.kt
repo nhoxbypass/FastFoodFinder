@@ -87,14 +87,13 @@ class StoreDetailAdapter internal constructor(private val mStore: Store) : Recyc
 
         fun onAddToFavorite(storeId: Int)
 
-        fun onCheckIn(storeId: Int)
+        fun onSave(storeId: Int)
     }
 
     internal class HeaderViewHolder(itemView: View, private val listener: StoreActionListener?) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
 
-        var save: TextView = itemView.save_this
-        var check: TextView = itemView.check_in
-        var rate: TextView = itemView.rate_it
+        var saveButton: TextView = itemView.btn_save
+        var favButton: TextView = itemView.btn_fav
         var comment: TextView = itemView.comment
         var btnCall: Button = itemView.btn_call
 
@@ -103,9 +102,8 @@ class StoreDetailAdapter internal constructor(private val mStore: Store) : Recyc
         fun bind(store: Store) {
             mStore = store
 
-            save.setOnClickListener(this)
-            check.setOnClickListener(this)
-            rate.setOnClickListener(this)
+            saveButton.setOnClickListener(this)
+            favButton.setOnClickListener(this)
             comment.setOnClickListener {
                 if (listener != null) {
                     listener.onShowComment()
@@ -120,11 +118,11 @@ class StoreDetailAdapter internal constructor(private val mStore: Store) : Recyc
 
         override fun onClick(v: View) {
             when (v.id) {
-                R.id.save_this -> if (listener != null) {
+                R.id.btn_fav -> if (listener != null) {
                     listener.onAddToFavorite(mStore!!.id)
                 }
-                R.id.check_in -> if (listener != null) {
-                    listener.onCheckIn(mStore!!.id)
+                R.id.btn_save -> if (listener != null) {
+                    listener.onSave(mStore!!.id)
                 }
                 else -> {
                 }

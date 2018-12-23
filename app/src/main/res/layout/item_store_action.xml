@@ -13,7 +13,7 @@
         android:paddingBottom="6dp">
 
         <TextView
-            android:id="@+id/save_this"
+            android:id="@+id/btn_save"
             style="@style/TextAction"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -22,13 +22,13 @@
             android:text="@string/save_this" />
 
         <TextView
-            android:id="@+id/rate_it"
+            android:id="@+id/btn_fav"
             style="@style/TextAction"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:drawableTop="@drawable/state_rate_click"
-            android:text="@string/rate_it" />
+            android:text="@string/add_to_fav" />
 
         <TextView
             android:id="@+id/comment"

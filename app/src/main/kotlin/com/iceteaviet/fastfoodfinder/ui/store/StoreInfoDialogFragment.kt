@@ -50,7 +50,7 @@ class StoreInfoDialogFragment : DialogFragment() {
         tvViewDetail = view_detail
         tvStoreAddress = store_address
         vCallDirection = call_direction
-        btnAddToFavorite = save_this
+        btnAddToFavorite = btn_fav
 
         cdvh = StoreDetailAdapter.CallDirectionViewHolder(vCallDirection) // TODO: Check this !!
 

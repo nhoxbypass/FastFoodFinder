@@ -183,7 +183,7 @@ class StoreDetailActivity : AppCompatActivity(), StoreDetailAdapter.StoreActionL
         Toast.makeText(this, R.string.fav_stores_added, Toast.LENGTH_SHORT).show()
     }
 
-    override fun onCheckIn(storeId: Int) {
+    override fun onSave(storeId: Int) {
         //TODO gọi hàm check in
     }
 
