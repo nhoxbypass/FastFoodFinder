@@ -19,7 +19,6 @@ fun getDefaultUserStoreLists(): List<UserStoreList> {
 
     userStoreLists.add(UserStoreList(0, ArrayList(), R.drawable.ic_profile_saved, "My Saved Places"))
     userStoreLists.add(UserStoreList(1, ArrayList(), R.drawable.ic_profile_favourite, "My Favourite Places"))
-    userStoreLists.add(UserStoreList(2, ArrayList(), R.drawable.ic_profile_checkin, "My Checked in Places"))
 
     return userStoreLists
 }
