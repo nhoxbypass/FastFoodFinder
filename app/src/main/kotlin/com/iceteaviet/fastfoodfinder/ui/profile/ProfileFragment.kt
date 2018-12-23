@@ -29,7 +29,6 @@ import java.util.*
 class ProfileFragment : Fragment() {
     lateinit var ivAvatarProfile: ImageView
     lateinit var cvSavePlace: StoreListView
-    lateinit var cvCheckinPlace: StoreListView
     lateinit var cvFavouritePlace: StoreListView
 
     private var mDialog: DialogUpdateCoverImage? = null
@@ -58,7 +57,6 @@ class ProfileFragment : Fragment() {
         
         ivAvatarProfile = iv_profile_avatar
         cvSavePlace = cv_saved_places
-        cvCheckinPlace = cv_checkin_places
         cvFavouritePlace = cv_favourite_places
 
         mAdapter = UserStoreListAdapter()
@@ -164,7 +162,6 @@ class ProfileFragment : Fragment() {
 
             cvSavePlace.setOnClickListener { sendToDetailListActivity(defaultList[UserStoreList.ID_SAVED]) }
             cvFavouritePlace.setOnClickListener { sendToDetailListActivity(defaultList[UserStoreList.ID_FAVOURITE]) }
-            cvCheckinPlace.setOnClickListener { sendToDetailListActivity(defaultList[UserStoreList.ID_CHECKED_IN]) }
 
             mAdapter!!.setOnItemLongClickListener(object : UserStoreListAdapter.OnItemLongClickListener {
                 override fun onClick(position: Int) {

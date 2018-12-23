@@ -126,14 +126,6 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/ll_list_container_1">
 
-                <com.iceteaviet.fastfoodfinder.ui.custom.store.StoreListView
-                    android:id="@+id/cv_checkin_places"
-                    android:layout_width="0dp"
-                    android:layout_height="160dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginBottom="16dp"
-                    android:layout_weight="1" />
-
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cvCreateNew"
                     style="@style/RippleEffect"
@@ -164,6 +156,14 @@
                         android:textSize="@dimen/medium_textsize"
                         android:textStyle="bold" />
                 </androidx.cardview.widget.CardView>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="160dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:layout_weight="1" />
             </LinearLayout>
 
             <LinearLayout
