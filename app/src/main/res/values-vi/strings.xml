@@ -94,7 +94,7 @@
     <string name="successfully">Thành công</string>
     <string name="ok">Ok</string>
     <string name="store_not_found">Không tìm thấy cửa hàng!</string>
-    <string name="count_places">%s places</string>
+    <string name="count_places">%s nơi</string>
     <string name="add_to_fav">Yêu thích</string>
 
 </resources>
