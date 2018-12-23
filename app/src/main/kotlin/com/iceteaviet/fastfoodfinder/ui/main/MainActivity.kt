@@ -349,7 +349,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 return
             }
             R.id.menu_action_map -> {
-                replaceFragment(MainFragment::class.java, menuItem)
+                if (supportFragmentManager.backStackEntryCount > 0) {
+                    supportFragmentManager.popBackStack()
+                }
+
                 // Close the navigation drawer
                 mDrawerLayout.closeDrawers()
                 return
@@ -376,7 +379,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
             // Insert the fragment by replacing any existing fragment
             val fragmentManager = supportFragmentManager
-            fragmentManager.beginTransaction().replace(R.id.fl_fragment_placeholder, fragment).commit()
+            fragmentManager
+                    .beginTransaction()
+                    .add(R.id.fl_fragment_placeholder, fragment)
+                    .addToBackStack(null) // Add this transaction to the back stack
+                    .commit()
             fragmentManager.executePendingTransactions()
             // Highlight the selected item has been done by NavigationView
             menuItem.isChecked = true
