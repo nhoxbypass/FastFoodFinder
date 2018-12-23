@@ -7,6 +7,7 @@ import android.view.*
 import android.widget.ImageView
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
+import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.bumptech.glide.Glide
@@ -26,10 +27,11 @@ import kotlinx.android.synthetic.main.fragment_profile.*
 import java.util.*
 
 
-class ProfileFragment : Fragment() {
+class ProfileFragment : Fragment(), View.OnClickListener {
     lateinit var ivAvatarProfile: ImageView
     lateinit var cvSavePlace: StoreListView
     lateinit var cvFavouritePlace: StoreListView
+    lateinit var btnCreateNew: CardView
 
     private var mDialog: DialogUpdateCoverImage? = null
     private var mDialogCreate: DialogCreateNewList? = null
@@ -54,16 +56,29 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(@NonNull view: View, @Nullable savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        
-        ivAvatarProfile = iv_profile_avatar
-        cvSavePlace = cv_saved_places
-        cvFavouritePlace = cv_favourite_places
 
-        mAdapter = UserStoreListAdapter()
-        val mLayoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-        rvListPacket!!.adapter = mAdapter
-        rvListPacket!!.layoutManager = mLayoutManager
+        setupUi()
+        setupEventListeners()
+        loadData()
+    }
 
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.cvCreateNew -> {
+                return
+            }
+
+            R.id.cv_saved_places -> {
+                return
+            }
+
+            R.id.cv_favourite_places -> {
+                return
+            }
+        }
+    }
+
+    private fun loadData() {
         tvName!!.setText(R.string.unregistered_user)
         tvEmail!!.setText(R.string.unregistered_email)
         if (dataManager.getCurrentUser() == null)
@@ -72,6 +87,24 @@ class ProfileFragment : Fragment() {
         if (dataManager.isSignedIn()) {
             loadCurrentUserData()
         }
+    }
+
+    private fun setupEventListeners() {
+        btnCreateNew.setOnClickListener(this)
+        cvSavePlace.setOnClickListener(this)
+        cvFavouritePlace.setOnClickListener(this)
+    }
+
+    private fun setupUi() {
+        ivAvatarProfile = iv_profile_avatar
+        cvSavePlace = cv_saved_places
+        cvFavouritePlace = cv_favourite_places
+        btnCreateNew = cvCreateNew
+
+        mAdapter = UserStoreListAdapter()
+        val mLayoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        rvListPacket!!.adapter = mAdapter
+        rvListPacket!!.layoutManager = mLayoutManager
     }
 
     fun loadUserList() {
