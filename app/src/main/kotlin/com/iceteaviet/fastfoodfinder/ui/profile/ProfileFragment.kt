@@ -82,10 +82,12 @@ class ProfileFragment : Fragment(), View.OnClickListener {
             }
 
             R.id.cv_saved_places -> {
+                sendToDetailListActivity(defaultList[UserStoreList.ID_SAVED])
                 return
             }
 
             R.id.cv_favourite_places -> {
+                sendToDetailListActivity(defaultList[UserStoreList.ID_FAVOURITE])
                 return
             }
 
@@ -110,9 +112,6 @@ class ProfileFragment : Fragment(), View.OnClickListener {
                         btnUpdateCoverImage!!.visibility = View.GONE
                     }
                 })
-
-                cvSavePlace.setOnClickListener { sendToDetailListActivity(defaultList[UserStoreList.ID_SAVED]) }
-                cvFavouritePlace.setOnClickListener { sendToDetailListActivity(defaultList[UserStoreList.ID_FAVOURITE]) }
 
                 mAdapter!!.setOnItemLongClickListener(object : UserStoreListAdapter.OnItemLongClickListener {
                     override fun onClick(position: Int) {
