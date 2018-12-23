@@ -40,6 +40,7 @@ class DialogUpdateCoverImage : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState)
         dialog.window!!.requestFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCanceledOnTouchOutside(false)
         return dialog
     }
 
@@ -84,11 +85,14 @@ class DialogUpdateCoverImage : DialogFragment() {
         }
 
         btnDone!!.setOnClickListener {
-            mListener!!.onButtonClickListener(chosenImageId, mBmp)
+            mListener?.onOkClick(chosenImageId, mBmp)
             dismiss()
         }
 
-        btnCancel!!.setOnClickListener { dismiss() }
+        btnCancel!!.setOnClickListener {
+            mListener?.onCancelClick()
+            dismiss()
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -132,7 +136,8 @@ class DialogUpdateCoverImage : DialogFragment() {
     }
 
     interface OnButtonClickListener {
-        fun onButtonClickListener(Id: Int, bmp: Bitmap?)
+        fun onOkClick(Id: Int, bmp: Bitmap?)
+        fun onCancelClick()
     }
 
     companion object {

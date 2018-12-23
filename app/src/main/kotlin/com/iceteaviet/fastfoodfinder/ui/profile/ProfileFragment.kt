@@ -91,43 +91,9 @@ class ProfileFragment : Fragment(), View.OnClickListener {
                 return
             }
 
-            R.id.ivCoverImage -> {
-                btnUpdateCoverImage!!.visibility = View.VISIBLE
-                return
-            }
-
             R.id.btnUpdateCoverImage -> {
-                mDialog = DialogUpdateCoverImage.newInstance()
-                mDialog!!.setOnButtonClickListener(object : DialogUpdateCoverImage.OnButtonClickListener {
-                    override fun onButtonClickListener(Id: Int, bmp: Bitmap?) {
-                        if (Id != 0)
-                            if (Id == -1) {
-                                ivCoverImage!!.setImageBitmap(bmp)
-                            } else {
-                                ivCoverImage!!.setImageResource(Id)
-                            }
-
-                        mDialog!!.show(fragmentManager, "")
-
-                        btnUpdateCoverImage!!.visibility = View.GONE
-                    }
-                })
-
-                mAdapter!!.setOnItemLongClickListener(object : UserStoreListAdapter.OnItemLongClickListener {
-                    override fun onClick(position: Int) {
-                        val currentUser = dataManager.getCurrentUser()
-                        tvNumberList!!.text = String.format("(%s)", mAdapter!!.itemCount.toString())
-                        currentUser!!.removeStoreList(position)
-                        dataManager.getRemoteUserDataSource().updateStoreListForUser(currentUser.uid, currentUser.getUserStoreLists())
-                    }
-                })
-
-                mAdapter!!.setOnItemClickListener(object : UserStoreListAdapter.OnItemClickListener {
-                    override fun onClick(listPacket: UserStoreList) {
-                        sendToDetailListActivity(listPacket)
-                    }
-                })
-
+                mDialog!!.show(fragmentManager, "")
+                btnUpdateCoverImage!!.visibility = View.GONE
                 return
             }
         }
@@ -148,8 +114,39 @@ class ProfileFragment : Fragment(), View.OnClickListener {
         btnCreateNew.setOnClickListener(this)
         cvSavePlace.setOnClickListener(this)
         cvFavouritePlace.setOnClickListener(this)
-        ivCoverImage.setOnClickListener(this)
         btnUpdateCoverImage.setOnClickListener(this)
+
+        mAdapter!!.setOnItemLongClickListener(object : UserStoreListAdapter.OnItemLongClickListener {
+            override fun onClick(position: Int) {
+                val currentUser = dataManager.getCurrentUser()
+                tvNumberList!!.text = String.format("(%s)", mAdapter!!.itemCount.toString())
+                currentUser!!.removeStoreList(position)
+                dataManager.getRemoteUserDataSource().updateStoreListForUser(currentUser.uid, currentUser.getUserStoreLists())
+            }
+        })
+
+        mAdapter!!.setOnItemClickListener(object : UserStoreListAdapter.OnItemClickListener {
+            override fun onClick(listPacket: UserStoreList) {
+                sendToDetailListActivity(listPacket)
+            }
+        })
+
+        mDialog!!.setOnButtonClickListener(object : DialogUpdateCoverImage.OnButtonClickListener {
+            override fun onOkClick(Id: Int, bmp: Bitmap?) {
+                if (Id != 0)
+                    if (Id == -1) {
+                        ivCoverImage!!.setImageBitmap(bmp)
+                    } else {
+                        ivCoverImage!!.setImageResource(Id)
+                    }
+
+                btnUpdateCoverImage!!.visibility = View.VISIBLE
+            }
+
+            override fun onCancelClick() {
+                btnUpdateCoverImage!!.visibility = View.VISIBLE
+            }
+        })
     }
 
     private fun setupUi() {
@@ -162,6 +159,8 @@ class ProfileFragment : Fragment(), View.OnClickListener {
         val mLayoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         rvListPacket!!.adapter = mAdapter
         rvListPacket!!.layoutManager = mLayoutManager
+
+        mDialog = DialogUpdateCoverImage.newInstance()
     }
 
     fun loadUserList() {
@@ -206,8 +205,6 @@ class ProfileFragment : Fragment(), View.OnClickListener {
                         }
 
                         fillStoreListPreviewData(user)
-
-                        onListener()
                     }
 
                     override fun onError(e: Throwable) {
@@ -219,13 +216,6 @@ class ProfileFragment : Fragment(), View.OnClickListener {
     private fun fillStoreListPreviewData(user: User) {
         cvSavePlace.setCount(user.getSavedStoreList().getStoreIdList()!!.size.toString())
         cvFavouritePlace.setCount(user.getFavouriteStoreList().getStoreIdList()!!.size.toString())
-    }
-
-    fun onListener() {
-
-        btnUpdateCoverImage!!.setOnClickListener {
-
-        }
     }
 
     fun sendToDetailListActivity(userStoreList: UserStoreList) {
