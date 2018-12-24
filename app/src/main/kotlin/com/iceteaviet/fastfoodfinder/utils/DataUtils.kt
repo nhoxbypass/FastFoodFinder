@@ -2,7 +2,6 @@
 
 package com.iceteaviet.fastfoodfinder.utils
 
-import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Comment
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList
@@ -17,8 +16,8 @@ import java.util.*
 fun getDefaultUserStoreLists(): List<UserStoreList> {
     val userStoreLists = ArrayList<UserStoreList>()
 
-    userStoreLists.add(UserStoreList(0, ArrayList(), R.drawable.ic_profile_saved, "My Saved Places"))
-    userStoreLists.add(UserStoreList(1, ArrayList(), R.drawable.ic_profile_favourite, "My Favourite Places"))
+    userStoreLists.add(UserStoreList(0, ArrayList(), 1, "My Saved Places"))
+    userStoreLists.add(UserStoreList(1, ArrayList(), 2, "My Favourite Places"))
 
     return userStoreLists
 }

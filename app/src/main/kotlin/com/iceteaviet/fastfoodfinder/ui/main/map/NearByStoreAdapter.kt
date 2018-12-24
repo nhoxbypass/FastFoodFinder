@@ -15,7 +15,7 @@ import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.ui.main.StoreDiffCallback
 import com.iceteaviet.fastfoodfinder.utils.calcDistance
 import com.iceteaviet.fastfoodfinder.utils.formatDistance
-import com.iceteaviet.fastfoodfinder.utils.ui.getStoreLogoDrawableId
+import com.iceteaviet.fastfoodfinder.utils.ui.getStoreLogoDrawableRes
 import kotlinx.android.synthetic.main.item_store.view.*
 import java.util.*
 
@@ -96,7 +96,7 @@ class NearByStoreAdapter : RecyclerView.Adapter<NearByStoreAdapter.StoreViewHold
 
         fun setData(store: Store, distance: Double) {
             Glide.with(logo.context)
-                    .load(getStoreLogoDrawableId(store.type))
+                    .load(getStoreLogoDrawableRes(store.type))
                     .into(logo)
             storeName.text = store.title
             storeAddress.text = store.address

@@ -20,7 +20,7 @@ import java.util.*
 class DialogCreateNewList : DialogFragment() {
     private var listName: ArrayList<String>? = null
     private var mListener: OnCreateListListener? = null
-    private var idIconSource = R.drawable.ic_profile_list_1
+    private var iconId = R.drawable.ic_profile_list_1
 
     fun setOnButtonClickListener(listener: OnCreateListListener) {
         mListener = listener
@@ -54,7 +54,7 @@ class DialogCreateNewList : DialogFragment() {
                     }
                 }
                 if (check) {
-                    mListener!!.onButtonClick(edtName!!.text.toString(), idIconSource)
+                    mListener!!.onButtonClick(edtName!!.text.toString(), iconId)
                     listName!!.add(edtName!!.text.toString())
                     dismiss()
                 }
@@ -66,7 +66,7 @@ class DialogCreateNewList : DialogFragment() {
 
     private fun getIdIconSource() {
         icon1!!.setOnClickListener {
-            idIconSource = R.drawable.ic_profile_list_2
+            iconId = 3
             icon1!!.scaleX = 1.25f
             icon1!!.scaleY = 1.25f
             icon1!!.alpha = 1f
@@ -99,7 +99,7 @@ class DialogCreateNewList : DialogFragment() {
             icon10!!.alpha = 0.5f
         }
         icon2!!.setOnClickListener {
-            idIconSource = R.drawable.ic_profile_list_4
+            iconId = 4
             icon1!!.scaleX = 1f
             icon1!!.scaleY = 1f
             icon1!!.alpha = 0.5f
@@ -132,7 +132,7 @@ class DialogCreateNewList : DialogFragment() {
             icon10!!.alpha = 0.5f
         }
         icon3!!.setOnClickListener {
-            idIconSource = R.drawable.ic_profile_list_5
+            iconId = 5
             icon1!!.scaleX = 1f
             icon1!!.scaleY = 1f
             icon1!!.alpha = 0.5f
@@ -165,7 +165,7 @@ class DialogCreateNewList : DialogFragment() {
             icon10!!.alpha = 0.5f
         }
         icon4!!.setOnClickListener {
-            idIconSource = R.drawable.ic_profile_list_6
+            iconId = 6
             icon1!!.scaleX = 1f
             icon1!!.scaleY = 1f
             icon1!!.alpha = 0.5f
@@ -198,7 +198,7 @@ class DialogCreateNewList : DialogFragment() {
             icon10!!.alpha = 0.5f
         }
         icon5!!.setOnClickListener {
-            idIconSource = R.drawable.ic_profile_list_7
+            iconId = 7
             icon1!!.scaleX = 1f
             icon1!!.scaleY = 1f
             icon1!!.alpha = 0.5f
@@ -231,7 +231,7 @@ class DialogCreateNewList : DialogFragment() {
             icon10!!.alpha = 0.5f
         }
         icon6!!.setOnClickListener {
-            idIconSource = R.drawable.ic_profile_list_8
+            iconId = 8
             icon1!!.scaleX = 1f
             icon1!!.scaleY = 1f
             icon1!!.alpha = 0.5f
@@ -264,7 +264,7 @@ class DialogCreateNewList : DialogFragment() {
             icon10!!.alpha = 0.5f
         }
         icon7!!.setOnClickListener {
-            idIconSource = R.drawable.ic_profile_list_9
+            iconId = 9
             icon1!!.scaleX = 1f
             icon1!!.scaleY = 1f
             icon1!!.alpha = 0.5f
@@ -297,7 +297,7 @@ class DialogCreateNewList : DialogFragment() {
             icon10!!.alpha = 0.5f
         }
         icon8!!.setOnClickListener {
-            idIconSource = R.drawable.ic_profile_list_10
+            iconId = 10
             icon1!!.scaleX = 1f
             icon1!!.scaleY = 1f
             icon1!!.alpha = 0.5f
@@ -330,7 +330,7 @@ class DialogCreateNewList : DialogFragment() {
             icon10!!.alpha = 0.5f
         }
         icon9!!.setOnClickListener {
-            idIconSource = R.drawable.ic_profile_list_11
+            iconId = 11
             icon1!!.scaleX = 1f
             icon1!!.scaleY = 1f
             icon1!!.alpha = 0.5f
@@ -363,7 +363,7 @@ class DialogCreateNewList : DialogFragment() {
             icon10!!.alpha = 0.5f
         }
         icon10!!.setOnClickListener {
-            idIconSource = R.drawable.ic_profile_list_3
+            iconId = 12
             icon1!!.scaleX = 1f
             icon1!!.scaleY = 1f
             icon1!!.alpha = 0.5f
@@ -410,7 +410,7 @@ class DialogCreateNewList : DialogFragment() {
     }
 
     interface OnCreateListListener {
-        fun onButtonClick(name: String, idIconSource: Int)
+        fun onButtonClick(name: String, iconId: Int)
     }
 
     companion object {

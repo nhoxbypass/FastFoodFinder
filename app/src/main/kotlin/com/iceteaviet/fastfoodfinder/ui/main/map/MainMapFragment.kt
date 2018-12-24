@@ -46,7 +46,7 @@ import com.iceteaviet.fastfoodfinder.ui.store.StoreInfoDialogFragment
 import com.iceteaviet.fastfoodfinder.utils.*
 import com.iceteaviet.fastfoodfinder.utils.Constant.DEFAULT_ZOOM_LEVEL
 import com.iceteaviet.fastfoodfinder.utils.ui.animateMarker
-import com.iceteaviet.fastfoodfinder.utils.ui.getStoreLogoDrawableId
+import com.iceteaviet.fastfoodfinder.utils.ui.getStoreLogoDrawableRes
 import io.reactivex.Observer
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -569,7 +569,7 @@ class MainMapFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, Locatio
             return if (CACHE.containsKey(type)) {
                 CACHE[type]!!
             } else {
-                val id = getStoreLogoDrawableId(type!!)
+                val id = getStoreLogoDrawableRes(type!!)
                 val bitmap = BitmapFactory.decodeResource(resources, id)
 
                 CACHE[type] = bitmap

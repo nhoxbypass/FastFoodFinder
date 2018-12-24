@@ -68,10 +68,10 @@ class ProfileFragment : Fragment(), View.OnClickListener {
                 mDialogCreate = DialogCreateNewList.newInstance(listName)
                 mDialogCreate!!.show(fragmentManager, "")
                 mDialogCreate!!.setOnButtonClickListener(object : DialogCreateNewList.OnCreateListListener {
-                    override fun onButtonClick(name: String, idIconSource: Int) {
+                    override fun onButtonClick(name: String, iconId: Int) {
                         val currentUser = dataManager.getCurrentUser()
                         val id = currentUser!!.getUserStoreLists().size //New id = current size
-                        val list = UserStoreList(id, ArrayList(), idIconSource, name)
+                        val list = UserStoreList(id, ArrayList(), iconId, name)
                         mAdapter!!.addListPacket(list)
                         currentUser.addStoreList(list)
                         dataManager.getRemoteUserDataSource().updateStoreListForUser(currentUser.uid, currentUser.getUserStoreLists())

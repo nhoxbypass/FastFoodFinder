@@ -27,7 +27,7 @@ import com.iceteaviet.fastfoodfinder.ui.custom.ar.ARCamera
 import com.iceteaviet.fastfoodfinder.ui.custom.ar.AROverlayView
 import com.iceteaviet.fastfoodfinder.utils.*
 import com.iceteaviet.fastfoodfinder.utils.Constant.DEFAULT_MAP_TARGET
-import com.iceteaviet.fastfoodfinder.utils.ui.getStoreLogoDrawableId
+import com.iceteaviet.fastfoodfinder.utils.ui.getStoreLogoDrawableRes
 import io.reactivex.SingleObserver
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -147,7 +147,7 @@ class ArCameraActivity : BaseActivity(), SensorEventListener, LocationListener {
                                     java.lang.Double.valueOf(storeList[i].lat)!!,
                                     java.lang.Double.valueOf(storeList[i].lng)!!,
                                     0.0,
-                                    getStoreLogoDrawableId(storeList[i].type)))
+                                    getStoreLogoDrawableRes(storeList[i].type)))
                         }
                     }
 

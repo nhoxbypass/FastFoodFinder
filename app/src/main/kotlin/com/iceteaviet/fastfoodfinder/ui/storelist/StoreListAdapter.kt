@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
-import com.iceteaviet.fastfoodfinder.utils.ui.getStoreLogoDrawableId
+import com.iceteaviet.fastfoodfinder.utils.ui.getStoreLogoDrawableRes
 import kotlinx.android.synthetic.main.item_list_store.view.*
 import java.util.*
 
@@ -60,7 +60,7 @@ class StoreListAdapter : RecyclerView.Adapter<StoreListAdapter.StoreListViewHold
             tvStoreAddress.text = store.address
             tvTel.text = store.tel
             Glide.with(ivStoreImage.context)
-                    .load(getStoreLogoDrawableId(store.type))
+                    .load(getStoreLogoDrawableRes(store.type))
                     .into(ivStoreImage)
         }
     }

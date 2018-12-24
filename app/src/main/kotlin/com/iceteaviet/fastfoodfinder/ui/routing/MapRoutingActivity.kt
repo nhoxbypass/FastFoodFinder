@@ -25,7 +25,7 @@ import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.utils.Constant.DEFAULT_ZOOM_LEVEL
 import com.iceteaviet.fastfoodfinder.utils.Constant.DETAILED_ZOOM_LEVEL
 import com.iceteaviet.fastfoodfinder.utils.convertDpToPx
-import com.iceteaviet.fastfoodfinder.utils.ui.getStoreLogoDrawableId
+import com.iceteaviet.fastfoodfinder.utils.ui.getStoreLogoDrawableRes
 import kotlinx.android.synthetic.main.activity_map_routing.*
 import java.util.*
 
@@ -204,7 +204,7 @@ class MapRoutingActivity : AppCompatActivity() {
                 googleMap.addMarker(MarkerOptions().position(mCurrStore!!.getPosition())
                         .title(mCurrStore!!.title)
                         .snippet(mCurrStore!!.address)
-                        .icon(BitmapDescriptorFactory.fromResource(getStoreLogoDrawableId(mCurrStore!!.type))))
+                        .icon(BitmapDescriptorFactory.fromResource(getStoreLogoDrawableRes(mCurrStore!!.type))))
             }
 
             mGoogleMap?.let { drawPolylines(mGeoPointList, it) }

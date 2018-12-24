@@ -20,7 +20,7 @@ import kotlin.collections.ArrayList
 /**
  * Get resource id of store logo drawable
  */
-fun getStoreLogoDrawableId(type: Int): Int {
+fun getStoreLogoDrawableRes(type: Int): Int {
     return when (type) {
         StoreType.TYPE_CIRCLE_K -> R.drawable.logo_circlek_50
         StoreType.TYPE_MINI_STOP -> R.drawable.logo_ministop_50
@@ -96,4 +96,26 @@ fun getRandomStoreImages(numb: Int): List<Int> {
     }
 
     return res
+}
+
+/**
+ * Get resource id of store logo drawable
+ */
+val STORE_ICON_DRAWABLE_ARRAY: MutableList<Int> = Arrays.asList(
+        R.drawable.ic_all_store24h,
+        R.drawable.ic_profile_saved,
+        R.drawable.ic_profile_favourite,
+        R.drawable.ic_profile_list_2,
+        R.drawable.ic_profile_list_4,
+        R.drawable.ic_profile_list_5,
+        R.drawable.ic_profile_list_6,
+        R.drawable.ic_profile_list_7,
+        R.drawable.ic_profile_list_8,
+        R.drawable.ic_profile_list_9,
+        R.drawable.ic_profile_list_10,
+        R.drawable.ic_profile_list_11,
+        R.drawable.ic_profile_list_3)
+
+fun getStoreIconDrawableRes(storeIconId: Int): Int {
+    return STORE_ICON_DRAWABLE_ARRAY[storeIconId]
 }
