@@ -5,11 +5,10 @@ package com.iceteaviet.fastfoodfinder.utils.ui
 import android.animation.ValueAnimator
 import android.graphics.Bitmap
 import android.view.animation.BounceInterpolator
-
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.Marker
 import com.iceteaviet.fastfoodfinder.R
-import com.iceteaviet.fastfoodfinder.utils.Constant
+import com.iceteaviet.fastfoodfinder.utils.StoreType
 import com.iceteaviet.fastfoodfinder.utils.resizeMarkerIcon
 import java.util.*
 import kotlin.collections.ArrayList
@@ -23,11 +22,11 @@ import kotlin.collections.ArrayList
  */
 fun getStoreLogoDrawableId(type: Int): Int {
     return when (type) {
-        Constant.TYPE_CIRCLE_K -> R.drawable.logo_circlek_50
-        Constant.TYPE_MINI_STOP -> R.drawable.logo_ministop_50
-        Constant.TYPE_FAMILY_MART -> R.drawable.logo_familymart_50
-        Constant.TYPE_BSMART -> R.drawable.logo_bsmart_50
-        Constant.TYPE_SHOP_N_GO -> R.drawable.logo_shopngo_50
+        StoreType.TYPE_CIRCLE_K -> R.drawable.logo_circlek_50
+        StoreType.TYPE_MINI_STOP -> R.drawable.logo_ministop_50
+        StoreType.TYPE_FAMILY_MART -> R.drawable.logo_familymart_50
+        StoreType.TYPE_BSMART -> R.drawable.logo_bsmart_50
+        StoreType.TYPE_SHOP_N_GO -> R.drawable.logo_shopngo_50
         else -> R.drawable.logo_circlek_50
     }
 }

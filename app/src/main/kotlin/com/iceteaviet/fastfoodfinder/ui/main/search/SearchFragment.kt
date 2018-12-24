@@ -22,6 +22,7 @@ import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.data.transport.model.SearchEventResult
 import com.iceteaviet.fastfoodfinder.ui.storelist.StoreListActivity
 import com.iceteaviet.fastfoodfinder.utils.Constant
+import com.iceteaviet.fastfoodfinder.utils.StoreType
 import de.hdodenhof.circleimageview.CircleImageView
 import io.reactivex.SingleObserver
 import io.reactivex.disposables.Disposable
@@ -197,31 +198,31 @@ class SearchFragment : Fragment() {
     private fun setupQuickSearchBar() {
         quickSearchCircleK.setOnClickListener {
             searchString = "Circle K"
-            EventBus.getDefault().post(SearchEventResult(SearchEventResult.SEARCH_ACTION_QUICK, searchString!!, Constant.TYPE_CIRCLE_K))
+            EventBus.getDefault().post(SearchEventResult(SearchEventResult.SEARCH_ACTION_QUICK, searchString!!, StoreType.TYPE_CIRCLE_K))
             searchContainer.visibility = View.GONE
         }
 
         quickSearchFamilyMart.setOnClickListener {
             searchString = "Family Mart"
-            EventBus.getDefault().post(SearchEventResult(SearchEventResult.SEARCH_ACTION_QUICK, searchString!!, Constant.TYPE_FAMILY_MART))
+            EventBus.getDefault().post(SearchEventResult(SearchEventResult.SEARCH_ACTION_QUICK, searchString!!, StoreType.TYPE_FAMILY_MART))
             searchContainer.visibility = View.GONE
         }
 
         quickSearchMiniStop.setOnClickListener {
             searchString = "Mini Stop"
-            EventBus.getDefault().post(SearchEventResult(SearchEventResult.SEARCH_ACTION_QUICK, searchString!!, Constant.TYPE_MINI_STOP))
+            EventBus.getDefault().post(SearchEventResult(SearchEventResult.SEARCH_ACTION_QUICK, searchString!!, StoreType.TYPE_MINI_STOP))
             searchContainer.visibility = View.GONE
         }
 
         quickSearchBsMart.setOnClickListener {
             searchString = "BsMart"
-            EventBus.getDefault().post(SearchEventResult(SearchEventResult.SEARCH_ACTION_QUICK, searchString!!, Constant.TYPE_BSMART))
+            EventBus.getDefault().post(SearchEventResult(SearchEventResult.SEARCH_ACTION_QUICK, searchString!!, StoreType.TYPE_BSMART))
             searchContainer.visibility = View.GONE
         }
 
         quickSearchShopNGo.setOnClickListener {
             searchString = "Shop and Go"
-            EventBus.getDefault().post(SearchEventResult(SearchEventResult.SEARCH_ACTION_QUICK, searchString!!, Constant.TYPE_SHOP_N_GO))
+            EventBus.getDefault().post(SearchEventResult(SearchEventResult.SEARCH_ACTION_QUICK, searchString!!, StoreType.TYPE_SHOP_N_GO))
             searchContainer.visibility = View.GONE
         }
 

@@ -12,13 +12,6 @@ import com.google.android.gms.maps.model.LatLng
  */
 
 object Constant {
-    //Type
-    const val TYPE_CIRCLE_K = 0
-    const val TYPE_MINI_STOP = 1
-    const val TYPE_FAMILY_MART = 2
-    const val TYPE_BSMART = 3
-    const val TYPE_SHOP_N_GO = 4
-
     //Map utils
     const val MAPS_INTERVAL = (1000 * 10).toLong()
     const val MAPS_FASTEST_INTERVAL = (1000 * 5).toLong()

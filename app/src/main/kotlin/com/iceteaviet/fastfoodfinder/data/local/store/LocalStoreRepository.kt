@@ -3,7 +3,7 @@ package com.iceteaviet.fastfoodfinder.data.local.store
 import com.iceteaviet.fastfoodfinder.data.domain.store.StoreDataSource
 import com.iceteaviet.fastfoodfinder.data.local.store.model.StoreEntity
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
-import com.iceteaviet.fastfoodfinder.utils.Constant
+import com.iceteaviet.fastfoodfinder.utils.StoreType
 import com.iceteaviet.fastfoodfinder.utils.exception.EmptyParamsException
 import com.iceteaviet.fastfoodfinder.utils.normalizeDistrictQuery
 import io.reactivex.Single
@@ -100,11 +100,11 @@ class LocalStoreRepository : StoreDataSource {
     override fun findStores(queryString: String): Single<MutableList<Store>> {
         val trimmedQuery = queryString.toLowerCase().trim { it <= ' ' }
         return when {
-            isCircleKQuery(trimmedQuery) -> findStoresByType(Constant.TYPE_CIRCLE_K)
-            isMinisStopQuery(trimmedQuery) -> findStoresByType(Constant.TYPE_MINI_STOP)
-            isFamilyMartQuery(trimmedQuery) -> findStoresByType(Constant.TYPE_FAMILY_MART)
-            isShopnGoQuery(trimmedQuery) -> findStoresByType(Constant.TYPE_SHOP_N_GO)
-            isBsMartQuery(trimmedQuery) -> findStoresByType(Constant.TYPE_BSMART)
+            isCircleKQuery(trimmedQuery) -> findStoresByType(StoreType.TYPE_CIRCLE_K)
+            isMinisStopQuery(trimmedQuery) -> findStoresByType(StoreType.TYPE_MINI_STOP)
+            isFamilyMartQuery(trimmedQuery) -> findStoresByType(StoreType.TYPE_FAMILY_MART)
+            isShopnGoQuery(trimmedQuery) -> findStoresByType(StoreType.TYPE_SHOP_N_GO)
+            isBsMartQuery(trimmedQuery) -> findStoresByType(StoreType.TYPE_BSMART)
             else -> // Cant determine
                 // Quite hard to implement
                 findStoresByCustomAddress(normalizeDistrictQuery(queryString))
