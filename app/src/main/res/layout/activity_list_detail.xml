@@ -6,63 +6,20 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="240dp">
 
-        <LinearLayout
-            android:id="@+id/ll1"
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:scaleType="centerCrop"
-                android:src="@drawable/all_placeholder" />
-
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:scaleType="centerCrop"
-                android:src="@drawable/all_placeholder" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:layout_below="@+id/ll1"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:scaleType="centerCrop"
-                android:src="@drawable/all_placeholder" />
-
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:scaleType="centerCrop"
-                android:src="@drawable/all_placeholder" />
-        </LinearLayout>
+        <ImageView
+            android:id="@+id/iv_list_cover"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iconList"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:layout_centerInParent="true"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="16dp"
             android:src="@drawable/ic_profile_list_10" />
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/cvAvatar"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:layout_marginTop="124dp"
-            android:src="@drawable/all_sample_avatar" />
 
     </RelativeLayout>
 
@@ -70,8 +27,7 @@
         android:id="@+id/tvListName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_margin="16dp"
         android:text="Name's List"
         android:textSize="24sp"
         android:textStyle="bold" />
@@ -80,12 +36,15 @@
         android:id="@+id/tvNumberPlace"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
+        android:layout_marginLeft="16dp"
         android:text="0 Places" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp" />
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="8dp" />
 </LinearLayout>

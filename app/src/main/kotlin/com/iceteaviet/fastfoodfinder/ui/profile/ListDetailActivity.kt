@@ -56,10 +56,9 @@ class ListDetailActivity : AppCompatActivity() {
         rvStoreList.addItemDecoration(decoration)
 
         tvListName!!.text = userStoreList!!.listName
-        cvIconList.setImageResource(userStoreList!!.iconId)
         Glide.with(applicationContext)
-                .load(photoUrl)
-                .into(cvAvatar!!)
+                .load(userStoreList!!.iconId)
+                .into(cvIconList)
     }
 
     private fun loadData(intent: Intent): UserStoreList {
