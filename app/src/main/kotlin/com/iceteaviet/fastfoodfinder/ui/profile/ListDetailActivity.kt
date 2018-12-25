@@ -14,6 +14,7 @@ import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList
 import com.iceteaviet.fastfoodfinder.ui.storelist.StoreListAdapter
+import com.iceteaviet.fastfoodfinder.utils.ui.getStoreListIconDrawableRes
 import de.hdodenhof.circleimageview.CircleImageView
 import io.reactivex.SingleObserver
 import io.reactivex.disposables.Disposable
@@ -57,14 +58,14 @@ class ListDetailActivity : AppCompatActivity() {
 
         tvListName!!.text = userStoreList!!.listName
         Glide.with(applicationContext)
-                .load(userStoreList!!.iconId)
+                .load(getStoreListIconDrawableRes(userStoreList!!.iconId))
                 .into(cvIconList)
     }
 
     private fun loadData(intent: Intent): UserStoreList {
-        val userStoreList = UserStoreList()
+        var userStoreList = UserStoreList()
         if (intent.hasExtra(KEY_USER_STORE_LIST))
-            intent.getParcelableExtra<UserStoreList>(KEY_USER_STORE_LIST)
+            userStoreList = intent.getParcelableExtra(KEY_USER_STORE_LIST)
         photoUrl = intent.getStringExtra(KEY_USER_PHOTO_URL)
 
         //add list store to mAdapter here

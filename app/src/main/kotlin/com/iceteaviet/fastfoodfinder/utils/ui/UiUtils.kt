@@ -116,6 +116,6 @@ val STORE_ICON_DRAWABLE_ARRAY: MutableList<Int> = Arrays.asList(
         R.drawable.ic_profile_list_11,
         R.drawable.ic_profile_list_3)
 
-fun getStoreIconDrawableRes(storeIconId: Int): Int {
+fun getStoreListIconDrawableRes(storeIconId: Int): Int {
     return STORE_ICON_DRAWABLE_ARRAY[storeIconId]
 }
