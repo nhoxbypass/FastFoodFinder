@@ -60,7 +60,9 @@
             android:name=".ui.store.CommentActivity"
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".ui.storelist.StoreListActivity" />
-        <activity android:name=".ui.profile.ListDetailActivity" />
+        <activity
+            android:name=".ui.profile.ListDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar.TranslucentStatus" />
         <activity android:name=".ui.ar.ArCameraActivity"></activity>
     </application>
 
