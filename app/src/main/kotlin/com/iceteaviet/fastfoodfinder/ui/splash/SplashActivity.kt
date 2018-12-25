@@ -58,7 +58,7 @@ class SplashActivity : AppCompatActivity() {
                         override fun onError(e: Throwable) {
                             dataManager.signOut()
                             e.printStackTrace()
-                            waitAndStartActivity(start)
+                            startMyActivity(LoginActivity::class.java)
                         }
                     })
         } else {
@@ -84,22 +84,18 @@ class SplashActivity : AppCompatActivity() {
                             })
                 }
 
-                waitAndStartActivity(start)
+                val remainTime = SPLASH_DELAY_TIME - (System.currentTimeMillis() - start)
+                if (remainTime > 0) {
+                    Handler(Looper.getMainLooper())
+                            .postDelayed({
+                                startMyActivity(MainActivity::class.java)
+                            }, remainTime)
+                } else {
+                    startMyActivity(MainActivity::class.java)
+                }
             } else {
-                waitAndStartActivity(start)
+                startMyActivity(LoginActivity::class.java)
             }
-        }
-    }
-
-    private fun waitAndStartActivity(start: Long) {
-        val remainTime = SPLASH_DELAY_TIME - (System.currentTimeMillis() - start)
-        if (remainTime > 0) {
-            Handler(Looper.getMainLooper())
-                    .postDelayed({
-                        startMyActivity(MainActivity::class.java)
-                    }, remainTime)
-        } else {
-            startMyActivity(MainActivity::class.java)
         }
     }
 
