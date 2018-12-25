@@ -41,7 +41,6 @@ class ListDetailActivity : AppCompatActivity() {
         rvStoreList = rvList
         cvIconList = iconList
 
-
         dataManager = App.getDataManager()
 
         userStoreList = loadData(intent)

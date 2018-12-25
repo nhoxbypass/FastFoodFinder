@@ -11,8 +11,9 @@
         <ImageView
             android:id="@+id/iv_list_cover"
             android:layout_width="match_parent"
-            android:src="@drawable/detail_sample_circlekcover"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/detail_sample_circlekcover" />
 
         <View
             android:layout_width="match_parent"
