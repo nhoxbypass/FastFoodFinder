@@ -6,8 +6,10 @@ import android.view.ViewGroup
 import androidx.annotation.NonNull
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList
+import com.iceteaviet.fastfoodfinder.utils.ui.getStoreListIconDrawableRes
 import kotlinx.android.synthetic.main.view_new_list.view.*
 import java.util.*
 
@@ -46,7 +48,9 @@ class UserStoreListAdapter internal constructor() : RecyclerView.Adapter<UserSto
     override fun onBindViewHolder(@NonNull holder: ListViewHolder, position: Int) {
         val listPacket = mListPackets[position]
         holder.itemView.tvNameList!!.text = listPacket.listName
-        holder.itemView.iconNewList!!.setImageResource(listPacket.iconId)
+        Glide.with(holder.itemView.context)
+                .load(getStoreListIconDrawableRes(listPacket.iconId))
+                .into(holder.itemView.iconNewList)
     }
 
     override fun getItemCount(): Int {
