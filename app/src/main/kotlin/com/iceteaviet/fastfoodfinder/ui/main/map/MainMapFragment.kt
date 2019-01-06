@@ -561,7 +561,7 @@ class MainMapFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, Locatio
                 Toast.makeText(activity, R.string.fav_stores_added, Toast.LENGTH_SHORT).show()
             }
         })
-        dialog.show(fm, "dialog-info")
+        dialog.show(fm!!, "dialog-info")
     }
 
     private fun getStoreIcon(type: Int?): Bitmap {

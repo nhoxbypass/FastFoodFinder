@@ -66,7 +66,7 @@ class ProfileFragment : Fragment(), View.OnClickListener {
         when (v?.id) {
             R.id.cvCreateNew -> {
                 mDialogCreate = DialogCreateNewList.newInstance(listName)
-                mDialogCreate!!.show(fragmentManager, "")
+                mDialogCreate!!.show(fragmentManager!!, "")
                 mDialogCreate!!.setOnButtonClickListener(object : DialogCreateNewList.OnCreateListListener {
                     override fun onButtonClick(name: String, iconId: Int) {
                         val currentUser = dataManager.getCurrentUser()
@@ -92,7 +92,7 @@ class ProfileFragment : Fragment(), View.OnClickListener {
             }
 
             R.id.btnUpdateCoverImage -> {
-                mDialog!!.show(fragmentManager, "")
+                mDialog!!.show(fragmentManager!!, "")
                 btnUpdateCoverImage!!.visibility = View.GONE
                 return
             }
@@ -175,9 +175,9 @@ class ProfileFragment : Fragment(), View.OnClickListener {
         tvNumberList!!.text = String.format("(%s)", mAdapter!!.itemCount.toString())
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        val item = menu!!.findItem(R.id.action_search)
+        val item = menu.findItem(R.id.action_search)
         item.isVisible = false
     }
 

@@ -15,12 +15,12 @@ class MainPagerAdapter internal constructor(fm: FragmentManager) : FragmentPager
     private val pageTitles = arrayOf(R.string.map.toString(), R.string.recently.toString(), R.string.favourite.toString())
     private val imageResId = intArrayOf(R.drawable.ic_main_map, R.drawable.ic_main_clock_red, R.drawable.ic_main_star_red)
 
-    override fun getItem(position: Int): Fragment? {
+    override fun getItem(position: Int): Fragment {
         return when (position) {
             0 -> MainMapFragment.newInstance()
             1 -> MainRecentlyFragment.newInstance()
             2 -> MainFavouriteFragment.newInstance()
-            else -> null
+            else -> MainMapFragment.newInstance()
         }
     }
 

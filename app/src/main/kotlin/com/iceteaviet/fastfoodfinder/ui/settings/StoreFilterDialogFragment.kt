@@ -33,7 +33,7 @@ class StoreFilterDialogFragment : DialogFragment() {
 
         tagContainer = tag_container
 
-        dialog.setTitle(R.string.subscription)
+        dialog?.setTitle(R.string.subscription)
         setupTagContainer()
 
         btnCancel!!.setOnClickListener { dismiss() }
@@ -42,7 +42,7 @@ class StoreFilterDialogFragment : DialogFragment() {
 
     override fun onActivityCreated(arg0: Bundle?) {
         super.onActivityCreated(arg0)
-        dialog.window!!.attributes.windowAnimations = R.style.DialogAnimationUpDown
+        dialog?.window?.attributes?.windowAnimations = R.style.DialogAnimationUpDown
     }
 
     private fun setupTagContainer() {

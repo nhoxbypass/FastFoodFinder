@@ -93,11 +93,11 @@ class StoreInfoDialogFragment : DialogFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        dialog.window!!.attributes.windowAnimations = R.style.DialogAnimation
+        dialog!!.window!!.attributes.windowAnimations = R.style.DialogAnimation
     }
 
     override fun onResume() {
-        val window = dialog.window
+        val window = dialog!!.window
         val size = Point()
         val display = window!!.windowManager.defaultDisplay
         display.getSize(size)
