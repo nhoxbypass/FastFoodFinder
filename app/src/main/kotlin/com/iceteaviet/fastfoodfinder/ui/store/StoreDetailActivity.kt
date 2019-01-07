@@ -104,7 +104,7 @@ class StoreDetailActivity : AppCompatActivity(), StoreDetailAdapter.StoreActionL
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == RESULT_OK && requestCode == REQUEST_COMMENT && data != null) {
-            val comment = data.getSerializableExtra(KEY_COMMENT) as Comment
+            val comment = data.getParcelableExtra(KEY_COMMENT) as Comment
             if (comment != null) {
                 mStoreDetailAdapter!!.addComment(comment)
                 appbar!!.setExpanded(false)

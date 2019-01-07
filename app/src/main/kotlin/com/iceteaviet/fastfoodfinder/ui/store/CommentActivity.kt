@@ -81,7 +81,9 @@ class CommentActivity : AppCompatActivity(), NoticeDialog.NoticeDialogListener {
             }
             val comment = createFakeUserComment(etComment.text.toString())
             val data = Intent()
-            data.putExtra(KEY_COMMENT, comment)
+            val extras = Bundle()
+            extras.putParcelable(KEY_COMMENT, comment)
+            data.putExtras(extras)
             setResult(RESULT_OK, data)
             finish()
         })
