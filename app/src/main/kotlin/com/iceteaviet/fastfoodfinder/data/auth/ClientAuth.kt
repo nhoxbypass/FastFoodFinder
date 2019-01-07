@@ -1,4 +1,4 @@
-package com.iceteaviet.fastfoodfinder.data.remote
+package com.iceteaviet.fastfoodfinder.data.auth
 
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseUser

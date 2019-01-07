@@ -4,10 +4,10 @@ import android.app.Activity
 import android.content.Context
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseUser
+import com.iceteaviet.fastfoodfinder.data.auth.ClientAuth
 import com.iceteaviet.fastfoodfinder.data.domain.store.StoreDataSource
 import com.iceteaviet.fastfoodfinder.data.domain.user.UserDataSource
 import com.iceteaviet.fastfoodfinder.data.prefs.PreferencesHelper
-import com.iceteaviet.fastfoodfinder.data.remote.ClientAuth
 import com.iceteaviet.fastfoodfinder.data.remote.routing.MapsRoutingApiHelper
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
