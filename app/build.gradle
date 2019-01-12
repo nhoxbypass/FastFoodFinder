@@ -31,7 +31,7 @@ android {
         debug {
             testCoverageEnabled true
             minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules-debug.pro'
         }
     }
 
@@ -40,6 +40,10 @@ android {
     }
 
     sourceSets{ main.java.srcDirs += 'src/main/kotlin' }
+
+    dexOptions {
+        javaMaxHeapSize = "4g"
+    }
 }
 
 coveralls {
