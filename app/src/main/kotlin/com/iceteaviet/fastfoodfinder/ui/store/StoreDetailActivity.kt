@@ -90,6 +90,9 @@ class StoreDetailActivity : AppCompatActivity(), StoreDetailAdapter.StoreActionL
                 .addOnConnectionFailedListener { e(TAG, getString(R.string.cannot_get_curr_location)) }
                 .addApi(LocationServices.API)
                 .build()
+
+        // Load new store data
+        fetchStoreData()
     }
 
     override fun onStart() {
@@ -104,11 +107,14 @@ class StoreDetailActivity : AppCompatActivity(), StoreDetailAdapter.StoreActionL
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == RESULT_OK && requestCode == REQUEST_COMMENT && data != null) {
-            val comment = data.getParcelableExtra(KEY_COMMENT) as Comment
+            val comment = data.getParcelableExtra(KEY_COMMENT) as Comment?
             if (comment != null) {
                 mStoreDetailAdapter!!.addComment(comment)
                 appbar!!.setExpanded(false)
                 rvContent.scrollToPosition(3)
+
+                // Update comment data
+                dataManager.getRemoteStoreDataSource().insertOrUpdateComment(currentStore!!.id.toString(), comment)
             }
         }
     }
@@ -211,6 +217,22 @@ class StoreDetailActivity : AppCompatActivity(), StoreDetailAdapter.StoreActionL
             currLocation = LatLng(lastLocation.latitude, lastLocation.longitude)
         } else
             Toast.makeText(this@StoreDetailActivity, R.string.cannot_get_curr_location, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun fetchStoreData() {
+        dataManager.getRemoteStoreDataSource().getComments(currentStore!!.id.toString())
+                .subscribe(object : SingleObserver<MutableList<Comment>> {
+                    override fun onSubscribe(d: Disposable) {
+
+                    }
+
+                    override fun onSuccess(commentList: MutableList<Comment>) {
+                        mStoreDetailAdapter!!.setComments(commentList)
+                    }
+
+                    override fun onError(e: Throwable) {
+                    }
+                })
     }
 
     companion object {

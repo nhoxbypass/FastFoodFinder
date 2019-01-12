@@ -1,5 +1,6 @@
 package com.iceteaviet.fastfoodfinder.data.domain.store
 
+import com.iceteaviet.fastfoodfinder.data.remote.store.model.Comment
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 
 import io.reactivex.Single
@@ -30,4 +31,8 @@ interface StoreDataSource {
     fun findStoresByIds(ids: List<Int>): Single<MutableList<Store>>
 
     fun deleteAllStores()
+
+    fun getComments(storeId: String): Single<MutableList<Comment>>
+
+    fun insertOrUpdateComment(storeId: String, comment: Comment)
 }

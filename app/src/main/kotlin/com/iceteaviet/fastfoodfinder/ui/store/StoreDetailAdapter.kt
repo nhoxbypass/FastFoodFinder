@@ -18,7 +18,6 @@ import com.bumptech.glide.request.target.BitmapImageViewTarget
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Comment
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
-import com.iceteaviet.fastfoodfinder.utils.getFakeComments
 import com.iceteaviet.fastfoodfinder.utils.getRelativeTimeAgo
 import kotlinx.android.synthetic.main.item_store_action.view.*
 import kotlinx.android.synthetic.main.item_store_comment.view.*
@@ -31,7 +30,7 @@ import kotlinx.android.synthetic.main.layout_call_direction.view.*
  */
 
 class StoreDetailAdapter internal constructor(private val mStore: Store) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    private val mComments: MutableList<Comment> = getFakeComments().toMutableList()
+    private var mComments: MutableList<Comment> = mutableListOf<Comment>()
     private var mListener: StoreActionListener? = null
 
     fun setListener(listener: StoreActionListener) {
@@ -42,6 +41,11 @@ class StoreDetailAdapter internal constructor(private val mStore: Store) : Recyc
         mComments.add(0, comment)
         notifyItemInserted(3)
         return 3
+    }
+
+    fun setComments(comments: MutableList<Comment>) {
+        mComments = comments
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(@NonNull parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

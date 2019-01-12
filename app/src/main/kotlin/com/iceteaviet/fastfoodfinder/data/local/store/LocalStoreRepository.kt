@@ -2,6 +2,7 @@ package com.iceteaviet.fastfoodfinder.data.local.store
 
 import com.iceteaviet.fastfoodfinder.data.domain.store.StoreDataSource
 import com.iceteaviet.fastfoodfinder.data.local.store.model.StoreEntity
+import com.iceteaviet.fastfoodfinder.data.remote.store.model.Comment
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.utils.StoreType
 import com.iceteaviet.fastfoodfinder.utils.exception.EmptyParamsException
@@ -247,6 +248,14 @@ class LocalStoreRepository : StoreDataSource {
 
     private fun isBsMartQuery(queryString: String): Boolean {
         return queryString == "bsmart" || queryString == "b smart" || queryString == "bs mart" || queryString == "bmart" || queryString == "b'smart" || queryString == "b's mart"
+    }
+
+    override fun getComments(storeId: String): Single<MutableList<Comment>> {
+        return Single.never()
+    }
+
+    override fun insertOrUpdateComment(storeId: String, comment: Comment) {
+        // TODO: Support this
     }
 
     companion object {
