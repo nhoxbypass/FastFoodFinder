@@ -7,7 +7,6 @@ import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
@@ -22,6 +21,7 @@ import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.Step
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
+import com.iceteaviet.fastfoodfinder.ui.base.BaseActivity
 import com.iceteaviet.fastfoodfinder.utils.Constant.DEFAULT_ZOOM_LEVEL
 import com.iceteaviet.fastfoodfinder.utils.Constant.DETAILED_ZOOM_LEVEL
 import com.iceteaviet.fastfoodfinder.utils.convertDpToPx
@@ -30,8 +30,7 @@ import kotlinx.android.synthetic.main.activity_map_routing.*
 import java.util.*
 
 
-class MapRoutingActivity : AppCompatActivity() {
-
+class MapRoutingActivity : BaseActivity() {
     lateinit var txtTravelTime: TextView
     lateinit var txtTravelDistance: TextView
     lateinit var txtTravelOverview: TextView
@@ -59,7 +58,6 @@ class MapRoutingActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_map_routing)
 
         txtTravelTime = tv_routing_time
         txtTravelDistance = tv_routing_distance
@@ -80,6 +78,9 @@ class MapRoutingActivity : AppCompatActivity() {
             setUpMapIfNeeded()
         }
     }
+
+    override val layoutId: Int
+        get() = R.layout.activity_map_routing
 
     private fun setupEventListeners() {
         mListener = object : RoutingAdapter.OnNavigationItemClickListener {

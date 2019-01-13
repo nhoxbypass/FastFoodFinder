@@ -9,14 +9,11 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.*
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
-
-import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.BuildConfig
 import com.iceteaviet.fastfoodfinder.R
-import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
+import com.iceteaviet.fastfoodfinder.ui.base.BaseActivity
 import com.iceteaviet.fastfoodfinder.ui.login.LoginActivity
 import com.iceteaviet.fastfoodfinder.utils.filterInvalidData
 import io.reactivex.SingleObserver
@@ -24,7 +21,7 @@ import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_setting.*
 import java.util.*
 
-class SettingActivity : AppCompatActivity() {
+class SettingActivity : BaseActivity() {
     lateinit var txtShareApp: TextView
     lateinit var txtChangeMetric: TextView
     lateinit var txtEditProfile: TextView
@@ -46,11 +43,8 @@ class SettingActivity : AppCompatActivity() {
 
     private var isVietnamese = true
 
-    private lateinit var dataManager: DataManager
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_setting)
 
         txtShareApp = tv_setting_share_app
         txtChangeMetric = tv_setting_change_metric
@@ -71,8 +65,6 @@ class SettingActivity : AppCompatActivity() {
         swChangeLanguage = sw_languages
         tvSettingLanguage = tv_setting_english
 
-        dataManager = App.getDataManager()
-
         val pref = this.getSharedPreferences(
                 BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE)
 
@@ -88,6 +80,9 @@ class SettingActivity : AppCompatActivity() {
 
         setupEventListeners(pref)
     }
+
+    override val layoutId: Int
+        get() = R.layout.activity_setting
 
     fun loadLanguage(languageToLoad: String) {
         val locale = Locale(languageToLoad)

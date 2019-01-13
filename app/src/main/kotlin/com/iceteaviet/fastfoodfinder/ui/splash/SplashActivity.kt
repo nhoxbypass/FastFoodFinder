@@ -5,12 +5,11 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
-import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
+import com.iceteaviet.fastfoodfinder.ui.base.BaseActivity
 import com.iceteaviet.fastfoodfinder.ui.login.LoginActivity
 import com.iceteaviet.fastfoodfinder.ui.main.MainActivity
 import com.iceteaviet.fastfoodfinder.utils.filterInvalidData
@@ -20,17 +19,14 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
-class SplashActivity : AppCompatActivity() {
+class SplashActivity : BaseActivity() {
 
     companion object {
         const val SPLASH_DELAY_TIME = 500;
     }
 
-    private lateinit var dataManager: DataManager
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_splash)
 
         val start = System.currentTimeMillis()
 
@@ -98,6 +94,9 @@ class SplashActivity : AppCompatActivity() {
             }
         }
     }
+
+    override val layoutId: Int
+        get() = R.layout.activity_splash
 
     private fun startMyActivity(activity: Class<*>) {
         val intent = Intent(this@SplashActivity, activity)

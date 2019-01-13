@@ -16,7 +16,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.Nullable
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
@@ -26,11 +25,10 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.google.android.material.navigation.NavigationView
-import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
-import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.transport.model.SearchEventResult
 import com.iceteaviet.fastfoodfinder.ui.ar.ArCameraActivity
+import com.iceteaviet.fastfoodfinder.ui.base.BaseActivity
 import com.iceteaviet.fastfoodfinder.ui.login.LoginActivity
 import com.iceteaviet.fastfoodfinder.ui.main.search.SearchFragment
 import com.iceteaviet.fastfoodfinder.ui.profile.ProfileFragment
@@ -45,7 +43,7 @@ import org.greenrobot.eventbus.ThreadMode
 
 //TODO: Check !! of SearchView
 
-class MainActivity : AppCompatActivity(), View.OnClickListener {
+class MainActivity : BaseActivity(), View.OnClickListener {
     lateinit var mNavigationView: NavigationView
     lateinit var mDrawerLayout: DrawerLayout
     lateinit var mToolbar: Toolbar
@@ -61,18 +59,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private var searchItem: MenuItem? = null
     private var profileItem: MenuItem? = null
 
-    private lateinit var dataManager: DataManager
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
         mNavigationView = nav_view
         mDrawerLayout = drawer_layout
         mToolbar = toolbar
-
-        dataManager = App.getDataManager()
 
         setSupportActionBar(mToolbar)
         setupAllViews()
@@ -133,6 +125,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         // Pass any configuration change to the drawer toggles
         mDrawerToggle!!.onConfigurationChanged(newConfig)
     }
+
+    override val layoutId: Int
+        get() = R.layout.activity_main
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onSearchResult(searchEventResult: SearchEventResult) {

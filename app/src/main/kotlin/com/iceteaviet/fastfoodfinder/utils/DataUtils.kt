@@ -48,14 +48,14 @@ fun getRandomInt(min: Int, max: Int): Int {
 /**
  * Get relative time in the past
  */
-fun getRelativeTimeAgo(rawJsonDate: String): String {
+fun getRelativeTimeAgo(timestamp: Long): String {
     val twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy"
     var sf = SimpleDateFormat(twitterFormat, Locale.ENGLISH)
     sf.isLenient = true
     val now = Calendar.getInstance()
     val then = Calendar.getInstance()
     try {
-        val date = sf.parse(rawJsonDate)
+        val date = Date(timestamp)
         then.time = date
         val nowMs = now.timeInMillis
         val thenMs = then.timeInMillis

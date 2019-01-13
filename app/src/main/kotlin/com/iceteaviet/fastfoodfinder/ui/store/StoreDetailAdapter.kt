@@ -211,7 +211,7 @@ class StoreDetailAdapter internal constructor(private val mStore: Store) : Recyc
 
             tvUserName.text = comment.userName
             tvContent.text = comment.content
-            tvTime.text = getRelativeTimeAgo(comment.date!!)
+            tvTime.text = getRelativeTimeAgo(comment.timestamp)
         }
     }
 

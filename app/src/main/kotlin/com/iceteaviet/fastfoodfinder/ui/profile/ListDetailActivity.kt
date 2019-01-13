@@ -3,16 +3,14 @@ package com.iceteaviet.fastfoodfinder.ui.profile
 import android.content.Intent
 import android.os.Bundle
 import androidx.annotation.Nullable
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
-import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList
+import com.iceteaviet.fastfoodfinder.ui.base.BaseActivity
 import com.iceteaviet.fastfoodfinder.ui.storelist.StoreListAdapter
 import com.iceteaviet.fastfoodfinder.utils.ui.getStoreListIconDrawableRes
 import de.hdodenhof.circleimageview.CircleImageView
@@ -23,29 +21,27 @@ import kotlinx.android.synthetic.main.activity_list_detail.*
 /**
  * Created by MyPC on 12/6/2016.
  */
-class ListDetailActivity : AppCompatActivity() {
-
+class ListDetailActivity : BaseActivity() {
     lateinit var rvStoreList: RecyclerView
     lateinit var cvIconList: CircleImageView
 
     private var mAdapter: StoreListAdapter? = null
 
-    private var dataManager: DataManager? = null
     private var userStoreList: UserStoreList? = null
     private var photoUrl: String? = null
 
     override fun onCreate(@Nullable savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_list_detail)
 
         rvStoreList = rvList
         cvIconList = iconList
 
-        dataManager = App.getDataManager()
-
         userStoreList = loadData(intent)
         setupUI()
     }
+
+    override val layoutId: Int
+        get() = R.layout.activity_list_detail
 
     private fun setupUI() {
         mAdapter = StoreListAdapter()
@@ -68,7 +64,7 @@ class ListDetailActivity : AppCompatActivity() {
         photoUrl = intent.getStringExtra(KEY_USER_PHOTO_URL)
 
         //add list store to mAdapter here
-        dataManager!!.getLocalStoreDataSource().findStoresByIds(userStoreList.getStoreIdList()!!)
+        dataManager.getLocalStoreDataSource().findStoresByIds(userStoreList.getStoreIdList()!!)
                 .subscribe(object : SingleObserver<List<Store>> {
                     override fun onSubscribe(d: Disposable) {
 

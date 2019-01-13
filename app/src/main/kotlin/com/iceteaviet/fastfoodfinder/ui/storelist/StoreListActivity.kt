@@ -2,25 +2,24 @@ package com.iceteaviet.fastfoodfinder.ui.storelist
 
 import android.os.Bundle
 import androidx.annotation.Nullable
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.iceteaviet.fastfoodfinder.R
+import com.iceteaviet.fastfoodfinder.ui.base.BaseActivity
 import com.iceteaviet.fastfoodfinder.utils.getFakeStoreList
 import kotlinx.android.synthetic.main.activity_store_list.*
 
 /**
  * Created by MyPC on 11/30/2016.
  */
-class StoreListActivity : AppCompatActivity() {
+class StoreListActivity : BaseActivity() {
     lateinit var recyclerView: RecyclerView
 
     private var adapter: StoreListAdapter? = null
 
     override fun onCreate(@Nullable savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_store_list)
 
         recyclerView = rv_top_list
 
@@ -32,6 +31,9 @@ class StoreListActivity : AppCompatActivity() {
         recyclerView.addItemDecoration(decoration)
         loadData()
     }
+
+    override val layoutId: Int
+        get() = R.layout.activity_store_list
 
 
     private fun loadData() {

@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import com.facebook.*
 import com.facebook.login.LoginResult
 import com.facebook.login.widget.LoginButton
@@ -16,18 +15,16 @@ import com.google.android.gms.common.api.GoogleApiClient
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
-import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
-import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
+import com.iceteaviet.fastfoodfinder.ui.base.BaseActivity
 import com.iceteaviet.fastfoodfinder.ui.main.MainActivity
 import com.iceteaviet.fastfoodfinder.utils.*
 import io.reactivex.SingleObserver
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_login.*
 
-class LoginActivity : AppCompatActivity() {
-
+class LoginActivity : BaseActivity() {
     lateinit var skipButton: Button
     lateinit var joinNowButton: Button
     lateinit var fbSignInButton: LoginButton
@@ -35,20 +32,15 @@ class LoginActivity : AppCompatActivity() {
 
     private var mGoogleApiClient: GoogleApiClient? = null
     private var mCallBackManager: CallbackManager? = null
-    private lateinit var dataManager: DataManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         FacebookSdk.sdkInitialize(applicationContext)
-        setContentView(R.layout.activity_login)
 
         skipButton = btn_skip
         joinNowButton = btn_join_now
         fbSignInButton = btn_facebook_signin
         googleSignInButton = btn_google_signin
-
-
-        dataManager = App.getDataManager()
 
         // Initialize Firebase Auth
         if (dataManager.isSignedIn()) {
@@ -74,6 +66,9 @@ class LoginActivity : AppCompatActivity() {
 
         googleSignInButton.setOnClickListener { signIntWithGoogle(mGoogleApiClient) }
     }
+
+    override val layoutId: Int
+        get() = R.layout.activity_login
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

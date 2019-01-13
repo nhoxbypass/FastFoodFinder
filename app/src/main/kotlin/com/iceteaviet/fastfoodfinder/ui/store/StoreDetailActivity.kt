@@ -9,7 +9,6 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -19,13 +18,12 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.appbar.CollapsingToolbarLayout
-import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
-import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.routing.GoogleMapsRoutingApiHelper
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Comment
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
+import com.iceteaviet.fastfoodfinder.ui.base.BaseActivity
 import com.iceteaviet.fastfoodfinder.ui.routing.MapRoutingActivity
 import com.iceteaviet.fastfoodfinder.ui.routing.MapRoutingActivity.Companion.KEY_DES_STORE
 import com.iceteaviet.fastfoodfinder.ui.routing.MapRoutingActivity.Companion.KEY_ROUTE_LIST
@@ -40,8 +38,7 @@ import java.util.*
  * Created by taq on 18/11/2016.
  */
 
-class StoreDetailActivity : AppCompatActivity(), StoreDetailAdapter.StoreActionListener, GoogleApiClient.ConnectionCallbacks {
-
+class StoreDetailActivity : BaseActivity(), StoreDetailAdapter.StoreActionListener, GoogleApiClient.ConnectionCallbacks {
     lateinit var collapsingToolbar: CollapsingToolbarLayout
     lateinit var ivBackdrop: ImageView
     lateinit var rvContent: RecyclerView
@@ -53,11 +50,9 @@ class StoreDetailActivity : AppCompatActivity(), StoreDetailAdapter.StoreActionL
     //private SupportMapFragment mMapFragment;
     //private GoogleMap mGoogleMap;
     private var mStoreDetailAdapter: StoreDetailAdapter? = null
-    private lateinit var dataManager: DataManager
 
     override fun onCreate(@Nullable savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_store_detail)
 
         collapsingToolbar = collapsing_toolbar
         ivBackdrop = backdrop
@@ -83,7 +78,6 @@ class StoreDetailActivity : AppCompatActivity(), StoreDetailAdapter.StoreActionL
                 .apply(RequestOptions().centerCrop())
                 .into(ivBackdrop)
 
-        dataManager = App.getDataManager()
         mLocationRequest = createLocationRequest()
         googleApiClient = GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
@@ -137,6 +131,9 @@ class StoreDetailActivity : AppCompatActivity(), StoreDetailAdapter.StoreActionL
             }
         }
     }
+
+    override val layoutId: Int
+        get() = R.layout.activity_store_detail
 
     override fun onShowComment() {
         startActivityForResult(Intent(this, CommentActivity::class.java), REQUEST_COMMENT)
