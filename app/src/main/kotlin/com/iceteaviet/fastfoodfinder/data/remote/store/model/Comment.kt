@@ -4,7 +4,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.google.firebase.database.Exclude
 
-class Comment(var userName: String?, var avatar: String?, var content: String?, var mediaUrl: String?, var timestamp: Long) : Parcelable {
+class Comment(var userName: String, var avatar: String, var content: String, var mediaUrl: String, var timestamp: Long) : Parcelable {
 
     @Exclude
     @get:Exclude
@@ -13,7 +13,7 @@ class Comment(var userName: String?, var avatar: String?, var content: String?, 
 
     constructor() : this("", "", "", "", 0L)
 
-    constructor(id: String?, userName: String?, avatar: String?, content: String?, mediaUrl: String?, timestamp: Long) : this(
+    constructor(id: String, userName: String, avatar: String, content: String, mediaUrl: String, timestamp: Long) : this(
             userName,
             avatar,
             content,

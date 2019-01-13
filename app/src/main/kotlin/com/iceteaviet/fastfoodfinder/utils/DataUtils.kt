@@ -50,16 +50,13 @@ fun getRandomInt(min: Int, max: Int): Int {
  */
 fun getRelativeTimeAgo(timestamp: Long): String {
     val twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy"
-    var sf = SimpleDateFormat(twitterFormat, Locale.ENGLISH)
-    sf.isLenient = true
-    val now = Calendar.getInstance()
+    val now = System.currentTimeMillis()
     val then = Calendar.getInstance()
     try {
         val date = Date(timestamp)
         then.time = date
-        val nowMs = now.timeInMillis
         val thenMs = then.timeInMillis
-        val diff = nowMs - thenMs
+        val diff = now - thenMs
         val diffMinutes = diff / (60 * 1000)
         val diffHours = diff / (60 * 60 * 1000)
         val diffDays = diff / (24 * 60 * 60 * 1000)
@@ -72,6 +69,8 @@ fun getRelativeTimeAgo(timestamp: Long): String {
         } else if (diffDays < 7) {
             return diffDays.toString() + "d"
         } else {
+            var sf = SimpleDateFormat(twitterFormat, Locale.ENGLISH)
+            sf.isLenient = true
             sf = SimpleDateFormat("MMM dd", Locale.ENGLISH)
             return sf.format(date)
         }

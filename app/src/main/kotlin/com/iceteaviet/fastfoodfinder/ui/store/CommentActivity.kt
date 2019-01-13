@@ -82,7 +82,7 @@ class CommentActivity : BaseActivity(), NoticeDialog.NoticeDialogListener {
                 return@OnClickListener
             }
             val comment = Comment(dataManager.getCurrentUser()!!.name, dataManager.getCurrentUser()!!.photoUrl,
-                    etComment.text.toString(), "mediaurl", System.currentTimeMillis())
+                    etComment.text.toString(), "", System.currentTimeMillis())
             val data = Intent()
             val extras = Bundle()
             extras.putParcelable(KEY_COMMENT, comment)

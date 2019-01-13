@@ -37,15 +37,14 @@ class StoreDetailAdapter internal constructor(private val mStore: Store) : Recyc
         mListener = listener
     }
 
-    fun addComment(comment: Comment): Int {
+    fun addComment(comment: Comment) {
         mComments.add(0, comment)
         notifyItemInserted(3)
-        return 3
     }
 
     fun setComments(comments: MutableList<Comment>) {
         mComments = comments
-        notifyDataSetChanged()
+        notifyItemRangeInserted(3, comments.size)
     }
 
     override fun onCreateViewHolder(@NonNull parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -53,7 +52,8 @@ class StoreDetailAdapter internal constructor(private val mStore: Store) : Recyc
             HEADER -> HeaderViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_store_action, parent, false), mListener)
             INFO -> InfoViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_store_info, parent, false), mListener)
             TITLE -> TitleViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_store_title, parent, false))
-            else -> CommentViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_store_comment, parent, false))
+            COMMENT -> CommentViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_store_comment, parent, false))
+            else -> throw IllegalStateException()
         }
     }
 
@@ -65,7 +65,7 @@ class StoreDetailAdapter internal constructor(private val mStore: Store) : Recyc
                 val title = (holder as TitleViewHolder).context.resources.getString(R.string.tips_from_people_who_has_been_here)
                 holder.bind(if (position == 2) title else "")
             }
-            else -> (holder as CommentViewHolder).bind(mComments[position - 3])
+            COMMENT -> (holder as CommentViewHolder).bind(mComments[position - 3])
         }
     }
 
@@ -78,7 +78,7 @@ class StoreDetailAdapter internal constructor(private val mStore: Store) : Recyc
             0 -> HEADER
             1 -> INFO
             2 -> TITLE
-            else -> ITEM
+            else -> COMMENT
         }
     }
 
@@ -194,13 +194,13 @@ class StoreDetailAdapter internal constructor(private val mStore: Store) : Recyc
                     .into<BitmapImageViewTarget>(object : BitmapImageViewTarget(ivProfile) {
                         override fun setResource(resource: Bitmap?) {
                             val bitmap = RoundedBitmapDrawableFactory.create(context.resources, resource)
-                            bitmap.cornerRadius = 5f
+                            bitmap.cornerRadius = 8f
                             ivProfile.setImageDrawable(bitmap)
                         }
                     })
 
             val mediaUrl = comment.mediaUrl
-            if (!mediaUrl!!.isEmpty()) {
+            if (!mediaUrl.isEmpty()) {
                 container.visibility = View.VISIBLE
                 Glide.with(context)
                         .load(mediaUrl)
@@ -224,6 +224,6 @@ class StoreDetailAdapter internal constructor(private val mStore: Store) : Recyc
         private const val HEADER = 0
         private const val INFO = 1
         private const val TITLE = 2
-        private const val ITEM = 3
+        private const val COMMENT = 3
     }
 }

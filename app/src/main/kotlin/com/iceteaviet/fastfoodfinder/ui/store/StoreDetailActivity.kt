@@ -49,7 +49,7 @@ class StoreDetailActivity : BaseActivity(), StoreDetailAdapter.StoreActionListen
     private var googleApiClient: GoogleApiClient? = null
     //private SupportMapFragment mMapFragment;
     //private GoogleMap mGoogleMap;
-    private var mStoreDetailAdapter: StoreDetailAdapter? = null
+    private var adapter: StoreDetailAdapter? = null
 
     override fun onCreate(@Nullable savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,9 +60,9 @@ class StoreDetailActivity : BaseActivity(), StoreDetailAdapter.StoreActionListen
 
         currentStore = intent.getParcelableExtra(KEY_STORE)
         currentStore?.let {
-            mStoreDetailAdapter = StoreDetailAdapter(it)
-            mStoreDetailAdapter!!.setListener(this)
-            rvContent.adapter = mStoreDetailAdapter
+            adapter = StoreDetailAdapter(it)
+            adapter!!.setListener(this)
+            rvContent.adapter = adapter
         }
         rvContent.layoutManager = LinearLayoutManager(this)
 
@@ -103,7 +103,7 @@ class StoreDetailActivity : BaseActivity(), StoreDetailAdapter.StoreActionListen
         if (resultCode == RESULT_OK && requestCode == REQUEST_COMMENT && data != null) {
             val comment = data.getParcelableExtra(KEY_COMMENT) as Comment?
             if (comment != null) {
-                mStoreDetailAdapter!!.addComment(comment)
+                adapter!!.addComment(comment)
                 appbar!!.setExpanded(false)
                 rvContent.scrollToPosition(3)
 
@@ -224,10 +224,11 @@ class StoreDetailActivity : BaseActivity(), StoreDetailAdapter.StoreActionListen
                     }
 
                     override fun onSuccess(commentList: MutableList<Comment>) {
-                        mStoreDetailAdapter!!.setComments(commentList)
+                        adapter!!.setComments(commentList.asReversed())
                     }
 
                     override fun onError(e: Throwable) {
+                        e.printStackTrace()
                     }
                 })
     }
