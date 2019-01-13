@@ -2,7 +2,6 @@
 
 package com.iceteaviet.fastfoodfinder.utils
 
-import com.iceteaviet.fastfoodfinder.data.remote.store.model.Comment
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList
 import java.text.ParseException
@@ -22,41 +21,6 @@ fun getDefaultUserStoreLists(): List<UserStoreList> {
     return userStoreLists
 }
 
-fun getFakeComments(): List<Comment> {
-    val names = arrayOf("Scarlett", "Bà Tưng", "Ngọc Trinh", "Chi Pu", "Trâm Anh")
-
-    val avatars = arrayOf("http://i.imgur.com/u9mpkNC.jpg", "http://i.imgur.com/qQxDOZT.jpg", "http://i.imgur.com/VJ3FAB2.jpg", "http://i.imgur.com/31vADfq.jpg", "http://i.imgur.com/XUem99n.jpg")
-
-    val contents = arrayOf("Octopus salad with bacon, sundries tomatoes, potatoes and some other magic ingredients was absolutely or of this world delicious. I loved it so much I forgot to snap an Instagram photo.", "Loved it here. Great atmosphere, was packed during lunch time. The smoked salmon eggs on bread and salted caramel cupcake were really good. The sunrise drink was like a lukewarm smoothie though.", "Perfect place to work, delicious food and coffee, little bit expensive but staff let you work peacefully. Quite busy/noisy but a wonderful place to discover. Hey, they make their own cupcakes :)", "Great atmosphere, very nice place for a quick snack or a meal. Ask for the meat pies. The lasagna is great too. And always check out the specials on the blackboard", "Very friendly stuff, the fruit juices and food are super good! Very trendy and the shop has nice quality things ! Happy to stumble into this cafeteria :D")
-
-    val mediaUrls = arrayOf("http://i.imgur.com/RHdsWRW.jpg", "http://i.imgur.com/IsfQQhd.jpg", "", "http://i.imgur.com/tNu5G5D.jpg", "http://i.imgur.com/QruogAF.jpg")
-
-    val comments = ArrayList<Comment>()
-    for (i in 0 until getRandomInt(3, 5)) {
-        val index = getRandomInt(0, 4)
-        comments.add(Comment(names[index],
-                avatars[index],
-                contents[getRandomInt(0, 4)],
-                mediaUrls[getRandomInt(0, 4)],
-                getRandomDate(),
-                getRandomInt(0, 4)))
-    }
-    return comments
-}
-
-fun getRandomDate(): String {
-    val dfDateTime = SimpleDateFormat("EEE MMM dd HH:mm:ss ZZZZZ yyyy", Locale.getDefault())
-    val year = getRandomInt(2015, 2016)
-    val month = getRandomInt(0, 11)
-    val hour = getRandomInt(9, 22)
-    val min = getRandomInt(0, 59)
-    val sec = getRandomInt(0, 59)
-    val gc = GregorianCalendar(year, month, 1)
-    val day = getRandomInt(1, gc.getActualMaximum(GregorianCalendar.DAY_OF_MONTH))
-    gc.set(year, month, day, hour, min, sec)
-    return dfDateTime.format(gc.time)
-}
-
 fun getFakeStoreList(): List<Store> {
     val stores = ArrayList<Store>()
     stores.add(Store(1, "Circle K Le Thi Rieng", "148 Le Thi Rieng, Ben Thanh Ward, District 1, Ho Chi Minh, Vietnam", "10.770379", "106.68912279999995", "3925 6620", StoreType.TYPE_CIRCLE_K))
@@ -71,20 +35,6 @@ fun getFakeStoreList(): List<Store> {
     stores.add(Store(10, "FamilyMart - Tôn Dật Tiến", "Tôn Dật Tiên, Quận 7, TP. HCM", "10.723322", "106.71498", "3835 3193", StoreType.TYPE_FAMILY_MART))
 
     return stores
-}
-
-/**
- * Create fake user comment
- */
-fun createFakeUserComment(content: String): Comment {
-    val dfDateTime = SimpleDateFormat("EEE MMM dd HH:mm:ss ZZZZZ yyyy", Locale.getDefault())
-    val date = dfDateTime.format(Date())
-    return Comment("Tam Doan",
-            "http://i.imgur.com/wfV3jkw.jpg",
-            content,
-            "",
-            date,
-            getRandomInt(0, 4))
 }
 
 /**

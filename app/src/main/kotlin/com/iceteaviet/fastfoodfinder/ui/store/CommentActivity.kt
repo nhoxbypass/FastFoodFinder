@@ -12,23 +12,22 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.Nullable
-import androidx.appcompat.app.AppCompatActivity
 import com.iceteaviet.fastfoodfinder.R
-import com.iceteaviet.fastfoodfinder.utils.createFakeUserComment
+import com.iceteaviet.fastfoodfinder.data.remote.store.model.Comment
+import com.iceteaviet.fastfoodfinder.ui.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_comment.*
 
 /**
  * Created by binhlt on 29/11/2016.
  */
 
-class CommentActivity : AppCompatActivity(), NoticeDialog.NoticeDialogListener {
+class CommentActivity : BaseActivity(), NoticeDialog.NoticeDialogListener {
     lateinit var etComment: EditText
     lateinit var tvRemainChar: TextView
     lateinit var btnPost: Button
 
     override fun onCreate(@Nullable savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_comment)
 
         etComment = et_comment
         tvRemainChar = tv_remain_char
@@ -37,6 +36,9 @@ class CommentActivity : AppCompatActivity(), NoticeDialog.NoticeDialogListener {
         setupToolbar()
         setupViews()
     }
+
+    override val layoutId: Int
+        get() = R.layout.activity_comment
 
     private fun setupToolbar() {
         setSupportActionBar(toolbar)
@@ -79,7 +81,8 @@ class CommentActivity : AppCompatActivity(), NoticeDialog.NoticeDialogListener {
                         Toast.LENGTH_SHORT).show()
                 return@OnClickListener
             }
-            val comment = createFakeUserComment(etComment.text.toString())
+            val comment = Comment(dataManager.getCurrentUser()!!.name, dataManager.getCurrentUser()!!.photoUrl,
+                    etComment.text.toString(), "mediaurl", System.currentTimeMillis())
             val data = Intent()
             val extras = Bundle()
             extras.putParcelable(KEY_COMMENT, comment)

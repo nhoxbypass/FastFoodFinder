@@ -4,22 +4,21 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.google.firebase.database.Exclude
 
-class Comment(var userName: String?, var avatar: String?, var content: String?, var mediaUrl: String?, var date: String?, var rating: Int) : Parcelable {
+class Comment(var userName: String?, var avatar: String?, var content: String?, var mediaUrl: String?, var timestamp: Long) : Parcelable {
 
     @Exclude
     @get:Exclude
     @set:Exclude
     var id: String? = null
 
-    constructor() : this("", "", "", "", "", -1)
+    constructor() : this("", "", "", "", 0L)
 
-    constructor(id: String?, userName: String?, avatar: String?, content: String?, mediaUrl: String?, date: String?, rating: Int) : this(
+    constructor(id: String?, userName: String?, avatar: String?, content: String?, mediaUrl: String?, timestamp: Long) : this(
             userName,
             avatar,
             content,
             mediaUrl,
-            date,
-            rating) {
+            timestamp) {
         this.id = id
     }
 
@@ -29,8 +28,7 @@ class Comment(var userName: String?, var avatar: String?, var content: String?, 
             parcel.readString(),
             parcel.readString(),
             parcel.readString(),
-            parcel.readString(),
-            parcel.readInt())
+            parcel.readLong())
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(id)
@@ -38,8 +36,7 @@ class Comment(var userName: String?, var avatar: String?, var content: String?, 
         parcel.writeString(avatar)
         parcel.writeString(content)
         parcel.writeString(mediaUrl)
-        parcel.writeString(date)
-        parcel.writeInt(rating)
+        parcel.writeLong(timestamp)
     }
 
     override fun describeContents(): Int {

@@ -17,9 +17,7 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.NonNull
-import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
-import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.local.poi.model.AugmentedPOI
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.ui.base.BaseActivity
@@ -43,7 +41,6 @@ class ArCameraActivity : BaseActivity(), SensorEventListener, LocationListener {
     private var arCamera: ARCamera? = null
     private var tvCurrentLocation: TextView? = null
     private var sensorManager: SensorManager? = null
-    private lateinit var dataManager: DataManager
 
     override val layoutId: Int
         get() = R.layout.activity_ar_camera
@@ -56,8 +53,6 @@ class ArCameraActivity : BaseActivity(), SensorEventListener, LocationListener {
         surfaceView = surface_view
         tvCurrentLocation = tv_current_location
         arOverlayView = AROverlayView(this)
-
-        dataManager = App.getDataManager()
     }
 
     override fun onResume() {
