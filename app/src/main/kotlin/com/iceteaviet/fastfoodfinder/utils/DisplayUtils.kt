@@ -61,25 +61,3 @@ fun convertDpToPx(dp: Float): Float {
 fun convertPixelsToDp(px: Float, context: Context): Float {
     return px / (context.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
 }
-
-
-/**
- * Resize marker icon
- */
-fun resizeMarkerIcon(imageBitmap: Bitmap, width: Int, height: Int): Bitmap {
-    var width = width
-    var height = height
-
-    if (width > 100)
-        width = 200 - width
-    if (height > 100)
-        height = 200 - height
-
-    if (width == 0)
-        width = 1
-    if (height == 0)
-        height = 1
-
-
-    return Bitmap.createScaledBitmap(imageBitmap, width, height, false)
-}

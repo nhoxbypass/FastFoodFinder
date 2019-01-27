@@ -3,13 +3,16 @@
 package com.iceteaviet.fastfoodfinder.utils.ui
 
 import android.animation.ValueAnimator
+import android.content.res.Resources
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.view.animation.BounceInterpolator
+import androidx.collection.LruCache
+import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.Marker
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.utils.StoreType
-import com.iceteaviet.fastfoodfinder.utils.resizeMarkerIcon
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -51,28 +54,78 @@ fun getDirectionImage(direction: String?): Int {
     }
 }
 
-/**
- * Animate marker icon
- */
-fun animateMarker(bitmap: Bitmap, marker: Marker?) {
-    if (marker == null)
-        return
-
+fun getMarkerAnimator(): ValueAnimator {
     val animator = ValueAnimator.ofFloat(0.1f, 1f)
     animator.duration = 1000
     animator.startDelay = 500
     animator.interpolator = BounceInterpolator()
 
+    return animator
+}
+
+/**
+ * Animate marker icon
+ */
+fun animateMarker(resources: Resources, marker: Marker?, storeType: Int) {
+    if (marker == null)
+        return
+
+    val animator = getMarkerAnimator()
     animator.addUpdateListener { animation ->
         val scale = animation.animatedValue as Float
         try {
-            // TODO: Optimize .fromBitmap & resize icons
-            marker.setIcon(BitmapDescriptorFactory.fromBitmap(resizeMarkerIcon(bitmap, Math.round(scale * 75), Math.round(scale * 75))))
+            marker.setIcon(getStoreIcon(resources, storeType, Math.round(scale * 75), Math.round(scale * 75)))
         } catch (ex: IllegalArgumentException) {
             ex.printStackTrace()
         }
     }
     animator.start()
+}
+
+
+private var cache: LruCache<String, BitmapDescriptor> = LruCache(((Runtime.getRuntime().maxMemory() / 1024 / 8).toInt()))
+// -1 is default width & height
+fun getStoreIcon(resources: Resources, type: Int, width: Int, height: Int): BitmapDescriptor {
+    var key = type.toString()
+    if (width != -1 && height != -1)
+        key = type.toString() + "-" + width + "-" + height
+    synchronized(cache) {
+        var result: BitmapDescriptor? = cache.get(key)
+        if (result == null) {
+            val id = getStoreLogoDrawableRes(type)
+            val bitmap: Bitmap
+            if (width != -1 && height != -1)
+                bitmap = resizeMarkerBitmap(BitmapFactory.decodeResource(resources, id), width, height)
+            else
+                bitmap = BitmapFactory.decodeResource(resources, id)
+
+            result = BitmapDescriptorFactory.fromBitmap(bitmap)
+            cache.put(key, result)
+        }
+
+        return result!!
+    }
+}
+
+/**
+ * Resize marker icon
+ */
+fun resizeMarkerBitmap(imageBitmap: Bitmap, width: Int, height: Int): Bitmap {
+    var width = width
+    var height = height
+
+    if (width > 100)
+        width = 200 - width
+    if (height > 100)
+        height = 200 - height
+
+    if (width == 0)
+        width = 1
+    if (height == 0)
+        height = 1
+
+
+    return Bitmap.createScaledBitmap(imageBitmap, width, height, false)
 }
 
 val STORE_IMAGES = arrayListOf(R.drawable.detail_sample_food_1, R.drawable.detail_sample_food_2,

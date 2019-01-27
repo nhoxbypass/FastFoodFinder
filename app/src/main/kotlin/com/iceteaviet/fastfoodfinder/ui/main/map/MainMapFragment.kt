@@ -4,8 +4,6 @@ package com.iceteaviet.fastfoodfinder.ui.main.map
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.location.Location
 import android.os.Bundle
 import android.util.Pair
@@ -46,7 +44,7 @@ import com.iceteaviet.fastfoodfinder.ui.store.StoreInfoDialogFragment
 import com.iceteaviet.fastfoodfinder.utils.*
 import com.iceteaviet.fastfoodfinder.utils.Constant.DEFAULT_ZOOM_LEVEL
 import com.iceteaviet.fastfoodfinder.utils.ui.animateMarker
-import com.iceteaviet.fastfoodfinder.utils.ui.getStoreLogoDrawableRes
+import com.iceteaviet.fastfoodfinder.utils.ui.getStoreIcon
 import io.reactivex.Observer
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -88,7 +86,7 @@ class MainMapFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, Locatio
     private val lastLocation: LatLng
         @SuppressLint("MissingPermission")
         get() {
-            val lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient)
+            val lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient) // 32ms
             if (lastLocation != null) {
                 return LatLng(lastLocation.latitude, lastLocation.longitude)
             } else {
@@ -173,13 +171,13 @@ class MainMapFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, Locatio
         if (mGoogleMap == null)
             return
 
-        addMarkersToMap(mStoreList, mGoogleMap)
+        addMarkersToMap(mStoreList, mGoogleMap) // 1.9s
         setMarkersListener(mGoogleMap)
 
         if (isLocationPermissionGranted(context!!)) {
-            LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, mLocationRequest, this)
+            LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, mLocationRequest, this) // 13 ms
 
-            currLocation = lastLocation
+            currLocation = lastLocation // 32ms
 
             // Showing the current location in Google Map
             mGoogleMap!!.animateCamera(CameraUpdateFactory.newLatLngZoom(currLocation, DEFAULT_ZOOM_LEVEL))
@@ -455,19 +453,29 @@ class MainMapFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, Locatio
             newVisibleStorePublisher!!
                     .observeOn(Schedulers.computation())
                     .map { store ->
-                        val bitmap = getStoreIcon(store.type)
                         val marker = markerSparseArray!!.get(store.id)
 
-                        Pair(marker, bitmap)
+                        // TODO: warm up cache
+                        /*val animator = getMarkerAnimator()
+                        animator.addUpdateListener { animation ->
+                            val scale = animation.animatedValue as Float
+                            try {
+                                getStoreIcon(resources, store.type, Math.round(scale * 75), Math.round(scale * 75)) // warm up cache
+                            } catch (ex: IllegalArgumentException) {
+                                ex.printStackTrace()
+                            }
+                        }
+                        animator.start()*/
+
+                        Pair(marker, store.type)
                     }
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(object : Observer<Pair<Marker, Bitmap>> {
+                    .subscribe(object : Observer<Pair<Marker, Int>> {
                         override fun onSubscribe(d: Disposable) {
-
                         }
 
-                        override fun onNext(pair: Pair<Marker, Bitmap>) {
-                            animateMarker(pair.second, pair.first)
+                        override fun onNext(pair: Pair<Marker, Int>) {
+                            animateMarker(resources, pair.first, pair.second)
                         }
 
                         override fun onError(e: Throwable) {
@@ -475,7 +483,6 @@ class MainMapFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, Locatio
                         }
 
                         override fun onComplete() {
-
                         }
                     })
         }
@@ -491,10 +498,10 @@ class MainMapFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, Locatio
         // Set icons of the store marker to green
         for (i in storeList.indices) {
             val store = storeList[i]
-            val marker = googleMap.addMarker(MarkerOptions().position(store.getPosition())
+            val marker = googleMap.addMarker(MarkerOptions().position(store.getPosition()) // addMarker 30ms
                     .title(store.title)
                     .snippet(store.address)
-                    .icon(BitmapDescriptorFactory.fromBitmap(getStoreIcon(store.type))))
+                    .icon(getStoreIcon(resources, store.type, -1, -1))) // fromBitmap 25 -> 100ms
             marker.tag = store
             markerSparseArray!!.put(store.id, marker)
         }
@@ -564,20 +571,6 @@ class MainMapFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, Locatio
         dialog.show(fm!!, "dialog-info")
     }
 
-    private fun getStoreIcon(type: Int?): Bitmap {
-        synchronized(CACHE) {
-            return if (CACHE.containsKey(type)) {
-                CACHE[type]!!
-            } else {
-                val id = getStoreLogoDrawableRes(type!!)
-                val bitmap = BitmapFactory.decodeResource(resources, id)
-
-                CACHE[type] = bitmap
-                bitmap
-            }
-        }
-    }
-
     override fun onLocationChanged(location: Location) {
         currLocation = LatLng(location.latitude, location.longitude)
         // Creating a LatLng object for the current location
@@ -592,7 +585,6 @@ class MainMapFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, Locatio
 
     companion object {
         private val TAG = MainMapFragment::class.java.simpleName
-        private val CACHE = Hashtable<Int, Bitmap>()
 
 
         fun newInstance(): MainMapFragment {
