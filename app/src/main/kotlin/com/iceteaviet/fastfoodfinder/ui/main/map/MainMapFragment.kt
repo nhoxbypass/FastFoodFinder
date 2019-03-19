@@ -175,14 +175,15 @@ class MainMapFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, Locatio
         setMarkersListener(mGoogleMap)
 
         if (isLocationPermissionGranted(context!!)) {
-            LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, mLocationRequest, this) // 13 ms
-
+            mGoogleMap!!.isMyLocationEnabled = true
             currLocation = lastLocation // 32ms
+
+            LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, mLocationRequest, this) // 13 ms
 
             // Showing the current location in Google Map
             mGoogleMap!!.animateCamera(CameraUpdateFactory.newLatLngZoom(currLocation, DEFAULT_ZOOM_LEVEL))
         } else {
-            requestLocationPermission(this)
+            requestLocationPermission(this) // sau
         }
     }
 
@@ -415,11 +416,6 @@ class MainMapFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, Locatio
         mMapFragment!!.getMapAsync { googleMap ->
             mGoogleMap = googleMap
             mGoogleMap!!.isBuildingsEnabled = true
-            if (!isLocationPermissionGranted(context!!)) {
-                requestLocationPermission(this@MainMapFragment)
-            } else {
-                mGoogleMap!!.isMyLocationEnabled = true
-            }
 
             //Animate marker icons when camera move
             mGoogleMap!!.setOnCameraMoveListener {
