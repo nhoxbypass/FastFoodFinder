@@ -4,7 +4,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/HCMUSAssignmentWarehouse/FastFoodFinder/badge.svg?branch=master)](https://coveralls.io/github/HCMUSAssignmentWarehouse/FastFoodFinder?branch=master)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/5ae8369fb08c4d009d6fd95ce752b23c)](https://www.codacy.com/app/nhoxbypass/FastFoodFinder?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=HCMUS-AssignmentWarehouse/FastFoodFinder&amp;utm_campaign=Badge_Grade)
 
-**Fastfood Finder** is an awesome android app that allows a users to find some fast food stores or convinient stores around where their standing. And with this app he can do the other fantastic things.
+**Fastfood Finder** is an awesome android app that allows a users to find fast food or convenient stores nearby. 
 
 Time spent: **120** hours spent in total
 
@@ -13,30 +13,30 @@ Time spent: **120** hours spent in total
 The basic **required** functionality:
 
 * [x] Show the splash screen and do the robust check for Internet connection.
-* [x] Locate current user's position by GPS or 3g, wifi. If can not detect, get user's past location.
+* [x] Locate current user's position by GPS, 3g, or wifi. If can not detect a current location, get user's past location.
 * [x] Show top 10 nearest stores by marking on the maps in the first tab. 
 * [x] Show list of 10 nearest store in bottom sheet below the map, sort ascending by the distance from user to this store. User can click on each item to show the way to this store (routing). 
 * [x] Swipe to "recent" tab. Show recently tab that searched or selected by user.
-* [ ] Have a button to quickly show the nearest store base on user settings
-* [x] If user have logged in, user can swipe to the "Favourited" tab, to show list of stores that user visited and favourited.
+* [ ] Have a button to quickly show the nearest stores base on user settings
+* [x] If user is logged in, user can swipe to the "Favourited" tab, to show a list of stores that the user has visited and favourited.
 * [ ] User can filter stores that display in map by pressing the filter icon in Toolbar, and fulfill the Filter dialog.
 * [x] User can click on a store in the map to show the basic detail, overview of this store to determine to go or choose another store.
 * [ ] User can navigate to other activity to see the list of district, and some advanced filter. User can select and see the list of stores fit user need.
 
 
-The **extended** features are implemented:
+These **extended** features are implemented:
 
-* [x] User can toggle navigation drawer to see their profile. If user doesn't logged in. They can loggin by email, gmail or facebook.
-* [x] User can toggle the navigation drawer to select "Last visit", "Profile Detail", "Favourite list", "Settings", etc,...
-* [ ] Update to newest stores data, user can routing event dont have Internet
-* [x] User can search for store name, addresses,... in the search view in toolbar
+* [x] User can toggle navigation drawer to see their profile. If user isn't logged in, they can log in by Gmail or Facebook.
+* [x] User can toggle the navigation drawer to select "Last visit", "Profile Detail", "Favourite list", "Settings", etc...
+* [ ] Update to newest stores data, user can routing even if they don't have an internet connection
+* [x] User can search for store by name, address,... in the search view in toolbar
 
-The **advance** features are implemented:
+These **advanced** features are implemented:
 
-* [ ] User can add new place that they liked
-* [x] Sort stores base on location. Type of store.
-* [x] User can sit at home and choose a specified location (use pin of google maps or lat/long) to list the store nearest.
-* [ ] User can orders and wait for their food to be shipped to their home. (If stores provided this services)
+* [ ] User can add new placesthat they liked
+* [x] Sort stores base on location and type of store.
+* [x] User can sit at home and choose a specified location (use pin of google maps or latitude/longitude) to list the store nearest.
+* [ ] User can order and wait for their food to be shipped to their home. (If the store provides this service)
 
 ## Video Walkthrough
 
