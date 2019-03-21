@@ -29,12 +29,12 @@ import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.transport.model.SearchEventResult
 import com.iceteaviet.fastfoodfinder.ui.ar.ArCameraActivity
 import com.iceteaviet.fastfoodfinder.ui.base.BaseActivity
-import com.iceteaviet.fastfoodfinder.ui.login.LoginActivity
 import com.iceteaviet.fastfoodfinder.ui.main.search.SearchFragment
 import com.iceteaviet.fastfoodfinder.ui.profile.ProfileFragment
 import com.iceteaviet.fastfoodfinder.ui.settings.SettingActivity
 import com.iceteaviet.fastfoodfinder.utils.Constant
 import com.iceteaviet.fastfoodfinder.utils.e
+import com.iceteaviet.fastfoodfinder.utils.openLoginActivity
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_main.*
 import org.greenrobot.eventbus.EventBus
@@ -167,7 +167,7 @@ class MainActivity : BaseActivity(), View.OnClickListener {
                 }
             }
 
-            else -> Toast.makeText(this@MainActivity, R.string.search_error, Toast.LENGTH_SHORT).show()
+            else -> Toast.makeText(this, R.string.search_error, Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -181,16 +181,18 @@ class MainActivity : BaseActivity(), View.OnClickListener {
             }
 
             R.id.btn_nav_header_signin -> {
-                val intent = Intent(this@MainActivity, LoginActivity::class.java)
-                startActivity(intent)
-                finish()
+                openLoginActivity(this)
             }
 
             R.id.iv_nav_header_avatar, R.id.tv_nav_header_name, R.id.tv_nav_header_screenname -> {
                 if (profileItem != null) {
-                    replaceFragment(ProfileFragment::class.java, profileItem!!)
                     // Close the navigation drawer
                     mDrawerLayout.closeDrawers()
+
+                    if (dataManager.isSignedIn())
+                        replaceFragment(ProfileFragment::class.java, profileItem!!)
+                    else
+                        openLoginActivity(this)
                 }
             }
         }
@@ -203,7 +205,7 @@ class MainActivity : BaseActivity(), View.OnClickListener {
             mNavHeaderScreenName!!.visibility = View.GONE
             mNavHeaderSignIn!!.visibility = View.VISIBLE
         } else {
-            Glide.with(this@MainActivity)
+            Glide.with(this)
                     .load(dataManager.getCurrentUser()!!.photoUrl)
                     .into(mNavHeaderAvatar!!)
             mNavHeaderName!!.text = dataManager.getCurrentUser()!!.name
@@ -218,16 +220,16 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         menuInflater.inflate(R.menu.menu_main, menu)
         searchItem = menu.findItem(R.id.action_search) ?: return null
 
-        val searchManager = this@MainActivity.getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
 
         searchView = MenuItemCompat.getActionView(searchItem) as SearchView
 
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(this@MainActivity.componentName))
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
 
         searchView.queryHint = getString(R.string.type_name_store)
         searchView.setBackgroundColor(ContextCompat.getColor(this, R.color.material_red_600))
         mSearchInput = searchView.findViewById(androidx.appcompat.R.id.search_src_text)
-        mSearchInput!!.setHintTextColor(ContextCompat.getColor(this@MainActivity, R.color.colorHintText))
+        mSearchInput!!.setHintTextColor(ContextCompat.getColor(this, R.color.colorHintText))
         mSearchInput!!.setTextColor(Color.WHITE)
 
         // Set on search query submit
@@ -338,9 +340,14 @@ class MainActivity : BaseActivity(), View.OnClickListener {
     private fun selectDrawerItem(menuItem: MenuItem) {
         when (menuItem.itemId) {
             R.id.menu_action_profile -> {
-                replaceFragment(ProfileFragment::class.java, menuItem)
                 // Close the navigation drawer
                 mDrawerLayout.closeDrawers()
+
+                if (dataManager.isSignedIn())
+                    replaceFragment(ProfileFragment::class.java, menuItem)
+                else
+                    openLoginActivity(this)
+
                 return
             }
             R.id.menu_action_map -> {
@@ -353,12 +360,12 @@ class MainActivity : BaseActivity(), View.OnClickListener {
                 return
             }
             R.id.menu_action_ar -> {
-                val arIntent = Intent(this@MainActivity, ArCameraActivity::class.java)
+                val arIntent = Intent(this, ArCameraActivity::class.java)
                 startActivity(arIntent)
                 return
             }
             R.id.menu_action_setting -> {
-                val settingIntent = Intent(this@MainActivity, SettingActivity::class.java)
+                val settingIntent = Intent(this, SettingActivity::class.java)
                 startActivity(settingIntent)
                 return
             }

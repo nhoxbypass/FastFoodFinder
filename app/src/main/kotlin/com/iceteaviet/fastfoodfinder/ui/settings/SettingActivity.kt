@@ -2,7 +2,6 @@ package com.iceteaviet.fastfoodfinder.ui.settings
 
 import android.annotation.TargetApi
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Build
@@ -14,8 +13,8 @@ import com.iceteaviet.fastfoodfinder.BuildConfig
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.ui.base.BaseActivity
-import com.iceteaviet.fastfoodfinder.ui.login.LoginActivity
 import com.iceteaviet.fastfoodfinder.utils.filterInvalidData
+import com.iceteaviet.fastfoodfinder.utils.openLoginActivity
 import io.reactivex.SingleObserver
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_setting.*
@@ -129,9 +128,7 @@ class SettingActivity : BaseActivity() {
     private fun setupEventListeners(pref: SharedPreferences) {
         txtSignOut.setOnClickListener {
             dataManager.signOut()
-            val intent = Intent(this@SettingActivity, LoginActivity::class.java)
-            startActivity(intent)
-            finish()
+            openLoginActivity(this@SettingActivity)
         }
 
         swChangeLanguage.setOnClickListener {

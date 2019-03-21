@@ -13,20 +13,19 @@ import java.io.IOException
 /**
  * Check internet connection access
  */
-val isInternetConnected: Boolean
-    get() {
-        val command = "ping -c 1 google.com"
-        try {
-            return Runtime.getRuntime().exec(command).waitFor() == 0
-        } catch (e: InterruptedException) {
-            e.printStackTrace()
-            return false
-        } catch (e: IOException) {
-            e.printStackTrace()
-            return false
-        }
-
+fun isInternetConnected(): Boolean {
+    val command = "ping -c 1 google.com"
+    try {
+        return Runtime.getRuntime().exec(command).waitFor() == 0
+    } catch (e: InterruptedException) {
+        e.printStackTrace()
+        return false
+    } catch (e: IOException) {
+        e.printStackTrace()
+        return false
     }
+
+}
 
 /**
  * Check connected to any network (but don't need to have Internet access)

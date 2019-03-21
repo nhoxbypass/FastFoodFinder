@@ -19,8 +19,8 @@ import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList
 import com.iceteaviet.fastfoodfinder.ui.custom.store.StoreListView
 import com.iceteaviet.fastfoodfinder.ui.profile.ListDetailActivity.Companion.KEY_USER_PHOTO_URL
 import com.iceteaviet.fastfoodfinder.ui.profile.ListDetailActivity.Companion.KEY_USER_STORE_LIST
-import com.iceteaviet.fastfoodfinder.utils.Constant
 import com.iceteaviet.fastfoodfinder.utils.isValidUserUid
+import com.iceteaviet.fastfoodfinder.utils.openLoginActivity
 import io.reactivex.SingleObserver
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_profile.*
@@ -36,7 +36,7 @@ class ProfileFragment : Fragment(), View.OnClickListener {
     private var mDialog: DialogUpdateCoverImage? = null
     private var mDialogCreate: DialogCreateNewList? = null
     private var mAdapter: UserStoreListAdapter? = null
-    private var defaultList: MutableList<UserStoreList> = ArrayList()
+    private var defaultList: MutableList<UserStoreList> = ArrayList() // Default store list (saved, favourite) that every user have
     private var listName: ArrayList<String> = ArrayList()
 
     private lateinit var dataManager: DataManager
@@ -59,7 +59,14 @@ class ProfileFragment : Fragment(), View.OnClickListener {
 
         setupUi()
         setupEventListeners()
-        loadData()
+        loadCurrentUserData()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Invalid auth token -> go to login screen
+        if (!dataManager.isSignedIn())
+            openLoginActivity(activity!!)
     }
 
     override fun onClick(v: View?) {
@@ -96,17 +103,6 @@ class ProfileFragment : Fragment(), View.OnClickListener {
                 btnUpdateCoverImage!!.visibility = View.GONE
                 return
             }
-        }
-    }
-
-    private fun loadData() {
-        tvName!!.setText(R.string.unregistered_user)
-        tvEmail!!.setText(R.string.unregistered_email)
-        if (dataManager.getCurrentUser() == null)
-            dataManager.setCurrentUser(User(getString(R.string.unregistered_user), getString(R.string.unregistered_email), Constant.NO_AVATAR_PLACEHOLDER_URL, "null", ArrayList()))
-
-        if (dataManager.isSignedIn()) {
-            loadCurrentUserData()
         }
     }
 
@@ -161,9 +157,12 @@ class ProfileFragment : Fragment(), View.OnClickListener {
         rvListPacket!!.layoutManager = mLayoutManager
 
         mDialog = DialogUpdateCoverImage.newInstance()
+
+        tvName!!.setText(R.string.unregistered_user)
+        tvEmail!!.setText(R.string.unregistered_email)
     }
 
-    fun loadUserList() {
+    fun loadStoreLists() {
         val currentUser = dataManager.getCurrentUser()
         for (i in 0 until currentUser!!.getUserStoreLists().size) {
             if (i <= 2) {
@@ -199,7 +198,7 @@ class ProfileFragment : Fragment(), View.OnClickListener {
                                 .into(ivAvatarProfile)
                         tvName!!.text = user.name
                         tvEmail!!.text = user.email
-                        loadUserList()
+                        loadStoreLists()
                         for (i in 0 until user.getUserStoreLists().size) {
                             listName.add(user.getUserStoreLists()[i].listName)
                         }

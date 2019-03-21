@@ -1,6 +1,5 @@
 package com.iceteaviet.fastfoodfinder.ui.splash
 
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -10,10 +9,10 @@ import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
 import com.iceteaviet.fastfoodfinder.ui.base.BaseActivity
-import com.iceteaviet.fastfoodfinder.ui.login.LoginActivity
-import com.iceteaviet.fastfoodfinder.ui.main.MainActivity
 import com.iceteaviet.fastfoodfinder.utils.filterInvalidData
 import com.iceteaviet.fastfoodfinder.utils.isValidUserUid
+import com.iceteaviet.fastfoodfinder.utils.openLoginActivity
+import com.iceteaviet.fastfoodfinder.utils.openMainActivity
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -48,13 +47,13 @@ class SplashActivity : BaseActivity() {
                             dataManager.getLocalStoreDataSource().setStores(filterInvalidData(storeList.toMutableList()))
 
                             Toast.makeText(this@SplashActivity, R.string.update_database_successfull, Toast.LENGTH_SHORT).show()
-                            startMyActivity(LoginActivity::class.java)
+                            openLoginActivity(this@SplashActivity)
                         }
 
                         override fun onError(e: Throwable) {
                             dataManager.signOut()
                             e.printStackTrace()
-                            startMyActivity(LoginActivity::class.java)
+                            openLoginActivity(this@SplashActivity)
                         }
                     })
         } else {
@@ -84,23 +83,17 @@ class SplashActivity : BaseActivity() {
                 if (remainTime > 0) {
                     Handler(Looper.getMainLooper())
                             .postDelayed({
-                                startMyActivity(MainActivity::class.java)
+                                openMainActivity(this@SplashActivity)
                             }, remainTime)
                 } else {
-                    startMyActivity(MainActivity::class.java)
+                    openMainActivity(this@SplashActivity)
                 }
             } else {
-                startMyActivity(LoginActivity::class.java)
+                openLoginActivity(this@SplashActivity)
             }
         }
     }
 
     override val layoutId: Int
         get() = R.layout.activity_splash
-
-    private fun startMyActivity(activity: Class<*>) {
-        val intent = Intent(this@SplashActivity, activity)
-        startActivity(intent)
-        finish()
-    }
 }
