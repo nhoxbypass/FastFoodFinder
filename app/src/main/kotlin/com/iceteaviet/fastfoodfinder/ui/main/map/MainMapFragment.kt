@@ -552,7 +552,6 @@ class MainMapFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, Locatio
 
 
     private fun showDialogStoreInfo(store: Store) {
-        val fm = activity?.supportFragmentManager
         val dialog = StoreInfoDialog.newInstance(store)
         dialog.setDialogListen(object : StoreInfoDialog.StoreDialogActionListener {
             override fun onDirection(store: Store?) {
@@ -564,7 +563,7 @@ class MainMapFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, Locatio
                 Toast.makeText(activity, R.string.fav_stores_added, Toast.LENGTH_SHORT).show()
             }
         })
-        dialog.show(fm!!, "dialog-info")
+        dialog.show(activity?.supportFragmentManager!!, "dialog-info")
     }
 
     override fun onLocationChanged(location: Location) {

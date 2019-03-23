@@ -94,9 +94,8 @@ class CommentActivity : BaseActivity(), NoticeDialog.NoticeDialogListener {
 
     private fun checkClose() {
         if (!etComment.text.toString().isEmpty()) {
-            val fragmentManager = supportFragmentManager
             val noticeDialog = NoticeDialog.newInstance(getString(R.string.close_comment_editor))
-            noticeDialog.show(fragmentManager, "notice_dialog")
+            noticeDialog.show(supportFragmentManager, "notice_dialog")
         } else {
             finish()
         }

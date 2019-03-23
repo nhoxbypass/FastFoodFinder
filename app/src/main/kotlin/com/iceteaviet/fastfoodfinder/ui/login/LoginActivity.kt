@@ -61,7 +61,8 @@ class LoginActivity : BaseActivity() {
         }
 
         joinNowButton.setOnClickListener {
-            // TODO: Support email login
+            val dlg = EmailRegisterDialog.newInstance()
+            dlg.show(supportFragmentManager, "dialog-register")
         }
 
         googleSignInButton.setOnClickListener { signIntWithGoogle(mGoogleApiClient) }

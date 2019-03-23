@@ -162,9 +162,8 @@ class SettingActivity : BaseActivity() {
         }
 
         txtSetNotification.setOnClickListener {
-            val fm = supportFragmentManager
             val dlg = StoreFilterDialog.newInstance()
-            dlg.show(fm, "dialog-filter")
+            dlg.show(supportFragmentManager, "dialog-filter")
         }
 
         layoutUpdateDb.setOnClickListener {
