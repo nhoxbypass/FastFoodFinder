@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.view_store_tag.view.*
  * Created by taq on 8/12/2016.
  */
 
-class StoreFilterDialogFragment : DialogFragment() {
+class StoreFilterDialog : DialogFragment() {
     lateinit var tagContainer: HorizontalFlowLayout
 
     @Nullable
@@ -98,10 +98,10 @@ class StoreFilterDialogFragment : DialogFragment() {
 
         private val LIST_STORES = arrayOf(KEY_BSMART, KEY_CIRCLE_K, KEY_FAMILY_MART, KEY_MINI_STOP, KEY_SHOP_N_GO)
 
-        fun newInstance(): StoreFilterDialogFragment {
+        fun newInstance(): StoreFilterDialog {
             val args = Bundle()
 
-            val fragment = StoreFilterDialogFragment()
+            val fragment = StoreFilterDialog()
             fragment.arguments = args
             return fragment
         }

@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.fragment_store_info.*
  * Created by taq on 26/11/2016.
  */
 
-class StoreInfoDialogFragment : DialogFragment() {
+class StoreInfoDialog : DialogFragment() {
 
     lateinit var cdvh: StoreDetailAdapter.CallDirectionViewHolder
     lateinit var tvStoreName: TextView
@@ -71,7 +71,7 @@ class StoreInfoDialogFragment : DialogFragment() {
                 if (isCallPhonePermissionGranted(context!!))
                     startActivity(getCallIntent(store!!.tel!!))
                 else
-                    requestCallPhonePermission(this@StoreInfoDialogFragment)
+                    requestCallPhonePermission(this@StoreInfoDialog)
             } else {
                 Toast.makeText(activity, R.string.store_no_phone_numb, Toast.LENGTH_SHORT).show()
             }
@@ -132,10 +132,10 @@ class StoreInfoDialogFragment : DialogFragment() {
     }
 
     companion object {
-        fun newInstance(store: Store): StoreInfoDialogFragment {
+        fun newInstance(store: Store): StoreInfoDialog {
             val args = Bundle()
             args.putParcelable(KEY_STORE, store)
-            val fragment = StoreInfoDialogFragment()
+            val fragment = StoreInfoDialog()
             fragment.arguments = args
             return fragment
         }

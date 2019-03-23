@@ -22,7 +22,7 @@ import java.io.IOException
 /**
  * Created by MyPC on 11/29/2016.
  */
-class DialogUpdateCoverImage : DialogFragment() {
+class UpdateCoverImageDialog : DialogFragment() {
     private var chosenImageId = 0
     private var mBmp: Bitmap? = null
 
@@ -143,8 +143,8 @@ class DialogUpdateCoverImage : DialogFragment() {
     companion object {
         private const val RESULT_LOAD_IMAGE = 1
 
-        fun newInstance(): DialogUpdateCoverImage {
-            val frag = DialogUpdateCoverImage()
+        fun newInstance(): UpdateCoverImageDialog {
+            val frag = UpdateCoverImageDialog()
             val args = Bundle()
             frag.arguments = args
             return frag

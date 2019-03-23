@@ -17,7 +17,7 @@ import java.util.*
 /**
  * Created by MyPC on 11/30/2016.
  */
-class DialogCreateNewList : DialogFragment() {
+class CreateNewListDialog : DialogFragment() {
     private var listName: ArrayList<String>? = null
     private var mListener: OnCreateListListener? = null
     private var iconId = R.drawable.ic_profile_list_1
@@ -416,8 +416,8 @@ class DialogCreateNewList : DialogFragment() {
     companion object {
         private const val KEY_LIST_NAME = "list_name"
 
-        fun newInstance(listName: ArrayList<String>): DialogCreateNewList {
-            val frag = DialogCreateNewList()
+        fun newInstance(listName: ArrayList<String>): CreateNewListDialog {
+            val frag = CreateNewListDialog()
             val args = Bundle()
             args.putStringArrayList(KEY_LIST_NAME, listName)
             frag.arguments = args

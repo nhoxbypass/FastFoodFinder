@@ -33,8 +33,8 @@ class ProfileFragment : Fragment(), View.OnClickListener {
     lateinit var cvFavouritePlace: StoreListView
     lateinit var btnCreateNew: CardView
 
-    private var mDialog: DialogUpdateCoverImage? = null
-    private var mDialogCreate: DialogCreateNewList? = null
+    private var mDialog: UpdateCoverImageDialog? = null
+    private var mDialogCreate: CreateNewListDialog? = null
     private var mAdapter: UserStoreListAdapter? = null
     private var defaultList: MutableList<UserStoreList> = ArrayList() // Default store list (saved, favourite) that every user have
     private var listName: ArrayList<String> = ArrayList()
@@ -72,9 +72,9 @@ class ProfileFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.cvCreateNew -> {
-                mDialogCreate = DialogCreateNewList.newInstance(listName)
+                mDialogCreate = CreateNewListDialog.newInstance(listName)
                 mDialogCreate!!.show(fragmentManager!!, "")
-                mDialogCreate!!.setOnButtonClickListener(object : DialogCreateNewList.OnCreateListListener {
+                mDialogCreate!!.setOnButtonClickListener(object : CreateNewListDialog.OnCreateListListener {
                     override fun onButtonClick(name: String, iconId: Int) {
                         val currentUser = dataManager.getCurrentUser()
                         val id = currentUser!!.getUserStoreLists().size //New id = current size
@@ -127,7 +127,7 @@ class ProfileFragment : Fragment(), View.OnClickListener {
             }
         })
 
-        mDialog!!.setOnButtonClickListener(object : DialogUpdateCoverImage.OnButtonClickListener {
+        mDialog!!.setOnButtonClickListener(object : UpdateCoverImageDialog.OnButtonClickListener {
             override fun onOkClick(Id: Int, bmp: Bitmap?) {
                 if (Id != 0)
                     if (Id == -1) {
@@ -156,7 +156,7 @@ class ProfileFragment : Fragment(), View.OnClickListener {
         rvListPacket!!.adapter = mAdapter
         rvListPacket!!.layoutManager = mLayoutManager
 
-        mDialog = DialogUpdateCoverImage.newInstance()
+        mDialog = UpdateCoverImageDialog.newInstance()
 
         tvName!!.setText(R.string.unregistered_user)
         tvEmail!!.setText(R.string.unregistered_email)
