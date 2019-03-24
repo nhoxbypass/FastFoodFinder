@@ -96,5 +96,12 @@
     <string name="store_not_found">Không tìm thấy cửa hàng!</string>
     <string name="count_places">%s nơi</string>
     <string name="add_to_fav">Yêu thích</string>
-
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Mật khẩu</string>
+    <string name="hint_repassword">Nhập lại mật khẩu</string>
+    <string name="sign_up">Đăng ký</string>
+    <string name="sign_up_successful">Register successfully</string>
+    <string name="sign_up_fail">Register failed</string>
+    <string name="sign_up_loading">Registering</string>
+    <string name="member_register">Đăng ký thành viên</string>
 </resources>

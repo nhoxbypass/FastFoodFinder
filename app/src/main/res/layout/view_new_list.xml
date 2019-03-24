@@ -75,7 +75,7 @@
         android:layout_marginTop="88dp"
         android:text="@string/my_checked_in_places"
         android:textColor="#304FFE"
-        android:textSize="@dimen/medium_textsize"
+        android:textSize="@dimen/medium_text"
         android:textStyle="bold" />
 
     <TextView

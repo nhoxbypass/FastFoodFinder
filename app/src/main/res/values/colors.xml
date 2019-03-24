@@ -22,4 +22,17 @@
     <color name="material_purple_a700">#AA00FF</color>
     <color name="material_gray_100">#F5F5F5</color>
     <color name="material_gray_300">#E0E0E0</color>
+
+    <!-- BEGIN process button -->
+    <color name="blue_pressed">#0099cc</color>
+    <color name="blue_normal">#33b5e5</color>
+    <color name="material_light_green_500">#8BC34A</color>
+    <color name="material_orange_500">#FF9800</color>
+    <color name="red_error">#b00020</color>
+
+    <color name="holo_blue_bright">#00ddff</color>
+    <color name="holo_green_light">#99cc00</color>
+    <color name="holo_orange_light">#ffbb33</color>
+    <color name="holo_red_light">#ff4444</color>
+    <!-- END process button -->
 </resources>

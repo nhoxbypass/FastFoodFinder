@@ -106,6 +106,13 @@
     <string name="store_not_found">Store not found!</string>
     <string name="count_places">%s places</string>
     <string name="add_to_fav">Favourite this</string>
-
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_repassword">Re-input password</string>
+    <string name="sign_up">Register</string>
+    <string name="sign_up_successful">Register successfully</string>
+    <string name="sign_up_fail">Register failed</string>
+    <string name="sign_up_loading">Registering</string>
+    <string name="member_register">Member register</string>
 </resources>
 
