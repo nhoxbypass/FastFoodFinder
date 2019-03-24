@@ -156,7 +156,7 @@
                         android:layout_marginBottom="20dp"
                         android:text="@string/create_a_new_list"
                         android:textColor="#304FFE"
-                        android:textSize="@dimen/medium_textsize"
+                        android:textSize="@dimen/medium_text"
                         android:textStyle="bold" />
                 </androidx.cardview.widget.CardView>
 
