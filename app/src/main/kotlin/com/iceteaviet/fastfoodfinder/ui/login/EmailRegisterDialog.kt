@@ -3,6 +3,7 @@ package com.iceteaviet.fastfoodfinder.ui.login
 import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.NonNull
@@ -17,7 +18,7 @@ import kotlinx.android.synthetic.main.dialog_register.*
 /**
  * Created by MyPC on 11/29/2016.
  */
-class EmailRegisterDialog : DialogFragment(), View.OnClickListener {
+class EmailRegisterDialog : DialogFragment(), View.OnClickListener, View.OnTouchListener {
     private var mListener: OnRegisterCompleteListener? = null
 
     fun setOnRegisterCompleteListener(listener: OnRegisterCompleteListener) {
@@ -42,7 +43,7 @@ class EmailRegisterDialog : DialogFragment(), View.OnClickListener {
 
     override fun onViewCreated(@NonNull view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        btn_sign_up.setOnClickListener(this)
+        setupEventHandlers()
     }
 
     override fun onClick(v: View) {
@@ -50,7 +51,46 @@ class EmailRegisterDialog : DialogFragment(), View.OnClickListener {
             R.id.btn_sign_up -> {
                 onSignUpButtonClicked()
             }
+
+            R.id.input_email -> {
+                input_layout_email.error = ""
+            }
+
+            R.id.input_password -> {
+                input_layout_password.error = ""
+            }
+
+            R.id.input_repassword -> {
+                input_layout_repassword.error = ""
+            }
         }
+    }
+
+    override fun onTouch(v: View, event: MotionEvent): Boolean {
+        if (event.action == MotionEvent.ACTION_DOWN) {
+            when (v.id) {
+                R.id.input_email -> {
+                    input_layout_email.error = ""
+                }
+
+                R.id.input_password -> {
+                    input_layout_password.error = ""
+                }
+
+                R.id.input_repassword -> {
+                    input_layout_repassword.error = ""
+                }
+            }
+        }
+
+        return false
+    }
+
+    private fun setupEventHandlers() {
+        btn_sign_up.setOnClickListener(this)
+        input_email.setOnTouchListener(this)
+        input_password.setOnTouchListener(this)
+        input_repassword.setOnTouchListener(this)
     }
 
     // TODO: Optimize checking logic
