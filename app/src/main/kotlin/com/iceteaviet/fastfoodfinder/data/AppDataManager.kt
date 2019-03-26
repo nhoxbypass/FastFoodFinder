@@ -137,6 +137,10 @@ class AppDataManager(context: Context, private val localStoreDataSource: StoreDa
         return uid
     }
 
+    override fun signUpWithEmailAndPassword(email: String, password: String): Single<FirebaseUser> {
+        return clientAuth.signUpWithEmailAndPassword(email, password)
+    }
+
     override fun isSignedIn(): Boolean {
         return clientAuth.isSignedIn()
     }

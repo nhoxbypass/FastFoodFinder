@@ -20,6 +20,15 @@ class FirebaseClientAuth : ClientAuth {
         return if (mAuth.currentUser != null) mAuth.currentUser!!.uid else ""
     }
 
+    override fun signUpWithEmailAndPassword(email: String, password: String): Single<FirebaseUser> {
+        return Single.create { emitter ->
+            mAuth.createUserWithEmailAndPassword(email, password)
+                    .addOnSuccessListener { emitter.onSuccess(it.user) }
+                    .addOnFailureListener { e -> emitter.onError(e) }
+                    .addOnCanceledListener { emitter.onError(Exception("Cancel")) }
+        }
+    }
+
     override fun isSignedIn(): Boolean {
         return mAuth.currentUser != null && !mAuth.currentUser!!.isAnonymous
     }

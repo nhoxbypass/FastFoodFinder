@@ -11,6 +11,8 @@ import io.reactivex.Single
 interface ClientAuth {
     fun getCurrentUserUid(): String
 
+    fun signUpWithEmailAndPassword(email: String, password: String): Single<FirebaseUser>
+
     fun isSignedIn(): Boolean
 
     fun signOut()
