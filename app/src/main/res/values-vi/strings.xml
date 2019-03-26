@@ -98,10 +98,13 @@
     <string name="add_to_fav">Yêu thích</string>
     <string name="hint_email">Email</string>
     <string name="hint_password">Mật khẩu</string>
-    <string name="hint_repassword">Nhập lại mật khẩu</string>
+    <string name="hint_repassword">Xác nhận lại mật khẩu</string>
     <string name="sign_up">Đăng ký</string>
     <string name="sign_up_successful">Register successfully</string>
     <string name="sign_up_fail">Register failed</string>
     <string name="sign_up_loading">Registering</string>
     <string name="member_register">Đăng ký thành viên</string>
+    <string name="invalid_email">Địa chỉ Email không hợp lệ</string>
+    <string name="invalid_password">Mật khẩu không hơp lệ</string>
+    <string name="confirm_pwd_not_match">Mật khẩu xác nhận không trùng khớp</string>
 </resources>

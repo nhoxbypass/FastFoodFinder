@@ -7,6 +7,7 @@ import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.regex.Pattern
 
 /**
  * Created by binhlt on 23/11/2016.
@@ -192,4 +193,15 @@ fun filterInvalidData(stores: MutableList<Store>): MutableList<Store> {
 
 fun isValidUserUid(uid: String): Boolean {
     return !uid.isBlank() && uid != "null"
+}
+
+val VALID_EMAIL_ADDRESS_REGEX: Pattern = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE)
+fun isValidEmail(email: String): Boolean {
+    val matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(email)
+    return matcher.find()
+}
+
+val VALID_PWD_REGEX: Pattern = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#\$%^&+=])(?=\\S+\$).{8,}\$\n", Pattern.CASE_INSENSITIVE)
+fun isValidPassword(password: String): Boolean {
+    return password.trim().length >= 8
 }

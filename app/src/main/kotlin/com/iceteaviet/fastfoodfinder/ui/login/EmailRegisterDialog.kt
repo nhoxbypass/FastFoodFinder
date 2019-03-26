@@ -1,7 +1,6 @@
 package com.iceteaviet.fastfoodfinder.ui.login
 
 import android.app.Dialog
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,15 +10,17 @@ import androidx.annotation.Nullable
 import androidx.fragment.app.DialogFragment
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.ui.custom.processbutton.ActionProcessButton
+import com.iceteaviet.fastfoodfinder.utils.isValidEmail
+import com.iceteaviet.fastfoodfinder.utils.isValidPassword
 import kotlinx.android.synthetic.main.dialog_register.*
 
 /**
  * Created by MyPC on 11/29/2016.
  */
 class EmailRegisterDialog : DialogFragment(), View.OnClickListener {
-    private var mListener: OnButtonClickListener? = null
+    private var mListener: OnRegisterCompleteListener? = null
 
-    fun setOnButtonClickListener(listener: OnButtonClickListener) {
+    fun setOnRegisterCompleteListener(listener: OnRegisterCompleteListener) {
         mListener = listener
     }
 
@@ -47,12 +48,34 @@ class EmailRegisterDialog : DialogFragment(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.btn_sign_up -> {
-                btn_sign_up.setMode(ActionProcessButton.Mode.ENDLESS)
-                btn_sign_up.progress = 1
-
-                setInputEnabled(false)
+                onSignUpButtonClicked()
             }
         }
+    }
+
+    // TODO: Optimize checking logic
+    private fun onSignUpButtonClicked() {
+        btn_sign_up.setMode(ActionProcessButton.Mode.ENDLESS)
+        btn_sign_up.progress = 1
+        setInputEnabled(false)
+
+        if (isValidEmail(input_email.text.toString())) {
+            if (isValidPassword(input_password.text.toString())) {
+                if (input_password.text.toString().equals(input_repassword.text.toString())) {
+                    // Begin account register
+
+                } else {
+                    input_layout_repassword.error = getString(R.string.confirm_pwd_not_match)
+                }
+            } else {
+                input_layout_password.error = getString(R.string.invalid_password)
+            }
+        } else {
+            input_layout_email.error = getString(R.string.invalid_email)
+        }
+
+        btn_sign_up.progress = 0
+        setInputEnabled(true)
     }
 
     private fun setInputEnabled(enabled: Boolean) {
@@ -64,9 +87,9 @@ class EmailRegisterDialog : DialogFragment(), View.OnClickListener {
         input_repassword.isEnabled = enabled
     }
 
-    interface OnButtonClickListener {
-        fun onOkClick(Id: Int, bmp: Bitmap?)
-        fun onCancelClick()
+    interface OnRegisterCompleteListener {
+        fun onSuccess()
+        fun onErrror()
     }
 
     companion object {

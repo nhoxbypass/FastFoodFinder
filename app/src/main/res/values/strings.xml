@@ -108,11 +108,14 @@
     <string name="add_to_fav">Favourite this</string>
     <string name="hint_email">Email</string>
     <string name="hint_password">Password</string>
-    <string name="hint_repassword">Re-input password</string>
+    <string name="hint_repassword">Confirmation password</string>
     <string name="sign_up">Register</string>
     <string name="sign_up_successful">Register successfully</string>
     <string name="sign_up_fail">Register failed</string>
     <string name="sign_up_loading">Registering</string>
     <string name="member_register">Member register</string>
+    <string name="invalid_email">Invalid email address</string>
+    <string name="invalid_password">Invalid password</string>
+    <string name="confirm_pwd_not_match">Confirmation password not match</string>
 </resources>
 
