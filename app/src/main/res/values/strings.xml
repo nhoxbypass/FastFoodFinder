@@ -117,5 +117,7 @@
     <string name="invalid_email">Invalid email address</string>
     <string name="invalid_password">Invalid password</string>
     <string name="confirm_pwd_not_match">Confirmation password not match</string>
+    <string name="an_awesome_android_app_that_allows_a_you_to_find_some_fast_food_stores_or_convenient_stores_around">An awesome android app that allows a you to find some fast food stores or convenient stores around.</string>
+    <string name="app_name_fff">Fast Food Finder</string>
 </resources>
 

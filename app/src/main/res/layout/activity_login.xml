@@ -14,7 +14,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#3A424242" />
+        android:background="@color/bg_grey_blur" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -27,8 +27,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:text="@string/an_awesome_android_app_that_allows_a_you_to_find_some_fast_food_stores_or_convenient_stores_around"
             android:layout_marginTop="8dp"
-            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam vulputate malesuada odio eu posuere."
+            android:textAlignment="center"
             android:textColor="@color/colorWhite"
             android:textSize="14sp" />
 
@@ -38,7 +39,7 @@
             android:layout_above="@id/app_description"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="160dp"
-            android:text="Fast food Finder"
+            android:text="@string/app_name_fff"
             android:textColor="@color/colorWhite"
             android:textSize="36sp"
             android:textStyle="bold" />

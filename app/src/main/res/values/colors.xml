@@ -35,4 +35,6 @@
     <color name="holo_orange_light">#ffbb33</color>
     <color name="holo_red_light">#ff4444</color>
     <!-- END process button -->
+
+    <color name="bg_grey_blur">#3A424242</color>
 </resources>
