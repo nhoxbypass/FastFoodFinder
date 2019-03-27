@@ -9,10 +9,17 @@ import android.view.ViewGroup
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.fragment.app.DialogFragment
+import com.google.firebase.auth.FirebaseUser
+import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
+import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.ui.custom.processbutton.ActionProcessButton
 import com.iceteaviet.fastfoodfinder.utils.isValidEmail
 import com.iceteaviet.fastfoodfinder.utils.isValidPassword
+import io.reactivex.SingleObserver
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.dialog_register.*
 
 /**
@@ -20,6 +27,7 @@ import kotlinx.android.synthetic.main.dialog_register.*
  */
 class EmailRegisterDialog : DialogFragment(), View.OnClickListener, View.OnTouchListener {
     private var mListener: OnRegisterCompleteListener? = null
+    private lateinit var dataManager: DataManager
 
     fun setOnRegisterCompleteListener(listener: OnRegisterCompleteListener) {
         mListener = listener
@@ -43,6 +51,7 @@ class EmailRegisterDialog : DialogFragment(), View.OnClickListener, View.OnTouch
 
     override fun onViewCreated(@NonNull view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        dataManager = App.getDataManager()
         setupEventHandlers()
     }
 
@@ -103,7 +112,20 @@ class EmailRegisterDialog : DialogFragment(), View.OnClickListener, View.OnTouch
             if (isValidPassword(input_password.text.toString())) {
                 if (input_password.text.toString().equals(input_repassword.text.toString())) {
                     // Begin account register
+                    dataManager.signUpWithEmailAndPassword(input_email.text.toString(), input_password.text.toString())
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(object : SingleObserver<FirebaseUser> {
+                                override fun onSubscribe(d: Disposable) {
+                                }
 
+                                override fun onSuccess(user: FirebaseUser) {
+                                }
+
+                                override fun onError(e: Throwable) {
+                                    e.printStackTrace()
+                                }
+                            })
                 } else {
                     input_layout_repassword.error = getString(R.string.confirm_pwd_not_match)
                 }
