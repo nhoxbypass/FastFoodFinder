@@ -19,16 +19,15 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingLeft="24dp"
-        android:paddingRight="24dp">
+        android:padding="24dp">
 
         <TextView
             android:id="@+id/app_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/an_awesome_android_app_that_allows_a_you_to_find_some_fast_food_stores_or_convenient_stores_around"
             android:layout_marginTop="8dp"
+            android:text="@string/an_awesome_android_app_that_allows_a_you_to_find_some_fast_food_stores_or_convenient_stores_around"
             android:textAlignment="center"
             android:textColor="@color/colorWhite"
             android:textSize="14sp" />
@@ -47,44 +46,66 @@
         <Button
             android:id="@+id/btn_skip"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_alignParentBottom="true"
             android:layout_gravity="bottom"
-            android:layout_marginBottom="8dp"
-            android:textAllCaps="true"
-            android:background="@android:color/transparent"
+            android:background="@color/bg_grey_blur"
             android:text="@string/skip"
+            android:textAllCaps="true"
             android:textColor="@color/colorWhite" />
 
-        <com.facebook.login.widget.LoginButton
-            android:id="@+id/btn_facebook_signin"
+        <LinearLayout
+            android:id="@+id/ll_3rd_party_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@id/btn_skip"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="8dp"
-            android:paddingBottom="12dp"
-            android:paddingTop="12dp"
-            android:textColor="@color/colorWhite"
-            android:textSize="16sp" />
+            android:orientation="horizontal">
 
-        <com.google.android.gms.common.SignInButton
-            android:id="@+id/btn_google_signin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/btn_facebook_signin"
-            android:layout_marginBottom="8dp" />
+            <com.facebook.login.widget.LoginButton
+                android:id="@+id/btn_facebook_signin"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="8dp"
+                android:layout_weight="1"
+                android:paddingLeft="8dp"
+                android:paddingTop="12dp"
+                android:paddingRight="8dp"
+                android:paddingBottom="12dp"
+                android:textColor="@color/colorWhite"
+                android:textSize="12sp" />
+
+            <com.google.android.gms.common.SignInButton
+                android:id="@+id/btn_google_signin"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_weight="1" />
+        </LinearLayout>
 
         <Button
-            android:id="@+id/btn_join_now"
+            android:id="@+id/btn_register"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_above="@id/btn_google_signin"
+            android:layout_above="@id/ll_3rd_party_btn"
             android:layout_gravity="bottom"
             android:layout_marginBottom="8dp"
             android:background="@color/googleBlue"
+            android:text="@string/register"
             android:textAllCaps="true"
-            android:text="@string/join_now"
+            android:textColor="@color/colorWhite" />
+
+        <Button
+            android:id="@+id/btn_login"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_above="@id/btn_register"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="8dp"
+            android:background="@color/googleBlue"
+            android:text="@string/login"
+            android:textAllCaps="true"
             android:textColor="@color/colorWhite" />
 
     </RelativeLayout>

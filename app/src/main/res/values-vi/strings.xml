@@ -107,4 +107,6 @@
     <string name="invalid_email">Địa chỉ Email không hợp lệ</string>
     <string name="invalid_password">Mật khẩu không hơp lệ</string>
     <string name="confirm_pwd_not_match">Mật khẩu xác nhận không trùng khớp</string>
+    <string name="register">Đăng ký</string>
+    <string name="login">Đăng nhập</string>
 </resources>

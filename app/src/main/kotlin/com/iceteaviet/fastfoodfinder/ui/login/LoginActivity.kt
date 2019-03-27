@@ -2,15 +2,13 @@ package com.iceteaviet.fastfoodfinder.ui.login
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
+import android.view.View
 import android.widget.Toast
 import com.facebook.*
 import com.facebook.login.LoginResult
-import com.facebook.login.widget.LoginButton
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseUser
@@ -24,23 +22,13 @@ import io.reactivex.SingleObserver
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_login.*
 
-class LoginActivity : BaseActivity() {
-    lateinit var skipButton: Button
-    lateinit var joinNowButton: Button
-    lateinit var fbSignInButton: LoginButton
-    lateinit var googleSignInButton: SignInButton
-
+class LoginActivity : BaseActivity(), View.OnClickListener {
     private var mGoogleApiClient: GoogleApiClient? = null
     private var mCallBackManager: CallbackManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         FacebookSdk.sdkInitialize(applicationContext)
-
-        skipButton = btn_skip
-        joinNowButton = btn_join_now
-        fbSignInButton = btn_facebook_signin
-        googleSignInButton = btn_google_signin
 
         // Initialize Firebase Auth
         if (dataManager.isSignedIn()) {
@@ -55,17 +43,10 @@ class LoginActivity : BaseActivity() {
         mGoogleApiClient = setupGoogleSignIn()
         mCallBackManager = setupFacebookSignIn()
 
-        skipButton.setOnClickListener {
-            // Anonymous mode
-            startMainActivity()
-        }
-
-        joinNowButton.setOnClickListener {
-            val dlg = EmailRegisterDialog.newInstance()
-            dlg.show(supportFragmentManager, "dialog-register")
-        }
-
-        googleSignInButton.setOnClickListener { signIntWithGoogle(mGoogleApiClient) }
+        btn_skip.setOnClickListener(this)
+        btn_register.setOnClickListener(this)
+        btn_login.setOnClickListener(this)
+        btn_google_signin.setOnClickListener(this)
     }
 
     override val layoutId: Int
@@ -92,12 +73,33 @@ class LoginActivity : BaseActivity() {
         }
     }
 
+    override fun onClick(v: View) {
+        when (v.id) {
+            R.id.btn_skip -> {
+                // Anonymous mode
+                startMainActivity()
+            }
+
+            R.id.btn_register -> {
+                val dlg = EmailRegisterDialog.newInstance()
+                dlg.show(supportFragmentManager, "dialog-register")
+            }
+
+            R.id.btn_login -> {
+
+            }
+
+            R.id.btn_google_signin -> {
+                signIntWithGoogle(mGoogleApiClient)
+            }
+        }
+    }
 
     private fun setupFacebookSignIn(): CallbackManager {
         val callbackManager = CallbackManager.Factory.create()
-        fbSignInButton.setReadPermissions("email", "public_profile")
+        btn_facebook_signin.setReadPermissions("email", "public_profile")
 
-        fbSignInButton.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
+        btn_facebook_signin.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
             override fun onSuccess(loginResult: LoginResult) {
                 d(TAG, "facebook:onSuccess: $loginResult")
                 handleFacebookAccessToken(loginResult.accessToken)
@@ -214,6 +216,6 @@ class LoginActivity : BaseActivity() {
 
     companion object {
         private val TAG = LoginActivity::class.java.simpleName
-        private val RETURN_CODE_GOOGLE_SIGN_IN = 1
+        private const val RETURN_CODE_GOOGLE_SIGN_IN = 1
     }
 }
