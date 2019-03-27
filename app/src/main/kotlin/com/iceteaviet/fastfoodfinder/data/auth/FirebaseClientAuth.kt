@@ -3,6 +3,9 @@ package com.iceteaviet.fastfoodfinder.data.auth
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
+import com.iceteaviet.fastfoodfinder.utils.Constant
+import com.iceteaviet.fastfoodfinder.utils.getDefaultUserStoreLists
 import io.reactivex.Single
 
 /**
@@ -20,10 +23,10 @@ class FirebaseClientAuth : ClientAuth {
         return if (mAuth.currentUser != null) mAuth.currentUser!!.uid else ""
     }
 
-    override fun signUpWithEmailAndPassword(email: String, password: String): Single<FirebaseUser> {
+    override fun signUpWithEmailAndPassword(email: String, password: String): Single<User> {
         return Single.create { emitter ->
             mAuth.createUserWithEmailAndPassword(email, password)
-                    .addOnSuccessListener { emitter.onSuccess(it.user) }
+                    .addOnSuccessListener { emitter.onSuccess(convertFirebaseUserToUser(it.user)) }
                     .addOnFailureListener { e -> emitter.onError(e) }
                     .addOnCanceledListener { emitter.onError(Exception("Cancel")) }
         }
@@ -46,12 +49,22 @@ class FirebaseClientAuth : ClientAuth {
         }
     }
 
-    override fun signInWithCredential(authCredential: AuthCredential): Single<FirebaseUser> {
+    override fun signInWithCredential(authCredential: AuthCredential): Single<User> {
         return Single.create { emitter ->
             mAuth.signInWithCredential(authCredential)
-                    .addOnSuccessListener { authResult -> emitter.onSuccess(authResult.user) }
+                    .addOnSuccessListener { authResult -> emitter.onSuccess(convertFirebaseUserToUser(authResult.user)) }
                     .addOnFailureListener { e -> emitter.onError(e) }
                     .addOnCanceledListener { emitter.onError(Exception("Cancel")) }
         }
+    }
+
+    private fun convertFirebaseUserToUser(firebaseUser: FirebaseUser): User {
+        var photoUrl = Constant.NO_AVATAR_PLACEHOLDER_URL
+
+        if (firebaseUser.photoUrl != null) {
+            photoUrl = firebaseUser.photoUrl!!.toString()
+        }
+
+        return User(firebaseUser.displayName!!, firebaseUser.email!!, photoUrl, firebaseUser.uid, getDefaultUserStoreLists().toMutableList())
     }
 }

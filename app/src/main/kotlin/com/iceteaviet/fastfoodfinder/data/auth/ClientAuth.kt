@@ -1,8 +1,7 @@
 package com.iceteaviet.fastfoodfinder.data.auth
 
 import com.google.firebase.auth.AuthCredential
-import com.google.firebase.auth.FirebaseUser
-
+import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
 import io.reactivex.Single
 
 /**
@@ -11,7 +10,7 @@ import io.reactivex.Single
 interface ClientAuth {
     fun getCurrentUserUid(): String
 
-    fun signUpWithEmailAndPassword(email: String, password: String): Single<FirebaseUser>
+    fun signUpWithEmailAndPassword(email: String, password: String): Single<User>
 
     fun isSignedIn(): Boolean
 
@@ -19,5 +18,5 @@ interface ClientAuth {
 
     fun signInWithEmailAndPassword(email: String, password: String): Single<Boolean>
 
-    fun signInWithCredential(authCredential: AuthCredential): Single<FirebaseUser>
+    fun signInWithCredential(authCredential: AuthCredential): Single<User>
 }

@@ -9,10 +9,10 @@ import android.view.ViewGroup
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.fragment.app.DialogFragment
-import com.google.firebase.auth.FirebaseUser
 import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.DataManager
+import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
 import com.iceteaviet.fastfoodfinder.ui.custom.processbutton.ActionProcessButton
 import com.iceteaviet.fastfoodfinder.utils.isValidEmail
 import com.iceteaviet.fastfoodfinder.utils.isValidPassword
@@ -115,11 +115,11 @@ class EmailRegisterDialog : DialogFragment(), View.OnClickListener, View.OnTouch
                     dataManager.signUpWithEmailAndPassword(input_email.text.toString(), input_password.text.toString())
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(object : SingleObserver<FirebaseUser> {
+                            .subscribe(object : SingleObserver<User> {
                                 override fun onSubscribe(d: Disposable) {
                                 }
 
-                                override fun onSuccess(user: FirebaseUser) {
+                                override fun onSuccess(user: User) {
                                 }
 
                                 override fun onError(e: Throwable) {

@@ -3,7 +3,6 @@ package com.iceteaviet.fastfoodfinder.data
 import android.app.Activity
 import android.content.Context
 import com.google.firebase.auth.AuthCredential
-import com.google.firebase.auth.FirebaseUser
 import com.iceteaviet.fastfoodfinder.data.auth.ClientAuth
 import com.iceteaviet.fastfoodfinder.data.domain.store.StoreDataSource
 import com.iceteaviet.fastfoodfinder.data.domain.user.UserDataSource
@@ -137,7 +136,7 @@ class AppDataManager(context: Context, private val localStoreDataSource: StoreDa
         return uid
     }
 
-    override fun signUpWithEmailAndPassword(email: String, password: String): Single<FirebaseUser> {
+    override fun signUpWithEmailAndPassword(email: String, password: String): Single<User> {
         return clientAuth.signUpWithEmailAndPassword(email, password)
     }
 
@@ -154,7 +153,7 @@ class AppDataManager(context: Context, private val localStoreDataSource: StoreDa
         return clientAuth.signInWithEmailAndPassword(email, password)
     }
 
-    override fun signInWithCredential(authCredential: AuthCredential): Single<FirebaseUser> {
+    override fun signInWithCredential(authCredential: AuthCredential): Single<User> {
         return clientAuth.signInWithCredential(authCredential)
     }
 

@@ -11,13 +11,14 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.firebase.auth.FacebookAuthProvider
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
 import com.iceteaviet.fastfoodfinder.ui.base.BaseActivity
 import com.iceteaviet.fastfoodfinder.ui.main.MainActivity
-import com.iceteaviet.fastfoodfinder.utils.*
+import com.iceteaviet.fastfoodfinder.utils.d
+import com.iceteaviet.fastfoodfinder.utils.e
+import com.iceteaviet.fastfoodfinder.utils.w
 import io.reactivex.SingleObserver
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_login.*
@@ -135,14 +136,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
     }
 
 
-    private fun saveUserIfNotExists(firebaseUser: FirebaseUser) {
-        var photoUrl = Constant.NO_AVATAR_PLACEHOLDER_URL
-
-        if (firebaseUser.photoUrl != null) {
-            photoUrl = firebaseUser.photoUrl!!.toString()
-        }
-
-        val user = User(firebaseUser.displayName!!, firebaseUser.email!!, photoUrl, firebaseUser.uid, getDefaultUserStoreLists().toMutableList())
+    private fun saveUserIfNotExists(user: User) {
         dataManager.getRemoteUserDataSource().insertOrUpdate(user)
         dataManager.setCurrentUser(user)
     }
@@ -156,21 +150,15 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
     private fun authWithGoogle(acct: GoogleSignInAccount) {
         val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
         dataManager.signInWithCredential(credential)
-                .subscribe(object : SingleObserver<FirebaseUser> {
+                .subscribe(object : SingleObserver<User> {
                     override fun onSubscribe(d: Disposable) {
 
                     }
 
-                    override fun onSuccess(firebaseUser: FirebaseUser) {
-                        if (firebaseUser != null) {
-                            Toast.makeText(this@LoginActivity, R.string.sign_in_successfully, Toast.LENGTH_SHORT).show()
-                            saveUserIfNotExists(firebaseUser)
-                            startMainActivity()
-                        } else {
-                            w(TAG, "signInWithCredential")
-                            Toast.makeText(this@LoginActivity, R.string.authentication_failed,
-                                    Toast.LENGTH_SHORT).show()
-                        }
+                    override fun onSuccess(user: User) {
+                        Toast.makeText(this@LoginActivity, R.string.sign_in_successfully, Toast.LENGTH_SHORT).show()
+                        saveUserIfNotExists(user)
+                        startMainActivity()
                     }
 
                     override fun onError(e: Throwable) {
@@ -189,21 +177,15 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
     private fun handleFacebookAccessToken(token: AccessToken) {
         val credential = FacebookAuthProvider.getCredential(token.token)
         dataManager.signInWithCredential(credential)
-                .subscribe(object : SingleObserver<FirebaseUser> {
+                .subscribe(object : SingleObserver<User> {
                     override fun onSubscribe(d: Disposable) {
 
                     }
 
-                    override fun onSuccess(firebaseUser: FirebaseUser) {
-                        if (firebaseUser != null) {
-                            Toast.makeText(this@LoginActivity, R.string.sign_in_successfully, Toast.LENGTH_SHORT).show()
-                            saveUserIfNotExists(firebaseUser)
-                            startMainActivity()
-                        } else {
-                            w(TAG, "signInWithCredential")
-                            Toast.makeText(this@LoginActivity, R.string.authentication_failed,
-                                    Toast.LENGTH_SHORT).show()
-                        }
+                    override fun onSuccess(user: User) {
+                        Toast.makeText(this@LoginActivity, R.string.sign_in_successfully, Toast.LENGTH_SHORT).show()
+                        saveUserIfNotExists(user)
+                        startMainActivity()
                     }
 
                     override fun onError(e: Throwable) {
