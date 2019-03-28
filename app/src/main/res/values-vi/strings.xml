@@ -92,6 +92,7 @@
     <string name="list_name_already_exists">Tên danh sách đã được tạo, thử một tên mới!</string>
     <string name="get_map_direction_failed">Không thể lấy đường đi!</string>
     <string name="successfully">Thành công</string>
+    <string name="failed">Thất bại</string>
     <string name="ok">OK</string>
     <string name="store_not_found">Không tìm thấy cửa hàng!</string>
     <string name="count_places">%s nơi</string>

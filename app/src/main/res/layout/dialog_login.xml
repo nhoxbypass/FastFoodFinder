@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:minHeight="0dp"
-        android:text="@string/member_register" />
+        android:text="@string/login" />
 
     <View
         android:layout_width="match_parent"
@@ -55,22 +55,6 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/input_layout_repassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        app:passwordToggleEnabled="true">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/input_repassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/hint_repassword"
-            android:inputType="textPassword" />
-    </com.google.android.material.textfield.TextInputLayout>
-
     <com.iceteaviet.fastfoodfinder.ui.custom.processbutton.ActionProcessButton
         android:id="@+id/btn_sign_up"
         android:layout_width="match_parent"
@@ -78,7 +62,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginRight="16dp"
-        android:text="@string/sign_up"
+        android:text="@string/login"
         android:textColor="@android:color/white"
         android:textSize="@dimen/regular_text"
         custom:pb_colorComplete="@color/material_light_green_500"
@@ -87,6 +71,5 @@
         custom:pb_colorPressed="@color/blue_pressed"
         custom:pb_colorProgress="@color/purple_progress"
         custom:pb_textComplete="@string/successfully"
-        custom:pb_textError="@string/failed"
-        custom:pb_textProgress="@string/sign_up_loading" />
+        custom:pb_textError="@string/failed" />
 </LinearLayout>

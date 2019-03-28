@@ -83,11 +83,12 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
             R.id.btn_register -> {
                 val dlg = EmailRegisterDialog.newInstance()
-                dlg.show(supportFragmentManager, "dialog-register")
+                dlg.show(supportFragmentManager, "dialog-email-register")
             }
 
             R.id.btn_login -> {
-
+                val dlg = EmailLoginDialog.newInstance()
+                dlg.show(supportFragmentManager, "dialog-email-login")
             }
 
             R.id.btn_google_signin -> {
