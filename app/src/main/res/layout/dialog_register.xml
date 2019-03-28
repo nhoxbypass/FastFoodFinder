@@ -87,6 +87,6 @@
         custom:pb_colorPressed="@color/blue_pressed"
         custom:pb_colorProgress="@color/purple_progress"
         custom:pb_textComplete="@string/sign_up_successful"
-        custom:pb_textError="@string/sign_up_successful"
+        custom:pb_textError="@string/sign_up_fail"
         custom:pb_textProgress="@string/sign_up_loading" />
 </LinearLayout>

@@ -23,7 +23,7 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.dialog_register.*
 
 /**
- * Created by MyPC on 11/29/2016.
+ * Created by nhoxbypass on 03/29/2018.
  */
 class EmailRegisterDialog : DialogFragment(), View.OnClickListener, View.OnTouchListener {
     private var mListener: OnRegisterCompleteListener? = null
