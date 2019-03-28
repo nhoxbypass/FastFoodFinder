@@ -5,8 +5,8 @@
     android:layout_height="wrap_content"
     android:background="@color/colorWhite"
     android:paddingLeft="10dp"
-    android:paddingRight="10dp"
-    android:paddingTop="8dp">
+    android:paddingTop="8dp"
+    android:paddingRight="10dp">
 
     <ImageView
         android:id="@+id/profile_image"

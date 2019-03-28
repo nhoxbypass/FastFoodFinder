@@ -22,8 +22,8 @@
             app:contentScrim="?attr/colorPrimary"
             app:expandedTitleMarginEnd="64dp"
             app:expandedTitleMarginStart="48dp"
-            app:title="Store Detail"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:title="Store Detail">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -43,8 +43,8 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_alignBottom="@+id/backdrop"
                     android:layout_alignTop="@+id/backdrop"
+                    android:layout_alignBottom="@+id/backdrop"
                     android:background="#40000000" />
             </RelativeLayout>
 

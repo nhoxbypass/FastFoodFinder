@@ -6,7 +6,7 @@ import com.iceteaviet.fastfoodfinder.utils.d
 /**
  * Created by tom on 12/26/18.
  */
-class AppTaskBackgroundWorker() : Thread("AppTaskBackgroundWorker") {
+class AppTaskBackgroundWorker : Thread("AppTaskBackgroundWorker") {
     companion object {
         const val TAG = "AppTaskBackgroundWorker"
         var queue: ArrayList<Task> = ArrayList()

@@ -97,10 +97,6 @@ class RecentlySearchStoreAdapter internal constructor() : RecyclerView.Adapter<R
         return storeList.size
     }
 
-    override fun getItemViewType(position: Int): Int {
-        return super.getItemViewType(position)
-    }
-
     interface OnItemClickListener {
         fun onClick(store: Store)
     }

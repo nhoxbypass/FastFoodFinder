@@ -21,7 +21,7 @@ import io.reactivex.schedulers.Schedulers
 class SplashActivity : BaseActivity() {
 
     companion object {
-        const val SPLASH_DELAY_TIME = 500;
+        const val SPLASH_DELAY_TIME = 500
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

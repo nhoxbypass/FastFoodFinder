@@ -4,8 +4,8 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:paddingTop="16dp">
+    android:paddingTop="16dp"
+    android:paddingRight="16dp">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -43,8 +43,8 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingBottom="6dp"
         android:paddingTop="6dp"
+        android:paddingBottom="6dp"
         android:text="@string/convenience_store" />
 
     <View
@@ -66,8 +66,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         android:background="@color/googleBlue"
         android:text="@string/add_to_my_favorite"
         android:textColor="@color/colorWhite" />
@@ -80,8 +80,8 @@
         android:background="?attr/selectableItemBackground"
         android:clickable="true"
         android:focusable="true"
-        android:paddingBottom="8dp"
         android:paddingTop="8dp"
+        android:paddingBottom="8dp"
         android:text="@string/view_more_detail"
         android:textAlignment="center"
         android:textColor="@color/googleBlue"

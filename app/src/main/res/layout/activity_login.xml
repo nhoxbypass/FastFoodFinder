@@ -58,8 +58,8 @@
             android:id="@+id/ll_3rd_party_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
             android:layout_above="@id/btn_skip"
+            android:layout_marginBottom="8dp"
             android:orientation="horizontal">
 
             <com.facebook.login.widget.LoginButton

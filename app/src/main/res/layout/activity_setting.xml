@@ -47,8 +47,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right|end|top"
-                android:layout_marginRight="8dp"
                 android:layout_marginTop="6dp"
+                android:layout_marginRight="8dp"
                 android:gravity="center_vertical" />
 
             <androidx.appcompat.widget.SwitchCompat
@@ -56,8 +56,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right|end|bottom"
-                android:layout_marginBottom="8dp"
                 android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
                 android:gravity="center_vertical" />
 
             <LinearLayout
@@ -143,8 +143,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right|end|top"
-                android:layout_marginRight="8dp"
                 android:layout_marginTop="6dp"
+                android:layout_marginRight="8dp"
                 android:gravity="center_vertical" />
 
             <LinearLayout
@@ -196,8 +196,8 @@
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
-                    android:paddingTop="4dp">
+                    android:paddingTop="4dp"
+                    android:paddingRight="8dp">
 
                     <ProgressBar
                         android:id="@+id/progress_bar_update_db"
