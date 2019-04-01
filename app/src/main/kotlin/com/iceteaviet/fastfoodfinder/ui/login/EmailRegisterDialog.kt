@@ -183,8 +183,6 @@ class EmailRegisterDialog : DialogFragment(), View.OnClickListener, View.OnTouch
     }
 
     companion object {
-        private const val RESULT_LOAD_IMAGE = 1
-
         fun newInstance(): EmailRegisterDialog {
             val frag = EmailRegisterDialog()
             val args = Bundle()

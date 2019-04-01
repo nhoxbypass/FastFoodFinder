@@ -100,6 +100,18 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
             R.id.btn_login -> {
                 val dlg = EmailLoginDialog.newInstance()
+                dlg.setOnLoginCompleteListener(object : EmailLoginDialog.OnLoginCompleteListener {
+                    override fun onSuccess(user: User) {
+                        dlg.dismiss()
+                        saveUserIfNotExists(user)
+                        startMainActivity()
+                    }
+
+                    override fun onError(e: Throwable) {
+                        dlg.dismiss()
+                        e.printStackTrace()
+                    }
+                })
                 dlg.show(supportFragmentManager, "dialog-email-login")
             }
 

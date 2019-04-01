@@ -12,9 +12,13 @@ import androidx.fragment.app.DialogFragment
 import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.DataManager
-import com.iceteaviet.fastfoodfinder.ui.custom.processbutton.ActionProcessButton
+import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
 import com.iceteaviet.fastfoodfinder.utils.isValidEmail
 import com.iceteaviet.fastfoodfinder.utils.isValidPassword
+import io.reactivex.SingleObserver
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.dialog_login.*
 
 /**
@@ -90,13 +94,24 @@ class EmailLoginDialog : DialogFragment(), View.OnClickListener, View.OnTouchLis
 
     // TODO: Optimize checking logic
     private fun onSignUpButtonClicked() {
-        btn_sign_up.setMode(ActionProcessButton.Mode.ENDLESS)
-        btn_sign_up.progress = 1
-        setInputEnabled(false)
+        setLoginProgressState(1)
 
         if (isValidEmail(input_email.text.toString())) {
             if (isValidPassword(input_password.text.toString())) {
+                dataManager.signInWithEmailAndPassword(input_email.text.toString(), input_password.text.toString())
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(object : SingleObserver<Boolean> {
+                            override fun onSubscribe(d: Disposable) {
+                            }
 
+                            override fun onSuccess(success: Boolean) {
+
+                            }
+
+                            override fun onError(e: Throwable) {
+                            }
+                        })
             } else {
                 input_layout_password.error = getString(R.string.invalid_password)
             }
@@ -104,8 +119,31 @@ class EmailLoginDialog : DialogFragment(), View.OnClickListener, View.OnTouchLis
             input_layout_email.error = getString(R.string.invalid_email)
         }
 
-        btn_sign_up.progress = 0
-        setInputEnabled(true)
+        setLoginProgressState(0)
+    }
+
+    private fun setLoginProgressState(state: Int) {
+        when (state) {
+            -1 -> {
+                btn_sign_up.progress = -1
+                setInputEnabled(true)
+            }
+
+            0 -> {
+                btn_sign_up.progress = 0
+                setInputEnabled(true)
+            }
+
+            1 -> {
+                btn_sign_up.progress = 1
+                setInputEnabled(false)
+            }
+
+            2 -> {
+                btn_sign_up.progress = 100
+                setInputEnabled(false)
+            }
+        }
     }
 
     private fun setInputEnabled(enabled: Boolean) {
@@ -116,13 +154,11 @@ class EmailLoginDialog : DialogFragment(), View.OnClickListener, View.OnTouchLis
     }
 
     interface OnLoginCompleteListener {
-        fun onSuccess()
-        fun onErrror()
+        fun onSuccess(user: User)
+        fun onError(e: Throwable)
     }
 
     companion object {
-        private const val RESULT_LOAD_IMAGE = 1
-
         fun newInstance(): EmailLoginDialog {
             val frag = EmailLoginDialog()
             val args = Bundle()
