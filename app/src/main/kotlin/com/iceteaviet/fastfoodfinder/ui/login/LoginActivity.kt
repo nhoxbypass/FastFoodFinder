@@ -83,6 +83,18 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
             R.id.btn_register -> {
                 val dlg = EmailRegisterDialog.newInstance()
+                dlg.setOnRegisterCompleteListener(object : EmailRegisterDialog.OnRegisterCompleteListener {
+                    override fun onSuccess(user: User) {
+                        dlg.dismiss()
+                        saveUserIfNotExists(user)
+                        startMainActivity()
+                    }
+
+                    override fun onError(e: Throwable) {
+                        dlg.dismiss()
+                        e.printStackTrace()
+                    }
+                })
                 dlg.show(supportFragmentManager, "dialog-email-register")
             }
 

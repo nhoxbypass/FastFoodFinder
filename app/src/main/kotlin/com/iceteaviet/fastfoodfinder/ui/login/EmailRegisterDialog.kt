@@ -120,11 +120,13 @@ class EmailRegisterDialog : DialogFragment(), View.OnClickListener, View.OnTouch
 
                                 override fun onSuccess(user: User) {
                                     setRegisterProgressState(2)
+                                    mListener?.onSuccess(user)
                                 }
 
                                 override fun onError(e: Throwable) {
                                     e.printStackTrace()
                                     setRegisterProgressState(-1)
+                                    mListener?.onError(e)
                                 }
                             })
                     return
@@ -176,8 +178,8 @@ class EmailRegisterDialog : DialogFragment(), View.OnClickListener, View.OnTouch
     }
 
     interface OnRegisterCompleteListener {
-        fun onSuccess()
-        fun onErrror()
+        fun onSuccess(user: User)
+        fun onError(e: Throwable)
     }
 
     companion object {
