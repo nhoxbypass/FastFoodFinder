@@ -4,7 +4,6 @@ import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
-import com.iceteaviet.fastfoodfinder.utils.Constant
 import com.iceteaviet.fastfoodfinder.utils.getDefaultUserStoreLists
 import io.reactivex.Single
 
@@ -59,7 +58,7 @@ class FirebaseClientAuth : ClientAuth {
     }
 
     private fun convertFirebaseUserToUser(firebaseUser: FirebaseUser): User {
-        var photoUrl = Constant.NO_AVATAR_PLACEHOLDER_URL
+        var photoUrl = ""
 
         if (firebaseUser.photoUrl != null) {
             photoUrl = firebaseUser.photoUrl!!.toString()

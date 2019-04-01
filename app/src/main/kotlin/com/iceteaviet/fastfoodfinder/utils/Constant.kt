@@ -19,8 +19,6 @@ object Constant {
     const val DOWNLOADER_BOT_EMAIL = "store_downloader@fastfoodfinder.com"
     const val DOWNLOADER_BOT_PWD = "123456789"
 
-    const val NO_AVATAR_PLACEHOLDER_URL = "http://cdn.builtlean.com/wp-content/uploads/2015/11/all_noavatar.png.png"
-
     const val DEFAULT_ZOOM_LEVEL = 16f
     const val DETAILED_ZOOM_LEVEL = 18f
 

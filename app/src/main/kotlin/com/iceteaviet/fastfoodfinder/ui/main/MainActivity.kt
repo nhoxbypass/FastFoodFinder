@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -205,9 +206,15 @@ class MainActivity : BaseActivity(), View.OnClickListener {
             mNavHeaderScreenName!!.visibility = View.GONE
             mNavHeaderSignIn!!.visibility = View.VISIBLE
         } else {
-            Glide.with(this)
-                    .load(dataManager.getCurrentUser()!!.photoUrl)
-                    .into(mNavHeaderAvatar!!)
+            if (TextUtils.isEmpty(dataManager.getCurrentUser()!!.photoUrl)) {
+                Glide.with(this)
+                        .load(R.drawable.all_noavatar)
+                        .into(mNavHeaderAvatar!!)
+            } else {
+                Glide.with(this)
+                        .load(dataManager.getCurrentUser()!!.photoUrl)
+                        .into(mNavHeaderAvatar!!)
+            }
             mNavHeaderName!!.text = dataManager.getCurrentUser()!!.name
             mNavHeaderScreenName!!.text = dataManager.getCurrentUser()!!.email
         }
