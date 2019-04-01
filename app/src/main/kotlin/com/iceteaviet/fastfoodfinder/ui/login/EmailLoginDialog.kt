@@ -101,11 +101,11 @@ class EmailLoginDialog : DialogFragment(), View.OnClickListener, View.OnTouchLis
                 dataManager.signInWithEmailAndPassword(input_email.text.toString(), input_password.text.toString())
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(object : SingleObserver<Boolean> {
+                        .subscribe(object : SingleObserver<User> {
                             override fun onSubscribe(d: Disposable) {
                             }
 
-                            override fun onSuccess(success: Boolean) {
+                            override fun onSuccess(user: User) {
 
                             }
 

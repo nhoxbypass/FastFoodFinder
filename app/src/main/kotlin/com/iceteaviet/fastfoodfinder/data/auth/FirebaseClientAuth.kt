@@ -40,10 +40,10 @@ class FirebaseClientAuth : ClientAuth {
         mAuth.signOut()
     }
 
-    override fun signInWithEmailAndPassword(email: String, password: String): Single<Boolean> {
+    override fun signInWithEmailAndPassword(email: String, password: String): Single<User> {
         return Single.create { emitter ->
             mAuth.signInWithEmailAndPassword(email, password)
-                    .addOnSuccessListener { emitter.onSuccess(true) }
+                    .addOnSuccessListener { authResult -> emitter.onSuccess(convertFirebaseUserToUser(authResult.user)) }
                     .addOnFailureListener { e -> emitter.onError(e) }
                     .addOnCanceledListener { emitter.onError(Exception("Cancel")) }
         }

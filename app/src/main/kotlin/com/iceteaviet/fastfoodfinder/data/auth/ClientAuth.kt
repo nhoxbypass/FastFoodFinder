@@ -16,7 +16,7 @@ interface ClientAuth {
 
     fun signOut()
 
-    fun signInWithEmailAndPassword(email: String, password: String): Single<Boolean>
+    fun signInWithEmailAndPassword(email: String, password: String): Single<User>
 
     fun signInWithCredential(authCredential: AuthCredential): Single<User>
 }

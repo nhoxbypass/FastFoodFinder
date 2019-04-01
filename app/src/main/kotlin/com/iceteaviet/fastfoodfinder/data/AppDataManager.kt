@@ -70,32 +70,27 @@ class AppDataManager(context: Context, private val localStoreDataSource: StoreDa
             if (!clientAuth.isSignedIn()) {
                 // Not signed in
                 clientAuth.signInWithEmailAndPassword(Constant.DOWNLOADER_BOT_EMAIL, Constant.DOWNLOADER_BOT_PWD)
-                        .subscribe(object : SingleObserver<Boolean> {
+                        .subscribe(object : SingleObserver<User> {
                             override fun onSubscribe(d: Disposable) {
 
                             }
 
-                            override fun onSuccess(b: Boolean) {
-                                if (b) {
-                                    remoteStoreDataSource.getAllStores()
-                                            .subscribe(object : SingleObserver<List<Store>> {
-                                                override fun onSubscribe(d: Disposable) {
+                            override fun onSuccess(user: User) {
+                                remoteStoreDataSource.getAllStores()
+                                        .subscribe(object : SingleObserver<List<Store>> {
+                                            override fun onSubscribe(d: Disposable) {
 
-                                                }
+                                            }
 
-                                                override fun onSuccess(storeList: List<Store>) {
-                                                    signOut()
-                                                    emitter.onSuccess(storeList)
-                                                }
+                                            override fun onSuccess(storeList: List<Store>) {
+                                                signOut()
+                                                emitter.onSuccess(storeList)
+                                            }
 
-                                                override fun onError(e: Throwable) {
-                                                    emitter.onError(e)
-                                                }
-                                            })
-                                } else {
-                                    // Do nothing
-                                    w(TAG, "Sign In failed ")
-                                }
+                                            override fun onError(e: Throwable) {
+                                                emitter.onError(e)
+                                            }
+                                        })
                             }
 
                             override fun onError(e: Throwable) {
@@ -149,7 +144,7 @@ class AppDataManager(context: Context, private val localStoreDataSource: StoreDa
         setCurrentUser(null)
     }
 
-    override fun signInWithEmailAndPassword(email: String, password: String): Single<Boolean> {
+    override fun signInWithEmailAndPassword(email: String, password: String): Single<User> {
         return clientAuth.signInWithEmailAndPassword(email, password)
     }
 
