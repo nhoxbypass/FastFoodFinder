@@ -9,8 +9,6 @@ interface PreferencesHelper {
 
     fun getNumberOfStores(): Int
 
-    fun getCurrentUserUid(): String
-
     fun getSearchHistories(): MutableSet<String>
 
     fun putString(key: String, value: String)
@@ -28,8 +26,6 @@ interface PreferencesHelper {
     fun setAppLaunchFirstTime(isFirstTime: Boolean?)
 
     fun setNumberOfStores(numberOfStores: Int)
-
-    fun setCurrentUserUid(uid: String)
 
     fun setSearchHistories(set: MutableSet<String>)
 }

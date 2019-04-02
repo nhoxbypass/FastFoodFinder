@@ -26,9 +26,9 @@ interface DataManager : ClientAuth {
 
     fun getPreferencesHelper(): PreferencesHelper
 
-    fun getCurrentUser(): User?
-
     fun loadStoresFromServer(activity: Activity): Single<List<Store>>
+
+    fun getCurrentUser(): User?
 
     fun setCurrentUser(user: User?)
 

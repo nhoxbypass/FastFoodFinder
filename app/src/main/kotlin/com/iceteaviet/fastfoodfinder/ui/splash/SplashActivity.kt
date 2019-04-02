@@ -60,7 +60,7 @@ class SplashActivity : BaseActivity() {
             if (dataManager.isSignedIn()) {
                 val uid = dataManager.getCurrentUserUid()
                 if (isValidUserUid(uid)) {
-                    // User still signed in
+                    // User still signed in, fetch newest user data from server
                     dataManager.getRemoteUserDataSource().getUser(uid)
                             .subscribeOn(Schedulers.io())
                             .observeOn(Schedulers.io())
@@ -79,6 +79,7 @@ class SplashActivity : BaseActivity() {
                             })
                 }
 
+                // TODO: Load data in splash time
                 val remainTime = SPLASH_DELAY_TIME - (System.currentTimeMillis() - start)
                 if (remainTime > 0) {
                     Handler(Looper.getMainLooper())

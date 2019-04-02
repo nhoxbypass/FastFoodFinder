@@ -47,7 +47,6 @@ class FirebaseUserRepository(private val databaseRef: DatabaseReference) : UserD
                 }
 
                 override fun onCancelled(@NonNull databaseError: DatabaseError) {
-                    e(TAG, "Failed to get user data")
                     emitter.onError(databaseError.toException())
                 }
             })

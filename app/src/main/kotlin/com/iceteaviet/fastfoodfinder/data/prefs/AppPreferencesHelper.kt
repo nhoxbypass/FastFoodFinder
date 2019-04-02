@@ -69,16 +69,6 @@ class AppPreferencesHelper(context: Context) : PreferencesHelper {
                 .apply()
     }
 
-    override fun getCurrentUserUid(): String {
-        return sharedPreferences.getString(KEY_CURRENT_USER_UID, "")
-    }
-
-    override fun setCurrentUserUid(uid: String) {
-        sharedPreferences.edit()
-                .putString(KEY_CURRENT_USER_UID, uid)
-                .apply()
-    }
-
     override fun getSearchHistories(): MutableSet<String> {
         return sharedPreferences.getStringSet(KEY_SEARCH_HISTORIES, TreeSet())
     }
@@ -91,7 +81,6 @@ class AppPreferencesHelper(context: Context) : PreferencesHelper {
         private const val PREFS_NAME = "english_now_android"
         private const val KEY_APP_LAUNCH_FIRST_TIME = "app_launch_first_time"
         private const val KEY_NUMBER_OF_STORES = "number_of_stores"
-        private const val KEY_CURRENT_USER_UID = "current_user_uid"
         private const val KEY_SEARCH_HISTORIES = "search_histories"
     }
 }

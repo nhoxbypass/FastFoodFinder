@@ -125,9 +125,6 @@ class AppDataManager(context: Context, private val localStoreDataSource: StoreDa
         if (isEmpty(uid))
             uid = clientAuth.getCurrentUserUid()
 
-        if (isEmpty(uid))
-            uid = preferencesHelper.getCurrentUserUid()
-
         return uid
     }
 
@@ -171,10 +168,7 @@ class AppDataManager(context: Context, private val localStoreDataSource: StoreDa
     override fun setCurrentUser(user: User?) {
         currentUser = user
         if (user != null && !user.uid.isEmpty()) {
-            preferencesHelper.setCurrentUserUid(user.uid)
             localUserDataSource.insertOrUpdate(user)
-        } else {
-            preferencesHelper.setCurrentUserUid("")
         }
     }
 
