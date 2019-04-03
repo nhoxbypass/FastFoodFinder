@@ -28,8 +28,6 @@ class SplashActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val start = System.currentTimeMillis()
-
         dataManager = App.getDataManager()
 
         if (dataManager.getPreferencesHelper().getAppLaunchFirstTime() || dataManager.getPreferencesHelper().getNumberOfStores() == 0) {
@@ -37,9 +35,11 @@ class SplashActivity : BaseActivity() {
             loadStoresFromServer()
         } else {
             if (dataManager.isSignedIn()) {
+                val startTime = System.currentTimeMillis()
                 val uid = dataManager.getCurrentUserUid()
                 if (isValidUserUid(uid)) {
                     // User still signed in, fetch newest user data from server
+                    // TODO: Support timeout
                     dataManager.getRemoteUserDataSource().getUser(uid)
                             .subscribeOn(Schedulers.io())
                             .observeOn(Schedulers.io())
@@ -50,27 +50,30 @@ class SplashActivity : BaseActivity() {
 
                                 override fun onSuccess(user: User) {
                                     dataManager.setCurrentUser(user)
+                                    openMainActivityWithDelay(startTime)
                                 }
 
                                 override fun onError(e: Throwable) {
                                     e.printStackTrace()
+                                    openMainActivityWithDelay(startTime)
                                 }
                             })
-                }
-
-                // TODO: Load data in splash time
-                val remainTime = SPLASH_DELAY_TIME - (System.currentTimeMillis() - start)
-                if (remainTime > 0) {
-                    Handler(Looper.getMainLooper())
-                            .postDelayed({
-                                openMainActivity(this@SplashActivity)
-                            }, remainTime)
-                } else {
-                    openMainActivity(this@SplashActivity)
                 }
             } else {
                 openLoginActivity(this@SplashActivity)
             }
+        }
+    }
+
+    private fun openMainActivityWithDelay(startTime: Long) {
+        val remainTime = SPLASH_DELAY_TIME - (System.currentTimeMillis() - startTime)
+        if (remainTime > 0) {
+            Handler(Looper.getMainLooper())
+                    .postDelayed({
+                        openMainActivity(this@SplashActivity)
+                    }, remainTime)
+        } else {
+            openMainActivity(this@SplashActivity)
         }
     }
 
