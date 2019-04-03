@@ -31,7 +31,7 @@ class SplashActivity : BaseActivity() {
 
         dataManager = App.getDataManager()
 
-        if (dataManager.getPreferencesHelper().getAppLaunchFirstTime()!! || dataManager.getPreferencesHelper().getNumberOfStores() == 0) {
+        if (dataManager.getPreferencesHelper().getAppLaunchFirstTime() || dataManager.getPreferencesHelper().getNumberOfStores() == 0) {
             // Download data from Firebase and store in Realm
             dataManager.loadStoresFromServer(this)
                     .subscribeOn(Schedulers.io())

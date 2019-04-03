@@ -29,14 +29,14 @@ class AppPreferencesHelper(context: Context) : PreferencesHelper {
         return sharedPreferences.getString(key, defaultValue)
     }
 
-    override fun putBoolean(key: String, value: Boolean?) {
+    override fun putBoolean(key: String, value: Boolean) {
         sharedPreferences.edit()
-                .putBoolean(key, value!!)
+                .putBoolean(key, value)
                 .apply()
     }
 
-    override fun getBoolean(key: String, defaultValue: Boolean?): Boolean? {
-        return sharedPreferences.getBoolean(key, defaultValue!!)
+    override fun getBoolean(key: String, defaultValue: Boolean): Boolean {
+        return sharedPreferences.getBoolean(key, defaultValue)
     }
 
     override fun setStringSet(key: String, set: MutableSet<String>) {
@@ -49,13 +49,13 @@ class AppPreferencesHelper(context: Context) : PreferencesHelper {
         return sharedPreferences.getStringSet(key, defaultValue)
     }
 
-    override fun getAppLaunchFirstTime(): Boolean? {
+    override fun getAppLaunchFirstTime(): Boolean {
         return sharedPreferences.getBoolean(KEY_APP_LAUNCH_FIRST_TIME, true)
     }
 
-    override fun setAppLaunchFirstTime(isFirstTime: Boolean?) {
+    override fun setAppLaunchFirstTime(isFirstTime: Boolean) {
         sharedPreferences.edit()
-                .putBoolean(KEY_APP_LAUNCH_FIRST_TIME, isFirstTime!!)
+                .putBoolean(KEY_APP_LAUNCH_FIRST_TIME, isFirstTime)
                 .apply()
     }
 
