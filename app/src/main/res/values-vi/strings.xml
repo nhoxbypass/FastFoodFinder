@@ -51,8 +51,8 @@
     <string name="authentication_failed">Đăng nhập thất bại</string>
     <string name="search_error">Lỗi tìm kiếm!</string>
     <string name="type_name_store">Nhập tên cửa hàng…</string>
-    <string name="update_database_successfull">Cập nhật dữ liệu thành công</string>
-    <string name="update_database_failed">"Cập nhật dữ liệu thất bại: "</string>
+    <string name="update_database_successfull">Cập nhật dữ liệu cửa hàng thành công</string>
+    <string name="update_database_failed">"Cập nhật dữ liệu cửa hàng thất bại: "</string>
     <string name="want_undo">Phục hồi?</string>
     <string name="undo">Phục hồi</string>
     <string name="delete_favourite_location">Xóa địa điểm</string>
@@ -110,4 +110,6 @@
     <string name="confirm_pwd_not_match">Mật khẩu xác nhận không trùng khớp</string>
     <string name="register">Đăng ký</string>
     <string name="login">Đăng nhập</string>
+    <string name="msg_retry_update_db">Cập nhật dữ liệu cửa hàng thất bại. Thử tải lại?</string>
+    <string name="title_retry_update_db">Tải lại</string>
 </resources>

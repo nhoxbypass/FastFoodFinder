@@ -1,9 +1,9 @@
 package com.iceteaviet.fastfoodfinder.ui.splash
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.widget.Toast
 import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
@@ -17,6 +17,7 @@ import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+
 
 class SplashActivity : BaseActivity() {
 
@@ -33,28 +34,7 @@ class SplashActivity : BaseActivity() {
 
         if (dataManager.getPreferencesHelper().getAppLaunchFirstTime() || dataManager.getPreferencesHelper().getNumberOfStores() == 0) {
             // Download data from Firebase and store in Realm
-            dataManager.loadStoresFromServer(this)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(object : SingleObserver<List<Store>> {
-                        override fun onSubscribe(d: Disposable) {
-
-                        }
-
-                        override fun onSuccess(storeList: List<Store>) {
-                            dataManager.getPreferencesHelper().setAppLaunchFirstTime(false)
-                            dataManager.getPreferencesHelper().setNumberOfStores(storeList.size)
-                            dataManager.getLocalStoreDataSource().setStores(filterInvalidData(storeList.toMutableList()))
-
-                            Toast.makeText(this@SplashActivity, R.string.update_database_successfull, Toast.LENGTH_SHORT).show()
-                            openLoginActivity(this@SplashActivity)
-                        }
-
-                        override fun onError(e: Throwable) {
-                            e.printStackTrace()
-                            openLoginActivity(this@SplashActivity)
-                        }
-                    })
+            loadStoresFromServer()
         } else {
             if (dataManager.isSignedIn()) {
                 val uid = dataManager.getCurrentUserUid()
@@ -92,6 +72,42 @@ class SplashActivity : BaseActivity() {
                 openLoginActivity(this@SplashActivity)
             }
         }
+    }
+
+    private fun loadStoresFromServer() {
+        dataManager.loadStoresFromServer(this)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : SingleObserver<List<Store>> {
+                    override fun onSubscribe(d: Disposable) {
+
+                    }
+
+                    override fun onSuccess(storeList: List<Store>) {
+                        dataManager.getPreferencesHelper().setAppLaunchFirstTime(false)
+                        dataManager.getPreferencesHelper().setNumberOfStores(storeList.size)
+                        dataManager.getLocalStoreDataSource().setStores(filterInvalidData(storeList.toMutableList()))
+
+                        openLoginActivity(this@SplashActivity)
+                    }
+
+                    override fun onError(e: Throwable) {
+                        e.printStackTrace()
+
+                        AlertDialog.Builder(this@SplashActivity)
+                                .setTitle(getString(com.iceteaviet.fastfoodfinder.R.string.title_retry_update_db))
+                                .setMessage(getString(com.iceteaviet.fastfoodfinder.R.string.msg_retry_update_db))
+                                .setPositiveButton(android.R.string.yes) { dialog, which ->
+                                    dialog.dismiss()
+                                    loadStoresFromServer()
+                                }
+                                .setNegativeButton(android.R.string.no) { dialog, which ->
+                                    dialog.dismiss()
+                                    finish()
+                                }
+                                .show()
+                    }
+                })
     }
 
     override val layoutId: Int
