@@ -88,6 +88,7 @@ class AppDataManager(context: Context, private val localStoreDataSource: StoreDa
                                             }
 
                                             override fun onError(e: Throwable) {
+                                                signOut()
                                                 emitter.onError(e)
                                             }
                                         })

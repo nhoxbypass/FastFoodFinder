@@ -51,7 +51,6 @@ class SplashActivity : BaseActivity() {
                         }
 
                         override fun onError(e: Throwable) {
-                            dataManager.signOut()
                             e.printStackTrace()
                             openLoginActivity(this@SplashActivity)
                         }
