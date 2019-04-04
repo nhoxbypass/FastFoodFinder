@@ -201,22 +201,23 @@ class MainActivity : BaseActivity(), View.OnClickListener {
 
 
     private fun initAuth() {
-        if (dataManager.getCurrentUser() == null) {
+        if (!dataManager.isSignedIn() || dataManager.getCurrentUser() == null) {
             mNavHeaderName!!.visibility = View.GONE
             mNavHeaderScreenName!!.visibility = View.GONE
             mNavHeaderSignIn!!.visibility = View.VISIBLE
         } else {
-            if (TextUtils.isEmpty(dataManager.getCurrentUser()!!.photoUrl)) {
+            val user = dataManager.getCurrentUser()!!
+            if (TextUtils.isEmpty(user.photoUrl)) {
                 Glide.with(this)
                         .load(R.drawable.all_noavatar)
                         .into(mNavHeaderAvatar!!)
             } else {
                 Glide.with(this)
-                        .load(dataManager.getCurrentUser()!!.photoUrl)
+                        .load(user.photoUrl)
                         .into(mNavHeaderAvatar!!)
             }
-            mNavHeaderName!!.text = dataManager.getCurrentUser()!!.name
-            mNavHeaderScreenName!!.text = dataManager.getCurrentUser()!!.email
+            mNavHeaderName!!.text = user.name
+            mNavHeaderScreenName!!.text = user.email
         }
     }
 

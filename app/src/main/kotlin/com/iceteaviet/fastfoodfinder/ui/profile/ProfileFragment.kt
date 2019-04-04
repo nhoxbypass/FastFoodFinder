@@ -26,7 +26,7 @@ import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_profile.*
 import java.util.*
 
-
+// TODO: Check fragment lifecycle to support go to login screen when auth token invalid
 class ProfileFragment : Fragment(), View.OnClickListener {
     lateinit var ivAvatarProfile: ImageView
     lateinit var cvSavePlace: StoreListView
