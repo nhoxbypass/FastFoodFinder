@@ -8,6 +8,7 @@ import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreEvent
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList
 import com.iceteaviet.fastfoodfinder.utils.e
+import com.iceteaviet.fastfoodfinder.utils.exception.NotFoundException
 import io.reactivex.Observable
 import io.reactivex.Single
 
@@ -43,6 +44,8 @@ class FirebaseUserRepository(private val databaseRef: DatabaseReference) : UserD
                     if (dataSnapshot.exists()) {
                         val user = dataSnapshot.getValue(User::class.java)!!
                         emitter.onSuccess(user)
+                    } else {
+                        emitter.onError(NotFoundException())
                     }
                 }
 
@@ -67,6 +70,7 @@ class FirebaseUserRepository(private val databaseRef: DatabaseReference) : UserD
 
                 override fun onCancelled(@NonNull databaseError: DatabaseError) {
                     e(TAG, "Error checking user exists")
+                    emitter.onError(databaseError.toException())
                 }
             })
         }
