@@ -106,20 +106,24 @@ class EmailLoginDialog : DialogFragment(), View.OnClickListener, View.OnTouchLis
                             }
 
                             override fun onSuccess(user: User) {
-
+                                setLoginProgressState(2)
+                                mListener?.onSuccess(user)
                             }
 
                             override fun onError(e: Throwable) {
+                                e.printStackTrace()
+                                setLoginProgressState(-1)
+                                mListener?.onError(e)
                             }
                         })
             } else {
                 input_layout_password.error = getString(R.string.invalid_password)
+                setLoginProgressState(0)
             }
         } else {
             input_layout_email.error = getString(R.string.invalid_email)
+            setLoginProgressState(0)
         }
-
-        setLoginProgressState(0)
     }
 
     private fun setLoginProgressState(state: Int) {

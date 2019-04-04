@@ -129,18 +129,18 @@ class EmailRegisterDialog : DialogFragment(), View.OnClickListener, View.OnTouch
                                     mListener?.onError(e)
                                 }
                             })
-                    return
                 } else {
                     input_layout_repassword.error = getString(R.string.confirm_pwd_not_match)
+                    setRegisterProgressState(0)
                 }
             } else {
                 input_layout_password.error = getString(R.string.invalid_password)
+                setRegisterProgressState(0)
             }
         } else {
             input_layout_email.error = getString(R.string.invalid_email)
+            setRegisterProgressState(0)
         }
-
-        setRegisterProgressState(0)
     }
 
 
