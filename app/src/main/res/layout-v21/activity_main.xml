@@ -13,16 +13,6 @@
         android:layout_height="match_parent"
         android:fitsSystemWindows="true">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/googleRed"
-            android:fitsSystemWindows="true"
-            android:minHeight="?attr/actionBarSize"
-            app:titleTextColor="@color/colorWhite"
-            tools:title="Toolbar" />
-
         <FrameLayout
             android:id="@+id/fl_fragment_placeholder"
             android:layout_width="match_parent"
@@ -36,6 +26,16 @@
             android:layout_below="@id/toolbar"
             android:translationZ="8dp"
             android:visibility="gone" />
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/googleRed"
+            android:fitsSystemWindows="true"
+            android:minHeight="?attr/actionBarSize"
+            app:titleTextColor="@color/colorWhite"
+            tools:title="Toolbar" />
     </RelativeLayout>
 
     <com.google.android.material.navigation.NavigationView
@@ -45,6 +45,7 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/layout_nav_header"
+        app:itemBackground="@drawable/bg_navigation_menuitem"
         app:menu="@menu/menu_drawer" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

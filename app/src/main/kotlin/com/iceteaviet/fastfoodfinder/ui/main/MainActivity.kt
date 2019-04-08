@@ -46,7 +46,7 @@ import org.greenrobot.eventbus.ThreadMode
 
 class MainActivity : BaseActivity(), View.OnClickListener {
     lateinit var mNavigationView: NavigationView
-    lateinit var mDrawerLayout: DrawerLayout
+    lateinit var drawerLayout: DrawerLayout
     lateinit var mToolbar: Toolbar
     private var mSearchView: SearchView? = null
     private var mNavHeaderAvatar: CircleImageView? = null
@@ -64,7 +64,7 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
 
         mNavigationView = nav_view
-        mDrawerLayout = drawer_layout
+        drawerLayout = drawer_layout
         mToolbar = toolbar
 
         setSupportActionBar(mToolbar)
@@ -107,7 +107,7 @@ class MainActivity : BaseActivity(), View.OnClickListener {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
-                mDrawerLayout.openDrawer(GravityCompat.START)
+                drawerLayout.openDrawer(GravityCompat.START)
                 return true
             }
 
@@ -188,7 +188,7 @@ class MainActivity : BaseActivity(), View.OnClickListener {
             R.id.iv_nav_header_avatar, R.id.tv_nav_header_name, R.id.tv_nav_header_screenname -> {
                 if (profileItem != null) {
                     // Close the navigation drawer
-                    mDrawerLayout.closeDrawers()
+                    drawerLayout.closeDrawers()
 
                     if (dataManager.isSignedIn())
                         replaceFragment(ProfileFragment::class.java, profileItem!!)
@@ -328,7 +328,7 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         mDrawerToggle?.let { mDrawerToggle!!.drawerArrowDrawable.color = Color.WHITE }
 
         // Tie DrawerLayout events to the ActionBarToggle
-        mDrawerToggle?.let { mDrawerLayout.addDrawerListener(it) }
+        mDrawerToggle?.let { drawerLayout.addDrawerListener(it) }
     }
 
     private fun setupEventListeners() {
@@ -339,6 +339,7 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         mNavHeaderSignIn!!.setOnClickListener(this)
 
         mNavigationView.setNavigationItemSelectedListener { item ->
+            drawerLayout.closeDrawers()
             selectDrawerItem(item)
             true
         }
@@ -346,11 +347,12 @@ class MainActivity : BaseActivity(), View.OnClickListener {
 
 
     private fun selectDrawerItem(menuItem: MenuItem) {
+        // set item as selected to persist highlight
+        mNavigationView.setCheckedItem(menuItem)
+        menuItem.isChecked = true
+
         when (menuItem.itemId) {
             R.id.menu_action_profile -> {
-                // Close the navigation drawer
-                mDrawerLayout.closeDrawers()
-
                 if (dataManager.isSignedIn())
                     replaceFragment(ProfileFragment::class.java, menuItem)
                 else
@@ -362,9 +364,6 @@ class MainActivity : BaseActivity(), View.OnClickListener {
                 if (supportFragmentManager.backStackEntryCount > 0) {
                     supportFragmentManager.popBackStack()
                 }
-
-                // Close the navigation drawer
-                mDrawerLayout.closeDrawers()
                 return
             }
             R.id.menu_action_ar -> {
@@ -395,8 +394,7 @@ class MainActivity : BaseActivity(), View.OnClickListener {
                     .addToBackStack(null) // Add this transaction to the back stack
                     .commit()
             fragmentManager.executePendingTransactions()
-            // Highlight the selected item has been done by NavigationView
-            menuItem.isChecked = true
+
             // Set action bar title
             title = menuItem.title
         } catch (e: Exception) {
@@ -406,7 +404,7 @@ class MainActivity : BaseActivity(), View.OnClickListener {
 
 
     private fun setupDrawerToggle(): ActionBarDrawerToggle {
-        return ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.drawer_open, R.string.drawer_close)
+        return ActionBarDrawerToggle(this, drawerLayout, mToolbar, R.string.drawer_open, R.string.drawer_close)
     }
 
     companion object {
