@@ -124,5 +124,7 @@
     <string name="login">Login</string>
     <string name="msg_retry_update_db">Failed to update store database. Retry download?</string>
     <string name="title_retry_update_db">Retry download</string>
+    <string name="str_hint_login_account">You can login with your phone number or username</string>
+    <string name="str_recover_pass_func">Recover password</string>
 </resources>
 
