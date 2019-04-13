@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#db3236</color>
-    <color name="colorPrimaryDark">#CC0000</color>
-    <color name="colorYouTubeDark">#5B0E0C</color>
-    <color name="colorPrimaryLight">#506A9D</color>
+    <color name="colorPrimary">@color/googleRed</color>
+    <color name="colorPrimaryDark">@color/material_red_900</color>
+    <color name="colorPrimaryLight">@color/material_red_500</color>
     <color name="colorAccent">#3cba54</color>
-    <color name="colorHintText">#B71C1C</color>
+    <color name="colorHintText">@color/material_red_900</color>
+    <color name="colorYouTubeDark">#5B0E0C</color>
     <color name="googleRed">#db3236</color>
     <color name="googleGreen">#3cba54</color>
     <color name="googleBlue">#4885ed</color>
@@ -13,7 +13,10 @@
     <color name="material_gray_500">#9E9E9E</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorTabText">#1F1F1F</color>
-    <color name="material_red_600">#E53935</color>
+    <color name="material_red_300">#E57373</color>
+    <color name="material_red_500">#F44336</color>
+    <color name="material_red_700">#D32F2F</color>
+    <color name="material_red_900">#B71C1C</color>
     <color name="material_green_50">#E8F5E9</color>
     <color name="material_green_500">#4CAF50</color>
     <color name="material_green_700">#388E3C</color>
@@ -22,6 +25,7 @@
     <color name="material_purple_a700">#AA00FF</color>
     <color name="material_gray_100">#F5F5F5</color>
     <color name="material_gray_300">#E0E0E0</color>
+    <color name="material_gray_900">#212121</color>
 
     <!-- BEGIN process button -->
     <color name="blue_pressed">#0099cc</color>

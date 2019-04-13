@@ -235,7 +235,7 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
 
         searchView.queryHint = getString(R.string.type_name_store)
-        searchView.setBackgroundColor(ContextCompat.getColor(this, R.color.material_red_600))
+        searchView.setBackgroundColor(ContextCompat.getColor(this, R.color.material_red_700))
         mSearchInput = searchView.findViewById(androidx.appcompat.R.id.search_src_text)
         mSearchInput!!.setHintTextColor(ContextCompat.getColor(this, R.color.colorHintText))
         mSearchInput!!.setTextColor(Color.WHITE)
