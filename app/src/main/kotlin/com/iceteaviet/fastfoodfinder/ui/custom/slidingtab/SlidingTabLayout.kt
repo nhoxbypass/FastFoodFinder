@@ -1,17 +1,18 @@
 package com.iceteaviet.fastfoodfinder.ui.custom.slidingtab
 
 import android.content.Context
-import androidx.viewpager.widget.ViewPager
-import android.widget.TextView
-import android.view.LayoutInflater
-import android.os.Build
-import android.util.TypedValue
 import android.graphics.Typeface
+import android.os.Build
 import android.util.AttributeSet
+import android.util.TypedValue
 import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.HorizontalScrollView
+import android.widget.TextView
+import androidx.viewpager.widget.ViewPager
+import com.iceteaviet.fastfoodfinder.ui.custom.slidingtab.SlidingTabLayout.TabColorizer
 
 
 /**
