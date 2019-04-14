@@ -10,13 +10,21 @@ import java.util.*
  */
 
 /**
- * Get relative time in the past
+ * Get relative time in the past of given timestamp
+ *
+ * TODO: Support localize, search for other better solution
  */
 fun getRelativeTimeAgo(ts: Long): String {
     return getRelativeTimeAgo(ts, System.currentTimeMillis())
 }
 
 fun getRelativeTimeAgo(ts: Long, currentTs: Long): String {
+    if (ts < 0 || currentTs < 0)
+        return ""
+
+    if (ts > currentTs)
+        return ""
+
     val twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy"
     try {
         val date = Date(ts)
@@ -31,11 +39,13 @@ fun getRelativeTimeAgo(ts: Long, currentTs: Long): String {
         } else if (diffHours < 24) {
             return diffHours.toString() + "h"
         } else if (diffDays < 7) {
+            if (diffDays == 1L)
+                return "yesterday"
             return diffDays.toString() + "d"
         } else {
             var sf = SimpleDateFormat(twitterFormat, Locale.ENGLISH)
             sf.isLenient = true
-            sf = SimpleDateFormat("MMM dd", Locale.ENGLISH)
+            sf = SimpleDateFormat("dd MMM", Locale.ENGLISH)
             return sf.format(date)
         }
     } catch (e: Exception) {

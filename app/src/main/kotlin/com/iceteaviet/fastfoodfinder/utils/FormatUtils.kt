@@ -100,6 +100,8 @@ fun formatDecimal(decimal: Double, numbOfDecimalPlates: Int): String {
 
 /**
  * Normalize district query string
+ *
+ * TODO: Support normalize store type query
  */
 fun normalizeDistrictQuery(queryString: String): List<String> {
     val result = ArrayList<String>()
