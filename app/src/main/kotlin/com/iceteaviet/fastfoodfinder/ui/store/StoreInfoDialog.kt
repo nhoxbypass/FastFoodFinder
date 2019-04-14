@@ -69,7 +69,7 @@ class StoreInfoDialog : DialogFragment() {
         cdvh.btnCall.setOnClickListener {
             if (!isEmpty(store!!.tel)) {
                 if (isCallPhonePermissionGranted(context!!))
-                    startActivity(getCallIntent(store!!.tel!!))
+                    startActivity(newCallIntent(store!!.tel!!))
                 else
                     requestCallPhonePermission(this@StoreInfoDialog)
             } else {
