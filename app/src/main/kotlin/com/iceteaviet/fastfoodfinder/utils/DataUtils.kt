@@ -4,7 +4,6 @@ package com.iceteaviet.fastfoodfinder.utils
 
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList
-import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Pattern
@@ -75,7 +74,7 @@ fun getRelativeTimeAgo(timestamp: Long): String {
             sf = SimpleDateFormat("MMM dd", Locale.ENGLISH)
             return sf.format(date)
         }
-    } catch (e: ParseException) {
+    } catch (e: Exception) {
         e.printStackTrace()
     }
 
