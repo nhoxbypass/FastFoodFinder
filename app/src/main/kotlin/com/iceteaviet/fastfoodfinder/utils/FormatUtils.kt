@@ -2,8 +2,6 @@
 
 package com.iceteaviet.fastfoodfinder.utils
 
-import android.content.Intent
-import android.net.Uri
 import android.text.SpannableStringBuilder
 
 import java.text.DecimalFormat
@@ -73,16 +71,6 @@ fun getTrimmedShortInstruction(source: CharSequence?): CharSequence {
         newLen = source.length
 
     return source.subSequence(0, newLen)
-}
-
-/**
- * Get phone call Intent
- */
-fun getCallIntent(tel: String): Intent {
-    val normalizedTel = tel.replace("\\s".toRegex(), "")
-    val callIntent = Intent(Intent.ACTION_CALL)
-    callIntent.data = Uri.parse("tel:08$normalizedTel")
-    return callIntent
 }
 
 /**
