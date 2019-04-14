@@ -4,7 +4,6 @@ package com.iceteaviet.fastfoodfinder.utils
 
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList
-import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Pattern
 
@@ -43,42 +42,6 @@ fun getFakeStoreList(): List<Store> {
 fun getRandomInt(min: Int, max: Int): Int {
     val rand = Random()
     return rand.nextInt(max - min + 1) + min
-}
-
-/**
- * Get relative time in the past
- */
-fun getRelativeTimeAgo(timestamp: Long): String {
-    val twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy"
-    val now = System.currentTimeMillis()
-    val then = Calendar.getInstance()
-    try {
-        val date = Date(timestamp)
-        then.time = date
-        val thenMs = then.timeInMillis
-        val diff = now - thenMs
-        val diffMinutes = diff / (60 * 1000)
-        val diffHours = diff / (60 * 60 * 1000)
-        val diffDays = diff / (24 * 60 * 60 * 1000)
-        if (diffMinutes <= 0) {
-            return "just now"
-        } else if (diffMinutes < 60) {
-            return diffMinutes.toString() + "m"
-        } else if (diffHours < 24) {
-            return diffHours.toString() + "h"
-        } else if (diffDays < 7) {
-            return diffDays.toString() + "d"
-        } else {
-            var sf = SimpleDateFormat(twitterFormat, Locale.ENGLISH)
-            sf.isLenient = true
-            sf = SimpleDateFormat("MMM dd", Locale.ENGLISH)
-            return sf.format(date)
-        }
-    } catch (e: Exception) {
-        e.printStackTrace()
-    }
-
-    return "unknown"
 }
 
 /**
