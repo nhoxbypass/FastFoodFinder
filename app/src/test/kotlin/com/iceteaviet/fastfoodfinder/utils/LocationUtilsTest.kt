@@ -3,10 +3,7 @@ package com.iceteaviet.fastfoodfinder.utils
 import com.google.android.gms.maps.model.LatLng
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 
-@RunWith(RobolectricTestRunner::class)
 class LocationUtilsTest {
     @Test
     fun getLatLngString_normal() {
