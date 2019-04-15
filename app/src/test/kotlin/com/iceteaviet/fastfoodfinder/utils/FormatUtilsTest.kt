@@ -5,26 +5,6 @@ import org.junit.Test
 
 class FormatUtilsTest {
     @Test
-    fun trimWhitespace_normal() {
-        assertEquals("some text", trimWhitespace(" some text  "))
-    }
-
-    @Test
-    fun trimWhitespace_noWhitespace() {
-        assertEquals("some text", trimWhitespace("some text"))
-    }
-
-    @Test
-    fun trimWhitespace_empty() {
-        assertEquals("", trimWhitespace(""))
-    }
-
-    @Test
-    fun trimWhitespace_null() {
-        assertEquals("", trimWhitespace(null))
-    }
-
-    @Test
     fun getTrimmedShortInstruction_normal() {
         assertEquals("some text", getTrimmedShortInstruction("some text"))
     }

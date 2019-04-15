@@ -2,7 +2,6 @@
 
 package com.iceteaviet.fastfoodfinder.utils
 
-import android.text.SpannableStringBuilder
 import java.text.DecimalFormat
 import java.util.*
 
@@ -15,37 +14,6 @@ private val oneDecimalFormat = DecimalFormat("#.#")
 private val twoDecimalFormat = DecimalFormat("#.##")
 private val threeDecimalFormat = DecimalFormat("#.###")
 private val fourDecimalFormat = DecimalFormat("#.####")
-
-/**
- * Trim all whitespace
- */
-fun trimWhitespace(source: CharSequence?): CharSequence {
-    if (source == null)
-        return ""
-
-    val builder = SpannableStringBuilder(source)
-    var c: Char
-
-    for (i in 0 until source.length) {
-        c = source[i]
-        if (Character.isWhitespace(c)) {
-            try {
-                if (i < source.length - 1 && Character.isWhitespace(source[i + 1]))
-                //Ignore next char
-                //Because it is a whitespace again
-                    builder.delete(i, i + 1)
-            } catch (ex: Exception) {
-                ex.printStackTrace()
-            }
-
-        }
-    }
-
-    if (Character.isWhitespace(builder[builder.length - 1]))
-        builder.delete(builder.length - 1, builder.length)
-
-    return builder.subSequence(0, builder.length)
-}
 
 /**
  * Trim instruction

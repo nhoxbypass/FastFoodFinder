@@ -1,6 +1,5 @@
 package com.iceteaviet.fastfoodfinder.ui.routing
 
-import android.text.Html
 import android.text.Spanned
 import android.view.LayoutInflater
 import android.view.View
@@ -12,8 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.maps.model.LatLng
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.Step
+import com.iceteaviet.fastfoodfinder.utils.fromHtml
 import com.iceteaviet.fastfoodfinder.utils.getTrimmedShortInstruction
-import com.iceteaviet.fastfoodfinder.utils.trimWhitespace
 import com.iceteaviet.fastfoodfinder.utils.ui.getDirectionImage
 import kotlinx.android.synthetic.main.item_routing.view.*
 
@@ -67,16 +66,11 @@ class RoutingAdapter internal constructor(steps: List<Step>, type: Int) : Recycl
 
         fun bindData(step: Step, type: Int) {
             val imgResId = getDirectionImage(step.direction)
-            val instruction: Spanned
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                instruction = Html.fromHtml(step.instruction, Html.FROM_HTML_MODE_COMPACT)
-            } else {
-                instruction = Html.fromHtml(step.instruction)
-            }
+            val instruction: Spanned = fromHtml(step.instruction)
 
             routingImageView.setImageResource(imgResId)
             if (type == TYPE_FULL)
-                routingGuide.text = trimWhitespace(instruction)
+                routingGuide.text = instruction.trim()
             else if (type == TYPE_SHORT)
                 routingGuide.text = getTrimmedShortInstruction(instruction)
             routingDistance.text = step.getDistance()
