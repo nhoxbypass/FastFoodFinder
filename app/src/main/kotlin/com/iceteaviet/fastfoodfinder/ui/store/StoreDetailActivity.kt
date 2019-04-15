@@ -141,7 +141,7 @@ class StoreDetailActivity : BaseActivity(), StoreDetailAdapter.StoreActionListen
 
     override fun onCall(tel: String?) {
         if (!isEmpty(tel)) {
-            startActivity(getCallIntent(tel!!))
+            startActivity(newCallIntent(tel!!))
         } else {
             Toast.makeText(this, R.string.store_no_phone_numb, Toast.LENGTH_SHORT).show()
         }
