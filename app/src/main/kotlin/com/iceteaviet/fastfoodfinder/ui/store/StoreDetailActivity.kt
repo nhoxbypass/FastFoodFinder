@@ -100,6 +100,7 @@ class StoreDetailActivity : BaseActivity(), StoreDetailAdapter.StoreActionListen
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == RESULT_OK && requestCode == REQUEST_COMMENT && data != null) {
             val comment = data.getParcelableExtra(KEY_COMMENT) as Comment?
             if (comment != null) {

@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_marginTop="8dp"
-            android:text="@string/an_awesome_android_app_that_allows_a_you_to_find_some_fast_food_stores_or_convenient_stores_around"
+            android:text="@string/app_login_description"
             android:textAlignment="center"
             android:textColor="@color/colorWhite"
             android:textSize="14sp" />

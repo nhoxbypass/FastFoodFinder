@@ -108,6 +108,7 @@
     <string name="invalid_email">Địa chỉ Email không hợp lệ</string>
     <string name="invalid_password">Mật khẩu không hơp lệ</string>
     <string name="confirm_pwd_not_match">Mật khẩu xác nhận không trùng khớp</string>
+    <string name="app_login_description">Một ứng dụng tuyệt vời cho phép bạn tìm kiếm những cửa hàng tiện lợi, cửa hàng thức ăn nhanh xung quanh.</string>
     <string name="register">Đăng ký</string>
     <string name="login">Đăng nhập</string>
     <string name="msg_retry_update_db">Cập nhật dữ liệu cửa hàng thất bại. Thử tải lại?</string>
