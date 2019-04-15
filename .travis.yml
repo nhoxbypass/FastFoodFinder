@@ -25,8 +25,8 @@ android:
   - sys-img-armeabi-v7a-android-26
   - sys-img-armeabi-v7a-android-28
 before_install:
-- yes | sdkmanager "platforms;android-28"
-- chmod +x gradlew
+  - yes | sdkmanager "platforms;android-28"
+  - chmod +x gradlew
 script:
-- ./gradlew jacocoTestReport coveralls
-- ./gradlew assembleRelease --stacktrace
+  - ./gradlew jacocoTestReport coveralls
+  - ./gradlew clean build -Pbuild=dev
