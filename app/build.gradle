@@ -86,6 +86,8 @@ dependencies {
     testImplementation "org.mockito:mockito-core:$rootProject.ext.mockitoVersion"
     testImplementation "org.powermock:powermock-module-junit4:$rootProject.ext.powerMockito"
     testImplementation "org.powermock:powermock-api-mockito2:$rootProject.ext.powerMockito"
+    testImplementation("org.assertj:assertj-core:$rootProject.ext.assertJVersion")
+    //testImplementation 'com.google.truth:truth:0.44' // Does not stable
 
     // Espresso UI Testing dependencies.
     androidTestImplementation "com.android.support.test.espresso:espresso-core:$rootProject.ext.espressoVersion"
