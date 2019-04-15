@@ -31,5 +31,6 @@ before_install:
   - yes | sdkmanager "platforms;android-28"
   - chmod +x gradlew
 script:
-  - ./gradlew jacocoTestReport coveralls
   - ./gradlew clean build -Pbuild=dev
+  - ./gradlew test -Pbuild=dev
+  - ./gradlew jacocoTestReport coveralls
