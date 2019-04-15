@@ -4,9 +4,9 @@ import com.iceteaviet.fastfoodfinder.data.domain.store.StoreDataSource
 import com.iceteaviet.fastfoodfinder.data.local.store.model.StoreEntity
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Comment
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
-import com.iceteaviet.fastfoodfinder.utils.StoreType
 import com.iceteaviet.fastfoodfinder.utils.exception.EmptyParamsException
-import com.iceteaviet.fastfoodfinder.utils.normalizeDistrictQuery
+import com.iceteaviet.fastfoodfinder.utils.getStoreTypeFromQuery
+import com.iceteaviet.fastfoodfinder.utils.standardizeDistrictQuery
 import io.reactivex.Single
 import io.reactivex.SingleOnSubscribe
 import io.realm.Case
@@ -99,16 +99,13 @@ class LocalStoreRepository : StoreDataSource {
     }
 
     override fun findStores(queryString: String): Single<MutableList<Store>> {
-        val trimmedQuery = queryString.toLowerCase().trim { it <= ' ' }
-        return when {
-            isCircleKQuery(trimmedQuery) -> findStoresByType(StoreType.TYPE_CIRCLE_K)
-            isMinisStopQuery(trimmedQuery) -> findStoresByType(StoreType.TYPE_MINI_STOP)
-            isFamilyMartQuery(trimmedQuery) -> findStoresByType(StoreType.TYPE_FAMILY_MART)
-            isShopnGoQuery(trimmedQuery) -> findStoresByType(StoreType.TYPE_SHOP_N_GO)
-            isBsMartQuery(trimmedQuery) -> findStoresByType(StoreType.TYPE_BSMART)
-            else -> // Cant determine
-                // Quite hard to implement
-                findStoresByCustomAddress(normalizeDistrictQuery(queryString))
+        val storeType = getStoreTypeFromQuery(queryString)
+        if (storeType != -1) {
+            return findStoresByType(storeType)
+        } else {
+            // Cant determine
+            // Quite hard to implement
+            return findStoresByCustomAddress(standardizeDistrictQuery(queryString))
         }
     }
 
@@ -228,26 +225,6 @@ class LocalStoreRepository : StoreDataSource {
 
     fun clearCache() {
         cachedStores.clear()
-    }
-
-    private fun isCircleKQuery(query: String): Boolean {
-        return query == "circle k" || query == "circlek"
-    }
-
-    private fun isMinisStopQuery(query: String): Boolean {
-        return query == "mini stop" || query == "ministop"
-    }
-
-    private fun isFamilyMartQuery(queryString: String): Boolean {
-        return queryString == "family mart" || queryString == "familymart"
-    }
-
-    private fun isShopnGoQuery(queryString: String): Boolean {
-        return queryString == "shop and go" || queryString == "shopandgo" || queryString == "shop n go"
-    }
-
-    private fun isBsMartQuery(queryString: String): Boolean {
-        return queryString == "bsmart" || queryString == "b smart" || queryString == "bs mart" || queryString == "bmart" || queryString == "b'smart" || queryString == "b's mart"
     }
 
     override fun getComments(storeId: String): Single<MutableList<Comment>> {

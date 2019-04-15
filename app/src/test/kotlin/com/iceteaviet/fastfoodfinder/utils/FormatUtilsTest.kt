@@ -1,5 +1,6 @@
 package com.iceteaviet.fastfoodfinder.utils
 
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -31,7 +32,7 @@ class FormatUtilsTest {
 
     @Test
     fun formatDistance_negativeNumb() {
-        assertEquals("-1 Km", formatDistance(-1.0))
+        assertEquals("-2 Km", formatDistance(-2.0))
         assertEquals("-2.3 Km", formatDistance(-2.3))
     }
 
@@ -42,54 +43,62 @@ class FormatUtilsTest {
 
     @Test
     fun normalizeDistrictQuery_randomText() {
-        assertEquals(" some text  ", normalizeDistrictQuery(" some text  "))
-        assertEquals("some text", normalizeDistrictQuery("some text"))
-        assertEquals("some address, phuong x, quan y, Saigon", normalizeDistrictQuery("some address, phuong x, quan y, Saigon"))
+        assertThat(standardizeDistrictQuery(" some text  ")).contains("some text")
+        assertThat(standardizeDistrictQuery("some text")).contains("some text")
+        assertThat(standardizeDistrictQuery("some address, phuong x, quan y, Saigon")).contains("some address, phuong x, quan y, saigon")
     }
 
     @Test
-    fun normalizeDistrictQuery_district() {
-        assertEquals("quan 6", normalizeDistrictQuery("quan 6"))
-        assertEquals("quan 5", normalizeDistrictQuery("quan Nam "))
-        assertEquals("quan tan binh", normalizeDistrictQuery(" quan tan binh  "))
-        assertEquals("quan tan binh", normalizeDistrictQuery("tân bình"))
-        assertEquals("quan tan binh", normalizeDistrictQuery("quận tân bình"))
-        assertEquals("quan 6", normalizeDistrictQuery("quận 6"))
-        assertEquals("quan 5", normalizeDistrictQuery("quận năm"))
-
-        assertEquals("quan 6", normalizeDistrictQuery("district 6"))
-        assertEquals("quan 5", normalizeDistrictQuery("5 district"))
-        assertEquals("quan tan binh", normalizeDistrictQuery(" district Tan Binh  "))
-        assertEquals("quan tan binh", normalizeDistrictQuery("tân Bình district "))
-        assertEquals("quan tan binh", normalizeDistrictQuery("district Tân bình"))
+    fun normalizeDistrictQuery_vi() {
+        assertThat(standardizeDistrictQuery("quan 1")).contains("quận 1", "Quận 1", "quan 1", "Quan 1", "q1", "District 1", "district 1")
+        assertThat(standardizeDistrictQuery("quan 2 ")).contains("quận 2", "Quận 2", "quan 2", "Quan 2", "q2", "District 2", "district 2")
+        assertThat(standardizeDistrictQuery(" quan tan binh  ")).contains("Tân Bình", "tân bình", "Tan Binh", "tan binh")
+        assertThat(standardizeDistrictQuery("tân phú")).contains("Tân Phú", "tân phú", "Tan Phu", "tan phu")
+        assertThat(standardizeDistrictQuery("quận gò vấp")).contains("gò vấp", "Gò Vấp", "go vap", "Go Vap")
+        assertThat(standardizeDistrictQuery("quan 3")).contains("quận 3", "Quận 3", "quan 3", "Quan 3", "q3", "District 3", "district 3")
+        assertThat(standardizeDistrictQuery("quan 5")).contains("quận 5", "Quận 5", "quan 5", "Quan 5", "q5", "District 5", "district 5")
     }
 
     @Test
-    fun normalizeDistrictQuery_storeType() {
-        assertEquals("circle k", normalizeDistrictQuery("circle K"))
-        assertEquals("circle k", normalizeDistrictQuery("circle K  "))
-        assertEquals("circle k", normalizeDistrictQuery(" circleK"))
-
-        assertEquals("bsmart", normalizeDistrictQuery("bmart"))
-        assertEquals("bsmart", normalizeDistrictQuery("bs'mart"))
-        assertEquals("bsmart", normalizeDistrictQuery("b's mart"))
-
-        assertEquals("shopngo", normalizeDistrictQuery("shopngo"))
-        assertEquals("shopngo", normalizeDistrictQuery(" shop n go"))
-        assertEquals("shopngo", normalizeDistrictQuery("shopandgo"))
-        assertEquals("shopngo", normalizeDistrictQuery(" shop and go  "))
-
-        assertEquals("familymart", normalizeDistrictQuery("familymart"))
-        assertEquals("familymart", normalizeDistrictQuery("famima"))
-        assertEquals("familymart", normalizeDistrictQuery("family mart"))
-        assertEquals("familymart", normalizeDistrictQuery(" family mart  "))
-
-        assertEquals("ministop", normalizeDistrictQuery("ministop"))
-        assertEquals("ministop", normalizeDistrictQuery("mini stop"))
+    fun normalizeDistrictQuery_en() {
+        assertThat(standardizeDistrictQuery("district 8")).contains("quận 8", "Quận 8", "quan 8", "Quan 8", "q8", "District 8", "district 8")
+        assertThat(standardizeDistrictQuery("11 district")).contains("quận 11", "Quận 11", "quan 11", "Quan 11", "q11", "District 11", "district 11")
+        assertThat(standardizeDistrictQuery(" district Binh Chanh  ")).contains("Bình Chánh", "bình chánh", "Binh Chanh", "binh chanh")
+        assertThat(standardizeDistrictQuery("binh Tan district ")).contains("Bình Tân", "bình tân", "Binh Tan", "binh tan")
+        assertThat(standardizeDistrictQuery("district thu duc")).contains("Thủ Đức", "thủ đức", "Thu Duc", "thu duc")
     }
 
     @Test
     fun normalizeDistrictQuery_empty() {
-        assertEquals("", normalizeDistrictQuery(""))
+        assertThat(standardizeDistrictQuery("")).isEmpty()
+    }
+
+    @Test
+    fun getStoreTypeFromQuery_normal() {
+        assertEquals(StoreType.TYPE_CIRCLE_K, getStoreTypeFromQuery("circle K"))
+        assertEquals(StoreType.TYPE_CIRCLE_K, getStoreTypeFromQuery("circle K  "))
+        assertEquals(StoreType.TYPE_CIRCLE_K, getStoreTypeFromQuery(" circleK"))
+
+        assertEquals(StoreType.TYPE_BSMART, getStoreTypeFromQuery("bmart"))
+        assertEquals(StoreType.TYPE_BSMART, getStoreTypeFromQuery("bs'mart"))
+        assertEquals(StoreType.TYPE_BSMART, getStoreTypeFromQuery("b's mart"))
+
+        assertEquals(StoreType.TYPE_SHOP_N_GO, getStoreTypeFromQuery("shopngo"))
+        assertEquals(StoreType.TYPE_SHOP_N_GO, getStoreTypeFromQuery(" shop n go"))
+        assertEquals(StoreType.TYPE_SHOP_N_GO, getStoreTypeFromQuery("shopandgo"))
+        assertEquals(StoreType.TYPE_SHOP_N_GO, getStoreTypeFromQuery(" shop and go  "))
+
+        assertEquals(StoreType.TYPE_FAMILY_MART, getStoreTypeFromQuery("familymart"))
+        assertEquals(StoreType.TYPE_FAMILY_MART, getStoreTypeFromQuery("famima"))
+        assertEquals(StoreType.TYPE_FAMILY_MART, getStoreTypeFromQuery("family mart"))
+        assertEquals(StoreType.TYPE_FAMILY_MART, getStoreTypeFromQuery(" family mart  "))
+
+        assertEquals(StoreType.TYPE_MINI_STOP, getStoreTypeFromQuery("ministop"))
+        assertEquals(StoreType.TYPE_MINI_STOP, getStoreTypeFromQuery("mini stop"))
+    }
+
+    @Test
+    fun getStoreTypeFromQuery_empty() {
+        assertEquals(-1, getStoreTypeFromQuery(""))
     }
 }

@@ -68,79 +68,110 @@ fun formatDecimal(decimal: Double, numbOfDecimalPlates: Int): String {
 
 /**
  * Normalize district query string
- *
- * TODO: Support normalize store type query
  */
-fun normalizeDistrictQuery(queryString: String): List<String> {
+fun standardizeDistrictQuery(queryString: String): List<String> {
     val result = ArrayList<String>()
-    val trimmedQuery = queryString.toLowerCase().trim { it <= ' ' }
+    var trimmedQuery = queryString.toLowerCase().trim()
+
+    if (trimmedQuery.isEmpty())
+        return result
+
+    if (trimmedQuery.startsWith("district"))
+        trimmedQuery = trimmedQuery.substring(8, trimmedQuery.length).trim()
+
+    if (trimmedQuery.startsWith("dist"))
+        trimmedQuery = trimmedQuery.substring(4, trimmedQuery.length).trim()
+
+    if (trimmedQuery.endsWith("district"))
+        trimmedQuery = trimmedQuery.substring(0, trimmedQuery.length - 8).trim()
+
+    if (trimmedQuery.endsWith("dist"))
+        trimmedQuery = trimmedQuery.substring(0, trimmedQuery.length - 4).trim()
+
+    if (trimmedQuery.startsWith("quan") || trimmedQuery.startsWith("quận"))
+        trimmedQuery = trimmedQuery.substring(4, trimmedQuery.length).trim()
+
+    if (trimmedQuery.startsWith("q"))
+        trimmedQuery = trimmedQuery.substring(1, trimmedQuery.length).trim()
 
     if (trimmedQuery == "gò vấp" || trimmedQuery == "go vap" || trimmedQuery == "govap") {
         result.add("Gò Vấp")
         result.add("Go Vap")
+        result.add("go vap")
+        result.add("gò vấp")
     } else if (trimmedQuery == "tân bình" || trimmedQuery == "tan binh" || trimmedQuery == "tanbinh") {
         result.add("Tân Bình")
         result.add("Tan Binh")
+        result.add("tan binh")
+        result.add("tân bình")
     } else if (trimmedQuery == "tân phú" || trimmedQuery == "tan phu" || trimmedQuery == "tanphu") {
         result.add("Tân Phú")
+        result.add("tân phú")
         result.add("Tan Phu")
+        result.add("tan phu")
     } else if (trimmedQuery == "bình thạnh" || trimmedQuery == "binh thanh" || trimmedQuery == "binhthanh") {
         result.add("Bình Thạnh")
+        result.add("bình thạnh")
         result.add("Binh Thanh")
+        result.add("binh thanh")
     } else if (trimmedQuery == "phú nhuận" || trimmedQuery == "phu nhuan" || trimmedQuery == "phunhuan") {
         result.add("Phú Nhuận")
+        result.add("phú nhuận")
         result.add("Phu Nhuan")
-    } else if (trimmedQuery == "quận 9" || trimmedQuery == "quan 9" || trimmedQuery == "q9") {
-        result.add("Quận 9")
-        result.add("Quan 9")
-        result.add("District 9")
-    } else if (trimmedQuery == "quận 1" || trimmedQuery == "quan 1" || trimmedQuery == "q1") {
-        result.add("Quận 1")
-        result.add("Quan 1")
-        result.add("District 1")
-    } else if (trimmedQuery == "quận 2" || trimmedQuery == "quan 2" || trimmedQuery == "q2") {
-        result.add("Quận 2")
-        result.add("Quan 2")
-        result.add("District 2")
-    } else if (trimmedQuery == "quận 3" || trimmedQuery == "quan 3" || trimmedQuery == "q3") {
-        result.add("Quận 3")
-        result.add("Quan 3")
-        result.add("District 3")
-    } else if (trimmedQuery == "quận 4" || trimmedQuery == "quan 4" || trimmedQuery == "q4") {
-        result.add("Quận 4")
-        result.add("Quan 4")
-        result.add("District 4")
-    } else if (trimmedQuery == "quận 5" || trimmedQuery == "quan 5" || trimmedQuery == "q5") {
-        result.add("Quận 5")
-        result.add("Quan 5")
-        result.add("District 5")
-    } else if (trimmedQuery == "quận 6" || trimmedQuery == "quan 6" || trimmedQuery == "q6") {
-        result.add("Quận 6")
-        result.add("Quan 6")
-        result.add("District 6")
-    } else if (trimmedQuery == "quận 7" || trimmedQuery == "quan 7" || trimmedQuery == "q7") {
-        result.add("Quận 7")
-        result.add("Quan 7")
-        result.add("District 7")
-    } else if (trimmedQuery == "quận 8" || trimmedQuery == "quan 8" || trimmedQuery == "q8") {
-        result.add("Quận 8")
-        result.add("Quan 8")
-        result.add("District 8")
-    } else if (trimmedQuery == "quận 10" || trimmedQuery == "quan 10" || trimmedQuery == "q10") {
-        result.add("Quận 10")
-        result.add("Quan 10")
-        result.add("District 10")
-    } else if (trimmedQuery == "quận 11" || trimmedQuery == "quan 11" || trimmedQuery == "q11") {
-        result.add("Quận 11")
-        result.add("Quan 11")
-        result.add("District 11")
-    } else if (trimmedQuery == "quận 12" || trimmedQuery == "quan 12" || trimmedQuery == "q12") {
-        result.add("Quận 12")
-        result.add("Quan 12")
-        result.add("District 12")
+        result.add("phu nhuan")
+    } else if (trimmedQuery == "bình chánh" || trimmedQuery == "binh chanh" || trimmedQuery == "binhchanh") {
+        result.add("Bình Chánh")
+        result.add("Binh Chanh")
+        result.add("binh chanh")
+        result.add("bình chánh")
+    } else if (trimmedQuery == "thủ đức" || trimmedQuery == "thu duc" || trimmedQuery == "thuduc") {
+        result.add("Thủ Đức")
+        result.add("Thu Duc")
+        result.add("thủ đức")
+        result.add("thu duc")
+    } else if (trimmedQuery == "bình tân" || trimmedQuery == "binh tan" || trimmedQuery == "binhtan") {
+        result.add("Bình Tân")
+        result.add("bình tân")
+        result.add("Binh Tan")
+        result.add("binh tan")
+    } else if ((trimmedQuery >= "1" && trimmedQuery <= "9")
+            || trimmedQuery == "10" || trimmedQuery == "11" || trimmedQuery == "12") {
+        result.add("Quận $trimmedQuery")
+        result.add("quận $trimmedQuery")
+        result.add("Quan $trimmedQuery")
+        result.add("quan $trimmedQuery")
+        result.add("q$trimmedQuery")
+        result.add("District $trimmedQuery")
+        result.add("district $trimmedQuery")
     } else {
         result.add(trimmedQuery)
     }
 
     return result
+}
+
+
+/**
+ * Normalize store name query string
+ *
+ * The query string should be lowercase & trimmed before calling this method
+ */
+fun getStoreTypeFromQuery(queryString: String): Int {
+    val trimmedQuery = queryString.toLowerCase().trim()
+
+    if (trimmedQuery == "circle k" || trimmedQuery == "circlek")
+        return StoreType.TYPE_CIRCLE_K
+    else if (trimmedQuery == "mini stop" || trimmedQuery == "ministop")
+        return StoreType.TYPE_MINI_STOP
+    else if (trimmedQuery == "family mart" || trimmedQuery == "familymart" || trimmedQuery == "famima")
+        return StoreType.TYPE_FAMILY_MART
+    else if (trimmedQuery == "shop and go" || trimmedQuery == "shopandgo"
+            || trimmedQuery == "shop n go" || trimmedQuery == "shopngo")
+        return StoreType.TYPE_SHOP_N_GO
+    else if (trimmedQuery == "bsmart" || trimmedQuery == "b smart" || trimmedQuery == "bs mart"
+            || trimmedQuery == "bmart" || trimmedQuery == "b'smart" || trimmedQuery == "b's mart"
+            || trimmedQuery == "bs'mart")
+        return StoreType.TYPE_BSMART
+
+    return -1
 }
