@@ -63,7 +63,7 @@
         <activity
             android:name=".ui.profile.ListDetailActivity"
             android:theme="@style/AppTheme.NoActionBar.TranslucentStatus" />
-        <activity android:name=".ui.ar.ArCameraActivity"></activity>
+        <activity android:name=".ui.ar.LiveSightActivity"></activity>
     </application>
 
 </manifest>

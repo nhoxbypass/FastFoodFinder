@@ -28,7 +28,7 @@ import com.bumptech.glide.Glide
 import com.google.android.material.navigation.NavigationView
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.transport.model.SearchEventResult
-import com.iceteaviet.fastfoodfinder.ui.ar.ArCameraActivity
+import com.iceteaviet.fastfoodfinder.ui.ar.LiveSightActivity
 import com.iceteaviet.fastfoodfinder.ui.base.BaseActivity
 import com.iceteaviet.fastfoodfinder.ui.main.search.SearchFragment
 import com.iceteaviet.fastfoodfinder.ui.profile.ProfileFragment
@@ -367,7 +367,7 @@ class MainActivity : BaseActivity(), View.OnClickListener {
                 return
             }
             R.id.menu_action_ar -> {
-                val arIntent = Intent(this, ArCameraActivity::class.java)
+                val arIntent = Intent(this, LiveSightActivity::class.java)
                 startActivity(arIntent)
                 return
             }
