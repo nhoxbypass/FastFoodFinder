@@ -10,12 +10,12 @@ apply plugin: "com.github.kt3k.coveralls"
 apply from: '../app/coverage.gradle'
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion "28.0.3"
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
     defaultConfig {
         applicationId "com.iceteaviet.fastfoodfinder"
-        minSdkVersion 16
-        targetSdkVersion 28
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 11
         versionName "19.03.03"
         multiDexEnabled true
@@ -33,16 +33,40 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules-debug.pro'
         }
+        dev {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
     }
 
     aaptOptions {
         cruncherEnabled = false
     }
 
-    sourceSets{ main.java.srcDirs += 'src/main/kotlin' }
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+        test.java.srcDirs += 'src/test/kotlin'
+    }
 
     dexOptions {
         javaMaxHeapSize = "4g"
+    }
+}
+
+def build_param = "${build}"
+if (build_param != "dev") {
+    //exclude production build
+    android.variantFilter { variant ->
+        if (variant.buildType.name.equals('dev')) {
+            variant.setIgnore(true);
+        }
+    }
+} else {
+    //exclude all except production build
+    android.variantFilter { variant ->
+        if (!variant.buildType.name.equals('dev')) {
+            variant.setIgnore(true);
+        }
     }
 }
 
@@ -55,58 +79,89 @@ task testProdUnitTest { finalizedBy jacocoTestReport }
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
-    testImplementation 'junit:junit:4.12'
-    testImplementation 'org.mockito:mockito-core:2.22.0'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test:rules:1.0.2'
+    //// Testing dependencies
+    // Dependencies for local unit tests
+    testImplementation "junit:junit:$rootProject.ext.junitVersion"
+    testImplementation "org.robolectric:robolectric:$rootProject.ext.robolectricVersion"
+    testImplementation "org.mockito:mockito-core:$rootProject.ext.mockitoVersion"
+    testImplementation "org.powermock:powermock-module-junit4:$rootProject.ext.powerMockito"
+    testImplementation "org.powermock:powermock-api-mockito2:$rootProject.ext.powerMockito"
+    testImplementation("org.assertj:assertj-core:$rootProject.ext.assertJVersion")
+    //testImplementation 'com.google.truth:truth:0.44' // Does not stable
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    // Espresso UI Testing dependencies.
+    androidTestImplementation "com.android.support.test.espresso:espresso-core:$rootProject.ext.espressoVersion"
+    androidTestImplementation "com.android.support.test.espresso:espresso-contrib:$rootProject.ext.espressoVersion"
+    androidTestImplementation "com.android.support.test.espresso:espresso-intents:$rootProject.ext.espressoVersion"
 
-    // FirebaseUI Auth only
+    // Android Testing Support Library's runner and rules
+    androidTestImplementation "com.android.support.test:runner:$rootProject.ext.runnerVersion"
+    androidTestImplementation "com.android.support.test:rules:$rootProject.ext.rulesVersion"
+
+    implementation "com.android.support.test.espresso:espresso-idling-resource:$rootProject.ext.espressoVersion"
+
+    // Kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$rootProject.ext.kotlinVersion"
+
+    //// App dependencies
+    // AndroidX
+    implementation "androidx.multidex:multidex:$rootProject.multiDexVersion"
     implementation 'androidx.appcompat:appcompat:1.1.0-alpha04'
-    implementation 'com.google.android.material:material:1.1.0-alpha05'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    implementation 'com.google.android.material:material:1.1.0-alpha05'
 
-    implementation 'com.google.maps.android:android-maps-utils:0.5'
+    // Google Play Services
     implementation 'com.google.android.gms:play-services-maps:16.1.0'
     implementation 'com.google.android.gms:play-services-location:16.0.0'
+    implementation 'com.google.android.gms:play-services-auth:16.0.1'
+    implementation 'com.google.maps.android:android-maps-utils:0.5'
+
+    // Firebase
     implementation 'com.google.firebase:firebase-core:16.0.8'
     implementation 'com.google.firebase:firebase-database:16.1.0'
     implementation 'com.google.firebase:firebase-auth:16.2.1'
-    implementation 'com.google.android.gms:play-services-auth:16.0.1'
+    implementation 'com.google.firebase:firebase-perf:16.2.5'
 
-    implementation 'com.github.bumptech.glide:glide:4.7.1'
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.9.9'
 
-    implementation 'com.google.code.gson:gson:2.8.5'
-    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+    // UI
+    implementation 'com.google.android.material:material:1.1.0-alpha05'
+    implementation "com.github.bumptech.glide:glide:$rootProject.glideVersion"
+    implementation "de.hdodenhof:circleimageview:$rootProject.circleImageViewVersion"
 
-    implementation 'org.greenrobot:eventbus:3.1.1'
+    // REST api
+    implementation "com.google.code.gson:gson:$rootProject.gsonVersion"
+    implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofitVersion"
 
-    implementation 'de.hdodenhof:circleimageview:2.2.0'
-
-    implementation 'io.realm:realm-android-library:5.3.1'
-
-    implementation 'com.facebook.android:facebook-android-sdk:4.34.0'
+    // Code flow
+    implementation "org.greenrobot:eventbus:$rootProject.eventBusVersion"
 
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
     implementation 'io.reactivex.rxjava2:rxjava:2.1.9'
     implementation 'io.reactivex.rxjava2:rxkotlin:2.2.0'
 
-    implementation 'androidx.multidex:multidex:2.0.1'
+    // DB
+    implementation "io.realm:realm-android-library:$rootProject.realmAndroidVersion"
 
-    implementation 'com.crashlytics.sdk.android:crashlytics:2.9.9'
-    implementation 'com.google.firebase:firebase-perf:16.2.5'
+    // FB SDK
+    implementation "com.facebook.android:facebook-android-sdk:$rootProject.fbSdkVersion"
 
-    implementation 'com.jakewharton.timber:timber:4.7.1'
+    // Logging
+    implementation "com.jakewharton.timber:timber:$rootProject.timberVersion"
 }
 
 kapt {
     generateStubs = true
+}
+
+/*
+Resolves dependency versions across test and production APKs, specifically, transitive
+dependencies. This is required since Espresso internally has a dependency on support-annotations.
+*/
+configurations.all {
+    resolutionStrategy.force "com.android.support:support-annotations:$rootProject.supportLibraryVersion"
 }
 
 apply plugin: 'com.google.gms.google-services'

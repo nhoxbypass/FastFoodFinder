@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layoutStartupContainer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="13">
+
+            <ImageView
+                android:id="@+id/imvAppLogo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="70dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/bg_city" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <HorizontalScrollView
+                    android:id="@+id/sliding_tabs"
+                    android:layout_width="fill_parent"
+                    android:layout_height="8dp"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp" />
+
+                <ImageView
+                    android:id="@+id/iv_logo"
+                    android:layout_width="84dp"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_all_store24h_red" />
+
+                <androidx.viewpager.widget.ViewPager
+                    android:id="@+id/viewpager"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="4" />
+            </LinearLayout>
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="5"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoTextView
+                android:id="@+id/btnLogin"
+                android:layout_width="200dp"
+                android:layout_height="48dp"
+                android:background="@drawable/bg_rounded_corner_medium"
+                android:gravity="center"
+                android:text="@string/login"
+                android:textColor="@android:color/white"
+                android:textSize="14sp" />
+
+            <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoTextView
+                android:id="@+id/btnRegister"
+                android:layout_width="200dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_rounded_corner_medium"
+                android:gravity="center"
+                android:text="@string/register"
+                android:textColor="@android:color/white"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="16dp"
+            android:orientation="horizontal">
+
+            <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoTextView
+                android:id="@+id/str_language_applied_vi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center_horizontal"
+                android:minWidth="64dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:textColor="@color/material_gray_900" />
+
+            <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoTextView
+                android:id="@+id/str_language_applied_en"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:gravity="center_horizontal"
+                android:minWidth="64dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:textColor="@color/material_gray_900"
+                android:visibility="visible" />
+
+            <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoTextView
+                android:id="@+id/str_language_applied_my"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center_horizontal"
+                android:minWidth="64dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:textColor="@color/material_gray_900"
+                android:visibility="visible" />
+
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

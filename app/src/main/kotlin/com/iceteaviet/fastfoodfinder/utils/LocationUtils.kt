@@ -29,18 +29,17 @@ fun createLocationRequest(): LocationRequest {
 /**
  * Format LatLng string
  */
-fun getLatLngString(latLng: LatLng?): String? {
+fun getLatLngString(latLng: LatLng?): String {
     return if (latLng != null)
         latLng.latitude.toString() + "," + latLng.longitude.toString()
     else
-        null
+        ""
 }
 
 /**
  * Calculate distance between
  */
 fun calcDistance(startPosition: LatLng, endPosition: LatLng): Double {
-    //
     val start = Location("pointA")
     start.latitude = startPosition.latitude
     start.longitude = startPosition.longitude
