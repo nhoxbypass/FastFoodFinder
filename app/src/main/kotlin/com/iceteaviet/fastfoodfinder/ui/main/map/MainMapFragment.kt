@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Pair
 import android.util.SparseArray
 import android.view.LayoutInflater
@@ -507,10 +508,10 @@ class MainMapFragment : Fragment(), GoogleApiClient.ConnectionCallbacks, Locatio
         val storeLocation = store.getPosition()
         val queries = HashMap<String, String>()
 
-        val origin: String? = getLatLngString(currLocation)
-        val destination: String? = getLatLngString(storeLocation)
+        val origin = getLatLngString(currLocation)
+        val destination = getLatLngString(storeLocation)
 
-        if (origin == null || destination == null)
+        if (TextUtils.isEmpty(origin) || TextUtils.isEmpty(destination))
             return
 
         queries[PARAM_ORIGIN] = origin

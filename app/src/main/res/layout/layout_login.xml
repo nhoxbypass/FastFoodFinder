@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@android:color/transparent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoTextView
+            android:id="@+id/tvHintLogin"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/material_gray_100"
+            android:gravity="center_vertical"
+            android:minHeight="39dp"
+            android:paddingLeft="16dp"
+            android:paddingTop="12dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="12dp"
+            android:text="@string/str_hint_login_account"
+            android:textColor="@color/material_gray_500"
+            android:textSize="12sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_layout_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/input_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_email" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_layout_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                app:passwordToggleEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/input_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_password"
+                    android:inputType="textPassword" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+        <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoTextView
+            android:id="@+id/tvForgotPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_margin="8dp"
+            android:padding="8dp"
+            android:text="@string/str_recover_pass_func"
+            android:textColor="@color/colorPrimary"
+            android:textSize="14sp"
+            app:robotoFontFamily="roboto"
+            app:robotoTextWeight="medium" />
+
+    </LinearLayout>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/btnLogin"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="right|bottom"
+        android:padding="16dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_arrow_right"
+        app:civ_fill_color="@color/colorPrimary" />
+
+</FrameLayout>

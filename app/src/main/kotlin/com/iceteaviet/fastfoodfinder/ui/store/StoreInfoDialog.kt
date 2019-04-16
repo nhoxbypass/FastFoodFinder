@@ -69,7 +69,7 @@ class StoreInfoDialog : DialogFragment() {
         cdvh.btnCall.setOnClickListener {
             if (!isEmpty(store!!.tel)) {
                 if (isCallPhonePermissionGranted(context!!))
-                    startActivity(getCallIntent(store!!.tel!!))
+                    startActivity(newCallIntent(store!!.tel!!))
                 else
                     requestCallPhonePermission(this@StoreInfoDialog)
             } else {
@@ -113,7 +113,7 @@ class StoreInfoDialog : DialogFragment() {
             REQUEST_CALL_PHONE -> {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    startActivity(getCallIntent(store!!.tel!!))
+                    startActivity(newCallIntent(store!!.tel!!))
                 } else {
                     Toast.makeText(activity, R.string.permission_denied, Toast.LENGTH_SHORT).show()
                 }

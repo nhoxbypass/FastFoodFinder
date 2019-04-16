@@ -9,14 +9,14 @@ import android.graphics.drawable.LayerDrawable
 import android.graphics.drawable.StateListDrawable
 import android.os.Build
 import android.util.AttributeSet
-import android.widget.Button
+import androidx.appcompat.widget.AppCompatButton
 import com.iceteaviet.fastfoodfinder.R
 
 
 /**
  * Created by tom on 2019-03-23.
  */
-open class FlatButton : Button {
+open class FlatButton : AppCompatButton {
 
     lateinit var normalDrawable: StateListDrawable
         private set
