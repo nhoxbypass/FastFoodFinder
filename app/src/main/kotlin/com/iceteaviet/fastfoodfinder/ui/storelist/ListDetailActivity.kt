@@ -1,4 +1,4 @@
-package com.iceteaviet.fastfoodfinder.ui.profile
+package com.iceteaviet.fastfoodfinder.ui.storelist
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,7 +11,6 @@ import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList
 import com.iceteaviet.fastfoodfinder.ui.base.BaseActivity
-import com.iceteaviet.fastfoodfinder.ui.storelist.StoreListAdapter
 import com.iceteaviet.fastfoodfinder.utils.ui.getStoreListIconDrawableRes
 import de.hdodenhof.circleimageview.CircleImageView
 import io.reactivex.SingleObserver

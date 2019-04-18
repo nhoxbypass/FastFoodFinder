@@ -1,4 +1,4 @@
-package com.iceteaviet.fastfoodfinder.ui.profile
+package com.iceteaviet.fastfoodfinder.ui.profile.cover
 
 import android.app.Activity
 import android.app.Dialog

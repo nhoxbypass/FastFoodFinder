@@ -30,6 +30,12 @@ class UserStoreListAdapter internal constructor() : RecyclerView.Adapter<UserSto
         mOnItemLongClickListener = listener
     }
 
+    fun setListPackets(listPackets: List<UserStoreList>) {
+        this.mListPackets.clear()
+        this.mListPackets.addAll(listPackets)
+        notifyDataSetChanged()
+    }
+
     fun addListPacket(listPacket: UserStoreList) {
         mListPackets.add(listPacket)
         notifyItemRangeInserted(mListPackets.size, 1)
@@ -58,7 +64,7 @@ class UserStoreListAdapter internal constructor() : RecyclerView.Adapter<UserSto
     }
 
     interface OnItemLongClickListener {
-        fun onClick(position: Int)
+        fun onLongClick(position: Int)
     }
 
     interface OnItemClickListener {
@@ -82,7 +88,7 @@ class UserStoreListAdapter internal constructor() : RecyclerView.Adapter<UserSto
                         .setPositiveButton(android.R.string.yes) { dialog, which ->
                             mListPackets.removeAt(position)
                             notifyDataSetChanged()
-                            mOnItemLongClickListener!!.onClick(position)
+                            mOnItemLongClickListener!!.onLongClick(position)
                         }
                         .setNegativeButton(android.R.string.no) { dialog, which ->
                             //do nothing

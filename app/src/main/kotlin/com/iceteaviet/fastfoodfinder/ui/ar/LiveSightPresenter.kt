@@ -43,7 +43,7 @@ class LiveSightPresenter : BasePresenter<LiveSightContract.Presenter>, LiveSight
 
     override fun unsubscribe() {
         liveSightView.releaseARCamera()
-        compositeDisposable.clear()
+        super.unsubscribe()
     }
 
     override fun onLocationPermissionGranted() {

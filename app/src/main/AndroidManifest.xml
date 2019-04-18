@@ -61,7 +61,7 @@
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".ui.storelist.StoreListActivity" />
         <activity
-            android:name=".ui.profile.ListDetailActivity"
+            android:name=".ui.storelist.ListDetailActivity"
             android:theme="@style/AppTheme.NoActionBar.TranslucentStatus" />
         <activity android:name=".ui.ar.LiveSightActivity"></activity>
     </application>

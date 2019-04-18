@@ -12,25 +12,16 @@ import androidx.annotation.Nullable
 import androidx.fragment.app.DialogFragment
 import com.iceteaviet.fastfoodfinder.R
 import kotlinx.android.synthetic.main.dialog_create_newlist.*
-import java.util.*
 
 /**
  * Created by MyPC on 11/30/2016.
  */
 class CreateNewListDialog : DialogFragment() {
-    private var listName: ArrayList<String>? = null
     private var mListener: OnCreateListListener? = null
     private var iconId = R.drawable.ic_profile_list_1
 
     fun setOnButtonClickListener(listener: OnCreateListListener) {
         mListener = listener
-    }
-
-    override fun onCreate(@Nullable savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        if (arguments != null)
-            arguments?.let { listName = it.getStringArrayList(KEY_LIST_NAME) }
     }
 
     @Nullable
@@ -46,18 +37,8 @@ class CreateNewListDialog : DialogFragment() {
             if (edtName!!.text.isEmpty()) {
                 Toast.makeText(context, R.string.list_name_cannot_empty, Toast.LENGTH_SHORT).show()
             } else {
-                var check = true
-                for (i in listName!!.indices) {
-                    if (edtName!!.text.toString() == listName!![i]) {
-                        Toast.makeText(context, R.string.list_name_already_exists, Toast.LENGTH_SHORT).show()
-                        check = false
-                    }
-                }
-                if (check) {
-                    mListener!!.onButtonClick(edtName!!.text.toString(), iconId)
-                    listName!!.add(edtName!!.text.toString())
-                    dismiss()
-                }
+                if (mListener != null)
+                    mListener!!.onCreateButtonClick(edtName!!.text.toString(), iconId, this)
             }
         }
 
@@ -410,16 +391,14 @@ class CreateNewListDialog : DialogFragment() {
     }
 
     interface OnCreateListListener {
-        fun onButtonClick(name: String, iconId: Int)
+        fun onCreateButtonClick(name: String, iconId: Int, dialog: CreateNewListDialog)
+        fun onCancel(dialog: CreateNewListDialog)
     }
 
     companion object {
-        private const val KEY_LIST_NAME = "list_name"
-
-        fun newInstance(listName: ArrayList<String>): CreateNewListDialog {
+        fun newInstance(): CreateNewListDialog {
             val frag = CreateNewListDialog()
             val args = Bundle()
-            args.putStringArrayList(KEY_LIST_NAME, listName)
             frag.arguments = args
             return frag
         }
