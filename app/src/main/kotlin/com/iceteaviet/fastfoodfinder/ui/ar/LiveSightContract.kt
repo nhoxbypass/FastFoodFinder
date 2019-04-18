@@ -2,7 +2,6 @@ package com.iceteaviet.fastfoodfinder.ui.ar
 
 import android.location.Location
 import com.iceteaviet.fastfoodfinder.data.local.poi.model.AugmentedPOI
-import com.iceteaviet.fastfoodfinder.ui.base.BasePresenter
 import com.iceteaviet.fastfoodfinder.ui.base.BaseView
 
 /**
@@ -10,7 +9,6 @@ import com.iceteaviet.fastfoodfinder.ui.base.BaseView
  */
 
 interface LiveSightContract {
-
     interface View : BaseView<Presenter> {
         fun requestLocationPermission()
         fun isLocationPermissionGranted(): Boolean
@@ -27,7 +25,7 @@ interface LiveSightContract {
         fun addARPoint(arPoi: AugmentedPOI)
     }
 
-    interface Presenter : BasePresenter {
+    interface Presenter : com.iceteaviet.fastfoodfinder.ui.base.Presenter {
         fun startArCamera()
         fun onLocationPermissionGranted()
         fun onCameraPermissionGranted()

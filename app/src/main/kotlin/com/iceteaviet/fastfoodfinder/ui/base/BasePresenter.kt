@@ -1,11 +1,18 @@
 package com.iceteaviet.fastfoodfinder.ui.base
 
+import androidx.annotation.NonNull
+import com.iceteaviet.fastfoodfinder.data.DataManager
+import io.reactivex.disposables.CompositeDisposable
+
 /**
- * Created by tom on 2019-04-16.
+ * Created by tom on 2019-04-18.
  */
+abstract class BasePresenter<T>(protected val dataManager: DataManager) : Presenter {
 
-interface BasePresenter {
-    fun subscribe()
+    @NonNull
+    protected var compositeDisposable: CompositeDisposable = CompositeDisposable()
 
-    fun unsubscribe()
+    override fun unsubscribe() {
+        compositeDisposable.clear()
+    }
 }

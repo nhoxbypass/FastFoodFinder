@@ -1,14 +1,13 @@
 package com.iceteaviet.fastfoodfinder.ui.ar
 
 import android.location.Location
-import androidx.annotation.NonNull
 import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.local.poi.model.AugmentedPOI
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
+import com.iceteaviet.fastfoodfinder.ui.base.BasePresenter
 import com.iceteaviet.fastfoodfinder.utils.isLolipopOrHigher
 import com.iceteaviet.fastfoodfinder.utils.ui.getStoreLogoDrawableRes
 import io.reactivex.SingleObserver
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
@@ -16,18 +15,13 @@ import io.reactivex.schedulers.Schedulers
 /**
  * Created by tom on 2019-04-16.
  */
-class LiveSightPresenter(
-        val dataManager: DataManager,
-        val liveSightView: LiveSightContract.View
-) : LiveSightContract.Presenter {
+class LiveSightPresenter : BasePresenter<LiveSightContract.Presenter>, LiveSightContract.Presenter {
 
-    @NonNull
-    private var compositeDisposable: CompositeDisposable
+    val liveSightView: LiveSightContract.View
 
-
-    init {
-        liveSightView.presenter = this
-        compositeDisposable = CompositeDisposable()
+    constructor(dataManager: DataManager, liveSightView: LiveSightContract.View) : super(dataManager) {
+        this.liveSightView = liveSightView
+        this.liveSightView.presenter = this
     }
 
     override fun subscribe() {
