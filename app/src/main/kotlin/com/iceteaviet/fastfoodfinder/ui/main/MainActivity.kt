@@ -191,7 +191,7 @@ class MainActivity : BaseActivity(), View.OnClickListener {
                     drawerLayout.closeDrawers()
 
                     if (dataManager.isSignedIn())
-                        replaceFragment(ProfileFragment::class.java, profileItem!!)
+                        replaceFragment(ProfileFragment.newInstance(), profileItem!!)
                     else
                         openLoginActivity(this)
                 }
@@ -354,7 +354,7 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         when (menuItem.itemId) {
             R.id.menu_action_profile -> {
                 if (dataManager.isSignedIn())
-                    replaceFragment(ProfileFragment::class.java, menuItem)
+                    replaceFragment(ProfileFragment.newInstance(), menuItem)
                 else
                     openLoginActivity(this)
 
@@ -382,10 +382,8 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    private fun replaceFragment(fragmentClass: Class<*>, menuItem: MenuItem) {
+    private fun replaceFragment(fragment: Fragment, menuItem: MenuItem) {
         try {
-            val fragment = fragmentClass.newInstance() as Fragment
-
             // Insert the fragment by replacing any existing fragment
             val fragmentManager = supportFragmentManager
             fragmentManager
