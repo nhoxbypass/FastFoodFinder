@@ -113,12 +113,13 @@ class ProfilePresenter : BasePresenter<ProfileContract.Presenter>, ProfileContra
     }
 
     private fun isListNameExisted(listName: String): Boolean {
-        for (storeList in dataManager.getCurrentUser()!!.getUserStoreLists()) {
+        val currStoreLists = dataManager.getCurrentUser()!!.getUserStoreLists()
+        for (storeList in currStoreLists) {
             if (listName == storeList.listName) {
-                return false
+                return true
             }
         }
 
-        return true
+        return false
     }
 }
