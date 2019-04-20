@@ -17,6 +17,7 @@ import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList
 import com.iceteaviet.fastfoodfinder.ui.custom.store.StoreListView
 import com.iceteaviet.fastfoodfinder.ui.profile.cover.UpdateCoverImageDialog
+import com.iceteaviet.fastfoodfinder.ui.profile.createlist.CreateListDialog
 import com.iceteaviet.fastfoodfinder.ui.storelist.ListDetailActivity
 import com.iceteaviet.fastfoodfinder.ui.storelist.ListDetailActivity.Companion.KEY_USER_PHOTO_URL
 import com.iceteaviet.fastfoodfinder.ui.storelist.ListDetailActivity.Companion.KEY_USER_STORE_LIST
@@ -33,7 +34,7 @@ class ProfileFragment : Fragment(), ProfileContract.View, View.OnClickListener {
     lateinit var btnCreateNew: CardView
 
     private var mDialog: UpdateCoverImageDialog? = null
-    private var mDialogCreate: CreateNewListDialog? = null
+    private var mDialogCreate: CreateListDialog? = null
     private var storeListAdapter: UserStoreListAdapter? = null
 
     override fun onCreate(@Nullable savedInstanceState: Bundle?) {
@@ -182,14 +183,14 @@ class ProfileFragment : Fragment(), ProfileContract.View, View.OnClickListener {
     }
 
     override fun showCreateNewListDialog() {
-        mDialogCreate = CreateNewListDialog.newInstance()
+        mDialogCreate = CreateListDialog.newInstance()
         mDialogCreate!!.show(fragmentManager!!, "")
-        mDialogCreate!!.setOnButtonClickListener(object : CreateNewListDialog.OnCreateListListener {
-            override fun onCreateButtonClick(name: String, iconId: Int, dialog: CreateNewListDialog) {
+        mDialogCreate!!.setOnButtonClickListener(object : CreateListDialog.OnCreateListListener {
+            override fun onCreateButtonClick(name: String, iconId: Int, dialog: CreateListDialog) {
                 presenter.onCreateNewList(name, iconId)
             }
 
-            override fun onCancel(dialog: CreateNewListDialog) {
+            override fun onCancel(dialog: CreateListDialog) {
                 dialog.dismiss()
             }
         })

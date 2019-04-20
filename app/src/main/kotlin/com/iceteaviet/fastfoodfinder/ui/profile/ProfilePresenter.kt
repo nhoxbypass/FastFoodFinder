@@ -34,6 +34,7 @@ class ProfilePresenter : BasePresenter<ProfileContract.Presenter>, ProfileContra
         profileView.showCreateNewListDialog()
     }
 
+    // TODO: Check valid list name using FormatUtils
     override fun onCreateNewList(listName: String, iconId: Int) {
         if (!isListNameExisted(listName)) {
             val currentUser = dataManager.getCurrentUser()
