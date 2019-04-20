@@ -6,11 +6,15 @@ import android.animation.ValueAnimator
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.drawable.Drawable
 import android.view.animation.BounceInterpolator
+import androidx.annotation.DrawableRes
 import androidx.collection.LruCache
+import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.Marker
+import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.utils.StoreType
 import java.util.*
@@ -171,4 +175,8 @@ val STORE_ICON_DRAWABLE_ARRAY: MutableList<Int> = Arrays.asList(
 
 fun getStoreListIconDrawableRes(storeIconId: Int): Int {
     return STORE_ICON_DRAWABLE_ARRAY[storeIconId]
+}
+
+fun getDrawable(@DrawableRes id: Int): Drawable? {
+    return ContextCompat.getDrawable(App.getContext(), id)
 }

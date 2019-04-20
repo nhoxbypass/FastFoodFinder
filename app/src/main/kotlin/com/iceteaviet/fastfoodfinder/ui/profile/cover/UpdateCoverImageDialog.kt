@@ -4,32 +4,34 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.net.Uri
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.fragment.app.DialogFragment
+import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
+import com.iceteaviet.fastfoodfinder.utils.getBitmapFromUri
+import com.iceteaviet.fastfoodfinder.utils.ui.getDrawable
 import kotlinx.android.synthetic.main.dialog_choose_image.*
-import java.io.IOException
 
 /**
  * Created by MyPC on 11/29/2016.
  */
-class UpdateCoverImageDialog : DialogFragment() {
-    private var chosenImageId = 0
-    private var mBmp: Bitmap? = null
+class UpdateCoverImageDialog : DialogFragment(), UpdateCoverContract.View, View.OnClickListener {
+    override lateinit var presenter: UpdateCoverContract.Presenter
 
-    private var mListener: OnButtonClickListener? = null
+    private var listener: UpdateCoverImageDialog.OnButtonClickListener? = null
 
     fun setOnButtonClickListener(listener: OnButtonClickListener) {
-        mListener = listener
+        this.listener = listener
     }
 
     @Nullable
@@ -51,92 +53,105 @@ class UpdateCoverImageDialog : DialogFragment() {
 
     override fun onViewCreated(@NonNull view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupEventListeners()
+    }
 
-        btnBrowser!!.setOnClickListener {
-            val i = Intent(
-                    Intent.ACTION_PICK,
-                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-            startActivityForResult(i, RESULT_LOAD_IMAGE)
-        }
+    override fun onResume() {
+        super.onResume()
+        presenter.subscribe()
+    }
 
-        ivOne!!.setOnClickListener {
-            ivChosenImage!!.setImageResource(R.drawable.profile_sample_background)
-            chosenImageId = R.drawable.profile_sample_background
-        }
-        ivTwo!!.setOnClickListener {
-            ivChosenImage!!.setImageResource(R.drawable.all_sample_avatar)
-            chosenImageId = R.drawable.all_sample_avatar
-        }
-        ivThree!!.setOnClickListener {
-            ivChosenImage!!.setImageResource(R.drawable.profile_sample_background_3)
-            chosenImageId = R.drawable.profile_sample_background_3
-        }
-        ivFour!!.setOnClickListener {
-            ivChosenImage!!.setImageResource(R.drawable.profile_sample_background_4)
-            chosenImageId = R.drawable.profile_sample_background_4
-        }
-        ivFive!!.setOnClickListener {
-            ivChosenImage!!.setImageResource(R.drawable.profile_sample_background_5)
-            chosenImageId = R.drawable.profile_sample_background_5
-        }
-        ivSix!!.setOnClickListener {
-            ivChosenImage!!.setImageResource(R.drawable.profile_sample_background_6)
-            chosenImageId = R.drawable.profile_sample_background_6
-        }
+    override fun onPause() {
+        super.onPause()
+        presenter.unsubscribe()
+    }
 
-        btnDone!!.setOnClickListener {
-            mListener?.onOkClick(chosenImageId, mBmp)
-            dismiss()
-        }
+    private fun setupEventListeners() {
+        btnBrowser!!.setOnClickListener(this)
 
-        btnCancel!!.setOnClickListener {
-            mListener?.onCancelClick()
-            dismiss()
+        ivOne!!.setOnClickListener(this)
+        ivTwo!!.setOnClickListener(this)
+        ivThree!!.setOnClickListener(this)
+        ivFour!!.setOnClickListener(this)
+        ivFive!!.setOnClickListener(this)
+        ivSix!!.setOnClickListener(this)
+
+        btnDone!!.setOnClickListener(this)
+        btnCancel!!.setOnClickListener(this)
+    }
+
+    override fun onClick(v: View) {
+        when (v.id) {
+            R.id.btnBrowser -> {
+                presenter.onImageBrowserButtonClick()
+            }
+            R.id.ivOne -> {
+                presenter.onCoverImageSelect(getDrawable(R.drawable.profile_sample_background)!!)
+            }
+            R.id.ivTwo -> {
+                presenter.onCoverImageSelect(getDrawable(R.drawable.all_sample_avatar)!!)
+            }
+            R.id.ivThree -> {
+                presenter.onCoverImageSelect(getDrawable(R.drawable.profile_sample_background_3)!!)
+            }
+            R.id.ivFour -> {
+                presenter.onCoverImageSelect(getDrawable(R.drawable.profile_sample_background_4)!!)
+            }
+            R.id.ivFive -> {
+                presenter.onCoverImageSelect(getDrawable(R.drawable.profile_sample_background_5)!!)
+            }
+            R.id.ivSix -> {
+                presenter.onCoverImageSelect(getDrawable(R.drawable.profile_sample_background_6)!!)
+            }
+            R.id.btnDone -> {
+                presenter.onDoneButtonClick()
+            }
+            R.id.btnCancel -> {
+                presenter.onCancelButtonClick()
+            }
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
-            RESULT_LOAD_IMAGE -> if (resultCode == Activity.RESULT_OK && data != null && data.data != null) {
-                val selectedImage = data.data
-                val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
-
-                val cursor = activity!!.contentResolver.query(selectedImage!!,
-                        filePathColumn, null, null, null)
-                cursor!!.moveToFirst()
-
-                //int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                //String picturePath = cursor.getString(columnIndex);
-                cursor.close()
-
-                var bmp: Bitmap? = null
-                try {
-                    bmp = getBitmapFromUri(selectedImage)
-                } catch (e: IOException) {
-                    e.printStackTrace()
+            RESULT_LOAD_IMAGE -> {
+                if (resultCode == Activity.RESULT_OK && data != null && data.data != null) {
+                    val bmp: Bitmap? = getBitmapFromUri(activity!!, data.data!!)
+                    if (bmp != null)
+                        presenter.onCoverImageSelect(BitmapDrawable(resources, bmp))
+                    else
+                        Toast.makeText(activity!!, getString(R.string.get_image_from_picker_failed), Toast.LENGTH_SHORT).show()
                 }
-
-                ivChosenImage!!.setImageBitmap(bmp)
-                chosenImageId = -1
-                mBmp = bmp
-            }
-            else -> {
             }
         }
     }
 
-    @Throws(IOException::class)
-    private fun getBitmapFromUri(uri: Uri): Bitmap {
-        val parcelFileDescriptor = activity!!.contentResolver.openFileDescriptor(uri, "r")
-        val fileDescriptor = parcelFileDescriptor!!.fileDescriptor
-        val image = BitmapFactory.decodeFileDescriptor(fileDescriptor)
-        parcelFileDescriptor.close()
-        return image
+    override fun openImageFilePicker() {
+        val i = Intent(
+                Intent.ACTION_PICK,
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        startActivityForResult(i, UpdateCoverImageDialog.RESULT_LOAD_IMAGE)
+    }
+
+    override fun setSelectedImage(selectedImage: Drawable) {
+        ivChosenImage.setImageDrawable(selectedImage)
+    }
+
+    override fun dismissWithResult(selectedImage: Drawable?) {
+        if (listener != null)
+            listener!!.onOkClick(selectedImage)
+        dismiss()
+    }
+
+    override fun cancel() {
+        if (listener != null)
+            listener!!.onCancelClick()
+        dismiss()
     }
 
     interface OnButtonClickListener {
-        fun onOkClick(Id: Int, bmp: Bitmap?)
+        fun onOkClick(selectedImage: Drawable?)
         fun onCancelClick()
     }
 
@@ -147,6 +162,7 @@ class UpdateCoverImageDialog : DialogFragment() {
             val frag = UpdateCoverImageDialog()
             val args = Bundle()
             frag.arguments = args
+            frag.presenter = UpdateCoverPresenter(App.getDataManager(), frag)
             return frag
         }
     }

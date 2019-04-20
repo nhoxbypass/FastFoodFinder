@@ -1,7 +1,7 @@
 package com.iceteaviet.fastfoodfinder.ui.profile
 
 import android.content.Intent
-import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageView
@@ -108,13 +108,9 @@ class ProfileFragment : Fragment(), ProfileContract.View, View.OnClickListener {
         })
 
         mDialog!!.setOnButtonClickListener(object : UpdateCoverImageDialog.OnButtonClickListener {
-            override fun onOkClick(Id: Int, bmp: Bitmap?) {
-                if (Id != 0)
-                    if (Id == -1) {
-                        ivCoverImage!!.setImageBitmap(bmp)
-                    } else {
-                        ivCoverImage!!.setImageResource(Id)
-                    }
+            override fun onOkClick(selectedImage: Drawable?) {
+                if (selectedImage != null)
+                    ivCoverImage.setImageDrawable(selectedImage)
 
                 btnUpdateCoverImage!!.visibility = View.VISIBLE
             }

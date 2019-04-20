@@ -79,7 +79,7 @@ class ProfilePresenter : BasePresenter<ProfileContract.Presenter>, ProfileContra
         dataManager.getRemoteUserDataSource().getUser(uid)
                 .subscribe(object : SingleObserver<User> {
                     override fun onSubscribe(d: Disposable) {
-
+                        compositeDisposable.add(d)
                     }
 
                     override fun onSuccess(user: User) {

@@ -126,5 +126,6 @@
     <string name="title_retry_update_db">Retry download</string>
     <string name="str_hint_login_account">You can login with your phone number or username</string>
     <string name="str_recover_pass_func">Recover password</string>
+    <string name="get_image_from_picker_failed">Failed to get image from file picker</string>
 </resources>
 
