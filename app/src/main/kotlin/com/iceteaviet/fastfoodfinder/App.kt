@@ -53,7 +53,7 @@ class App : MultiDexApplication() {
         val clientAuth = FirebaseClientAuth()
         val preferencesHelper = AppPreferencesHelper(this)
 
-        dataManager = AppDataManager(this, localStoreDataSource, remoteStoreDataSource, clientAuth,
+        dataManager = AppDataManager(localStoreDataSource, remoteStoreDataSource, clientAuth,
                 localUserDataSource, remoteUserDataSource,
                 mapsRoutingApiHelper, preferencesHelper)
     }

@@ -1,8 +1,7 @@
 package com.iceteaviet.fastfoodfinder.data
 
-import android.app.Activity
-import android.content.Context
 import com.google.firebase.auth.AuthCredential
+import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.data.auth.ClientAuth
 import com.iceteaviet.fastfoodfinder.data.domain.store.StoreDataSource
 import com.iceteaviet.fastfoodfinder.data.domain.user.UserDataSource
@@ -24,7 +23,7 @@ import io.realm.RealmConfiguration
  * Created by tom on 7/9/18.
  */
 
-class AppDataManager(context: Context, private val localStoreDataSource: StoreDataSource, private val remoteStoreDataSource: StoreDataSource,
+class AppDataManager(private val localStoreDataSource: StoreDataSource, private val remoteStoreDataSource: StoreDataSource,
                      private val clientAuth: ClientAuth,
                      private val localUserDataSource: UserDataSource, private val remoteUserDataSource: UserDataSource,
                      private val mapsRoutingApiHelper: MapsRoutingApiHelper, private val preferencesHelper: PreferencesHelper) : DataManager {
@@ -33,8 +32,7 @@ class AppDataManager(context: Context, private val localStoreDataSource: StoreDa
     private lateinit var searchHistory: MutableSet<String>
 
     init {
-
-        Realm.init(context)
+        Realm.init(App.getContext())
         val config = RealmConfiguration.Builder()
                 .deleteRealmIfMigrationNeeded()
                 .build()
@@ -65,7 +63,7 @@ class AppDataManager(context: Context, private val localStoreDataSource: StoreDa
         return preferencesHelper
     }
 
-    override fun loadStoresFromServer(activity: Activity): Single<List<Store>> {
+    override fun loadStoresFromServer(): Single<List<Store>> {
         return Single.create { emitter ->
             if (!clientAuth.isSignedIn()) {
                 // Not signed in
