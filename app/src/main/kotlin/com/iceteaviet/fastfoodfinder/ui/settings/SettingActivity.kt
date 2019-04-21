@@ -167,7 +167,7 @@ class SettingActivity : BaseActivity() {
         }
 
         layoutUpdateDb.setOnClickListener {
-            dataManager.loadStoresFromServer(this@SettingActivity)
+            dataManager.loadStoresFromServer()
                     .subscribe(object : SingleObserver<List<Store>> {
                         override fun onSubscribe(d: Disposable) {
                             imageUpdateDb.visibility = View.GONE
