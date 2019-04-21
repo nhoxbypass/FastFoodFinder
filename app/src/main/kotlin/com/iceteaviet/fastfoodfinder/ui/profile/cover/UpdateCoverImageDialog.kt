@@ -107,7 +107,7 @@ class UpdateCoverImageDialog : DialogFragment(), UpdateCoverContract.View, View.
                 presenter.onDoneButtonClick()
             }
             R.id.btnCancel -> {
-                presenter.onCancelButtonClick()
+                cancel()
             }
         }
     }
@@ -139,14 +139,12 @@ class UpdateCoverImageDialog : DialogFragment(), UpdateCoverContract.View, View.
     }
 
     override fun dismissWithResult(selectedImage: Drawable?) {
-        if (listener != null)
-            listener!!.onOkClick(selectedImage)
+        listener?.onOkClick(selectedImage)
         dismiss()
     }
 
     override fun cancel() {
-        if (listener != null)
-            listener!!.onCancelClick()
+        listener?.onCancelClick()
         dismiss()
     }
 

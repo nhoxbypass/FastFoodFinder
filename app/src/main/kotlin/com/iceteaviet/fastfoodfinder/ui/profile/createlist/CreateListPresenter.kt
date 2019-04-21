@@ -30,6 +30,7 @@ class CreateListPresenter : BasePresenter<CreateListContract.Presenter>, CreateL
     }
 
     override fun onCancelButtonClick() {
+        // TODO: Show close confirm dialog
         createListView.cancel()
     }
 

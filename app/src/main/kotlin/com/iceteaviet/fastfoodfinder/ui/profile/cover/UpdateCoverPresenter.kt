@@ -34,8 +34,4 @@ class UpdateCoverPresenter : BasePresenter<UpdateCoverContract.Presenter>, Updat
     override fun onDoneButtonClick() {
         updateCoverView.dismissWithResult(selectedImage)
     }
-
-    override fun onCancelButtonClick() {
-        updateCoverView.cancel()
-    }
 }

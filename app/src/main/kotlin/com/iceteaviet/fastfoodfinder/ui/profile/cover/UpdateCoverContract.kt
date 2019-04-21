@@ -18,6 +18,5 @@ interface UpdateCoverContract {
         fun onImageBrowserButtonClick()
         fun onCoverImageSelect(selectedImage: Drawable)
         fun onDoneButtonClick()
-        fun onCancelButtonClick()
     }
 }

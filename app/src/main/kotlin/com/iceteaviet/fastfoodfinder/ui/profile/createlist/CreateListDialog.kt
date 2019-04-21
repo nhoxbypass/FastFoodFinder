@@ -109,13 +109,11 @@ class CreateListDialog : DialogFragment(), CreateListContract.View, View.OnClick
     }
 
     override fun notifyWithResult(storeName: String, iconId: Int) {
-        if (listener != null)
-            listener!!.onCreateButtonClick(storeName, iconId, this)
+        listener?.onCreateButtonClick(storeName, iconId, this)
     }
 
     override fun cancel() {
-        if (listener != null)
-            listener!!.onCancel(this)
+        listener?.onCancel(this)
     }
 
     override fun updateSelectedIconUI(iconId: Int) {

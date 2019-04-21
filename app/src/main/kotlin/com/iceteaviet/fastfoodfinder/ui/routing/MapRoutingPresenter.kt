@@ -17,7 +17,7 @@ import java.util.*
  */
 class MapRoutingPresenter : BasePresenter<MapRoutingContract.Presenter>, MapRoutingContract.Presenter {
 
-    val mapRoutingView: MapRoutingContract.View
+    private val mapRoutingView: MapRoutingContract.View
 
     private var inPreviewMode = false
     private var currLocation: LatLng? = null

@@ -109,25 +109,17 @@ class StoreDetailAdapter internal constructor(private val mStore: Store) : Recyc
             saveButton.setOnClickListener(this)
             favButton.setOnClickListener(this)
             comment.setOnClickListener {
-                if (listener != null) {
-                    listener.onShowComment()
-                }
+                listener?.onShowComment()
             }
             btnCall.setOnClickListener {
-                if (listener != null) {
-                    listener.onCall(mStore!!.tel)
-                }
+                listener?.onCall(mStore!!.tel)
             }
         }
 
         override fun onClick(v: View) {
             when (v.id) {
-                R.id.btn_fav -> if (listener != null) {
-                    listener.onAddToFavorite(mStore!!.id)
-                }
-                R.id.btn_save -> if (listener != null) {
-                    listener.onSave(mStore!!.id)
-                }
+                R.id.btn_fav -> listener?.onAddToFavorite(mStore!!.id)
+                R.id.btn_save -> listener?.onSave(mStore!!.id)
                 else -> {
                 }
             }
@@ -151,14 +143,10 @@ class StoreDetailAdapter internal constructor(private val mStore: Store) : Recyc
             tvAddress.text = mStore.address
 
             cdvh.btnCall.setOnClickListener {
-                if (listener != null) {
-                    listener.onCall(mStore.tel)
-                }
+                listener?.onCall(mStore.tel)
             }
             cdvh.btnDirection.setOnClickListener {
-                if (listener != null) {
-                    listener.onDirect()
-                }
+                listener?.onDirect()
             }
         }
     }

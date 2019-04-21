@@ -17,7 +17,7 @@ import io.reactivex.schedulers.Schedulers
  */
 class LiveSightPresenter : BasePresenter<LiveSightContract.Presenter>, LiveSightContract.Presenter {
 
-    val liveSightView: LiveSightContract.View
+    private val liveSightView: LiveSightContract.View
 
     constructor(dataManager: DataManager, liveSightView: LiveSightContract.View) : super(dataManager) {
         this.liveSightView = liveSightView

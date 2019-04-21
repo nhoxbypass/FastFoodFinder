@@ -14,7 +14,7 @@ import java.util.*
  */
 class ProfilePresenter : BasePresenter<ProfileContract.Presenter>, ProfileContract.Presenter {
 
-    val profileView: ProfileContract.View
+    private val profileView: ProfileContract.View
     private var defaultList: MutableList<UserStoreList> = ArrayList() // Default store list (saved, favourite) that every user have
 
     constructor(dataManager: DataManager, profileView: ProfileContract.View) : super(dataManager) {
