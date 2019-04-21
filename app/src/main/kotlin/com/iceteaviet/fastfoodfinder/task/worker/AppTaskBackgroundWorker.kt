@@ -5,7 +5,11 @@ import com.iceteaviet.fastfoodfinder.utils.d
 
 /**
  * Created by tom on 12/26/18.
+ *
+ * @see Task
  */
+
+@Deprecated(message = "This type of background worker thread only suitable for Java", replaceWith = ReplaceWith("Kotlin Coroutines or WorkManager instead"))
 class AppTaskBackgroundWorker : Thread("AppTaskBackgroundWorker") {
     companion object {
         const val TAG = "AppTaskBackgroundWorker"
