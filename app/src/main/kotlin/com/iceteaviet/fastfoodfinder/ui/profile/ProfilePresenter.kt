@@ -41,7 +41,7 @@ class ProfilePresenter : BasePresenter<ProfileContract.Presenter>, ProfileContra
             val id = currentUser!!.getUserStoreLists().size //New id = current size
             val list = UserStoreList(id, ArrayList(), iconId, listName)
             currentUser.addStoreList(list)
-            dataManager.getRemoteUserDataSource().updateStoreListForUser(currentUser.uid, currentUser.getUserStoreLists())
+            dataManager.getRemoteUserDataSource().updateStoreListForUser(currentUser.getUid(), currentUser.getUserStoreLists())
 
             profileView.addUserStoreList(list)
             profileView.setStoreListCount(String.format("(%d)", currentUser.getUserStoreLists().size))
@@ -67,7 +67,7 @@ class ProfilePresenter : BasePresenter<ProfileContract.Presenter>, ProfileContra
     override fun onStoreListLongClick(position: Int) {
         val currentUser = dataManager.getCurrentUser()
         currentUser!!.removeStoreList(position)
-        dataManager.getRemoteUserDataSource().updateStoreListForUser(currentUser.uid, currentUser.getUserStoreLists())
+        dataManager.getRemoteUserDataSource().updateStoreListForUser(currentUser.getUid(), currentUser.getUserStoreLists())
 
         profileView.setStoreListCount(String.format("(%d)", currentUser.getUserStoreLists().size))
     }

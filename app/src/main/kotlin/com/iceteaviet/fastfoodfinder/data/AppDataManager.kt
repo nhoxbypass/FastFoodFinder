@@ -121,7 +121,7 @@ class AppDataManager(context: Context, private val localStoreDataSource: StoreDa
     override fun getCurrentUserUid(): String {
         var uid = ""
         if (currentUser != null)
-            uid = currentUser!!.uid
+            uid = currentUser!!.getUid()
 
         if (isEmpty(uid))
             uid = clientAuth.getCurrentUserUid()
@@ -168,7 +168,7 @@ class AppDataManager(context: Context, private val localStoreDataSource: StoreDa
 
     override fun setCurrentUser(user: User?) {
         currentUser = user
-        if (user != null && !user.uid.isEmpty()) {
+        if (user != null && !user.getUid().isEmpty()) {
             localUserDataSource.insertOrUpdate(user)
         }
     }
