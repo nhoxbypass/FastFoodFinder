@@ -27,7 +27,8 @@ import com.iceteaviet.fastfoodfinder.ui.base.BaseActivity
 import com.iceteaviet.fastfoodfinder.ui.routing.MapRoutingActivity
 import com.iceteaviet.fastfoodfinder.ui.routing.MapRoutingActivity.Companion.KEY_DES_STORE
 import com.iceteaviet.fastfoodfinder.ui.routing.MapRoutingActivity.Companion.KEY_ROUTE_LIST
-import com.iceteaviet.fastfoodfinder.ui.store.CommentActivity.Companion.KEY_COMMENT
+import com.iceteaviet.fastfoodfinder.ui.store.comment.CommentActivity
+import com.iceteaviet.fastfoodfinder.ui.store.comment.CommentActivity.Companion.KEY_COMMENT
 import com.iceteaviet.fastfoodfinder.utils.*
 import io.reactivex.SingleObserver
 import io.reactivex.disposables.Disposable

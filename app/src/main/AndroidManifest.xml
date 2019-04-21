@@ -57,7 +57,7 @@
             android:configChanges="locale" />
         <activity android:name=".ui.routing.MapRoutingActivity" />
         <activity
-            android:name=".ui.store.CommentActivity"
+            android:name=".ui.store.comment.CommentActivity"
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".ui.storelist.StoreListActivity" />
         <activity

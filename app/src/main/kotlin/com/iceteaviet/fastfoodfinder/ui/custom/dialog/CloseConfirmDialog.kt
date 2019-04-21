@@ -1,4 +1,4 @@
-package com.iceteaviet.fastfoodfinder.ui.store
+package com.iceteaviet.fastfoodfinder.ui.custom.dialog
 
 import android.app.Dialog
 import android.os.Bundle
@@ -11,7 +11,9 @@ import com.iceteaviet.fastfoodfinder.R
  * Created by taq on 3/11/2016.
  */
 
-class NoticeDialog : DialogFragment() {
+class CloseConfirmDialog : DialogFragment() {
+
+    private var listener: OnClickListener? = null
 
     @NonNull
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -23,24 +25,30 @@ class NoticeDialog : DialogFragment() {
         val alertDialogBuilder = AlertDialog.Builder(activity!!)
         alertDialogBuilder.setMessage(message)
         alertDialogBuilder.setPositiveButton(R.string.ok) { dialog, which ->
-            val listener = activity as NoticeDialogListener
-            listener.onClickOk()
+            listener?.onOkClick(this)
         }
-        alertDialogBuilder.setNegativeButton(R.string.cancel) { dialog, which -> dialog.dismiss() }
+        alertDialogBuilder.setNegativeButton(R.string.cancel) { dialog, which ->
+            listener?.onCancelClick(this)
+        }
         return alertDialogBuilder.create()
     }
 
-    interface NoticeDialogListener {
-        fun onClickOk()
+    fun setOnClickListener(listener: OnClickListener) {
+        this.listener = listener
+    }
+
+    interface OnClickListener {
+        fun onOkClick(dialog: CloseConfirmDialog)
+        fun onCancelClick(dialog: CloseConfirmDialog)
     }
 
     companion object {
         private const val MESSAGE = "message"
 
-        fun newInstance(message: String): NoticeDialog {
+        fun newInstance(message: String): CloseConfirmDialog {
             val args = Bundle()
             args.putString(MESSAGE, message)
-            val fragment = NoticeDialog()
+            val fragment = CloseConfirmDialog()
             fragment.arguments = args
             return fragment
         }
