@@ -28,8 +28,8 @@ class MapRoutingPresenter : BasePresenter<MapRoutingContract.Presenter>, MapRout
 
     private var mapsDirection: MapsDirection? = null
 
-    constructor(dataManager: DataManager, profileView: MapRoutingContract.View) : super(dataManager) {
-        this.mapRoutingView = profileView
+    constructor(dataManager: DataManager, mapRoutingView: MapRoutingContract.View) : super(dataManager) {
+        this.mapRoutingView = mapRoutingView
         this.mapRoutingView.presenter = this
     }
 

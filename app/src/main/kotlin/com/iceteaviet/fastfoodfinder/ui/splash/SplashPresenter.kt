@@ -18,8 +18,8 @@ class SplashPresenter : BasePresenter<SplashContract.Presenter>, SplashContract.
 
     private val splashView: SplashContract.View
 
-    constructor(dataManager: DataManager, profileView: SplashContract.View) : super(dataManager) {
-        this.splashView = profileView
+    constructor(dataManager: DataManager, splashView: SplashContract.View) : super(dataManager) {
+        this.splashView = splashView
         this.splashView.presenter = this
     }
 

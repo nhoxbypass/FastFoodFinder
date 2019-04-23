@@ -13,8 +13,8 @@ class CreateListPresenter : BasePresenter<CreateListContract.Presenter>, CreateL
 
     private var iconId = R.drawable.ic_profile_list_1
 
-    constructor(dataManager: DataManager, updateCoverView: CreateListContract.View) : super(dataManager) {
-        this.createListView = updateCoverView
+    constructor(dataManager: DataManager, createListView: CreateListContract.View) : super(dataManager) {
+        this.createListView = createListView
         this.createListView.presenter = this
     }
 
