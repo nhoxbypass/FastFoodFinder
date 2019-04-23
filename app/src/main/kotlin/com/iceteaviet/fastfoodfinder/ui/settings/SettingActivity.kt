@@ -1,7 +1,8 @@
 package com.iceteaviet.fastfoodfinder.ui.settings
 
 import android.annotation.TargetApi
-import android.app.Activity
+import android.content.Context
+import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
@@ -9,6 +10,7 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.widget.SwitchCompat
 import com.iceteaviet.fastfoodfinder.App
+import com.iceteaviet.fastfoodfinder.BuildConfig
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.ui.base.BaseActivity
 import com.iceteaviet.fastfoodfinder.utils.openLoginActivity
@@ -35,6 +37,7 @@ class SettingActivity : BaseActivity(), SettingContract.View {
     lateinit var txtSignOut: TextView
     lateinit var swChangeLanguage: SwitchCompat
     lateinit var tvSettingLanguage: TextView
+    lateinit var pref : SharedPreferences
 
     private var isVietnamese = true
 
@@ -60,11 +63,12 @@ class SettingActivity : BaseActivity(), SettingContract.View {
         txtSignOut = tv_setting_sign_out
         swChangeLanguage = sw_languages
         tvSettingLanguage = tv_setting_english
-
-        presenter.onSetupLanguage()
+        pref =  this.getSharedPreferences(
+                BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE);
+        presenter.onSetupLanguage(pref)
 
         // Initialize Firebase Auth
-        setupEventListeners()
+        setupEventListeners(pref)
     }
 
     override fun onLanguageChanged(isVietnamese: Boolean) {
@@ -122,7 +126,7 @@ class SettingActivity : BaseActivity(), SettingContract.View {
 
     }
 
-    private fun setupEventListeners() {
+    private fun setupEventListeners(pref: SharedPreferences) {
         txtSignOut.setOnClickListener {
             presenter.signOut()
             openLoginActivity(this@SettingActivity)
@@ -139,7 +143,7 @@ class SettingActivity : BaseActivity(), SettingContract.View {
                 swChangeLanguage.isChecked = false
                 isVietnamese = true
             }
-            presenter.saveLanguagePref(isVietnamese)
+            presenter.saveLanguagePref(pref, isVietnamese)
         }
 
         tvSettingLanguage.setOnClickListener {
@@ -153,6 +157,7 @@ class SettingActivity : BaseActivity(), SettingContract.View {
                 swChangeLanguage.isChecked = false
                 isVietnamese = true
             }
+            presenter.saveLanguagePref(pref, isVietnamese)
         }
 
         txtSetNotification.setOnClickListener {
@@ -163,10 +168,6 @@ class SettingActivity : BaseActivity(), SettingContract.View {
         layoutUpdateDb.setOnClickListener {
             presenter.onLoadStoreFromServer()
         }
-    }
-
-    override fun getActivity(): Activity {
-        return this
     }
 
     override fun showSuccessLoadingToast(successMessage : String?) {

@@ -1,6 +1,6 @@
 package com.iceteaviet.fastfoodfinder.ui.settings
 
-import android.app.Activity
+import android.content.SharedPreferences
 import com.iceteaviet.fastfoodfinder.ui.base.BaseView
 
 /**
@@ -12,7 +12,6 @@ interface SettingContract {
         fun updateLoadingProgressView(showProgress: Boolean)
         fun showSuccessLoadingToast(successMessage : String?)
         fun showFailedLoadingToast(failedMessage: String?)
-        fun getActivity(): Activity
         fun onLanguageChanged(isVietnamese: Boolean)
     }
 
@@ -20,7 +19,7 @@ interface SettingContract {
         fun onInitSignOutTextView()
         fun signOut()
         fun onLoadStoreFromServer()
-        fun onSetupLanguage()
-        fun saveLanguagePref(isVietnamese: Boolean)
+        fun onSetupLanguage(pref: SharedPreferences)
+        fun saveLanguagePref(pref: SharedPreferences, isVietnamese: Boolean)
     }
 }
