@@ -16,7 +16,7 @@ import io.reactivex.schedulers.Schedulers
  */
 class SplashPresenter : BasePresenter<SplashContract.Presenter>, SplashContract.Presenter {
 
-    val splashView: SplashContract.View
+    private val splashView: SplashContract.View
 
     constructor(dataManager: DataManager, profileView: SplashContract.View) : super(dataManager) {
         this.splashView = profileView
