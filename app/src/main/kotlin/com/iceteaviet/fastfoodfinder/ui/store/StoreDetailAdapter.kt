@@ -29,12 +29,18 @@ import kotlinx.android.synthetic.main.layout_call_direction.view.*
  * Created by binhlt on 23/11/2016.
  */
 
-class StoreDetailAdapter internal constructor(private val mStore: Store) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class StoreDetailAdapter internal constructor() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var mComments: MutableList<Comment> = mutableListOf<Comment>()
     private var mListener: StoreActionListener? = null
+    private var mStore: Store? = null
 
     fun setListener(listener: StoreActionListener) {
         mListener = listener
+    }
+
+    fun setStore(store: Store) {
+        mStore = store
+        notifyDataSetChanged()
     }
 
     fun addComment(comment: Comment) {
@@ -83,15 +89,15 @@ class StoreDetailAdapter internal constructor(private val mStore: Store) : Recyc
     }
 
     interface StoreActionListener {
-        fun onShowComment()
+        fun onCommentButtonClick()
 
-        fun onCall(tel: String?)
+        fun onCallButtonClick(tel: String?)
 
-        fun onDirect()
+        fun onNavigationButtonClick()
 
-        fun onAddToFavorite(storeId: Int)
+        fun onAddToFavButtonClick(storeId: Int)
 
-        fun onSave(storeId: Int)
+        fun onSaveButtonClick(storeId: Int)
     }
 
     internal class HeaderViewHolder(itemView: View, private val listener: StoreActionListener?) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
@@ -103,23 +109,23 @@ class StoreDetailAdapter internal constructor(private val mStore: Store) : Recyc
 
         private var mStore: Store? = null
 
-        fun bind(store: Store) {
+        fun bind(store: Store?) {
             mStore = store
 
             saveButton.setOnClickListener(this)
             favButton.setOnClickListener(this)
             comment.setOnClickListener {
-                listener?.onShowComment()
+                listener?.onCommentButtonClick()
             }
             btnCall.setOnClickListener {
-                listener?.onCall(mStore!!.tel)
+                listener?.onCallButtonClick(mStore!!.tel)
             }
         }
 
         override fun onClick(v: View) {
             when (v.id) {
-                R.id.btn_fav -> listener?.onAddToFavorite(mStore!!.id)
-                R.id.btn_save -> listener?.onSave(mStore!!.id)
+                R.id.btn_fav -> listener?.onAddToFavButtonClick(mStore!!.id)
+                R.id.btn_save -> listener?.onSaveButtonClick(mStore!!.id)
                 else -> {
                 }
             }
@@ -138,15 +144,17 @@ class StoreDetailAdapter internal constructor(private val mStore: Store) : Recyc
             cdvh = CallDirectionViewHolder(vCallDirection) //TODO: Check this !!
         }
 
-        fun bind(mStore: Store) {
-            tvName.text = mStore.title
-            tvAddress.text = mStore.address
+        fun bind(mStore: Store?) {
+            mStore?.let { store ->
+                tvName.text = store.title
+                tvAddress.text = store.address
 
-            cdvh.btnCall.setOnClickListener {
-                listener?.onCall(mStore.tel)
-            }
-            cdvh.btnDirection.setOnClickListener {
-                listener?.onDirect()
+                cdvh.btnCall.setOnClickListener {
+                    listener?.onCallButtonClick(store.tel)
+                }
+                cdvh.btnDirection.setOnClickListener {
+                    listener?.onNavigationButtonClick()
+                }
             }
         }
     }

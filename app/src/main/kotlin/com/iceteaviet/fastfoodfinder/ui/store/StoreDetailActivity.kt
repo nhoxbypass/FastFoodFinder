@@ -16,78 +16,55 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.appbar.CollapsingToolbarLayout
+import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
-import com.iceteaviet.fastfoodfinder.data.remote.routing.GoogleMapsRoutingApiHelper
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Comment
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.ui.base.BaseActivity
 import com.iceteaviet.fastfoodfinder.ui.routing.MapRoutingActivity
-import com.iceteaviet.fastfoodfinder.ui.routing.MapRoutingActivity.Companion.KEY_DES_STORE
-import com.iceteaviet.fastfoodfinder.ui.routing.MapRoutingActivity.Companion.KEY_ROUTE_LIST
 import com.iceteaviet.fastfoodfinder.ui.store.comment.CommentActivity
 import com.iceteaviet.fastfoodfinder.ui.store.comment.CommentActivity.Companion.KEY_COMMENT
 import com.iceteaviet.fastfoodfinder.utils.*
-import io.reactivex.SingleObserver
-import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_store_detail.*
-import java.util.*
 
 /**
  * Created by taq on 18/11/2016.
  */
 
-class StoreDetailActivity : BaseActivity(), StoreDetailAdapter.StoreActionListener, GoogleApiClient.ConnectionCallbacks {
+class StoreDetailActivity : BaseActivity(), StoreDetailContract.View, GoogleApiClient.ConnectionCallbacks {
+    override lateinit var presenter: StoreDetailContract.Presenter
+
     lateinit var collapsingToolbar: CollapsingToolbarLayout
     lateinit var ivBackdrop: ImageView
     lateinit var rvContent: RecyclerView
 
-    private var currLocation: LatLng? = null
     private var mLocationRequest: LocationRequest? = null
-    private var currentStore: Store? = null
     private var googleApiClient: GoogleApiClient? = null
-    //private SupportMapFragment mMapFragment;
-    //private GoogleMap mGoogleMap;
     private var adapter: StoreDetailAdapter? = null
+
+    override val layoutId: Int
+        get() = R.layout.activity_store_detail
 
     override fun onCreate(@Nullable savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        collapsingToolbar = collapsing_toolbar
-        ivBackdrop = backdrop
-        rvContent = content
+        presenter = StoreDetailPresenter(App.getDataManager(), this)
 
-        currentStore = intent.getParcelableExtra(KEY_STORE)
-        currentStore?.let {
-            adapter = StoreDetailAdapter(it)
-            adapter!!.setListener(this)
-            rvContent.adapter = adapter
-        }
-        rvContent.layoutManager = LinearLayoutManager(this)
+        setupUI()
+        setupEventHandlers()
+        setupLocationServices()
+    }
 
-        setSupportActionBar(toolbar)
-        if (supportActionBar != null)
-            supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+    override fun onResume() {
+        super.onResume()
+        presenter.subscribe()
+    }
 
-        if (currentStore != null)
-            collapsingToolbar.title = currentStore!!.title
-
-        Glide.with(this)
-                .load(R.drawable.detail_sample_circlekcover)
-                .apply(RequestOptions().centerCrop())
-                .into(ivBackdrop)
-
-        mLocationRequest = createLocationRequest()
-        googleApiClient = GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener { e(TAG, getString(R.string.cannot_get_curr_location)) }
-                .addApi(LocationServices.API)
-                .build()
-
-        // Load new store data
-        fetchStoreData()
+    override fun onPause() {
+        super.onPause()
+        presenter.unsubscribe()
     }
 
     override fun onStart() {
@@ -102,16 +79,9 @@ class StoreDetailActivity : BaseActivity(), StoreDetailAdapter.StoreActionListen
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == RESULT_OK && requestCode == REQUEST_COMMENT && data != null) {
+        if (resultCode == RESULT_OK && requestCode == RC_ADD_COMMENT && data != null) {
             val comment = data.getParcelableExtra(KEY_COMMENT) as Comment?
-            if (comment != null) {
-                adapter!!.addComment(comment)
-                appbar!!.setExpanded(false)
-                rvContent.scrollToPosition(3)
-
-                // Update comment data
-                dataManager.getRemoteStoreDataSource().insertOrUpdateComment(currentStore!!.id.toString(), comment)
-            }
+            presenter.onAddNewComment(comment)
         }
     }
 
@@ -122,7 +92,8 @@ class StoreDetailActivity : BaseActivity(), StoreDetailAdapter.StoreActionListen
             REQUEST_LOCATION -> {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    getCurrentLocation()
+                    requestLocationUpdates()
+                    getLastLocation()
                 } else {
                     Toast.makeText(this, R.string.permission_denied, Toast.LENGTH_SHORT).show()
                 }
@@ -134,67 +105,105 @@ class StoreDetailActivity : BaseActivity(), StoreDetailAdapter.StoreActionListen
         }
     }
 
-    override val layoutId: Int
-        get() = R.layout.activity_store_detail
-
-    override fun onShowComment() {
-        startActivityForResult(Intent(this, CommentActivity::class.java), REQUEST_COMMENT)
+    override fun setToolbarTitle(title: String) {
+        collapsingToolbar.title = title
     }
 
-    override fun onCall(tel: String?) {
-        if (!isEmpty(tel)) {
-            startActivity(newCallIntent(tel!!))
-        } else {
-            Toast.makeText(this, R.string.store_no_phone_numb, Toast.LENGTH_SHORT).show()
-        }
+    override fun setStoreComments(listComments: MutableList<Comment>) {
+        adapter!!.setComments(listComments)
     }
 
-    override fun onDirect() {
-        val storeLocation = currentStore!!.getPosition()
-        val queries = HashMap<String, String>()
-
-        val origin: String? = getLatLngString(currLocation)
-        val destination: String? = getLatLngString(storeLocation)
-
-        if (origin == null || destination == null)
-            return
-
-        queries[GoogleMapsRoutingApiHelper.PARAM_ORIGIN] = origin
-        queries[GoogleMapsRoutingApiHelper.PARAM_DESTINATION] = destination
-
-        dataManager.getMapsRoutingApiHelper().getMapsDirection(queries, currentStore!!)
-                .subscribe(object : SingleObserver<MapsDirection> {
-                    override fun onSubscribe(d: Disposable) {
-
-                    }
-
-                    override fun onSuccess(mapsDirection: MapsDirection) {
-                        val intent = Intent(this@StoreDetailActivity, MapRoutingActivity::class.java)
-                        val extras = Bundle()
-                        extras.putParcelable(KEY_ROUTE_LIST, mapsDirection)
-                        extras.putParcelable(KEY_DES_STORE, currentStore)
-                        intent.putExtras(extras)
-                        startActivity(intent)
-                    }
-
-                    override fun onError(e: Throwable) {
-                        e.printStackTrace()
-                    }
-                })
+    override fun addStoreComment(comment: Comment) {
+        adapter!!.addComment(comment)
     }
 
-    override fun onAddToFavorite(storeId: Int) {
-        //TODO gọi hàm lưu vào danh sách yêu thích
-        Toast.makeText(this, R.string.fav_stores_added, Toast.LENGTH_SHORT).show()
+    override fun setAppBarExpanded(expanded: Boolean) {
+        appbar!!.setExpanded(expanded)
     }
 
-    override fun onSave(storeId: Int) {
-        //TODO gọi hàm check in
+    override fun scrollToCommentList() {
+        rvContent.scrollToPosition(3)
+    }
+
+    override fun showCommentEditorView() {
+        startActivityForResult(Intent(this@StoreDetailActivity, CommentActivity::class.java), RC_ADD_COMMENT)
+    }
+
+    override fun startCallIntent(tel: String) {
+        startActivity(newCallIntent(tel))
+    }
+
+    override fun showInvalidPhoneNumbWarning() {
+        Toast.makeText(this@StoreDetailActivity, R.string.store_no_phone_numb, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun showMapRoutingView(currStore: Store, mapsDirection: MapsDirection) {
+        val intent = Intent(this@StoreDetailActivity, MapRoutingActivity::class.java)
+        val extras = Bundle()
+        extras.putParcelable(MapRoutingActivity.KEY_ROUTE_LIST, mapsDirection)
+        extras.putParcelable(MapRoutingActivity.KEY_DES_STORE, currStore)
+        intent.putExtras(extras)
+        startActivity(intent)
+    }
+
+    private fun setupUI() {
+        collapsingToolbar = collapsing_toolbar
+        ivBackdrop = backdrop
+        rvContent = content
+
+        adapter = StoreDetailAdapter()
+        rvContent.adapter = adapter
+        rvContent.layoutManager = LinearLayoutManager(this)
+
+        setSupportActionBar(toolbar)
+        if (supportActionBar != null)
+            supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+
+        Glide.with(this)
+                .load(R.drawable.detail_sample_circlekcover)
+                .apply(RequestOptions().centerCrop())
+                .into(ivBackdrop)
+    }
+
+    private fun setupEventHandlers() {
+        adapter!!.setListener(object : StoreDetailAdapter.StoreActionListener {
+            override fun onCommentButtonClick() {
+                presenter.onCommentButtonClick()
+            }
+
+            override fun onCallButtonClick(tel: String?) {
+                presenter.onCallButtonClick(tel)
+            }
+
+            override fun onNavigationButtonClick() {
+                presenter.onNavigationButtonClick()
+            }
+
+            override fun onAddToFavButtonClick(storeId: Int) {
+                //TODO gọi hàm lưu vào danh sách yêu thích
+                Toast.makeText(this@StoreDetailActivity, R.string.fav_stores_added, Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onSaveButtonClick(storeId: Int) {
+                //TODO gọi hàm save
+            }
+
+        })
+    }
+
+    private fun setupLocationServices() {
+        mLocationRequest = createLocationRequest()
+        googleApiClient = GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener { e(TAG, getString(R.string.cannot_get_curr_location)) }
+                .addApi(LocationServices.API)
+                .build()
     }
 
     override fun onConnected(@Nullable bundle: Bundle?) {
         if (isLocationPermissionGranted(this)) {
-            getCurrentLocation()
+            requestLocationUpdates()
+            getLastLocation()
         } else {
             requestLocationPermission(this)
         }
@@ -205,39 +214,24 @@ class StoreDetailActivity : BaseActivity(), StoreDetailAdapter.StoreActionListen
     }
 
     @SuppressLint("MissingPermission")
-    private fun getCurrentLocation() {
+    private fun requestLocationUpdates() {
         LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, mLocationRequest) { location ->
-            currLocation = LatLng(location.latitude, location.longitude)
-            // Creating a LatLng object for the current location
+            presenter.onCurrLocationChanged(location.latitude, location.longitude)
         }
+    }
 
+    @SuppressLint("MissingPermission")
+    private fun getLastLocation() {
         val lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient)
         if (lastLocation != null) {
-            currLocation = LatLng(lastLocation.latitude, lastLocation.longitude)
+            presenter.onCurrLocationChanged(lastLocation.latitude, lastLocation.longitude)
         } else
             Toast.makeText(this@StoreDetailActivity, R.string.cannot_get_curr_location, Toast.LENGTH_SHORT).show()
     }
 
-    private fun fetchStoreData() {
-        dataManager.getRemoteStoreDataSource().getComments(currentStore!!.id.toString())
-                .subscribe(object : SingleObserver<MutableList<Comment>> {
-                    override fun onSubscribe(d: Disposable) {
-
-                    }
-
-                    override fun onSuccess(commentList: MutableList<Comment>) {
-                        adapter!!.setComments(commentList.asReversed())
-                    }
-
-                    override fun onError(e: Throwable) {
-                        e.printStackTrace()
-                    }
-                })
-    }
-
     companion object {
         const val KEY_STORE = "key_store"
-        const val REQUEST_COMMENT = 113
+        const val RC_ADD_COMMENT = 113
         private val TAG = StoreDetailActivity::class.java.simpleName
 
         fun getIntent(context: Context, store: Store): Intent {
