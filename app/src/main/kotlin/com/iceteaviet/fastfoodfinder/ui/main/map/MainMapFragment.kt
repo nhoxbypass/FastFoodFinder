@@ -41,7 +41,6 @@ import com.iceteaviet.fastfoodfinder.data.transport.model.SearchEventResult
 import com.iceteaviet.fastfoodfinder.ui.routing.MapRoutingActivity
 import com.iceteaviet.fastfoodfinder.ui.routing.MapRoutingActivity.Companion.KEY_DES_STORE
 import com.iceteaviet.fastfoodfinder.ui.routing.MapRoutingActivity.Companion.KEY_ROUTE_LIST
-import com.iceteaviet.fastfoodfinder.ui.store.StoreInfoDialog
 import com.iceteaviet.fastfoodfinder.utils.*
 import com.iceteaviet.fastfoodfinder.utils.Constant.DEFAULT_ZOOM_LEVEL
 import com.iceteaviet.fastfoodfinder.utils.ui.animateMarker

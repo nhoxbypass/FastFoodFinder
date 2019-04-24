@@ -1,4 +1,4 @@
-package com.iceteaviet.fastfoodfinder.ui.store
+package com.iceteaviet.fastfoodfinder.ui.main.map
 
 import android.app.Dialog
 import android.content.pm.PackageManager
@@ -13,7 +13,9 @@ import androidx.annotation.Nullable
 import androidx.fragment.app.DialogFragment
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
+import com.iceteaviet.fastfoodfinder.ui.store.StoreDetailActivity
 import com.iceteaviet.fastfoodfinder.ui.store.StoreDetailActivity.Companion.KEY_STORE
+import com.iceteaviet.fastfoodfinder.ui.store.StoreDetailAdapter
 import com.iceteaviet.fastfoodfinder.utils.*
 import kotlinx.android.synthetic.main.fragment_store_info.*
 
