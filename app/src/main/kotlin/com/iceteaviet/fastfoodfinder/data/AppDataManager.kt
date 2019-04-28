@@ -182,6 +182,10 @@ class AppDataManager(private val localStoreDataSource: StoreDataSource, private 
         if (!::searchHistory.isInitialized)
             searchHistory = preferencesHelper.getSearchHistories()
 
+        if (searchHistory.contains(searchContent)) {
+            // Remove old element to push the most recent search to the top of the list
+            searchHistory.remove(searchContent)
+        }
         searchHistory.add(searchContent)
         preferencesHelper.setSearchHistories(searchHistory)
     }
