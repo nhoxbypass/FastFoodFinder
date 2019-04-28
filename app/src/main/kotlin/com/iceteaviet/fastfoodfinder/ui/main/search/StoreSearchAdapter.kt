@@ -8,6 +8,7 @@ import androidx.annotation.NonNull
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.ui.custom.store.BaseStoreAdapter
+import com.iceteaviet.fastfoodfinder.utils.Constant
 import kotlinx.android.synthetic.main.item_recently_location.view.*
 
 /**
@@ -54,7 +55,7 @@ class StoreSearchAdapter internal constructor() : BaseStoreAdapter() {
     override fun getItemViewType(position: Int): Int {
         val store = storeList[position]
 
-        return if (recentlySearch.contains(store.id.toString())) {
+        return if (recentlySearch.contains(Constant.SEARCH_STORE_PREFIX + store.id)) {
             TYPE_SEARCH_RECENTLY
         } else if (store.id != -1) {
             TYPE_SEARCH_NORMAL

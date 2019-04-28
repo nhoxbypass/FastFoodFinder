@@ -39,7 +39,23 @@ class AppPreferencesHelper(context: Context) : PreferencesHelper {
         return sharedPreferences.getBoolean(key, defaultValue)
     }
 
+    override fun putInt(key: String, value: Int) {
+        sharedPreferences.edit()
+                .putInt(key, value)
+                .apply()
+    }
+
+    override fun getInt(key: String, defaultValue: Int): Int {
+        return sharedPreferences.getInt(key, defaultValue)
+    }
+
     override fun setStringSet(key: String, set: MutableSet<String>) {
+        // Small hack to fix bug cannot update StringSet in SharedPreferences
+        // The getStringSet() returns a reference of the stored HashSet object inside the SharedPreferences
+        // @see: https://stackoverflow.com/questions/14034803/misbehavior-when-trying-to-store-a-string-set-using-sharedpreferences
+        putInt(key + "_size", set.size)
+
+        // Then store the StringSet itself
         sharedPreferences.edit()
                 .putStringSet(key, set)
                 .apply()
@@ -82,5 +98,6 @@ class AppPreferencesHelper(context: Context) : PreferencesHelper {
         private const val KEY_APP_LAUNCH_FIRST_TIME = "app_launch_first_time"
         private const val KEY_NUMBER_OF_STORES = "number_of_stores"
         private const val KEY_SEARCH_HISTORIES = "search_histories"
+        private const val KEY_SEARCH_HISTORIES_SIZE = "search_histories_size"
     }
 }

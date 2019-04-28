@@ -13,6 +13,10 @@ interface PreferencesHelper {
 
     fun getBoolean(key: String, defaultValue: Boolean): Boolean
 
+    fun putInt(key: String, value: Int)
+
+    fun getInt(key: String, defaultValue: Int): Int
+
     fun setStringSet(key: String, set: MutableSet<String>)
 
     fun getStringSet(key: String, defaultValue: MutableSet<String>): MutableSet<String>
