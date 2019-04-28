@@ -36,6 +36,16 @@ class CreateListDialog : DialogFragment(), CreateListContract.View, View.OnClick
         setupEventListeners()
     }
 
+    override fun onResume() {
+        super.onResume()
+        presenter.subscribe()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        presenter.unsubscribe()
+    }
+
     private fun setupEventListeners() {
         ivQuit!!.setOnClickListener(this)
         btnDone!!.setOnClickListener(this)
