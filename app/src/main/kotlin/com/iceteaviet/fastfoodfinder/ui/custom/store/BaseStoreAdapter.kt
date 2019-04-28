@@ -1,34 +1,23 @@
-package com.iceteaviet.fastfoodfinder.ui.main.search
+package com.iceteaviet.fastfoodfinder.ui.custom.store
 
 import android.graphics.Color
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
-import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
-import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.ui.main.ItemTouchHelperAdapter
 import com.iceteaviet.fastfoodfinder.ui.main.ItemTouchHelperViewHolder
-import kotlinx.android.synthetic.main.item_recently_location.view.*
 import java.util.*
 
 /**
  * Created by MyPC on 11/16/2016.
  */
-class SuggestedSearchStoreAdapter internal constructor() : RecyclerView.Adapter<SuggestedSearchStoreAdapter.RecentlySearchStoreViewHolder>(), ItemTouchHelperAdapter {
-    private val storeList: MutableList<Store>
-    private var mOnItemClickListener: OnItemClickListener? = null
+abstract class BaseStoreAdapter internal constructor() : RecyclerView.Adapter<BaseStoreAdapter.BaseStoreViewHolder>(), ItemTouchHelperAdapter {
+
+    protected val storeList: MutableList<Store>
+    private var onItemClickListener: OnItemClickListener? = null
 
     init {
         storeList = ArrayList()
-    }
-
-    override fun onCreateViewHolder(@NonNull parent: ViewGroup, viewType: Int): RecentlySearchStoreViewHolder {
-        val itemView = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_search_suggestion, parent, false)
-        return RecentlySearchStoreViewHolder(itemView)
     }
 
     override fun onItemMove(fromPosition: Int, toPosition: Int): Boolean {
@@ -41,7 +30,7 @@ class SuggestedSearchStoreAdapter internal constructor() : RecyclerView.Adapter<
     }
 
     fun setOnItemClickListener(listener: OnItemClickListener) {
-        mOnItemClickListener = listener
+        onItemClickListener = listener
     }
 
     fun addStores(destinations: List<Store>) {
@@ -61,7 +50,7 @@ class SuggestedSearchStoreAdapter internal constructor() : RecyclerView.Adapter<
         notifyDataSetChanged()
     }
 
-    override fun onBindViewHolder(holder: RecentlySearchStoreViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: BaseStoreViewHolder, position: Int) {
         val store = storeList[position]
         holder.setData(store)
     }
@@ -74,16 +63,13 @@ class SuggestedSearchStoreAdapter internal constructor() : RecyclerView.Adapter<
         fun onClick(store: Store)
     }
 
-    inner class RecentlySearchStoreViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), ItemTouchHelperViewHolder {
-        var txtTitle: TextView = itemView.tv_item_title
-        var txtAddress: TextView = itemView.tv_item_address
-
+    abstract inner class BaseStoreViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), ItemTouchHelperViewHolder {
         init {
             itemView.setOnClickListener {
                 val position = adapterPosition
                 val store = storeList[position]
-                if (mOnItemClickListener != null) {
-                    mOnItemClickListener!!.onClick(store)
+                if (onItemClickListener != null) {
+                    onItemClickListener!!.onClick(store)
                 }
             }
         }
@@ -96,10 +82,6 @@ class SuggestedSearchStoreAdapter internal constructor() : RecyclerView.Adapter<
             itemView.setBackgroundColor(0)
         }
 
-        fun setData(store: Store) {
-            txtTitle.text = store.title
-            txtAddress.text = store.address
-        }
+        abstract fun setData(store: Store)
     }
-
 }

@@ -25,5 +25,6 @@ object Constant {
     @JvmStatic
     val DEFAULT_MAP_TARGET = LatLng(10.773996, 106.6898035)
 
-    const val SEARCH_STORE_PREFIX = "$-"
+    const val SEARCH_STORE_PREFIX = "search-store-id_"
+    const val SEARCH_STORE_PREFIX_LEN = SEARCH_STORE_PREFIX.length
 }

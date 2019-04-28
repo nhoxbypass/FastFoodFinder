@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tool="http://schemas.android.com/tools"
     android:id="@+id/fl_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -8,42 +8,48 @@
     android:padding="12dp">
 
     <ImageView
+        android:id="@+id/recently_store_icon"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_gravity="center_vertical"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_all_clock_grey" />
+        android:src="@drawable/ic_clock_outline_grey" />
 
-    <RelativeLayout
-        android:layout_width="248dp"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp">
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_toLeftOf="@id/btn_goto_store"
+        android:layout_toRightOf="@id/recently_store_icon"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/tv_item_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="end"
-            android:text="Circle K Nguyen Van Cu"
             android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tool:text="Circle K Nguyen Van Cu" />
 
         <TextView
             android:id="@+id/tv_item_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_item_title"
             android:layout_marginTop="5dp"
             android:ellipsize="end"
-            android:text="225, Nguyen Van Cu, Quan 5, HCM"
-            android:textSize="14sp" />
-    </RelativeLayout>
+            android:textSize="14sp"
+            tool:text="225, Nguyen Van Cu, Quan 5, HCM" />
+    </LinearLayout>
 
     <ImageView
+        android:id="@+id/btn_goto_store"
         android:layout_width="28dp"
         android:layout_height="28dp"
-        android:layout_gravity="center_vertical"
-        android:layout_marginLeft="12dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
         android:src="@drawable/ic_main_goto" />
 
-</LinearLayout>
+</RelativeLayout>

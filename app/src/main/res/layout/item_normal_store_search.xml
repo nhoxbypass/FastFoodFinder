@@ -11,7 +11,7 @@
         android:layout_weight="1"
         android:padding="8dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_all_clock_grey" />
+        android:src="@drawable/ic_marker_outline_grey" />
 
     <LinearLayout
         android:layout_width="0dp"
