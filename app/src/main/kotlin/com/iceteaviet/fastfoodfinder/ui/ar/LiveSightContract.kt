@@ -1,7 +1,7 @@
 package com.iceteaviet.fastfoodfinder.ui.ar
 
 import android.location.Location
-import com.iceteaviet.fastfoodfinder.data.local.poi.model.AugmentedPOI
+import com.iceteaviet.fastfoodfinder.ui.ar.model.AugmentedPOI
 import com.iceteaviet.fastfoodfinder.ui.base.BaseView
 
 /**

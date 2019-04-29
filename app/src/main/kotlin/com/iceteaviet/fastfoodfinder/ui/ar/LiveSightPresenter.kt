@@ -2,8 +2,8 @@ package com.iceteaviet.fastfoodfinder.ui.ar
 
 import android.location.Location
 import com.iceteaviet.fastfoodfinder.data.DataManager
-import com.iceteaviet.fastfoodfinder.data.local.poi.model.AugmentedPOI
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
+import com.iceteaviet.fastfoodfinder.ui.ar.model.AugmentedPOI
 import com.iceteaviet.fastfoodfinder.ui.base.BasePresenter
 import com.iceteaviet.fastfoodfinder.utils.isLolipopOrHigher
 import com.iceteaviet.fastfoodfinder.utils.ui.getStoreLogoDrawableRes

@@ -1,4 +1,4 @@
-package com.iceteaviet.fastfoodfinder.data.local.poi.model
+package com.iceteaviet.fastfoodfinder.ui.ar.model
 
 import android.location.Location
 
