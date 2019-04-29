@@ -1,4 +1,4 @@
-package com.iceteaviet.fastfoodfinder.ui.main.map
+package com.iceteaviet.fastfoodfinder.ui.main.map.storeinfo
 
 import android.app.Dialog
 import android.content.pm.PackageManager
