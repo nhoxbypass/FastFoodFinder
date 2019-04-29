@@ -74,8 +74,6 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
                         mStoreList = storeList.toMutableList()
                         if (mStoreList == null || mStoreList!!.size <= 0)
                             mainMapView.showWarningMessage(R.string.get_store_data_failed)
-
-                        mainMapView.addMarkersToMap(mStoreList!!)
                     }
 
                     override fun onError(e: Throwable) {
@@ -112,6 +110,8 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
     }
 
     override fun onGetMapAsync() {
+        mainMapView.addMarkersToMap(mStoreList!!)
+
         mainMapView.setupMapEventHandlers()
 
         cameraPositionPublisher!!
