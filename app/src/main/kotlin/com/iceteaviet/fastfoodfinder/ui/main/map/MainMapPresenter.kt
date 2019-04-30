@@ -63,6 +63,8 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
         mainMapView.setupMap()
 
         dataManager.getLocalStoreDataSource().getAllStores()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : SingleObserver<List<Store>> {
                     override fun onSubscribe(d: Disposable) {
                         compositeDisposable.add(d)
@@ -84,7 +86,10 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
 
     override fun unsubscribe() {
         super.unsubscribe()
+        cameraPositionPublisher!!.onComplete()
+        cameraPositionPublisher = null
         newVisibleStorePublisher!!.onComplete()
+        newVisibleStorePublisher = null
         EventBus.getDefault().unregister(this)
     }
 
@@ -117,19 +122,23 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
 
         cameraPositionPublisher!!
                 .debounce(200, TimeUnit.MILLISECONDS)
+                .subscribeOn(Schedulers.computation())
+                .map {
+                    visibleStores = getVisibleStore(storeList, it.cameraBounds)
+                    generateNearByStoresWithDistance(it.cameraPosition, visibleStores)
+                }
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : Observer<MapCameraPosition> {
+                .subscribe(object : Observer<List<NearByStore>> {
                     override fun onSubscribe(d: Disposable) {
                         compositeDisposable.add(d)
                     }
 
-                    override fun onNext(cameraPosition: MapCameraPosition) {
-                        visibleStores = getVisibleStore(storeList, cameraPosition.cameraBounds)
-                        mainMapView.setNearByStores(generateNearByStoresWithDistance(cameraPosition.cameraPosition, visibleStores))
+                    override fun onNext(nearbyStores: List<NearByStore>) {
+                        mainMapView.setNearByStores(nearbyStores)
                     }
 
                     override fun onError(e: Throwable) {
-
+                        e.printStackTrace()
                     }
 
                     override fun onComplete() {
@@ -138,7 +147,7 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
                 })
 
         newVisibleStorePublisher!!
-                .observeOn(Schedulers.computation())
+                .subscribeOn(Schedulers.io())
                 .map { store ->
                     val marker = markerSparseArray.get(store.id)
 
@@ -201,6 +210,8 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
         queries[GoogleMapsRoutingApiHelper.PARAM_DESTINATION] = destination
 
         dataManager.getMapsRoutingApiHelper().getMapsDirection(queries, store)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : SingleObserver<MapsDirection> {
                     override fun onSubscribe(d: Disposable) {
                         compositeDisposable.add(d)
@@ -226,6 +237,8 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
             SearchEventResult.SEARCH_ACTION_QUICK -> {
                 dataManager.getLocalStoreDataSource()
                         .findStoresByType(searchEventResult.storeType)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(object : SingleObserver<List<Store>> {
                             override fun onSubscribe(d: Disposable) {
                                 compositeDisposable.add(d)
@@ -257,6 +270,8 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
 
                 dataManager.getLocalStoreDataSource()
                         .findStores(searchEventResult.searchString)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(object : SingleObserver<List<Store>> {
                             override fun onSubscribe(d: Disposable) {
                                 compositeDisposable.add(d)
@@ -285,6 +300,8 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
 
             SearchEventResult.SEARCH_ACTION_COLLAPSE -> {
                 dataManager.getLocalStoreDataSource().getAllStores()
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(object : SingleObserver<List<Store>> {
                             override fun onSubscribe(d: Disposable) {
                                 compositeDisposable.add(d)

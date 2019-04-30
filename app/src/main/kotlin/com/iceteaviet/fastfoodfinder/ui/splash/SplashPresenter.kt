@@ -36,7 +36,7 @@ class SplashPresenter : BasePresenter<SplashContract.Presenter>, SplashContract.
                     // TODO: Support timeout
                     dataManager.getRemoteUserDataSource().getUser(uid)
                             .subscribeOn(Schedulers.io())
-                            .observeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(object : SingleObserver<User> {
                                 override fun onSubscribe(d: Disposable) {
                                     compositeDisposable.add(d)

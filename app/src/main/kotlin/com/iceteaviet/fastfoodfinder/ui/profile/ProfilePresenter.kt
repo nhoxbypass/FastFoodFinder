@@ -6,7 +6,9 @@ import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList
 import com.iceteaviet.fastfoodfinder.ui.base.BasePresenter
 import com.iceteaviet.fastfoodfinder.utils.isValidUserUid
 import io.reactivex.SingleObserver
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import java.util.*
 
 /**
@@ -78,6 +80,8 @@ class ProfilePresenter : BasePresenter<ProfileContract.Presenter>, ProfileContra
             return
 
         dataManager.getRemoteUserDataSource().getUser(uid)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : SingleObserver<User> {
                     override fun onSubscribe(d: Disposable) {
                         compositeDisposable.add(d)

@@ -16,6 +16,7 @@ import com.iceteaviet.fastfoodfinder.utils.w
 import io.reactivex.Single
 import io.reactivex.SingleObserver
 import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import io.realm.Realm
 import io.realm.RealmConfiguration
 
@@ -68,6 +69,7 @@ class AppDataManager(private val localStoreDataSource: StoreDataSource, private 
             if (!clientAuth.isSignedIn()) {
                 // Not signed in
                 clientAuth.signInWithEmailAndPassword(Constant.DOWNLOADER_BOT_EMAIL, Constant.DOWNLOADER_BOT_PWD)
+                        .subscribeOn(Schedulers.io())
                         .subscribe(object : SingleObserver<User> {
                             override fun onSubscribe(d: Disposable) {
 
@@ -75,6 +77,7 @@ class AppDataManager(private val localStoreDataSource: StoreDataSource, private 
 
                             override fun onSuccess(user: User) {
                                 remoteStoreDataSource.getAllStores()
+                                        .subscribeOn(Schedulers.io())
                                         .subscribe(object : SingleObserver<List<Store>> {
                                             override fun onSubscribe(d: Disposable) {
 
@@ -99,6 +102,7 @@ class AppDataManager(private val localStoreDataSource: StoreDataSource, private 
                         })
             } else {
                 remoteStoreDataSource.getAllStores()
+                        .subscribeOn(Schedulers.io())
                         .subscribe(object : SingleObserver<List<Store>> {
                             override fun onSubscribe(d: Disposable) {
 

@@ -7,7 +7,9 @@ import com.iceteaviet.fastfoodfinder.ui.base.BasePresenter
 import com.iceteaviet.fastfoodfinder.utils.Constant
 import com.iceteaviet.fastfoodfinder.utils.getStoreSearchString
 import io.reactivex.SingleObserver
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import org.greenrobot.eventbus.EventBus
 
 /**
@@ -45,6 +47,8 @@ class SearchPresenter : BasePresenter<SearchContract.Presenter>, SearchContract.
     override fun onUpdateSearchList(searchText: String) {
         dataManager.getLocalStoreDataSource()
                 .findStores(searchText)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : SingleObserver<List<Store>> {
                     override fun onSubscribe(d: Disposable) {
 
