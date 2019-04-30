@@ -53,7 +53,7 @@ class LoginPresenter : BasePresenter<LoginContract.Presenter>, LoginContract.Pre
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : SingleObserver<User> {
                     override fun onSubscribe(d: Disposable) {
-
+                        compositeDisposable.add(d)
                     }
 
                     override fun onSuccess(user: User) {
@@ -90,7 +90,7 @@ class LoginPresenter : BasePresenter<LoginContract.Presenter>, LoginContract.Pre
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : SingleObserver<User> {
                     override fun onSubscribe(d: Disposable) {
-
+                        compositeDisposable.add(d)
                     }
 
                     override fun onSuccess(user: User) {
@@ -115,7 +115,7 @@ class LoginPresenter : BasePresenter<LoginContract.Presenter>, LoginContract.Pre
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : SingleObserver<User> {
                     override fun onSubscribe(d: Disposable) {
-
+                        compositeDisposable.add(d)
                     }
 
                     override fun onSuccess(user: User) {

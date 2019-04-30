@@ -38,6 +38,7 @@ class EmailRegisterPresenter : BasePresenter<EmailRegisterContract.Presenter>, E
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(object : SingleObserver<User> {
                                 override fun onSubscribe(d: Disposable) {
+                                    compositeDisposable.add(d)
                                 }
 
                                 override fun onSuccess(user: User) {

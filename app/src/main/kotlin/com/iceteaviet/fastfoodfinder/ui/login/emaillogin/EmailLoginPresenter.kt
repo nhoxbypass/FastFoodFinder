@@ -36,6 +36,7 @@ class EmailLoginPresenter : BasePresenter<EmailLoginContract.Presenter>, EmailLo
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(object : SingleObserver<User> {
                             override fun onSubscribe(d: Disposable) {
+                                compositeDisposable.add(d)
                             }
 
                             override fun onSuccess(user: User) {
