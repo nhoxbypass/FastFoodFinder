@@ -40,8 +40,8 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
     private val mainMapView: MainMapContract.View
 
     private var currLocation: LatLng? = null
-    private var mStoreList: MutableList<Store>? = null
-    private var visibleStores: List<Store>? = null
+    private var storeList: MutableList<Store> = ArrayList()
+    private var visibleStores: List<Store> = ArrayList()
     private var isZoomToUser = false
 
     private var markerSparseArray: SparseArray<Marker> = SparseArray() // pair storeId - marker
@@ -55,8 +55,6 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
     }
 
     override fun subscribe() {
-        mStoreList = ArrayList()
-        visibleStores = ArrayList()
         newVisibleStorePublisher = PublishSubject.create()
         cameraPositionPublisher = PublishSubject.create()
 
@@ -71,9 +69,11 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
                     }
 
                     override fun onSuccess(storeList: List<Store>) {
-                        mStoreList = storeList.toMutableList()
-                        if (mStoreList == null || mStoreList!!.size <= 0)
+                        this@MainMapPresenter.storeList = storeList.toMutableList()
+                        if (storeList.isEmpty())
                             mainMapView.showWarningMessage(R.string.get_store_data_failed)
+                        else
+                            mainMapView.addMarkersToMap(this@MainMapPresenter.storeList)
                     }
 
                     override fun onError(e: Throwable) {
@@ -110,7 +110,8 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
     }
 
     override fun onGetMapAsync() {
-        mainMapView.addMarkersToMap(mStoreList!!)
+        if (storeList.isNotEmpty())
+            mainMapView.addMarkersToMap(storeList)
 
         mainMapView.setupMapEventHandlers()
 
@@ -123,10 +124,8 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
                     }
 
                     override fun onNext(cameraPosition: MapCameraPosition) {
-                        visibleStores = getVisibleStore(mStoreList!!, cameraPosition.cameraBounds)
-                        visibleStores?.let {
-                            mainMapView.setNearByStores(generateNearByStoresWithDistance(cameraPosition.cameraPosition, it))
-                        }
+                        visibleStores = getVisibleStore(storeList, cameraPosition.cameraBounds)
+                        mainMapView.setNearByStores(generateNearByStoresWithDistance(cameraPosition.cameraPosition, visibleStores))
                     }
 
                     override fun onError(e: Throwable) {
@@ -238,12 +237,12 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
                                     return
                                 }
 
-                                mStoreList = storeList.toMutableList()
-                                mainMapView.addMarkersToMap(mStoreList!!)
+                                this@MainMapPresenter.storeList = storeList.toMutableList()
+                                mainMapView.addMarkersToMap(this@MainMapPresenter.storeList)
                                 mainMapView.animateMapCamera(storeList[0].getPosition(), false)
 
                                 /*mAdapter!!.setCurrCameraPosition(mGoogleMap!!.cameraPosition.target)
-                                visibleStores = getVisibleStore(mStoreList!!, mGoogleMap!!.projection.visibleRegion.latLngBounds)
+                                visibleStores = getVisibleStore(storeList!!, mGoogleMap!!.projection.visibleRegion.latLngBounds)
                                 visibleStores?.let { mAdapter!!.setStores(it) }*/
                             }
 
@@ -269,12 +268,12 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
                                     return
                                 }
 
-                                mStoreList = storeList.toMutableList()
-                                mainMapView.addMarkersToMap(mStoreList!!)
+                                this@MainMapPresenter.storeList = storeList.toMutableList()
+                                mainMapView.addMarkersToMap(this@MainMapPresenter.storeList)
                                 mainMapView.animateMapCamera(storeList[0].getPosition(), false)
 
                                 /*mAdapter!!.setCurrCameraPosition(mGoogleMap!!.cameraPosition.target)
-                                visibleStores = getVisibleStore(mStoreList!!, mGoogleMap!!.projection.visibleRegion.latLngBounds)
+                                visibleStores = getVisibleStore(storeList!!, mGoogleMap!!.projection.visibleRegion.latLngBounds)
                                 visibleStores?.let { mAdapter!!.setStores(it) }*/
                             }
 
@@ -297,8 +296,8 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
                                     return
                                 }
 
-                                mStoreList = storeList.toMutableList()
-                                mainMapView.addMarkersToMap(mStoreList!!)
+                                this@MainMapPresenter.storeList = storeList.toMutableList()
+                                mainMapView.addMarkersToMap(this@MainMapPresenter.storeList)
                             }
 
                             override fun onError(e: Throwable) {
@@ -312,10 +311,10 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
 
             SearchEventResult.SEARCH_ACTION_STORE_CLICK -> {
                 if (searchEventResult.store != null) {
-                    mStoreList = ArrayList()
-                    mStoreList!!.add(searchEventResult.store!!)
+                    storeList = ArrayList()
+                    storeList.add(searchEventResult.store!!)
 
-                    mainMapView.addMarkersToMap(mStoreList!!)
+                    mainMapView.addMarkersToMap(storeList)
                     mainMapView.animateMapCamera(searchEventResult.store!!.getPosition(), false)
 
                     mainMapView.clearNearByStores()

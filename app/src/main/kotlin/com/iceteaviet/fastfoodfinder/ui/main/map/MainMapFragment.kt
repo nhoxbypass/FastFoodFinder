@@ -162,13 +162,10 @@ class MainMapFragment : Fragment(), MainMapContract.View, GoogleApiClient.Connec
     }
 
     override fun addMarkersToMap(storeList: MutableList<Store>) {
-        if (storeList.isEmpty()) {
-            return
-        }
-
         if (googleMap == null)
             return
 
+        // Clear old markers
         googleMap!!.clear()
 
         for (i in storeList.indices) {
