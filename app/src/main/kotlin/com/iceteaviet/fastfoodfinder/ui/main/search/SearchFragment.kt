@@ -116,10 +116,6 @@ class SearchFragment : Fragment(), SearchContract.View {
         searchAdapter!!.setStores(searchStores)
     }
 
-    override fun hide() {
-        searchContainer.visibility = View.GONE
-    }
-
     override fun showStoreListView() {
         val intent = Intent(context, StoreListActivity::class.java)
         startActivity(intent)

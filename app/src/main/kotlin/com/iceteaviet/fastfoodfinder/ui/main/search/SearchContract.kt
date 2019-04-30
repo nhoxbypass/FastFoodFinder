@@ -10,7 +10,6 @@ interface SearchContract {
     interface View : BaseView<Presenter> {
         fun setSearchHistory(searchHistory: List<String>, recentlyStores: List<Store>)
         fun setSearchStores(searchStores: List<Store>)
-        fun hide()
         fun showStoreListView()
     }
 

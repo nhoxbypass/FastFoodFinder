@@ -41,7 +41,6 @@ class SearchPresenter : BasePresenter<SearchContract.Presenter>, SearchContract.
     override fun onQuickSearchItemClick(storeType: Int) {
         searchString = getStoreSearchString(storeType)
         EventBus.getDefault().post(SearchEventResult(SearchEventResult.SEARCH_ACTION_QUICK, searchString, storeType))
-        searchView.hide()
     }
 
     override fun onUpdateSearchList(searchText: String) {

@@ -351,7 +351,7 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
             if (bounds.contains(store.getPosition())) {
                 // Inside visible range
                 stores.add(store)
-                if (!this.visibleStores!!.contains(store)) {
+                if (!this.visibleStores.contains(store)) {
                     // New store become visible
                     newVisibleStorePublisher!!.onNext(store)
                 }

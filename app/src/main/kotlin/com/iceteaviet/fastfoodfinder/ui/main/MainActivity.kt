@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -26,53 +25,47 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.google.android.material.navigation.NavigationView
+import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
-import com.iceteaviet.fastfoodfinder.data.transport.model.SearchEventResult
 import com.iceteaviet.fastfoodfinder.ui.ar.LiveSightActivity
 import com.iceteaviet.fastfoodfinder.ui.base.BaseActivity
 import com.iceteaviet.fastfoodfinder.ui.main.search.SearchFragment
 import com.iceteaviet.fastfoodfinder.ui.profile.ProfileFragment
 import com.iceteaviet.fastfoodfinder.ui.settings.SettingActivity
-import com.iceteaviet.fastfoodfinder.utils.Constant
 import com.iceteaviet.fastfoodfinder.utils.e
 import com.iceteaviet.fastfoodfinder.utils.openLoginActivity
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_main.*
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 
 //TODO: Check !! of SearchView
 
-class MainActivity : BaseActivity(), View.OnClickListener {
+class MainActivity : BaseActivity(), MainContract.View, View.OnClickListener {
+    override lateinit var presenter: MainContract.Presenter
+
     lateinit var mNavigationView: NavigationView
     lateinit var drawerLayout: DrawerLayout
     lateinit var mToolbar: Toolbar
     private var mSearchView: SearchView? = null
-    private var mNavHeaderAvatar: CircleImageView? = null
-    private var mNavHeaderName: TextView? = null
-    private var mNavHeaderScreenName: TextView? = null
+    private var navHeaderAvatar: CircleImageView? = null
+    private var navHeaderName: TextView? = null
+    private var navHeaderEmail: TextView? = null
     private var mSearchInput: EditText? = null
     private var mNavHeaderSignIn: Button? = null
     private var mDrawerToggle: ActionBarDrawerToggle? = null
     private var searchFragment: SearchFragment? = null
 
     private var searchItem: MenuItem? = null
-    private var profileItem: MenuItem? = null
+
+    override val layoutId: Int
+        get() = R.layout.activity_main
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        mNavigationView = nav_view
-        drawerLayout = drawer_layout
-        mToolbar = toolbar
+        presenter = MainPresenter(App.getDataManager(), this)
 
-        setSupportActionBar(mToolbar)
-        setupAllViews()
-        setupEventListeners()
-
-        // Initialize Auth
-        initAuth()
+        setupUI()
+        setupEventHandlers()
 
         //Inflate Map fragment
         mNavigationView.menu.getItem(0).isChecked = true
@@ -86,14 +79,14 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         mDrawerToggle!!.syncState()
     }
 
-    override fun onPause() {
-        super.onPause()
-        EventBus.getDefault().unregister(this)
-    }
-
     override fun onResume() {
         super.onResume()
-        EventBus.getDefault().register(this)
+        presenter.subscribe()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        presenter.unsubscribe()
     }
 
 
@@ -127,49 +120,102 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         mDrawerToggle!!.onConfigurationChanged(newConfig)
     }
 
-    override val layoutId: Int
-        get() = R.layout.activity_main
+    override fun showProfileView() {
+        replaceFragment(ProfileFragment.newInstance(), getString(R.string.profile))
+    }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onSearchResult(searchEventResult: SearchEventResult) {
-        val resultCode = searchEventResult.resultCode
-        when (resultCode) {
-            SearchEventResult.SEARCH_ACTION_QUICK -> {
-                mSearchView!!.setQuery(searchEventResult.searchString, false)
-                // Check if no view has focus:
-                val view = this.currentFocus
-                if (view != null) {
-                    val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                    imm.hideSoftInputFromWindow(view.windowToken, 0)
-                    view.clearFocus()
-                    mSearchInput!!.clearFocus()
-                }
-            }
-            SearchEventResult.SEARCH_ACTION_QUERY_SUBMIT -> {
-                removeSearchFragment()
-                if (!searchEventResult.searchString.isBlank()) {
-                    dataManager.addSearchHistories(searchEventResult.searchString)
-                    mSearchView!!.setQuery(searchEventResult.searchString, false)
-                    mSearchView!!.clearFocus()
-                }
-            }
+    override fun showLoginView() {
+        openLoginActivity(this)
+    }
 
-            SearchEventResult.SEARCH_ACTION_COLLAPSE -> {
-            }
+    override fun showARLiveSightView() {
+        val arIntent = Intent(this, LiveSightActivity::class.java)
+        startActivity(arIntent)
+    }
 
-            SearchEventResult.SEARCH_ACTION_STORE_CLICK -> {
-                if (searchEventResult.store != null) {
-                    mSearchView!!.setQuery(searchEventResult.store!!.title, false)
-                    mSearchView!!.clearFocus()
+    override fun showSettingsView() {
+        val settingIntent = Intent(this, SettingActivity::class.java)
+        startActivity(settingIntent)
+    }
 
-                    removeSearchFragment()
+    override fun setSearchQueryText(searchString: String) {
+        mSearchView!!.setQuery(searchString, false)
+    }
 
-                    dataManager.addSearchHistories(Constant.SEARCH_STORE_PREFIX + searchEventResult.store!!.id)
-                }
-            }
-
-            else -> Toast.makeText(this, R.string.search_error, Toast.LENGTH_SHORT).show()
+    override fun hideKeyboard() {
+        // Check if no view has focus:
+        val view = this.currentFocus
+        if (view != null) {
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
         }
+    }
+
+    override fun clearFocus() {
+        val view = this.currentFocus
+        if (view != null) {
+            view.clearFocus()
+        }
+        mSearchInput!!.clearFocus()
+        mSearchView!!.clearFocus()
+    }
+
+    override fun showSearchWarningMessage() {
+        Toast.makeText(this, R.string.search_error, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun showSearchView() {
+        val ft = supportFragmentManager.beginTransaction()
+        ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+
+        if (searchFragment == null)
+            searchFragment = SearchFragment.newInstance()
+
+        val fragmentPlaceHolder = findViewById<View>(R.id.fragment_search_placeholder)
+        fragmentPlaceHolder.visibility = View.VISIBLE
+        ft.replace(R.id.fragment_search_placeholder, searchFragment!!, "search-fragment")
+
+        // Start the animated transition.
+        ft.commit()
+    }
+
+    override fun hideSearchView() {
+        val ft = supportFragmentManager.beginTransaction()
+        ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+
+        val fragment = supportFragmentManager.findFragmentById(R.id.fragment_search_placeholder)
+
+        if (fragment != null) {
+            ft.remove(fragment)
+        }
+
+        ft.commit()
+    }
+
+    override fun updateProfileHeader(showSignIn: Boolean) {
+        if (showSignIn) {
+            navHeaderName!!.visibility = View.GONE
+            navHeaderEmail!!.visibility = View.GONE
+            mNavHeaderSignIn!!.visibility = View.VISIBLE
+        } else {
+            navHeaderName!!.visibility = View.VISIBLE
+            navHeaderEmail!!.visibility = View.VISIBLE
+            mNavHeaderSignIn!!.visibility = View.GONE
+        }
+    }
+
+    override fun loadProfileHeaderAvatar(photoUrl: String) {
+        Glide.with(this)
+                .load(photoUrl)
+                .into(navHeaderAvatar!!)
+    }
+
+    override fun setProfileHeaderNameText(name: String) {
+        navHeaderName!!.text = name
+    }
+
+    override fun setProfileHeaderEmailText(email: String) {
+        navHeaderEmail!!.text = email
     }
 
     override fun onClick(view: View) {
@@ -177,48 +223,54 @@ class MainActivity : BaseActivity(), View.OnClickListener {
             R.id.search_close_btn -> {
                 if (!searchFragment!!.isVisible) {
                     MenuItemCompat.collapseActionView(searchItem)
-                    EventBus.getDefault().post(SearchEventResult(SearchEventResult.SEARCH_ACTION_COLLAPSE))
                 }
             }
 
             R.id.btn_nav_header_signin -> {
-                openLoginActivity(this)
+                presenter.onSignInMenuItemClick()
             }
 
             R.id.iv_nav_header_avatar, R.id.tv_nav_header_name, R.id.tv_nav_header_screenname -> {
-                if (profileItem != null) {
-                    // Close the navigation drawer
-                    drawerLayout.closeDrawers()
-
-                    if (dataManager.isSignedIn())
-                        replaceFragment(ProfileFragment.newInstance(), profileItem!!)
-                    else
-                        openLoginActivity(this)
-                }
+                // Close the navigation drawer
+                drawerLayout.closeDrawers()
+                presenter.onProfileMenuItemClick()
             }
         }
     }
 
+    private fun setupUI() {
+        mNavigationView = nav_view
+        drawerLayout = drawer_layout
+        mToolbar = toolbar
 
-    private fun initAuth() {
-        if (!dataManager.isSignedIn() || dataManager.getCurrentUser() == null) {
-            mNavHeaderName!!.visibility = View.GONE
-            mNavHeaderScreenName!!.visibility = View.GONE
-            mNavHeaderSignIn!!.visibility = View.VISIBLE
-        } else {
-            val user = dataManager.getCurrentUser()!!
-            if (TextUtils.isEmpty(user.photoUrl)) {
-                Glide.with(this)
-                        .load(R.drawable.all_noavatar)
-                        .into(mNavHeaderAvatar!!)
-            } else {
-                Glide.with(this)
-                        .load(user.photoUrl)
-                        .into(mNavHeaderAvatar!!)
-            }
-            mNavHeaderName!!.text = user.name
-            mNavHeaderScreenName!!.text = user.email
+        setSupportActionBar(mToolbar)
+
+        mDrawerToggle = ActionBarDrawerToggle(this, drawerLayout, mToolbar, R.string.drawer_open, R.string.drawer_close)
+
+        val headerLayout = mNavigationView.getHeaderView(0)
+        navHeaderAvatar = headerLayout.findViewById(R.id.iv_nav_header_avatar)
+        navHeaderName = headerLayout.findViewById(R.id.tv_nav_header_name)
+        navHeaderEmail = headerLayout.findViewById(R.id.tv_nav_header_screenname)
+        mNavHeaderSignIn = headerLayout.findViewById(R.id.btn_nav_header_signin)
+
+        mDrawerToggle?.let { mDrawerToggle!!.drawerArrowDrawable.color = Color.WHITE }
+    }
+
+    private fun setupEventHandlers() {
+        navHeaderAvatar!!.setOnClickListener(this)
+        navHeaderName!!.setOnClickListener(this)
+        navHeaderEmail!!.setOnClickListener(this)
+
+        mNavHeaderSignIn!!.setOnClickListener(this)
+
+        mNavigationView.setNavigationItemSelectedListener { item ->
+            drawerLayout.closeDrawers()
+            selectDrawerItem(item)
+            true
         }
+
+        // Tie DrawerLayout events to the ActionBarToggle
+        mDrawerToggle?.let { drawerLayout.addDrawerListener(it) }
     }
 
 
@@ -243,7 +295,7 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         // Set on search query submit
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
-                EventBus.getDefault().post(SearchEventResult(SearchEventResult.SEARCH_ACTION_QUERY_SUBMIT, query))
+                presenter.onSearchQuerySubmit(query)
                 return false
             }
 
@@ -269,80 +321,17 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         //Set event expand search view
         MenuItemCompat.setOnActionExpandListener(searchItem, object : MenuItemCompat.OnActionExpandListener {
             override fun onMenuItemActionExpand(menuItem: MenuItem): Boolean {
-                showSearchFragment()
+                presenter.onSearchMenuItemExpand()
                 return true
             }
 
             override fun onMenuItemActionCollapse(menuItem: MenuItem): Boolean {
-                EventBus.getDefault().post(SearchEventResult(SearchEventResult.SEARCH_ACTION_COLLAPSE))
-                removeSearchFragment()
+                presenter.onSearchMenuItemCollapse()
                 return true
             }
         })
 
         return searchView
-    }
-
-
-    private fun showSearchFragment() {
-        val ft = supportFragmentManager.beginTransaction()
-        ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-
-        if (searchFragment == null)
-            searchFragment = SearchFragment.newInstance()
-
-        val fragmentPlaceHolder = findViewById<View>(R.id.fragment_search_placeholder)
-        fragmentPlaceHolder.visibility = View.VISIBLE
-        ft.replace(R.id.fragment_search_placeholder, searchFragment!!, "blankFragment")
-
-        // Start the animated transition.
-        ft.commit()
-    }
-
-
-    private fun removeSearchFragment() {
-        val ft = supportFragmentManager.beginTransaction()
-        ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-
-        val fragment = supportFragmentManager.findFragmentById(R.id.fragment_search_placeholder)
-
-        if (fragment != null) {
-            ft.remove(fragment)
-        }
-
-        ft.commit()
-    }
-
-
-    private fun setupAllViews() {
-        mDrawerToggle = setupDrawerToggle()
-
-        val headerLayout = mNavigationView.getHeaderView(0)
-        mNavHeaderAvatar = headerLayout.findViewById(R.id.iv_nav_header_avatar)
-        mNavHeaderName = headerLayout.findViewById(R.id.tv_nav_header_name)
-        mNavHeaderScreenName = headerLayout.findViewById(R.id.tv_nav_header_screenname)
-        mNavHeaderSignIn = headerLayout.findViewById(R.id.btn_nav_header_signin)
-
-        profileItem = mNavigationView.menu.findItem(R.id.menu_action_profile)
-
-        mDrawerToggle?.let { mDrawerToggle!!.drawerArrowDrawable.color = Color.WHITE }
-
-        // Tie DrawerLayout events to the ActionBarToggle
-        mDrawerToggle?.let { drawerLayout.addDrawerListener(it) }
-    }
-
-    private fun setupEventListeners() {
-        mNavHeaderAvatar!!.setOnClickListener(this)
-        mNavHeaderName!!.setOnClickListener(this)
-        mNavHeaderScreenName!!.setOnClickListener(this)
-
-        mNavHeaderSignIn!!.setOnClickListener(this)
-
-        mNavigationView.setNavigationItemSelectedListener { item ->
-            drawerLayout.closeDrawers()
-            selectDrawerItem(item)
-            true
-        }
     }
 
 
@@ -353,11 +342,7 @@ class MainActivity : BaseActivity(), View.OnClickListener {
 
         when (menuItem.itemId) {
             R.id.menu_action_profile -> {
-                if (dataManager.isSignedIn())
-                    replaceFragment(ProfileFragment.newInstance(), menuItem)
-                else
-                    openLoginActivity(this)
-
+                presenter.onProfileMenuItemClick()
                 return
             }
             R.id.menu_action_map -> {
@@ -367,13 +352,11 @@ class MainActivity : BaseActivity(), View.OnClickListener {
                 return
             }
             R.id.menu_action_ar -> {
-                val arIntent = Intent(this, LiveSightActivity::class.java)
-                startActivity(arIntent)
+                presenter.onARLiveSightMenuItemClick()
                 return
             }
             R.id.menu_action_setting -> {
-                val settingIntent = Intent(this, SettingActivity::class.java)
-                startActivity(settingIntent)
+                presenter.onSettingsMenuItemClick()
                 return
             }
             else -> {
@@ -382,7 +365,7 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    private fun replaceFragment(fragment: Fragment, menuItem: MenuItem) {
+    private fun replaceFragment(fragment: Fragment, actionBarTitle: String) {
         try {
             // Insert the fragment by replacing any existing fragment
             val fragmentManager = supportFragmentManager
@@ -394,15 +377,10 @@ class MainActivity : BaseActivity(), View.OnClickListener {
             fragmentManager.executePendingTransactions()
 
             // Set action bar title
-            title = menuItem.title
+            title = actionBarTitle
         } catch (e: Exception) {
             e.printStackTrace()
         }
-    }
-
-
-    private fun setupDrawerToggle(): ActionBarDrawerToggle {
-        return ActionBarDrawerToggle(this, drawerLayout, mToolbar, R.string.drawer_open, R.string.drawer_close)
     }
 
     companion object {
