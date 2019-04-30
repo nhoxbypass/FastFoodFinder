@@ -113,7 +113,7 @@ class EmailRegisterDialog : DialogFragment(), EmailRegisterContract.View, View.O
     }
 
     override fun notifyRegisterSuccess(user: User) {
-        mListener?.onSuccess(user)
+        mListener?.onSuccess(user, this)
     }
 
     override fun notifyLoginError(e: Throwable) {
@@ -132,7 +132,7 @@ class EmailRegisterDialog : DialogFragment(), EmailRegisterContract.View, View.O
     }
 
     interface OnRegisterCompleteListener {
-        fun onSuccess(user: User)
+        fun onSuccess(user: User, dialog: EmailRegisterDialog)
         fun onError(e: Throwable)
     }
 

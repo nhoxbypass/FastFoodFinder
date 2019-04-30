@@ -101,7 +101,7 @@ class EmailLoginDialog : DialogFragment(), EmailLoginContract.View, View.OnClick
     }
 
     override fun notifyLoginSuccess(user: User) {
-        mListener?.onSuccess(user)
+        mListener?.onSuccess(user, this)
     }
 
     override fun notifyLoginError(e: Throwable) {
@@ -115,7 +115,7 @@ class EmailLoginDialog : DialogFragment(), EmailLoginContract.View, View.OnClick
     }
 
     interface OnLoginCompleteListener {
-        fun onSuccess(user: User)
+        fun onSuccess(user: User, dialog: EmailLoginDialog)
         fun onError(e: Throwable)
     }
 
