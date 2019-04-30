@@ -17,6 +17,6 @@ interface EmailLoginContract {
     }
 
     interface Presenter : com.iceteaviet.fastfoodfinder.ui.base.Presenter {
-        fun onSignUpButtonClicked(email: String, password: String)
+        fun onSignInButtonClicked(email: String, password: String)
     }
 }

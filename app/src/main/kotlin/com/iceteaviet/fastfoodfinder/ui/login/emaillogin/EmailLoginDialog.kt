@@ -59,8 +59,8 @@ class EmailLoginDialog : DialogFragment(), EmailLoginContract.View, View.OnClick
 
     override fun onClick(v: View) {
         when (v.id) {
-            R.id.btn_sign_up -> {
-                presenter.onSignUpButtonClicked(input_email.text.toString(), input_password.text.toString())
+            R.id.btn_sign_in -> {
+                presenter.onSignInButtonClicked(input_email.text.toString(), input_password.text.toString())
             }
         }
     }
@@ -82,7 +82,7 @@ class EmailLoginDialog : DialogFragment(), EmailLoginContract.View, View.OnClick
     }
 
     override fun setLoginButtonProgress(progress: Int) {
-        btn_sign_up.progress = progress
+        btn_sign_in.progress = progress
     }
 
     override fun setInputEnabled(enabled: Boolean) {
@@ -109,7 +109,7 @@ class EmailLoginDialog : DialogFragment(), EmailLoginContract.View, View.OnClick
     }
 
     private fun setupEventHandlers() {
-        btn_sign_up.setOnClickListener(this)
+        btn_sign_in.setOnClickListener(this)
         input_email.setOnTouchListener(this)
         input_password.setOnTouchListener(this)
     }

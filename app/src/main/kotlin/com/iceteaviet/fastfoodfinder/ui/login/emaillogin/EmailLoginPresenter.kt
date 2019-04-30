@@ -26,7 +26,7 @@ class EmailLoginPresenter : BasePresenter<EmailLoginContract.Presenter>, EmailLo
     }
 
     // TODO: Optimize checking logic
-    override fun onSignUpButtonClicked(email: String, password: String) {
+    override fun onSignInButtonClicked(email: String, password: String) {
         setLoginProgressState(1)
 
         if (isValidEmail(email)) {
