@@ -51,7 +51,7 @@ class SearchPresenter : BasePresenter<SearchContract.Presenter>, SearchContract.
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : SingleObserver<List<Store>> {
                     override fun onSubscribe(d: Disposable) {
-
+                        compositeDisposable.add(d)
                     }
 
                     override fun onSuccess(storeList: List<Store>) {

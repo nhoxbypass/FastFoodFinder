@@ -36,7 +36,7 @@ class ListDetailPresenter : BasePresenter<ListDetailContract.Presenter>, ListDet
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : SingleObserver<List<Store>> {
                     override fun onSubscribe(d: Disposable) {
-
+                        compositeDisposable.add(d)
                     }
 
                     override fun onSuccess(storeList: List<Store>) {
