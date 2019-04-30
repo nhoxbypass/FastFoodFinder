@@ -17,8 +17,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
-import com.iceteaviet.fastfoodfinder.ui.main.OnStartDragListener
-import com.iceteaviet.fastfoodfinder.ui.main.SimpleItemTouchHelperCallback
+import com.iceteaviet.fastfoodfinder.ui.custom.itemtouchhelper.OnStartDragListener
+import com.iceteaviet.fastfoodfinder.ui.custom.itemtouchhelper.SimpleItemTouchHelperCallback
 import com.iceteaviet.fastfoodfinder.ui.store.StoreDetailActivity
 import kotlinx.android.synthetic.main.fragment_main_favourited.*
 

@@ -4,8 +4,8 @@ import android.graphics.Color
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
-import com.iceteaviet.fastfoodfinder.ui.main.ItemTouchHelperAdapter
-import com.iceteaviet.fastfoodfinder.ui.main.ItemTouchHelperViewHolder
+import com.iceteaviet.fastfoodfinder.ui.custom.itemtouchhelper.ItemTouchHelperAdapter
+import com.iceteaviet.fastfoodfinder.ui.custom.itemtouchhelper.ItemTouchHelperViewHolder
 import java.util.*
 
 /**

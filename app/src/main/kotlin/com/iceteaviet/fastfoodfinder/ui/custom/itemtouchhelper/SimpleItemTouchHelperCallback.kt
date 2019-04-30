@@ -1,4 +1,4 @@
-package com.iceteaviet.fastfoodfinder.ui.main
+package com.iceteaviet.fastfoodfinder.ui.custom.itemtouchhelper
 
 import android.graphics.Canvas
 
