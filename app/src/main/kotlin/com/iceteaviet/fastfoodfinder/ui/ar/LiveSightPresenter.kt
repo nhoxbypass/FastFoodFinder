@@ -29,7 +29,7 @@ class LiveSightPresenter : BasePresenter<LiveSightContract.Presenter>, LiveSight
         if (isLolipopOrHigher() && !liveSightView.isLocationPermissionGranted()) {
             liveSightView.requestLocationPermission()
         } else {
-            liveSightView.subscribeLocationServices()
+            liveSightView.subscribeLocationUpdate()
         }
 
         if (isLolipopOrHigher() && !liveSightView.isCameraPermissionGranted()) {
@@ -43,20 +43,20 @@ class LiveSightPresenter : BasePresenter<LiveSightContract.Presenter>, LiveSight
     }
 
     override fun unsubscribe() {
-        liveSightView.unsubscribeLocationServices()
+        liveSightView.unsubscribeLocationUpdate()
         liveSightView.releaseARCamera()
         super.unsubscribe()
     }
 
     override fun onLocationPermissionGranted() {
-        liveSightView.subscribeLocationServices()
+        liveSightView.subscribeLocationUpdate()
     }
 
     override fun onCameraPermissionGranted() {
         liveSightView.initARCameraView()
     }
 
-    override fun onLocationChanged(location: Location) {
+    override fun onCurrLocationChanged(location: Location) {
         liveSightView.updateLatestLocation(location)
         dataManager.getLocalStoreDataSource().getStoreInBounds(location.latitude - RADIUS,
                 location.longitude - RADIUS,

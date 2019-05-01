@@ -16,10 +16,6 @@ import androidx.annotation.Nullable
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.gms.common.api.GoogleApiClient
-import com.google.android.gms.location.LocationListener
-import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.GoogleMapOptions
@@ -33,11 +29,16 @@ import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
+import com.iceteaviet.fastfoodfinder.location.GoogleLocationManager
+import com.iceteaviet.fastfoodfinder.location.LocationListener
 import com.iceteaviet.fastfoodfinder.ui.main.map.model.NearByStore
 import com.iceteaviet.fastfoodfinder.ui.main.map.storeinfo.StoreInfoDialog
 import com.iceteaviet.fastfoodfinder.ui.routing.MapRoutingActivity
-import com.iceteaviet.fastfoodfinder.utils.*
+import com.iceteaviet.fastfoodfinder.utils.Constant
 import com.iceteaviet.fastfoodfinder.utils.Constant.DEFAULT_ZOOM_LEVEL
+import com.iceteaviet.fastfoodfinder.utils.REQUEST_LOCATION
+import com.iceteaviet.fastfoodfinder.utils.isLocationPermissionGranted
+import com.iceteaviet.fastfoodfinder.utils.requestLocationPermission
 import com.iceteaviet.fastfoodfinder.utils.ui.animateMarker
 import com.iceteaviet.fastfoodfinder.utils.ui.getStoreIcon
 import kotlinx.android.synthetic.main.fragment_main_map.*
@@ -46,18 +47,16 @@ import kotlinx.android.synthetic.main.fragment_main_map.*
 /**
  * Main fragment that display a map with near by stores
  */
-class MainMapFragment : Fragment(), MainMapContract.View, GoogleApiClient.ConnectionCallbacks, LocationListener {
+class MainMapFragment : Fragment(), MainMapContract.View, LocationListener {
     override lateinit var presenter: MainMapContract.Presenter
 
     lateinit var mNearStoreRecyclerView: RecyclerView
     lateinit var mBottomSheetContainer: LinearLayout
 
-    private var mLocationRequest: LocationRequest? = null
     private var googleMap: GoogleMap? = null
 
     private var mMapFragment: SupportMapFragment? = null
     private var nearByStoreAdapter: NearByStoreAdapter? = null
-    private var googleApiClient: GoogleApiClient? = null
 
 
     override fun onActivityCreated(@Nullable savedInstanceState: Bundle?) {
@@ -75,27 +74,21 @@ class MainMapFragment : Fragment(), MainMapContract.View, GoogleApiClient.Connec
         super.onViewCreated(view, savedInstanceState)
 
         setupUI()
-        setupLocationServices()
     }
 
     override fun onResume() {
         super.onResume()
         presenter.subscribe()
+        if (isLocationPermissionGranted(context!!)) {
+            presenter.onLocationPermissionGranted()
+        } else {
+            requestLocationPermission(this)
+        }
     }
 
     override fun onPause() {
         super.onPause()
         presenter.unsubscribe()
-    }
-
-    override fun onStart() {
-        super.onStart()
-        googleApiClient!!.connect()
-    }
-
-    override fun onStop() {
-        googleApiClient!!.disconnect()
-        super.onStop()
     }
 
     @SuppressLint("MissingPermission")
@@ -119,26 +112,13 @@ class MainMapFragment : Fragment(), MainMapContract.View, GoogleApiClient.Connec
     }
 
     @SuppressLint("MissingPermission")
-    override fun onConnected(@Nullable bundle: Bundle?) {
-        if (isLocationPermissionGranted(context!!)) {
-            presenter.onLocationPermissionGranted()
-        } else {
-            requestLocationPermission(this)
-        }
-    }
-
-    override fun onConnectionSuspended(i: Int) {
-        Toast.makeText(activity, R.string.cannot_connect_location_service, Toast.LENGTH_SHORT).show()
-    }
-
-    @SuppressLint("MissingPermission")
     override fun setMyLocationEnabled(enabled: Boolean) {
         googleMap?.isMyLocationEnabled = enabled
     }
 
     @SuppressLint("MissingPermission")
     override fun requestLocationUpdates() {
-        LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, mLocationRequest, this)
+        GoogleLocationManager.getInstance().subscribeLocationUpdate(this)
     }
 
     override fun animateMapCamera(location: LatLng, zoomToDetail: Boolean) {
@@ -148,12 +128,9 @@ class MainMapFragment : Fragment(), MainMapContract.View, GoogleApiClient.Connec
 
     @SuppressLint("MissingPermission")
     override fun getLastLocation() {
-        val lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient)
+        val lastLocation = GoogleLocationManager.getInstance().getCurrentLocation()
         if (lastLocation != null) {
             presenter.onCurrLocationChanged(lastLocation.latitude, lastLocation.longitude)
-        } else if (googleMap != null) {
-            val cameraPos = googleMap!!.cameraPosition.target
-            presenter.onCurrLocationChanged(cameraPos.latitude, cameraPos.longitude)
         }
     }
 
@@ -223,6 +200,14 @@ class MainMapFragment : Fragment(), MainMapContract.View, GoogleApiClient.Connec
         nearByStoreAdapter!!.clearData()
     }
 
+    override fun onLocationChanged(location: Location) {
+        presenter.onCurrLocationChanged(location.latitude, location.longitude)
+    }
+
+    override fun onLocationFailed(type: Int) {
+
+    }
+
     private fun inflateSupportMapFragment(): SupportMapFragment? {
         val fragmentManager = childFragmentManager
         var fragment = fragmentManager.findFragmentById(R.id.maps_container)
@@ -258,15 +243,6 @@ class MainMapFragment : Fragment(), MainMapContract.View, GoogleApiClient.Connec
         nearByStoreAdapter = NearByStoreAdapter()
 
         initBottomSheet()
-    }
-
-    private fun setupLocationServices() {
-        mLocationRequest = createLocationRequest()
-        googleApiClient = GoogleApiClient.Builder(context!!)
-                .addConnectionCallbacks(this@MainMapFragment)
-                .addOnConnectionFailedListener { e(TAG, getString(R.string.cannot_get_curr_location)) }
-                .addApi(LocationServices.API)
-                .build()
     }
 
 
@@ -309,10 +285,6 @@ class MainMapFragment : Fragment(), MainMapContract.View, GoogleApiClient.Connec
             }
         })
         dialog.show(activity?.supportFragmentManager!!, "dialog-info")
-    }
-
-    override fun onLocationChanged(location: Location) {
-        presenter.onLocationChanged(location.latitude, location.longitude)
     }
 
     companion object {

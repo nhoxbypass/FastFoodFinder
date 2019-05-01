@@ -53,6 +53,11 @@ class StoreDetailPresenter : BasePresenter<StoreDetailContract.Presenter>, Store
                 })
     }
 
+    override fun onLocationPermissionGranted() {
+        storeDetailView.getLastLocation()
+        storeDetailView.requestLocationUpdates()
+    }
+
     override fun handleExtras(intent: Intent?) {
         intent?.let {
             currStore = it.getParcelableExtra(StoreDetailActivity.KEY_STORE)

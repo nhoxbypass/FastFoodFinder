@@ -16,16 +16,16 @@ import android.widget.Toast
 import androidx.annotation.NonNull
 import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
+import com.iceteaviet.fastfoodfinder.location.SystemLocationListener
+import com.iceteaviet.fastfoodfinder.location.SystemLocationManager
 import com.iceteaviet.fastfoodfinder.ui.ar.model.AugmentedPOI
 import com.iceteaviet.fastfoodfinder.ui.base.BaseActivity
 import com.iceteaviet.fastfoodfinder.ui.custom.ar.ARCamera
 import com.iceteaviet.fastfoodfinder.ui.custom.ar.AROverlayView
 import com.iceteaviet.fastfoodfinder.utils.*
-import com.iceteaviet.fastfoodfinder.utils.location.LocationListener
-import com.iceteaviet.fastfoodfinder.utils.location.LocationManager
 import kotlinx.android.synthetic.main.activity_ar_camera.*
 
-class LiveSightActivity : BaseActivity(), LiveSightContract.View, SensorEventListener, LocationListener {
+class LiveSightActivity : BaseActivity(), LiveSightContract.View, SensorEventListener, SystemLocationListener {
 
     override lateinit var presenter: LiveSightContract.Presenter
 
@@ -115,7 +115,7 @@ class LiveSightActivity : BaseActivity(), LiveSightContract.View, SensorEventLis
     }
 
     override fun onLocationChanged(location: Location) {
-        presenter.onLocationChanged(location)
+        presenter.onCurrLocationChanged(location)
     }
 
     override fun onLocationFailed(type: Int) {
@@ -221,13 +221,13 @@ class LiveSightActivity : BaseActivity(), LiveSightContract.View, SensorEventLis
                 SensorManager.SENSOR_DELAY_FASTEST)
     }
 
-    override fun subscribeLocationServices() {
-        LocationManager.getInstance().addListener(this)
-        presenter.onLocationChanged(LocationManager.getInstance().getCurrentLocation())
+    override fun subscribeLocationUpdate() {
+        SystemLocationManager.getInstance().subscribeLocationUpdate(this)
+        presenter.onCurrLocationChanged(SystemLocationManager.getInstance().getCurrentLocation()!!)
     }
 
-    override fun unsubscribeLocationServices() {
-        LocationManager.getInstance().removeListener(this)
+    override fun unsubscribeLocationUpdate() {
+        SystemLocationManager.getInstance().unsubscribeLocationUpdate(this)
     }
 
     override fun updateLatestLocation(latestLocation: Location) {

@@ -1,4 +1,4 @@
-package com.iceteaviet.fastfoodfinder.utils.location
+package com.iceteaviet.fastfoodfinder.location
 
 import androidx.annotation.IntDef
 

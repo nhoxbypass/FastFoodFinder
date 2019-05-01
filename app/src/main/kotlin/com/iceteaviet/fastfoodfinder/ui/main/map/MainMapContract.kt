@@ -31,11 +31,9 @@ interface MainMapContract {
 
     interface Presenter : com.iceteaviet.fastfoodfinder.ui.base.Presenter {
         fun onLocationPermissionGranted()
-        fun onGoogleApiConnected()
         fun onCurrLocationChanged(latitude: Double, longitude: Double)
         fun onMapCameraMove(cameraPosition: LatLng, bounds: LatLngBounds)
         fun onGetMapAsync()
-        fun onLocationChanged(latitude: Double, longitude: Double)
         fun onDirectionNavigateClick(store: Store)
         fun onMapMarkerAdd(storeId: Int, marker: Marker)
     }

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.Toast
@@ -13,35 +14,35 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.google.android.gms.common.api.GoogleApiClient
-import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationServices
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Comment
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
+import com.iceteaviet.fastfoodfinder.location.GoogleLocationManager
+import com.iceteaviet.fastfoodfinder.location.LocationListener
 import com.iceteaviet.fastfoodfinder.ui.base.BaseActivity
 import com.iceteaviet.fastfoodfinder.ui.routing.MapRoutingActivity
 import com.iceteaviet.fastfoodfinder.ui.store.comment.CommentActivity
 import com.iceteaviet.fastfoodfinder.ui.store.comment.CommentActivity.Companion.KEY_COMMENT
-import com.iceteaviet.fastfoodfinder.utils.*
+import com.iceteaviet.fastfoodfinder.utils.REQUEST_LOCATION
+import com.iceteaviet.fastfoodfinder.utils.isLocationPermissionGranted
+import com.iceteaviet.fastfoodfinder.utils.newCallIntent
+import com.iceteaviet.fastfoodfinder.utils.requestLocationPermission
 import kotlinx.android.synthetic.main.activity_store_detail.*
 
 /**
  * Created by taq on 18/11/2016.
  */
 
-class StoreDetailActivity : BaseActivity(), StoreDetailContract.View, GoogleApiClient.ConnectionCallbacks {
+class StoreDetailActivity : BaseActivity(), StoreDetailContract.View, LocationListener {
     override lateinit var presenter: StoreDetailContract.Presenter
 
     lateinit var collapsingToolbar: CollapsingToolbarLayout
     lateinit var ivBackdrop: ImageView
     lateinit var rvContent: RecyclerView
 
-    private var mLocationRequest: LocationRequest? = null
-    private var googleApiClient: GoogleApiClient? = null
     private var adapter: StoreDetailAdapter? = null
 
     override val layoutId: Int
@@ -54,27 +55,21 @@ class StoreDetailActivity : BaseActivity(), StoreDetailContract.View, GoogleApiC
 
         setupUI()
         setupEventHandlers()
-        setupLocationServices()
     }
 
     override fun onResume() {
         super.onResume()
         presenter.subscribe()
+        if (isLocationPermissionGranted(this)) {
+            presenter.onLocationPermissionGranted()
+        } else {
+            requestLocationPermission(this)
+        }
     }
 
     override fun onPause() {
         super.onPause()
         presenter.unsubscribe()
-    }
-
-    override fun onStart() {
-        super.onStart()
-        googleApiClient!!.connect()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        googleApiClient!!.disconnect()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -92,8 +87,7 @@ class StoreDetailActivity : BaseActivity(), StoreDetailContract.View, GoogleApiC
             REQUEST_LOCATION -> {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    requestLocationUpdates()
-                    getLastLocation()
+                    presenter.onLocationPermissionGranted()
                 } else {
                     Toast.makeText(this, R.string.permission_denied, Toast.LENGTH_SHORT).show()
                 }
@@ -107,6 +101,20 @@ class StoreDetailActivity : BaseActivity(), StoreDetailContract.View, GoogleApiC
 
     override fun setToolbarTitle(title: String) {
         collapsingToolbar.title = title
+    }
+
+    @SuppressLint("MissingPermission")
+    override fun requestLocationUpdates() {
+        GoogleLocationManager.getInstance().subscribeLocationUpdate(this)
+    }
+
+    @SuppressLint("MissingPermission")
+    override fun getLastLocation() {
+        val lastLocation = GoogleLocationManager.getInstance().getCurrentLocation()
+        if (lastLocation != null) {
+            presenter.onCurrLocationChanged(lastLocation.latitude, lastLocation.longitude)
+        } else
+            Toast.makeText(this@StoreDetailActivity, R.string.cannot_get_curr_location, Toast.LENGTH_SHORT).show()
     }
 
     override fun setStoreComments(listComments: MutableList<Comment>) {
@@ -144,6 +152,14 @@ class StoreDetailActivity : BaseActivity(), StoreDetailContract.View, GoogleApiC
         extras.putParcelable(MapRoutingActivity.KEY_DES_STORE, currStore)
         intent.putExtras(extras)
         startActivity(intent)
+    }
+
+    override fun onLocationChanged(location: Location) {
+        presenter.onCurrLocationChanged(location.latitude, location.longitude)
+    }
+
+    override fun onLocationFailed(type: Int) {
+
     }
 
     private fun setupUI() {
@@ -189,44 +205,6 @@ class StoreDetailActivity : BaseActivity(), StoreDetailContract.View, GoogleApiC
             }
 
         })
-    }
-
-    private fun setupLocationServices() {
-        mLocationRequest = createLocationRequest()
-        googleApiClient = GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener { e(TAG, getString(R.string.cannot_get_curr_location)) }
-                .addApi(LocationServices.API)
-                .build()
-    }
-
-    override fun onConnected(@Nullable bundle: Bundle?) {
-        if (isLocationPermissionGranted(this)) {
-            requestLocationUpdates()
-            getLastLocation()
-        } else {
-            requestLocationPermission(this)
-        }
-    }
-
-    override fun onConnectionSuspended(i: Int) {
-        Toast.makeText(this, R.string.cannot_connect_location_service, Toast.LENGTH_SHORT).show()
-    }
-
-    @SuppressLint("MissingPermission")
-    private fun requestLocationUpdates() {
-        LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, mLocationRequest) { location ->
-            presenter.onCurrLocationChanged(location.latitude, location.longitude)
-        }
-    }
-
-    @SuppressLint("MissingPermission")
-    private fun getLastLocation() {
-        val lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient)
-        if (lastLocation != null) {
-            presenter.onCurrLocationChanged(lastLocation.latitude, lastLocation.longitude)
-        } else
-            Toast.makeText(this@StoreDetailActivity, R.string.cannot_get_curr_location, Toast.LENGTH_SHORT).show()
     }
 
     companion object {

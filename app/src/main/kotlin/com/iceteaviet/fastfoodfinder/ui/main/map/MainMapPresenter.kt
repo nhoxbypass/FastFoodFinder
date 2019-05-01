@@ -43,6 +43,7 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
     private var storeList: MutableList<Store> = ArrayList()
     private var visibleStores: List<Store> = ArrayList()
     private var isZoomToUser = false
+    private var locationGranted = false
 
     private var markerSparseArray: SparseArray<Marker> = SparseArray() // pair storeId - marker
 
@@ -55,11 +56,13 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
     }
 
     override fun subscribe() {
+        EventBus.getDefault().register(this)
+
         newVisibleStorePublisher = PublishSubject.create()
         cameraPositionPublisher = PublishSubject.create()
+        locationGranted = false
+        isZoomToUser = false
 
-
-        EventBus.getDefault().register(this)
         mainMapView.setupMap()
 
         dataManager.getLocalStoreDataSource().getAllStores()
@@ -94,20 +97,20 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
     }
 
     override fun onLocationPermissionGranted() {
-        mainMapView.setMyLocationEnabled(true)
-        mainMapView.getLastLocation()
         mainMapView.requestLocationUpdates()
-
-        // Showing the current location in Google Map
-        mainMapView.animateMapCamera(currLocation!!, false)
-    }
-
-    override fun onGoogleApiConnected() {
-
+        locationGranted = true
     }
 
     override fun onCurrLocationChanged(latitude: Double, longitude: Double) {
         currLocation = LatLng(latitude, longitude)
+
+        if (!isZoomToUser) {
+            // Zoom and show current location in the Google Map
+            // Only zoom-in the first time user location come
+            mainMapView.animateMapCamera(currLocation!!, false)
+
+            isZoomToUser = true
+        }
     }
 
     override fun onMapCameraMove(cameraPosition: LatLng, bounds: LatLngBounds) {
@@ -117,6 +120,14 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
     override fun onGetMapAsync() {
         if (storeList.isNotEmpty())
             mainMapView.addMarkersToMap(storeList)
+
+        if (locationGranted) {
+            mainMapView.setMyLocationEnabled(true)
+            mainMapView.getLastLocation()
+            // Showing the current location in Google Map
+            if (currLocation != null)
+                mainMapView.animateMapCamera(currLocation!!, false)
+        }
 
         mainMapView.setupMapEventHandlers()
 
@@ -182,18 +193,6 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
                     override fun onComplete() {
                     }
                 })
-    }
-
-    override fun onLocationChanged(latitude: Double, longitude: Double) {
-        currLocation = LatLng(latitude, longitude)
-        // Creating a LatLng object for the current location
-
-        if (!isZoomToUser) {
-            // Zoom and show current location in the Google Map
-            mainMapView.animateMapCamera(currLocation!!, false)
-
-            isZoomToUser = true
-        }
     }
 
     override fun onDirectionNavigateClick(store: Store) {

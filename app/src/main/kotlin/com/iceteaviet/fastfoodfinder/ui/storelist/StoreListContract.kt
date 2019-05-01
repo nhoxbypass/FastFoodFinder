@@ -11,6 +11,5 @@ interface StoreListContract {
         fun setStores(stores: List<Store>)
     }
 
-    interface Presenter : com.iceteaviet.fastfoodfinder.ui.base.Presenter {
-    }
+    interface Presenter : com.iceteaviet.fastfoodfinder.ui.base.Presenter
 }
