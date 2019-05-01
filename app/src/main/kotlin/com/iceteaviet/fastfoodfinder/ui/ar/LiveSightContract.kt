@@ -15,7 +15,8 @@ interface LiveSightContract {
         fun requestCameraPermission()
         fun isCameraPermissionGranted(): Boolean
 
-        fun initLocationService(minTime: Long, minDistance: Float)
+        fun subscribeLocationServices()
+        fun unsubscribeLocationServices()
         fun updateLatestLocation(latestLocation: Location)
 
         fun initARCameraView()

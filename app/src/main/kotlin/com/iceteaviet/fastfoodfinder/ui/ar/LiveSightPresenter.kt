@@ -29,7 +29,7 @@ class LiveSightPresenter : BasePresenter<LiveSightContract.Presenter>, LiveSight
         if (isLolipopOrHigher() && !liveSightView.isLocationPermissionGranted()) {
             liveSightView.requestLocationPermission()
         } else {
-            liveSightView.initLocationService(MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES)
+            liveSightView.subscribeLocationServices()
         }
 
         if (isLolipopOrHigher() && !liveSightView.isCameraPermissionGranted()) {
@@ -43,12 +43,13 @@ class LiveSightPresenter : BasePresenter<LiveSightContract.Presenter>, LiveSight
     }
 
     override fun unsubscribe() {
+        liveSightView.unsubscribeLocationServices()
         liveSightView.releaseARCamera()
         super.unsubscribe()
     }
 
     override fun onLocationPermissionGranted() {
-        liveSightView.initLocationService(MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES)
+        liveSightView.subscribeLocationServices()
     }
 
     override fun onCameraPermissionGranted() {
@@ -88,8 +89,6 @@ class LiveSightPresenter : BasePresenter<LiveSightContract.Presenter>, LiveSight
     }
 
     companion object {
-        private const val MIN_DISTANCE_CHANGE_FOR_UPDATES: Float = 10f // 10 meters
-        private const val MIN_TIME_BW_UPDATES = (1000 * 30).toLong() // 30 seconds
         private const val RADIUS = 0.005
     }
 }

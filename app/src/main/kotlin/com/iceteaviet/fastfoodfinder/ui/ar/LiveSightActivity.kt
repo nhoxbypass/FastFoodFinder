@@ -1,12 +1,10 @@
 package com.iceteaviet.fastfoodfinder.ui.ar
 
-import android.annotation.SuppressLint
+
 import android.content.Context
 import android.content.pm.PackageManager
 import android.hardware.*
 import android.location.Location
-import android.location.LocationListener
-import android.location.LocationManager
 import android.opengl.Matrix
 import android.os.Bundle
 import android.view.SurfaceView
@@ -23,6 +21,8 @@ import com.iceteaviet.fastfoodfinder.ui.base.BaseActivity
 import com.iceteaviet.fastfoodfinder.ui.custom.ar.ARCamera
 import com.iceteaviet.fastfoodfinder.ui.custom.ar.AROverlayView
 import com.iceteaviet.fastfoodfinder.utils.*
+import com.iceteaviet.fastfoodfinder.utils.location.LocationListener
+import com.iceteaviet.fastfoodfinder.utils.location.LocationManager
 import kotlinx.android.synthetic.main.activity_ar_camera.*
 
 class LiveSightActivity : BaseActivity(), LiveSightContract.View, SensorEventListener, LocationListener {
@@ -116,6 +116,10 @@ class LiveSightActivity : BaseActivity(), LiveSightContract.View, SensorEventLis
 
     override fun onLocationChanged(location: Location) {
         presenter.onLocationChanged(location)
+    }
+
+    override fun onLocationFailed(type: Int) {
+
     }
 
     override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {
@@ -217,48 +221,13 @@ class LiveSightActivity : BaseActivity(), LiveSightContract.View, SensorEventLis
                 SensorManager.SENSOR_DELAY_FASTEST)
     }
 
-    override fun initLocationService(minTime: Long, minDistance: Float) {
-        try {
-            val locationManager = this.getSystemService(Context.LOCATION_SERVICE) as LocationManager?
-
-            if (locationManager == null) {
-                Toast.makeText(this, R.string.cannot_connect_location_service, Toast.LENGTH_SHORT).show()
-                return
-            }
-
-            requestLocationUpdates(locationManager, minTime, minDistance)
-        } catch (ex: Exception) {
-            e(ex, TAG)
-
-        }
+    override fun subscribeLocationServices() {
+        LocationManager.getInstance().addListener(this)
+        presenter.onLocationChanged(LocationManager.getInstance().getCurrentLocation())
     }
 
-    @SuppressLint("MissingPermission")
-    private fun requestLocationUpdates(locationManager: LocationManager, minTime: Long, minDistance: Float) {
-        // Get GPS and network status
-        val isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
-        val isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
-
-        var location: Location? = null
-        if (isNetworkEnabled) {
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
-                    minTime,
-                    minDistance, this)
-            location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
-        }
-
-        if (isGPSEnabled) {
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                    minTime,
-                    minDistance, this)
-
-            location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-        }
-
-        if (location == null)
-            location = Location(LocationManager.PASSIVE_PROVIDER)
-
-        updateLatestLocation(location)
+    override fun unsubscribeLocationServices() {
+        LocationManager.getInstance().removeListener(this)
     }
 
     override fun updateLatestLocation(latestLocation: Location) {
