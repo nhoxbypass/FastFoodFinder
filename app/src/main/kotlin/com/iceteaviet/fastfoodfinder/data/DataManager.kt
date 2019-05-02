@@ -12,7 +12,7 @@ import io.reactivex.Single
 /**
  * Created by tom on 7/9/18.
  */
-interface DataManager : ClientAuth {
+interface DataManager<AC> : ClientAuth<AC> {
     fun getLocalStoreDataSource(): StoreDataSource
 
     fun getRemoteStoreDataSource(): StoreDataSource
