@@ -1,13 +1,6 @@
 package com.iceteaviet.fastfoodfinder.ui.login
 
-import android.content.Intent
-import com.facebook.AccessToken
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.tasks.Task
-import com.google.firebase.auth.FacebookAuthProvider
-import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.AuthCredential
 import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
 import com.iceteaviet.fastfoodfinder.ui.base.BasePresenter
@@ -69,23 +62,8 @@ class LoginPresenter : BasePresenter<LoginContract.Presenter>, LoginContract.Pre
                 })
     }
 
-    override fun onRequestGoogleAccountResult(data: Intent) {
-        val task: Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(data)
-        if (task.isSuccessful) {
-            // Google Sign In was successful, authenticate with Firebase
-            val account = task.getResult(ApiException::class.java)
-            if (account != null)
-                onRequestGoogleAccountSuccess(account, false)
-            else
-                loginView.showSignInFailMessage()
-        } else {
-            loginView.showSignInFailMessage()
-        }
-    }
-
-    override fun onRequestGoogleAccountSuccess(account: GoogleSignInAccount, fromLastSignIn: Boolean) {
-        val credential = GoogleAuthProvider.getCredential(account.idToken, null)
-        dataManager.signInWithCredential(credential)
+    override fun onRequestGoogleAccountSuccess(authCredential: AuthCredential, fromLastSignIn: Boolean) {
+        dataManager.signInWithCredential(authCredential)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : SingleObserver<User> {
@@ -108,9 +86,8 @@ class LoginPresenter : BasePresenter<LoginContract.Presenter>, LoginContract.Pre
     }
 
     // TODO: Check is new account
-    override fun onRequestFacebookAccountSuccess(accessToken: AccessToken) {
-        val credential = FacebookAuthProvider.getCredential(accessToken.token)
-        dataManager.signInWithCredential(credential)
+    override fun onRequestFacebookAccountSuccess(authCredential: AuthCredential) {
+        dataManager.signInWithCredential(authCredential)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : SingleObserver<User> {

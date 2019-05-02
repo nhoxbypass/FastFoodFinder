@@ -1,8 +1,6 @@
 package com.iceteaviet.fastfoodfinder.ui.login
 
-import android.content.Intent
-import com.facebook.AccessToken
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.firebase.auth.AuthCredential
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
 import com.iceteaviet.fastfoodfinder.ui.base.BaseView
 
@@ -20,8 +18,7 @@ interface LoginContract {
         fun onSkipButtonClick()
         fun onEmailRegisterSuccess(user: User)
         fun onLoginSuccess(user: User)
-        fun onRequestGoogleAccountSuccess(account: GoogleSignInAccount, fromLastSignIn: Boolean)
-        fun onRequestGoogleAccountResult(data: Intent)
-        fun onRequestFacebookAccountSuccess(accessToken: AccessToken)
+        fun onRequestGoogleAccountSuccess(authCredential: AuthCredential, fromLastSignIn: Boolean)
+        fun onRequestFacebookAccountSuccess(authCredential: AuthCredential)
     }
 }
