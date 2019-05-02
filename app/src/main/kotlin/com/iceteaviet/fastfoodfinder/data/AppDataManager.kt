@@ -1,5 +1,6 @@
 package com.iceteaviet.fastfoodfinder.data
 
+import com.google.firebase.auth.AuthCredential
 import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.data.auth.ClientAuth
 import com.iceteaviet.fastfoodfinder.data.domain.store.StoreDataSource
@@ -23,10 +24,10 @@ import io.realm.RealmConfiguration
  * Created by tom on 7/9/18.
  */
 
-class AppDataManager<AC>(private val localStoreDataSource: StoreDataSource, private val remoteStoreDataSource: StoreDataSource,
-                         private val clientAuth: ClientAuth<AC>,
-                         private val localUserDataSource: UserDataSource, private val remoteUserDataSource: UserDataSource,
-                         private val mapsRoutingApiHelper: MapsRoutingApiHelper, private val preferencesHelper: PreferencesHelper) : DataManager<AC> {
+class AppDataManager(private val localStoreDataSource: StoreDataSource, private val remoteStoreDataSource: StoreDataSource,
+                     private val clientAuth: ClientAuth,
+                     private val localUserDataSource: UserDataSource, private val remoteUserDataSource: UserDataSource,
+                     private val mapsRoutingApiHelper: MapsRoutingApiHelper, private val preferencesHelper: PreferencesHelper) : DataManager {
 
     private var currentUser: User? = null
     private lateinit var searchHistory: MutableSet<String>
@@ -147,7 +148,7 @@ class AppDataManager<AC>(private val localStoreDataSource: StoreDataSource, priv
         return clientAuth.signInWithEmailAndPassword(email, password)
     }
 
-    override fun signInWithCredential(authCredential: AC): Single<User> {
+    override fun signInWithCredential(authCredential: AuthCredential): Single<User> {
         return clientAuth.signInWithCredential(authCredential)
     }
 

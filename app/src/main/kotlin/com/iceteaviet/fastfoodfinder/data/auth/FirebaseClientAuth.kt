@@ -11,7 +11,7 @@ import io.reactivex.Single
  * Created by Genius Doan on 14/07/2017.
  */
 
-class FirebaseClientAuth : ClientAuth<AuthCredential> {
+class FirebaseClientAuth : ClientAuth {
     private val mAuth: FirebaseAuth
 
     init {
