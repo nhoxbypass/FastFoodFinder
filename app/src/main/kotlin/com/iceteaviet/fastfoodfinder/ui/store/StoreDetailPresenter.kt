@@ -59,8 +59,13 @@ class StoreDetailPresenter : BasePresenter<StoreDetailContract.Presenter>, Store
     }
 
     override fun handleExtras(intent: Intent?) {
-        intent?.let {
-            currStore = it.getParcelableExtra(StoreDetailActivity.KEY_STORE)
+        if (intent != null) {
+            currStore = intent.getParcelableExtra(StoreDetailActivity.KEY_STORE)
+
+            if (currStore == null)
+                storeDetailView.exit()
+        } else {
+            storeDetailView.exit()
         }
     }
 

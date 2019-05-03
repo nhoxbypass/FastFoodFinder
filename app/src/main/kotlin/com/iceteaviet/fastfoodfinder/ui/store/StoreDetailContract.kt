@@ -22,6 +22,7 @@ interface StoreDetailContract {
         fun startCallIntent(tel: String)
         fun showInvalidPhoneNumbWarning()
         fun showMapRoutingView(currStore: Store, mapsDirection: MapsDirection)
+        fun exit()
     }
 
     interface Presenter : com.iceteaviet.fastfoodfinder.ui.base.Presenter {
