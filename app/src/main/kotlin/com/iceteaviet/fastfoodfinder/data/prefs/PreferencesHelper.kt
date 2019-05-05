@@ -32,4 +32,8 @@ interface PreferencesHelper {
     fun getSearchHistories(): MutableSet<String>
 
     fun setSearchHistories(set: MutableSet<String>)
+
+    fun getIfLanguageIsVietnamese(): Boolean
+
+    fun setIfLanguageIsVietnamese(isVietnamese: Boolean)
 }

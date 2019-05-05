@@ -12,14 +12,18 @@ interface SettingContract {
         fun updateLoadingProgressView(showProgress: Boolean)
         fun showSuccessLoadingToast(successMessage : String?)
         fun showFailedLoadingToast(failedMessage: String?)
-        fun onLanguageChanged(isVietnamese: Boolean)
+        fun initLanguageView(isVietnamese: Boolean)
+        fun onClickOnLanguageTextView()
+        fun onClickOnLanguageSwitch()
     }
 
     interface Presenter : com.iceteaviet.fastfoodfinder.ui.base.Presenter {
         fun onInitSignOutTextView()
         fun signOut()
         fun onLoadStoreFromServer()
-        fun onSetupLanguage(pref: SharedPreferences)
-        fun saveLanguagePref(pref: SharedPreferences, isVietnamese: Boolean)
+        fun onSetupLanguage()
+        fun saveLanguagePref(isVietnamese: Boolean)
+        fun onLanguageTextViewClick()
+        fun onLanguageSwitchClick()
     }
 }

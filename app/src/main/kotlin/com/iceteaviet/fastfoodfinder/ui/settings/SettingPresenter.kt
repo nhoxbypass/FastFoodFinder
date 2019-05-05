@@ -1,6 +1,5 @@
 package com.iceteaviet.fastfoodfinder.ui.settings
 
-import android.content.SharedPreferences
 import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.ui.base.BasePresenter
@@ -26,17 +25,27 @@ class SettingPresenter : BasePresenter<SettingContract.Presenter>, SettingContra
     }
 
     override fun onInitSignOutTextView() {
-        settingView.initSignOutTextView(!dataManager.isSignedIn())
+        settingView.initSignOutTextView(dataManager.isSignedIn())
     }
 
     override fun signOut() {
         dataManager.signOut()
     }
 
-    override fun saveLanguagePref(pref: SharedPreferences, isVietnamese: Boolean) {
-        val editor = pref.edit()
-        editor.putBoolean(KEY_LANGUAGE, isVietnamese)
-        editor.apply()
+    override fun onLanguageTextViewClick() {
+        settingView.onClickOnLanguageTextView()
+    }
+
+    override fun onLanguageSwitchClick() {
+        settingView.onClickOnLanguageSwitch()
+    }
+
+    override fun onSetupLanguage() {
+        this.settingView.initLanguageView(dataManager.getPreferencesHelper().getIfLanguageIsVietnamese())
+    }
+
+    override fun saveLanguagePref(isVietnamese: Boolean) {
+        dataManager.getPreferencesHelper().setIfLanguageIsVietnamese(isVietnamese)
     }
     override fun onLoadStoreFromServer() {
         dataManager.loadStoresFromServer()
@@ -44,6 +53,7 @@ class SettingPresenter : BasePresenter<SettingContract.Presenter>, SettingContra
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : SingleObserver<List<Store>> {
                     override fun onSubscribe(d: Disposable) {
+                        compositeDisposable.add(d)
                         settingView.updateLoadingProgressView(true)
                     }
 
@@ -59,12 +69,4 @@ class SettingPresenter : BasePresenter<SettingContract.Presenter>, SettingContra
                     }
                 })
     }
-
-    override fun onSetupLanguage(pref: SharedPreferences) {
-        this.settingView.onLanguageChanged(pref.getBoolean(KEY_LANGUAGE, false))
-    }
-    companion object {
-        const val KEY_LANGUAGE = "lang"
-    }
-
 }
