@@ -20,8 +20,9 @@ import kotlinx.android.synthetic.main.view_store_tag.view.*
  * Created by taq on 8/12/2016.
  */
 
-class DiscountNotifyDialog : DialogFragment() {
+class DiscountNotifyDialog : DialogFragment(), DiscountNotifyContract.View {
     lateinit var tagContainer: HorizontalFlowLayout
+    override lateinit var presenter: DiscountNotifyContract.Presenter
 
     @Nullable
     override fun onCreateView(inflater: LayoutInflater, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View {
@@ -34,10 +35,31 @@ class DiscountNotifyDialog : DialogFragment() {
         tagContainer = tag_container
 
         dialog?.setTitle(R.string.subscription)
-        setupTagContainer()
+        presenter.onSetupTagContainer()
+        setUpViewListener()
+    }
 
-        btnCancel!!.setOnClickListener { dismiss() }
-        btnDone!!.setOnClickListener { dismiss() }
+    fun setUpViewListener() {
+        btnCancel!!.setOnClickListener { presenter.onCancelButtonClick() }
+        btnDone!!.setOnClickListener { presenter.onDoneButtonClick() }
+    }
+
+    override fun cancelDialog() {
+        dismiss()
+    }
+
+    override fun doneDialog() {
+        dismiss()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        presenter.subscribe()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        presenter.unsubscribe()
     }
 
     override fun onActivityCreated(arg0: Bundle?) {
@@ -45,24 +67,13 @@ class DiscountNotifyDialog : DialogFragment() {
         dialog?.window?.attributes?.windowAnimations = R.style.DialogAnimationUpDown
     }
 
-    private fun setupTagContainer() {
+    override fun setupTagContainer(storeList: Array<String>) {
         val inflater = LayoutInflater.from(context)
-        for (key in LIST_STORES) {
+        for (key in storeList) {
             val view = inflater.inflate(R.layout.view_store_tag, tagContainer, false)
             val holder = TagViewHolder(view)
-            holder.setName(getStoreName(key))
+            holder.setName(presenter.getStoreName(key))
             tagContainer.addView(view)
-        }
-    }
-
-    private fun getStoreName(key: String): String {
-        return when (key) {
-            KEY_CIRCLE_K -> "Cirle K"
-            KEY_BSMART -> "B’s mart"
-            KEY_FAMILY_MART -> "Family mart"
-            KEY_MINI_STOP -> "Ministop"
-            KEY_SHOP_N_GO -> "Shop & Go"
-            else -> "Unknown"
         }
     }
 
@@ -71,17 +82,22 @@ class DiscountNotifyDialog : DialogFragment() {
 
         init {
             tag.setOnClickListener { v ->
-                val animator = AnimatorInflater.loadAnimator(context, R.animator.zoom_in_out)
-                animator.setTarget(itemView)
-                animator.duration = 100
-                animator.addListener(object : AnimatorListenerAdapter() {
-                    override fun onAnimationStart(animation: Animator) {
-                        Toast.makeText(context, R.string.successfully, Toast.LENGTH_SHORT).show()
-                    }
-                })
-                animator.start()
+                playAnimation()
                 v.isSelected = !v.isSelected
             }
+        }
+
+        private fun playAnimation() {
+            val animator = AnimatorInflater.loadAnimator(context, R.animator.zoom_in_out)
+            animator.setTarget(itemView)
+            animator.duration = 100
+            animator.addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationStart(animation: Animator) {
+                    Toast.makeText(context, R.string.successfully, Toast.LENGTH_SHORT).show()
+                }
+            })
+            animator.start()
+
         }
 
         fun setName(name: String) {
@@ -90,19 +106,12 @@ class DiscountNotifyDialog : DialogFragment() {
     }
 
     companion object {
-        private const val KEY_CIRCLE_K = "circle_k"
-        private const val KEY_MINI_STOP = "mini_stop"
-        private const val KEY_FAMILY_MART = "family_mark"
-        private const val KEY_BSMART = "bsmart"
-        private const val KEY_SHOP_N_GO = "shop_n_go"
-
-        private val LIST_STORES = arrayOf(KEY_BSMART, KEY_CIRCLE_K, KEY_FAMILY_MART, KEY_MINI_STOP, KEY_SHOP_N_GO)
-
         fun newInstance(): DiscountNotifyDialog {
             val args = Bundle()
 
             val fragment = DiscountNotifyDialog()
             fragment.arguments = args
+            fragment.presenter = DiscountNotifyPresenter(fragment)
             return fragment
         }
     }
