@@ -68,6 +68,7 @@ class SettingPresenter : BasePresenter<SettingContract.Presenter>, SettingContra
     override fun saveLanguagePref() {
         dataManager.getPreferencesHelper().setIfLanguageIsVietnamese(isVietnamese)
     }
+
     override fun onLoadStoreFromServer() {
         dataManager.loadStoresFromServer()
                 .subscribeOn(Schedulers.io())

@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.activity_setting.*
 import java.util.*
 
 class SettingActivity : BaseActivity(), SettingContract.View {
-    override lateinit var presenter : SettingContract.Presenter;
+    override lateinit var presenter: SettingContract.Presenter;
     lateinit var txtShareApp: TextView
     lateinit var txtChangeMetric: TextView
     lateinit var txtEditProfile: TextView
@@ -73,13 +73,14 @@ class SettingActivity : BaseActivity(), SettingContract.View {
         }
     }
 
-    override fun initSignOutTextView(enabled : Boolean) {
+    override fun initSignOutTextView(enabled: Boolean) {
         if (enabled) {
             txtSignOut.visibility = View.VISIBLE
         } else {
             txtSignOut.visibility = View.INVISIBLE
         }
     }
+
     override val layoutId: Int
         get() = R.layout.activity_setting
 
@@ -163,15 +164,16 @@ class SettingActivity : BaseActivity(), SettingContract.View {
     }
 
 
-    override fun showSuccessLoadingToast(successMessage : String?) {
+    override fun showSuccessLoadingToast(successMessage: String?) {
         Toast.makeText(this@SettingActivity, getString(R.string.update_database_successfull) + successMessage, Toast.LENGTH_SHORT).show()
     }
 
     override fun showFailedLoadingToast(failedMessage: String?) {
         Toast.makeText(this@SettingActivity, getString(R.string.update_database_failed) + failedMessage, Toast.LENGTH_SHORT).show()
     }
+
     override fun updateLoadingProgressView(showProgress: Boolean) {
-        imageUpdateDb.visibility =  if (showProgress) View.GONE else View.VISIBLE
+        imageUpdateDb.visibility = if (showProgress) View.GONE else View.VISIBLE
         progressBarUpdateDb.visibility = if (showProgress) View.VISIBLE else View.GONE
     }
 }

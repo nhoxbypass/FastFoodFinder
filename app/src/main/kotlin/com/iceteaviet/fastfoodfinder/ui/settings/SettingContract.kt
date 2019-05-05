@@ -1,6 +1,5 @@
 package com.iceteaviet.fastfoodfinder.ui.settings
 
-import android.content.SharedPreferences
 import com.iceteaviet.fastfoodfinder.ui.base.BaseView
 
 /**
@@ -8,9 +7,9 @@ import com.iceteaviet.fastfoodfinder.ui.base.BaseView
  */
 interface SettingContract {
     interface View : BaseView<Presenter> {
-        fun initSignOutTextView(enabled : Boolean)
+        fun initSignOutTextView(enabled: Boolean)
         fun updateLoadingProgressView(showProgress: Boolean)
-        fun showSuccessLoadingToast(successMessage : String?)
+        fun showSuccessLoadingToast(successMessage: String?)
         fun showFailedLoadingToast(failedMessage: String?)
         fun updateLangUI(isVietnamese: Boolean)
         fun loadLanguage(languageToLoad: String)
