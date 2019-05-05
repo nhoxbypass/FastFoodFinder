@@ -1,4 +1,4 @@
-package com.iceteaviet.fastfoodfinder.ui.settings
+package com.iceteaviet.fastfoodfinder.ui.settings.discountnotify
 
 import android.animation.Animator
 import android.animation.AnimatorInflater
@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.view_store_tag.view.*
  * Created by taq on 8/12/2016.
  */
 
-class StoreFilterDialog : DialogFragment() {
+class DiscountNotifyDialog : DialogFragment() {
     lateinit var tagContainer: HorizontalFlowLayout
 
     @Nullable
@@ -98,10 +98,10 @@ class StoreFilterDialog : DialogFragment() {
 
         private val LIST_STORES = arrayOf(KEY_BSMART, KEY_CIRCLE_K, KEY_FAMILY_MART, KEY_MINI_STOP, KEY_SHOP_N_GO)
 
-        fun newInstance(): StoreFilterDialog {
+        fun newInstance(): DiscountNotifyDialog {
             val args = Bundle()
 
-            val fragment = StoreFilterDialog()
+            val fragment = DiscountNotifyDialog()
             fragment.arguments = args
             return fragment
         }

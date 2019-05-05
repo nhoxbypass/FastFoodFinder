@@ -10,6 +10,7 @@ import androidx.appcompat.widget.SwitchCompat
 import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.ui.base.BaseActivity
+import com.iceteaviet.fastfoodfinder.ui.settings.discountnotify.DiscountNotifyDialog
 import com.iceteaviet.fastfoodfinder.utils.openLoginActivity
 import kotlinx.android.synthetic.main.activity_setting.*
 import java.util.*
@@ -152,7 +153,7 @@ class SettingActivity : BaseActivity(), SettingContract.View {
         }
 
         txtSetNotification.setOnClickListener {
-            val dlg = StoreFilterDialog.newInstance()
+            val dlg = DiscountNotifyDialog.newInstance()
             dlg.show(supportFragmentManager, "dialog-filter")
         }
 
