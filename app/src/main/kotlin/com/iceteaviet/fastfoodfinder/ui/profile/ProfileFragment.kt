@@ -1,6 +1,5 @@
 package com.iceteaviet.fastfoodfinder.ui.profile
 
-import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.*
@@ -18,9 +17,7 @@ import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList
 import com.iceteaviet.fastfoodfinder.ui.custom.store.StoreListView
 import com.iceteaviet.fastfoodfinder.ui.profile.cover.UpdateCoverImageDialog
 import com.iceteaviet.fastfoodfinder.ui.profile.createlist.CreateListDialog
-import com.iceteaviet.fastfoodfinder.ui.storelist.ListDetailActivity
-import com.iceteaviet.fastfoodfinder.ui.storelist.ListDetailActivity.Companion.KEY_USER_PHOTO_URL
-import com.iceteaviet.fastfoodfinder.ui.storelist.ListDetailActivity.Companion.KEY_USER_STORE_LIST
+import com.iceteaviet.fastfoodfinder.utils.openListDetailActivity
 import com.iceteaviet.fastfoodfinder.utils.openLoginActivity
 import kotlinx.android.synthetic.main.fragment_profile.*
 
@@ -146,6 +143,7 @@ class ProfileFragment : Fragment(), ProfileContract.View, View.OnClickListener {
 
     override fun openLoginActivity() {
         openLoginActivity(activity!!)
+        activity!!.finish()
     }
 
     override fun loadAvatarPhoto(photoUrl: String) {
@@ -205,10 +203,7 @@ class ProfileFragment : Fragment(), ProfileContract.View, View.OnClickListener {
     }
 
     override fun openListDetail(userStoreList: UserStoreList, photoUrl: String) {
-        val intent = Intent(context, ListDetailActivity::class.java)
-        intent.putExtra(KEY_USER_PHOTO_URL, photoUrl)
-        intent.putExtra(KEY_USER_STORE_LIST, userStoreList)
-        startActivity(intent)
+        openListDetailActivity(activity!!, userStoreList, photoUrl)
     }
 
     companion object {

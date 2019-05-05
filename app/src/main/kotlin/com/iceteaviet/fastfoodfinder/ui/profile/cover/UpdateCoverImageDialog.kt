@@ -7,7 +7,6 @@ import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +18,7 @@ import androidx.fragment.app.DialogFragment
 import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.utils.getBitmapFromUri
+import com.iceteaviet.fastfoodfinder.utils.getImagePickerIntent
 import com.iceteaviet.fastfoodfinder.utils.ui.getDrawable
 import kotlinx.android.synthetic.main.dialog_choose_image.*
 
@@ -128,10 +128,7 @@ class UpdateCoverImageDialog : DialogFragment(), UpdateCoverContract.View, View.
     }
 
     override fun openImageFilePicker() {
-        val i = Intent(
-                Intent.ACTION_PICK,
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        startActivityForResult(i, UpdateCoverImageDialog.RESULT_LOAD_IMAGE)
+        startActivityForResult(getImagePickerIntent(), RESULT_LOAD_IMAGE)
     }
 
     override fun setSelectedImage(selectedImage: Drawable) {

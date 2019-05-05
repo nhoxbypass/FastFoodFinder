@@ -1,7 +1,6 @@
 package com.iceteaviet.fastfoodfinder.ui.store
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
@@ -23,13 +22,9 @@ import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.location.GoogleLocationManager
 import com.iceteaviet.fastfoodfinder.location.LocationListener
 import com.iceteaviet.fastfoodfinder.ui.base.BaseActivity
-import com.iceteaviet.fastfoodfinder.ui.routing.MapRoutingActivity
 import com.iceteaviet.fastfoodfinder.ui.store.comment.CommentActivity
 import com.iceteaviet.fastfoodfinder.ui.store.comment.CommentActivity.Companion.KEY_COMMENT
-import com.iceteaviet.fastfoodfinder.utils.REQUEST_LOCATION
-import com.iceteaviet.fastfoodfinder.utils.isLocationPermissionGranted
-import com.iceteaviet.fastfoodfinder.utils.newCallIntent
-import com.iceteaviet.fastfoodfinder.utils.requestLocationPermission
+import com.iceteaviet.fastfoodfinder.utils.*
 import kotlinx.android.synthetic.main.activity_store_detail.*
 
 /**
@@ -139,7 +134,7 @@ class StoreDetailActivity : BaseActivity(), StoreDetailContract.View, LocationLi
     }
 
     override fun startCallIntent(tel: String) {
-        startActivity(newCallIntent(tel))
+        makeNativeCall(this, tel)
     }
 
     override fun showInvalidPhoneNumbWarning() {
@@ -147,12 +142,7 @@ class StoreDetailActivity : BaseActivity(), StoreDetailContract.View, LocationLi
     }
 
     override fun showMapRoutingView(currStore: Store, mapsDirection: MapsDirection) {
-        val intent = Intent(this@StoreDetailActivity, MapRoutingActivity::class.java)
-        val extras = Bundle()
-        extras.putParcelable(MapRoutingActivity.KEY_ROUTE_LIST, mapsDirection)
-        extras.putParcelable(MapRoutingActivity.KEY_DES_STORE, currStore)
-        intent.putExtras(extras)
-        startActivity(intent)
+        openRoutingActivity(this, currStore, mapsDirection)
     }
 
     override fun onLocationChanged(location: Location) {
@@ -216,13 +206,5 @@ class StoreDetailActivity : BaseActivity(), StoreDetailContract.View, LocationLi
         const val KEY_STORE = "key_store"
         const val RC_ADD_COMMENT = 113
         private val TAG = StoreDetailActivity::class.java.simpleName
-
-        fun getIntent(context: Context, store: Store): Intent {
-            val intent = Intent(context, StoreDetailActivity::class.java)
-            val args = Bundle()
-            args.putParcelable(KEY_STORE, store)
-            intent.putExtras(args)
-            return intent
-        }
     }
 }

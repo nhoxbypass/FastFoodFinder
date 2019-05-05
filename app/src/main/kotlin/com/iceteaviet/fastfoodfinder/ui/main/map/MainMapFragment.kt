@@ -2,7 +2,6 @@ package com.iceteaviet.fastfoodfinder.ui.main.map
 
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
@@ -33,12 +32,8 @@ import com.iceteaviet.fastfoodfinder.location.GoogleLocationManager
 import com.iceteaviet.fastfoodfinder.location.LocationListener
 import com.iceteaviet.fastfoodfinder.ui.main.map.model.NearByStore
 import com.iceteaviet.fastfoodfinder.ui.main.map.storeinfo.StoreInfoDialog
-import com.iceteaviet.fastfoodfinder.ui.routing.MapRoutingActivity
-import com.iceteaviet.fastfoodfinder.utils.Constant
+import com.iceteaviet.fastfoodfinder.utils.*
 import com.iceteaviet.fastfoodfinder.utils.Constant.DEFAULT_ZOOM_LEVEL
-import com.iceteaviet.fastfoodfinder.utils.REQUEST_LOCATION
-import com.iceteaviet.fastfoodfinder.utils.isLocationPermissionGranted
-import com.iceteaviet.fastfoodfinder.utils.requestLocationPermission
 import com.iceteaviet.fastfoodfinder.utils.ui.animateMarker
 import com.iceteaviet.fastfoodfinder.utils.ui.getStoreIcon
 import kotlinx.android.synthetic.main.fragment_main_map.*
@@ -180,12 +175,7 @@ class MainMapFragment : Fragment(), MainMapContract.View, LocationListener {
     }
 
     override fun showMapRoutingView(currStore: Store, mapsDirection: MapsDirection) {
-        val intent = Intent(context, MapRoutingActivity::class.java)
-        val extras = Bundle()
-        extras.putParcelable(MapRoutingActivity.KEY_ROUTE_LIST, mapsDirection)
-        extras.putParcelable(MapRoutingActivity.KEY_DES_STORE, currStore)
-        intent.putExtras(extras)
-        startActivity(intent)
+        openRoutingActivity(activity!!, currStore, mapsDirection)
     }
 
     override fun animateMapMarker(marker: Marker?, storeType: Int) {

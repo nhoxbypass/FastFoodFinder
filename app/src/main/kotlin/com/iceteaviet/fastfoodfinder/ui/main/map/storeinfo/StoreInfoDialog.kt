@@ -13,7 +13,6 @@ import androidx.annotation.Nullable
 import androidx.fragment.app.DialogFragment
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
-import com.iceteaviet.fastfoodfinder.ui.store.StoreDetailActivity
 import com.iceteaviet.fastfoodfinder.ui.store.StoreDetailActivity.Companion.KEY_STORE
 import com.iceteaviet.fastfoodfinder.ui.store.StoreDetailAdapter
 import com.iceteaviet.fastfoodfinder.utils.*
@@ -65,13 +64,15 @@ class StoreInfoDialog : DialogFragment() {
         tvStoreName.text = store!!.title
         tvStoreAddress.text = store!!.address
         tvViewDetail.setOnClickListener {
-            store?.let { activity?.startActivity(StoreDetailActivity.getIntent(context!!, it)) }
+            store?.let {
+                openStoreDetailActivity(activity!!, it)
+            }
         }
 
         cdvh.btnCall.setOnClickListener {
             if (!isEmpty(store!!.tel)) {
                 if (isCallPhonePermissionGranted(context!!))
-                    startActivity(newCallIntent(store!!.tel!!))
+                    makeNativeCall(activity!!, store!!.tel!!)
                 else
                     requestCallPhonePermission(this@StoreInfoDialog)
             } else {
@@ -115,7 +116,7 @@ class StoreInfoDialog : DialogFragment() {
             REQUEST_CALL_PHONE -> {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    startActivity(newCallIntent(store!!.tel!!))
+                    makeNativeCall(activity!!, store!!.tel!!)
                 } else {
                     Toast.makeText(activity, R.string.permission_denied, Toast.LENGTH_SHORT).show()
                 }

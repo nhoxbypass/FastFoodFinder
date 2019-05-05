@@ -19,7 +19,7 @@ import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.ui.custom.itemtouchhelper.OnStartDragListener
 import com.iceteaviet.fastfoodfinder.ui.custom.itemtouchhelper.SimpleItemTouchHelperCallback
-import com.iceteaviet.fastfoodfinder.ui.store.StoreDetailActivity
+import com.iceteaviet.fastfoodfinder.utils.openStoreDetailActivity
 import kotlinx.android.synthetic.main.fragment_main_favourited.*
 
 /**
@@ -78,7 +78,7 @@ class MainFavouriteFragment : Fragment(), MainFavContract.View, OnStartDragListe
     }
 
     override fun showStoreDetailView(store: Store) {
-        activity?.startActivity(StoreDetailActivity.getIntent(context!!, store))
+        openStoreDetailActivity(activity!!, store)
     }
 
     private fun setupUI() {

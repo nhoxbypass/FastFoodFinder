@@ -36,6 +36,7 @@ class SplashActivity : BaseActivity(), SplashContract.View {
 
     override fun openLoginScreen() {
         openLoginActivity(this)
+        finish()
     }
 
     override fun exit() {
@@ -48,9 +49,11 @@ class SplashActivity : BaseActivity(), SplashContract.View {
             Handler(Looper.getMainLooper())
                     .postDelayed({
                         openMainActivity(this)
+                        finish()
                     }, remainTime)
         } else {
             openMainActivity(this)
+            finish()
         }
     }
 

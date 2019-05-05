@@ -1,7 +1,6 @@
 package com.iceteaviet.fastfoodfinder.ui.main.search
 
 
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.transition.TransitionManager
@@ -19,8 +18,8 @@ import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.ui.custom.store.BaseStoreAdapter
-import com.iceteaviet.fastfoodfinder.ui.storelist.StoreListActivity
 import com.iceteaviet.fastfoodfinder.utils.StoreType
+import com.iceteaviet.fastfoodfinder.utils.openStoreListActivity
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.fragment_search.*
 
@@ -117,8 +116,7 @@ class SearchFragment : Fragment(), SearchContract.View {
     }
 
     override fun showStoreListView() {
-        val intent = Intent(context, StoreListActivity::class.java)
-        startActivity(intent)
+        openStoreListActivity(activity!!)
     }
 
     private fun setupUI() {
