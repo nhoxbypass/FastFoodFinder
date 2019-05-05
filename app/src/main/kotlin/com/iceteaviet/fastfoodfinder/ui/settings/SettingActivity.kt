@@ -35,8 +35,6 @@ class SettingActivity : BaseActivity(), SettingContract.View {
     lateinit var swChangeLanguage: SwitchCompat
     lateinit var tvSettingLanguage: TextView
 
-    private var isVietnamese = true
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -66,10 +64,11 @@ class SettingActivity : BaseActivity(), SettingContract.View {
         setupEventListeners()
     }
 
-    override fun initLanguageView(isVietnamese: Boolean) {
-        this.isVietnamese = isVietnamese;
+    override fun updateLangUI(isVietnamese: Boolean) {
         if (!isVietnamese) {
             swChangeLanguage.isChecked = true
+        } else {
+            swChangeLanguage.isChecked = false
         }
     }
 
@@ -83,7 +82,7 @@ class SettingActivity : BaseActivity(), SettingContract.View {
     override val layoutId: Int
         get() = R.layout.activity_setting
 
-    fun loadLanguage(languageToLoad: String) {
+    override fun loadLanguage(languageToLoad: String) {
         val locale = Locale(languageToLoad)
         Locale.setDefault(locale)
         val configuration = Configuration()
@@ -96,7 +95,7 @@ class SettingActivity : BaseActivity(), SettingContract.View {
 
         baseContext.resources.updateConfiguration(configuration,
                 baseContext.resources.displayMetrics)
-        changeLanguage()
+        refreshUI()
     }
 
     override fun onResume() {
@@ -118,7 +117,7 @@ class SettingActivity : BaseActivity(), SettingContract.View {
         config.setLocale(locale)
     }
 
-    fun changeLanguage() {
+    fun refreshUI() {
         txtShareApp.setText(R.string.share_app_with_friends)
         txtChangeMetric.setText(R.string.use_metric_units)
         txtEditProfile.setText(R.string.edit_your_profile)
@@ -135,33 +134,6 @@ class SettingActivity : BaseActivity(), SettingContract.View {
 
     }
 
-    override fun onClickOnLanguageSwitch() {
-        if (isVietnamese) {
-            swChangeLanguage.isChecked = true
-            isVietnamese = false
-            loadLanguage("vi")
-
-        } else {
-            loadLanguage("en")
-            swChangeLanguage.isChecked = false
-            isVietnamese = true
-        }
-    }
-
-    override fun onClickOnLanguageTextView() {
-        swChangeLanguage.isChecked = true
-        if (isVietnamese) {
-            swChangeLanguage.isChecked = true
-            isVietnamese = false
-            loadLanguage("vi")
-        } else {
-            loadLanguage("en")
-            swChangeLanguage.isChecked = false
-            isVietnamese = true
-        }
-    }
-
-
     private fun setupEventListeners() {
         txtSignOut.setOnClickListener {
             presenter.signOut()
@@ -171,12 +143,12 @@ class SettingActivity : BaseActivity(), SettingContract.View {
 
         swChangeLanguage.setOnClickListener {
             presenter.onLanguageSwitchClick()
-            presenter.saveLanguagePref(isVietnamese)
+            presenter.saveLanguagePref()
         }
 
         tvSettingLanguage.setOnClickListener {
             presenter.onLanguageTextViewClick()
-            presenter.saveLanguagePref(isVietnamese)
+            presenter.saveLanguagePref()
         }
 
         txtSetNotification.setOnClickListener {

@@ -15,6 +15,8 @@ import io.reactivex.schedulers.Schedulers
 class SettingPresenter : BasePresenter<SettingContract.Presenter>, SettingContract.Presenter {
 
     val settingView: SettingContract.View
+    private var isVietnamese = true
+
 
     constructor(dataManager: DataManager, settingView: SettingContract.View) : super(dataManager) {
         this.settingView = settingView
@@ -33,18 +35,37 @@ class SettingPresenter : BasePresenter<SettingContract.Presenter>, SettingContra
     }
 
     override fun onLanguageTextViewClick() {
-        settingView.onClickOnLanguageTextView()
+        settingView.updateLangUI(true)
+        if (isVietnamese) {
+            settingView.updateLangUI(true)
+            isVietnamese = false
+            settingView.loadLanguage("vi")
+        } else {
+            settingView.loadLanguage("en")
+            settingView.updateLangUI(false)
+            isVietnamese = true
+        }
     }
 
     override fun onLanguageSwitchClick() {
-        settingView.onClickOnLanguageSwitch()
+        if (isVietnamese) {
+            settingView.updateLangUI(true)
+            isVietnamese = false
+            settingView.loadLanguage("vi")
+
+        } else {
+            settingView.loadLanguage("en")
+            settingView.updateLangUI(false)
+            isVietnamese = true
+        }
     }
 
     override fun onSetupLanguage() {
-        this.settingView.initLanguageView(dataManager.getPreferencesHelper().getIfLanguageIsVietnamese())
+        isVietnamese = dataManager.getPreferencesHelper().getIfLanguageIsVietnamese()
+        this.settingView.updateLangUI(isVietnamese)
     }
 
-    override fun saveLanguagePref(isVietnamese: Boolean) {
+    override fun saveLanguagePref() {
         dataManager.getPreferencesHelper().setIfLanguageIsVietnamese(isVietnamese)
     }
     override fun onLoadStoreFromServer() {
