@@ -20,6 +20,7 @@ class FacebookAuthHelper(private var loginButton: LoginButton) : AbsAuthHelper<A
 
     init {
         FacebookSdk.sdkInitialize(App.getContext())
+        setupAuthProvider()
     }
 
     override fun setupAuthProvider() {

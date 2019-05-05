@@ -7,10 +7,6 @@ abstract class AbsAuthHelper<AC> protected constructor() : AuthHelper<AC> {
 
     protected var listener: AuthRequestListener<AC>? = null
 
-    init {
-        this.setupAuthProvider()
-    }
-
     protected abstract fun setupAuthProvider()
 
     override fun setAuthRequestListener(listener: AuthRequestListener<AC>) {

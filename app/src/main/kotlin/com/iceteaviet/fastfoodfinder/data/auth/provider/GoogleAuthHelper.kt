@@ -11,6 +11,7 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.GoogleAuthProvider
 import com.iceteaviet.fastfoodfinder.ui.login.LoginActivity.Companion.RC_GOOGLE_SIGN_IN
+import com.iceteaviet.fastfoodfinder.utils.e
 
 /**
  * Created by tom on 2019-05-03.
@@ -18,6 +19,10 @@ import com.iceteaviet.fastfoodfinder.ui.login.LoginActivity.Companion.RC_GOOGLE_
 class GoogleAuthHelper(private var activity: Activity, private var apiKey: String) : AbsAuthHelper<AuthCredential>(), AuthHelper<AuthCredential> {
 
     private var googleSignInClient: GoogleSignInClient? = null
+
+    init {
+        setupAuthProvider()
+    }
 
     override fun setupAuthProvider() {
         googleSignInClient = setupGoogleSignInClient()
@@ -49,6 +54,8 @@ class GoogleAuthHelper(private var activity: Activity, private var apiKey: Strin
     }
 
     private fun setupGoogleSignInClient(): GoogleSignInClient {
+        e("setupGoogleSignInClient: " + apiKey)
+
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         val client: GoogleSignInClient
@@ -60,5 +67,9 @@ class GoogleAuthHelper(private var activity: Activity, private var apiKey: Strin
         // Build a GoogleSignInClient with the options specified by gso.
         client = GoogleSignIn.getClient(activity, gso)
         return client
+    }
+
+    init {
+        e("apiKey: " + apiKey)
     }
 }
