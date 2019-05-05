@@ -99,6 +99,16 @@ class SettingActivity : BaseActivity(), SettingContract.View {
         changeLanguage()
     }
 
+    override fun onResume() {
+        super.onResume()
+        presenter.subscribe()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        presenter.unsubscribe()
+    }
+
     fun setSystemLocaleLegacy(config: Configuration, locale: Locale) {
         config.locale = locale
     }
