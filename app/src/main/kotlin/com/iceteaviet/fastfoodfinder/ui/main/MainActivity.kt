@@ -2,7 +2,6 @@ package com.iceteaviet.fastfoodfinder.ui.main
 
 import android.app.SearchManager
 import android.content.Context
-import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Bundle
@@ -27,13 +26,13 @@ import com.bumptech.glide.Glide
 import com.google.android.material.navigation.NavigationView
 import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
-import com.iceteaviet.fastfoodfinder.ui.ar.LiveSightActivity
 import com.iceteaviet.fastfoodfinder.ui.base.BaseActivity
 import com.iceteaviet.fastfoodfinder.ui.main.search.SearchFragment
 import com.iceteaviet.fastfoodfinder.ui.profile.ProfileFragment
-import com.iceteaviet.fastfoodfinder.ui.settings.SettingActivity
 import com.iceteaviet.fastfoodfinder.utils.e
+import com.iceteaviet.fastfoodfinder.utils.openARLiveSightActivity
 import com.iceteaviet.fastfoodfinder.utils.openLoginActivity
+import com.iceteaviet.fastfoodfinder.utils.openSettingsActivity
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -126,16 +125,15 @@ class MainActivity : BaseActivity(), MainContract.View, View.OnClickListener {
 
     override fun showLoginView() {
         openLoginActivity(this)
+        finish()
     }
 
     override fun showARLiveSightView() {
-        val arIntent = Intent(this, LiveSightActivity::class.java)
-        startActivity(arIntent)
+        openARLiveSightActivity(this)
     }
 
     override fun showSettingsView() {
-        val settingIntent = Intent(this, SettingActivity::class.java)
-        startActivity(settingIntent)
+        openSettingsActivity(this)
     }
 
     override fun setSearchQueryText(searchString: String) {

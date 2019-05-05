@@ -156,6 +156,7 @@ class SettingActivity : BaseActivity(), SettingContract.View {
         txtSignOut.setOnClickListener {
             presenter.signOut()
             openLoginActivity(this@SettingActivity)
+            finish()
         }
 
         swChangeLanguage.setOnClickListener {
