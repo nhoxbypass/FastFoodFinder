@@ -102,6 +102,18 @@ class LocalUserRepository : UserDataSource {
         }
     }
 
+    @Deprecated("")
+    override fun unsubscribeFavouriteStoresOfUser(uid: String) {
+        val realm = Realm.getDefaultInstance()
+
+        realm.where(UserEntity::class.java)
+                .equalTo(PARAM_UID, uid)
+                .findAll()
+                .removeAllChangeListeners()
+
+        realm.close()
+    }
+
     companion object {
         private const val PARAM_UID = "uid"
     }

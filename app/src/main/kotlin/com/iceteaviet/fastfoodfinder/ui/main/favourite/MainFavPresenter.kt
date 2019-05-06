@@ -92,6 +92,11 @@ class MainFavPresenter : BasePresenter<MainFavContract.Presenter>, MainFavContra
         }
     }
 
+    override fun unsubscribe() {
+        dataManager.getRemoteUserDataSource().unsubscribeFavouriteStoresOfUser(dataManager.getCurrentUserUid())
+        super.unsubscribe()
+    }
+
     override fun onStoreItemClick(store: Store) {
         mainFavView.showStoreDetailView(store)
     }

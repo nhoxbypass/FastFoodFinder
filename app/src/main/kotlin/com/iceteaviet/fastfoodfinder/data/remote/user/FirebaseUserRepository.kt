@@ -17,6 +17,8 @@ import io.reactivex.Single
  */
 class FirebaseUserRepository(private val databaseRef: DatabaseReference) : UserDataSource {
 
+    var favouriteStoresListener: ChildEventListener? = null
+
     override fun insertOrUpdate(name: String, email: String, photoUrl: String, uid: String, storeLists: List<UserStoreList>) {
         val user = User(uid, name, email, photoUrl, storeLists.toMutableList())
         insertOrUpdate(user)
@@ -78,7 +80,7 @@ class FirebaseUserRepository(private val databaseRef: DatabaseReference) : UserD
 
     override fun subscribeFavouriteStoresOfUser(uid: String): Observable<Pair<Int, Int>> {
         return Observable.create { emitter ->
-            databaseRef.child(CHILD_USERS)
+            favouriteStoresListener = databaseRef.child(CHILD_USERS)
                     .child(uid)
                     .child(CHILD_USERS_STORE_LIST)
                     .child(UserStoreList.ID_FAVOURITE.toString())
@@ -107,6 +109,16 @@ class FirebaseUserRepository(private val databaseRef: DatabaseReference) : UserD
                             emitter.onError(databaseError.toException())
                         }
                     })
+        }
+    }
+
+    override fun unsubscribeFavouriteStoresOfUser(uid: String) {
+        favouriteStoresListener?.let {
+            databaseRef.child(CHILD_USERS)
+                    .child(uid)
+                    .child(CHILD_USERS_STORE_LIST)
+                    .child(UserStoreList.ID_FAVOURITE.toString())
+                    .child(CHILD_STORE_ID_LIST).removeEventListener(it)
         }
     }
 
