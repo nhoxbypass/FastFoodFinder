@@ -108,7 +108,9 @@ class ProfilePresenter : BasePresenter<ProfileContract.Presenter>, ProfileContra
         val currentUser = dataManager.getCurrentUser()
         for (i in 0 until currentUser!!.getUserStoreLists().size) {
             if (i <= 2) {
+                // Load default lists
                 defaultList.add(currentUser.getUserStoreLists()[i])
+            } else {
                 break
             }
         }
