@@ -12,18 +12,21 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
-import com.iceteaviet.fastfoodfinder.ui.main.OnStartDragListener
-import com.iceteaviet.fastfoodfinder.ui.main.SimpleItemTouchHelperCallback
-import com.iceteaviet.fastfoodfinder.ui.store.StoreDetailActivity
+import com.iceteaviet.fastfoodfinder.ui.custom.itemtouchhelper.OnStartDragListener
+import com.iceteaviet.fastfoodfinder.ui.custom.itemtouchhelper.SimpleItemTouchHelperCallback
+import com.iceteaviet.fastfoodfinder.utils.openStoreDetailActivity
 import kotlinx.android.synthetic.main.fragment_main_recently.*
 import java.util.*
 
 /**
  * Created by MyPC on 11/20/2016.
  */
-class MainRecentlyFragment : Fragment(), OnStartDragListener {
+class MainRecentlyFragment : Fragment(), MainRecentlyContract.View, OnStartDragListener {
+    override lateinit var presenter: MainRecentlyContract.Presenter
+
     lateinit var recyclerView: RecyclerView
     lateinit var containerLayout: FrameLayout
 
@@ -40,37 +43,49 @@ class MainRecentlyFragment : Fragment(), OnStartDragListener {
         recyclerView = rv_recently_stores
         containerLayout = fl_container
 
-        setupRecyclerView(recyclerView)
-        loadData()
+        setupUI()
+        setupEventHandlers()
     }
 
-    private fun setupRecyclerView(rv: RecyclerView) {
+    override fun onResume() {
+        super.onResume()
+        presenter.subscribe()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        presenter.unsubscribe()
+    }
+
+    override fun setStores(stores: ArrayList<Store>) {
+        mRecentlyAdapter!!.setStores(stores)
+    }
+
+    override fun showStoreDetailView(store: Store) {
+        openStoreDetailActivity(activity!!, store)
+    }
+
+    private fun setupUI() {
         mRecentlyAdapter = RecentlyStoreAdapter(this, containerLayout)
+        val llm = LinearLayoutManager(context)
+        recyclerView.layoutManager = llm
+        recyclerView.adapter = mRecentlyAdapter
+        val decoration = DividerItemDecoration(recyclerView.context, DividerItemDecoration.VERTICAL)
+        recyclerView.addItemDecoration(decoration)
 
-        mRecentlyAdapter!!.setOnItemClickListener(object : RecentlyStoreAdapter.OnItemClickListener {
-            override fun onClick(store: Store) {
-                activity?.startActivity(StoreDetailActivity.getIntent(context!!, store))
-            }
-        })
-
-        val mLayoutManager = LinearLayoutManager(context)
-        rv.layoutManager = mLayoutManager
-        rv.adapter = mRecentlyAdapter
-        val decoration = DividerItemDecoration(rv.context, DividerItemDecoration.VERTICAL)
-
-        rv.addItemDecoration(decoration)
         mRecentlyAdapter?.let {
             val callback = SimpleItemTouchHelperCallback(it)
             mItemTouchHelper = ItemTouchHelper(callback)
-            mItemTouchHelper!!.attachToRecyclerView(rv)
+            mItemTouchHelper!!.attachToRecyclerView(recyclerView)
         }
     }
 
-
-    private fun loadData() {
-        val stores = ArrayList<Store>()
-        //TODO: Load recently store from Realm
-        mRecentlyAdapter!!.setStores(stores)
+    private fun setupEventHandlers() {
+        mRecentlyAdapter!!.setOnItemClickListener(object : RecentlyStoreAdapter.OnItemClickListener {
+            override fun onClick(store: Store) {
+                presenter.onStoreItemClick(store)
+            }
+        })
     }
 
     override fun onStartDrag(viewHolder: RecyclerView.ViewHolder) {
@@ -85,6 +100,7 @@ class MainRecentlyFragment : Fragment(), OnStartDragListener {
             val args = Bundle()
             val fragment = MainRecentlyFragment()
             fragment.arguments = args
+            fragment.presenter = MainRecentlyPresenter(App.getDataManager(), fragment)
             return fragment
         }
     }

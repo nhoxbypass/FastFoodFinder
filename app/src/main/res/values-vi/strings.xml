@@ -65,7 +65,7 @@
     <string name="profile">Cá nhân</string>
     <string name="notifications">Thông báo</string>
     <string name="your_places">Danh sách địa điểm của bạn</string>
-    <string name="persional">Cá nhân</string>
+    <string name="personal">Cá nhân</string>
     <string name="connection">Kết nối</string>
     <string name="setting">Cài đặt</string>
     <string name="help_and_feedback">Trợ giúp và phản hồi</string>
@@ -115,4 +115,5 @@
     <string name="title_retry_update_db">Tải lại</string>
     <string name="str_hint_login_account">Bạn có thể đăng nhập bằng số điện thoại hoặc username</string>
     <string name="str_recover_pass_func">Lấy lại mật khẩu</string>
+    <string name="get_image_from_picker_failed">Có lỗi khi truy xuất ảnh từ bộ nhớ</string>
 </resources>

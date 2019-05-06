@@ -69,6 +69,6 @@ class FirebaseClientAuth : ClientAuth {
             displayName = firebaseUser.displayName!!
 
 
-        return User(displayName, firebaseUser.email!!, photoUrl, firebaseUser.uid, getDefaultUserStoreLists().toMutableList())
+        return User(firebaseUser.uid, displayName, firebaseUser.email!!, photoUrl, getDefaultUserStoreLists().toMutableList())
     }
 }

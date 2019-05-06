@@ -5,7 +5,7 @@ import android.graphics.*
 import android.location.Location
 import android.opengl.Matrix
 import android.view.View
-import com.iceteaviet.fastfoodfinder.data.local.poi.model.AugmentedPOI
+import com.iceteaviet.fastfoodfinder.ui.ar.model.AugmentedPOI
 import com.iceteaviet.fastfoodfinder.utils.convertECEFtoENU
 import com.iceteaviet.fastfoodfinder.utils.convertWSG84toECEF
 import java.util.*

@@ -18,14 +18,14 @@ import io.reactivex.Single
 class FirebaseUserRepository(private val databaseRef: DatabaseReference) : UserDataSource {
 
     override fun insertOrUpdate(name: String, email: String, photoUrl: String, uid: String, storeLists: List<UserStoreList>) {
-        val user = User(name, email, photoUrl, uid, storeLists.toMutableList())
+        val user = User(uid, name, email, photoUrl, storeLists.toMutableList())
         insertOrUpdate(user)
     }
 
 
     override fun insertOrUpdate(user: User) {
         databaseRef.child(CHILD_USERS)
-                .child(user.uid)
+                .child(user.getUid())
                 .setValue(user)
     }
 

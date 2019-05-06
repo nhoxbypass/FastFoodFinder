@@ -12,6 +12,8 @@ import com.iceteaviet.fastfoodfinder.data.prefs.AppPreferencesHelper
 import com.iceteaviet.fastfoodfinder.data.remote.routing.GoogleMapsRoutingApiHelper
 import com.iceteaviet.fastfoodfinder.data.remote.store.FirebaseStoreRepository
 import com.iceteaviet.fastfoodfinder.data.remote.user.FirebaseUserRepository
+import com.iceteaviet.fastfoodfinder.location.GoogleLocationManager
+import com.iceteaviet.fastfoodfinder.location.SystemLocationManager
 import com.iceteaviet.fastfoodfinder.utils.initLogger
 
 /**
@@ -53,8 +55,14 @@ class App : MultiDexApplication() {
         val clientAuth = FirebaseClientAuth()
         val preferencesHelper = AppPreferencesHelper(this)
 
-        dataManager = AppDataManager(this, localStoreDataSource, remoteStoreDataSource, clientAuth,
+        dataManager = AppDataManager(localStoreDataSource, remoteStoreDataSource, clientAuth,
                 localUserDataSource, remoteUserDataSource,
                 mapsRoutingApiHelper, preferencesHelper)
+    }
+
+    override fun onTerminate() {
+        GoogleLocationManager.getInstance().terminate()
+        SystemLocationManager.getInstance().terminate()
+        super.onTerminate()
     }
 }

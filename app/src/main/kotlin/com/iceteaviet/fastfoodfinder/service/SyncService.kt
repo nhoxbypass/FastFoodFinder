@@ -38,12 +38,11 @@ class SyncService : Service() {
         }
 
         fun start(context: Context) {
-            val starter = Intent(context, SyncService::class.java)
-            context.startService(starter)
+            context.startService(getStartIntent(context))
         }
 
         fun stop(context: Context) {
-            context.stopService(Intent(context, SyncService::class.java))
+            context.stopService(getStartIntent(context))
         }
     }
 }

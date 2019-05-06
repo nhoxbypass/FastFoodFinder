@@ -62,6 +62,17 @@ fun getStoreType(key: String): Int {
         StoreType.TYPE_CIRCLE_K
 }
 
+fun getStoreSearchString(storeType: Int): String {
+    return when (storeType) {
+        StoreType.TYPE_CIRCLE_K -> "Circle K"
+        StoreType.TYPE_MINI_STOP -> "Mini Stop"
+        StoreType.TYPE_FAMILY_MART -> "Family Mart"
+        StoreType.TYPE_BSMART -> "B'smart"
+        StoreType.TYPE_SHOP_N_GO -> "Shop and Go"
+        else -> ""
+    }
+}
+
 
 fun filterInvalidData(stores: MutableList<Store>): MutableList<Store> {
     for (i in 0 until stores.size) {

@@ -4,7 +4,7 @@
     android:id="@+id/activity_ar"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.ar.ArCameraActivity">
+    tools:context=".ui.ar.LiveSightActivity">
 
     <FrameLayout
         android:id="@+id/camera_container_layout"

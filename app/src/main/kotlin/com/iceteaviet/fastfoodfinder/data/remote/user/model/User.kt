@@ -9,26 +9,28 @@ import com.iceteaviet.fastfoodfinder.utils.wtf
  * Created by Genius Doan on 11/24/2016.
  */
 class User {
-    lateinit var name: String
-    lateinit var email: String
-    lateinit var uid: String
-    lateinit var photoUrl: String
-    private lateinit var userStoreLists: MutableList<UserStoreList>
+    var name: String = ""
+    var email: String = ""
+    private var uid: String = ""
+    var photoUrl: String = ""
+    private var userStoreLists: MutableList<UserStoreList> = ArrayList()
 
     constructor()
 
-    constructor(name: String, email: String, photoUrl: String, uid: String, storeLists: MutableList<UserStoreList>) {
+    constructor(user: User) : this(user.uid, user.name, user.email, user.photoUrl, user.userStoreLists)
+
+    constructor(uid: String, name: String, email: String, photoUrl: String, storeLists: MutableList<UserStoreList>) {
+        this.uid = uid
         this.name = name
         this.email = email
-        this.uid = uid
         this.photoUrl = photoUrl
         this.userStoreLists = storeLists
     }
 
     constructor(entity: UserEntity) {
+        this.uid = entity.getUid()
         this.name = entity.name
         this.email = entity.email
-        this.uid = entity.uid
         this.photoUrl = entity.photoUrl
 
         val userStoreListEntities: List<UserStoreListEntity> = realmListToList(entity.userStoreLists)
@@ -36,6 +38,10 @@ class User {
         for (i in userStoreListEntities.indices) {
             this.userStoreLists.add(UserStoreList(userStoreListEntities[i]))
         }
+    }
+
+    fun getUid(): String {
+        return uid
     }
 
     fun getUserStoreLists(): List<UserStoreList> {

@@ -3,7 +3,7 @@
     <group
         android:id="@+id/drawer_group"
         android:checkableBehavior="single">
-        <item android:title="@string/persional">
+        <item android:title="@string/personal">
             <menu>
                 <item
                     android:id="@+id/menu_action_map"

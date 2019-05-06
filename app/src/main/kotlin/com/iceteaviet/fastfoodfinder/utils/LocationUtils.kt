@@ -3,8 +3,6 @@
 package com.iceteaviet.fastfoodfinder.utils
 
 import android.location.Location
-
-import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.maps.model.LatLng
 
 /**
@@ -13,18 +11,6 @@ import com.google.android.gms.maps.model.LatLng
 
 private const val WGS84_A = 6378137.0                  // WGS 84 semi-major axis constant in meters
 private const val WGS84_E2 = 0.00669437999014          // square of WGS 84 eccentricity
-
-/**
- * Create location request with high accuracy
- */
-fun createLocationRequest(): LocationRequest {
-    val mLocationRequest = LocationRequest()
-    mLocationRequest.interval = Constant.MAPS_INTERVAL
-    mLocationRequest.fastestInterval = Constant.MAPS_FASTEST_INTERVAL
-    mLocationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-
-    return mLocationRequest
-}
 
 /**
  * Format LatLng string

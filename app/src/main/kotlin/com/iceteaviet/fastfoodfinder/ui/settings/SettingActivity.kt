@@ -1,26 +1,22 @@
 package com.iceteaviet.fastfoodfinder.ui.settings
 
 import android.annotation.TargetApi
-import android.content.Context
-import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.appcompat.widget.SwitchCompat
-import com.iceteaviet.fastfoodfinder.BuildConfig
+import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
-import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.ui.base.BaseActivity
-import com.iceteaviet.fastfoodfinder.utils.filterInvalidData
+import com.iceteaviet.fastfoodfinder.ui.settings.discountnotify.DiscountNotifyDialog
 import com.iceteaviet.fastfoodfinder.utils.openLoginActivity
-import io.reactivex.SingleObserver
-import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_setting.*
 import java.util.*
 
-class SettingActivity : BaseActivity() {
+class SettingActivity : BaseActivity(), SettingContract.View {
+    override lateinit var presenter: SettingContract.Presenter;
     lateinit var txtShareApp: TextView
     lateinit var txtChangeMetric: TextView
     lateinit var txtEditProfile: TextView
@@ -40,11 +36,10 @@ class SettingActivity : BaseActivity() {
     lateinit var swChangeLanguage: SwitchCompat
     lateinit var tvSettingLanguage: TextView
 
-    private var isVietnamese = true
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        presenter = SettingPresenter(App.getDataManager(), this)
         txtShareApp = tv_setting_share_app
         txtChangeMetric = tv_setting_change_metric
         txtEditProfile = tv_setting_edit_profile
@@ -63,27 +58,33 @@ class SettingActivity : BaseActivity() {
         txtSignOut = tv_setting_sign_out
         swChangeLanguage = sw_languages
         tvSettingLanguage = tv_setting_english
+        presenter.onSetupLanguage()
+        presenter.onInitSignOutTextView()
 
-        val pref = this.getSharedPreferences(
-                BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE)
+        // Initialize Firebase Auth
+        setupEventListeners()
+    }
 
-        isVietnamese = pref.getBoolean(KEY_LANGUAGE, false)
-
+    override fun updateLangUI(isVietnamese: Boolean) {
         if (!isVietnamese) {
             swChangeLanguage.isChecked = true
+        } else {
+            swChangeLanguage.isChecked = false
         }
-        // Initialize Firebase Auth
-        if (!dataManager.isSignedIn()) {
-            txtSignOut.isEnabled = false
-        }
+    }
 
-        setupEventListeners(pref)
+    override fun initSignOutTextView(enabled: Boolean) {
+        if (enabled) {
+            txtSignOut.visibility = View.VISIBLE
+        } else {
+            txtSignOut.visibility = View.INVISIBLE
+        }
     }
 
     override val layoutId: Int
         get() = R.layout.activity_setting
 
-    fun loadLanguage(languageToLoad: String) {
+    override fun loadLanguage(languageToLoad: String) {
         val locale = Locale(languageToLoad)
         Locale.setDefault(locale)
         val configuration = Configuration()
@@ -96,7 +97,17 @@ class SettingActivity : BaseActivity() {
 
         baseContext.resources.updateConfiguration(configuration,
                 baseContext.resources.displayMetrics)
-        changeLanguage()
+        refreshUI()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        presenter.subscribe()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        presenter.unsubscribe()
     }
 
     fun setSystemLocaleLegacy(config: Configuration, locale: Locale) {
@@ -108,7 +119,7 @@ class SettingActivity : BaseActivity() {
         config.setLocale(locale)
     }
 
-    fun changeLanguage() {
+    fun refreshUI() {
         txtShareApp.setText(R.string.share_app_with_friends)
         txtChangeMetric.setText(R.string.use_metric_units)
         txtEditProfile.setText(R.string.edit_your_profile)
@@ -125,72 +136,44 @@ class SettingActivity : BaseActivity() {
 
     }
 
-    private fun setupEventListeners(pref: SharedPreferences) {
+    private fun setupEventListeners() {
         txtSignOut.setOnClickListener {
-            dataManager.signOut()
+            presenter.signOut()
             openLoginActivity(this@SettingActivity)
+            finish()
         }
 
         swChangeLanguage.setOnClickListener {
-            if (isVietnamese) {
-                swChangeLanguage.isChecked = true
-                isVietnamese = false
-                loadLanguage("vi")
-
-            } else {
-                loadLanguage("en")
-                swChangeLanguage.isChecked = false
-                isVietnamese = true
-            }
-
-            val editor = pref.edit()
-            editor.putBoolean(KEY_LANGUAGE, isVietnamese)
-            editor.apply()
+            presenter.onLanguageSwitchClick()
+            presenter.saveLanguagePref()
         }
 
         tvSettingLanguage.setOnClickListener {
-            swChangeLanguage.isChecked = true
-            if (isVietnamese) {
-                swChangeLanguage.isChecked = true
-                isVietnamese = false
-                loadLanguage("vi")
-            } else {
-                loadLanguage("en")
-                swChangeLanguage.isChecked = false
-                isVietnamese = true
-            }
+            presenter.onLanguageTextViewClick()
+            presenter.saveLanguagePref()
         }
 
         txtSetNotification.setOnClickListener {
-            val dlg = StoreFilterDialog.newInstance()
+            val dlg = DiscountNotifyDialog.newInstance()
             dlg.show(supportFragmentManager, "dialog-filter")
         }
 
         layoutUpdateDb.setOnClickListener {
-            dataManager.loadStoresFromServer(this@SettingActivity)
-                    .subscribe(object : SingleObserver<List<Store>> {
-                        override fun onSubscribe(d: Disposable) {
-                            imageUpdateDb.visibility = View.GONE
-                            progressBarUpdateDb.visibility = View.VISIBLE
-                        }
-
-                        override fun onSuccess(storeList: List<Store>) {
-                            dataManager.getLocalStoreDataSource().setStores(filterInvalidData(storeList.toMutableList()))
-                            Toast.makeText(this@SettingActivity, R.string.update_database_successfull, Toast.LENGTH_SHORT).show()
-                            imageUpdateDb.visibility = View.VISIBLE
-                            progressBarUpdateDb.visibility = View.GONE
-                        }
-
-                        override fun onError(e: Throwable) {
-                            Toast.makeText(this@SettingActivity, getString(R.string.update_database_failed) + e.message, Toast.LENGTH_SHORT).show()
-                            imageUpdateDb.visibility = View.VISIBLE
-                            progressBarUpdateDb.visibility = View.GONE
-                        }
-                    })
+            presenter.onLoadStoreFromServer()
         }
     }
 
-    companion object {
-        const val KEY_LANGUAGE = "lang"
+
+    override fun showSuccessLoadingToast(successMessage: String?) {
+        Toast.makeText(this@SettingActivity, getString(R.string.update_database_successfull) + successMessage, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun showFailedLoadingToast(failedMessage: String?) {
+        Toast.makeText(this@SettingActivity, getString(R.string.update_database_failed) + failedMessage, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun updateLoadingProgressView(showProgress: Boolean) {
+        imageUpdateDb.visibility = if (showProgress) View.GONE else View.VISIBLE
+        progressBarUpdateDb.visibility = if (showProgress) View.VISIBLE else View.GONE
     }
 }

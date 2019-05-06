@@ -1,6 +1,5 @@
 package com.iceteaviet.fastfoodfinder.data
 
-import android.app.Activity
 import com.iceteaviet.fastfoodfinder.data.auth.ClientAuth
 import com.iceteaviet.fastfoodfinder.data.domain.store.StoreDataSource
 import com.iceteaviet.fastfoodfinder.data.domain.user.UserDataSource
@@ -26,7 +25,7 @@ interface DataManager : ClientAuth {
 
     fun getPreferencesHelper(): PreferencesHelper
 
-    fun loadStoresFromServer(activity: Activity): Single<List<Store>>
+    fun loadStoresFromServer(): Single<List<Store>>
 
     fun getCurrentUser(): User?
 

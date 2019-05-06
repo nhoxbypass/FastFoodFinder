@@ -1,10 +1,10 @@
 package com.iceteaviet.fastfoodfinder.ui.profile
 
-import android.content.Intent
-import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.cardview.widget.CardView
@@ -13,40 +13,30 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.bumptech.glide.Glide
 import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
-import com.iceteaviet.fastfoodfinder.data.DataManager
-import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList
 import com.iceteaviet.fastfoodfinder.ui.custom.store.StoreListView
-import com.iceteaviet.fastfoodfinder.ui.profile.ListDetailActivity.Companion.KEY_USER_PHOTO_URL
-import com.iceteaviet.fastfoodfinder.ui.profile.ListDetailActivity.Companion.KEY_USER_STORE_LIST
-import com.iceteaviet.fastfoodfinder.utils.isValidUserUid
+import com.iceteaviet.fastfoodfinder.ui.profile.cover.UpdateCoverImageDialog
+import com.iceteaviet.fastfoodfinder.ui.profile.createlist.CreateListDialog
+import com.iceteaviet.fastfoodfinder.utils.openListDetailActivity
 import com.iceteaviet.fastfoodfinder.utils.openLoginActivity
-import io.reactivex.SingleObserver
-import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_profile.*
-import java.util.*
 
 // TODO: Check fragment lifecycle to support go to login screen when auth token invalid
-class ProfileFragment : Fragment(), View.OnClickListener {
+class ProfileFragment : Fragment(), ProfileContract.View, View.OnClickListener {
+    override lateinit var presenter: ProfileContract.Presenter
+
     lateinit var ivAvatarProfile: ImageView
     lateinit var cvSavePlace: StoreListView
     lateinit var cvFavouritePlace: StoreListView
     lateinit var btnCreateNew: CardView
 
     private var mDialog: UpdateCoverImageDialog? = null
-    private var mDialogCreate: CreateNewListDialog? = null
-    private var mAdapter: UserStoreListAdapter? = null
-    private var defaultList: MutableList<UserStoreList> = ArrayList() // Default store list (saved, favourite) that every user have
-    private var listName: ArrayList<String> = ArrayList()
-
-    private lateinit var dataManager: DataManager
-
+    private var mDialogCreate: CreateListDialog? = null
+    private var storeListAdapter: UserStoreListAdapter? = null
 
     override fun onCreate(@Nullable savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-
-        dataManager = App.getDataManager()
     }
 
     @Nullable
@@ -57,44 +47,35 @@ class ProfileFragment : Fragment(), View.OnClickListener {
     override fun onViewCreated(@NonNull view: View, @Nullable savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupUi()
+        storeListAdapter = UserStoreListAdapter()
+        setupUI()
         setupEventListeners()
-        loadCurrentUserData()
     }
 
     override fun onResume() {
         super.onResume()
-        // Invalid auth token -> go to login screen
-        if (!dataManager.isSignedIn())
-            openLoginActivity(activity!!)
+        presenter.subscribe()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        presenter.unsubscribe()
     }
 
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.cvCreateNew -> {
-                mDialogCreate = CreateNewListDialog.newInstance(listName)
-                mDialogCreate!!.show(fragmentManager!!, "")
-                mDialogCreate!!.setOnButtonClickListener(object : CreateNewListDialog.OnCreateListListener {
-                    override fun onButtonClick(name: String, iconId: Int) {
-                        val currentUser = dataManager.getCurrentUser()
-                        val id = currentUser!!.getUserStoreLists().size //New id = current size
-                        val list = UserStoreList(id, ArrayList(), iconId, name)
-                        mAdapter!!.addListPacket(list)
-                        currentUser.addStoreList(list)
-                        dataManager.getRemoteUserDataSource().updateStoreListForUser(currentUser.uid, currentUser.getUserStoreLists())
-                        tvNumberList!!.text = String.format("(%s)", mAdapter!!.itemCount.toString())
-                    }
-                })
+                presenter.onCreateNewListButtonClick()
                 return
             }
 
             R.id.cv_saved_places -> {
-                sendToDetailListActivity(defaultList[UserStoreList.ID_SAVED])
+                presenter.onSavedListClick()
                 return
             }
 
             R.id.cv_favourite_places -> {
-                sendToDetailListActivity(defaultList[UserStoreList.ID_FAVOURITE])
+                presenter.onFavouriteListClick()
                 return
             }
 
@@ -112,29 +93,22 @@ class ProfileFragment : Fragment(), View.OnClickListener {
         cvFavouritePlace.setOnClickListener(this)
         btnUpdateCoverImage.setOnClickListener(this)
 
-        mAdapter!!.setOnItemLongClickListener(object : UserStoreListAdapter.OnItemLongClickListener {
-            override fun onClick(position: Int) {
-                val currentUser = dataManager.getCurrentUser()
-                tvNumberList!!.text = String.format("(%s)", mAdapter!!.itemCount.toString())
-                currentUser!!.removeStoreList(position)
-                dataManager.getRemoteUserDataSource().updateStoreListForUser(currentUser.uid, currentUser.getUserStoreLists())
+        storeListAdapter!!.setOnItemLongClickListener(object : UserStoreListAdapter.OnItemLongClickListener {
+            override fun onLongClick(position: Int) {
+                presenter.onStoreListLongClick(position)
             }
         })
 
-        mAdapter!!.setOnItemClickListener(object : UserStoreListAdapter.OnItemClickListener {
+        storeListAdapter!!.setOnItemClickListener(object : UserStoreListAdapter.OnItemClickListener {
             override fun onClick(listPacket: UserStoreList) {
-                sendToDetailListActivity(listPacket)
+                presenter.onStoreListClick(listPacket)
             }
         })
 
         mDialog!!.setOnButtonClickListener(object : UpdateCoverImageDialog.OnButtonClickListener {
-            override fun onOkClick(Id: Int, bmp: Bitmap?) {
-                if (Id != 0)
-                    if (Id == -1) {
-                        ivCoverImage!!.setImageBitmap(bmp)
-                    } else {
-                        ivCoverImage!!.setImageResource(Id)
-                    }
+            override fun onOkClick(selectedImage: Drawable?) {
+                if (selectedImage != null)
+                    ivCoverImage.setImageDrawable(selectedImage)
 
                 btnUpdateCoverImage!!.visibility = View.VISIBLE
             }
@@ -145,15 +119,14 @@ class ProfileFragment : Fragment(), View.OnClickListener {
         })
     }
 
-    private fun setupUi() {
+    private fun setupUI() {
         ivAvatarProfile = iv_profile_avatar
         cvSavePlace = cv_saved_places
         cvFavouritePlace = cv_favourite_places
         btnCreateNew = cvCreateNew
 
-        mAdapter = UserStoreListAdapter()
         val mLayoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-        rvListPacket!!.adapter = mAdapter
+        rvListPacket!!.adapter = storeListAdapter
         rvListPacket!!.layoutManager = mLayoutManager
 
         mDialog = UpdateCoverImageDialog.newInstance()
@@ -162,72 +135,82 @@ class ProfileFragment : Fragment(), View.OnClickListener {
         tvEmail!!.setText(R.string.unregistered_email)
     }
 
-    fun loadStoreLists() {
-        val currentUser = dataManager.getCurrentUser()
-        for (i in 0 until currentUser!!.getUserStoreLists().size) {
-            if (i <= 2) {
-                defaultList.add(currentUser.getUserStoreLists()[i])
-            } else {
-                mAdapter!!.addListPacket(currentUser.getUserStoreLists()[i])
-            }
-        }
-        tvNumberList!!.text = String.format("(%s)", mAdapter!!.itemCount.toString())
-    }
-
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         val item = menu.findItem(R.id.action_search)
         item.isVisible = false
     }
 
-    private fun loadCurrentUserData() {
-        val uid = dataManager.getCurrentUserUid()
-        if (!isValidUserUid(uid))
-            return
-
-        dataManager.getRemoteUserDataSource().getUser(uid)
-                .subscribe(object : SingleObserver<User> {
-                    override fun onSubscribe(d: Disposable) {
-
-                    }
-
-                    override fun onSuccess(user: User) {
-                        dataManager.setCurrentUser(user)
-                        Glide.with(context!!)
-                                .load(user.photoUrl)
-                                .into(ivAvatarProfile)
-                        tvName!!.text = user.name
-                        tvEmail!!.text = user.email
-                        loadStoreLists()
-                        for (i in 0 until user.getUserStoreLists().size) {
-                            listName.add(user.getUserStoreLists()[i].listName)
-                        }
-
-                        fillStoreListPreviewData(user)
-                    }
-
-                    override fun onError(e: Throwable) {
-                        e.printStackTrace()
-                    }
-                })
+    override fun openLoginActivity() {
+        openLoginActivity(activity!!)
+        activity!!.finish()
     }
 
-    private fun fillStoreListPreviewData(user: User) {
-        cvSavePlace.setCount(user.getSavedStoreList().getStoreIdList()!!.size.toString())
-        cvFavouritePlace.setCount(user.getFavouriteStoreList().getStoreIdList()!!.size.toString())
+    override fun loadAvatarPhoto(photoUrl: String) {
+        Glide.with(activity!!)
+                .load(photoUrl)
+                .into(ivAvatarProfile)
     }
 
-    fun sendToDetailListActivity(userStoreList: UserStoreList) {
-        val intent = Intent(context, ListDetailActivity::class.java)
-        intent.putExtra(KEY_USER_PHOTO_URL, dataManager.getCurrentUser()!!.photoUrl)
-        intent.putExtra(KEY_USER_STORE_LIST, userStoreList)
-        startActivity(intent)
+    override fun setName(name: String) {
+        tvName.text = name
+    }
+
+    override fun setEmail(email: String) {
+        tvEmail.text = email
+    }
+
+    override fun setStoreListCount(storeCount: String) {
+        tvNumberList.text = storeCount
+    }
+
+    override fun setSavedStoreCount(size: Int) {
+        cvSavePlace.setCount(size.toString())
+    }
+
+    override fun setFavouriteStoreCount(size: Int) {
+        cvFavouritePlace.setCount(size.toString())
+    }
+
+    override fun setUserStoreLists(userStoreLists: List<UserStoreList>) {
+        storeListAdapter!!.setListPackets(userStoreLists)
+    }
+
+    override fun addUserStoreList(list: UserStoreList) {
+        storeListAdapter!!.addListPacket(list)
+    }
+
+    override fun showCreateNewListDialog() {
+        mDialogCreate = CreateListDialog.newInstance()
+        mDialogCreate!!.show(fragmentManager!!, "")
+        mDialogCreate!!.setOnButtonClickListener(object : CreateListDialog.OnCreateListListener {
+            override fun onCreateButtonClick(name: String, iconId: Int, dialog: CreateListDialog) {
+                presenter.onCreateNewList(name, iconId)
+            }
+
+            override fun onCancel(dialog: CreateListDialog) {
+                dialog.dismiss()
+            }
+        })
+    }
+
+    override fun dismissCreateNewListDialog() {
+        mDialogCreate!!.dismiss()
+    }
+
+    override fun warningListNameExisted() {
+        Toast.makeText(context, R.string.list_name_already_exists, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun openListDetail(userStoreList: UserStoreList, photoUrl: String) {
+        openListDetailActivity(activity!!, userStoreList, photoUrl)
     }
 
     companion object {
         fun newInstance(): ProfileFragment {
             val extras = Bundle()
             val fragment = ProfileFragment()
+            fragment.presenter = ProfilePresenter(App.getDataManager(), fragment)
             fragment.arguments = extras
             return fragment
         }

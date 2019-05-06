@@ -7,90 +7,70 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.google.android.gms.maps.model.LatLng
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
-import com.iceteaviet.fastfoodfinder.ui.main.StoreDiffCallback
-import com.iceteaviet.fastfoodfinder.utils.calcDistance
+import com.iceteaviet.fastfoodfinder.ui.main.map.model.NearByStore
 import com.iceteaviet.fastfoodfinder.utils.formatDistance
 import com.iceteaviet.fastfoodfinder.utils.ui.getStoreLogoDrawableRes
 import kotlinx.android.synthetic.main.item_store.view.*
 import java.util.*
 
 /**
- * Created by Genius Doan on 11/9/2016.
- *
- * @see androidx.recyclerview.widget.ListAdapter
+ * Created by tom on 7/21/18.
  */
+class NearByStoreAdapter @JvmOverloads internal constructor(@NonNull diffCallback: DiffUtil.ItemCallback<NearByStore> = DIFF_CALLBACK) : ListAdapter<NearByStore, NearByStoreAdapter.StoreViewHolder>(diffCallback) {
 
-@Deprecated("due to the publish of ListAdapter\n")
-class NearByStoreAdapter : RecyclerView.Adapter<NearByStoreAdapter.StoreViewHolder>() {
-    private var currCameraPosition: LatLng? = null
-    private val mListStore: MutableList<Store>
+    private val nearByStores: MutableList<NearByStore>
     private var listener: StoreListListener? = null
 
     init {
-        mListStore = ArrayList()
+        nearByStores = ArrayList()
     }
 
     fun setOnStoreListListener(listener: StoreListListener) {
         this.listener = listener
     }
 
-    fun setCurrCameraPosition(currCameraPosition: LatLng) {
-        this.currCameraPosition = currCameraPosition
+    // FIXME: Called too many times
+    fun setStores(nearbyStores: List<NearByStore>) {
+        nearByStores.clear()
+        nearByStores.addAll(nearbyStores)
+
+        submitList(nearbyStores) // DiffUtil takes care of the check
     }
 
-    fun addStore(store: Store) {
-        mListStore.add(store)
-        notifyItemInserted(mListStore.size - 1)
+    fun clearData() {
+        nearByStores.clear()
+        submitList(nearByStores)
     }
 
-    fun addStores(listStores: List<Store>) {
-        val position = mListStore.size
-        mListStore.addAll(listStores)
-        notifyItemRangeInserted(position, mListStore.size)
-    }
-
-    fun setStores(listStores: List<Store>) {
-        val diffResult = DiffUtil.calculateDiff(StoreDiffCallback(this.mListStore, listStores))
-
-        mListStore.clear()
-        mListStore.addAll(listStores)
-
-        diffResult.dispatchUpdatesTo(this)
-    }
-
+    @NonNull
     override fun onCreateViewHolder(@NonNull parent: ViewGroup, viewType: Int): StoreViewHolder {
         val convertView = LayoutInflater.from(parent.context).inflate(R.layout.item_store, parent, false)
-        return StoreViewHolder(convertView, listener, mListStore)
+        return StoreViewHolder(convertView, listener)
     }
 
     override fun onBindViewHolder(@NonNull holder: StoreViewHolder, position: Int) {
-        val store = mListStore[position]
-        holder.setData(store, calcDistance(currCameraPosition!!, store.getPosition()))
-    }
-
-    override fun getItemCount(): Int {
-        return mListStore.size
+        val nearByStore = getItem(position)
+        holder.setData(nearByStore.store, nearByStore.distance)
     }
 
     interface StoreListListener {
         fun onItemClick(store: Store)
     }
 
-    class StoreViewHolder(itemView: View, listener: StoreListListener?, storeList: List<Store>) : RecyclerView.ViewHolder(itemView) {
+    inner class StoreViewHolder(itemView: View, listener: StoreListListener?) : RecyclerView.ViewHolder(itemView) {
         var logo: ImageView = itemView.iv_item_store
         var storeName: TextView = itemView.tv_item_storename
         var storeAddress: TextView = itemView.tv_item_address
         var storeDistance: TextView = itemView.tv_item_distance
 
-
         init {
             itemView.setOnClickListener {
-                listener?.onItemClick(storeList[adapterPosition])
+                listener?.onItemClick(nearByStores[adapterPosition].store)
             }
         }
 
@@ -101,6 +81,18 @@ class NearByStoreAdapter : RecyclerView.Adapter<NearByStoreAdapter.StoreViewHold
             storeName.text = store.title
             storeAddress.text = store.address
             storeDistance.text = formatDistance(distance)
+        }
+    }
+
+    companion object {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<NearByStore>() {
+            override fun areItemsTheSame(oldItem: NearByStore, newItem: NearByStore): Boolean {
+                return oldItem.store.id == newItem.store.id && oldItem.distance == newItem.distance
+            }
+
+            override fun areContentsTheSame(oldItem: NearByStore, newItem: NearByStore): Boolean {
+                return oldItem.store.address == newItem.store.address && oldItem.distance == newItem.distance
+            }
         }
     }
 }

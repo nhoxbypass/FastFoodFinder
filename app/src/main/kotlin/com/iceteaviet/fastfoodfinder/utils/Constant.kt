@@ -12,10 +12,6 @@ import com.google.android.gms.maps.model.LatLng
  */
 
 object Constant {
-    //Map utils
-    const val MAPS_INTERVAL = (1000 * 10).toLong()
-    const val MAPS_FASTEST_INTERVAL = (1000 * 5).toLong()
-
     const val DOWNLOADER_BOT_EMAIL = "store_downloader@fastfoodfinder.com"
     const val DOWNLOADER_BOT_PWD = "123456789"
 
@@ -25,5 +21,6 @@ object Constant {
     @JvmStatic
     val DEFAULT_MAP_TARGET = LatLng(10.773996, 106.6898035)
 
-    const val SEARCH_STORE_PREFIX = "$-"
+    const val SEARCH_STORE_PREFIX = "search-store-id_"
+    const val SEARCH_STORE_PREFIX_LEN = SEARCH_STORE_PREFIX.length
 }

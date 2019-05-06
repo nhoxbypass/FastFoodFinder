@@ -57,13 +57,13 @@
             android:configChanges="locale" />
         <activity android:name=".ui.routing.MapRoutingActivity" />
         <activity
-            android:name=".ui.store.CommentActivity"
+            android:name=".ui.store.comment.CommentActivity"
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".ui.storelist.StoreListActivity" />
         <activity
-            android:name=".ui.profile.ListDetailActivity"
+            android:name=".ui.storelist.ListDetailActivity"
             android:theme="@style/AppTheme.NoActionBar.TranslucentStatus" />
-        <activity android:name=".ui.ar.ArCameraActivity"></activity>
+        <activity android:name=".ui.ar.LiveSightActivity"></activity>
     </application>
 
 </manifest>

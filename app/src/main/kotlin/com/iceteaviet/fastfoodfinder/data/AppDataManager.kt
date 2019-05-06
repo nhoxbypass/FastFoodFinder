@@ -1,8 +1,7 @@
 package com.iceteaviet.fastfoodfinder.data
 
-import android.app.Activity
-import android.content.Context
 import com.google.firebase.auth.AuthCredential
+import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.data.auth.ClientAuth
 import com.iceteaviet.fastfoodfinder.data.domain.store.StoreDataSource
 import com.iceteaviet.fastfoodfinder.data.domain.user.UserDataSource
@@ -17,6 +16,7 @@ import com.iceteaviet.fastfoodfinder.utils.w
 import io.reactivex.Single
 import io.reactivex.SingleObserver
 import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import io.realm.Realm
 import io.realm.RealmConfiguration
 
@@ -24,7 +24,7 @@ import io.realm.RealmConfiguration
  * Created by tom on 7/9/18.
  */
 
-class AppDataManager(context: Context, private val localStoreDataSource: StoreDataSource, private val remoteStoreDataSource: StoreDataSource,
+class AppDataManager(private val localStoreDataSource: StoreDataSource, private val remoteStoreDataSource: StoreDataSource,
                      private val clientAuth: ClientAuth,
                      private val localUserDataSource: UserDataSource, private val remoteUserDataSource: UserDataSource,
                      private val mapsRoutingApiHelper: MapsRoutingApiHelper, private val preferencesHelper: PreferencesHelper) : DataManager {
@@ -33,8 +33,7 @@ class AppDataManager(context: Context, private val localStoreDataSource: StoreDa
     private lateinit var searchHistory: MutableSet<String>
 
     init {
-
-        Realm.init(context)
+        Realm.init(App.getContext())
         val config = RealmConfiguration.Builder()
                 .deleteRealmIfMigrationNeeded()
                 .build()
@@ -65,11 +64,12 @@ class AppDataManager(context: Context, private val localStoreDataSource: StoreDa
         return preferencesHelper
     }
 
-    override fun loadStoresFromServer(activity: Activity): Single<List<Store>> {
+    override fun loadStoresFromServer(): Single<List<Store>> {
         return Single.create { emitter ->
             if (!clientAuth.isSignedIn()) {
                 // Not signed in
                 clientAuth.signInWithEmailAndPassword(Constant.DOWNLOADER_BOT_EMAIL, Constant.DOWNLOADER_BOT_PWD)
+                        .subscribeOn(Schedulers.io())
                         .subscribe(object : SingleObserver<User> {
                             override fun onSubscribe(d: Disposable) {
 
@@ -77,6 +77,7 @@ class AppDataManager(context: Context, private val localStoreDataSource: StoreDa
 
                             override fun onSuccess(user: User) {
                                 remoteStoreDataSource.getAllStores()
+                                        .subscribeOn(Schedulers.io())
                                         .subscribe(object : SingleObserver<List<Store>> {
                                             override fun onSubscribe(d: Disposable) {
 
@@ -101,6 +102,7 @@ class AppDataManager(context: Context, private val localStoreDataSource: StoreDa
                         })
             } else {
                 remoteStoreDataSource.getAllStores()
+                        .subscribeOn(Schedulers.io())
                         .subscribe(object : SingleObserver<List<Store>> {
                             override fun onSubscribe(d: Disposable) {
 
@@ -121,7 +123,7 @@ class AppDataManager(context: Context, private val localStoreDataSource: StoreDa
     override fun getCurrentUserUid(): String {
         var uid = ""
         if (currentUser != null)
-            uid = currentUser!!.uid
+            uid = currentUser!!.getUid()
 
         if (isEmpty(uid))
             uid = clientAuth.getCurrentUserUid()
@@ -168,7 +170,7 @@ class AppDataManager(context: Context, private val localStoreDataSource: StoreDa
 
     override fun setCurrentUser(user: User?) {
         currentUser = user
-        if (user != null && !user.uid.isEmpty()) {
+        if (user != null && !user.getUid().isEmpty()) {
             localUserDataSource.insertOrUpdate(user)
         }
     }
@@ -184,6 +186,10 @@ class AppDataManager(context: Context, private val localStoreDataSource: StoreDa
         if (!::searchHistory.isInitialized)
             searchHistory = preferencesHelper.getSearchHistories()
 
+        if (searchHistory.contains(searchContent)) {
+            // Remove old element to push the most recent search to the top of the list
+            searchHistory.remove(searchContent)
+        }
         searchHistory.add(searchContent)
         preferencesHelper.setSearchHistories(searchHistory)
     }

@@ -6,6 +6,8 @@ package com.iceteaviet.fastfoodfinder.utils
 import android.text.Html
 import android.text.SpannableStringBuilder
 import android.text.Spanned
+import androidx.annotation.StringRes
+import com.iceteaviet.fastfoodfinder.App
 
 /**
  * Created by tom on 7/19/18.
@@ -58,4 +60,8 @@ fun trimWhitespace(source: CharSequence?): CharSequence {
         builder.delete(builder.length - 1, builder.length)
 
     return builder.subSequence(0, builder.length)
+}
+
+fun getString(@StringRes resId: Int): String {
+    return App.getContext().getString(resId)
 }

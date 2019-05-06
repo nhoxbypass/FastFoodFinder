@@ -13,7 +13,7 @@
         android:layout_height="80dp"
         android:layout_marginTop="48dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_menu_profile" />
+        android:src="@drawable/ic_default_avatar_menu" />
 
     <TextView
         android:id="@+id/tv_nav_header_name"

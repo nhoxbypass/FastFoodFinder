@@ -2,7 +2,6 @@ package com.iceteaviet.fastfoodfinder.data.prefs
 
 import android.content.Context
 import android.content.SharedPreferences
-import java.util.*
 
 /**
  * Created by tom on 7/24/18.
@@ -39,7 +38,23 @@ class AppPreferencesHelper(context: Context) : PreferencesHelper {
         return sharedPreferences.getBoolean(key, defaultValue)
     }
 
+    override fun putInt(key: String, value: Int) {
+        sharedPreferences.edit()
+                .putInt(key, value)
+                .apply()
+    }
+
+    override fun getInt(key: String, defaultValue: Int): Int {
+        return sharedPreferences.getInt(key, defaultValue)
+    }
+
     override fun setStringSet(key: String, set: MutableSet<String>) {
+        // Small hack to fix bug cannot update StringSet in SharedPreferences
+        // The getStringSet() returns a reference of the stored HashSet object inside the SharedPreferences
+        // @see: https://stackoverflow.com/questions/14034803/misbehavior-when-trying-to-store-a-string-set-using-sharedpreferences
+        putInt(key + "_size", set.size)
+
+        // Then store the StringSet itself
         sharedPreferences.edit()
                 .putStringSet(key, set)
                 .apply()
@@ -70,17 +85,28 @@ class AppPreferencesHelper(context: Context) : PreferencesHelper {
     }
 
     override fun getSearchHistories(): MutableSet<String> {
-        return sharedPreferences.getStringSet(KEY_SEARCH_HISTORIES, TreeSet())
+        return sharedPreferences.getStringSet(KEY_SEARCH_HISTORIES, LinkedHashSet())
     }
 
     override fun setSearchHistories(set: MutableSet<String>) {
         setStringSet(KEY_SEARCH_HISTORIES, set)
     }
 
+    override fun getIfLanguageIsVietnamese(): Boolean {
+        return sharedPreferences.getBoolean(KEY_LANGUAGE, false)
+    }
+
+    override fun setIfLanguageIsVietnamese(isVietnamese: Boolean) {
+        sharedPreferences.edit()
+                .putBoolean(KEY_LANGUAGE, isVietnamese)
+                .apply()
+    }
     companion object {
         private const val PREFS_NAME = "english_now_android"
         private const val KEY_APP_LAUNCH_FIRST_TIME = "app_launch_first_time"
         private const val KEY_NUMBER_OF_STORES = "number_of_stores"
         private const val KEY_SEARCH_HISTORIES = "search_histories"
+        private const val KEY_SEARCH_HISTORIES_SIZE = "search_histories_size"
+        private const val KEY_LANGUAGE = "lang"
     }
 }

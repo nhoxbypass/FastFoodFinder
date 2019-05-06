@@ -8,7 +8,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.gms.maps.model.LatLng
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.Step
 import com.iceteaviet.fastfoodfinder.utils.fromHtml
@@ -19,20 +18,19 @@ import kotlinx.android.synthetic.main.item_routing.view.*
 /**
  * Created by Genius Doan on 11/30/2016.
  */
-class RoutingAdapter internal constructor(steps: List<Step>, type: Int) : RecyclerView.Adapter<RoutingAdapter.RoutingViewHolder>() {
+class RoutingAdapter internal constructor(type: Int) : RecyclerView.Adapter<RoutingAdapter.RoutingViewHolder>() {
 
-    private var mStepList: List<Step>? = steps
-    private var mListener: OnNavigationItemClickListener? = null
+    private var stepList: List<Step> = ArrayList()
+    private var mListener: OnNavigationRowClickListener? = null
     private val mType: Int = type
 
-    fun setOnNavigationItemClickListener(listener: OnNavigationItemClickListener) {
+    fun setOnNavigationItemClickListener(listener: OnNavigationRowClickListener) {
         mListener = listener
     }
 
-    fun getDirectionLocationAt(index: Int): LatLng? {
-        return if (index < 0 || index >= mStepList!!.size) {
-            null
-        } else mStepList!![index].endMapCoordination.location
+    fun setStepList(stepList: List<Step>) {
+        this.stepList = stepList
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(@NonNull parent: ViewGroup, viewType: Int): RoutingViewHolder {
@@ -41,19 +39,19 @@ class RoutingAdapter internal constructor(steps: List<Step>, type: Int) : Recycl
     }
 
     override fun onBindViewHolder(@NonNull holder: RoutingViewHolder, position: Int) {
-        holder.bindData(mStepList!![position], mType)
+        holder.bindData(stepList[position], mType)
     }
 
     override fun getItemCount(): Int {
-        return mStepList!!.size
+        return stepList.size
     }
 
 
-    interface OnNavigationItemClickListener {
+    interface OnNavigationRowClickListener {
         fun onClick(index: Int)
     }
 
-    class RoutingViewHolder(itemView: View, listener: OnNavigationItemClickListener?) : RecyclerView.ViewHolder(itemView) {
+    class RoutingViewHolder(itemView: View, listener: OnNavigationRowClickListener?) : RecyclerView.ViewHolder(itemView) {
         var routingGuide: TextView = itemView.tv_routing_guide
         var routingDistance: TextView = itemView.tv_routing_distance
         var routingImageView: ImageView = itemView.iv_routing
