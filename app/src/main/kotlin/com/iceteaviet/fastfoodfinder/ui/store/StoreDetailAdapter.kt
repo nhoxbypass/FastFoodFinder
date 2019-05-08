@@ -112,6 +112,9 @@ class StoreDetailAdapter internal constructor() : RecyclerView.Adapter<RecyclerV
         fun bind(store: Store?) {
             mStore = store
 
+            if (store == null)
+                return
+
             saveButton.setOnClickListener(this)
             favButton.setOnClickListener(this)
             comment.setOnClickListener {
