@@ -14,7 +14,7 @@ class UserStoreList : Parcelable {
     var id: Int = -1
     var listName: String = ""
     var iconId: Int = -1
-    private lateinit var storeIdList: MutableList<Int>
+    private var storeIdList: MutableList<Int> = ArrayList()
 
     protected constructor(`in`: Parcel) {
         id = `in`.readInt()
@@ -46,8 +46,6 @@ class UserStoreList : Parcelable {
     }
 
     fun getStoreIdList(): MutableList<Int>? {
-        if (!::storeIdList.isInitialized)
-            storeIdList = ArrayList()
         return storeIdList
     }
 
