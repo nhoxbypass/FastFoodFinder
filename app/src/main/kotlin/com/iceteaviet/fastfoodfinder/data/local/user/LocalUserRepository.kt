@@ -18,7 +18,7 @@ import io.realm.RealmList
 class LocalUserRepository : UserDataSource {
 
     override fun insertOrUpdate(name: String, email: String, photoUrl: String, uid: String, storeLists: List<UserStoreList>) {
-        insertOrUpdate(User(uid, name, email, photoUrl, storeLists.toMutableList()))
+        insertOrUpdate(User(uid, name, email, photoUrl, storeLists))
     }
 
     override fun insertOrUpdate(user: User) {

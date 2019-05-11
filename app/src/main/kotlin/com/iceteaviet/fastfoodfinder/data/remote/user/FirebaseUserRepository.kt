@@ -20,7 +20,7 @@ class FirebaseUserRepository(private val databaseRef: DatabaseReference) : UserD
     var favouriteStoresListener: ChildEventListener? = null
 
     override fun insertOrUpdate(name: String, email: String, photoUrl: String, uid: String, storeLists: List<UserStoreList>) {
-        val user = User(uid, name, email, photoUrl, storeLists.toMutableList())
+        val user = User(uid, name, email, photoUrl, storeLists)
         insertOrUpdate(user)
     }
 

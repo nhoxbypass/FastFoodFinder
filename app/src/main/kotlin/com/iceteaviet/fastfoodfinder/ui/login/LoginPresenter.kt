@@ -1,9 +1,12 @@
 package com.iceteaviet.fastfoodfinder.ui.login
 
+import android.text.TextUtils
 import com.google.firebase.auth.AuthCredential
 import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
 import com.iceteaviet.fastfoodfinder.ui.base.BasePresenter
+import com.iceteaviet.fastfoodfinder.utils.getDefaultUserStoreLists
+import com.iceteaviet.fastfoodfinder.utils.getNameFromEmail
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -35,6 +38,8 @@ class LoginPresenter : BasePresenter<LoginContract.Presenter>, LoginContract.Pre
     }
 
     override fun onEmailRegisterSuccess(user: User) {
+        ensureBasicUserData(user)
+
         dataManager.getRemoteUserDataSource().insertOrUpdate(user)
         dataManager.setCurrentUser(user)
         loginView.showMainView()
@@ -73,6 +78,7 @@ class LoginPresenter : BasePresenter<LoginContract.Presenter>, LoginContract.Pre
 
                     override fun onSuccess(user: User) {
                         if (!fromLastSignIn) {
+                            ensureBasicUserData(user)
                             dataManager.getRemoteUserDataSource().insertOrUpdate(user)
                         }
 
@@ -96,14 +102,23 @@ class LoginPresenter : BasePresenter<LoginContract.Presenter>, LoginContract.Pre
                     }
 
                     override fun onSuccess(user: User) {
+                        ensureBasicUserData(user)
                         dataManager.getRemoteUserDataSource().insertOrUpdate(user)
-                        dataManager.setCurrentUser(user)
-                        loginView.showMainView()
+                        onLoginSuccess(user)
                     }
 
                     override fun onError(e: Throwable) {
                         loginView.showSignInFailMessage()
                     }
                 })
+    }
+
+    private fun ensureBasicUserData(user: User) {
+        if (TextUtils.isEmpty(user.name)) {
+            user.name = getNameFromEmail(user.email)
+        }
+
+        if (user.getUserStoreLists().isEmpty())
+            user.setUserStoreLists(getDefaultUserStoreLists().toMutableList())
     }
 }

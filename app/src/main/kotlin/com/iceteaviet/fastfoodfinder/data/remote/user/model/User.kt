@@ -19,12 +19,12 @@ class User {
 
     constructor(user: User) : this(user.uid, user.name, user.email, user.photoUrl, user.userStoreLists)
 
-    constructor(uid: String, name: String, email: String, photoUrl: String, storeLists: MutableList<UserStoreList>) {
+    constructor(uid: String, name: String, email: String, photoUrl: String, storeLists: List<UserStoreList>) {
         this.uid = uid
         this.name = name
         this.email = email
         this.photoUrl = photoUrl
-        this.userStoreLists = storeLists
+        this.userStoreLists = storeLists.toMutableList()
     }
 
     constructor(entity: UserEntity) {
@@ -48,8 +48,8 @@ class User {
         return userStoreLists
     }
 
-    fun setUserStoreLists(userStoreLists: MutableList<UserStoreList>) {
-        this.userStoreLists = userStoreLists
+    fun setUserStoreLists(userStoreLists: List<UserStoreList>) {
+        this.userStoreLists = userStoreLists.toMutableList()
     }
 
     fun addStoreList(list: UserStoreList) {
