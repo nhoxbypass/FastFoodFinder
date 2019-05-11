@@ -98,6 +98,8 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
 
     override fun onLocationPermissionGranted() {
         mainMapView.requestLocationUpdates()
+        mainMapView.setMyLocationEnabled(true)
+        mainMapView.getLastLocation()
         locationGranted = true
     }
 
