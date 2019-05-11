@@ -27,6 +27,7 @@ interface MainMapContract {
         fun animateMapMarker(marker: Marker?, storeType: Int)
         fun setNearByStores(nearbyStores: List<NearByStore>)
         fun clearNearByStores()
+        fun clearMapData()
     }
 
     interface Presenter : com.iceteaviet.fastfoodfinder.ui.base.Presenter {
@@ -36,5 +37,6 @@ interface MainMapContract {
         fun onGetMapAsync()
         fun onDirectionNavigateClick(store: Store)
         fun onMapMarkerAdd(storeId: Int, marker: Marker)
+        fun onClearOldMapData()
     }
 }

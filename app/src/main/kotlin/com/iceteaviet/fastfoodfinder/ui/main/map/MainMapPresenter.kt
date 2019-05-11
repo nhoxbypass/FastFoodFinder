@@ -226,6 +226,11 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
                 })
     }
 
+    override fun onClearOldMapData() {
+        markerSparseArray.clear()
+        mainMapView.clearMapData()
+    }
+
     override fun onMapMarkerAdd(storeId: Int, marker: Marker) {
         markerSparseArray.put(storeId, marker)
     }
