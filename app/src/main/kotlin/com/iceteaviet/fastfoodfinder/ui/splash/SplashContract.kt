@@ -8,7 +8,7 @@ import com.iceteaviet.fastfoodfinder.ui.base.BaseView
 interface SplashContract {
     interface View : BaseView<Presenter> {
         fun openLoginScreen()
-        fun openMainActivityWithDelay(startTime: Long)
+        fun openMainActivityWithDelay(delayTime: Long)
         fun exit()
         fun showRetryDialog()
     }

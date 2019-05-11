@@ -43,14 +43,13 @@ class SplashActivity : BaseActivity(), SplashContract.View {
         finish()
     }
 
-    override fun openMainActivityWithDelay(startTime: Long) {
-        val remainTime = SPLASH_DELAY_TIME - (System.currentTimeMillis() - startTime)
-        if (remainTime > 0) {
+    override fun openMainActivityWithDelay(delayTime: Long) {
+        if (delayTime > 0) {
             Handler(Looper.getMainLooper())
                     .postDelayed({
                         openMainActivity(this)
                         finish()
-                    }, remainTime)
+                    }, delayTime)
         } else {
             openMainActivity(this)
             finish()
