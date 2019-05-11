@@ -6,10 +6,13 @@ import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
 import com.iceteaviet.fastfoodfinder.ui.base.BasePresenter
 import com.iceteaviet.fastfoodfinder.utils.filterInvalidData
 import com.iceteaviet.fastfoodfinder.utils.isValidUserUid
+import io.reactivex.Observable
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
+
 
 /**
  * Created by tom on 2019-04-18.
@@ -54,6 +57,7 @@ class SplashPresenter : BasePresenter<SplashContract.Presenter>, SplashContract.
                             })
                 }
             } else {
+
                 splashView.openLoginScreen()
             }
         }
@@ -70,8 +74,10 @@ class SplashPresenter : BasePresenter<SplashContract.Presenter>, SplashContract.
 
                     override fun onSuccess(storeList: List<Store>) {
                         dataManager.getPreferencesHelper().setAppLaunchFirstTime(false)
-                        dataManager.getPreferencesHelper().setNumberOfStores(storeList.size)
-                        dataManager.getLocalStoreDataSource().setStores(filterInvalidData(storeList.toMutableList()))
+
+                        val filteredStoreList = filterInvalidData(storeList.toMutableList())
+                        dataManager.getPreferencesHelper().setNumberOfStores(filteredStoreList.size)
+                        dataManager.getLocalStoreDataSource().setStores(filteredStoreList)
 
                         splashView.openLoginScreen()
                     }

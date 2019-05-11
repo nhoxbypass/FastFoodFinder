@@ -20,7 +20,7 @@ class LocalStoreRepository : StoreDataSource {
     private var cachedStores: MutableList<Store>
 
     init {
-        cachedStores = mutableListOf<Store>()
+        cachedStores = ArrayList()
     }
 
 

@@ -80,7 +80,10 @@ class SettingPresenter : BasePresenter<SettingContract.Presenter>, SettingContra
                     }
 
                     override fun onSuccess(storeList: List<Store>) {
-                        dataManager.getLocalStoreDataSource().setStores(filterInvalidData(storeList.toMutableList()))
+                        val filteredStoreList = filterInvalidData(storeList.toMutableList())
+                        dataManager.getPreferencesHelper().setNumberOfStores(filteredStoreList.size)
+                        dataManager.getLocalStoreDataSource().setStores(filteredStoreList)
+
                         settingView.showSuccessLoadingToast("")
                         settingView.updateLoadingProgressView(false)
                     }
