@@ -81,6 +81,7 @@ class StoreListView constructor(context: Context, attrs: AttributeSet?, defStyle
         initRandomImages()
     }
 
+    // TODO: Check calling on onDraw()
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
 
