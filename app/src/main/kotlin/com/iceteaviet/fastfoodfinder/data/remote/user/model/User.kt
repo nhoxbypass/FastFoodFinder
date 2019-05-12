@@ -1,5 +1,6 @@
 package com.iceteaviet.fastfoodfinder.data.remote.user.model
 
+import com.google.firebase.database.Exclude
 import com.iceteaviet.fastfoodfinder.data.local.user.model.UserEntity
 import com.iceteaviet.fastfoodfinder.data.local.user.model.UserStoreListEntity
 import com.iceteaviet.fastfoodfinder.utils.realmListToList
@@ -60,6 +61,7 @@ class User {
         userStoreLists.removeAt(position)
     }
 
+    @Exclude
     fun getFavouriteStoreList(): UserStoreList {
         for (i in userStoreLists.indices) {
             if (userStoreLists[i].id == UserStoreList.ID_FAVOURITE) {
@@ -71,6 +73,7 @@ class User {
         return UserStoreList()
     }
 
+    @Exclude
     fun getSavedStoreList(): UserStoreList {
         for (i in userStoreLists.indices) {
             if (userStoreLists[i].id == UserStoreList.ID_SAVED) {
