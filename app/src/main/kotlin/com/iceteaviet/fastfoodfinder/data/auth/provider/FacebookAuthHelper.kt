@@ -19,6 +19,7 @@ class FacebookAuthHelper(private var loginButton: LoginButton) : AbsAuthHelper<A
     private var callBackManager: CallbackManager? = null
 
     init {
+        loginButton.setReadPermissions("email", "public_profile")
         FacebookSdk.sdkInitialize(App.getContext())
         setupAuthProvider()
     }
