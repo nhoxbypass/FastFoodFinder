@@ -6,7 +6,9 @@
 
 **Fastfood Finder** is an awesome android app that allows a users to find some fast food stores or convinient stores around where their standing. And with this app he can do the other fantastic things.
 
-Time spent: **120** hours spent in total
+The source code is well-programmed with **MVP architecture, SOLID principle & lots of design patterns**.
+
+Time spent: **180** hours spent in total
 
 ## User Stories
 
