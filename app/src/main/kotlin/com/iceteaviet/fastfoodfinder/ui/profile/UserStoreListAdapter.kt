@@ -6,17 +6,16 @@ import android.view.ViewGroup
 import androidx.annotation.NonNull
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList
+import com.iceteaviet.fastfoodfinder.ui.custom.store.StoreListView
 import com.iceteaviet.fastfoodfinder.utils.ui.getStoreListIconDrawableRes
-import kotlinx.android.synthetic.main.view_new_list.view.*
 import java.util.*
 
 /**
  * Created by MyPC on 12/5/2016.
  */
-class UserStoreListAdapter internal constructor() : RecyclerView.Adapter<UserStoreListAdapter.ListViewHolder>() {
+class UserStoreListAdapter internal constructor() : RecyclerView.Adapter<UserStoreListAdapter.StoreListViewHolder>() {
 
     private val mListPackets: MutableList<UserStoreList>
     private var mListener: OnItemClickListener? = null
@@ -45,18 +44,15 @@ class UserStoreListAdapter internal constructor() : RecyclerView.Adapter<UserSto
         mListener = onItemClickListener
     }
 
-    override fun onCreateViewHolder(@NonNull parent: ViewGroup, viewType: Int): ListViewHolder {
+    override fun onCreateViewHolder(@NonNull parent: ViewGroup, viewType: Int): StoreListViewHolder {
         val itemView = LayoutInflater.from(parent.context)
                 .inflate(R.layout.view_new_list, parent, false)
-        return ListViewHolder(itemView)
+        return StoreListViewHolder(itemView)
     }
 
-    override fun onBindViewHolder(@NonNull holder: ListViewHolder, position: Int) {
+    override fun onBindViewHolder(@NonNull holder: StoreListViewHolder, position: Int) {
         val listPacket = mListPackets[position]
-        holder.itemView.tvNameList!!.text = listPacket.listName
-        Glide.with(holder.itemView.context)
-                .load(getStoreListIconDrawableRes(listPacket.iconId))
-                .into(holder.itemView.iconNewList)
+        holder.bindData(listPacket)
     }
 
     override fun getItemCount(): Int {
@@ -71,9 +67,8 @@ class UserStoreListAdapter internal constructor() : RecyclerView.Adapter<UserSto
         fun onClick(listPacket: UserStoreList)
     }
 
-    inner class ListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class StoreListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         init {
-
             itemView.setOnClickListener {
                 val listPacket = mListPackets[adapterPosition]
                 mListener!!.onClick(listPacket)
@@ -97,6 +92,10 @@ class UserStoreListAdapter internal constructor() : RecyclerView.Adapter<UserSto
                         .show()
                 true
             }
+        }
+
+        fun bindData(storeList: UserStoreList) {
+            (itemView as StoreListView).setData(storeList.listName, getStoreListIconDrawableRes(storeList.iconId), storeList.getStoreIdList()!!.size.toString())
         }
     }
 }

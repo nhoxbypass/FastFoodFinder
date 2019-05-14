@@ -1,5 +1,6 @@
 package com.iceteaviet.fastfoodfinder.ui.profile
 
+import android.text.TextUtils
 import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList
@@ -89,7 +90,8 @@ class ProfilePresenter : BasePresenter<ProfileContract.Presenter>, ProfileContra
 
                     override fun onSuccess(user: User) {
                         dataManager.setCurrentUser(user)
-                        profileView.loadAvatarPhoto(user.photoUrl)
+                        if (!TextUtils.isEmpty(user.photoUrl))
+                            profileView.loadAvatarPhoto(user.photoUrl)
                         profileView.setName(user.name)
                         profileView.setEmail(user.email)
                         loadStoreLists()
@@ -108,7 +110,9 @@ class ProfilePresenter : BasePresenter<ProfileContract.Presenter>, ProfileContra
         val currentUser = dataManager.getCurrentUser()
         for (i in 0 until currentUser!!.getUserStoreLists().size) {
             if (i <= 2) {
+                // Load default lists
                 defaultList.add(currentUser.getUserStoreLists()[i])
+            } else {
                 break
             }
         }

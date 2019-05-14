@@ -4,5 +4,6 @@
         <attr name="name" format="string" />
         <attr name="count" format="integer" />
         <attr name="icon" format="reference" />
+        <attr name="highlightName" format="boolean" />
     </declare-styleable>
 </resources>

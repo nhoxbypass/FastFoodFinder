@@ -1,6 +1,9 @@
 package com.iceteaviet.fastfoodfinder.ui.custom.store
 
 import android.content.Context
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Typeface
 import android.util.AttributeSet
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -43,9 +46,9 @@ class StoreListView constructor(context: Context, attrs: AttributeSet?, defStyle
         imageView4.scaleType = ImageView.ScaleType.CENTER_CROP
 
         tvName = TextView(context)
-        tvName.layoutParams = MarginLayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+        tvName.layoutParams = LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
         tvCount = TextView(context)
-        tvCount.layoutParams = MarginLayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+        tvCount.layoutParams = LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
 
         ivIcon = CircleImageView(context)
 
@@ -64,6 +67,12 @@ class StoreListView constructor(context: Context, attrs: AttributeSet?, defStyle
                         tvCount.text = String.format(context.getString(R.string.count_places),
                                 getInteger(R.styleable.StoreListView_count, 0).toString())
                         ivIcon.setImageDrawable(getDrawable(R.styleable.StoreListView_icon))
+
+                        val highlightName = getBoolean(R.styleable.StoreListView_highlightName, false)
+                        if (highlightName) {
+                            tvName.setTypeface(null, Typeface.BOLD)
+                            tvName.setTextColor(Color.parseColor("#304FFE"))
+                        }
                     } finally {
                         recycle()
                     }
@@ -72,8 +81,9 @@ class StoreListView constructor(context: Context, attrs: AttributeSet?, defStyle
         initRandomImages()
     }
 
-    override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
-        super.onLayout(changed, left, top, right, bottom)
+    // TODO: Check calling on onDraw()
+    override fun onDraw(canvas: Canvas?) {
+        super.onDraw(canvas)
 
         val infoHeight = tvName.height + tvCount.height + DEFAULT_TEXT_PADDING_TOP_BOTTOM * 3
         val imgWidth = (width - DEFAULT_PADDING) / 2
@@ -83,38 +93,38 @@ class StoreListView constructor(context: Context, attrs: AttributeSet?, defStyle
         imageView1.layoutParams.width = imgWidth
         imageView1.layoutParams.height = imgHeight
 
-        var params = imageView2.layoutParams as MarginLayoutParams
-        params.leftMargin = imgWidth + DEFAULT_PADDING
+        var params = imageView2.layoutParams as LayoutParams
+        imageView2.x = (imgWidth + DEFAULT_PADDING).toFloat()
         params.width = imgWidth
         params.height = imgHeight
         imageView2.layoutParams = params
 
-        params = imageView3.layoutParams as MarginLayoutParams
-        params.topMargin = imgHeight + DEFAULT_PADDING
+        params = imageView3.layoutParams as LayoutParams
+        imageView3.y = (imgHeight + DEFAULT_PADDING).toFloat()
         params.width = imgWidth
         params.height = imgHeight
         imageView3.layoutParams = params
 
-        params = imageView4.layoutParams as MarginLayoutParams
-        params.leftMargin = imgWidth + DEFAULT_PADDING
-        params.topMargin = imgHeight + DEFAULT_PADDING
+        params = imageView4.layoutParams as LayoutParams
+        imageView4.x = (imgWidth + DEFAULT_PADDING).toFloat()
+        imageView4.y = (imgHeight + DEFAULT_PADDING).toFloat()
         params.width = imgWidth
         params.height = imgHeight
         imageView4.layoutParams = params
 
-        params = tvName.layoutParams as MarginLayoutParams
-        params.topMargin = height - infoHeight + DEFAULT_TEXT_PADDING_TOP_BOTTOM
-        params.leftMargin = DEFAULT_TEXT_PADDING_LEFT_RIGHT
+        params = tvName.layoutParams as LayoutParams
+        tvName.y = (height - infoHeight + DEFAULT_TEXT_PADDING_TOP_BOTTOM).toFloat()
+        tvName.x = DEFAULT_TEXT_PADDING_LEFT_RIGHT.toFloat()
         tvName.layoutParams = params
 
-        params = tvCount.layoutParams as MarginLayoutParams
-        params.topMargin = height - infoHeight + tvName.height + DEFAULT_TEXT_PADDING_TOP_BOTTOM * 2
-        params.leftMargin = DEFAULT_TEXT_PADDING_LEFT_RIGHT
+        params = tvCount.layoutParams as LayoutParams
+        tvCount.y = (height - infoHeight + tvName.height + DEFAULT_TEXT_PADDING_TOP_BOTTOM * 2).toFloat()
+        tvCount.x = DEFAULT_TEXT_PADDING_LEFT_RIGHT.toFloat()
         tvCount.layoutParams = params
 
-        params = ivIcon.layoutParams as MarginLayoutParams
-        params.topMargin = imgHeight - iconSize / 2
-        params.leftMargin = imgWidth - iconSize / 2
+        params = ivIcon.layoutParams as LayoutParams
+        ivIcon.y = (imgHeight - iconSize / 2).toFloat()
+        ivIcon.x = (imgWidth - iconSize / 2).toFloat()
         params.width = iconSize
         params.height = iconSize
         ivIcon.layoutParams = params
@@ -129,15 +139,26 @@ class StoreListView constructor(context: Context, attrs: AttributeSet?, defStyle
         imageView4.setImageResource(imgs[3])
     }
 
+    fun setData(name: String, @DrawableRes iconId: Int, count: String) {
+        tvName.text = name
+        ivIcon.setImageResource(iconId)
+        tvCount.text = String.format(context.getString(R.string.count_places), count)
+
+        requestLayout()
+    }
+
     fun setIcon(@DrawableRes resId: Int) {
         ivIcon.setImageResource(resId)
+        requestLayout()
     }
 
     fun setName(name: String) {
         tvName.text = name
+        requestLayout()
     }
 
     fun setCount(count: String) {
         tvCount.text = String.format(context.getString(R.string.count_places), count)
+        requestLayout()
     }
 }

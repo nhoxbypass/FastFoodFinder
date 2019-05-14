@@ -4,7 +4,6 @@ import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
-import com.iceteaviet.fastfoodfinder.utils.getDefaultUserStoreLists
 import io.reactivex.Single
 
 /**
@@ -69,6 +68,6 @@ class FirebaseClientAuth : ClientAuth {
             displayName = firebaseUser.displayName!!
 
 
-        return User(firebaseUser.uid, displayName, firebaseUser.email!!, photoUrl, getDefaultUserStoreLists().toMutableList())
+        return User(firebaseUser.uid, displayName, firebaseUser.email!!, photoUrl, ArrayList())
     }
 }

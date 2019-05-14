@@ -23,4 +23,6 @@ interface UserDataSource {
     fun isUserExists(uid: String): Single<Boolean>
 
     fun subscribeFavouriteStoresOfUser(uid: String): Observable<Pair<Int, Int>>  // Pair <StoreId, Event code>
+
+    fun unsubscribeFavouriteStoresOfUser(uid: String)
 }

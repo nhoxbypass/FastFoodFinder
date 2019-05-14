@@ -98,6 +98,8 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
 
     override fun onLocationPermissionGranted() {
         mainMapView.requestLocationUpdates()
+        mainMapView.setMyLocationEnabled(true)
+        mainMapView.getLastLocation()
         locationGranted = true
     }
 
@@ -224,6 +226,11 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
                         e.printStackTrace()
                     }
                 })
+    }
+
+    override fun onClearOldMapData() {
+        markerSparseArray.clear()
+        mainMapView.clearMapData()
     }
 
     override fun onMapMarkerAdd(storeId: Int, marker: Marker) {

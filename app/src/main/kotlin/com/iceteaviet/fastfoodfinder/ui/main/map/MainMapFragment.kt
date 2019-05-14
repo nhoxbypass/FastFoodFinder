@@ -138,7 +138,7 @@ class MainMapFragment : Fragment(), MainMapContract.View, LocationListener {
             return
 
         // Clear old markers
-        googleMap!!.clear()
+        presenter.onClearOldMapData()
 
         for (i in storeList.indices) {
             val store = storeList[i]
@@ -188,6 +188,10 @@ class MainMapFragment : Fragment(), MainMapContract.View, LocationListener {
 
     override fun clearNearByStores() {
         nearByStoreAdapter!!.clearData()
+    }
+
+    override fun clearMapData() {
+        googleMap?.clear()
     }
 
     override fun onLocationChanged(location: Location) {

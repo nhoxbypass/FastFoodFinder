@@ -13,6 +13,11 @@ import com.iceteaviet.fastfoodfinder.App
  * Created by tom on 7/19/18.
  */
 
+
+fun getString(@StringRes resId: Int): String {
+    return App.getContext().getString(resId)
+}
+
 /**
  * Check string is null or empty
  */
@@ -62,6 +67,6 @@ fun trimWhitespace(source: CharSequence?): CharSequence {
     return builder.subSequence(0, builder.length)
 }
 
-fun getString(@StringRes resId: Int): String {
-    return App.getContext().getString(resId)
+fun getNameFromEmail(email: String): String {
+    return email.substringBefore("@")
 }

@@ -3,7 +3,6 @@ package com.iceteaviet.fastfoodfinder.ui.profile
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.*
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
@@ -19,13 +18,14 @@ import com.iceteaviet.fastfoodfinder.ui.profile.cover.UpdateCoverImageDialog
 import com.iceteaviet.fastfoodfinder.ui.profile.createlist.CreateListDialog
 import com.iceteaviet.fastfoodfinder.utils.openListDetailActivity
 import com.iceteaviet.fastfoodfinder.utils.openLoginActivity
+import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.fragment_profile.*
 
 // TODO: Check fragment lifecycle to support go to login screen when auth token invalid
 class ProfileFragment : Fragment(), ProfileContract.View, View.OnClickListener {
     override lateinit var presenter: ProfileContract.Presenter
 
-    lateinit var ivAvatarProfile: ImageView
+    lateinit var ivAvatarProfile: CircleImageView
     lateinit var cvSavePlace: StoreListView
     lateinit var cvFavouritePlace: StoreListView
     lateinit var btnCreateNew: CardView

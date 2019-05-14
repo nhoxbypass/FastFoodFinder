@@ -30,7 +30,7 @@ import kotlinx.android.synthetic.main.layout_call_direction.view.*
  */
 
 class StoreDetailAdapter internal constructor() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    private var mComments: MutableList<Comment> = mutableListOf<Comment>()
+    private var mComments: MutableList<Comment> = ArrayList()
     private var mListener: StoreActionListener? = null
     private var mStore: Store? = null
 
@@ -111,6 +111,9 @@ class StoreDetailAdapter internal constructor() : RecyclerView.Adapter<RecyclerV
 
         fun bind(store: Store?) {
             mStore = store
+
+            if (store == null)
+                return
 
             saveButton.setOnClickListener(this)
             favButton.setOnClickListener(this)

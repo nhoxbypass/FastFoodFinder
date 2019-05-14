@@ -1,5 +1,6 @@
 package com.iceteaviet.fastfoodfinder.data.remote.user.model
 
+import com.google.firebase.database.Exclude
 import com.iceteaviet.fastfoodfinder.data.local.user.model.UserEntity
 import com.iceteaviet.fastfoodfinder.data.local.user.model.UserStoreListEntity
 import com.iceteaviet.fastfoodfinder.utils.realmListToList
@@ -19,12 +20,12 @@ class User {
 
     constructor(user: User) : this(user.uid, user.name, user.email, user.photoUrl, user.userStoreLists)
 
-    constructor(uid: String, name: String, email: String, photoUrl: String, storeLists: MutableList<UserStoreList>) {
+    constructor(uid: String, name: String, email: String, photoUrl: String, storeLists: List<UserStoreList>) {
         this.uid = uid
         this.name = name
         this.email = email
         this.photoUrl = photoUrl
-        this.userStoreLists = storeLists
+        this.userStoreLists = storeLists.toMutableList()
     }
 
     constructor(entity: UserEntity) {
@@ -48,8 +49,8 @@ class User {
         return userStoreLists
     }
 
-    fun setUserStoreLists(userStoreLists: MutableList<UserStoreList>) {
-        this.userStoreLists = userStoreLists
+    fun setUserStoreLists(userStoreLists: List<UserStoreList>) {
+        this.userStoreLists = userStoreLists.toMutableList()
     }
 
     fun addStoreList(list: UserStoreList) {
@@ -60,6 +61,7 @@ class User {
         userStoreLists.removeAt(position)
     }
 
+    @Exclude
     fun getFavouriteStoreList(): UserStoreList {
         for (i in userStoreLists.indices) {
             if (userStoreLists[i].id == UserStoreList.ID_FAVOURITE) {
@@ -71,6 +73,7 @@ class User {
         return UserStoreList()
     }
 
+    @Exclude
     fun getSavedStoreList(): UserStoreList {
         for (i in userStoreLists.indices) {
             if (userStoreLists[i].id == UserStoreList.ID_SAVED) {
