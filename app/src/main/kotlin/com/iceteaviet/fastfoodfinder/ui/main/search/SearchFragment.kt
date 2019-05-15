@@ -32,29 +32,29 @@ import kotlinx.android.synthetic.main.fragment_search.*
 class SearchFragment : Fragment(), SearchContract.View {
     override lateinit var presenter: SearchContract.Presenter
 
-    lateinit var quickSearchCircleK: CircleImageView
-    lateinit var quickSearchFamilyMart: CircleImageView
-    lateinit var quickSearchMiniStop: CircleImageView
-    lateinit var quickSearchLoadMore: CircleImageView
-    lateinit var quickSearchBsMart: CircleImageView
-    lateinit var quickSearchShopNGo: CircleImageView
+    private lateinit var quickSearchCircleK: CircleImageView
+    private lateinit var quickSearchFamilyMart: CircleImageView
+    private lateinit var quickSearchMiniStop: CircleImageView
+    private lateinit var quickSearchLoadMore: CircleImageView
+    private lateinit var quickSearchBsMart: CircleImageView
+    private lateinit var quickSearchShopNGo: CircleImageView
 
-    lateinit var cvActionContainer: CardView
-    lateinit var cvRecentlyContainer: CardView
-    lateinit var cvTimeSuggestionContainer: CardView
-    lateinit var cvSuggestionContainer: CardView
-    lateinit var cvSearchContainer: CardView
-    lateinit var cardViewQuickSearch: ViewGroup
-    lateinit var searchMoreLayout: ViewGroup
-    lateinit var searchContainer: ScrollView
+    private lateinit var cvActionContainer: CardView
+    private lateinit var cvRecentlyContainer: CardView
+    private lateinit var cvTimeSuggestionContainer: CardView
+    private lateinit var cvSuggestionContainer: CardView
+    private lateinit var cvSearchContainer: CardView
+    private lateinit var cardViewQuickSearch: ViewGroup
+    private lateinit var searchMoreLayout: ViewGroup
+    private lateinit var searchContainer: ScrollView
 
-    lateinit var tvRecently: TextView
-    lateinit var tvTimeSuggestion: TextView
-    lateinit var tvSuggestion: TextView
+    private lateinit var tvRecently: TextView
+    private lateinit var tvTimeSuggestion: TextView
+    private lateinit var tvSuggestion: TextView
 
-    lateinit var rvRecentlyStores: RecyclerView
-    lateinit var rvSuggestedStores: RecyclerView
-    lateinit var rvSearch: RecyclerView
+    private lateinit var rvRecentlyStores: RecyclerView
+    private lateinit var rvSuggestedStores: RecyclerView
+    private lateinit var rvSearch: RecyclerView
 
     private var recentlySearchAdapter: RecentlyStoreSearchAdapter? = null
     private var suggestedSearchAdapter: SuggestStoreSearchAdapter? = null
@@ -107,12 +107,12 @@ class SearchFragment : Fragment(), SearchContract.View {
     }
 
     override fun setSearchHistory(searchHistory: List<String>, recentlyStores: List<Store>) {
-        searchAdapter!!.setRecentlySearch(searchHistory)
-        recentlySearchAdapter!!.setStores(recentlyStores)
+        searchAdapter?.setRecentlySearch(searchHistory)
+        recentlySearchAdapter?.setStores(recentlyStores)
     }
 
     override fun setSearchStores(searchStores: List<Store>) {
-        searchAdapter!!.setStores(searchStores)
+        searchAdapter?.setStores(searchStores)
     }
 
     override fun showStoreListView() {
@@ -134,14 +134,14 @@ class SearchFragment : Fragment(), SearchContract.View {
     }
 
     private fun setupEventHandlers() {
-        recentlySearchAdapter!!.setOnItemClickListener(object : BaseStoreAdapter.OnItemClickListener {
+        recentlySearchAdapter?.setOnItemClickListener(object : BaseStoreAdapter.OnItemClickListener {
             override fun onClick(store: Store) {
                 presenter.onStoreSearchClick(store)
             }
 
         })
 
-        searchAdapter!!.setOnItemClickListener(object : BaseStoreAdapter.OnItemClickListener {
+        searchAdapter?.setOnItemClickListener(object : BaseStoreAdapter.OnItemClickListener {
             override fun onClick(store: Store) {
                 presenter.onStoreSearchClick(store)
             }
@@ -176,17 +176,17 @@ class SearchFragment : Fragment(), SearchContract.View {
             }
         }
 
-        tvTop!!.setOnClickListener {
+        tvTop.setOnClickListener {
             presenter.onTopStoreButtonClick()
         }
 
-        tvNearest!!.setOnClickListener {
+        tvNearest.setOnClickListener {
             presenter.onNearestStoreButtonClick()
         }
-        tvTrending!!.setOnClickListener {
+        tvTrending.setOnClickListener {
             presenter.onTrendingStoreButtonClick()
         }
-        tvConvenienceStore!!.setOnClickListener {
+        tvConvenienceStore.setOnClickListener {
             presenter.onConvenienceStoreButtonClick()
         }
     }

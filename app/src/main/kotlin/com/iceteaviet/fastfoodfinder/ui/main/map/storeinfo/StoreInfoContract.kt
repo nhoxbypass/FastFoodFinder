@@ -8,7 +8,7 @@ interface StoreInfoContract {
     interface View : BaseView<Presenter> {
         fun updateNewStoreUI(store: Store?)
         fun openStoreDetailActivity(store: Store?)
-        fun makeNativeCall(tel: String?)
+        fun makeNativeCall(tel: String)
         fun addStoreToFavorite(store: Store)
         fun onDirectionChange(store: Store)
         fun showEmptyTelToast()

@@ -110,15 +110,15 @@ class MapRoutingActivity : BaseActivity(), MapRoutingContract.View, View.OnClick
     override fun enterPreviewMode() {
         routingButtonContainer.visibility = View.VISIBLE
         topRecyclerView.visibility = View.VISIBLE
-        bottomSheetBehavior!!.isHideable = true
-        bottomSheetBehavior!!.state = BottomSheetBehavior.STATE_HIDDEN
+        bottomSheetBehavior?.isHideable = true
+        bottomSheetBehavior?.state = BottomSheetBehavior.STATE_HIDDEN
     }
 
     override fun exitPreviewMode() {
         routingButtonContainer.visibility = View.GONE
         topRecyclerView.visibility = View.GONE
-        bottomSheetBehavior!!.isHideable = false
-        bottomSheetBehavior!!.state = BottomSheetBehavior.STATE_COLLAPSED
+        bottomSheetBehavior?.isHideable = false
+        bottomSheetBehavior?.state = BottomSheetBehavior.STATE_COLLAPSED
     }
 
     override fun scrollToPosition(directionIndex: Int) {
@@ -131,11 +131,11 @@ class MapRoutingActivity : BaseActivity(), MapRoutingContract.View, View.OnClick
 
     override fun animateMapCamera(location: LatLng, zoomToDetail: Boolean) {
         val zoomLevel = if (zoomToDetail) DETAILED_ZOOM_LEVEL else DEFAULT_ZOOM_LEVEL
-        googleMap!!.animateCamera(CameraUpdateFactory.newLatLngZoom(location, zoomLevel))
+        googleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(location, zoomLevel))
     }
 
     override fun addMapMarker(location: LatLng, title: String, description: String, icon: Int) {
-        googleMap!!.addMarker(MarkerOptions().position(location)
+        googleMap?.addMarker(MarkerOptions().position(location)
                 .title(title)
                 .snippet(description)
                 .icon(BitmapDescriptorFactory.fromResource(icon)))
@@ -160,8 +160,7 @@ class MapRoutingActivity : BaseActivity(), MapRoutingContract.View, View.OnClick
                 builder.include(geoPoint)
             }
 
-            if (currDirection != null)
-                currDirection!!.remove()
+            currDirection?.remove()
 
             currDirection = it.addPolyline(options)
 
@@ -199,10 +198,8 @@ class MapRoutingActivity : BaseActivity(), MapRoutingContract.View, View.OnClick
 
         setSupportActionBar(toolbar)
         // add back arrow to mToolbar
-        if (supportActionBar != null) {
-            supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-            supportActionBar!!.setDisplayShowHomeEnabled(true)
-        }
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
 
         bottomRoutingAdapter = RoutingAdapter(RoutingAdapter.TYPE_FULL)
         val layoutManager = LinearLayoutManager(this@MapRoutingActivity)
@@ -237,9 +234,9 @@ class MapRoutingActivity : BaseActivity(), MapRoutingContract.View, View.OnClick
             // Check if we were successful in obtaining the map.
             if (mapFragment !== null) {
                 mapFragment!!.getMapAsync { map ->
+                    googleMap = map
                     if (map != null) {
                         // The map is verified. It is now safe to manipulate the map.
-                        googleMap = map
                         presenter.onLoadMap()
                     }
                 }

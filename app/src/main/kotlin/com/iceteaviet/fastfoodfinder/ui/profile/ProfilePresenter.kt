@@ -96,8 +96,8 @@ class ProfilePresenter : BasePresenter<ProfileContract.Presenter>, ProfileContra
                         profileView.setEmail(user.email)
                         loadStoreLists()
 
-                        profileView.setSavedStoreCount(user.getSavedStoreList().getStoreIdList()!!.size)
-                        profileView.setFavouriteStoreCount(user.getFavouriteStoreList().getStoreIdList()!!.size)
+                        profileView.setSavedStoreCount(user.getSavedStoreList().getStoreIdList().size)
+                        profileView.setFavouriteStoreCount(user.getFavouriteStoreList().getStoreIdList().size)
                     }
 
                     override fun onError(e: Throwable) {

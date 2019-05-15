@@ -26,7 +26,7 @@ class MainFavPresenter : BasePresenter<MainFavContract.Presenter>, MainFavContra
         val currUser = dataManager.getCurrentUser()
         if (currUser != null) {
             dataManager.getLocalStoreDataSource()
-                    .findStoresByIds(currUser.getFavouriteStoreList().getStoreIdList()!!)
+                    .findStoresByIds(currUser.getFavouriteStoreList().getStoreIdList())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(object : SingleObserver<List<Store>> {
@@ -59,16 +59,16 @@ class MainFavPresenter : BasePresenter<MainFavContract.Presenter>, MainFavContra
                         override fun onNext(userStoreEvent: UserStoreEvent) {
                             val store = userStoreEvent.store
                             when (userStoreEvent.eventActionCode) {
-                                UserStoreEvent.ACTION_ADDED -> if (!dataManager.getCurrentUser()!!.getFavouriteStoreList().getStoreIdList()!!.contains(store.id)) {
+                                UserStoreEvent.ACTION_ADDED -> if (!dataManager.getCurrentUser()!!.getFavouriteStoreList().getStoreIdList().contains(store.id)) {
                                     mainFavView.addStore(store)
-                                    dataManager.getCurrentUser()!!.getFavouriteStoreList().getStoreIdList()!!.add(store.id)
+                                    dataManager.getCurrentUser()!!.getFavouriteStoreList().getStoreIdList().add(store.id)
                                 }
 
-                                UserStoreEvent.ACTION_CHANGED -> if (dataManager.getCurrentUser()!!.getFavouriteStoreList().getStoreIdList()!!.contains(store.id)) {
+                                UserStoreEvent.ACTION_CHANGED -> if (dataManager.getCurrentUser()!!.getFavouriteStoreList().getStoreIdList().contains(store.id)) {
                                     mainFavView.updateStore(store)
                                 }
 
-                                UserStoreEvent.ACTION_REMOVED -> if (dataManager.getCurrentUser()!!.getFavouriteStoreList().getStoreIdList()!!.contains(store.id)) {
+                                UserStoreEvent.ACTION_REMOVED -> if (dataManager.getCurrentUser()!!.getFavouriteStoreList().getStoreIdList().contains(store.id)) {
                                     mainFavView.removeStore(store)
                                     dataManager.getCurrentUser()!!.getFavouriteStoreList().removeStore(store.id)
                                 }

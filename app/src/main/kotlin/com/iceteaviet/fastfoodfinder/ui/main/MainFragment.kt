@@ -22,8 +22,8 @@ import kotlinx.android.synthetic.main.fragment_main.*
  * A simple [Fragment] subclass.
  */
 class MainFragment : Fragment() {
-    lateinit var mTabLayout: TabLayout
-    lateinit var mViewPager: ViewPager
+    private lateinit var mTabLayout: TabLayout
+    private lateinit var mViewPager: ViewPager
 
     override fun onCreateView(@NonNull inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
@@ -43,22 +43,22 @@ class MainFragment : Fragment() {
 
 
         for (i in 0 until mTabLayout.tabCount) {
-            mTabLayout.getTabAt(i)!!.text = null
-            mTabLayout.getTabAt(i)!!.setIcon(mPagerAdapter.getIcon(i))
+            mTabLayout.getTabAt(i)?.text = null
+            mTabLayout.getTabAt(i)?.setIcon(mPagerAdapter.getIcon(i))
         }
 
-        mTabLayout.getTabAt(0)!!.icon!!.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN)
+        mTabLayout.getTabAt(0)?.icon?.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN)
 
 
         mTabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 val tabItemColor = Color.WHITE
-                tab.icon!!.setColorFilter(tabItemColor, PorterDuff.Mode.SRC_IN)
+                tab.icon?.setColorFilter(tabItemColor, PorterDuff.Mode.SRC_IN)
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {
                 val tabItemColor = ContextCompat.getColor(context!!, R.color.colorYouTubeDark)
-                tab.icon!!.setColorFilter(tabItemColor, PorterDuff.Mode.SRC_IN)
+                tab.icon?.setColorFilter(tabItemColor, PorterDuff.Mode.SRC_IN)
             }
 
             override fun onTabReselected(tab: TabLayout.Tab) {

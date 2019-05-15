@@ -92,7 +92,7 @@ private var cache: LruCache<String, BitmapDescriptor> = LruCache(((Runtime.getRu
 fun getStoreIcon(resources: Resources, type: Int, width: Int, height: Int): BitmapDescriptor {
     var key = type.toString()
     if (width != -1 && height != -1)
-        key = type.toString() + "-" + width + "-" + height
+        key = "$type-$width-$height"
     synchronized(cache) {
         var result: BitmapDescriptor? = cache.get(key)
         if (result == null) {

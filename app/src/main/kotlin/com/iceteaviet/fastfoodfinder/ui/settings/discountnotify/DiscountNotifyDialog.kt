@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.view_store_tag.view.*
  */
 
 class DiscountNotifyDialog : DialogFragment(), DiscountNotifyContract.View {
-    lateinit var tagContainer: HorizontalFlowLayout
+    private lateinit var tagContainer: HorizontalFlowLayout
     override lateinit var presenter: DiscountNotifyContract.Presenter
 
     @Nullable
@@ -40,8 +40,8 @@ class DiscountNotifyDialog : DialogFragment(), DiscountNotifyContract.View {
     }
 
     fun setUpViewListener() {
-        btnCancel!!.setOnClickListener { presenter.onCancelButtonClick() }
-        btnDone!!.setOnClickListener { presenter.onDoneButtonClick() }
+        btnCancel.setOnClickListener { presenter.onCancelButtonClick() }
+        btnDone.setOnClickListener { presenter.onDoneButtonClick() }
     }
 
     override fun cancelDialog() {

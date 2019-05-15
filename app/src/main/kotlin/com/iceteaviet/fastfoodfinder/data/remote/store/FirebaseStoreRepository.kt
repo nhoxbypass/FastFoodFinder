@@ -99,8 +99,10 @@ class FirebaseStoreRepository(private val databaseRef: DatabaseReference) : Stor
         for (child in dataSnapshot.children) {
             for (storeLocation in child.child(CHILD_MARKERS_ADD).children) {
                 val store = storeLocation.getValue(Store::class.java)
-                store!!.type = getStoreType(child.key!!)
-                storeList.add(store)
+                if (store != null) {
+                    store.type = getStoreType(child.key!!)
+                    storeList.add(store)
+                }
             }
         }
 
@@ -111,8 +113,10 @@ class FirebaseStoreRepository(private val databaseRef: DatabaseReference) : Stor
         val commentList = ArrayList<Comment>()
         for (child in dataSnapshot.children) {
             val comment = child.getValue(Comment::class.java)
-            comment!!.id = child.key
-            commentList.add(comment)
+            if (comment != null) {
+                comment.id = child.key
+                commentList.add(comment)
+            }
         }
         return commentList
     }

@@ -27,6 +27,6 @@ open class UserStoreListEntity : RealmObject {
         listName = userStoreList.listName
         iconId = userStoreList.iconId
         storeIdList = RealmList()
-        storeIdList.addAll(userStoreList.getStoreIdList()!!)
+        storeIdList.addAll(userStoreList.getStoreIdList())
     }
 }

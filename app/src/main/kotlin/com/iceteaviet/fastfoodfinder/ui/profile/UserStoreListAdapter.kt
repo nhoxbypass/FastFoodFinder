@@ -95,7 +95,7 @@ class UserStoreListAdapter internal constructor() : RecyclerView.Adapter<UserSto
         }
 
         fun bindData(storeList: UserStoreList) {
-            (itemView as StoreListView).setData(storeList.listName, getStoreListIconDrawableRes(storeList.iconId), storeList.getStoreIdList()!!.size.toString())
+            (itemView as StoreListView).setData(storeList.listName, getStoreListIconDrawableRes(storeList.iconId), storeList.getStoreIdList().size.toString())
         }
     }
 }

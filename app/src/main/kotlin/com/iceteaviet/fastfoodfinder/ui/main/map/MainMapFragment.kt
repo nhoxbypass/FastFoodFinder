@@ -158,15 +158,18 @@ class MainMapFragment : Fragment(), MainMapContract.View, LocationListener {
 
         mMapFragment!!.getMapAsync { googleMap ->
             this.googleMap = googleMap
-            googleMap.isBuildingsEnabled = true
 
-            //Animate marker icons when camera move
-            googleMap.setOnCameraMoveListener {
-                presenter.onMapCameraMove(this.googleMap!!.cameraPosition.target,
-                        this.googleMap!!.projection.visibleRegion.latLngBounds)
+            if (googleMap != null) {
+                googleMap.isBuildingsEnabled = true
+
+                //Animate marker icons when camera move
+                googleMap.setOnCameraMoveListener {
+                    presenter.onMapCameraMove(googleMap.cameraPosition.target,
+                            googleMap.projection.visibleRegion.latLngBounds)
+                }
+
+                presenter.onGetMapAsync()
             }
-
-            presenter.onGetMapAsync()
         }
     }
 
@@ -183,11 +186,11 @@ class MainMapFragment : Fragment(), MainMapContract.View, LocationListener {
     }
 
     override fun setNearByStores(nearbyStores: List<NearByStore>) {
-        nearByStoreAdapter!!.setStores(nearbyStores)
+        nearByStoreAdapter?.setStores(nearbyStores)
     }
 
     override fun clearNearByStores() {
-        nearByStoreAdapter!!.clearData()
+        nearByStoreAdapter?.clearData()
     }
 
     override fun clearMapData() {
@@ -245,7 +248,7 @@ class MainMapFragment : Fragment(), MainMapContract.View, LocationListener {
         mNearStoreRecyclerView.adapter = nearByStoreAdapter
         mNearStoreRecyclerView.layoutManager = LinearLayoutManager(context)
 
-        nearByStoreAdapter!!.setOnStoreListListener(object : NearByStoreAdapter.StoreListListener {
+        nearByStoreAdapter?.setOnStoreListListener(object : NearByStoreAdapter.StoreListListener {
             override fun onItemClick(store: Store) {
                 presenter.onDirectionNavigateClick(store)
             }

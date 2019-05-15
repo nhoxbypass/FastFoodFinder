@@ -11,7 +11,6 @@ import android.view.SurfaceView
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.NonNull
 import com.iceteaviet.fastfoodfinder.App
@@ -34,7 +33,6 @@ class LiveSightActivity : BaseActivity(), LiveSightContract.View, SensorEventLis
     private var arOverlayView: AROverlayView? = null
     private var camera: Camera? = null
     private var arCamera: ARCamera? = null
-    private var tvCurrentLocation: TextView? = null
     private var sensorManager: SensorManager? = null
 
     override val layoutId: Int
@@ -47,7 +45,6 @@ class LiveSightActivity : BaseActivity(), LiveSightContract.View, SensorEventLis
 
         cameraContainerLayout = camera_container_layout
         surfaceView = surface_view
-        tvCurrentLocation = tv_current_location
         arOverlayView = AROverlayView(this)
     }
 
@@ -101,8 +98,8 @@ class LiveSightActivity : BaseActivity(), LiveSightContract.View, SensorEventLis
 
             SensorManager.getRotationMatrixFromVector(rotationMatrixFromVector, event.values)
 
-            if (arCamera != null) {
-                projectionMatrix = arCamera!!.projectionMatrix
+            arCamera?.let {
+                projectionMatrix = it.projectionMatrix
             }
 
             Matrix.multiplyMM(rotatedProjectionMatrix, 0, projectionMatrix, 0, rotationMatrixFromVector, 0)
@@ -164,11 +161,11 @@ class LiveSightActivity : BaseActivity(), LiveSightContract.View, SensorEventLis
         if (arCamera == null) {
             arCamera = ARCamera(this, surfaceView!!)
         }
-        if (arCamera!!.parent != null) {
-            (arCamera!!.parent as ViewGroup).removeView(arCamera)
+        if (arCamera?.parent != null) {
+            (arCamera?.parent as ViewGroup).removeView(arCamera)
         }
         cameraContainerLayout!!.addView(arCamera)
-        arCamera!!.keepScreenOn = true
+        arCamera?.keepScreenOn = true
         initCamera()
     }
 
@@ -181,8 +178,10 @@ class LiveSightActivity : BaseActivity(), LiveSightContract.View, SensorEventLis
         if (numCams > 0) {
             try {
                 camera = Camera.open()
-                camera!!.startPreview()
-                arCamera!!.setCamera(camera!!)
+                camera?.let {
+                    it.startPreview()
+                    arCamera?.setCamera(it)
+                }
             } catch (ex: RuntimeException) {
                 Toast.makeText(this, R.string.camera_not_found, Toast.LENGTH_LONG).show()
             }
@@ -199,13 +198,13 @@ class LiveSightActivity : BaseActivity(), LiveSightContract.View, SensorEventLis
     }
 
     override fun releaseARCamera() {
-        if (camera != null) {
-            camera!!.setPreviewCallback(null)
-            camera!!.stopPreview()
-            arCamera!!.setCamera(null)
-            camera!!.release()
-            camera = null
+        arCamera?.setCamera(null)
+        camera?.let {
+            it.setPreviewCallback(null)
+            it.stopPreview()
+            it.release()
         }
+        camera = null
     }
 
     override fun initSensorService() {
@@ -216,8 +215,8 @@ class LiveSightActivity : BaseActivity(), LiveSightContract.View, SensorEventLis
     }
 
     private fun registerSensorListeners() {
-        sensorManager!!.registerListener(this,
-                sensorManager!!.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR),
+        sensorManager?.registerListener(this,
+                sensorManager?.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR),
                 SensorManager.SENSOR_DELAY_FASTEST)
     }
 
@@ -233,7 +232,7 @@ class LiveSightActivity : BaseActivity(), LiveSightContract.View, SensorEventLis
     override fun updateLatestLocation(latestLocation: Location) {
         if (arOverlayView != null) {
             arOverlayView!!.updateCurrentLocation(latestLocation)
-            tvCurrentLocation!!.text = String.format("lat: %s \nlon: %s \nalt: %s \n",
+            tv_current_location.text = String.format("lat: %s \nlon: %s \nalt: %s \n",
                     formatDecimal(latestLocation.latitude, 4),
                     formatDecimal(latestLocation.longitude, 4),
                     formatDecimal(latestLocation.altitude, 4))

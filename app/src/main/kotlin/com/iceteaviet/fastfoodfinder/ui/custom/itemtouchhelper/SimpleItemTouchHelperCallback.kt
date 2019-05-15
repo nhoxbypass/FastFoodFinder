@@ -64,7 +64,7 @@ class SimpleItemTouchHelperCallback(private val mAdapter: ItemTouchHelperAdapter
             if (viewHolder is ItemTouchHelperViewHolder) {
                 // Let the view holder know that this item is being moved or dragged
                 val itemViewHolder = viewHolder as ItemTouchHelperViewHolder?
-                itemViewHolder!!.onItemSelected()
+                itemViewHolder?.onItemSelected()
             }
         }
 

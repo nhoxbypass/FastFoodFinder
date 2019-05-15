@@ -122,8 +122,10 @@ class AppDataManager(private val localStoreDataSource: StoreDataSource, private 
 
     override fun getCurrentUserUid(): String {
         var uid = ""
-        if (currentUser != null)
-            uid = currentUser!!.getUid()
+
+        currentUser?.let {
+            uid = it.getUid()
+        }
 
         if (isEmpty(uid))
             uid = clientAuth.getCurrentUserUid()

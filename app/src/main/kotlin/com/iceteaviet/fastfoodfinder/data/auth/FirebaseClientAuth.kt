@@ -60,12 +60,13 @@ class FirebaseClientAuth : ClientAuth {
         var photoUrl = ""
 
         if (firebaseUser.photoUrl != null) {
-            photoUrl = firebaseUser.photoUrl!!.toString()
+            photoUrl = firebaseUser.photoUrl.toString()
         }
 
         var displayName = ""
-        if (firebaseUser.displayName != null)
-            displayName = firebaseUser.displayName!!
+        firebaseUser.displayName?.let {
+            displayName = it
+        }
 
 
         return User(firebaseUser.uid, displayName, firebaseUser.email!!, photoUrl, ArrayList())

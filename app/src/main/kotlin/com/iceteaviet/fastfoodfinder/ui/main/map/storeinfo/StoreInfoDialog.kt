@@ -55,7 +55,7 @@ class StoreInfoDialog : DialogFragment(), StoreInfoContract.View {
         vCallDirection = call_direction
         btnAddToFavorite = btn_fav
 
-        cdvh = StoreDetailAdapter.CallDirectionViewHolder(vCallDirection) // TODO: Check this !!
+        cdvh = StoreDetailAdapter.CallDirectionViewHolder(vCallDirection)
 
         presenter.parseNewIntent(arguments)
 
@@ -79,16 +79,16 @@ class StoreInfoDialog : DialogFragment(), StoreInfoContract.View {
     }
 
     override fun onDirectionChange(store: Store) {
-        mListener!!.onDirection(store)
+        mListener?.onDirection(store)
     }
 
     override fun addStoreToFavorite(store: Store) {
-        mListener!!.onAddToFavorite(store!!.id)
+        mListener?.onAddToFavorite(store.id)
         dismiss()
     }
 
-    override fun makeNativeCall(tel: String?) {
-        makeNativeCall(activity!!, tel!!)
+    override fun makeNativeCall(tel: String) {
+        makeNativeCall(activity!!, tel)
     }
 
     override fun showEmptyTelToast() {
@@ -103,29 +103,31 @@ class StoreInfoDialog : DialogFragment(), StoreInfoContract.View {
         if (store == null)
             return
 
-        tvStoreName.text = store!!.title
-        tvStoreAddress.text = store!!.address
+        tvStoreName.text = store.title
+        tvStoreAddress.text = store.address
     }
 
     @NonNull
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState)
-        dialog.window!!.requestFeature(Window.FEATURE_NO_TITLE)
+        dialog.window?.requestFeature(Window.FEATURE_NO_TITLE)
         return dialog
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        dialog!!.window!!.attributes.windowAnimations = R.style.DialogAnimation
+        dialog?.window?.attributes?.windowAnimations = R.style.DialogAnimation
     }
 
     override fun onResume() {
-        val window = dialog!!.window
+        val window = dialog?.window
         val size = Point()
-        val display = window!!.windowManager.defaultDisplay
-        display.getSize(size)
-        window.setLayout((0.8 * size.x).toInt(), WindowManager.LayoutParams.WRAP_CONTENT)
-        window.setGravity(Gravity.CENTER)
+        window?.let {
+            val display = it.windowManager.defaultDisplay
+            display.getSize(size)
+            it.setLayout((0.8 * size.x).toInt(), WindowManager.LayoutParams.WRAP_CONTENT)
+            it.setGravity(Gravity.CENTER)
+        }
         super.onResume()
         presenter.subscribe()
     }

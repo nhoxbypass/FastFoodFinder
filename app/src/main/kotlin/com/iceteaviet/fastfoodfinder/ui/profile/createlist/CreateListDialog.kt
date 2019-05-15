@@ -47,19 +47,19 @@ class CreateListDialog : DialogFragment(), CreateListContract.View, View.OnClick
     }
 
     private fun setupEventListeners() {
-        ivQuit!!.setOnClickListener(this)
-        btnDone!!.setOnClickListener(this)
+        ivQuit.setOnClickListener(this)
+        btnDone.setOnClickListener(this)
 
-        icon1!!.setOnClickListener(this)
-        icon2!!.setOnClickListener(this)
-        icon3!!.setOnClickListener(this)
-        icon4!!.setOnClickListener(this)
-        icon5!!.setOnClickListener(this)
-        icon6!!.setOnClickListener(this)
-        icon7!!.setOnClickListener(this)
-        icon8!!.setOnClickListener(this)
-        icon9!!.setOnClickListener(this)
-        icon10!!.setOnClickListener(this)
+        icon1.setOnClickListener(this)
+        icon2.setOnClickListener(this)
+        icon3.setOnClickListener(this)
+        icon4.setOnClickListener(this)
+        icon5.setOnClickListener(this)
+        icon6.setOnClickListener(this)
+        icon7.setOnClickListener(this)
+        icon8.setOnClickListener(this)
+        icon9.setOnClickListener(this)
+        icon10.setOnClickListener(this)
     }
 
     override fun onClick(v: View) {
@@ -69,7 +69,7 @@ class CreateListDialog : DialogFragment(), CreateListContract.View, View.OnClick
             }
 
             R.id.btnDone -> {
-                presenter.onDoneButtonClick(edtName!!.text.toString())
+                presenter.onDoneButtonClick(edtName.text.toString())
             }
 
             R.id.icon1 -> {
@@ -187,8 +187,7 @@ class CreateListDialog : DialogFragment(), CreateListContract.View, View.OnClick
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState)
-        //request
-        dialog.window!!.requestFeature(Window.FEATURE_NO_TITLE)
+        dialog.window?.requestFeature(Window.FEATURE_NO_TITLE)
         return dialog
     }
 
