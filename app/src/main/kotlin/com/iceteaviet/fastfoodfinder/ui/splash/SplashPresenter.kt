@@ -41,7 +41,7 @@ class SplashPresenter : BasePresenter<SplashContract.Presenter>, SplashContract.
                     // TODO: Support timeout
                     Single.zip(dataManager.getRemoteUserDataSource().getUser(uid),
                             dataManager.getLocalStoreDataSource().getAllStores(),
-                            BiFunction<User, MutableList<Store>, Pair<User, List<Store>>> { user, storeList ->
+                            BiFunction<User, List<Store>, Pair<User, List<Store>>> { user, storeList ->
                                 Pair(user, storeList)
                             })
                             .subscribeOn(Schedulers.io())

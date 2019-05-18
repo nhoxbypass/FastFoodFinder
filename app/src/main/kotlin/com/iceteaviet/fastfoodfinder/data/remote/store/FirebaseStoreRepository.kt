@@ -23,7 +23,7 @@ class FirebaseStoreRepository(private val databaseRef: DatabaseReference) : Stor
         databaseRef.child(CHILD_STORES_LOCATION).setValue(storeList)
     }
 
-    override fun getAllStores(): Single<MutableList<Store>> {
+    override fun getAllStores(): Single<List<Store>> {
         return Single.create { emitter ->
             databaseRef.child(CHILD_STORES_LOCATION).addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(@NonNull dataSnapshot: DataSnapshot) {
