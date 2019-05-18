@@ -62,7 +62,7 @@ class MapRoutingActivity : BaseActivity(), MapRoutingContract.View, View.OnClick
             setUpMapIfNeeded()
             setupEventListeners()
         } else {
-            Toast.makeText(this@MapRoutingActivity, R.string.get_map_direction_failed, Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.get_map_direction_failed, Toast.LENGTH_SHORT).show()
             finish()
         }
     }
@@ -149,7 +149,7 @@ class MapRoutingActivity : BaseActivity(), MapRoutingContract.View, View.OnClick
 
             val options = PolylineOptions()
                     .clickable(true)
-                    .color(ContextCompat.getColor(this@MapRoutingActivity, R.color.googleBlue))
+                    .color(ContextCompat.getColor(this, R.color.googleBlue))
                     .width(12f)
                     .geodesic(true)
                     .zIndex(5f)
@@ -202,12 +202,12 @@ class MapRoutingActivity : BaseActivity(), MapRoutingContract.View, View.OnClick
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
         bottomRoutingAdapter = RoutingAdapter(RoutingAdapter.TYPE_FULL)
-        val layoutManager = LinearLayoutManager(this@MapRoutingActivity)
+        val layoutManager = LinearLayoutManager(this)
         bottomRecyclerView.layoutManager = layoutManager
         bottomRecyclerView.adapter = bottomRoutingAdapter
 
         topRoutingAdapter = RoutingAdapter(RoutingAdapter.TYPE_SHORT)
-        val topLayoutManager = LinearLayoutManager(this@MapRoutingActivity, LinearLayoutManager.HORIZONTAL, false)
+        val topLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         topRecyclerView.layoutManager = topLayoutManager
         topRecyclerView.adapter = topRoutingAdapter
         val snapHelper = LinearSnapHelper()

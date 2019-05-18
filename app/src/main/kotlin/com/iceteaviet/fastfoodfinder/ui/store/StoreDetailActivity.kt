@@ -110,7 +110,7 @@ class StoreDetailActivity : BaseActivity(), StoreDetailContract.View, LocationLi
         if (lastLocation != null) {
             presenter.onCurrLocationChanged(lastLocation.latitude, lastLocation.longitude)
         } else
-            Toast.makeText(this@StoreDetailActivity, R.string.cannot_get_curr_location, Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.cannot_get_curr_location, Toast.LENGTH_SHORT).show()
     }
 
     override fun setStoreComments(listComments: MutableList<Comment>) {
@@ -130,7 +130,7 @@ class StoreDetailActivity : BaseActivity(), StoreDetailContract.View, LocationLi
     }
 
     override fun showCommentEditorView() {
-        startActivityForResult(Intent(this@StoreDetailActivity, CommentActivity::class.java), RC_ADD_COMMENT)
+        startActivityForResult(Intent(this, CommentActivity::class.java), RC_ADD_COMMENT)
     }
 
     override fun startCallIntent(tel: String) {
@@ -138,7 +138,7 @@ class StoreDetailActivity : BaseActivity(), StoreDetailContract.View, LocationLi
     }
 
     override fun showInvalidPhoneNumbWarning() {
-        Toast.makeText(this@StoreDetailActivity, R.string.store_no_phone_numb, Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, R.string.store_no_phone_numb, Toast.LENGTH_SHORT).show()
     }
 
     override fun showMapRoutingView(currStore: Store, mapsDirection: MapsDirection) {

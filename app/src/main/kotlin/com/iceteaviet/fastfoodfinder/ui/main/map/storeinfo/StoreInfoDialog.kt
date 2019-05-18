@@ -67,7 +67,7 @@ class StoreInfoDialog : DialogFragment(), StoreInfoContract.View {
             if (isCallPhonePermissionGranted(context!!))
                 presenter.onMakeCallWithPermission()
             else
-                requestCallPhonePermission(this@StoreInfoDialog)
+                requestCallPhonePermission(this)
         }
         cdvh.btnDirection.setOnClickListener {
             presenter.onDirectionButtonClick()

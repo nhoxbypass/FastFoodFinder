@@ -57,7 +57,7 @@ class SplashActivity : BaseActivity(), SplashContract.View {
     }
 
     override fun showRetryDialog() {
-        AlertDialog.Builder(this@SplashActivity)
+        AlertDialog.Builder(this)
                 .setTitle(getString(R.string.title_retry_update_db))
                 .setMessage(getString(R.string.msg_retry_update_db))
                 .setPositiveButton(android.R.string.yes) { dialog, which ->

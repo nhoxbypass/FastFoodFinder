@@ -139,7 +139,7 @@ class SettingActivity : BaseActivity(), SettingContract.View {
     private fun setupEventListeners() {
         txtSignOut.setOnClickListener {
             presenter.signOut()
-            openLoginActivity(this@SettingActivity)
+            openLoginActivity(this)
             finish()
         }
 
@@ -165,11 +165,11 @@ class SettingActivity : BaseActivity(), SettingContract.View {
 
 
     override fun showSuccessLoadingToast(successMessage: String?) {
-        Toast.makeText(this@SettingActivity, getString(R.string.update_database_successfull) + successMessage, Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, getString(R.string.update_database_successfull) + successMessage, Toast.LENGTH_SHORT).show()
     }
 
     override fun showFailedLoadingToast(failedMessage: String?) {
-        Toast.makeText(this@SettingActivity, getString(R.string.update_database_failed) + failedMessage, Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, getString(R.string.update_database_failed) + failedMessage, Toast.LENGTH_SHORT).show()
     }
 
     override fun updateLoadingProgressView(showProgress: Boolean) {
