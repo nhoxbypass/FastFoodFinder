@@ -33,25 +33,7 @@ class EmailRegisterPresenter : BasePresenter<EmailRegisterContract.Presenter>, E
             if (isValidPassword(password)) {
                 if (password.equals(rePassword)) {
                     // Begin account register
-                    dataManager.signUpWithEmailAndPassword(email, password)
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(object : SingleObserver<User> {
-                                override fun onSubscribe(d: Disposable) {
-                                    compositeDisposable.add(d)
-                                }
-
-                                override fun onSuccess(user: User) {
-                                    setRegisterProgressState(2)
-                                    emailRegisterView.notifyRegisterSuccess(user)
-                                }
-
-                                override fun onError(e: Throwable) {
-                                    e.printStackTrace()
-                                    setRegisterProgressState(-1)
-                                    emailRegisterView.notifyLoginError(e)
-                                }
-                            })
+                    startRegister(email, password)
                 } else {
                     emailRegisterView.showInvalidRePasswordError()
                     setRegisterProgressState(0)
@@ -64,6 +46,28 @@ class EmailRegisterPresenter : BasePresenter<EmailRegisterContract.Presenter>, E
             emailRegisterView.showInvalidEmailError()
             setRegisterProgressState(0)
         }
+    }
+
+    private fun startRegister(email: String, password: String) {
+        dataManager.signUpWithEmailAndPassword(email, password)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : SingleObserver<User> {
+                    override fun onSubscribe(d: Disposable) {
+                        compositeDisposable.add(d)
+                    }
+
+                    override fun onSuccess(user: User) {
+                        setRegisterProgressState(2)
+                        emailRegisterView.notifyRegisterSuccess(user)
+                    }
+
+                    override fun onError(e: Throwable) {
+                        e.printStackTrace()
+                        setRegisterProgressState(-1)
+                        emailRegisterView.notifyLoginError(e)
+                    }
+                })
     }
 
     private fun setRegisterProgressState(state: Int) {
