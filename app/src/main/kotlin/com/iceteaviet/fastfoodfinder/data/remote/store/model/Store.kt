@@ -2,7 +2,6 @@ package com.iceteaviet.fastfoodfinder.data.remote.store.model
 
 import android.os.Parcel
 import android.os.Parcelable
-
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.database.Exclude
 import com.google.firebase.database.PropertyName
@@ -48,7 +47,7 @@ class Store : Parcelable {
             this.type = type
 
             position = LatLng(java.lang.Double.valueOf(lat)!!, java.lang.Double.valueOf(lng)!!)
-        } catch (e: Exception) {
+        } catch (e: NumberFormatException) {
             e.printStackTrace()
         }
     }

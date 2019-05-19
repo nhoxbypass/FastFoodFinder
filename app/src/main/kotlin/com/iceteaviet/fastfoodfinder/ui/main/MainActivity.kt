@@ -365,21 +365,17 @@ class MainActivity : BaseActivity(), MainContract.View, View.OnClickListener {
     }
 
     private fun replaceFragment(fragment: Fragment, actionBarTitle: String) {
-        try {
-            // Insert the fragment by replacing any existing fragment
-            val fragmentManager = supportFragmentManager
-            fragmentManager
-                    .beginTransaction()
-                    .add(R.id.fl_fragment_placeholder, fragment)
-                    .addToBackStack(null) // Add this transaction to the back stack
-                    .commit()
-            fragmentManager.executePendingTransactions()
+        // Insert the fragment by replacing any existing fragment
+        val fragmentManager = supportFragmentManager
+        fragmentManager
+                .beginTransaction()
+                .add(R.id.fl_fragment_placeholder, fragment)
+                .addToBackStack(null) // Add this transaction to the back stack
+                .commit()
+        fragmentManager.executePendingTransactions()
 
-            // Set action bar title
-            title = actionBarTitle
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+        // Set action bar title
+        title = actionBarTitle
     }
 
     companion object {

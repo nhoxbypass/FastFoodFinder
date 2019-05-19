@@ -54,7 +54,7 @@ fun trimWhitespace(source: CharSequence?): CharSequence {
                 //Ignore next char
                 //Because it is a whitespace again
                     builder.delete(i, i + 1)
-            } catch (ex: Exception) {
+            } catch (ex: IndexOutOfBoundsException) {
                 ex.printStackTrace()
             }
 
