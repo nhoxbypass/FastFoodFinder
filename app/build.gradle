@@ -16,8 +16,8 @@ android {
         applicationId "com.iceteaviet.fastfoodfinder"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 11
-        versionName "19.03.03"
+        versionCode 12
+        versionName "19.05.02"
         multiDexEnabled true
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
