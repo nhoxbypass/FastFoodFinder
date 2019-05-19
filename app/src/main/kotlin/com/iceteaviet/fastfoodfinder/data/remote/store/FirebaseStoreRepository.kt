@@ -100,7 +100,7 @@ class FirebaseStoreRepository(private val databaseRef: DatabaseReference) : Stor
             for (storeLocation in child.child(CHILD_MARKERS_ADD).children) {
                 val store = storeLocation.getValue(Store::class.java)
                 if (store != null) {
-                    store.type = getStoreType(child.key!!)
+                    store.type = getStoreType(child.key)
                     storeList.add(store)
                 }
             }

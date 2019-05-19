@@ -2,6 +2,7 @@ package com.iceteaviet.fastfoodfinder.ui.main
 
 import android.text.TextUtils
 import com.iceteaviet.fastfoodfinder.data.DataManager
+import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.data.transport.model.SearchEventResult
 import com.iceteaviet.fastfoodfinder.ui.base.BasePresenter
 import com.iceteaviet.fastfoodfinder.utils.Constant
@@ -25,18 +26,17 @@ class MainPresenter : BasePresenter<MainContract.Presenter>, MainContract.Presen
         EventBus.getDefault().register(this)
 
         // Initialize auth info
-        if (!dataManager.isSignedIn() || dataManager.getCurrentUser() == null) {
+        val currUser = dataManager.getCurrentUser()
+        if (!dataManager.isSignedIn() || currUser == null) {
             mainView.updateProfileHeader(true)
         } else {
-            val user = dataManager.getCurrentUser()!!
-
             mainView.updateProfileHeader(false)
-            if (!TextUtils.isEmpty(user.photoUrl)) {
-                mainView.loadProfileHeaderAvatar(user.photoUrl)
+            if (!TextUtils.isEmpty(currUser.photoUrl)) {
+                mainView.loadProfileHeaderAvatar(currUser.photoUrl)
             }
 
-            mainView.setProfileHeaderNameText(user.name)
-            mainView.setProfileHeaderEmailText(user.email)
+            mainView.setProfileHeaderNameText(currUser.name)
+            mainView.setProfileHeaderEmailText(currUser.email)
         }
     }
 
@@ -80,36 +80,53 @@ class MainPresenter : BasePresenter<MainContract.Presenter>, MainContract.Presen
     fun onSearchResult(searchEventResult: SearchEventResult) {
         when (searchEventResult.resultCode) {
             SearchEventResult.SEARCH_ACTION_QUICK -> {
-                mainView.setSearchQueryText(searchEventResult.searchString)
-                mainView.hideSearchView()
-                mainView.clearFocus()
+                handleSearchQuickAction(searchEventResult.searchString)
             }
             SearchEventResult.SEARCH_ACTION_QUERY_SUBMIT -> {
                 mainView.hideSearchView()
                 if (!searchEventResult.searchString.isBlank()) {
-                    dataManager.addSearchHistories(searchEventResult.searchString)
-                    mainView.setSearchQueryText(searchEventResult.searchString)
-                    mainView.clearFocus()
+                    handleSearchQuerySubmitAction(searchEventResult.searchString)
                 }
             }
 
             SearchEventResult.SEARCH_ACTION_COLLAPSE -> {
-                mainView.hideSearchView()
-                mainView.hideKeyboard()
-                mainView.clearFocus()
+                handleSearchCollapseAction()
             }
 
             SearchEventResult.SEARCH_ACTION_STORE_CLICK -> {
                 mainView.hideSearchView()
-                if (searchEventResult.store != null) {
-                    mainView.setSearchQueryText(searchEventResult.store!!.title)
-                    mainView.clearFocus()
-
-                    dataManager.addSearchHistories(Constant.SEARCH_STORE_PREFIX + searchEventResult.store!!.id)
+                val store = searchEventResult.store
+                if (store != null) {
+                    handleSearchStoreClickAction(store)
                 }
             }
 
             else -> mainView.showSearchWarningMessage()
         }
+    }
+
+    private fun handleSearchQuickAction(searchString: String) {
+        mainView.setSearchQueryText(searchString)
+        mainView.hideSearchView()
+        mainView.clearFocus()
+    }
+
+    private fun handleSearchQuerySubmitAction(searchString: String) {
+        dataManager.addSearchHistories(searchString)
+        mainView.setSearchQueryText(searchString)
+        mainView.clearFocus()
+    }
+
+    private fun handleSearchCollapseAction() {
+        mainView.hideSearchView()
+        mainView.hideKeyboard()
+        mainView.clearFocus()
+    }
+
+    private fun handleSearchStoreClickAction(store: Store) {
+        mainView.setSearchQueryText(store.title)
+        mainView.clearFocus()
+
+        dataManager.addSearchHistories(Constant.SEARCH_STORE_PREFIX + store.id)
     }
 }

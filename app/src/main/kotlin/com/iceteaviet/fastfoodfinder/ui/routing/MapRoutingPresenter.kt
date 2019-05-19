@@ -49,7 +49,7 @@ class MapRoutingPresenter : BasePresenter<MapRoutingContract.Presenter>, MapRout
         currStore = extras.getParcelable(MapRoutingActivity.KEY_DES_STORE)
     }
 
-    override fun checkDataValid(): Boolean {
+    override fun isRoutingDataValid(): Boolean {
         if (mapsDirection == null || currStore == null
                 || mapsDirection!!.routeList.isEmpty() || mapsDirection!!.routeList[0].legList.isEmpty()) {
             return false
@@ -59,9 +59,11 @@ class MapRoutingPresenter : BasePresenter<MapRoutingContract.Presenter>, MapRout
     }
 
     override fun setupData() {
-        stepList = mapsDirection!!.routeList[0].legList[0].stepList
-        currLocation = stepList[0].startMapCoordination.location
-        geoPointList = PolyUtil.decode(mapsDirection!!.routeList[0].encodedPolylineString)
+        mapsDirection?.let {
+            stepList = it.routeList[0].legList[0].stepList
+            currLocation = stepList[0].startMapCoordination.location
+            geoPointList = PolyUtil.decode(it.routeList[0].encodedPolylineString)
+        }
     }
 
     override fun onNavigationRowClick(index: Int) {
@@ -100,22 +102,23 @@ class MapRoutingPresenter : BasePresenter<MapRoutingContract.Presenter>, MapRout
         }
     }
 
-    override fun onLoadMap() {
-        if (currLocation != null) {
-            mapRoutingView.animateMapCamera(currLocation!!, false)
-            mapRoutingView.addMapMarker(currLocation!!, "Your location",
+    override fun onGetMapAsync() {
+        currStore?.let {
+            mapRoutingView.addMapMarker(it.getPosition(), it.title, it.address, getStoreLogoDrawableRes(it.type))
+        }
+
+        currLocation?.let {
+            mapRoutingView.animateMapCamera(it, false)
+            mapRoutingView.addMapMarker(it, "Your location",
                     "Your current location, please follow the line", R.drawable.ic_map_bluedot)
+
+            mapRoutingView.drawRoutingPath(it, geoPointList)
         }
 
-        if (currStore != null) {
-            mapRoutingView.addMapMarker(currStore!!.getPosition(), currStore!!.title!!,
-                    currStore!!.address!!, getStoreLogoDrawableRes(currStore!!.type))
+        mapsDirection?.let {
+            mapRoutingView.setTravelDurationText(it.routeList[0].legList[0].getDuration())
+            mapRoutingView.setTravelDistanceText(it.routeList[0].legList[0].getDistance())
+            mapRoutingView.setTravelSummaryText(String.format("Via %s", it.routeList[0].summary))
         }
-
-        mapRoutingView.drawRoutingPath(currLocation!!, geoPointList)
-
-        mapRoutingView.setTravelDurationText(mapsDirection!!.routeList[0].legList[0].getDuration())
-        mapRoutingView.setTravelDistanceText(mapsDirection!!.routeList[0].legList[0].getDistance())
-        mapRoutingView.setTravelSummaryText(String.format("Via %s", mapsDirection!!.routeList[0].summary))
     }
 }

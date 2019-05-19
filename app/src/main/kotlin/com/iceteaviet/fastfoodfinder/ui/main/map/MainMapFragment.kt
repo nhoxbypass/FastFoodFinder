@@ -122,7 +122,7 @@ class MainMapFragment : Fragment(), MainMapContract.View, LocationListener {
     }
 
     @SuppressLint("MissingPermission")
-    override fun getLastLocation() {
+    override fun requestLastLocation() {
         val lastLocation = GoogleLocationManager.getInstance().getCurrentLocation()
         if (lastLocation != null) {
             presenter.onCurrLocationChanged(lastLocation.latitude, lastLocation.longitude)
@@ -156,7 +156,7 @@ class MainMapFragment : Fragment(), MainMapContract.View, LocationListener {
         if (googleMap != null)
             return
 
-        mMapFragment!!.getMapAsync { googleMap ->
+        mMapFragment?.getMapAsync { googleMap ->
             this.googleMap = googleMap
 
             if (googleMap != null) {
@@ -273,7 +273,8 @@ class MainMapFragment : Fragment(), MainMapContract.View, LocationListener {
         val dialog = StoreInfoDialog.newInstance(store)
         dialog.setDialogListen(object : StoreInfoDialog.StoreDialogActionListener {
             override fun onDirection(store: Store?) {
-                presenter.onDirectionNavigateClick(store!!)
+                if (store != null)
+                    presenter.onDirectionNavigateClick(store)
             }
 
             override fun onAddToFavorite(storeId: Int) {

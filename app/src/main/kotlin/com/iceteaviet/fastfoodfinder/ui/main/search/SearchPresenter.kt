@@ -33,9 +33,9 @@ class SearchPresenter : BasePresenter<SearchContract.Presenter>, SearchContract.
 
     override fun onStoreSearchClick(store: Store) {
         if (store.id == -1)
-            EventBus.getDefault().post(SearchEventResult(SearchEventResult.SEARCH_ACTION_QUERY_SUBMIT, store.title!!, store))
+            EventBus.getDefault().post(SearchEventResult(SearchEventResult.SEARCH_ACTION_QUERY_SUBMIT, store.title, store))
         else
-            EventBus.getDefault().post(SearchEventResult(SearchEventResult.SEARCH_ACTION_STORE_CLICK, store.title!!, store))
+            EventBus.getDefault().post(SearchEventResult(SearchEventResult.SEARCH_ACTION_STORE_CLICK, store.title, store))
     }
 
     override fun onQuickSearchItemClick(storeType: Int) {

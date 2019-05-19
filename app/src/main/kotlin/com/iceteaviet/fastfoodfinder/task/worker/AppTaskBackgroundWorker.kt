@@ -60,15 +60,14 @@ class AppTaskBackgroundWorker : Thread("AppTaskBackgroundWorker") {
             if (worker != null) {
                 synchronized(worker!!) {
                     while (!queue.isEmpty()) {
-                        worker!!.doTask()
+                        worker?.doTask()
                     }
 
                     running = false
                     (worker as java.lang.Object).notify()
                 }
 
-                if (worker != null)
-                    worker!!.interrupt()
+                worker?.interrupt()
             }
         }
     }
@@ -88,6 +87,7 @@ class AppTaskBackgroundWorker : Thread("AppTaskBackgroundWorker") {
                     try {
                         (worker as java.lang.Object).wait()
                     } catch (ex: Exception) {
+                        ex.printStackTrace()
                     }
                 }
             }

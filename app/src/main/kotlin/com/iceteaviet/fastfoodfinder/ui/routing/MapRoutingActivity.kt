@@ -56,7 +56,7 @@ class MapRoutingActivity : BaseActivity(), MapRoutingContract.View, View.OnClick
 
         presenter.fetchDataFromExtra(intent.extras)
 
-        if (presenter.checkDataValid()) {
+        if (presenter.isRoutingDataValid()) {
             presenter.setupData()
             setupUI()
             setUpMapIfNeeded()
@@ -232,13 +232,12 @@ class MapRoutingActivity : BaseActivity(), MapRoutingContract.View, View.OnClick
         if (mapFragment === null) {
             mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
             // Check if we were successful in obtaining the map.
-            if (mapFragment !== null) {
-                mapFragment!!.getMapAsync { map ->
-                    googleMap = map
-                    if (map != null) {
-                        // The map is verified. It is now safe to manipulate the map.
-                        presenter.onLoadMap()
-                    }
+
+            mapFragment?.getMapAsync { map ->
+                googleMap = map
+                if (map != null) {
+                    // The map is verified. It is now safe to manipulate the map.
+                    presenter.onGetMapAsync()
                 }
             }
         }

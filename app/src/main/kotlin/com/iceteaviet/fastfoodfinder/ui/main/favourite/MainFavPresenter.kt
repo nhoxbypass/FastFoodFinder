@@ -89,18 +89,27 @@ class MainFavPresenter : BasePresenter<MainFavContract.Presenter>, MainFavContra
     private fun handleUserStoreEvent(userStoreEvent: UserStoreEvent) {
         val store = userStoreEvent.store
         when (userStoreEvent.eventActionCode) {
-            UserStoreEvent.ACTION_ADDED -> if (!dataManager.getCurrentUser()!!.getFavouriteStoreList().getStoreIdList().contains(store.id)) {
-                mainFavView.addStore(store)
-                dataManager.getCurrentUser()!!.getFavouriteStoreList().getStoreIdList().add(store.id)
+            UserStoreEvent.ACTION_ADDED -> {
+                val user = dataManager.getCurrentUser()
+                if (user != null && !user.getFavouriteStoreList().getStoreIdList().contains(store.id)) {
+                    mainFavView.addStore(store)
+                    user.getFavouriteStoreList().getStoreIdList().add(store.id)
+                }
             }
 
-            UserStoreEvent.ACTION_CHANGED -> if (dataManager.getCurrentUser()!!.getFavouriteStoreList().getStoreIdList().contains(store.id)) {
-                mainFavView.updateStore(store)
+            UserStoreEvent.ACTION_CHANGED -> {
+                val user = dataManager.getCurrentUser()
+                if (user != null && user.getFavouriteStoreList().getStoreIdList().contains(store.id)) {
+                    mainFavView.updateStore(store)
+                }
             }
 
-            UserStoreEvent.ACTION_REMOVED -> if (dataManager.getCurrentUser()!!.getFavouriteStoreList().getStoreIdList().contains(store.id)) {
-                mainFavView.removeStore(store)
-                dataManager.getCurrentUser()!!.getFavouriteStoreList().removeStore(store.id)
+            UserStoreEvent.ACTION_REMOVED -> {
+                val user = dataManager.getCurrentUser()
+                if (user != null && user.getFavouriteStoreList().getStoreIdList().contains(store.id)) {
+                    mainFavView.removeStore(store)
+                    user.getFavouriteStoreList().removeStore(store.id)
+                }
             }
 
             UserStoreEvent.ACTION_MOVED -> {

@@ -80,19 +80,19 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
     override fun onLocationPermissionGranted() {
         mainMapView.requestLocationUpdates()
         mainMapView.setMyLocationEnabled(true)
-        mainMapView.getLastLocation()
+        mainMapView.requestLastLocation()
         locationGranted = true
     }
 
     override fun onCurrLocationChanged(latitude: Double, longitude: Double) {
-        currLocation = LatLng(latitude, longitude)
+        currLocation = LatLng(latitude, longitude).also {
+            if (!isZoomToUser) {
+                // Zoom and show current location in the Google Map
+                // Only zoom-in the first time user location come
+                mainMapView.animateMapCamera(it, false)
 
-        if (!isZoomToUser) {
-            // Zoom and show current location in the Google Map
-            // Only zoom-in the first time user location come
-            mainMapView.animateMapCamera(currLocation!!, false)
-
-            isZoomToUser = true
+                isZoomToUser = true
+            }
         }
     }
 
@@ -106,10 +106,7 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
 
         if (locationGranted) {
             mainMapView.setMyLocationEnabled(true)
-            mainMapView.getLastLocation()
-            // Showing the current location in Google Map
-            if (currLocation != null)
-                mainMapView.animateMapCamera(currLocation!!, false)
+            mainMapView.requestLastLocation()
         }
 
         mainMapView.setupMapEventHandlers()
@@ -300,10 +297,6 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
                         this@MainMapPresenter.storeList = storeList.toMutableList()
                         mainMapView.addMarkersToMap(this@MainMapPresenter.storeList)
                         mainMapView.animateMapCamera(storeList[0].getPosition(), false)
-
-                        /*mAdapter!!.setCurrCameraPosition(mGoogleMap!!.cameraPosition.target)
-                        visibleStores = getVisibleStore(storeList!!, mGoogleMap!!.projection.visibleRegion.latLngBounds)
-                        visibleStores?.let { mAdapter!!.setStores(it) }*/
                     }
 
                     override fun onError(e: Throwable) {
@@ -331,10 +324,6 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
                         this@MainMapPresenter.storeList = storeList.toMutableList()
                         mainMapView.addMarkersToMap(this@MainMapPresenter.storeList)
                         mainMapView.animateMapCamera(storeList[0].getPosition(), false)
-
-                        /*mAdapter!!.setCurrCameraPosition(mGoogleMap!!.cameraPosition.target)
-                        visibleStores = getVisibleStore(storeList!!, mGoogleMap!!.projection.visibleRegion.latLngBounds)
-                        visibleStores?.let { mAdapter!!.setStores(it) }*/
                     }
 
                     override fun onError(e: Throwable) {
@@ -346,8 +335,9 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
     private fun handleSearchCollapseAction() {
         loadAllStoresToMap()
 
-        if (currLocation != null)
-            mainMapView.animateMapCamera(currLocation!!, false)
+        currLocation?.let {
+            mainMapView.animateMapCamera(it, false)
+        }
     }
 
     private fun loadAllStoresToMap() {

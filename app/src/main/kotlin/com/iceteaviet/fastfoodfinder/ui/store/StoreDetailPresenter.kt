@@ -9,7 +9,6 @@ import com.iceteaviet.fastfoodfinder.data.remote.store.model.Comment
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.ui.base.BasePresenter
 import com.iceteaviet.fastfoodfinder.utils.getLatLngString
-import com.iceteaviet.fastfoodfinder.utils.isEmpty
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -32,25 +31,26 @@ class StoreDetailPresenter : BasePresenter<StoreDetailContract.Presenter>, Store
     }
 
     override fun subscribe() {
-        if (currStore != null)
-            storeDetailView.setToolbarTitle(currStore!!.title!!)
+        currStore?.let {
+            storeDetailView.setToolbarTitle(it.title)
 
-        dataManager.getRemoteStoreDataSource().getComments(currStore!!.id.toString())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : SingleObserver<MutableList<Comment>> {
-                    override fun onSubscribe(d: Disposable) {
-                        compositeDisposable.add(d)
-                    }
+            dataManager.getRemoteStoreDataSource().getComments(it.id.toString())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(object : SingleObserver<MutableList<Comment>> {
+                        override fun onSubscribe(d: Disposable) {
+                            compositeDisposable.add(d)
+                        }
 
-                    override fun onSuccess(commentList: MutableList<Comment>) {
-                        storeDetailView.setStoreComments(commentList.asReversed())
-                    }
+                        override fun onSuccess(commentList: MutableList<Comment>) {
+                            storeDetailView.setStoreComments(commentList.asReversed())
+                        }
 
-                    override fun onError(e: Throwable) {
-                        e.printStackTrace()
-                    }
-                })
+                        override fun onError(e: Throwable) {
+                            e.printStackTrace()
+                        }
+                    })
+        }
     }
 
     override fun onLocationPermissionGranted() {
@@ -89,41 +89,43 @@ class StoreDetailPresenter : BasePresenter<StoreDetailContract.Presenter>, Store
     }
 
     override fun onCallButtonClick(tel: String?) {
-        if (!isEmpty(tel)) {
-            storeDetailView.startCallIntent(tel!!)
+        if (tel != null && tel.isNotEmpty()) {
+            storeDetailView.startCallIntent(tel)
         } else {
             storeDetailView.showInvalidPhoneNumbWarning()
         }
     }
 
     override fun onNavigationButtonClick() {
-        val storeLocation = currStore!!.getPosition()
-        val queries = HashMap<String, String>()
+        currStore?.let {
+            val storeLocation = it.getPosition()
+            val queries = HashMap<String, String>()
 
-        val origin: String? = getLatLngString(currLocation)
-        val destination: String? = getLatLngString(storeLocation)
+            val origin: String? = getLatLngString(currLocation)
+            val destination: String? = getLatLngString(storeLocation)
 
-        if (origin == null || destination == null)
-            return
+            if (origin == null || destination == null)
+                return
 
-        queries[GoogleMapsRoutingApiHelper.PARAM_ORIGIN] = origin
-        queries[GoogleMapsRoutingApiHelper.PARAM_DESTINATION] = destination
+            queries[GoogleMapsRoutingApiHelper.PARAM_ORIGIN] = origin
+            queries[GoogleMapsRoutingApiHelper.PARAM_DESTINATION] = destination
 
-        dataManager.getMapsRoutingApiHelper().getMapsDirection(queries, currStore!!)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : SingleObserver<MapsDirection> {
-                    override fun onSubscribe(d: Disposable) {
-                        compositeDisposable.add(d)
-                    }
+            dataManager.getMapsRoutingApiHelper().getMapsDirection(queries, it)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(object : SingleObserver<MapsDirection> {
+                        override fun onSubscribe(d: Disposable) {
+                            compositeDisposable.add(d)
+                        }
 
-                    override fun onSuccess(mapsDirection: MapsDirection) {
-                        storeDetailView.showMapRoutingView(currStore!!, mapsDirection)
-                    }
+                        override fun onSuccess(mapsDirection: MapsDirection) {
+                            storeDetailView.showMapRoutingView(it, mapsDirection)
+                        }
 
-                    override fun onError(e: Throwable) {
-                        e.printStackTrace()
-                    }
-                })
+                        override fun onError(e: Throwable) {
+                            e.printStackTrace()
+                        }
+                    })
+        }
     }
 }

@@ -27,34 +27,38 @@ class ListDetailPresenter : BasePresenter<ListDetailContract.Presenter>, ListDet
     }
 
     override fun subscribe() {
-        listDetailView.setListNameText(userStoreList!!.listName)
-        listDetailView.loadStoreIcon(getStoreListIconDrawableRes(userStoreList!!.iconId))
+        userStoreList?.let {
+            listDetailView.setListNameText(it.listName)
+            listDetailView.loadStoreIcon(getStoreListIconDrawableRes(it.iconId))
 
-        //add list store to mAdapter here
-        dataManager.getLocalStoreDataSource().findStoresByIds(userStoreList!!.getStoreIdList())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : SingleObserver<List<Store>> {
-                    override fun onSubscribe(d: Disposable) {
-                        compositeDisposable.add(d)
-                    }
+            //add list store to mAdapter here
+            dataManager.getLocalStoreDataSource().findStoresByIds(it.getStoreIdList())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(object : SingleObserver<List<Store>> {
+                        override fun onSubscribe(d: Disposable) {
+                            compositeDisposable.add(d)
+                        }
 
-                    override fun onSuccess(storeList: List<Store>) {
-                        listDetailView.setStores(storeList)
-                    }
+                        override fun onSuccess(storeList: List<Store>) {
+                            listDetailView.setStores(storeList)
+                        }
 
-                    override fun onError(e: Throwable) {
-                        e.printStackTrace()
-                    }
-                })
+                        override fun onError(e: Throwable) {
+                            e.printStackTrace()
+                        }
+                    })
+        }
     }
 
     override fun handleExtras(intent: Intent?) {
-        if (intent == null)
+        if (intent == null) {
             listDetailView.exit()
+            return
+        }
 
         userStoreList = UserStoreList()
-        if (intent!!.hasExtra(ListDetailActivity.KEY_USER_STORE_LIST))
+        if (intent.hasExtra(ListDetailActivity.KEY_USER_STORE_LIST))
             userStoreList = intent.getParcelableExtra(ListDetailActivity.KEY_USER_STORE_LIST)
         photoUrl = intent.getStringExtra(ListDetailActivity.KEY_USER_PHOTO_URL)
     }
