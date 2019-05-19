@@ -42,9 +42,8 @@ internal class SlidingTabStrip @JvmOverloads constructor(context: Context, attrs
                 DEFAULT_BOTTOM_BORDER_COLOR_ALPHA)
 
         mDefaultTabColorizer = SimpleTabColorizer()
-        mDefaultTabColorizer.setIndicatorColors(DEFAULT_SELECTED_INDICATOR_COLOR)
-        mDefaultTabColorizer.setDividerColors(setColorAlpha(themeForegroundColor,
-                DEFAULT_DIVIDER_COLOR_ALPHA))
+        mDefaultTabColorizer.setIndicatorColors(IntArray(1) { DEFAULT_SELECTED_INDICATOR_COLOR })
+        mDefaultTabColorizer.setDividerColors(IntArray(1) { setColorAlpha(themeForegroundColor, DEFAULT_DIVIDER_COLOR_ALPHA) })
 
         mBottomBorderThickness = (DEFAULT_BOTTOM_BORDER_THICKNESS_DIPS * density).toInt()
         mBottomBorderPaint = Paint()
@@ -63,17 +62,17 @@ internal class SlidingTabStrip @JvmOverloads constructor(context: Context, attrs
         invalidate()
     }
 
-    fun setSelectedIndicatorColors(vararg colors: Int) {
+    fun setSelectedIndicatorColors(colors: IntArray) {
         // Make sure that the custom colorizer is removed
         mCustomTabColorizer = null
-        mDefaultTabColorizer.setIndicatorColors(*colors)
+        mDefaultTabColorizer.setIndicatorColors(colors)
         invalidate()
     }
 
-    fun setDividerColors(vararg colors: Int) {
+    fun setDividerColors(colors: IntArray) {
         // Make sure that the custom colorizer is removed
         mCustomTabColorizer = null
-        mDefaultTabColorizer.setDividerColors(*colors)
+        mDefaultTabColorizer.setDividerColors(colors)
         invalidate()
     }
 
@@ -142,11 +141,11 @@ internal class SlidingTabStrip @JvmOverloads constructor(context: Context, attrs
             return mDividerColors!![position % mDividerColors!!.size]
         }
 
-        internal fun setIndicatorColors(vararg colors: Int) {
+        internal fun setIndicatorColors(colors: IntArray) {
             mIndicatorColors = colors
         }
 
-        internal fun setDividerColors(vararg colors: Int) {
+        internal fun setDividerColors(colors: IntArray) {
             mDividerColors = colors
         }
     }

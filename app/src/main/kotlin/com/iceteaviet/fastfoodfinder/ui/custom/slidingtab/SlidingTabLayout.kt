@@ -92,16 +92,16 @@ open class SlidingTabLayout @JvmOverloads constructor(context: Context, attrs: A
      * Sets the colors to be used for indicating the selected tab. These colors are treated as a
      * circular array. Providing one color will mean that all tabs are indicated with the same color.
      */
-    fun setSelectedIndicatorColors(vararg colors: Int) {
-        mTabStrip.setSelectedIndicatorColors(*colors)
+    fun setSelectedIndicatorColors(colors: IntArray) {
+        mTabStrip.setSelectedIndicatorColors(colors)
     }
 
     /**
      * Sets the colors to be used for tab dividers. These colors are treated as a circular array.
      * Providing one color will mean that all tabs are indicated with the same color.
      */
-    fun setDividerColors(vararg colors: Int) {
-        mTabStrip.setDividerColors(*colors)
+    fun setDividerColors(colors: IntArray) {
+        mTabStrip.setDividerColors(colors)
     }
 
     /**
