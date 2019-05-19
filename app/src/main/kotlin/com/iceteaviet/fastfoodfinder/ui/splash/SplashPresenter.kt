@@ -6,6 +6,8 @@ import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
 import com.iceteaviet.fastfoodfinder.ui.base.BasePresenter
 import com.iceteaviet.fastfoodfinder.utils.filterInvalidData
 import com.iceteaviet.fastfoodfinder.utils.isValidUserUid
+import io.reactivex.Completable
+import io.reactivex.CompletableObserver
 import io.reactivex.Single
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -30,8 +32,9 @@ class SplashPresenter : BasePresenter<SplashContract.Presenter>, SplashContract.
     override fun subscribe() {
         startTime = System.currentTimeMillis()
 
-        if (dataManager.getPreferencesHelper().getAppLaunchFirstTime() || dataManager.getPreferencesHelper().getNumberOfStores() == 0) {
-            // Download data from Firebase and store in Realm
+        if (dataManager.getPreferencesHelper().getAppLaunchFirstTime()) {
+            onAppOpenFirstTime()
+        } else if (dataManager.getPreferencesHelper().getNumberOfStores() == 0) {
             loadStoresFromServer()
         } else {
             if (dataManager.isSignedIn()) {
@@ -93,36 +96,65 @@ class SplashPresenter : BasePresenter<SplashContract.Presenter>, SplashContract.
     }
 
     override fun loadStoresFromServer() {
-        dataManager.loadStoresFromServer()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : SingleObserver<List<Store>> {
-                    override fun onSubscribe(d: Disposable) {
-                        compositeDisposable.add(d)
-                    }
-
-                    override fun onSuccess(storeList: List<Store>) {
-                        dataManager.getPreferencesHelper().setAppLaunchFirstTime(false)
-
-                        val filteredStoreList = filterInvalidData(storeList.toMutableList())
-                        dataManager.getPreferencesHelper().setNumberOfStores(filteredStoreList.size)
-                        dataManager.getLocalStoreDataSource().setStores(filteredStoreList)
-
+        loadStoresFromServerInternal()
+                .subscribe(object : CompletableObserver {
+                    override fun onComplete() {
                         if (dataManager.isSignedIn())
                             splashView.openMainActivityWithDelay(getSplashRemainingTime())
                         else
                             splashView.openLoginScreen()
                     }
 
+                    override fun onSubscribe(d: Disposable) {
+                        compositeDisposable.add(d)
+                    }
+
                     override fun onError(e: Throwable) {
                         e.printStackTrace()
-
-                        splashView.showRetryDialog()
                     }
+
                 })
     }
 
     private fun getSplashRemainingTime(): Long {
         return SplashActivity.SPLASH_DELAY_TIME - (System.currentTimeMillis() - startTime)
+    }
+
+    private fun onAppOpenFirstTime() {
+        loadStoresFromServerInternal()
+                .subscribe {
+                    dataManager.getPreferencesHelper().setAppLaunchFirstTime(false)
+                    splashView.openLoginScreen()
+                }
+                .dispose()
+    }
+
+    /**
+     * Download data from Firebase and store in Realm
+     */
+    private fun loadStoresFromServerInternal(): Completable {
+        return Completable.create { emitter ->
+            dataManager.loadStoresFromServer()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(object : SingleObserver<List<Store>> {
+                        override fun onSubscribe(d: Disposable) {
+                            emitter.setDisposable(d)
+                        }
+
+                        override fun onSuccess(storeList: List<Store>) {
+                            val filteredStoreList = filterInvalidData(storeList.toMutableList())
+                            dataManager.getPreferencesHelper().setNumberOfStores(filteredStoreList.size)
+                            dataManager.getLocalStoreDataSource().setStores(filteredStoreList)
+
+                            emitter.onComplete()
+                        }
+
+                        override fun onError(e: Throwable) {
+                            splashView.showRetryDialog()
+                            emitter.onError(e)
+                        }
+                    })
+        }
     }
 }
