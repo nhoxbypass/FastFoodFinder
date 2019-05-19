@@ -193,7 +193,7 @@ open class SlidingTabLayout @JvmOverloads constructor(context: Context, attrs: A
                 tabTitleView = tabView as TextView
             }
 
-            tabTitleView!!.text = adapter.getPageTitle(i)
+            tabTitleView?.text = adapter.getPageTitle(i)
             tabView.setOnClickListener(tabClickListener)
 
             mTabStrip.addView(tabView)

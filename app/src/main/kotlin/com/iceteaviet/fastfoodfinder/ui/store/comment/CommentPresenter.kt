@@ -36,7 +36,12 @@ class CommentPresenter : BasePresenter<CommentContract.Presenter>, CommentContra
             commentView.showCommentPostFailedWarning()
             return
         }
-        val comment = Comment(dataManager.getCurrentUser()!!.name, dataManager.getCurrentUser()!!.photoUrl,
+
+        val currUser = dataManager.getCurrentUser()
+        if (currUser == null)
+            return
+
+        val comment = Comment(currUser.name, currUser.photoUrl,
                 commentText.toString(), "", System.currentTimeMillis())
         commentView.exitWithResult(comment)
     }

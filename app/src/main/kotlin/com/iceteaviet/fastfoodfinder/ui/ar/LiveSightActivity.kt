@@ -60,7 +60,7 @@ class LiveSightActivity : BaseActivity(), LiveSightContract.View, SensorEventLis
     }
 
     override fun onDestroy() {
-        arOverlayView!!.destroy()
+        arOverlayView?.destroy()
         super.onDestroy()
     }
 
@@ -103,7 +103,7 @@ class LiveSightActivity : BaseActivity(), LiveSightContract.View, SensorEventLis
             }
 
             Matrix.multiplyMM(rotatedProjectionMatrix, 0, projectionMatrix, 0, rotationMatrixFromVector, 0)
-            this.arOverlayView!!.updateRotatedProjectionMatrix(rotatedProjectionMatrix)
+            arOverlayView?.updateRotatedProjectionMatrix(rotatedProjectionMatrix)
         }
     }
 
@@ -149,10 +149,10 @@ class LiveSightActivity : BaseActivity(), LiveSightContract.View, SensorEventLis
 
 
     override fun initAROverlayView() {
-        if (arOverlayView!!.parent != null) {
-            (arOverlayView!!.parent as ViewGroup).removeView(arOverlayView)
+        if (arOverlayView?.parent != null) {
+            (arOverlayView?.parent as ViewGroup).removeView(arOverlayView)
         }
-        cameraContainerLayout!!.addView(arOverlayView)
+        cameraContainerLayout?.addView(arOverlayView)
     }
 
     override fun initARCameraView() {
@@ -164,13 +164,13 @@ class LiveSightActivity : BaseActivity(), LiveSightContract.View, SensorEventLis
         if (arCamera?.parent != null) {
             (arCamera?.parent as ViewGroup).removeView(arCamera)
         }
-        cameraContainerLayout!!.addView(arCamera)
+        cameraContainerLayout?.addView(arCamera)
         arCamera?.keepScreenOn = true
         initCamera()
     }
 
     override fun addARPoint(arPoi: AugmentedPOI) {
-        arOverlayView!!.addArPoint(arPoi)
+        arOverlayView?.addArPoint(arPoi)
     }
 
     private fun initCamera() {
@@ -190,11 +190,11 @@ class LiveSightActivity : BaseActivity(), LiveSightContract.View, SensorEventLis
     }
 
     private fun reloadSurfaceView() {
-        if (surfaceView!!.parent != null) {
-            (surfaceView!!.parent as ViewGroup).removeView(surfaceView)
+        if (surfaceView?.parent != null) {
+            (surfaceView?.parent as ViewGroup).removeView(surfaceView)
         }
 
-        cameraContainerLayout!!.addView(surfaceView)
+        cameraContainerLayout?.addView(surfaceView)
     }
 
     override fun releaseARCamera() {
