@@ -102,7 +102,7 @@ class MainPresenter : BasePresenter<MainContract.Presenter>, MainContract.Presen
             SearchEventResult.SEARCH_ACTION_STORE_CLICK -> {
                 mainView.hideSearchView()
                 if (searchEventResult.store != null) {
-                    mainView.setSearchQueryText(searchEventResult.store!!.title!!)
+                    mainView.setSearchQueryText(searchEventResult.store!!.title)
                     mainView.clearFocus()
 
                     dataManager.addSearchHistories(Constant.SEARCH_STORE_PREFIX + searchEventResult.store!!.id)

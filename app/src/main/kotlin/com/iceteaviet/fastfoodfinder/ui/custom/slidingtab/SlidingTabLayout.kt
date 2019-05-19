@@ -240,23 +240,18 @@ open class SlidingTabLayout @JvmOverloads constructor(context: Context, attrs: A
 
             val selectedTitle = mTabStrip.getChildAt(position)
             val extraOffset = if (selectedTitle != null)
-                (positionOffset * selectedTitle!!.getWidth()) as Int
+                (positionOffset * selectedTitle.getWidth()).toInt()
             else
                 0
             scrollToTab(position, extraOffset)
 
-            if (mViewPagerPageChangeListener != null) {
-                mViewPagerPageChangeListener!!.onPageScrolled(position, positionOffset,
-                        positionOffsetPixels)
-            }
+            mViewPagerPageChangeListener?.onPageScrolled(position, positionOffset, positionOffsetPixels)
         }
 
         override fun onPageScrollStateChanged(state: Int) {
             mScrollState = state
 
-            if (mViewPagerPageChangeListener != null) {
-                mViewPagerPageChangeListener!!.onPageScrollStateChanged(state)
-            }
+            mViewPagerPageChangeListener?.onPageScrollStateChanged(state)
         }
 
         override fun onPageSelected(position: Int) {
@@ -265,9 +260,7 @@ open class SlidingTabLayout @JvmOverloads constructor(context: Context, attrs: A
                 scrollToTab(position, 0)
             }
 
-            if (mViewPagerPageChangeListener != null) {
-                mViewPagerPageChangeListener!!.onPageSelected(position)
-            }
+            mViewPagerPageChangeListener?.onPageSelected(position)
         }
 
     }
@@ -285,9 +278,9 @@ open class SlidingTabLayout @JvmOverloads constructor(context: Context, attrs: A
 
     companion object {
 
-        private val TITLE_OFFSET_DIPS = 24
-        private val TAB_VIEW_PADDING_DIPS = 16
-        private val TAB_VIEW_TEXT_SIZE_SP = 12
+        private const val TITLE_OFFSET_DIPS = 24
+        private const val TAB_VIEW_PADDING_DIPS = 16
+        private const val TAB_VIEW_TEXT_SIZE_SP = 12
     }
 
 }

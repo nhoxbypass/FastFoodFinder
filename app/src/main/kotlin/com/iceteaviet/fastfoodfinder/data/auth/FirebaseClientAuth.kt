@@ -68,7 +68,10 @@ class FirebaseClientAuth : ClientAuth {
             displayName = it
         }
 
-
-        return User(firebaseUser.uid, displayName, firebaseUser.email!!, photoUrl, ArrayList())
+        val email = firebaseUser.email
+        if (email != null)
+            return User(firebaseUser.uid, displayName, email, photoUrl, ArrayList())
+        else
+            throw IllegalArgumentException()
     }
 }

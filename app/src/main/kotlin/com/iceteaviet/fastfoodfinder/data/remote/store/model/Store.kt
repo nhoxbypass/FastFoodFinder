@@ -46,7 +46,7 @@ class Store : Parcelable {
             this.tel = tel
             this.type = type
 
-            position = LatLng(java.lang.Double.valueOf(lat)!!, java.lang.Double.valueOf(lng)!!)
+            position = LatLng(lat.toDouble(), lng.toDouble())
         } catch (e: NumberFormatException) {
             e.printStackTrace()
         }
@@ -60,7 +60,7 @@ class Store : Parcelable {
     @Exclude
     fun getPosition(): LatLng {
         if (!::position.isInitialized)
-            position = LatLng(java.lang.Double.valueOf(lat)!!, java.lang.Double.valueOf(lng)!!)
+            position = LatLng(lat.toDouble(), lng.toDouble())
         return position
     }
 

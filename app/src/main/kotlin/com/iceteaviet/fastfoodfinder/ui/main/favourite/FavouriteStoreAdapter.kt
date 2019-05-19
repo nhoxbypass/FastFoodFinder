@@ -132,9 +132,7 @@ class FavouriteStoreAdapter internal constructor(private val mDragStartListener:
             itemView.setOnClickListener {
                 val position = adapterPosition
                 val store = mStoreList[position]
-                if (mOnItemClickListener != null) {
-                    mOnItemClickListener!!.onClick(store)
-                }
+                mOnItemClickListener?.onClick(store)
             }
 
             itemView.setOnLongClickListener {

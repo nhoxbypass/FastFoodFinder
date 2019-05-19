@@ -70,9 +70,9 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
 
     override fun unsubscribe() {
         super.unsubscribe()
-        cameraPositionPublisher!!.onComplete()
+        cameraPositionPublisher?.onComplete()
         cameraPositionPublisher = null
-        newVisibleStorePublisher!!.onComplete()
+        newVisibleStorePublisher?.onComplete()
         newVisibleStorePublisher = null
         EventBus.getDefault().unregister(this)
     }
@@ -194,7 +194,7 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
                 stores.add(store)
                 if (!this.visibleStores.contains(store)) {
                     // New store become visible
-                    newVisibleStorePublisher!!.onNext(store)
+                    newVisibleStorePublisher?.onNext(store)
                 }
             }
         }
@@ -213,70 +213,72 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
     }
 
     private fun subscribeMapCameraPositionChange() {
-        cameraPositionPublisher!!
-                .debounce(200, TimeUnit.MILLISECONDS)
-                .subscribeOn(Schedulers.computation())
-                .map {
-                    visibleStores = getVisibleStore(storeList, it.cameraBounds)
-                    generateNearByStoresWithDistance(it.cameraPosition, visibleStores)
-                }
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : Observer<List<NearByStore>> {
-                    override fun onSubscribe(d: Disposable) {
-                        compositeDisposable.add(d)
+        cameraPositionPublisher?.let {
+            it.debounce(200, TimeUnit.MILLISECONDS)
+                    .subscribeOn(Schedulers.computation())
+                    .map {
+                        visibleStores = getVisibleStore(storeList, it.cameraBounds)
+                        generateNearByStoresWithDistance(it.cameraPosition, visibleStores)
                     }
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(object : Observer<List<NearByStore>> {
+                        override fun onSubscribe(d: Disposable) {
+                            compositeDisposable.add(d)
+                        }
 
-                    override fun onNext(nearbyStores: List<NearByStore>) {
-                        mainMapView.setNearByStores(nearbyStores)
-                    }
+                        override fun onNext(nearbyStores: List<NearByStore>) {
+                            mainMapView.setNearByStores(nearbyStores)
+                        }
 
-                    override fun onError(e: Throwable) {
-                        e.printStackTrace()
-                    }
+                        override fun onError(e: Throwable) {
+                            e.printStackTrace()
+                        }
 
-                    override fun onComplete() {
+                        override fun onComplete() {
 
-                    }
-                })
+                        }
+                    })
+        }
     }
 
     private fun subscribeNewVisibleStore() {
-        newVisibleStorePublisher!!
-                .subscribeOn(Schedulers.io())
-                .map { store ->
-                    val marker = markerSparseArray.get(store.id)
+        newVisibleStorePublisher?.let {
+            it.subscribeOn(Schedulers.io())
+                    .map { store ->
+                        val marker = markerSparseArray.get(store.id)
 
-                    // TODO: warm up cache
-                    /*val animator = getMarkerAnimator()
-                    animator.addUpdateListener { animation ->
-                        val scale = animation.animatedValue as Float
-                        try {
-                            getStoreIcon(resources, store.type, Math.round(scale * 75), Math.round(scale * 75)) // warm up cache
-                        } catch (ex: IllegalArgumentException) {
-                            ex.printStackTrace()
+                        // TODO: warm up cache
+                        /*val animator = getMarkerAnimator()
+                        animator.addUpdateListener { animation ->
+                            val scale = animation.animatedValue as Float
+                            try {
+                                getStoreIcon(resources, store.type, Math.round(scale * 75), Math.round(scale * 75)) // warm up cache
+                            } catch (ex: IllegalArgumentException) {
+                                ex.printStackTrace()
+                            }
                         }
-                    }
-                    animator.start()*/
+                        animator.start()*/
 
-                    Pair(marker, store.type)
-                }
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : Observer<Pair<Marker, Int>> {
-                    override fun onSubscribe(d: Disposable) {
-                        compositeDisposable.add(d)
+                        Pair(marker, store.type)
                     }
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(object : Observer<Pair<Marker, Int>> {
+                        override fun onSubscribe(d: Disposable) {
+                            compositeDisposable.add(d)
+                        }
 
-                    override fun onNext(pair: Pair<Marker, Int>) {
-                        mainMapView.animateMapMarker(pair.first, pair.second)
-                    }
+                        override fun onNext(pair: Pair<Marker, Int>) {
+                            mainMapView.animateMapMarker(pair.first, pair.second)
+                        }
 
-                    override fun onError(e: Throwable) {
-                        e.printStackTrace()
-                    }
+                        override fun onError(e: Throwable) {
+                            e.printStackTrace()
+                        }
 
-                    override fun onComplete() {
-                    }
-                })
+                        override fun onComplete() {
+                        }
+                    })
+        }
     }
 
     private fun handleSearchQuickAction(storeType: Int) {

@@ -71,7 +71,7 @@ class UserStoreListAdapter internal constructor() : RecyclerView.Adapter<UserSto
         init {
             itemView.setOnClickListener {
                 val listPacket = mListPackets[adapterPosition]
-                mListener!!.onClick(listPacket)
+                mListener?.onClick(listPacket)
             }
 
             itemView.setOnLongClickListener {
@@ -83,7 +83,7 @@ class UserStoreListAdapter internal constructor() : RecyclerView.Adapter<UserSto
                         .setPositiveButton(android.R.string.yes) { dialog, which ->
                             mListPackets.removeAt(position)
                             notifyDataSetChanged()
-                            mOnItemLongClickListener!!.onLongClick(position)
+                            mOnItemLongClickListener?.onLongClick(position)
                         }
                         .setNegativeButton(android.R.string.no) { dialog, which ->
                             //do nothing

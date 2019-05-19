@@ -71,13 +71,13 @@ abstract class ProcessButton : FlatButton {
         maxProgress = 100
 
         progressDrawable = getDrawable(R.drawable.rect_progress).mutate() as GradientDrawable?
-        progressDrawable!!.cornerRadius = cornerRadius
+        progressDrawable?.cornerRadius = cornerRadius
 
         completeDrawable = getDrawable(R.drawable.rect_complete).mutate() as GradientDrawable?
-        completeDrawable!!.cornerRadius = cornerRadius
+        completeDrawable?.cornerRadius = cornerRadius
 
         errorDrawable = getDrawable(R.drawable.rect_error).mutate() as GradientDrawable?
-        errorDrawable!!.cornerRadius = cornerRadius
+        errorDrawable?.cornerRadius = cornerRadius
 
         if (attrs != null) {
             initAttributes(context, attrs)
@@ -94,15 +94,15 @@ abstract class ProcessButton : FlatButton {
 
             val purple = getColor(R.color.material_orange_500)
             val colorProgress = attr.getColor(R.styleable.ProcessButton_pb_colorProgress, purple)
-            progressDrawable!!.setColor(colorProgress)
+            progressDrawable?.setColor(colorProgress)
 
             val green = getColor(R.color.material_light_green_500)
             val colorComplete = attr.getColor(R.styleable.ProcessButton_pb_colorComplete, green)
-            completeDrawable!!.setColor(colorComplete)
+            completeDrawable?.setColor(colorComplete)
 
             val red = getColor(R.color.red_error)
             val colorError = attr.getColor(R.styleable.ProcessButton_pb_colorError, red)
-            errorDrawable!!.setColor(colorError)
+            errorDrawable?.setColor(colorError)
 
         } finally {
             attr.recycle()
@@ -139,7 +139,7 @@ abstract class ProcessButton : FlatButton {
 
     override fun onDraw(canvas: Canvas) {
         // progress
-        if (mProgress > minProgress && mProgress < maxProgress) {
+        if (mProgress in (minProgress + 1) until maxProgress) {
             drawProgress(canvas)
         }
 

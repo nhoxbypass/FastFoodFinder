@@ -54,6 +54,6 @@ class StoreListActivity : BaseActivity(), StoreListContract.View {
     }
 
     override fun setStores(stores: List<Store>) {
-        adapter!!.setStores(stores)
+        adapter?.setStores(stores)
     }
 }

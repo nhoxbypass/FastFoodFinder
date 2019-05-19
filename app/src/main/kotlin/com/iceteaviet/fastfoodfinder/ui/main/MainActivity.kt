@@ -251,7 +251,7 @@ class MainActivity : BaseActivity(), MainContract.View, View.OnClickListener {
         navHeaderEmail = headerLayout.findViewById(R.id.tv_nav_header_screenname)
         mNavHeaderSignIn = headerLayout.findViewById(R.id.btn_nav_header_signin)
 
-        mDrawerToggle?.let { mDrawerToggle!!.drawerArrowDrawable.color = Color.WHITE }
+        mDrawerToggle?.let { it.drawerArrowDrawable.color = Color.WHITE }
     }
 
     private fun setupEventHandlers() {
