@@ -230,8 +230,8 @@ class LiveSightActivity : BaseActivity(), LiveSightContract.View, SensorEventLis
     }
 
     override fun updateLatestLocation(latestLocation: Location) {
-        if (arOverlayView != null) {
-            arOverlayView!!.updateCurrentLocation(latestLocation)
+        arOverlayView?.let {
+            it.updateCurrentLocation(latestLocation)
             tv_current_location.text = String.format("lat: %s \nlon: %s \nalt: %s \n",
                     formatDecimal(latestLocation.latitude, 4),
                     formatDecimal(latestLocation.longitude, 4),
