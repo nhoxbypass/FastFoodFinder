@@ -71,27 +71,6 @@ class SearchFragment : Fragment(), SearchContract.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        cvActionContainer = cv_action_container
-        cvRecentlyContainer = cv_recently_container
-        cvTimeSuggestionContainer = cv_time_suggestion_container
-        cvSuggestionContainer = cv_suggestion_container
-        cvSearchContainer = cv_search_container
-        tvRecently = tv_recently
-        tvTimeSuggestion = tv_time_suggestion
-        tvSuggestion = tv_suggestion
-        quickSearchCircleK = btn_search_circle_k
-        quickSearchFamilyMart = btn_search_family_mart
-        quickSearchMiniStop = btn_search_mini_stop
-        quickSearchLoadMore = btn_load_more
-        quickSearchBsMart = btn_search_bsmart
-        quickSearchShopNGo = btn_search_shop_n_go
-        cardViewQuickSearch = cv_action_container
-        searchMoreLayout = ll_load_more_container
-        searchContainer = sv_search_container
-        rvRecentlyStores = rv_recently_stores
-        rvSuggestedStores = rv_suggested_stores
-        rvSearch = rv_search
-
         setupUI()
         setupEventHandlers()
     }
@@ -120,6 +99,8 @@ class SearchFragment : Fragment(), SearchContract.View {
     }
 
     private fun setupUI() {
+        findViews()
+
         recentlySearchAdapter = RecentlyStoreSearchAdapter()
         rvRecentlyStores.layoutManager = LinearLayoutManager(context)
         rvRecentlyStores.adapter = recentlySearchAdapter
@@ -131,6 +112,29 @@ class SearchFragment : Fragment(), SearchContract.View {
         searchAdapter = StoreSearchAdapter()
         rvSearch.layoutManager = LinearLayoutManager(context)
         rvSearch.adapter = searchAdapter
+    }
+
+    private fun findViews() {
+        cvActionContainer = cv_action_container
+        cvRecentlyContainer = cv_recently_container
+        cvTimeSuggestionContainer = cv_time_suggestion_container
+        cvSuggestionContainer = cv_suggestion_container
+        cvSearchContainer = cv_search_container
+        tvRecently = tv_recently
+        tvTimeSuggestion = tv_time_suggestion
+        tvSuggestion = tv_suggestion
+        quickSearchCircleK = btn_search_circle_k
+        quickSearchFamilyMart = btn_search_family_mart
+        quickSearchMiniStop = btn_search_mini_stop
+        quickSearchLoadMore = btn_load_more
+        quickSearchBsMart = btn_search_bsmart
+        quickSearchShopNGo = btn_search_shop_n_go
+        cardViewQuickSearch = cv_action_container
+        searchMoreLayout = ll_load_more_container
+        searchContainer = sv_search_container
+        rvRecentlyStores = rv_recently_stores
+        rvSuggestedStores = rv_suggested_stores
+        rvSearch = rv_search
     }
 
     private fun setupEventHandlers() {

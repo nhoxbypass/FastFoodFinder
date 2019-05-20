@@ -184,16 +184,7 @@ class MapRoutingActivity : BaseActivity(), MapRoutingContract.View, View.OnClick
     }
 
     private fun setupUI() {
-        txtTravelTime = tv_routing_time
-        txtTravelDistance = tv_routing_distance
-        txtTravelOverview = tv_routing_overview
-        bottomRecyclerView = rv_bottom_sheet
-        topRecyclerView = rv_direction_instruction
-        bottomSheetContainer = ll_bottom_sheet
-        prevInstruction = btn_prev_instruction
-        nextInstruction = btn_next_instruction
-        routingButtonContainer = ll_routing_button_container
-
+        findViews()
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetContainer)
 
         setSupportActionBar(toolbar)
@@ -212,6 +203,18 @@ class MapRoutingActivity : BaseActivity(), MapRoutingContract.View, View.OnClick
         topRecyclerView.adapter = topRoutingAdapter
         val snapHelper = LinearSnapHelper()
         snapHelper.attachToRecyclerView(topRecyclerView)
+    }
+
+    private fun findViews() {
+        txtTravelTime = tv_routing_time
+        txtTravelDistance = tv_routing_distance
+        txtTravelOverview = tv_routing_overview
+        bottomRecyclerView = rv_bottom_sheet
+        topRecyclerView = rv_direction_instruction
+        bottomSheetContainer = ll_bottom_sheet
+        prevInstruction = btn_prev_instruction
+        nextInstruction = btn_next_instruction
+        routingButtonContainer = ll_routing_button_container
     }
 
     private fun setupEventListeners() {
