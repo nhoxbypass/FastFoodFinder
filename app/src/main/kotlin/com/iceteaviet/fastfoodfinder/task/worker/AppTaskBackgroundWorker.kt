@@ -86,7 +86,7 @@ class AppTaskBackgroundWorker : Thread("AppTaskBackgroundWorker") {
                     d("Waiting for new task request...")
                     try {
                         (worker as java.lang.Object).wait()
-                    } catch (ex: Exception) {
+                    } catch (ex: InterruptedException) {
                         ex.printStackTrace()
                     }
                 }
@@ -102,7 +102,7 @@ class AppTaskBackgroundWorker : Thread("AppTaskBackgroundWorker") {
     private fun doTask() {
         try {
             queue.removeAt(0).doTask()
-        } catch (ex: Exception) {
+        } catch (ex: IndexOutOfBoundsException) {
             ex.printStackTrace()
         }
     }

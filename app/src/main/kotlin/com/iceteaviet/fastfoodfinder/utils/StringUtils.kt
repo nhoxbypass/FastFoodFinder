@@ -49,15 +49,10 @@ fun trimWhitespace(source: CharSequence?): CharSequence {
     for (i in 0 until source.length) {
         c = source[i]
         if (Character.isWhitespace(c)) {
-            try {
-                if (i < source.length - 1 && Character.isWhitespace(source[i + 1]))
-                //Ignore next char
-                //Because it is a whitespace again
-                    builder.delete(i, i + 1)
-            } catch (ex: IndexOutOfBoundsException) {
-                ex.printStackTrace()
-            }
-
+            if (i < source.length - 1 && Character.isWhitespace(source[i + 1]))
+            //Ignore next char
+            //Because it is a whitespace again
+                builder.delete(i, i + 1)
         }
     }
 
