@@ -40,57 +40,10 @@ class SplashPresenter : BasePresenter<SplashContract.Presenter>, SplashContract.
             if (dataManager.isSignedIn()) {
                 val uid = dataManager.getCurrentUserUid()
                 if (isValidUserUid(uid)) {
-                    // User still signed in, fetch newest user data from server
-                    // TODO: Support timeout
-                    Single.zip(dataManager.getRemoteUserDataSource().getUser(uid),
-                            dataManager.getLocalStoreDataSource().getAllStores(),
-                            BiFunction<User, List<Store>, Pair<User, List<Store>>> { user, storeList ->
-                                Pair(user, storeList)
-                            })
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(object : SingleObserver<Pair<User, List<Store>>> {
-                                override fun onSubscribe(d: Disposable) {
-                                    compositeDisposable.add(d)
-                                }
-
-                                override fun onSuccess(pair: Pair<User, List<Store>>) {
-                                    dataManager.setCurrentUser(pair.first)
-
-                                    if (pair.second.isEmpty())
-                                        loadStoresFromServer()
-                                    else
-                                        splashView.openMainActivityWithDelay(getSplashRemainingTime())
-                                }
-
-                                override fun onError(e: Throwable) {
-                                    e.printStackTrace()
-                                    splashView.openMainActivityWithDelay(getSplashRemainingTime())
-                                }
-                            })
+                    onUserSignedIn(uid)
                 }
             } else {
-                // Warm up store data
-                dataManager.getLocalStoreDataSource().getAllStores()
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(object : SingleObserver<List<Store>> {
-                            override fun onSubscribe(d: Disposable) {
-                                compositeDisposable.add(d)
-                            }
-
-                            override fun onSuccess(storeList: List<Store>) {
-                                if (storeList.isEmpty())
-                                    loadStoresFromServer()
-                                else
-                                    splashView.openLoginScreen()
-                            }
-
-                            override fun onError(e: Throwable) {
-                                e.printStackTrace()
-                                splashView.openLoginScreen()
-                            }
-                        })
+                onUserNotSignedIn()
             }
         }
     }
@@ -156,5 +109,60 @@ class SplashPresenter : BasePresenter<SplashContract.Presenter>, SplashContract.
                         }
                     })
         }
+    }
+
+    private fun onUserNotSignedIn() {
+        // Warm up store data
+        dataManager.getLocalStoreDataSource().getAllStores()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : SingleObserver<List<Store>> {
+                    override fun onSubscribe(d: Disposable) {
+                        compositeDisposable.add(d)
+                    }
+
+                    override fun onSuccess(storeList: List<Store>) {
+                        if (storeList.isEmpty())
+                            loadStoresFromServer()
+                        else
+                            splashView.openLoginScreen()
+                    }
+
+                    override fun onError(e: Throwable) {
+                        e.printStackTrace()
+                        splashView.openLoginScreen()
+                    }
+                })
+    }
+
+    private fun onUserSignedIn(userUid: String) {
+        // User still signed in, fetch newest user data from server
+        // TODO: Support timeout
+        Single.zip(dataManager.getRemoteUserDataSource().getUser(userUid),
+                dataManager.getLocalStoreDataSource().getAllStores(),
+                BiFunction<User, List<Store>, Pair<User, List<Store>>> { user, storeList ->
+                    Pair(user, storeList)
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : SingleObserver<Pair<User, List<Store>>> {
+                    override fun onSubscribe(d: Disposable) {
+                        compositeDisposable.add(d)
+                    }
+
+                    override fun onSuccess(pair: Pair<User, List<Store>>) {
+                        dataManager.setCurrentUser(pair.first)
+
+                        if (pair.second.isEmpty())
+                            loadStoresFromServer()
+                        else
+                            splashView.openMainActivityWithDelay(getSplashRemainingTime())
+                    }
+
+                    override fun onError(e: Throwable) {
+                        e.printStackTrace()
+                        splashView.openMainActivityWithDelay(getSplashRemainingTime())
+                    }
+                })
     }
 }
