@@ -50,8 +50,11 @@ class MapRoutingPresenter : BasePresenter<MapRoutingContract.Presenter>, MapRout
     }
 
     override fun isRoutingDataValid(): Boolean {
-        if (mapsDirection == null || currStore == null
-                || mapsDirection!!.routeList.isEmpty() || mapsDirection!!.routeList[0].legList.isEmpty()) {
+        if (currStore == null)
+            return false
+
+        if (mapsDirection == null || mapsDirection!!.routeList.isEmpty()
+                || mapsDirection!!.routeList[0].legList.isEmpty()) {
             return false
         }
 
