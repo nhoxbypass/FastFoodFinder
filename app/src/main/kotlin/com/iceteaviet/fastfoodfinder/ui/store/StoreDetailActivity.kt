@@ -34,9 +34,9 @@ import kotlinx.android.synthetic.main.activity_store_detail.*
 class StoreDetailActivity : BaseActivity(), StoreDetailContract.View, LocationListener {
     override lateinit var presenter: StoreDetailContract.Presenter
 
-    lateinit var collapsingToolbar: CollapsingToolbarLayout
-    lateinit var ivBackdrop: ImageView
-    lateinit var rvContent: RecyclerView
+    private lateinit var collapsingToolbar: CollapsingToolbarLayout
+    private lateinit var ivBackdrop: ImageView
+    private lateinit var rvContent: RecyclerView
 
     private var adapter: StoreDetailAdapter? = null
 
@@ -110,19 +110,19 @@ class StoreDetailActivity : BaseActivity(), StoreDetailContract.View, LocationLi
         if (lastLocation != null) {
             presenter.onCurrLocationChanged(lastLocation.latitude, lastLocation.longitude)
         } else
-            Toast.makeText(this@StoreDetailActivity, R.string.cannot_get_curr_location, Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.cannot_get_curr_location, Toast.LENGTH_SHORT).show()
     }
 
     override fun setStoreComments(listComments: MutableList<Comment>) {
-        adapter!!.setComments(listComments)
+        adapter?.setComments(listComments)
     }
 
     override fun addStoreComment(comment: Comment) {
-        adapter!!.addComment(comment)
+        adapter?.addComment(comment)
     }
 
     override fun setAppBarExpanded(expanded: Boolean) {
-        appbar!!.setExpanded(expanded)
+        appbar?.setExpanded(expanded)
     }
 
     override fun scrollToCommentList() {
@@ -130,7 +130,7 @@ class StoreDetailActivity : BaseActivity(), StoreDetailContract.View, LocationLi
     }
 
     override fun showCommentEditorView() {
-        startActivityForResult(Intent(this@StoreDetailActivity, CommentActivity::class.java), RC_ADD_COMMENT)
+        startActivityForResult(Intent(this, CommentActivity::class.java), RC_ADD_COMMENT)
     }
 
     override fun startCallIntent(tel: String) {
@@ -138,7 +138,7 @@ class StoreDetailActivity : BaseActivity(), StoreDetailContract.View, LocationLi
     }
 
     override fun showInvalidPhoneNumbWarning() {
-        Toast.makeText(this@StoreDetailActivity, R.string.store_no_phone_numb, Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, R.string.store_no_phone_numb, Toast.LENGTH_SHORT).show()
     }
 
     override fun showMapRoutingView(currStore: Store, mapsDirection: MapsDirection) {
@@ -167,8 +167,7 @@ class StoreDetailActivity : BaseActivity(), StoreDetailContract.View, LocationLi
         rvContent.layoutManager = LinearLayoutManager(this)
 
         setSupportActionBar(toolbar)
-        if (supportActionBar != null)
-            supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         Glide.with(this)
                 .load(R.drawable.detail_sample_circlekcover)
@@ -177,7 +176,7 @@ class StoreDetailActivity : BaseActivity(), StoreDetailContract.View, LocationLi
     }
 
     private fun setupEventHandlers() {
-        adapter!!.setListener(object : StoreDetailAdapter.StoreActionListener {
+        adapter?.setListener(object : StoreDetailAdapter.StoreActionListener {
             override fun onCommentButtonClick() {
                 presenter.onCommentButtonClick()
             }

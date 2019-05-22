@@ -17,10 +17,10 @@ class Route constructor(`in`: Parcel) : Parcelable {
     @SerializedName("summary")
     val summary: String
     @SerializedName("overview_polyline")
-    var encodedPolyline: JsonObject? = null
+    var encodedPolyline: JsonObject
 
     val encodedPolylineString: String
-        get() = encodedPolyline!!.getAsJsonPrimitive("points").asString
+        get() = encodedPolyline.getAsJsonPrimitive("points").asString
 
     init {
         legList = `in`.createTypedArrayList(Leg.CREATOR)
@@ -36,7 +36,7 @@ class Route constructor(`in`: Parcel) : Parcelable {
     override fun writeToParcel(parcel: Parcel, i: Int) {
         parcel.writeTypedList(legList)
         parcel.writeString(summary)
-        parcel.writeString(encodedPolyline!!.toString())
+        parcel.writeString(encodedPolyline.toString())
     }
 
     companion object CREATOR : Parcelable.Creator<Route> {

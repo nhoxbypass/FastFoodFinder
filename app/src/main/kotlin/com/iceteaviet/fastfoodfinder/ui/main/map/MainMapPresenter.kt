@@ -65,33 +65,14 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
 
         mainMapView.setupMap()
 
-        dataManager.getLocalStoreDataSource().getAllStores()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : SingleObserver<List<Store>> {
-                    override fun onSubscribe(d: Disposable) {
-                        compositeDisposable.add(d)
-                    }
-
-                    override fun onSuccess(storeList: List<Store>) {
-                        this@MainMapPresenter.storeList = storeList.toMutableList()
-                        if (storeList.isEmpty())
-                            mainMapView.showWarningMessage(R.string.get_store_data_failed)
-                        else
-                            mainMapView.addMarkersToMap(this@MainMapPresenter.storeList)
-                    }
-
-                    override fun onError(e: Throwable) {
-                        mainMapView.showWarningMessage(R.string.get_store_data_failed)
-                    }
-                })
+        loadAllStoresToMap()
     }
 
     override fun unsubscribe() {
         super.unsubscribe()
-        cameraPositionPublisher!!.onComplete()
+        cameraPositionPublisher?.onComplete()
         cameraPositionPublisher = null
-        newVisibleStorePublisher!!.onComplete()
+        newVisibleStorePublisher?.onComplete()
         newVisibleStorePublisher = null
         EventBus.getDefault().unregister(this)
     }
@@ -99,19 +80,19 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
     override fun onLocationPermissionGranted() {
         mainMapView.requestLocationUpdates()
         mainMapView.setMyLocationEnabled(true)
-        mainMapView.getLastLocation()
+        mainMapView.requestLastLocation()
         locationGranted = true
     }
 
     override fun onCurrLocationChanged(latitude: Double, longitude: Double) {
-        currLocation = LatLng(latitude, longitude)
+        currLocation = LatLng(latitude, longitude).also {
+            if (!isZoomToUser) {
+                // Zoom and show current location in the Google Map
+                // Only zoom-in the first time user location come
+                mainMapView.animateMapCamera(it, false)
 
-        if (!isZoomToUser) {
-            // Zoom and show current location in the Google Map
-            // Only zoom-in the first time user location come
-            mainMapView.animateMapCamera(currLocation!!, false)
-
-            isZoomToUser = true
+                isZoomToUser = true
+            }
         }
     }
 
@@ -125,76 +106,13 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
 
         if (locationGranted) {
             mainMapView.setMyLocationEnabled(true)
-            mainMapView.getLastLocation()
-            // Showing the current location in Google Map
-            if (currLocation != null)
-                mainMapView.animateMapCamera(currLocation!!, false)
+            mainMapView.requestLastLocation()
         }
 
         mainMapView.setupMapEventHandlers()
 
-        cameraPositionPublisher!!
-                .debounce(200, TimeUnit.MILLISECONDS)
-                .subscribeOn(Schedulers.computation())
-                .map {
-                    visibleStores = getVisibleStore(storeList, it.cameraBounds)
-                    generateNearByStoresWithDistance(it.cameraPosition, visibleStores)
-                }
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : Observer<List<NearByStore>> {
-                    override fun onSubscribe(d: Disposable) {
-                        compositeDisposable.add(d)
-                    }
-
-                    override fun onNext(nearbyStores: List<NearByStore>) {
-                        mainMapView.setNearByStores(nearbyStores)
-                    }
-
-                    override fun onError(e: Throwable) {
-                        e.printStackTrace()
-                    }
-
-                    override fun onComplete() {
-
-                    }
-                })
-
-        newVisibleStorePublisher!!
-                .subscribeOn(Schedulers.io())
-                .map { store ->
-                    val marker = markerSparseArray.get(store.id)
-
-                    // TODO: warm up cache
-                    /*val animator = getMarkerAnimator()
-                    animator.addUpdateListener { animation ->
-                        val scale = animation.animatedValue as Float
-                        try {
-                            getStoreIcon(resources, store.type, Math.round(scale * 75), Math.round(scale * 75)) // warm up cache
-                        } catch (ex: IllegalArgumentException) {
-                            ex.printStackTrace()
-                        }
-                    }
-                    animator.start()*/
-
-                    Pair(marker, store.type)
-                }
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : Observer<Pair<Marker, Int>> {
-                    override fun onSubscribe(d: Disposable) {
-                        compositeDisposable.add(d)
-                    }
-
-                    override fun onNext(pair: Pair<Marker, Int>) {
-                        mainMapView.animateMapMarker(pair.first, pair.second)
-                    }
-
-                    override fun onError(e: Throwable) {
-                        e.printStackTrace()
-                    }
-
-                    override fun onComplete() {
-                    }
-                })
+        subscribeMapCameraPositionChange()
+        subscribeNewVisibleStore()
     }
 
     override fun onDirectionNavigateClick(store: Store) {
@@ -241,108 +159,22 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
     fun onSearchResult(searchEventResult: SearchEventResult) {
         when (searchEventResult.resultCode) {
             SearchEventResult.SEARCH_ACTION_QUICK -> {
-                dataManager.getLocalStoreDataSource()
-                        .findStoresByType(searchEventResult.storeType)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(object : SingleObserver<List<Store>> {
-                            override fun onSubscribe(d: Disposable) {
-                                compositeDisposable.add(d)
-                            }
-
-                            override fun onSuccess(storeList: List<Store>) {
-                                if (storeList.isEmpty()) {
-                                    mainMapView.showWarningMessage(R.string.store_not_found)
-                                    return
-                                }
-
-                                this@MainMapPresenter.storeList = storeList.toMutableList()
-                                mainMapView.addMarkersToMap(this@MainMapPresenter.storeList)
-                                mainMapView.animateMapCamera(storeList[0].getPosition(), false)
-
-                                /*mAdapter!!.setCurrCameraPosition(mGoogleMap!!.cameraPosition.target)
-                                visibleStores = getVisibleStore(storeList!!, mGoogleMap!!.projection.visibleRegion.latLngBounds)
-                                visibleStores?.let { mAdapter!!.setStores(it) }*/
-                            }
-
-                            override fun onError(e: Throwable) {
-                                mainMapView.showWarningMessage(R.string.get_store_data_failed)
-                            }
-                        })
+                handleSearchQuickAction(searchEventResult.storeType)
             }
             SearchEventResult.SEARCH_ACTION_QUERY_SUBMIT -> {
                 if (searchEventResult.searchString.isBlank())
                     return
 
-                dataManager.getLocalStoreDataSource()
-                        .findStores(searchEventResult.searchString)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(object : SingleObserver<List<Store>> {
-                            override fun onSubscribe(d: Disposable) {
-                                compositeDisposable.add(d)
-                            }
-
-                            override fun onSuccess(storeList: List<Store>) {
-                                if (storeList.isEmpty()) {
-                                    mainMapView.showWarningMessage(R.string.store_not_found)
-                                    return
-                                }
-
-                                this@MainMapPresenter.storeList = storeList.toMutableList()
-                                mainMapView.addMarkersToMap(this@MainMapPresenter.storeList)
-                                mainMapView.animateMapCamera(storeList[0].getPosition(), false)
-
-                                /*mAdapter!!.setCurrCameraPosition(mGoogleMap!!.cameraPosition.target)
-                                visibleStores = getVisibleStore(storeList!!, mGoogleMap!!.projection.visibleRegion.latLngBounds)
-                                visibleStores?.let { mAdapter!!.setStores(it) }*/
-                            }
-
-                            override fun onError(e: Throwable) {
-                                mainMapView.showWarningMessage(R.string.get_store_data_failed)
-                            }
-                        })
+                handleSearchQuerySubmitAction(searchEventResult.searchString)
             }
 
             SearchEventResult.SEARCH_ACTION_COLLAPSE -> {
-                dataManager.getLocalStoreDataSource().getAllStores()
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(object : SingleObserver<List<Store>> {
-                            override fun onSubscribe(d: Disposable) {
-                                compositeDisposable.add(d)
-                            }
-
-                            override fun onSuccess(storeList: List<Store>) {
-                                if (storeList.isEmpty()) {
-                                    mainMapView.showWarningMessage(R.string.get_store_data_failed)
-                                    return
-                                }
-
-                                this@MainMapPresenter.storeList = storeList.toMutableList()
-                                mainMapView.addMarkersToMap(this@MainMapPresenter.storeList)
-                            }
-
-                            override fun onError(e: Throwable) {
-                                mainMapView.showWarningMessage(R.string.get_store_data_failed)
-                            }
-                        })
-
-                if (currLocation != null)
-                    mainMapView.animateMapCamera(currLocation!!, false)
+                handleSearchCollapseAction()
             }
 
             SearchEventResult.SEARCH_ACTION_STORE_CLICK -> {
-                if (searchEventResult.store != null) {
-                    storeList = ArrayList()
-                    storeList.add(searchEventResult.store!!)
-
-                    mainMapView.addMarkersToMap(storeList)
-                    mainMapView.animateMapCamera(searchEventResult.store!!.getPosition(), false)
-
-                    mainMapView.clearNearByStores()
-
-                    mainMapView.showDialogStoreInfo(searchEventResult.store!!)
+                searchEventResult.store?.let {
+                    handleSearchStoreClickAction(it)
                 }
             }
         }
@@ -359,7 +191,7 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
                 stores.add(store)
                 if (!this.visibleStores.contains(store)) {
                     // New store become visible
-                    newVisibleStorePublisher!!.onNext(store)
+                    newVisibleStorePublisher?.onNext(store)
                 }
             }
         }
@@ -375,5 +207,171 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
         }
 
         return res
+    }
+
+    private fun subscribeMapCameraPositionChange() {
+        cameraPositionPublisher?.let {
+            it.debounce(200, TimeUnit.MILLISECONDS)
+                    .subscribeOn(Schedulers.computation())
+                    .map {
+                        visibleStores = getVisibleStore(storeList, it.cameraBounds)
+                        generateNearByStoresWithDistance(it.cameraPosition, visibleStores)
+                    }
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(object : Observer<List<NearByStore>> {
+                        override fun onSubscribe(d: Disposable) {
+                            compositeDisposable.add(d)
+                        }
+
+                        override fun onNext(nearbyStores: List<NearByStore>) {
+                            mainMapView.setNearByStores(nearbyStores)
+                        }
+
+                        override fun onError(e: Throwable) {
+                            e.printStackTrace()
+                        }
+
+                        override fun onComplete() {
+
+                        }
+                    })
+        }
+    }
+
+    private fun subscribeNewVisibleStore() {
+        newVisibleStorePublisher?.let {
+            it.subscribeOn(Schedulers.io())
+                    .map { store ->
+                        val marker = markerSparseArray.get(store.id)
+
+                        // TODO: warm up cache
+                        /*val animator = getMarkerAnimator()
+                        animator.addUpdateListener { animation ->
+                            val scale = animation.animatedValue as Float
+                            try {
+                                getStoreIcon(resources, store.type, Math.round(scale * 75), Math.round(scale * 75)) // warm up cache
+                            } catch (ex: IllegalArgumentException) {
+                                ex.printStackTrace()
+                            }
+                        }
+                        animator.start()*/
+
+                        Pair(marker, store.type)
+                    }
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(object : Observer<Pair<Marker, Int>> {
+                        override fun onSubscribe(d: Disposable) {
+                            compositeDisposable.add(d)
+                        }
+
+                        override fun onNext(pair: Pair<Marker, Int>) {
+                            mainMapView.animateMapMarker(pair.first, pair.second)
+                        }
+
+                        override fun onError(e: Throwable) {
+                            e.printStackTrace()
+                        }
+
+                        override fun onComplete() {
+                        }
+                    })
+        }
+    }
+
+    private fun handleSearchQuickAction(storeType: Int) {
+        dataManager.getLocalStoreDataSource()
+                .findStoresByType(storeType)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : SingleObserver<List<Store>> {
+                    override fun onSubscribe(d: Disposable) {
+                        compositeDisposable.add(d)
+                    }
+
+                    override fun onSuccess(storeList: List<Store>) {
+                        if (storeList.isEmpty()) {
+                            mainMapView.showWarningMessage(R.string.store_not_found)
+                            return
+                        }
+
+                        this@MainMapPresenter.storeList = storeList.toMutableList()
+                        mainMapView.addMarkersToMap(this@MainMapPresenter.storeList)
+                        mainMapView.animateMapCamera(storeList[0].getPosition(), false)
+                    }
+
+                    override fun onError(e: Throwable) {
+                        mainMapView.showWarningMessage(R.string.get_store_data_failed)
+                    }
+                })
+    }
+
+    private fun handleSearchQuerySubmitAction(searchString: String) {
+        dataManager.getLocalStoreDataSource()
+                .findStores(searchString)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : SingleObserver<List<Store>> {
+                    override fun onSubscribe(d: Disposable) {
+                        compositeDisposable.add(d)
+                    }
+
+                    override fun onSuccess(storeList: List<Store>) {
+                        if (storeList.isEmpty()) {
+                            mainMapView.showWarningMessage(R.string.store_not_found)
+                            return
+                        }
+
+                        this@MainMapPresenter.storeList = storeList.toMutableList()
+                        mainMapView.addMarkersToMap(this@MainMapPresenter.storeList)
+                        mainMapView.animateMapCamera(storeList[0].getPosition(), false)
+                    }
+
+                    override fun onError(e: Throwable) {
+                        mainMapView.showWarningMessage(R.string.get_store_data_failed)
+                    }
+                })
+    }
+
+    private fun handleSearchCollapseAction() {
+        loadAllStoresToMap()
+
+        currLocation?.let {
+            mainMapView.animateMapCamera(it, false)
+        }
+    }
+
+    private fun loadAllStoresToMap() {
+        dataManager.getLocalStoreDataSource().getAllStores()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : SingleObserver<List<Store>> {
+                    override fun onSubscribe(d: Disposable) {
+                        compositeDisposable.add(d)
+                    }
+
+                    override fun onSuccess(storeList: List<Store>) {
+                        this@MainMapPresenter.storeList = storeList.toMutableList()
+                        if (storeList.isEmpty())
+                            mainMapView.showWarningMessage(R.string.get_store_data_failed)
+                        else
+                            mainMapView.addMarkersToMap(this@MainMapPresenter.storeList)
+                    }
+
+                    override fun onError(e: Throwable) {
+                        mainMapView.showWarningMessage(R.string.get_store_data_failed)
+                    }
+                })
+    }
+
+    private fun handleSearchStoreClickAction(store: Store) {
+        storeList = ArrayList()
+        storeList.add(store)
+
+        mainMapView.addMarkersToMap(storeList)
+        mainMapView.animateMapCamera(store.getPosition(), false)
+
+        mainMapView.clearNearByStores()
+
+        mainMapView.showDialogStoreInfo(store)
     }
 }

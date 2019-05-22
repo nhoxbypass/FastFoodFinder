@@ -10,7 +10,7 @@ import io.reactivex.Single
  */
 interface StoreDataSource {
 
-    fun getAllStores(): Single<MutableList<Store>>
+    fun getAllStores(): Single<List<Store>>
 
     fun setStores(storeList: List<Store>)
 

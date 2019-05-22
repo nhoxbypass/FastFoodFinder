@@ -92,16 +92,16 @@ open class SlidingTabLayout @JvmOverloads constructor(context: Context, attrs: A
      * Sets the colors to be used for indicating the selected tab. These colors are treated as a
      * circular array. Providing one color will mean that all tabs are indicated with the same color.
      */
-    fun setSelectedIndicatorColors(vararg colors: Int) {
-        mTabStrip.setSelectedIndicatorColors(*colors)
+    fun setSelectedIndicatorColors(colors: IntArray) {
+        mTabStrip.setSelectedIndicatorColors(colors)
     }
 
     /**
      * Sets the colors to be used for tab dividers. These colors are treated as a circular array.
      * Providing one color will mean that all tabs are indicated with the same color.
      */
-    fun setDividerColors(vararg colors: Int) {
-        mTabStrip.setDividerColors(*colors)
+    fun setDividerColors(colors: IntArray) {
+        mTabStrip.setDividerColors(colors)
     }
 
     /**
@@ -193,7 +193,7 @@ open class SlidingTabLayout @JvmOverloads constructor(context: Context, attrs: A
                 tabTitleView = tabView as TextView
             }
 
-            tabTitleView!!.text = adapter.getPageTitle(i)
+            tabTitleView?.text = adapter.getPageTitle(i)
             tabView.setOnClickListener(tabClickListener)
 
             mTabStrip.addView(tabView)
@@ -240,23 +240,18 @@ open class SlidingTabLayout @JvmOverloads constructor(context: Context, attrs: A
 
             val selectedTitle = mTabStrip.getChildAt(position)
             val extraOffset = if (selectedTitle != null)
-                (positionOffset * selectedTitle!!.getWidth()) as Int
+                (positionOffset * selectedTitle.getWidth()).toInt()
             else
                 0
             scrollToTab(position, extraOffset)
 
-            if (mViewPagerPageChangeListener != null) {
-                mViewPagerPageChangeListener!!.onPageScrolled(position, positionOffset,
-                        positionOffsetPixels)
-            }
+            mViewPagerPageChangeListener?.onPageScrolled(position, positionOffset, positionOffsetPixels)
         }
 
         override fun onPageScrollStateChanged(state: Int) {
             mScrollState = state
 
-            if (mViewPagerPageChangeListener != null) {
-                mViewPagerPageChangeListener!!.onPageScrollStateChanged(state)
-            }
+            mViewPagerPageChangeListener?.onPageScrollStateChanged(state)
         }
 
         override fun onPageSelected(position: Int) {
@@ -265,9 +260,7 @@ open class SlidingTabLayout @JvmOverloads constructor(context: Context, attrs: A
                 scrollToTab(position, 0)
             }
 
-            if (mViewPagerPageChangeListener != null) {
-                mViewPagerPageChangeListener!!.onPageSelected(position)
-            }
+            mViewPagerPageChangeListener?.onPageSelected(position)
         }
 
     }
@@ -285,9 +278,9 @@ open class SlidingTabLayout @JvmOverloads constructor(context: Context, attrs: A
 
     companion object {
 
-        private val TITLE_OFFSET_DIPS = 24
-        private val TAB_VIEW_PADDING_DIPS = 16
-        private val TAB_VIEW_TEXT_SIZE_SP = 12
+        private const val TITLE_OFFSET_DIPS = 24
+        private const val TAB_VIEW_PADDING_DIPS = 16
+        private const val TAB_VIEW_TEXT_SIZE_SP = 12
     }
 
 }

@@ -144,7 +144,7 @@ class StoreDetailAdapter internal constructor() : RecyclerView.Adapter<RecyclerV
         var vCallDirection: View = itemView.call_direction
 
         init {
-            cdvh = CallDirectionViewHolder(vCallDirection) //TODO: Check this !!
+            cdvh = CallDirectionViewHolder(vCallDirection)
         }
 
         fun bind(mStore: Store?) {

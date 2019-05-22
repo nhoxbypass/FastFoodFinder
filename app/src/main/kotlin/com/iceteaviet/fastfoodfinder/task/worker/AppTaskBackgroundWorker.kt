@@ -60,15 +60,14 @@ class AppTaskBackgroundWorker : Thread("AppTaskBackgroundWorker") {
             if (worker != null) {
                 synchronized(worker!!) {
                     while (!queue.isEmpty()) {
-                        worker!!.doTask()
+                        worker?.doTask()
                     }
 
                     running = false
                     (worker as java.lang.Object).notify()
                 }
 
-                if (worker != null)
-                    worker!!.interrupt()
+                worker?.interrupt()
             }
         }
     }
@@ -87,7 +86,8 @@ class AppTaskBackgroundWorker : Thread("AppTaskBackgroundWorker") {
                     d("Waiting for new task request...")
                     try {
                         (worker as java.lang.Object).wait()
-                    } catch (ex: Exception) {
+                    } catch (ex: InterruptedException) {
+                        ex.printStackTrace()
                     }
                 }
             }
@@ -102,7 +102,7 @@ class AppTaskBackgroundWorker : Thread("AppTaskBackgroundWorker") {
     private fun doTask() {
         try {
             queue.removeAt(0).doTask()
-        } catch (ex: Exception) {
+        } catch (ex: IndexOutOfBoundsException) {
             ex.printStackTrace()
         }
     }

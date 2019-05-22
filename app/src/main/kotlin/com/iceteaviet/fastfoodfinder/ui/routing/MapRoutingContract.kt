@@ -27,12 +27,12 @@ interface MapRoutingContract {
 
     interface Presenter : com.iceteaviet.fastfoodfinder.ui.base.Presenter {
         fun fetchDataFromExtra(extras: Bundle?)
-        fun checkDataValid(): Boolean
+        fun isRoutingDataValid(): Boolean
         fun setupData()
         fun onNavigationRowClick(index: Int)
         fun onPrevInstructionClick()
         fun onNextInstructionClick()
         fun onBackArrowButtonPress()
-        fun onLoadMap()
+        fun onGetMapAsync()
     }
 }

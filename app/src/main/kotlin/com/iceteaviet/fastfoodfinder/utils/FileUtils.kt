@@ -20,7 +20,7 @@ fun getBitmapFromUri(context: Context, uri: Uri): Bitmap? {
 
     val cursor = context.contentResolver.query(uri,
             filePathColumn, null, null, null)
-    cursor!!.moveToFirst()
+    cursor.moveToFirst()
     cursor.close()
 
     var bmp: Bitmap? = null

@@ -13,14 +13,14 @@ open class StoreEntity : RealmObject() {
     var type: Int = 0
         private set
     var id: Int = 0
-    var title: String? = null
+    var title: String = ""
         private set
-    var address: String? = null
+    var address: String = ""
     var latitude: Double = 0.toDouble()
         private set
     var longitude: Double = 0.toDouble()
         private set
-    var telephone: String? = null
+    var telephone: String = ""
 
     val position: LatLng
         get() = LatLng(latitude, longitude)

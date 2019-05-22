@@ -89,8 +89,8 @@ class ActionProcessButton : ProcessButton {
 
         val indicatorHeightPercent = 0.05 // 5%
         val bottom = (measuredHeight - measuredHeight * indicatorHeightPercent).toInt()
-        progressDrawable!!.setBounds(0, bottom, indicatorWidth.toInt(), measuredHeight)
-        progressDrawable!!.draw(canvas)
+        progressDrawable?.setBounds(0, bottom, indicatorWidth.toInt(), measuredHeight)
+        progressDrawable?.draw(canvas)
     }
 
     private fun drawEndlessProgress(canvas: Canvas) {
@@ -109,7 +109,7 @@ class ActionProcessButton : ProcessButton {
     private fun setupProgressBarBounds() {
         val indicatorHeight = getDimension(R.dimen.layer_padding).toDouble()
         val bottom = (measuredHeight - indicatorHeight).toInt()
-        mProgressBar!!.setBounds(0, bottom, measuredWidth, measuredHeight)
+        mProgressBar?.setBounds(0, bottom, measuredWidth, measuredHeight)
     }
 
     class ProgressBar(private val mParent: View) {

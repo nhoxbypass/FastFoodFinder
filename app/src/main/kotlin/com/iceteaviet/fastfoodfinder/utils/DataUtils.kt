@@ -47,7 +47,7 @@ fun getRandomInt(min: Int, max: Int): Int {
 /**
  * Get store type by keyword
  */
-fun getStoreType(key: String): Int {
+fun getStoreType(key: String?): Int {
     return if (key == "circle_k")
         StoreType.TYPE_CIRCLE_K
     else if (key == "mini_stop")

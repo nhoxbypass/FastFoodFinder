@@ -25,70 +25,8 @@ class MainFavPresenter : BasePresenter<MainFavContract.Presenter>, MainFavContra
     override fun subscribe() {
         val currUser = dataManager.getCurrentUser()
         if (currUser != null) {
-            dataManager.getLocalStoreDataSource()
-                    .findStoresByIds(currUser.getFavouriteStoreList().getStoreIdList()!!)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(object : SingleObserver<List<Store>> {
-                        override fun onSubscribe(d: Disposable) {
-                            compositeDisposable.add(d)
-                        }
-
-                        override fun onSuccess(storeList: List<Store>) {
-                            mainFavView.setStores(storeList)
-                        }
-
-                        override fun onError(e: Throwable) {
-                            e.printStackTrace()
-                        }
-                    })
-
-
-            dataManager.getRemoteUserDataSource().subscribeFavouriteStoresOfUser(dataManager.getCurrentUserUid())
-                    .subscribeOn(Schedulers.io())
-                    .map { storeIdPair ->
-                        val store = dataManager.getLocalStoreDataSource().findStoresById(storeIdPair.first).blockingGet()[0]
-                        UserStoreEvent(store, storeIdPair.second)
-                    }
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(object : Observer<UserStoreEvent> {
-                        override fun onSubscribe(d: Disposable) {
-                            compositeDisposable.add(d)
-                        }
-
-                        override fun onNext(userStoreEvent: UserStoreEvent) {
-                            val store = userStoreEvent.store
-                            when (userStoreEvent.eventActionCode) {
-                                UserStoreEvent.ACTION_ADDED -> if (!dataManager.getCurrentUser()!!.getFavouriteStoreList().getStoreIdList()!!.contains(store.id)) {
-                                    mainFavView.addStore(store)
-                                    dataManager.getCurrentUser()!!.getFavouriteStoreList().getStoreIdList()!!.add(store.id)
-                                }
-
-                                UserStoreEvent.ACTION_CHANGED -> if (dataManager.getCurrentUser()!!.getFavouriteStoreList().getStoreIdList()!!.contains(store.id)) {
-                                    mainFavView.updateStore(store)
-                                }
-
-                                UserStoreEvent.ACTION_REMOVED -> if (dataManager.getCurrentUser()!!.getFavouriteStoreList().getStoreIdList()!!.contains(store.id)) {
-                                    mainFavView.removeStore(store)
-                                    dataManager.getCurrentUser()!!.getFavouriteStoreList().removeStore(store.id)
-                                }
-
-                                UserStoreEvent.ACTION_MOVED -> {
-                                }
-
-                                else -> {
-                                }
-                            }
-                        }
-
-                        override fun onError(e: Throwable) {
-                            mainFavView.showWarningMessage(e.message)
-                        }
-
-                        override fun onComplete() {
-
-                        }
-                    })
+            loadStoreListsFromIds(currUser.getFavouriteStoreList().getStoreIdList())
+            listenFavStoresOfUser(dataManager.getCurrentUserUid())
         }
     }
 
@@ -99,5 +37,83 @@ class MainFavPresenter : BasePresenter<MainFavContract.Presenter>, MainFavContra
 
     override fun onStoreItemClick(store: Store) {
         mainFavView.showStoreDetailView(store)
+    }
+
+    private fun loadStoreListsFromIds(storeIdList: MutableList<Int>) {
+        dataManager.getLocalStoreDataSource()
+                .findStoresByIds(storeIdList)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : SingleObserver<List<Store>> {
+                    override fun onSubscribe(d: Disposable) {
+                        compositeDisposable.add(d)
+                    }
+
+                    override fun onSuccess(storeList: List<Store>) {
+                        mainFavView.setStores(storeList)
+                    }
+
+                    override fun onError(e: Throwable) {
+                        e.printStackTrace()
+                    }
+                })
+    }
+
+    private fun listenFavStoresOfUser(userUid: String) {
+        dataManager.getRemoteUserDataSource().subscribeFavouriteStoresOfUser(userUid)
+                .subscribeOn(Schedulers.io())
+                .map { storeIdPair ->
+                    val store = dataManager.getLocalStoreDataSource().findStoresById(storeIdPair.first).blockingGet()[0]
+                    UserStoreEvent(store, storeIdPair.second)
+                }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : Observer<UserStoreEvent> {
+                    override fun onSubscribe(d: Disposable) {
+                        compositeDisposable.add(d)
+                    }
+
+                    override fun onNext(userStoreEvent: UserStoreEvent) {
+                        handleUserStoreEvent(userStoreEvent)
+                    }
+
+                    override fun onError(e: Throwable) {
+                        mainFavView.showWarningMessage(e.message)
+                    }
+
+                    override fun onComplete() {
+
+                    }
+                })
+    }
+
+    private fun handleUserStoreEvent(userStoreEvent: UserStoreEvent) {
+        val store = userStoreEvent.store
+        when (userStoreEvent.eventActionCode) {
+            UserStoreEvent.ACTION_ADDED -> {
+                val user = dataManager.getCurrentUser()
+                if (user != null && !user.getFavouriteStoreList().getStoreIdList().contains(store.id)) {
+                    mainFavView.addStore(store)
+                    user.getFavouriteStoreList().getStoreIdList().add(store.id)
+                }
+            }
+
+            UserStoreEvent.ACTION_CHANGED -> {
+                val user = dataManager.getCurrentUser()
+                if (user != null && user.getFavouriteStoreList().getStoreIdList().contains(store.id)) {
+                    mainFavView.updateStore(store)
+                }
+            }
+
+            UserStoreEvent.ACTION_REMOVED -> {
+                val user = dataManager.getCurrentUser()
+                if (user != null && user.getFavouriteStoreList().getStoreIdList().contains(store.id)) {
+                    mainFavView.removeStore(store)
+                    user.getFavouriteStoreList().removeStore(store.id)
+                }
+            }
+
+            UserStoreEvent.ACTION_MOVED -> {
+            }
+        }
     }
 }

@@ -17,47 +17,32 @@ import java.util.*
 
 class SettingActivity : BaseActivity(), SettingContract.View {
     override lateinit var presenter: SettingContract.Presenter;
-    lateinit var txtShareApp: TextView
-    lateinit var txtChangeMetric: TextView
-    lateinit var txtEditProfile: TextView
-    lateinit var txtChangePassword: TextView
-    lateinit var txtChangeEmail: TextView
-    lateinit var txtSetNotification: TextView
-    lateinit var txtSetEmailNotification: TextView
-    lateinit var layoutUpdateDb: LinearLayout
-    lateinit var progressBarUpdateDb: ProgressBar
-    lateinit var imageUpdateDb: ImageView
-    lateinit var txtAboutApp: TextView
-    lateinit var txtRateApp: TextView
-    lateinit var txtFeedBack: TextView
-    lateinit var txtPrivacyPolicy: TextView
-    lateinit var txtTermOfUse: TextView
-    lateinit var txtSignOut: TextView
-    lateinit var swChangeLanguage: SwitchCompat
-    lateinit var tvSettingLanguage: TextView
+    private lateinit var txtShareApp: TextView
+    private lateinit var txtChangeMetric: TextView
+    private lateinit var txtEditProfile: TextView
+    private lateinit var txtChangePassword: TextView
+    private lateinit var txtChangeEmail: TextView
+    private lateinit var txtSetNotification: TextView
+    private lateinit var txtSetEmailNotification: TextView
+    private lateinit var layoutUpdateDb: LinearLayout
+    private lateinit var progressBarUpdateDb: ProgressBar
+    private lateinit var imageUpdateDb: ImageView
+    private lateinit var txtAboutApp: TextView
+    private lateinit var txtRateApp: TextView
+    private lateinit var txtFeedBack: TextView
+    private lateinit var txtPrivacyPolicy: TextView
+    private lateinit var txtTermOfUse: TextView
+    private lateinit var txtSignOut: TextView
+    private lateinit var swChangeLanguage: SwitchCompat
+    private lateinit var tvSettingLanguage: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         presenter = SettingPresenter(App.getDataManager(), this)
-        txtShareApp = tv_setting_share_app
-        txtChangeMetric = tv_setting_change_metric
-        txtEditProfile = tv_setting_edit_profile
-        txtChangePassword = tv_setting_change_password
-        txtChangeEmail = tv_setting_change_email
-        txtSetNotification = tv_setting_notification
-        txtSetEmailNotification = tv_setting_notification_email
-        layoutUpdateDb = ll_setting_update_db
-        progressBarUpdateDb = progress_bar_update_db
-        imageUpdateDb = iv_update_db
-        txtAboutApp = tv_setting_about_app
-        txtRateApp = tv_setting_rate_app
-        txtFeedBack = tv_setting_feedback
-        txtPrivacyPolicy = tv_setting_privacy_policy
-        txtTermOfUse = tv_setting_term_of_use
-        txtSignOut = tv_setting_sign_out
-        swChangeLanguage = sw_languages
-        tvSettingLanguage = tv_setting_english
+
+        setupUI()
+        
         presenter.onSetupLanguage()
         presenter.onInitSignOutTextView()
 
@@ -110,16 +95,54 @@ class SettingActivity : BaseActivity(), SettingContract.View {
         presenter.unsubscribe()
     }
 
-    fun setSystemLocaleLegacy(config: Configuration, locale: Locale) {
+    override fun showSuccessLoadingToast(successMessage: String?) {
+        Toast.makeText(this, getString(R.string.update_database_successfull) + successMessage, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun showFailedLoadingToast(failedMessage: String?) {
+        Toast.makeText(this, getString(R.string.update_database_failed) + failedMessage, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun updateLoadingProgressView(showProgress: Boolean) {
+        imageUpdateDb.visibility = if (showProgress) View.GONE else View.VISIBLE
+        progressBarUpdateDb.visibility = if (showProgress) View.VISIBLE else View.GONE
+    }
+
+    private fun setSystemLocaleLegacy(config: Configuration, locale: Locale) {
         config.locale = locale
     }
 
     @TargetApi(Build.VERSION_CODES.N)
-    fun setSystemLocale(config: Configuration, locale: Locale) {
+    private fun setSystemLocale(config: Configuration, locale: Locale) {
         config.setLocale(locale)
     }
 
-    fun refreshUI() {
+    private fun setupUI() {
+        findViews()
+    }
+
+    private fun findViews() {
+        txtShareApp = tv_setting_share_app
+        txtChangeMetric = tv_setting_change_metric
+        txtEditProfile = tv_setting_edit_profile
+        txtChangePassword = tv_setting_change_password
+        txtChangeEmail = tv_setting_change_email
+        txtSetNotification = tv_setting_notification
+        txtSetEmailNotification = tv_setting_notification_email
+        layoutUpdateDb = ll_setting_update_db
+        progressBarUpdateDb = progress_bar_update_db
+        imageUpdateDb = iv_update_db
+        txtAboutApp = tv_setting_about_app
+        txtRateApp = tv_setting_rate_app
+        txtFeedBack = tv_setting_feedback
+        txtPrivacyPolicy = tv_setting_privacy_policy
+        txtTermOfUse = tv_setting_term_of_use
+        txtSignOut = tv_setting_sign_out
+        swChangeLanguage = sw_languages
+        tvSettingLanguage = tv_setting_english
+    }
+
+    private fun refreshUI() {
         txtShareApp.setText(R.string.share_app_with_friends)
         txtChangeMetric.setText(R.string.use_metric_units)
         txtEditProfile.setText(R.string.edit_your_profile)
@@ -139,7 +162,7 @@ class SettingActivity : BaseActivity(), SettingContract.View {
     private fun setupEventListeners() {
         txtSignOut.setOnClickListener {
             presenter.signOut()
-            openLoginActivity(this@SettingActivity)
+            openLoginActivity(this)
             finish()
         }
 
@@ -161,19 +184,5 @@ class SettingActivity : BaseActivity(), SettingContract.View {
         layoutUpdateDb.setOnClickListener {
             presenter.onLoadStoreFromServer()
         }
-    }
-
-
-    override fun showSuccessLoadingToast(successMessage: String?) {
-        Toast.makeText(this@SettingActivity, getString(R.string.update_database_successfull) + successMessage, Toast.LENGTH_SHORT).show()
-    }
-
-    override fun showFailedLoadingToast(failedMessage: String?) {
-        Toast.makeText(this@SettingActivity, getString(R.string.update_database_failed) + failedMessage, Toast.LENGTH_SHORT).show()
-    }
-
-    override fun updateLoadingProgressView(showProgress: Boolean) {
-        imageUpdateDb.visibility = if (showProgress) View.GONE else View.VISIBLE
-        progressBarUpdateDb.visibility = if (showProgress) View.VISIBLE else View.GONE
     }
 }

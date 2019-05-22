@@ -71,9 +71,9 @@ class LiveSightPresenter : BasePresenter<LiveSightContract.Presenter>, LiveSight
 
                     override fun onSuccess(storeList: List<Store>) {
                         for (i in storeList.indices) {
-                            liveSightView.addARPoint(AugmentedPOI(storeList[i].title!!,
-                                    storeList[i].lat!!.toDouble(),
-                                    storeList[i].lng!!.toDouble(),
+                            liveSightView.addARPoint(AugmentedPOI(storeList[i].title,
+                                    storeList[i].lat.toDouble(),
+                                    storeList[i].lng.toDouble(),
                                     0.0,
                                     getStoreLogoDrawableRes(storeList[i].type)))
                         }

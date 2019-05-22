@@ -36,8 +36,6 @@ import com.iceteaviet.fastfoodfinder.utils.openSettingsActivity
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_main.*
 
-//TODO: Check !! of SearchView
-
 class MainActivity : BaseActivity(), MainContract.View, View.OnClickListener {
     override lateinit var presenter: MainContract.Presenter
 
@@ -75,7 +73,7 @@ class MainActivity : BaseActivity(), MainContract.View, View.OnClickListener {
 
     override fun onPostCreate(@Nullable savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
-        mDrawerToggle!!.syncState()
+        mDrawerToggle?.syncState()
     }
 
     override fun onResume() {
@@ -116,7 +114,7 @@ class MainActivity : BaseActivity(), MainContract.View, View.OnClickListener {
         super.onConfigurationChanged(newConfig)
 
         // Pass any configuration change to the drawer toggles
-        mDrawerToggle!!.onConfigurationChanged(newConfig)
+        mDrawerToggle?.onConfigurationChanged(newConfig)
     }
 
     override fun showProfileView() {
@@ -137,7 +135,7 @@ class MainActivity : BaseActivity(), MainContract.View, View.OnClickListener {
     }
 
     override fun setSearchQueryText(searchString: String) {
-        mSearchView!!.setQuery(searchString, false)
+        mSearchView?.setQuery(searchString, false)
     }
 
     override fun hideKeyboard() {
@@ -154,8 +152,8 @@ class MainActivity : BaseActivity(), MainContract.View, View.OnClickListener {
         if (view != null) {
             view.clearFocus()
         }
-        mSearchInput!!.clearFocus()
-        mSearchView!!.clearFocus()
+        mSearchInput?.clearFocus()
+        mSearchView?.clearFocus()
     }
 
     override fun showSearchWarningMessage() {
@@ -192,28 +190,30 @@ class MainActivity : BaseActivity(), MainContract.View, View.OnClickListener {
 
     override fun updateProfileHeader(showSignIn: Boolean) {
         if (showSignIn) {
-            navHeaderName!!.visibility = View.GONE
-            navHeaderEmail!!.visibility = View.GONE
-            mNavHeaderSignIn!!.visibility = View.VISIBLE
+            navHeaderName?.visibility = View.GONE
+            navHeaderEmail?.visibility = View.GONE
+            mNavHeaderSignIn?.visibility = View.VISIBLE
         } else {
-            navHeaderName!!.visibility = View.VISIBLE
-            navHeaderEmail!!.visibility = View.VISIBLE
-            mNavHeaderSignIn!!.visibility = View.GONE
+            navHeaderName?.visibility = View.VISIBLE
+            navHeaderEmail?.visibility = View.VISIBLE
+            mNavHeaderSignIn?.visibility = View.GONE
         }
     }
 
     override fun loadProfileHeaderAvatar(photoUrl: String) {
-        Glide.with(this)
-                .load(photoUrl)
-                .into(navHeaderAvatar!!)
+        navHeaderAvatar?.let {
+            Glide.with(this)
+                    .load(photoUrl)
+                    .into(it)
+        }
     }
 
     override fun setProfileHeaderNameText(name: String) {
-        navHeaderName!!.text = name
+        navHeaderName?.text = name
     }
 
     override fun setProfileHeaderEmailText(email: String) {
-        navHeaderEmail!!.text = email
+        navHeaderEmail?.text = email
     }
 
     override fun onClick(view: View) {
@@ -251,15 +251,15 @@ class MainActivity : BaseActivity(), MainContract.View, View.OnClickListener {
         navHeaderEmail = headerLayout.findViewById(R.id.tv_nav_header_screenname)
         mNavHeaderSignIn = headerLayout.findViewById(R.id.btn_nav_header_signin)
 
-        mDrawerToggle?.let { mDrawerToggle!!.drawerArrowDrawable.color = Color.WHITE }
+        mDrawerToggle?.let { it.drawerArrowDrawable.color = Color.WHITE }
     }
 
     private fun setupEventHandlers() {
-        navHeaderAvatar!!.setOnClickListener(this)
-        navHeaderName!!.setOnClickListener(this)
-        navHeaderEmail!!.setOnClickListener(this)
+        navHeaderAvatar?.setOnClickListener(this)
+        navHeaderName?.setOnClickListener(this)
+        navHeaderEmail?.setOnClickListener(this)
 
-        mNavHeaderSignIn!!.setOnClickListener(this)
+        mNavHeaderSignIn?.setOnClickListener(this)
 
         mNavigationView.setNavigationItemSelectedListener { item ->
             drawerLayout.closeDrawers()
@@ -287,8 +287,8 @@ class MainActivity : BaseActivity(), MainContract.View, View.OnClickListener {
         searchView.queryHint = getString(R.string.type_name_store)
         searchView.setBackgroundColor(ContextCompat.getColor(this, R.color.material_red_700))
         mSearchInput = searchView.findViewById(androidx.appcompat.R.id.search_src_text)
-        mSearchInput!!.setHintTextColor(ContextCompat.getColor(this, R.color.colorHintText))
-        mSearchInput!!.setTextColor(Color.WHITE)
+        mSearchInput?.setHintTextColor(ContextCompat.getColor(this, R.color.colorHintText))
+        mSearchInput?.setTextColor(Color.WHITE)
 
         // Set on search query submit
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -298,17 +298,18 @@ class MainActivity : BaseActivity(), MainContract.View, View.OnClickListener {
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
-                if (!searchFragment!!.isVisible)
-                    return false
+                searchFragment?.let {
+                    if (!it.isVisible)
+                        return false
 
-                if (newText.isNotBlank()) {
-                    searchFragment!!.hideOptionsContainer()
-                    searchFragment!!.showSearchContainer()
-
-                    searchFragment!!.updateSearchList(newText)
-                } else {
-                    searchFragment!!.showOptionsContainer()
-                    searchFragment!!.hideSearchContainer()
+                    if (newText.isNotBlank()) {
+                        it.hideOptionsContainer()
+                        it.showSearchContainer()
+                        it.updateSearchList(newText)
+                    } else {
+                        it.showOptionsContainer()
+                        it.hideSearchContainer()
+                    }
                 }
                 return false
             }
@@ -364,21 +365,17 @@ class MainActivity : BaseActivity(), MainContract.View, View.OnClickListener {
     }
 
     private fun replaceFragment(fragment: Fragment, actionBarTitle: String) {
-        try {
-            // Insert the fragment by replacing any existing fragment
-            val fragmentManager = supportFragmentManager
-            fragmentManager
-                    .beginTransaction()
-                    .add(R.id.fl_fragment_placeholder, fragment)
-                    .addToBackStack(null) // Add this transaction to the back stack
-                    .commit()
-            fragmentManager.executePendingTransactions()
+        // Insert the fragment by replacing any existing fragment
+        val fragmentManager = supportFragmentManager
+        fragmentManager
+                .beginTransaction()
+                .add(R.id.fl_fragment_placeholder, fragment)
+                .addToBackStack(null) // Add this transaction to the back stack
+                .commit()
+        fragmentManager.executePendingTransactions()
 
-            // Set action bar title
-            title = actionBarTitle
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+        // Set action bar title
+        title = actionBarTitle
     }
 
     companion object {

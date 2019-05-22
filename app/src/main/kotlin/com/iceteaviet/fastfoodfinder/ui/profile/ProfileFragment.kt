@@ -80,8 +80,8 @@ class ProfileFragment : Fragment(), ProfileContract.View, View.OnClickListener {
             }
 
             R.id.btnUpdateCoverImage -> {
-                mDialog!!.show(fragmentManager!!, "")
-                btnUpdateCoverImage!!.visibility = View.GONE
+                mDialog?.show(fragmentManager!!, "")
+                btnUpdateCoverImage.visibility = View.GONE
                 return
             }
         }
@@ -93,28 +93,28 @@ class ProfileFragment : Fragment(), ProfileContract.View, View.OnClickListener {
         cvFavouritePlace.setOnClickListener(this)
         btnUpdateCoverImage.setOnClickListener(this)
 
-        storeListAdapter!!.setOnItemLongClickListener(object : UserStoreListAdapter.OnItemLongClickListener {
+        storeListAdapter?.setOnItemLongClickListener(object : UserStoreListAdapter.OnItemLongClickListener {
             override fun onLongClick(position: Int) {
                 presenter.onStoreListLongClick(position)
             }
         })
 
-        storeListAdapter!!.setOnItemClickListener(object : UserStoreListAdapter.OnItemClickListener {
+        storeListAdapter?.setOnItemClickListener(object : UserStoreListAdapter.OnItemClickListener {
             override fun onClick(listPacket: UserStoreList) {
                 presenter.onStoreListClick(listPacket)
             }
         })
 
-        mDialog!!.setOnButtonClickListener(object : UpdateCoverImageDialog.OnButtonClickListener {
+        mDialog?.setOnButtonClickListener(object : UpdateCoverImageDialog.OnButtonClickListener {
             override fun onOkClick(selectedImage: Drawable?) {
                 if (selectedImage != null)
                     ivCoverImage.setImageDrawable(selectedImage)
 
-                btnUpdateCoverImage!!.visibility = View.VISIBLE
+                btnUpdateCoverImage.visibility = View.VISIBLE
             }
 
             override fun onCancelClick() {
-                btnUpdateCoverImage!!.visibility = View.VISIBLE
+                btnUpdateCoverImage.visibility = View.VISIBLE
             }
         })
     }
@@ -126,13 +126,13 @@ class ProfileFragment : Fragment(), ProfileContract.View, View.OnClickListener {
         btnCreateNew = cvCreateNew
 
         val mLayoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-        rvListPacket!!.adapter = storeListAdapter
-        rvListPacket!!.layoutManager = mLayoutManager
+        rvListPacket.adapter = storeListAdapter
+        rvListPacket.layoutManager = mLayoutManager
 
         mDialog = UpdateCoverImageDialog.newInstance()
 
-        tvName!!.setText(R.string.unregistered_user)
-        tvEmail!!.setText(R.string.unregistered_email)
+        tvName.setText(R.string.unregistered_user)
+        tvEmail.setText(R.string.unregistered_email)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -173,17 +173,17 @@ class ProfileFragment : Fragment(), ProfileContract.View, View.OnClickListener {
     }
 
     override fun setUserStoreLists(userStoreLists: List<UserStoreList>) {
-        storeListAdapter!!.setListPackets(userStoreLists)
+        storeListAdapter?.setListPackets(userStoreLists)
     }
 
     override fun addUserStoreList(list: UserStoreList) {
-        storeListAdapter!!.addListPacket(list)
+        storeListAdapter?.addListPacket(list)
     }
 
     override fun showCreateNewListDialog() {
         mDialogCreate = CreateListDialog.newInstance()
-        mDialogCreate!!.show(fragmentManager!!, "")
-        mDialogCreate!!.setOnButtonClickListener(object : CreateListDialog.OnCreateListListener {
+        mDialogCreate?.show(fragmentManager!!, "")
+        mDialogCreate?.setOnButtonClickListener(object : CreateListDialog.OnCreateListListener {
             override fun onCreateButtonClick(name: String, iconId: Int, dialog: CreateListDialog) {
                 presenter.onCreateNewList(name, iconId)
             }
@@ -195,7 +195,7 @@ class ProfileFragment : Fragment(), ProfileContract.View, View.OnClickListener {
     }
 
     override fun dismissCreateNewListDialog() {
-        mDialogCreate!!.dismiss()
+        mDialogCreate?.dismiss()
     }
 
     override fun warningListNameExisted() {

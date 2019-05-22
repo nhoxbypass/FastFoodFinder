@@ -58,19 +58,19 @@ class MainFavouriteFragment : Fragment(), MainFavContract.View, OnStartDragListe
     }
 
     override fun setStores(storeList: List<Store>) {
-        mFavouriteAdapter!!.setStores(storeList)
+        mFavouriteAdapter?.setStores(storeList)
     }
 
     override fun addStore(store: Store) {
-        mFavouriteAdapter!!.addStore(store)
+        mFavouriteAdapter?.addStore(store)
     }
 
     override fun updateStore(store: Store) {
-        mFavouriteAdapter!!.updateStore(store)
+        mFavouriteAdapter?.updateStore(store)
     }
 
     override fun removeStore(store: Store) {
-        mFavouriteAdapter!!.removeStore(store)
+        mFavouriteAdapter?.removeStore(store)
     }
 
     override fun showWarningMessage(message: String?) {
@@ -97,15 +97,15 @@ class MainFavouriteFragment : Fragment(), MainFavContract.View, OnStartDragListe
         mFavouriteAdapter?.let {
             val callback = SimpleItemTouchHelperCallback(it)
             mItemTouchHelper = ItemTouchHelper(callback)
-            mItemTouchHelper!!.attachToRecyclerView(recyclerView)
+            mItemTouchHelper?.attachToRecyclerView(recyclerView)
         }
     }
 
 
     private fun setupEventHandlers() {
-        mFavouriteAdapter!!.setOnItemClickListener(object : FavouriteStoreAdapter.OnItemClickListener {
-            override fun onClick(store: Store) {
-                presenter.onStoreItemClick(store)
+        mFavouriteAdapter?.setOnItemClickListener(object : FavouriteStoreAdapter.OnItemClickListener {
+            override fun onClick(des: Store) {
+                presenter.onStoreItemClick(des)
             }
         })
 
@@ -122,7 +122,7 @@ class MainFavouriteFragment : Fragment(), MainFavContract.View, OnStartDragListe
 
     override fun onStartDrag(viewHolder: RecyclerView.ViewHolder) {
         if (isFABChangeClicked)
-            mItemTouchHelper!!.startDrag(viewHolder)
+            mItemTouchHelper?.startDrag(viewHolder)
 
     }
 

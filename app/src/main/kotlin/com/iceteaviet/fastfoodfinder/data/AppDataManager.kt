@@ -12,7 +12,6 @@ import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
 import com.iceteaviet.fastfoodfinder.utils.Constant
 import com.iceteaviet.fastfoodfinder.utils.isEmpty
 import com.iceteaviet.fastfoodfinder.utils.isValidUserUid
-import com.iceteaviet.fastfoodfinder.utils.w
 import io.reactivex.Single
 import io.reactivex.SingleObserver
 import io.reactivex.disposables.Disposable
@@ -65,54 +64,27 @@ class AppDataManager(private val localStoreDataSource: StoreDataSource, private 
     }
 
     override fun loadStoresFromServer(): Single<List<Store>> {
-        return Single.create { emitter ->
-            if (!clientAuth.isSignedIn()) {
+        if (clientAuth.isSignedIn()) {
+            return remoteStoreDataSource.getAllStores()
+        } else {
+            return Single.create { emitter ->
                 // Not signed in
                 clientAuth.signInWithEmailAndPassword(Constant.DOWNLOADER_BOT_EMAIL, Constant.DOWNLOADER_BOT_PWD)
-                        .subscribeOn(Schedulers.io())
-                        .subscribe(object : SingleObserver<User> {
-                            override fun onSubscribe(d: Disposable) {
-
-                            }
-
-                            override fun onSuccess(user: User) {
-                                remoteStoreDataSource.getAllStores()
-                                        .subscribeOn(Schedulers.io())
-                                        .subscribe(object : SingleObserver<List<Store>> {
-                                            override fun onSubscribe(d: Disposable) {
-
-                                            }
-
-                                            override fun onSuccess(storeList: List<Store>) {
-                                                signOut()
-                                                emitter.onSuccess(storeList)
-                                            }
-
-                                            override fun onError(e: Throwable) {
-                                                signOut()
-                                                emitter.onError(e)
-                                            }
-                                        })
-                            }
-
-                            override fun onError(e: Throwable) {
-                                w(TAG, "Sign In failed " + e.message)
-                                emitter.onError(e)
-                            }
-                        })
-            } else {
-                remoteStoreDataSource.getAllStores()
+                        .toCompletable()
+                        .andThen(remoteStoreDataSource.getAllStores())
                         .subscribeOn(Schedulers.io())
                         .subscribe(object : SingleObserver<List<Store>> {
                             override fun onSubscribe(d: Disposable) {
-
+                                emitter.setDisposable(d)
                             }
 
                             override fun onSuccess(storeList: List<Store>) {
+                                signOut()
                                 emitter.onSuccess(storeList)
                             }
 
                             override fun onError(e: Throwable) {
+                                signOut()
                                 emitter.onError(e)
                             }
                         })
@@ -122,8 +94,10 @@ class AppDataManager(private val localStoreDataSource: StoreDataSource, private 
 
     override fun getCurrentUserUid(): String {
         var uid = ""
-        if (currentUser != null)
-            uid = currentUser!!.getUid()
+
+        currentUser?.let {
+            uid = it.getUid()
+        }
 
         if (isEmpty(uid))
             uid = clientAuth.getCurrentUserUid()

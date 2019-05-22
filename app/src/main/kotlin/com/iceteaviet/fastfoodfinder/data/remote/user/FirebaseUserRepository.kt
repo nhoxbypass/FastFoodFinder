@@ -44,8 +44,11 @@ class FirebaseUserRepository(private val databaseRef: DatabaseReference) : UserD
             databaseRef.child(CHILD_USERS).child(uid).addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(@NonNull dataSnapshot: DataSnapshot) {
                     if (dataSnapshot.exists()) {
-                        val user = dataSnapshot.getValue(User::class.java)!!
-                        emitter.onSuccess(user)
+                        val user = dataSnapshot.getValue(User::class.java)
+                        if (user != null)
+                            emitter.onSuccess(user)
+                        else
+                            emitter.onError(NotFoundException())
                     } else {
                         emitter.onError(NotFoundException())
                     }

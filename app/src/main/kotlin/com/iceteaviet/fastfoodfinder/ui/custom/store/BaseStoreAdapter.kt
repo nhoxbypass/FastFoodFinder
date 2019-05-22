@@ -68,9 +68,7 @@ abstract class BaseStoreAdapter internal constructor() : RecyclerView.Adapter<Ba
             itemView.setOnClickListener {
                 val position = adapterPosition
                 val store = storeList[position]
-                if (onItemClickListener != null) {
-                    onItemClickListener!!.onClick(store)
-                }
+                onItemClickListener?.onClick(store)
             }
         }
 
