@@ -2,7 +2,6 @@ package com.iceteaviet.fastfoodfinder.data.remote.store.model
 
 import android.os.Parcel
 import android.os.Parcelable
-
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.database.Exclude
 import com.google.firebase.database.PropertyName
@@ -20,24 +19,24 @@ class Store : Parcelable {
     var id: Int = 0
     @PropertyName("title")
     @set:PropertyName("title")
-    var title: String? = null
+    var title: String = ""
     @PropertyName("address")
-    var address: String? = null
+    var address: String = ""
     @PropertyName("lat")
     @set:PropertyName("lat")
-    var lat: String? = null
+    var lat: String = ""
     @PropertyName("lng")
     @set:PropertyName("lng")
-    var lng: String? = null
+    var lng: String = ""
     @PropertyName("tel")
     @set:PropertyName("tel")
-    var tel: String? = null
+    var tel: String = ""
     @Exclude
     private lateinit var position: LatLng
 
     constructor()
 
-    constructor(id: Int, title: String?, address: String?, lat: String, lng: String, tel: String?, type: Int) {
+    constructor(id: Int, title: String, address: String, lat: String, lng: String, tel: String, type: Int) {
         try {
             this.id = id
             this.title = title
@@ -47,8 +46,8 @@ class Store : Parcelable {
             this.tel = tel
             this.type = type
 
-            position = LatLng(java.lang.Double.valueOf(lat)!!, java.lang.Double.valueOf(lng)!!)
-        } catch (e: Exception) {
+            position = LatLng(lat.toDouble(), lng.toDouble())
+        } catch (e: NumberFormatException) {
             e.printStackTrace()
         }
     }
@@ -61,7 +60,7 @@ class Store : Parcelable {
     @Exclude
     fun getPosition(): LatLng {
         if (!::position.isInitialized)
-            position = LatLng(java.lang.Double.valueOf(lat)!!, java.lang.Double.valueOf(lng)!!)
+            position = LatLng(lat.toDouble(), lng.toDouble())
         return position
     }
 
@@ -89,11 +88,11 @@ class Store : Parcelable {
     override fun hashCode(): Int {
         var result = type
         result = 31 * result + id
-        result = 31 * result + (title?.hashCode() ?: 0)
-        result = 31 * result + (address?.hashCode() ?: 0)
-        result = 31 * result + (lat?.hashCode() ?: 0)
-        result = 31 * result + (lng?.hashCode() ?: 0)
-        result = 31 * result + (tel?.hashCode() ?: 0)
+        result = 31 * result + (title.hashCode() ?: 0)
+        result = 31 * result + (address.hashCode() ?: 0)
+        result = 31 * result + (lat.hashCode() ?: 0)
+        result = 31 * result + (lng.hashCode() ?: 0)
+        result = 31 * result + (tel.hashCode() ?: 0)
         result = 31 * result + position.hashCode()
         return result
     }

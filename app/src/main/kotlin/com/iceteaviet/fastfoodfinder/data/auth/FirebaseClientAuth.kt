@@ -18,7 +18,8 @@ class FirebaseClientAuth : ClientAuth {
     }
 
     override fun getCurrentUserUid(): String {
-        return if (mAuth.currentUser != null) mAuth.currentUser!!.uid else ""
+        val currUser = mAuth.currentUser
+        return if (currUser != null) currUser.uid else ""
     }
 
     override fun signUpWithEmailAndPassword(email: String, password: String): Single<User> {
@@ -31,7 +32,8 @@ class FirebaseClientAuth : ClientAuth {
     }
 
     override fun isSignedIn(): Boolean {
-        return mAuth.currentUser != null && !mAuth.currentUser!!.isAnonymous
+        val currUser = mAuth.currentUser
+        return currUser != null && !currUser.isAnonymous
     }
 
     override fun signOut() {
@@ -60,14 +62,18 @@ class FirebaseClientAuth : ClientAuth {
         var photoUrl = ""
 
         if (firebaseUser.photoUrl != null) {
-            photoUrl = firebaseUser.photoUrl!!.toString()
+            photoUrl = firebaseUser.photoUrl.toString()
         }
 
         var displayName = ""
-        if (firebaseUser.displayName != null)
-            displayName = firebaseUser.displayName!!
+        firebaseUser.displayName?.let {
+            displayName = it
+        }
 
-
-        return User(firebaseUser.uid, displayName, firebaseUser.email!!, photoUrl, ArrayList())
+        val email = firebaseUser.email
+        if (email != null)
+            return User(firebaseUser.uid, displayName, email, photoUrl, ArrayList())
+        else
+            throw IllegalArgumentException()
     }
 }

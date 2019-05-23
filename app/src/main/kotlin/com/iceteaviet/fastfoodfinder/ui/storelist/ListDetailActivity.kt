@@ -48,7 +48,7 @@ class ListDetailActivity : BaseActivity(), ListDetailContract.View {
     }
 
     override fun setStores(storeList: List<Store>) {
-        mAdapter!!.setStores(storeList)
+        mAdapter?.setStores(storeList)
     }
 
     override fun setListNameText(listName: String) {

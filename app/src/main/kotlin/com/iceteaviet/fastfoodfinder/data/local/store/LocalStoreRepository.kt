@@ -24,7 +24,7 @@ class LocalStoreRepository : StoreDataSource {
     }
 
 
-    override fun getAllStores(): Single<MutableList<Store>> {
+    override fun getAllStores(): Single<List<Store>> {
         return Single.create(SingleOnSubscribe { emitter ->
             if (cachedStores.isNotEmpty()) {
                 emitter.onSuccess(cachedStores)

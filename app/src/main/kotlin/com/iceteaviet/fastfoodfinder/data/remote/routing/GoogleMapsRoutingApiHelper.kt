@@ -5,6 +5,7 @@ import com.iceteaviet.fastfoodfinder.data.remote.ApiEndPoint
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.utils.e
+import com.iceteaviet.fastfoodfinder.utils.exception.NotFoundException
 import com.iceteaviet.fastfoodfinder.utils.get
 import io.reactivex.Single
 import retrofit2.Call
@@ -26,7 +27,11 @@ class GoogleMapsRoutingApiHelper(googleMapBrowserKey: String) : MapsRoutingApiHe
         return Single.create { emitter ->
             mMapDirectionApi.getDirection(queries).enqueue(object : Callback<MapsDirection> {
                 override fun onResponse(@NonNull call: Call<MapsDirection>, @NonNull response: Response<MapsDirection>) {
-                    emitter.onSuccess(response.body()!!)
+                    val body = response.body()
+                    if (body != null)
+                        emitter.onSuccess(body)
+                    else
+                        emitter.onError(NotFoundException())
                 }
 
                 override fun onFailure(@NonNull call: Call<MapsDirection>, @NonNull t: Throwable) {

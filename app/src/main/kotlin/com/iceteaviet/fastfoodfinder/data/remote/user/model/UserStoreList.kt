@@ -45,7 +45,7 @@ class UserStoreList : Parcelable {
         this.storeIdList = realmListToList(userStoreListEntity.storeIdList)
     }
 
-    fun getStoreIdList(): MutableList<Int>? {
+    fun getStoreIdList(): MutableList<Int> {
         return storeIdList
     }
 

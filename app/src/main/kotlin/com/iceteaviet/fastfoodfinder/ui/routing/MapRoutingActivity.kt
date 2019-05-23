@@ -56,13 +56,13 @@ class MapRoutingActivity : BaseActivity(), MapRoutingContract.View, View.OnClick
 
         presenter.fetchDataFromExtra(intent.extras)
 
-        if (presenter.checkDataValid()) {
+        if (presenter.isRoutingDataValid()) {
             presenter.setupData()
             setupUI()
             setUpMapIfNeeded()
             setupEventListeners()
         } else {
-            Toast.makeText(this@MapRoutingActivity, R.string.get_map_direction_failed, Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.get_map_direction_failed, Toast.LENGTH_SHORT).show()
             finish()
         }
     }
@@ -110,15 +110,15 @@ class MapRoutingActivity : BaseActivity(), MapRoutingContract.View, View.OnClick
     override fun enterPreviewMode() {
         routingButtonContainer.visibility = View.VISIBLE
         topRecyclerView.visibility = View.VISIBLE
-        bottomSheetBehavior!!.isHideable = true
-        bottomSheetBehavior!!.state = BottomSheetBehavior.STATE_HIDDEN
+        bottomSheetBehavior?.isHideable = true
+        bottomSheetBehavior?.state = BottomSheetBehavior.STATE_HIDDEN
     }
 
     override fun exitPreviewMode() {
         routingButtonContainer.visibility = View.GONE
         topRecyclerView.visibility = View.GONE
-        bottomSheetBehavior!!.isHideable = false
-        bottomSheetBehavior!!.state = BottomSheetBehavior.STATE_COLLAPSED
+        bottomSheetBehavior?.isHideable = false
+        bottomSheetBehavior?.state = BottomSheetBehavior.STATE_COLLAPSED
     }
 
     override fun scrollToPosition(directionIndex: Int) {
@@ -131,11 +131,11 @@ class MapRoutingActivity : BaseActivity(), MapRoutingContract.View, View.OnClick
 
     override fun animateMapCamera(location: LatLng, zoomToDetail: Boolean) {
         val zoomLevel = if (zoomToDetail) DETAILED_ZOOM_LEVEL else DEFAULT_ZOOM_LEVEL
-        googleMap!!.animateCamera(CameraUpdateFactory.newLatLngZoom(location, zoomLevel))
+        googleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(location, zoomLevel))
     }
 
     override fun addMapMarker(location: LatLng, title: String, description: String, icon: Int) {
-        googleMap!!.addMarker(MarkerOptions().position(location)
+        googleMap?.addMarker(MarkerOptions().position(location)
                 .title(title)
                 .snippet(description)
                 .icon(BitmapDescriptorFactory.fromResource(icon)))
@@ -149,7 +149,7 @@ class MapRoutingActivity : BaseActivity(), MapRoutingContract.View, View.OnClick
 
             val options = PolylineOptions()
                     .clickable(true)
-                    .color(ContextCompat.getColor(this@MapRoutingActivity, R.color.googleBlue))
+                    .color(ContextCompat.getColor(this, R.color.googleBlue))
                     .width(12f)
                     .geodesic(true)
                     .zIndex(5f)
@@ -160,8 +160,7 @@ class MapRoutingActivity : BaseActivity(), MapRoutingContract.View, View.OnClick
                 builder.include(geoPoint)
             }
 
-            if (currDirection != null)
-                currDirection!!.remove()
+            currDirection?.remove()
 
             currDirection = it.addPolyline(options)
 
@@ -185,6 +184,28 @@ class MapRoutingActivity : BaseActivity(), MapRoutingContract.View, View.OnClick
     }
 
     private fun setupUI() {
+        findViews()
+        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetContainer)
+
+        setSupportActionBar(toolbar)
+        // add back arrow to mToolbar
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+
+        bottomRoutingAdapter = RoutingAdapter(RoutingAdapter.TYPE_FULL)
+        val layoutManager = LinearLayoutManager(this)
+        bottomRecyclerView.layoutManager = layoutManager
+        bottomRecyclerView.adapter = bottomRoutingAdapter
+
+        topRoutingAdapter = RoutingAdapter(RoutingAdapter.TYPE_SHORT)
+        val topLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        topRecyclerView.layoutManager = topLayoutManager
+        topRecyclerView.adapter = topRoutingAdapter
+        val snapHelper = LinearSnapHelper()
+        snapHelper.attachToRecyclerView(topRecyclerView)
+    }
+
+    private fun findViews() {
         txtTravelTime = tv_routing_time
         txtTravelDistance = tv_routing_distance
         txtTravelOverview = tv_routing_overview
@@ -194,27 +215,6 @@ class MapRoutingActivity : BaseActivity(), MapRoutingContract.View, View.OnClick
         prevInstruction = btn_prev_instruction
         nextInstruction = btn_next_instruction
         routingButtonContainer = ll_routing_button_container
-
-        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetContainer)
-
-        setSupportActionBar(toolbar)
-        // add back arrow to mToolbar
-        if (supportActionBar != null) {
-            supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-            supportActionBar!!.setDisplayShowHomeEnabled(true)
-        }
-
-        bottomRoutingAdapter = RoutingAdapter(RoutingAdapter.TYPE_FULL)
-        val layoutManager = LinearLayoutManager(this@MapRoutingActivity)
-        bottomRecyclerView.layoutManager = layoutManager
-        bottomRecyclerView.adapter = bottomRoutingAdapter
-
-        topRoutingAdapter = RoutingAdapter(RoutingAdapter.TYPE_SHORT)
-        val topLayoutManager = LinearLayoutManager(this@MapRoutingActivity, LinearLayoutManager.HORIZONTAL, false)
-        topRecyclerView.layoutManager = topLayoutManager
-        topRecyclerView.adapter = topRoutingAdapter
-        val snapHelper = LinearSnapHelper()
-        snapHelper.attachToRecyclerView(topRecyclerView)
     }
 
     private fun setupEventListeners() {
@@ -235,13 +235,12 @@ class MapRoutingActivity : BaseActivity(), MapRoutingContract.View, View.OnClick
         if (mapFragment === null) {
             mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
             // Check if we were successful in obtaining the map.
-            if (mapFragment !== null) {
-                mapFragment!!.getMapAsync { map ->
-                    if (map != null) {
-                        // The map is verified. It is now safe to manipulate the map.
-                        googleMap = map
-                        presenter.onLoadMap()
-                    }
+
+            mapFragment?.getMapAsync { map ->
+                googleMap = map
+                if (map != null) {
+                    // The map is verified. It is now safe to manipulate the map.
+                    presenter.onGetMapAsync()
                 }
             }
         }

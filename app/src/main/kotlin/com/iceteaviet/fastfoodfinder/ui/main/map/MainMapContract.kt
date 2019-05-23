@@ -16,7 +16,7 @@ interface MainMapContract {
     interface View : BaseView<Presenter> {
         fun setMyLocationEnabled(enabled: Boolean)
         fun requestLocationUpdates()
-        fun getLastLocation()
+        fun requestLastLocation()
         fun animateMapCamera(location: LatLng, zoomToDetail: Boolean)
         fun showWarningMessage(@StringRes stringId: Int)
         fun addMarkersToMap(storeList: MutableList<Store>)

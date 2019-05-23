@@ -28,7 +28,7 @@ import kotlinx.android.synthetic.main.dialog_choose_image.*
 class UpdateCoverImageDialog : DialogFragment(), UpdateCoverContract.View, View.OnClickListener {
     override lateinit var presenter: UpdateCoverContract.Presenter
 
-    private var listener: UpdateCoverImageDialog.OnButtonClickListener? = null
+    private var listener: OnButtonClickListener? = null
 
     fun setOnButtonClickListener(listener: OnButtonClickListener) {
         this.listener = listener
@@ -41,14 +41,14 @@ class UpdateCoverImageDialog : DialogFragment(), UpdateCoverContract.View, View.
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState)
-        dialog.window!!.requestFeature(Window.FEATURE_NO_TITLE)
+        dialog.window?.requestFeature(Window.FEATURE_NO_TITLE)
         dialog.setCanceledOnTouchOutside(false)
         return dialog
     }
 
     override fun onStart() {
         super.onStart()
-        dialog?.window!!.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        dialog?.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
     override fun onViewCreated(@NonNull view: View, savedInstanceState: Bundle?) {
@@ -67,17 +67,17 @@ class UpdateCoverImageDialog : DialogFragment(), UpdateCoverContract.View, View.
     }
 
     private fun setupEventListeners() {
-        btnBrowser!!.setOnClickListener(this)
+        btnBrowser.setOnClickListener(this)
 
-        ivOne!!.setOnClickListener(this)
-        ivTwo!!.setOnClickListener(this)
-        ivThree!!.setOnClickListener(this)
-        ivFour!!.setOnClickListener(this)
-        ivFive!!.setOnClickListener(this)
-        ivSix!!.setOnClickListener(this)
+        ivOne.setOnClickListener(this)
+        ivTwo.setOnClickListener(this)
+        ivThree.setOnClickListener(this)
+        ivFour.setOnClickListener(this)
+        ivFive.setOnClickListener(this)
+        ivSix.setOnClickListener(this)
 
-        btnDone!!.setOnClickListener(this)
-        btnCancel!!.setOnClickListener(this)
+        btnDone.setOnClickListener(this)
+        btnCancel.setOnClickListener(this)
     }
 
     override fun onClick(v: View) {

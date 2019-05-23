@@ -21,7 +21,7 @@ class StoreInfoPresenter : StoreInfoContract.Presenter {
 
     override fun parseNewIntent(bundle: Bundle?) {
         if (bundle != null)
-            bundle?.let { store = it.getParcelable(StoreDetailActivity.KEY_STORE) }
+            store = bundle.getParcelable(StoreDetailActivity.KEY_STORE)
         storeInfoView.updateNewStoreUI(store)
     }
 
@@ -30,7 +30,7 @@ class StoreInfoPresenter : StoreInfoContract.Presenter {
     }
 
     override fun onMakeCallWithPermission() {
-        if (store!!.tel?.isNotEmpty()!!) {
+        if (store!!.tel.isNotEmpty()) {
             storeInfoView.makeNativeCall(store!!.tel)
         } else {
             storeInfoView.showEmptyTelToast()
@@ -38,10 +38,14 @@ class StoreInfoPresenter : StoreInfoContract.Presenter {
     }
 
     override fun onAddToFavoriteButtonClick() {
-        storeInfoView.addStoreToFavorite(store!!)
+        store?.let {
+            storeInfoView.addStoreToFavorite(it)
+        }
     }
 
     override fun onDirectionButtonClick() {
-        storeInfoView.onDirectionChange(store!!)
+        store?.let {
+            storeInfoView.onDirectionChange(it)
+        }
     }
 }

@@ -23,7 +23,7 @@ class GoogleLocationManager private constructor() : AbsLocationManager<LocationL
     override fun initLocationProvider() {
         locationRequest = createLocationRequest()
         googleApiClient = createGoogleApiClient(App.getContext())
-        googleApiClient!!.connect()
+        googleApiClient?.connect()
     }
 
     @SuppressLint("MissingPermission")
@@ -38,7 +38,7 @@ class GoogleLocationManager private constructor() : AbsLocationManager<LocationL
 
     override fun terminate() {
         super.terminate()
-        googleApiClient!!.disconnect()
+        googleApiClient?.disconnect()
         LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this)
     }
 

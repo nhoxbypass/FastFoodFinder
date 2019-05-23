@@ -107,11 +107,9 @@ class CommentActivity : BaseActivity(), CommentContract.View {
 
     private fun setupToolbar() {
         setSupportActionBar(toolbar)
-        if (supportActionBar != null) {
-            supportActionBar!!.setHomeAsUpIndicator(R.drawable.ic_all_close)
-            supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-            supportActionBar!!.setTitle(R.string.add_comment_or_photo)
-        }
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_all_close)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setTitle(R.string.add_comment_or_photo)
     }
 
     private fun setupEventHandlers() {

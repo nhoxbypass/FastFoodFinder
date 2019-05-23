@@ -39,9 +39,12 @@ class ProfilePresenter : BasePresenter<ProfileContract.Presenter>, ProfileContra
 
     // TODO: Check valid list name using FormatUtils
     override fun onCreateNewList(listName: String, iconId: Int) {
+        val currentUser = dataManager.getCurrentUser()
+        if (currentUser == null)
+            return
+
         if (!isListNameExisted(listName)) {
-            val currentUser = dataManager.getCurrentUser()
-            val id = currentUser!!.getUserStoreLists().size //New id = current size
+            val id = currentUser.getUserStoreLists().size // New id = current size
             val list = UserStoreList(id, ArrayList(), iconId, listName)
             currentUser.addStoreList(list)
             dataManager.getRemoteUserDataSource().updateStoreListForUser(currentUser.getUid(), currentUser.getUserStoreLists())
@@ -63,13 +66,19 @@ class ProfilePresenter : BasePresenter<ProfileContract.Presenter>, ProfileContra
     }
 
     override fun onStoreListClick(listPacket: UserStoreList) {
-        profileView.openListDetail(listPacket, dataManager.getCurrentUser()!!.photoUrl)
+        val user = dataManager.getCurrentUser()
+        if (user != null)
+            profileView.openListDetail(listPacket, user.photoUrl)
     }
 
     // TODO: Support dialog asking user want to delete or not
     override fun onStoreListLongClick(position: Int) {
         val currentUser = dataManager.getCurrentUser()
-        currentUser!!.removeStoreList(position)
+
+        if (currentUser == null)
+            return
+
+        currentUser.removeStoreList(position)
         dataManager.getRemoteUserDataSource().updateStoreListForUser(currentUser.getUid(), currentUser.getUserStoreLists())
 
         profileView.setStoreListCount(String.format("(%d)", currentUser.getUserStoreLists().size))
@@ -96,8 +105,8 @@ class ProfilePresenter : BasePresenter<ProfileContract.Presenter>, ProfileContra
                         profileView.setEmail(user.email)
                         loadStoreLists()
 
-                        profileView.setSavedStoreCount(user.getSavedStoreList().getStoreIdList()!!.size)
-                        profileView.setFavouriteStoreCount(user.getFavouriteStoreList().getStoreIdList()!!.size)
+                        profileView.setSavedStoreCount(user.getSavedStoreList().getStoreIdList().size)
+                        profileView.setFavouriteStoreCount(user.getFavouriteStoreList().getStoreIdList().size)
                     }
 
                     override fun onError(e: Throwable) {
@@ -122,7 +131,12 @@ class ProfilePresenter : BasePresenter<ProfileContract.Presenter>, ProfileContra
     }
 
     private fun isListNameExisted(listName: String): Boolean {
-        val currStoreLists = dataManager.getCurrentUser()!!.getUserStoreLists()
+        val user = dataManager.getCurrentUser()
+
+        if (user == null)
+            return true
+
+        val currStoreLists = user.getUserStoreLists()
         for (storeList in currStoreLists) {
             if (listName == storeList.listName) {
                 return true

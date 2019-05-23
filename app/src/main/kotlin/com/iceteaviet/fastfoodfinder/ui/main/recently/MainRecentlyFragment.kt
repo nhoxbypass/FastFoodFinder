@@ -58,7 +58,7 @@ class MainRecentlyFragment : Fragment(), MainRecentlyContract.View, OnStartDragL
     }
 
     override fun setStores(stores: ArrayList<Store>) {
-        mRecentlyAdapter!!.setStores(stores)
+        mRecentlyAdapter?.setStores(stores)
     }
 
     override fun showStoreDetailView(store: Store) {
@@ -76,12 +76,12 @@ class MainRecentlyFragment : Fragment(), MainRecentlyContract.View, OnStartDragL
         mRecentlyAdapter?.let {
             val callback = SimpleItemTouchHelperCallback(it)
             mItemTouchHelper = ItemTouchHelper(callback)
-            mItemTouchHelper!!.attachToRecyclerView(recyclerView)
+            mItemTouchHelper?.attachToRecyclerView(recyclerView)
         }
     }
 
     private fun setupEventHandlers() {
-        mRecentlyAdapter!!.setOnItemClickListener(object : RecentlyStoreAdapter.OnItemClickListener {
+        mRecentlyAdapter?.setOnItemClickListener(object : RecentlyStoreAdapter.OnItemClickListener {
             override fun onClick(store: Store) {
                 presenter.onStoreItemClick(store)
             }
@@ -90,7 +90,7 @@ class MainRecentlyFragment : Fragment(), MainRecentlyContract.View, OnStartDragL
 
     override fun onStartDrag(viewHolder: RecyclerView.ViewHolder) {
         if (isFABChangeClicked)
-            mItemTouchHelper!!.startDrag(viewHolder)
+            mItemTouchHelper?.startDrag(viewHolder)
     }
 
     companion object {

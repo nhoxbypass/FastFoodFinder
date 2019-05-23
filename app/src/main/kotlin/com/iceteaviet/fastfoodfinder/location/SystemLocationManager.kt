@@ -56,13 +56,13 @@ class SystemLocationManager private constructor() : AbsLocationManager<SystemLoc
         val isNetworkEnabled = locationManager!!.isProviderEnabled(android.location.LocationManager.NETWORK_PROVIDER)
 
         if (isNetworkEnabled) {
-            locationManager!!.requestLocationUpdates(android.location.LocationManager.NETWORK_PROVIDER,
+            locationManager?.requestLocationUpdates(android.location.LocationManager.NETWORK_PROVIDER,
                     minTime,
                     minDistance, this)
         }
 
         if (isGPSEnabled) {
-            locationManager!!.requestLocationUpdates(android.location.LocationManager.GPS_PROVIDER,
+            locationManager?.requestLocationUpdates(android.location.LocationManager.GPS_PROVIDER,
                     minTime,
                     minDistance, this)
         }

@@ -71,13 +71,11 @@ class ARCamera(context: Context, surfaceView: SurfaceView) : ViewGroup(context),
 
     override fun surfaceCreated(holder: SurfaceHolder) {
         try {
-            if (camera != null) {
+            camera?.let {
                 val orientation = cameraOrientation
-
-                camera!!.setDisplayOrientation(orientation)
-                camera!!.parameters.setRotation(orientation)
-
-                camera!!.setPreviewDisplay(holder)
+                it.setDisplayOrientation(orientation)
+                it.parameters.setRotation(orientation)
+                it.setPreviewDisplay(holder)
             }
         } catch (exception: IOException) {
             e(exception, TAG)
@@ -86,28 +84,27 @@ class ARCamera(context: Context, surfaceView: SurfaceView) : ViewGroup(context),
     }
 
     override fun surfaceChanged(holder: SurfaceHolder, format: Int, width: Int, height: Int) {
-        if (camera != null) {
-            this.cameraWidth = width
-            this.cameraHeight = height
-
-            val params = camera!!.parameters
+        this.cameraWidth = width
+        this.cameraHeight = height
+        camera?.let {
+            val params = it.parameters
             params.setPreviewSize(previewSize!!.width, previewSize!!.height)
             requestLayout()
 
-            camera!!.parameters = params
-            camera!!.startPreview()
+            it.parameters = params
+            it.startPreview()
 
             generateProjectionMatrix()
         }
     }
 
     override fun surfaceDestroyed(holder: SurfaceHolder) {
-        if (camera != null) {
-            camera!!.setPreviewCallback(null)
-            camera!!.stopPreview()
-            camera!!.release()
-            camera = null
+        camera?.let {
+            it.setPreviewCallback(null)
+            it.stopPreview()
+            it.release()
         }
+        camera = null
     }
 
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
@@ -138,15 +135,15 @@ class ARCamera(context: Context, surfaceView: SurfaceView) : ViewGroup(context),
 
     fun setCamera(camera: Camera?) {
         this.camera = camera
-        if (this.camera != null) {
-            supportedPreviewSizes = this.camera!!.parameters.supportedPreviewSizes
+        if (camera != null) {
+            supportedPreviewSizes = camera.parameters.supportedPreviewSizes
             requestLayout()
-            val params = this.camera!!.parameters
+            val params = camera.parameters
 
             val focusModes = params.supportedFocusModes
             if (focusModes.contains(Camera.Parameters.FOCUS_MODE_AUTO)) {
                 params.focusMode = Camera.Parameters.FOCUS_MODE_AUTO
-                this.camera!!.parameters = params
+                camera.parameters = params
             }
         }
     }

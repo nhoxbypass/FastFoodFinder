@@ -45,7 +45,7 @@ class FacebookAuthHelper(private var loginButton: LoginButton) : AbsAuthHelper<A
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
-        callBackManager!!.onActivityResult(requestCode, resultCode, data)
+        callBackManager?.onActivityResult(requestCode, resultCode, data)
     }
 
     private fun setupFacebookSignInClient(): CallbackManager {
