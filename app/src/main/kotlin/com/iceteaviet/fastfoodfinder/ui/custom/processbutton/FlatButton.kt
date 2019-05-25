@@ -105,15 +105,15 @@ open class FlatButton : AppCompatButton {
     }
 
     protected fun getDrawable(id: Int): Drawable {
-        return resources.getDrawable(id)
+        return getDrawable(id)
     }
 
     protected fun getDimension(id: Int): Float {
-        return resources.getDimension(id)
+        return getDimension(id)
     }
 
     protected fun getColor(id: Int): Int {
-        return resources.getColor(id)
+        return getColor(id)
     }
 
     protected fun getTypedArray(context: Context, attributeSet: AttributeSet, attr: IntArray): TypedArray? {

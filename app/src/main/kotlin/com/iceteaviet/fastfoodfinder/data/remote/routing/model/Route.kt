@@ -23,8 +23,8 @@ class Route constructor(`in`: Parcel) : Parcelable {
         get() = encodedPolyline.getAsJsonPrimitive("points").asString
 
     init {
-        legList = `in`.createTypedArrayList(Leg.CREATOR)
-        summary = `in`.readString()
+        legList = `in`.createTypedArrayList(Leg.CREATOR) ?: ArrayList()
+        summary = `in`.readString() ?: ""
         val parser = JsonParser()
         encodedPolyline = parser.parse(`in`.readString()).asJsonObject
     }

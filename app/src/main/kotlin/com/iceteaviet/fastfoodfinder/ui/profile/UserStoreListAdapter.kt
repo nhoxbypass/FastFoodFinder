@@ -80,13 +80,15 @@ class UserStoreListAdapter internal constructor() : RecyclerView.Adapter<UserSto
                 AlertDialog.Builder(itemView.context)
                         .setTitle(R.string.delete_favourite_location)
                         .setMessage(R.string.are_you_sure)
-                        .setPositiveButton(android.R.string.yes) { dialog, which ->
+                        .setPositiveButton(android.R.string.yes) { dialog, _ ->
                             mListPackets.removeAt(position)
                             notifyDataSetChanged()
                             mOnItemLongClickListener?.onLongClick(position)
+                            dialog.dismiss()
                         }
-                        .setNegativeButton(android.R.string.no) { dialog, which ->
+                        .setNegativeButton(android.R.string.no) { dialog, _ ->
                             //do nothing
+                            dialog.dismiss()
                         }
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .show()

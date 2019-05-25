@@ -1,6 +1,7 @@
 package com.iceteaviet.fastfoodfinder.ui.store.comment
 
 import android.app.Activity
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -93,11 +94,11 @@ class CommentActivity : BaseActivity(), CommentContract.View {
     override fun showCloseConfirmDialog() {
         val noticeDialog = CloseConfirmDialog.newInstance(getString(R.string.close_comment_editor))
         noticeDialog.setOnClickListener(object : CloseConfirmDialog.OnClickListener {
-            override fun onOkClick(dialog: CloseConfirmDialog) {
+            override fun onOkClick(dialog: DialogInterface) {
                 finish()
             }
 
-            override fun onCancelClick(dialog: CloseConfirmDialog) {
+            override fun onCancelClick(dialog: DialogInterface) {
                 dialog.dismiss()
             }
 

@@ -115,21 +115,21 @@ fun getStoreIcon(resources: Resources, type: Int, width: Int, height: Int): Bitm
  * Resize marker icon
  */
 fun resizeMarkerBitmap(imageBitmap: Bitmap, width: Int, height: Int): Bitmap {
-    var width = width
-    var height = height
+    var newWidth = width
+    var newHeight = height
 
     if (width > 100)
-        width = 200 - width
+        newWidth = 200 - width
     if (height > 100)
-        height = 200 - height
+        newHeight = 200 - height
 
     if (width == 0)
-        width = 1
+        newWidth = 1
     if (height == 0)
-        height = 1
+        newHeight = 1
 
 
-    return Bitmap.createScaledBitmap(imageBitmap, width, height, false)
+    return Bitmap.createScaledBitmap(imageBitmap, newWidth, newHeight, false) // Disable filter for faster Bitmap scaling
 }
 
 val STORE_IMAGES = arrayListOf(R.drawable.detail_sample_food_1, R.drawable.detail_sample_food_2,

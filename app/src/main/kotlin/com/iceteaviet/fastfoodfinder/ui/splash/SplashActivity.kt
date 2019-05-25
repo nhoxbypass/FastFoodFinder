@@ -60,11 +60,11 @@ class SplashActivity : BaseActivity(), SplashContract.View {
         AlertDialog.Builder(this)
                 .setTitle(getString(R.string.title_retry_update_db))
                 .setMessage(getString(R.string.msg_retry_update_db))
-                .setPositiveButton(android.R.string.yes) { dialog, which ->
+                .setPositiveButton(android.R.string.yes) { dialog, _ ->
                     dialog.dismiss()
                     presenter.loadStoresFromServer()
                 }
-                .setNegativeButton(android.R.string.no) { dialog, which ->
+                .setNegativeButton(android.R.string.no) { dialog, _ ->
                     dialog.dismiss()
                     exit()
                 }
