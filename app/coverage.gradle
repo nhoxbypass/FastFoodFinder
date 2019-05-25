@@ -7,53 +7,59 @@ android.testOptions.unitTests.all {
     maxHeapSize = "2048m"
 }
 
-apply plugin: 'jacoco'
+apply plugin: 'jacoco-android'
 
 jacoco {
-    toolVersion = "0.7.9"
+    toolVersion = "0.8.3"
 }
 
-def coverageSourceDirs = [
-        '../app/src/main/java'
-]
+//def coverageSourceDirs = [
+//        '../app/src/main/java'
+//]
 
-task jacocoTestReport(type: JacocoReport, dependsOn: "testProdUnitTest") {
-    group = "Reporting"
-
-    description = "Generate Jacoco coverage reports"
-
-    classDirectories = fileTree(
-            dir: '../app/build/intermediates/classes/prod/debug',
-            excludes: ['**/R.class',
-                       '**/R$*.class',
-                       '**/*$ViewInjector*.*',
-                       '**/*$ViewBinder*.*',
-                       '**/*BR*.*',
-                       '**/*Fake*.*',
-                       '**/*App*.*',
-                       '**/BuildConfig.*',
-                       '**/Manifest*.*',
-                       '**/utils/view/**',
-                       '**/activity/**',
-                       '**/adapter/**',
-                       '**/fragment/**',
-                       '**/databinding/**',
-                       '**/*$Lambda$*.*',
-                       '**/*Module.*',
-                       '**/*Dagger*.*',
-                       '**/*MembersInjector*.*',
-                       '**/*_Provide*Factory*.*']
-    )
-
-    additionalSourceDirs = files(coverageSourceDirs)
-    sourceDirectories = files(coverageSourceDirs)
-    executionData = files('../app/build/jacoco/testProdUnitTest.exec')
-
-    reports {
-        xml.enabled = true // human readable
-        html.enabled = true // required by coveralls
-        csv.enabled false
-        xml.destination file("${buildDir}/reports/jacoco/test/jacocoTestReport.xml")
-        html.destination file("${buildDir}/reports/jacoco/test/html")
-    }
+tasks.withType(Test) {
+    jacoco.includeNoLocationClasses = true
 }
+
+task testProdUnitTest { finalizedBy jacocoTestReport }
+
+//task jacocoTestReport(type: JacocoReport, dependsOn: "testProdUnitTest") {
+//    group = "Reporting"
+//
+//    description = "Generate Jacoco coverage reports"
+//
+//    classDirectories = fileTree(
+//            dir: '../app/build/intermediates/classes/prod/debug',
+//            excludes: ['**/R.class',
+//                       '**/R$*.class',
+//                       '**/*$ViewInjector*.*',
+//                       '**/*$ViewBinder*.*',
+//                       '**/*BR*.*',
+//                       '**/*Fake*.*',
+//                       '**/*App*.*',
+//                       '**/BuildConfig.*',
+//                       '**/Manifest*.*',
+//                       '**/utils/view/**',
+//                       '**/activity/**',
+//                       '**/adapter/**',
+//                       '**/fragment/**',
+//                       '**/databinding/**',
+//                       '**/*$Lambda$*.*',
+//                       '**/*Module.*',
+//                       '**/*Dagger*.*',
+//                       '**/*MembersInjector*.*',
+//                       '**/*_Provide*Factory*.*']
+//    )
+//
+//    additionalSourceDirs = files(coverageSourceDirs)
+//    sourceDirectories = files(coverageSourceDirs)
+//    executionData = files('../app/build/jacoco/testProdUnitTest.exec')
+//
+//    reports {
+//        xml.enabled = true // human readable
+//        html.enabled = true // required by coveralls
+//        csv.enabled false
+//        xml.destination file("${buildDir}/reports/jacoco/test/jacocoTestReport.xml")
+//        html.destination file("${buildDir}/reports/jacoco/test/html")
+//    }
+//}
