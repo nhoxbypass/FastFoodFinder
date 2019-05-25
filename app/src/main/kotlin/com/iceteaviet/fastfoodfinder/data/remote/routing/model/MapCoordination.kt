@@ -9,16 +9,16 @@ import com.google.gson.annotations.SerializedName
 /**
  * Created by Genius Doan on 11/11/2016.
  */
-class MapCoordination constructor() : Parcelable {
+class MapCoordination constructor(`in`: Parcel) : Parcelable {
     @SerializedName("lat")
-    var latitude: Double = 0.0
+    val latitude: Double
     @SerializedName("lng")
-    var longitude: Double = 0.0
+    val longitude: Double
 
     val location: LatLng
         get() = LatLng(latitude, longitude)
 
-    constructor(`in`: Parcel) : this() {
+    init {
         latitude = `in`.readDouble()
         longitude = `in`.readDouble()
     }

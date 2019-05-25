@@ -23,11 +23,11 @@ class Comment(var userName: String, var avatar: String, var content: String, var
     }
 
     constructor(parcel: Parcel) : this(
-            parcel.readString() ?: "",
-            parcel.readString() ?: "",
-            parcel.readString() ?: "",
-            parcel.readString() ?: "",
-            parcel.readString() ?: "",
+            parcel.readString(),
+            parcel.readString(),
+            parcel.readString(),
+            parcel.readString(),
+            parcel.readString(),
             parcel.readLong())
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {

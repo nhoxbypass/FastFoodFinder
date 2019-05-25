@@ -32,9 +32,9 @@ class Leg constructor(`in`: Parcel) : Parcelable {
         val parser = JsonParser()
         distance = parser.parse(`in`.readString()).asJsonObject
         duration = parser.parse(`in`.readString()).asJsonObject
-        startAddress = `in`.readString() ?: ""
-        endAddress = `in`.readString() ?: ""
-        stepList = `in`.createTypedArrayList(Step.CREATOR) ?: ArrayList()
+        startAddress = `in`.readString()
+        endAddress = `in`.readString()
+        stepList = `in`.createTypedArrayList(Step.CREATOR)
     }
 
     fun getDistance(): String {

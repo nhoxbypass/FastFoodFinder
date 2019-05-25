@@ -25,8 +25,7 @@ class AppPreferencesHelper(context: Context) : PreferencesHelper {
     }
 
     override fun getString(key: String, defaultValue: String): String {
-        val value = sharedPreferences.getString(key, defaultValue)
-        return value ?: defaultValue
+        return sharedPreferences.getString(key, defaultValue)
     }
 
     override fun putBoolean(key: String, value: Boolean) {
@@ -62,8 +61,7 @@ class AppPreferencesHelper(context: Context) : PreferencesHelper {
     }
 
     override fun getStringSet(key: String, defaultValue: MutableSet<String>): MutableSet<String> {
-        val value = sharedPreferences.getStringSet(key, defaultValue)
-        return value ?: defaultValue
+        return sharedPreferences.getStringSet(key, defaultValue)
     }
 
     override fun getAppLaunchFirstTime(): Boolean {
@@ -87,8 +85,7 @@ class AppPreferencesHelper(context: Context) : PreferencesHelper {
     }
 
     override fun getSearchHistories(): MutableSet<String> {
-        val value = sharedPreferences.getStringSet(KEY_SEARCH_HISTORIES, LinkedHashSet())
-        return value ?: LinkedHashSet()
+        return sharedPreferences.getStringSet(KEY_SEARCH_HISTORIES, LinkedHashSet())
     }
 
     override fun setSearchHistories(set: MutableSet<String>) {

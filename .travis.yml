@@ -27,8 +27,9 @@ before_install:
   - chmod +x gradlew
 
 script:
-  - ./gradlew build jacocoTestReport test -Pbuild=dev
+  - ./gradlew clean build -Pbuild=dev
+  - ./gradlew test -Pbuild=dev
+  - ./gradlew jacocoTestReport coveralls
 
 after_success:
-  - bash <(curl -s https://codecov.io/bash)
   - echo "Build Passed - Branch($TRAVIS_BRANCH) Pull Request($TRAVIS_PULL_REQUEST) Tag($TRAVIS_TAG)"

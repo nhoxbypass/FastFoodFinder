@@ -56,13 +56,13 @@ class LocalStoreRepository : StoreDataSource {
 
             // Write to persistence
             val realm = Realm.getDefaultInstance()
-            realm.executeTransactionAsync {
-                it.where(StoreEntity::class.java)
+            realm.executeTransactionAsync { realm ->
+                realm.where(StoreEntity::class.java)
                         .findAll()
                         .deleteAllFromRealm()
 
                 for (i in storeList.indices) {
-                    val storeEntity = it.createObject(StoreEntity::class.java)
+                    val storeEntity = realm.createObject(StoreEntity::class.java)
                     storeEntity.map(storeList[i])
                 }
             }

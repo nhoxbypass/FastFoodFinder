@@ -35,7 +35,7 @@ class MapRoutingPresenter : BasePresenter<MapRoutingContract.Presenter>, MapRout
 
     override fun subscribe() {
         if (currStore != null)
-            mapRoutingView.setStoreTitle(currStore!!.title)
+            mapRoutingView.setStoreTitle(currStore!!.title!!)
 
         mapRoutingView.setRoutingStepList(stepList)
     }

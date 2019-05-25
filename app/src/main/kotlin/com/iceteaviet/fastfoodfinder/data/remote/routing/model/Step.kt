@@ -38,11 +38,9 @@ class Step constructor(`in`: Parcel) : Parcelable {
         distance = parser.parse(`in`.readString()).asJsonObject
         duration = parser.parse(`in`.readString()).asJsonObject
         startMapCoordination = `in`.readParcelable(MapCoordination::class.java.classLoader)
-                ?: MapCoordination()
         endMapCoordination = `in`.readParcelable(MapCoordination::class.java.classLoader)
-                ?: MapCoordination()
-        instruction = `in`.readString() ?: ""
-        travelMode = `in`.readString() ?: ""
+        instruction = `in`.readString()
+        travelMode = `in`.readString()
         direction = `in`.readString()
     }
 

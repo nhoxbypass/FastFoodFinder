@@ -54,9 +54,7 @@ class Store : Parcelable {
 
     constructor(entity: StoreEntity) : this(entity.id, entity.title, entity.address, entity.latitude.toString(), entity.longitude.toString(), entity.telephone, entity.type)
 
-    protected constructor(`in`: Parcel) : this(`in`.readInt(), `in`.readString()
-            ?: "", `in`.readString() ?: "", `in`.readString() ?: "", `in`.readString()
-            ?: "", `in`.readString() ?: "", `in`.readInt())
+    protected constructor(`in`: Parcel) : this(`in`.readInt(), `in`.readString(), `in`.readString(), `in`.readString(), `in`.readString(), `in`.readString(), `in`.readInt())
 
 
     @Exclude
@@ -90,11 +88,11 @@ class Store : Parcelable {
     override fun hashCode(): Int {
         var result = type
         result = 31 * result + id
-        result = 31 * result + title.hashCode()
-        result = 31 * result + address.hashCode()
-        result = 31 * result + lat.hashCode()
-        result = 31 * result + lng.hashCode()
-        result = 31 * result + tel.hashCode()
+        result = 31 * result + (title.hashCode() ?: 0)
+        result = 31 * result + (address.hashCode() ?: 0)
+        result = 31 * result + (lat.hashCode() ?: 0)
+        result = 31 * result + (lng.hashCode() ?: 0)
+        result = 31 * result + (tel.hashCode() ?: 0)
         result = 31 * result + position.hashCode()
         return result
     }

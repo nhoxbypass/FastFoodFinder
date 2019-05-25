@@ -13,7 +13,7 @@ class MapsDirection constructor(`in`: Parcel) : Parcelable {
     val routeList: List<Route>
 
     init {
-        routeList = `in`.createTypedArrayList(Route.CREATOR) ?: ArrayList()
+        routeList = `in`.createTypedArrayList(Route.CREATOR)
     }
 
     override fun describeContents(): Int {
