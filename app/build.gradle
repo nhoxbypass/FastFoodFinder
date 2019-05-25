@@ -51,6 +51,10 @@ android {
     dexOptions {
         javaMaxHeapSize = "4g"
     }
+
+    lintOptions {
+        abortOnError false
+    }
 }
 
 def build_param = "${build}"
