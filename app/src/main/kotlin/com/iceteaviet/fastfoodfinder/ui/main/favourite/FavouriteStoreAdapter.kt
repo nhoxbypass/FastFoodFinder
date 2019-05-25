@@ -140,20 +140,22 @@ class FavouriteStoreAdapter internal constructor(private val mDragStartListener:
                 AlertDialog.Builder(itemView.context)
                         .setTitle(R.string.delete_favourite_location)
                         .setMessage(R.string.are_you_sure)
-                        .setPositiveButton(android.R.string.yes) { dialog, which ->
+                        .setPositiveButton(android.R.string.yes) { dialog, _ ->
                             mStoreList.removeAt(position)
                             notifyDataSetChanged()
                             Snackbar.make(itemView, R.string.undo, Snackbar.LENGTH_INDEFINITE).show()
+                            dialog.dismiss()
                         }
-                        .setNegativeButton(android.R.string.no) { dialog, which ->
+                        .setNegativeButton(android.R.string.no) { dialog, _ ->
                             //do nothing
+                            dialog.dismiss()
                         }
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .show()
                 true
             }
 
-            itemView.setOnTouchListener { v, event ->
+            itemView.setOnTouchListener { view, event ->
                 if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
                     mDragStartListener.onStartDrag(this)
                 }

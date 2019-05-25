@@ -24,12 +24,12 @@ class LocalUserRepository : UserDataSource {
     override fun insertOrUpdate(user: User) {
         val realm = Realm.getDefaultInstance()
 
-        realm.executeTransactionAsync { realm ->
-            realm.where(UserEntity::class.java)
+        realm.executeTransactionAsync {
+            it.where(UserEntity::class.java)
                     .findAll()
                     .deleteAllFromRealm()
 
-            val userEntity = realm.createObject(UserEntity::class.java)
+            val userEntity = it.createObject(UserEntity::class.java)
             userEntity.map(user)
         }
 
@@ -39,8 +39,8 @@ class LocalUserRepository : UserDataSource {
     override fun updateStoreListForUser(uid: String, storeLists: List<UserStoreList>) {
         val realm = Realm.getDefaultInstance()
 
-        realm.executeTransactionAsync { realm ->
-            val entity = realm.where(UserEntity::class.java)
+        realm.executeTransactionAsync {
+            val entity = it.where(UserEntity::class.java)
                     .equalTo(PARAM_UID, uid)
                     .findFirst()
             if (entity != null) {

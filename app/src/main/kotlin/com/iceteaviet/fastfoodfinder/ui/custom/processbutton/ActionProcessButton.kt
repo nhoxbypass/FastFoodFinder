@@ -44,14 +44,12 @@ class ActionProcessButton : ProcessButton {
     }
 
     private fun init(context: Context) {
-        val res = context.resources
-
         mMode = Mode.ENDLESS
 
-        mColor1 = res.getColor(R.color.holo_blue_bright)
-        mColor2 = res.getColor(R.color.holo_green_light)
-        mColor3 = res.getColor(R.color.holo_orange_light)
-        mColor4 = res.getColor(R.color.holo_red_light)
+        mColor1 = getColor(R.color.holo_blue_bright)
+        mColor2 = getColor(R.color.holo_green_light)
+        mColor3 = getColor(R.color.holo_orange_light)
+        mColor4 = getColor(R.color.holo_red_light)
     }
 
     fun setMode(mode: Mode) {

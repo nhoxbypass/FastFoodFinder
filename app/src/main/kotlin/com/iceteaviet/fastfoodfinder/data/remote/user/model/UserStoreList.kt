@@ -18,7 +18,7 @@ class UserStoreList : Parcelable {
 
     protected constructor(`in`: Parcel) {
         id = `in`.readInt()
-        listName = `in`.readString()
+        listName = `in`.readString() ?: ""
         iconId = `in`.readInt()
         storeIdList = ArrayList()
         `in`.readList(storeIdList, Int::class.java.classLoader)
