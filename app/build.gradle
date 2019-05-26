@@ -77,8 +77,10 @@ android {
 
 def build_param = "${build}"
 if (build_param == "dev") {
+    println "build dev"
     // Exclude all except mock flavor
     android.variantFilter { variant ->
+        println variant.getFlavors().get(0).name
         if (variant.getFlavors().get(0).name != 'mock') {
             variant.setIgnore(true)
         }
