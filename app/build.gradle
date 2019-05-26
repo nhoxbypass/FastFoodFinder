@@ -42,6 +42,7 @@ android {
     productFlavors {
         mock {
             dimension "mock"
+            applicationIdSuffix = ".mock"
             //sourceSets.main.java.srcDirs = ['src/main/kotlin', 'src/mock/kotlin']
         }
         prod {
