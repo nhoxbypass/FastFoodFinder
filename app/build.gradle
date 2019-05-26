@@ -97,6 +97,8 @@ if (build_param == "dev") {
 
 // Exclude mockRelease as it's not needed.
 android.variantFilter { variant ->
+    println "inside variant filter 2"
+    println "genius: " + variant.getFlavors().get(0).name
     if(variant.buildType.name.equals('release')
             && variant.getFlavors().get(0).name == 'mock') {
         variant.setIgnore(true)
