@@ -76,32 +76,20 @@ android {
 }
 
 def build_param = "${build}"
-if (build_param == "dev") {
-    println "build dev"
+if (build_param == "devCI") {
     // Exclude all except mock flavor
     android.variantFilter { variant ->
-        println "inside variant filter"
-        println "genius: " + variant.getFlavors().get(0).name
         if (variant.getFlavors().get(0).name != 'mock') {
             variant.setIgnore(true)
         }
     }
 } else {
-    // Exclude all mock flavor
+    // Exclude mockRelease as it's not needed.
     android.variantFilter { variant ->
-        if (variant.getFlavors().get(0).name == 'mock') {
+        if(variant.buildType.name.equals('release')
+                && variant.getFlavors().get(0).name == 'mock') {
             variant.setIgnore(true)
         }
-    }
-}
-
-// Exclude mockRelease as it's not needed.
-android.variantFilter { variant ->
-    println "inside variant filter 2"
-    println "genius: " + variant.getFlavors().get(0).name
-    if(variant.buildType.name.equals('release')
-            && variant.getFlavors().get(0).name == 'mock') {
-        variant.setIgnore(true)
     }
 }
 
