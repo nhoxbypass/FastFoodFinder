@@ -17,8 +17,7 @@ import com.iceteaviet.fastfoodfinder.data.remote.store.FirebaseStoreRepository
 import com.iceteaviet.fastfoodfinder.data.remote.user.FirebaseUserRepository
 
 /**
- * Enables injection of mock implementations at compile time. This is useful for testing, since it allows us to use
- * a fake instance of the class to isolate the dependencies and run a test hermetically.
+ * Enables injection of production implementations at compile time.
  */
 object Injection {
     fun provideDataManager(): DataManager {
