@@ -67,28 +67,23 @@ class AppPreferencesHelper(context: Context) : PreferencesHelper {
     }
 
     override fun getAppLaunchFirstTime(): Boolean {
-        return sharedPreferences.getBoolean(KEY_APP_LAUNCH_FIRST_TIME, true)
+        return getBoolean(KEY_APP_LAUNCH_FIRST_TIME, true)
     }
 
     override fun setAppLaunchFirstTime(isFirstTime: Boolean) {
-        sharedPreferences.edit()
-                .putBoolean(KEY_APP_LAUNCH_FIRST_TIME, isFirstTime)
-                .apply()
+        putBoolean(KEY_APP_LAUNCH_FIRST_TIME, isFirstTime)
     }
 
     override fun getNumberOfStores(): Int {
-        return sharedPreferences.getInt(KEY_NUMBER_OF_STORES, 0)
+        return getInt(KEY_NUMBER_OF_STORES, 0)
     }
 
     override fun setNumberOfStores(numberOfStores: Int) {
-        sharedPreferences.edit()
-                .putInt(KEY_NUMBER_OF_STORES, numberOfStores)
-                .apply()
+        putInt(KEY_NUMBER_OF_STORES, numberOfStores)
     }
 
     override fun getSearchHistories(): MutableSet<String> {
-        val value = sharedPreferences.getStringSet(KEY_SEARCH_HISTORIES, LinkedHashSet())
-        return value ?: LinkedHashSet()
+        return getStringSet(KEY_SEARCH_HISTORIES, LinkedHashSet())
     }
 
     override fun setSearchHistories(set: MutableSet<String>) {
@@ -96,13 +91,11 @@ class AppPreferencesHelper(context: Context) : PreferencesHelper {
     }
 
     override fun getIfLanguageIsVietnamese(): Boolean {
-        return sharedPreferences.getBoolean(KEY_LANGUAGE, false)
+        return getBoolean(KEY_LANGUAGE, false)
     }
 
     override fun setIfLanguageIsVietnamese(isVietnamese: Boolean) {
-        sharedPreferences.edit()
-                .putBoolean(KEY_LANGUAGE, isVietnamese)
-                .apply()
+        putBoolean(KEY_LANGUAGE, isVietnamese)
     }
     companion object {
         private const val PREFS_NAME = "english_now_android"
