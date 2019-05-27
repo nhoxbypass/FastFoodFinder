@@ -93,6 +93,11 @@ if (build_param == "devCI") {
     }
 }
 
+buildScan {
+    termsOfServiceUrl = 'https://gradle.com/terms-of-service'
+    termsOfServiceAgree = 'yes'
+}
+
 //coveralls {
 //    jacocoReportPath = "${buildDir}/reports/jacoco/test/jacocoTestReport.xml"
 //}

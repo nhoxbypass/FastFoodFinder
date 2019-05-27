@@ -27,6 +27,7 @@ before_install:
   - chmod +x gradlew
 
 script:
+  - ./gradlew build -Pbuild=devCI --scan
   - ./gradlew build jacocoTestReport test -Pbuild=devCI
 
 after_success:
