@@ -80,7 +80,8 @@ if (build_param == "devCI") {
     // Exclude all except mock flavor
     android.variantFilter { variant ->
         println "genius"
-        println variant
+        println variant.getFlavors().get(0)
+        println variant.buildType
         if (variant.getFlavors().get(0).name != 'mock') {
             variant.setIgnore(true)
         }
@@ -89,7 +90,8 @@ if (build_param == "devCI") {
     // Exclude mockRelease as it's not needed.
     android.variantFilter { variant ->
         println "genius"
-        println variant
+        println variant.getFlavors().get(0)
+        println variant.buildType
         if(variant.buildType.name.equals('release')
                 && variant.getFlavors().get(0).name == 'mock') {
             variant.setIgnore(true)
