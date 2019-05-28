@@ -10,43 +10,39 @@ import android.content.SharedPreferences
  * Entry point contains methods that help interacting with application's SharedPreferences
  */
 
-class AppPreferencesHelper(context: Context) : PreferencesHelper {
+class FakePreferencesHelper : PreferencesHelper {
 
-    private val sharedPreferences: SharedPreferences
+    private val preferenceMap: HashMap<String, Any>
 
     init {
-        sharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        preferenceMap = HashMap()
     }
 
     override fun putString(key: String, value: String) {
-        sharedPreferences.edit()
-                .putString(key, value)
-                .apply()
+        preferenceMap.put(key, value)
     }
 
     override fun getString(key: String, defaultValue: String): String {
-        val value = sharedPreferences.getString(key, defaultValue)
+        val value = preferenceMap.get(key) as String?
         return value ?: defaultValue
     }
 
     override fun putBoolean(key: String, value: Boolean) {
-        sharedPreferences.edit()
-                .putBoolean(key, value)
-                .apply()
+        preferenceMap.put(key, value)
     }
 
     override fun getBoolean(key: String, defaultValue: Boolean): Boolean {
-        return sharedPreferences.getBoolean(key, defaultValue)
+        val value = preferenceMap.get(key) as Boolean?
+        return value ?: defaultValue
     }
 
     override fun putInt(key: String, value: Int) {
-        sharedPreferences.edit()
-                .putInt(key, value)
-                .apply()
+        preferenceMap.put(key, value)
     }
 
     override fun getInt(key: String, defaultValue: Int): Int {
-        return sharedPreferences.getInt(key, defaultValue)
+        val value = preferenceMap.get(key) as Int?
+        return value ?: defaultValue
     }
 
     override fun setStringSet(key: String, set: MutableSet<String>) {
@@ -56,13 +52,11 @@ class AppPreferencesHelper(context: Context) : PreferencesHelper {
         putInt(key + "_size", set.size)
 
         // Then store the StringSet itself
-        sharedPreferences.edit()
-                .putStringSet(key, set)
-                .apply()
+        preferenceMap.put(key, set)
     }
 
     override fun getStringSet(key: String, defaultValue: MutableSet<String>): MutableSet<String> {
-        val value = sharedPreferences.getStringSet(key, defaultValue)
+        val value = preferenceMap.get(key) as MutableSet<String>?
         return value ?: defaultValue
     }
 

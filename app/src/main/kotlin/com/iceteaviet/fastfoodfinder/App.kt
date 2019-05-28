@@ -2,16 +2,7 @@ package com.iceteaviet.fastfoodfinder
 
 import android.content.Context
 import androidx.multidex.MultiDexApplication
-import com.google.firebase.database.FirebaseDatabase
-import com.iceteaviet.fastfoodfinder.data.AppDataManager
 import com.iceteaviet.fastfoodfinder.data.DataManager
-import com.iceteaviet.fastfoodfinder.data.auth.FirebaseClientAuth
-import com.iceteaviet.fastfoodfinder.data.local.store.LocalStoreRepository
-import com.iceteaviet.fastfoodfinder.data.local.user.LocalUserRepository
-import com.iceteaviet.fastfoodfinder.data.prefs.AppPreferencesHelper
-import com.iceteaviet.fastfoodfinder.data.remote.routing.GoogleMapsRoutingApiHelper
-import com.iceteaviet.fastfoodfinder.data.remote.store.FirebaseStoreRepository
-import com.iceteaviet.fastfoodfinder.data.remote.user.FirebaseUserRepository
 import com.iceteaviet.fastfoodfinder.location.GoogleLocationManager
 import com.iceteaviet.fastfoodfinder.location.SystemLocationManager
 import com.iceteaviet.fastfoodfinder.utils.initLogger
@@ -45,19 +36,7 @@ class App : MultiDexApplication() {
 
         initLogger()
 
-        val localStoreDataSource = LocalStoreRepository()
-        val remoteStoreDataSource = FirebaseStoreRepository(FirebaseDatabase.getInstance().reference)
-
-        val localUserDataSource = LocalUserRepository()
-        val remoteUserDataSource = FirebaseUserRepository(FirebaseDatabase.getInstance().reference)
-
-        val mapsRoutingApiHelper = GoogleMapsRoutingApiHelper(getString(R.string.google_maps_browser_key))
-        val clientAuth = FirebaseClientAuth()
-        val preferencesHelper = AppPreferencesHelper(this)
-
-        dataManager = AppDataManager(localStoreDataSource, remoteStoreDataSource, clientAuth,
-                localUserDataSource, remoteUserDataSource,
-                mapsRoutingApiHelper, preferencesHelper)
+        dataManager = Injection.provideDataManager()
     }
 
     override fun onTerminate() {
