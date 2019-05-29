@@ -47,7 +47,6 @@ class StoreDetailActivity : BaseActivity(), StoreDetailContract.View, LocationLi
         super.onCreate(savedInstanceState)
 
         presenter = StoreDetailPresenter(App.getDataManager(), this)
-        presenter.handleExtras(intent)
 
         setupUI()
         setupEventHandlers()
@@ -55,6 +54,7 @@ class StoreDetailActivity : BaseActivity(), StoreDetailContract.View, LocationLi
 
     override fun onResume() {
         super.onResume()
+        presenter.handleExtras(intent.getParcelableExtra(KEY_STORE))
         presenter.subscribe()
         if (isLocationPermissionGranted(this)) {
             presenter.onLocationPermissionGranted()

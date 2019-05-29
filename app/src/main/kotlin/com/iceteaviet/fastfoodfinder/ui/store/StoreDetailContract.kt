@@ -1,6 +1,6 @@
 package com.iceteaviet.fastfoodfinder.ui.store
 
-import android.content.Intent
+import android.os.Parcelable
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Comment
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
@@ -27,7 +27,7 @@ interface StoreDetailContract {
 
     interface Presenter : com.iceteaviet.fastfoodfinder.ui.base.Presenter {
         fun onLocationPermissionGranted()
-        fun handleExtras(intent: Intent?)
+        fun handleExtras(extras: Parcelable?)
         fun onAddNewComment(comment: Comment?)
         fun onCurrLocationChanged(latitude: Double, longitude: Double)
         fun onCommentButtonClick()

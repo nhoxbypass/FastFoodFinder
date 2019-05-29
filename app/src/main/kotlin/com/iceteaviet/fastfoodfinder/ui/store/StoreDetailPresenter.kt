@@ -1,6 +1,6 @@
 package com.iceteaviet.fastfoodfinder.ui.store
 
-import android.content.Intent
+import android.os.Parcelable
 import com.google.android.gms.maps.model.LatLng
 import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.routing.GoogleMapsRoutingApiHelper
@@ -58,9 +58,9 @@ class StoreDetailPresenter : BasePresenter<StoreDetailContract.Presenter>, Store
         storeDetailView.requestLocationUpdates()
     }
 
-    override fun handleExtras(intent: Intent?) {
-        if (intent != null) {
-            currStore = intent.getParcelableExtra(StoreDetailActivity.KEY_STORE)
+    override fun handleExtras(extras: Parcelable?) {
+        if (extras != null) {
+            currStore = extras as Store?
 
             if (currStore == null)
                 storeDetailView.exit()

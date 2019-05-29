@@ -8,12 +8,20 @@ import com.google.gson.annotations.SerializedName
 /**
  * Created by Genius Doan on 11/11/2016.
  */
-class MapsDirection constructor(`in`: Parcel) : Parcelable {
+class MapsDirection : Parcelable {
     @SerializedName("routes")
-    val routeList: List<Route>
+    var routeList: List<Route>
 
-    init {
+    constructor() {
+        routeList = ArrayList()
+    }
+
+    constructor(`in`: Parcel) : this() {
         routeList = `in`.createTypedArrayList(Route.CREATOR) ?: ArrayList()
+    }
+
+    constructor(routeList: List<Route>) : this() {
+        this.routeList = routeList
     }
 
     override fun describeContents(): Int {
