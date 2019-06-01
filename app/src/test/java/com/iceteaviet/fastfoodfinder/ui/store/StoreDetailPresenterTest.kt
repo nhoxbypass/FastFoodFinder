@@ -31,7 +31,7 @@ class StoreDetailPresenterTest {
      * perform further actions or assertions on them.
      */
     @Captor
-    private lateinit var getStoreCallbackCaptor: ArgumentCaptor<SingleObserver<MutableList<Comment>>>
+    private lateinit var getStoreCallbackCaptor: ArgumentCaptor<SingleObserver<List<Comment>>>
 
     private lateinit var storeDetailPresenter: StoreDetailPresenter
 
@@ -55,7 +55,7 @@ class StoreDetailPresenterTest {
         verify(storeDetailView).setToolbarTitle(store.title)
 
         // Then store is loaded from model, callback is captured and progress indicator is shown
-        verify(dataManager).getRemoteStoreDataSource().getComments(store.id.toString())
+        verify(dataManager).getComments(store.id.toString())
                 .subscribe(getStoreCallbackCaptor.capture())
         //verify(storeDetailView).setProgressIndicator(true)
 
@@ -64,7 +64,7 @@ class StoreDetailPresenterTest {
 
         // Then progress indicator is hidden and title and description are shown in UI
         //verify(storeDetailView).setProgressIndicator(false)
-        verify(storeDetailView).setStoreComments(comments.asReversed())
+        verify(storeDetailView).setStoreComments(comments.toMutableList().asReversed())
     }
 
     @Test
@@ -104,6 +104,6 @@ class StoreDetailPresenterTest {
         private const val STORE_TEL = "012345678965"
         private const val STORE_TYPE = StoreType.TYPE_CIRCLE_K
 
-        private val comments = getFakeComments().toMutableList()
+        private val comments = getFakeComments()
     }
 }

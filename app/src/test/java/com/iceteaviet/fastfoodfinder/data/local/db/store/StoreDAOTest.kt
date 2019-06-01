@@ -1,4 +1,4 @@
-package com.iceteaviet.fastfoodfinder.data.local.user
+package com.iceteaviet.fastfoodfinder.data.local.db.store
 
 import org.junit.Before
 import org.mockito.MockitoAnnotations
@@ -6,8 +6,8 @@ import org.mockito.MockitoAnnotations
 /**
  * Created by tom on 2019-05-29.
  */
-class LocalUserRepositoryTest {
-    private var localUserRepository: LocalUserRepository? = null
+class StoreDAOTest {
+    private var storeDAO: StoreDAO? = null
 
     @Before
     fun setupPreferencesHelper() {
@@ -16,6 +16,6 @@ class LocalUserRepositoryTest {
         MockitoAnnotations.initMocks(this)
 
         // Get a reference to the class under test
-        localUserRepository = LocalUserRepository()
+        storeDAO = StoreDAO()
     }
 }

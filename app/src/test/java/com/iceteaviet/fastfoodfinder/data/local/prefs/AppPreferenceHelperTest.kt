@@ -1,6 +1,5 @@
-package com.iceteaviet.fastfoodfinder.data.remote.store
+package com.iceteaviet.fastfoodfinder.data.local.prefs
 
-import com.google.firebase.database.DatabaseReference
 import org.junit.Before
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
@@ -8,11 +7,11 @@ import org.mockito.MockitoAnnotations
 /**
  * Created by tom on 2019-05-29.
  */
-class FirebaseStoreRepositoryTest {
-    private var firebaseStoreRepository: FirebaseStoreRepository? = null
+class AppPreferencesHelperTest {
+    private var appPreferencesHelper: AppPreferencesHelper? = null
 
     @Mock
-    private val databaseRef: DatabaseReference? = null
+    private lateinit var preferencesWrapper: AppPreferencesWrapper
 
     @Before
     fun setupPreferencesHelper() {
@@ -21,6 +20,6 @@ class FirebaseStoreRepositoryTest {
         MockitoAnnotations.initMocks(this)
 
         // Get a reference to the class under test
-        firebaseStoreRepository = FirebaseStoreRepository(databaseRef!!)
+        appPreferencesHelper = AppPreferencesHelper(preferencesWrapper)
     }
 }

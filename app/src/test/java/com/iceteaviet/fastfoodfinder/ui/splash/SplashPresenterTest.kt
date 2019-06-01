@@ -12,10 +12,10 @@ import org.mockito.MockitoAnnotations
 class SplashPresenterTest {
 
     @Mock
-    private val splashView: SplashContract.View? = null
+    private lateinit var splashView: SplashContract.View
 
     @Mock
-    private val dataManager: DataManager? = null
+    private lateinit var dataManager: DataManager
 
     private lateinit var splashPresenter: SplashPresenter
 
@@ -26,7 +26,7 @@ class SplashPresenterTest {
         MockitoAnnotations.initMocks(this)
 
         // Get a reference to the class under test
-        splashPresenter = SplashPresenter(dataManager!!, splashView!!)
+        splashPresenter = SplashPresenter(dataManager, splashView)
     }
 
     @Test

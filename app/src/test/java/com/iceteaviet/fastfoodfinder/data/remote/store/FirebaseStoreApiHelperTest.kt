@@ -1,6 +1,6 @@
-package com.iceteaviet.fastfoodfinder.data.prefs
+package com.iceteaviet.fastfoodfinder.data.remote.store
 
-import android.content.Context
+import com.google.firebase.database.DatabaseReference
 import org.junit.Before
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
@@ -8,11 +8,11 @@ import org.mockito.MockitoAnnotations
 /**
  * Created by tom on 2019-05-29.
  */
-class AppPreferencesHelperTest {
-    private var appPreferencesHelper: AppPreferencesHelper? = null
+class FirebaseStoreApiHelperTest {
+    private var firebaseStoreRepository: FirebaseStoreApiHelper? = null
 
     @Mock
-    private val context: Context? = null
+    private lateinit var databaseRef: DatabaseReference
 
     @Before
     fun setupPreferencesHelper() {
@@ -21,6 +21,6 @@ class AppPreferencesHelperTest {
         MockitoAnnotations.initMocks(this)
 
         // Get a reference to the class under test
-        appPreferencesHelper = AppPreferencesHelper(context!!)
+        firebaseStoreRepository = FirebaseStoreApiHelper(databaseRef)
     }
 }

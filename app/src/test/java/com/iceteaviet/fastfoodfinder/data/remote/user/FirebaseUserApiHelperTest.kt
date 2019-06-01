@@ -8,11 +8,11 @@ import org.mockito.MockitoAnnotations
 /**
  * Created by tom on 2019-05-29.
  */
-class FirebaseUserRepositoryTest {
-    private var firebaseUserRepository: FirebaseUserRepository? = null
+class FirebaseUserApiHelperTest {
+    private var firebaseUserRepository: FirebaseUserApiHelper? = null
 
     @Mock
-    private val databaseRef: DatabaseReference? = null
+    private lateinit var databaseRef: DatabaseReference
 
     @Before
     fun setupPreferencesHelper() {
@@ -21,6 +21,6 @@ class FirebaseUserRepositoryTest {
         MockitoAnnotations.initMocks(this)
 
         // Get a reference to the class under test
-        firebaseUserRepository = FirebaseUserRepository(databaseRef!!)
+        firebaseUserRepository = FirebaseUserApiHelper(databaseRef)
     }
 }
