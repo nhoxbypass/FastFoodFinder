@@ -10,11 +10,13 @@ import io.reactivex.Single
 
 /**
  * Created by tom on 7/15/18.
+ *
+ * Main entry point for accessing user data.
  */
-interface UserDataSource {
-    fun insertOrUpdate(name: String, email: String, photoUrl: String, uid: String, storeLists: List<UserStoreList>)
+interface UserRepository {
+    fun insertOrUpdateUser(name: String, email: String, photoUrl: String, uid: String, storeLists: List<UserStoreList>)
 
-    fun insertOrUpdate(user: User)
+    fun insertOrUpdateUser(user: User)
 
     fun updateStoreListForUser(uid: String, storeLists: List<UserStoreList>)
 

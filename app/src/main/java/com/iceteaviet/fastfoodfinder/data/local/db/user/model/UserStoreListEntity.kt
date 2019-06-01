@@ -1,4 +1,4 @@
-package com.iceteaviet.fastfoodfinder.data.local.user.model
+package com.iceteaviet.fastfoodfinder.data.local.db.user.model
 
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList
 

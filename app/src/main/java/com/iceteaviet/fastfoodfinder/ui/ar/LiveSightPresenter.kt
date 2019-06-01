@@ -58,7 +58,7 @@ class LiveSightPresenter : BasePresenter<LiveSightContract.Presenter>, LiveSight
 
     override fun onCurrLocationChanged(location: Location) {
         liveSightView.updateLatestLocation(location)
-        dataManager.getLocalStoreDataSource().getStoreInBounds(location.latitude - RADIUS,
+        dataManager.getStoreInBounds(location.latitude - RADIUS,
                 location.longitude - RADIUS,
                 location.latitude + RADIUS,
                 location.longitude + RADIUS)

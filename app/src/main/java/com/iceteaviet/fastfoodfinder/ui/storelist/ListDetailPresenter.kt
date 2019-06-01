@@ -32,7 +32,7 @@ class ListDetailPresenter : BasePresenter<ListDetailContract.Presenter>, ListDet
             listDetailView.loadStoreIcon(getStoreListIconDrawableRes(it.iconId))
 
             //add list store to mAdapter here
-            dataManager.getLocalStoreDataSource().findStoresByIds(it.getStoreIdList())
+            dataManager.findStoresByIds(it.getStoreIdList())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(object : SingleObserver<List<Store>> {

@@ -74,12 +74,13 @@ class SplashPresenter : BasePresenter<SplashContract.Presenter>, SplashContract.
     }
 
     private fun onAppOpenFirstTime() {
-        loadStoresFromServerInternal()
+        val disposable = loadStoresFromServerInternal()
                 .subscribe {
                     dataManager.getPreferencesHelper().setAppLaunchFirstTime(false)
                     splashView.openLoginScreen()
                 }
-                .dispose()
+
+        compositeDisposable.add(disposable)
     }
 
     /**
@@ -98,7 +99,7 @@ class SplashPresenter : BasePresenter<SplashContract.Presenter>, SplashContract.
                         override fun onSuccess(storeList: List<Store>) {
                             val filteredStoreList = filterInvalidData(storeList.toMutableList())
                             dataManager.getPreferencesHelper().setNumberOfStores(filteredStoreList.size)
-                            dataManager.getLocalStoreDataSource().setStores(filteredStoreList)
+                            dataManager.setStores(filteredStoreList)
 
                             emitter.onComplete()
                         }
@@ -113,7 +114,7 @@ class SplashPresenter : BasePresenter<SplashContract.Presenter>, SplashContract.
 
     private fun onUserNotSignedIn() {
         // Warm up store data
-        dataManager.getLocalStoreDataSource().getAllStores()
+        dataManager.getAllStores()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : SingleObserver<List<Store>> {
@@ -138,8 +139,8 @@ class SplashPresenter : BasePresenter<SplashContract.Presenter>, SplashContract.
     private fun onUserSignedIn(userUid: String) {
         // User still signed in, fetch newest user data from server
         // TODO: Support timeout
-        Single.zip(dataManager.getRemoteUserDataSource().getUser(userUid),
-                dataManager.getLocalStoreDataSource().getAllStores(),
+        Single.zip(dataManager.getUser(userUid),
+                dataManager.getAllStores(),
                 BiFunction<User, List<Store>, Pair<User, List<Store>>> { user, storeList ->
                     Pair(user, storeList)
                 })

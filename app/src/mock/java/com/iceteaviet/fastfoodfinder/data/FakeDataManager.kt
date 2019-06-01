@@ -1,37 +1,105 @@
 package com.iceteaviet.fastfoodfinder.data
 
+import android.util.Pair
 import com.google.firebase.auth.AuthCredential
 import com.iceteaviet.fastfoodfinder.data.auth.ClientAuth
-import com.iceteaviet.fastfoodfinder.data.domain.store.StoreDataSource
-import com.iceteaviet.fastfoodfinder.data.domain.user.UserDataSource
-import com.iceteaviet.fastfoodfinder.data.prefs.PreferencesHelper
+import com.iceteaviet.fastfoodfinder.data.domain.store.StoreRepository
+import com.iceteaviet.fastfoodfinder.data.domain.user.UserRepository
+import com.iceteaviet.fastfoodfinder.data.local.prefs.PreferencesHelper
 import com.iceteaviet.fastfoodfinder.data.remote.routing.MapsRoutingApiHelper
+import com.iceteaviet.fastfoodfinder.data.remote.store.model.Comment
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
+import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList
+import io.reactivex.Observable
 import io.reactivex.Single
 
 /**
  * Created by tom on 2019-05-26.
  */
 
-class FakeDataManager(private val localStoreDataSource: StoreDataSource, private val remoteStoreDataSource: StoreDataSource,
+class FakeDataManager(private val storeRepository: StoreRepository, private val userRepository: UserRepository,
                       private val clientAuth: ClientAuth,
-                      private val localUserDataSource: UserDataSource, private val remoteUserDataSource: UserDataSource,
                       private val mapsRoutingApiHelper: MapsRoutingApiHelper, private val preferencesHelper: PreferencesHelper) : DataManager {
-    override fun getLocalStoreDataSource(): StoreDataSource {
-        return localStoreDataSource
+
+    override fun getAllStores(): Single<List<Store>> {
+        return storeRepository.getAllStores()
     }
 
-    override fun getRemoteStoreDataSource(): StoreDataSource {
-        return remoteStoreDataSource
+    override fun setStores(storeList: List<Store>) {
+        storeRepository.setStores(storeList)
     }
 
-    override fun getLocalUserDataSource(): UserDataSource {
-        return localUserDataSource
+    override fun getStoreInBounds(minLat: Double, minLng: Double, maxLat: Double, maxLng: Double): Single<MutableList<Store>> {
+        return storeRepository.getStoreInBounds(minLat, minLng, maxLat, maxLng)
     }
 
-    override fun getRemoteUserDataSource(): UserDataSource {
-        return remoteUserDataSource
+    override fun findStores(queryString: String): Single<MutableList<Store>> {
+        return storeRepository.findStores(queryString)
+    }
+
+    override fun findStoresByCustomAddress(customQuerySearch: List<String>): Single<MutableList<Store>> {
+        return storeRepository.findStoresByCustomAddress(customQuerySearch)
+    }
+
+    override fun findStoresBy(key: String, value: Int): Single<MutableList<Store>> {
+        return storeRepository.findStoresBy(key, value)
+    }
+
+    override fun findStoresBy(key: String, values: List<Int>): Single<MutableList<Store>> {
+        return storeRepository.findStoresBy(key, values)
+    }
+
+    override fun findStoresByType(type: Int): Single<MutableList<Store>> {
+        return storeRepository.findStoresByType(type)
+    }
+
+    override fun findStoresById(id: Int): Single<MutableList<Store>> {
+        return storeRepository.findStoresById(id)
+    }
+
+    override fun findStoresByIds(ids: List<Int>): Single<MutableList<Store>> {
+        return storeRepository.findStoresByIds(ids)
+    }
+
+    override fun deleteAllStores() {
+        return storeRepository.deleteAllStores()
+    }
+
+    override fun getComments(storeId: String): Single<List<Comment>> {
+        return storeRepository.getComments(storeId)
+    }
+
+    override fun insertOrUpdateComment(storeId: String, comment: Comment) {
+        return storeRepository.insertOrUpdateComment(storeId, comment)
+    }
+
+    override fun insertOrUpdateUser(name: String, email: String, photoUrl: String, uid: String, storeLists: List<UserStoreList>) {
+        return userRepository.insertOrUpdateUser(name, email, photoUrl, uid, storeLists)
+    }
+
+    override fun insertOrUpdateUser(user: User) {
+        return userRepository.insertOrUpdateUser(user)
+    }
+
+    override fun updateStoreListForUser(uid: String, storeLists: List<UserStoreList>) {
+        return userRepository.updateStoreListForUser(uid, storeLists)
+    }
+
+    override fun getUser(uid: String): Single<User> {
+        return userRepository.getUser(uid)
+    }
+
+    override fun isUserExists(uid: String): Single<Boolean> {
+        return userRepository.isUserExists(uid)
+    }
+
+    override fun subscribeFavouriteStoresOfUser(uid: String): Observable<Pair<Int, Int>> {
+        return userRepository.subscribeFavouriteStoresOfUser(uid)
+    }
+
+    override fun unsubscribeFavouriteStoresOfUser(uid: String) {
+        return userRepository.unsubscribeFavouriteStoresOfUser(uid)
     }
 
     override fun getMapsRoutingApiHelper(): MapsRoutingApiHelper {

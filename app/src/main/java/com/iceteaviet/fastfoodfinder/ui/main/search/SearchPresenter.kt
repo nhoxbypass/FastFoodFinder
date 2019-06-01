@@ -44,8 +44,7 @@ class SearchPresenter : BasePresenter<SearchContract.Presenter>, SearchContract.
     }
 
     override fun onUpdateSearchList(searchText: String) {
-        dataManager.getLocalStoreDataSource()
-                .findStores(searchText)
+        dataManager.findStores(searchText)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : SingleObserver<List<Store>> {
@@ -83,8 +82,7 @@ class SearchPresenter : BasePresenter<SearchContract.Presenter>, SearchContract.
         val stores: MutableList<Store> = ArrayList()
         for (history in searchHistories) {
             if (history.contains(Constant.SEARCH_STORE_PREFIX)) {
-                stores.addAll(dataManager.getLocalStoreDataSource()
-                        .findStoresById(history.substring(Constant.SEARCH_STORE_PREFIX_LEN).toInt())
+                stores.addAll(dataManager.findStoresById(history.substring(Constant.SEARCH_STORE_PREFIX_LEN).toInt())
                         .blockingGet())
             } else {
                 // Add fake store that represent a search query

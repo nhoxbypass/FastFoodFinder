@@ -5,42 +5,56 @@ import com.iceteaviet.fastfoodfinder.data.AppDataManager
 import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.auth.ClientAuth
 import com.iceteaviet.fastfoodfinder.data.auth.FirebaseClientAuth
-import com.iceteaviet.fastfoodfinder.data.domain.store.StoreDataSource
-import com.iceteaviet.fastfoodfinder.data.domain.user.UserDataSource
-import com.iceteaviet.fastfoodfinder.data.local.store.LocalStoreRepository
-import com.iceteaviet.fastfoodfinder.data.local.user.LocalUserRepository
-import com.iceteaviet.fastfoodfinder.data.prefs.AppPreferencesHelper
-import com.iceteaviet.fastfoodfinder.data.prefs.PreferencesHelper
+import com.iceteaviet.fastfoodfinder.data.domain.store.AppStoreRepository
+import com.iceteaviet.fastfoodfinder.data.domain.store.StoreRepository
+import com.iceteaviet.fastfoodfinder.data.domain.user.AppUserRepository
+import com.iceteaviet.fastfoodfinder.data.domain.user.UserRepository
+import com.iceteaviet.fastfoodfinder.data.local.db.store.StoreDAO
+import com.iceteaviet.fastfoodfinder.data.local.db.store.StoreDataSource
+import com.iceteaviet.fastfoodfinder.data.local.db.user.UserDAO
+import com.iceteaviet.fastfoodfinder.data.local.db.user.UserDataSource
+import com.iceteaviet.fastfoodfinder.data.local.prefs.AppPreferencesHelper
+import com.iceteaviet.fastfoodfinder.data.local.prefs.AppPreferencesWrapper
+import com.iceteaviet.fastfoodfinder.data.local.prefs.PreferencesHelper
 import com.iceteaviet.fastfoodfinder.data.remote.routing.GoogleMapsRoutingApiHelper
 import com.iceteaviet.fastfoodfinder.data.remote.routing.MapsRoutingApiHelper
-import com.iceteaviet.fastfoodfinder.data.remote.store.FirebaseStoreRepository
-import com.iceteaviet.fastfoodfinder.data.remote.user.FirebaseUserRepository
+import com.iceteaviet.fastfoodfinder.data.remote.store.FirebaseStoreApiHelper
+import com.iceteaviet.fastfoodfinder.data.remote.store.StoreApi
+import com.iceteaviet.fastfoodfinder.data.remote.user.FirebaseUserApiHelper
+import com.iceteaviet.fastfoodfinder.data.remote.user.UserApi
 
 /**
  * Enables injection of production implementations at compile time.
  */
 object Injection {
     fun provideDataManager(): DataManager {
-        return AppDataManager(provideLocalStoreDataSource(), provideRemoteStoreDataSource(),
+        return AppDataManager(provideStoreRepository(), provideUserRepository(),
                 provideAuthClient(),
-                provideLocalUserDataSource(), provideRemoteUserDataSource(),
                 provideRoutingApiHelper(), providePreferenceHelper())
     }
 
+    fun provideStoreRepository(): StoreRepository {
+        return AppStoreRepository(provideRemoteStoreDataSource(), provideLocalStoreDataSource())
+    }
+
+    fun provideUserRepository(): UserRepository {
+        return AppUserRepository(provideRemoteUserDataSource(), provideLocalUserDataSource())
+    }
+
     fun provideLocalStoreDataSource(): StoreDataSource {
-        return LocalStoreRepository()
+        return StoreDAO()
     }
 
     fun provideLocalUserDataSource(): UserDataSource {
-        return LocalUserRepository()
+        return UserDAO()
     }
 
-    fun provideRemoteStoreDataSource(): StoreDataSource {
-        return FirebaseStoreRepository(FirebaseDatabase.getInstance().reference)
+    fun provideRemoteStoreDataSource(): StoreApi {
+        return FirebaseStoreApiHelper(FirebaseDatabase.getInstance().reference)
     }
 
-    fun provideRemoteUserDataSource(): UserDataSource {
-        return FirebaseUserRepository(FirebaseDatabase.getInstance().reference)
+    fun provideRemoteUserDataSource(): UserApi {
+        return FirebaseUserApiHelper(FirebaseDatabase.getInstance().reference)
     }
 
     fun provideRoutingApiHelper(): MapsRoutingApiHelper {
@@ -48,7 +62,7 @@ object Injection {
     }
 
     fun providePreferenceHelper(): PreferencesHelper {
-        return AppPreferencesHelper(App.getContext())
+        return AppPreferencesHelper(AppPreferencesWrapper(App.getContext()))
     }
 
     fun provideAuthClient(): ClientAuth {

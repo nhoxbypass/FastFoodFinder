@@ -40,13 +40,13 @@ class LoginPresenter : BasePresenter<LoginContract.Presenter>, LoginContract.Pre
     override fun onEmailRegisterSuccess(user: User) {
         ensureBasicUserData(user)
 
-        dataManager.getRemoteUserDataSource().insertOrUpdate(user)
+        dataManager.insertOrUpdateUser(user)
         dataManager.setCurrentUser(user)
         loginView.showMainView()
     }
 
     override fun onLoginSuccess(user: User) {
-        dataManager.getRemoteUserDataSource().getUser(user.getUid())
+        dataManager.getUser(user.getUid())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : SingleObserver<User> {
@@ -79,7 +79,7 @@ class LoginPresenter : BasePresenter<LoginContract.Presenter>, LoginContract.Pre
                     override fun onSuccess(user: User) {
                         if (!fromLastSignIn) {
                             ensureBasicUserData(user)
-                            dataManager.getRemoteUserDataSource().insertOrUpdate(user)
+                            dataManager.insertOrUpdateUser(user)
                         }
 
                         onLoginSuccess(user)
@@ -103,7 +103,7 @@ class LoginPresenter : BasePresenter<LoginContract.Presenter>, LoginContract.Pre
 
                     override fun onSuccess(user: User) {
                         ensureBasicUserData(user)
-                        dataManager.getRemoteUserDataSource().insertOrUpdate(user)
+                        dataManager.insertOrUpdateUser(user)
                         onLoginSuccess(user)
                     }
 

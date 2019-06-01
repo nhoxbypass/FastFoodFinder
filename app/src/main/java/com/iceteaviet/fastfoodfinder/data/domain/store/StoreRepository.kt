@@ -7,8 +7,10 @@ import io.reactivex.Single
 
 /**
  * Created by tom on 7/15/18.
+ *
+ * Main entry point for accessing store data.
  */
-interface StoreDataSource {
+interface StoreRepository {
 
     fun getAllStores(): Single<List<Store>>
 
@@ -32,7 +34,7 @@ interface StoreDataSource {
 
     fun deleteAllStores()
 
-    fun getComments(storeId: String): Single<MutableList<Comment>>
+    fun getComments(storeId: String): Single<List<Comment>>
 
     fun insertOrUpdateComment(storeId: String, comment: Comment)
 }

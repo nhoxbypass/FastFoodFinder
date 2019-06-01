@@ -1,59 +1,40 @@
-package com.iceteaviet.fastfoodfinder.data.local.store
+package com.iceteaviet.fastfoodfinder.data.local.db.store
 
-import com.iceteaviet.fastfoodfinder.data.domain.store.StoreDataSource
-import com.iceteaviet.fastfoodfinder.data.local.store.model.StoreEntity
-import com.iceteaviet.fastfoodfinder.data.remote.store.model.Comment
+import com.iceteaviet.fastfoodfinder.data.local.db.store.model.StoreEntity
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.utils.exception.EmptyParamsException
 import com.iceteaviet.fastfoodfinder.utils.getStoreTypeFromQuery
 import com.iceteaviet.fastfoodfinder.utils.standardizeDistrictQuery
 import io.reactivex.Single
-import io.reactivex.SingleOnSubscribe
 import io.realm.Case
 import io.realm.Realm
 
 /**
  * Created by Genius Doan on 11/20/2016.
  */
-class LocalStoreRepository : StoreDataSource {
-
-    private var cachedStores: MutableList<Store>
-
-    init {
-        cachedStores = ArrayList()
-    }
-
-
-    override fun getAllStores(): Single<List<Store>> {
-        return Single.create(SingleOnSubscribe { emitter ->
-            if (cachedStores.isNotEmpty()) {
-                emitter.onSuccess(cachedStores)
-                return@SingleOnSubscribe
-            }
-
+class AsyncStoreDAO {
+    fun getAllStores(): Single<List<Store>> {
+        return Single.create { emitter ->
             val realm = Realm.getDefaultInstance()
             val results = realm
                     .where(StoreEntity::class.java)
                     .findAll()
 
-            cachedStores = ArrayList()
+            val stores = ArrayList<Store>()
             for (i in results.indices) {
                 val storeEntity = results[i]
                 if (storeEntity != null)
-                    cachedStores.add(Store(storeEntity))
+                    stores.add(Store(storeEntity))
             }
 
             realm.close()
-            emitter.onSuccess(ArrayList(cachedStores))
-        })
+            emitter.onSuccess(stores)
+        }
     }
 
 
-    override fun setStores(storeList: List<Store>) {
+    fun setStores(storeList: List<Store>) {
         if (!storeList.isEmpty()) {
-            // Cache
-            cachedStores = ArrayList(storeList)
-
             // Write to persistence
             val realm = Realm.getDefaultInstance()
             realm.executeTransactionAsync {
@@ -71,7 +52,7 @@ class LocalStoreRepository : StoreDataSource {
         }
     }
 
-    override fun getStoreInBounds(minLat: Double, minLng: Double, maxLat: Double, maxLng: Double): Single<MutableList<Store>> {
+    fun getStoreInBounds(minLat: Double, minLng: Double, maxLat: Double, maxLng: Double): Single<MutableList<Store>> {
         return Single.create { emitter ->
             val realm = Realm.getDefaultInstance()
             val storeList = ArrayList<Store>()
@@ -98,7 +79,7 @@ class LocalStoreRepository : StoreDataSource {
         }
     }
 
-    override fun findStores(queryString: String): Single<MutableList<Store>> {
+    fun findStores(queryString: String): Single<MutableList<Store>> {
         val storeType = getStoreTypeFromQuery(queryString)
         if (storeType != -1) {
             return findStoresByType(storeType)
@@ -109,7 +90,7 @@ class LocalStoreRepository : StoreDataSource {
         }
     }
 
-    override fun findStoresByCustomAddress(customQuerySearch: List<String>): Single<MutableList<Store>> {
+    fun findStoresByCustomAddress(customQuerySearch: List<String>): Single<MutableList<Store>> {
         return Single.create { emitter ->
             val realm = Realm.getDefaultInstance()
             val storeList = ArrayList<Store>()
@@ -143,7 +124,7 @@ class LocalStoreRepository : StoreDataSource {
         }
     }
 
-    override fun findStoresBy(key: String, value: Int): Single<MutableList<Store>> {
+    fun findStoresBy(key: String, value: Int): Single<MutableList<Store>> {
         return Single.create { emitter ->
             val realm = Realm.getDefaultInstance()
             val storeList = ArrayList<Store>()
@@ -169,7 +150,7 @@ class LocalStoreRepository : StoreDataSource {
         }
     }
 
-    override fun findStoresBy(key: String, values: List<Int>): Single<MutableList<Store>> {
+    fun findStoresBy(key: String, values: List<Int>): Single<MutableList<Store>> {
         if (values.isEmpty())
             return Single.error(EmptyParamsException())
         else
@@ -200,39 +181,26 @@ class LocalStoreRepository : StoreDataSource {
             }
     }
 
-    override fun findStoresByType(type: Int): Single<MutableList<Store>> {
+    fun findStoresByType(type: Int): Single<MutableList<Store>> {
         return findStoresBy(PARAM_TYPE, type)
     }
 
 
-    override fun findStoresById(id: Int): Single<MutableList<Store>> {
+    fun findStoresById(id: Int): Single<MutableList<Store>> {
         return findStoresBy(PARAM_ID, id)
     }
 
-    override fun findStoresByIds(ids: List<Int>): Single<MutableList<Store>> {
+    fun findStoresByIds(ids: List<Int>): Single<MutableList<Store>> {
         return findStoresBy(PARAM_ID, ids)
     }
 
-    override fun deleteAllStores() {
-        cachedStores.clear()
+    fun deleteAllStores() {
         val realm = Realm.getDefaultInstance()
         realm.where(StoreEntity::class.java)
                 .findAll()
                 .deleteAllFromRealm()
 
         realm.close()
-    }
-
-    fun clearCache() {
-        cachedStores.clear()
-    }
-
-    override fun getComments(storeId: String): Single<MutableList<Comment>> {
-        return Single.never()
-    }
-
-    override fun insertOrUpdateComment(storeId: String, comment: Comment) {
-        // TODO: Support this
     }
 
     companion object {

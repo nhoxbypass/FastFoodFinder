@@ -3,19 +3,17 @@ package com.iceteaviet.fastfoodfinder.data.remote.user
 import android.util.Pair
 import androidx.annotation.NonNull
 import com.google.firebase.database.*
-import com.iceteaviet.fastfoodfinder.data.domain.user.UserDataSource
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreEvent
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList
 import com.iceteaviet.fastfoodfinder.utils.e
 import com.iceteaviet.fastfoodfinder.utils.exception.NotFoundException
 import io.reactivex.Observable
-import io.reactivex.Single
 
 /**
  * Created by tom on 7/15/18.
  */
-class FirebaseUserRepository(private val databaseRef: DatabaseReference) : UserDataSource {
+class FirebaseUserApiHelper(private val databaseRef: DatabaseReference) : UserApi {
 
     var favouriteStoresListener: ChildEventListener? = null
 
@@ -38,47 +36,42 @@ class FirebaseUserRepository(private val databaseRef: DatabaseReference) : UserD
                 .setValue(storeLists)
     }
 
-    override fun getUser(uid: String): Single<User> {
-        return Single.create { emitter ->
-
-            databaseRef.child(CHILD_USERS).child(uid).addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(@NonNull dataSnapshot: DataSnapshot) {
-                    if (dataSnapshot.exists()) {
-                        val user = dataSnapshot.getValue(User::class.java)
-                        if (user != null)
-                            emitter.onSuccess(user)
-                        else
-                            emitter.onError(NotFoundException())
-                    } else {
-                        emitter.onError(NotFoundException())
-                    }
+    override fun getUser(uid: String, callback: UserApi.UserLoadCallback<User>) {
+        databaseRef.child(CHILD_USERS).child(uid).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(@NonNull dataSnapshot: DataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    val user = dataSnapshot.getValue(User::class.java)
+                    if (user != null)
+                        callback.onSuccess(user)
+                    else
+                        callback.onError(NotFoundException())
+                } else {
+                    callback.onError(NotFoundException())
                 }
+            }
 
-                override fun onCancelled(@NonNull databaseError: DatabaseError) {
-                    emitter.onError(databaseError.toException())
-                }
-            })
-        }
+            override fun onCancelled(@NonNull databaseError: DatabaseError) {
+                callback.onError(databaseError.toException())
+            }
+        })
     }
 
-    override fun isUserExists(uid: String): Single<Boolean> {
-        return Single.create { emitter ->
-            databaseRef.child(CHILD_USERS).addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(@NonNull dataSnapshot: DataSnapshot) {
-                    if (!dataSnapshot.exists() || !dataSnapshot.hasChild(uid)) {
-                        // Not exists
-                        emitter.onSuccess(false)
-                    } else {
-                        emitter.onSuccess(true)
-                    }
+    override fun isUserExists(uid: String, callback: UserApi.UserLoadCallback<Boolean>) {
+        databaseRef.child(CHILD_USERS).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(@NonNull dataSnapshot: DataSnapshot) {
+                if (!dataSnapshot.exists() || !dataSnapshot.hasChild(uid)) {
+                    // Not exists
+                    callback.onSuccess(false)
+                } else {
+                    callback.onSuccess(true)
                 }
+            }
 
-                override fun onCancelled(@NonNull databaseError: DatabaseError) {
-                    e(TAG, "Error checking user exists")
-                    emitter.onError(databaseError.toException())
-                }
-            })
-        }
+            override fun onCancelled(@NonNull databaseError: DatabaseError) {
+                e(TAG, "Error checking user exists")
+                callback.onError(databaseError.toException())
+            }
+        })
     }
 
     override fun subscribeFavouriteStoresOfUser(uid: String): Observable<Pair<Int, Int>> {
@@ -126,7 +119,7 @@ class FirebaseUserRepository(private val databaseRef: DatabaseReference) : UserD
     }
 
     companion object {
-        private val TAG = FirebaseUserRepository::class.java.simpleName
+        private val TAG = FirebaseUserApiHelper::class.java.simpleName
         private const val CHILD_USERS = "users"
         private const val CHILD_USERS_STORE_LIST = "userStoreLists"
         private const val CHILD_STORE_ID_LIST = "storeIdList"

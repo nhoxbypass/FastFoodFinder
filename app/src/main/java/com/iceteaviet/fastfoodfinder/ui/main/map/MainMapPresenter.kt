@@ -279,8 +279,7 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
     }
 
     private fun handleSearchQuickAction(storeType: Int) {
-        dataManager.getLocalStoreDataSource()
-                .findStoresByType(storeType)
+        dataManager.findStoresByType(storeType)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : SingleObserver<List<Store>> {
@@ -306,8 +305,7 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
     }
 
     private fun handleSearchQuerySubmitAction(searchString: String) {
-        dataManager.getLocalStoreDataSource()
-                .findStores(searchString)
+        dataManager.findStores(searchString)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : SingleObserver<List<Store>> {
@@ -341,7 +339,7 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
     }
 
     private fun loadAllStoresToMap() {
-        dataManager.getLocalStoreDataSource().getAllStores()
+        dataManager.getAllStores()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : SingleObserver<List<Store>> {

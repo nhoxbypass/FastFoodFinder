@@ -1,25 +1,20 @@
-package com.iceteaviet.fastfoodfinder.data.remote.user
+package com.iceteaviet.fastfoodfinder.data.local.db.user
 
-import android.util.Pair
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList
 import com.iceteaviet.fastfoodfinder.utils.exception.NotFoundException
-import io.reactivex.Observable
 import java.util.*
 
 /**
- * Created by tom on 7/15/18.
+ * Created by tom on 7/25/18.
  */
-class FakeFirebaseUserRepository : UserApi {
+class FakeLocalUserRepository : UserDataSource {
 
     private var USER_SERVICE_DATA_MAP: MutableMap<String, User> = TreeMap()
 
-
     override fun insertOrUpdate(name: String, email: String, photoUrl: String, uid: String, storeLists: List<UserStoreList>) {
-        val user = User(uid, name, email, photoUrl, storeLists)
-        insertOrUpdate(user)
+        insertOrUpdate(User(uid, name, email, photoUrl, storeLists))
     }
-
 
     override fun insertOrUpdate(user: User) {
         USER_SERVICE_DATA_MAP.put(user.getUid(), user)
@@ -33,26 +28,15 @@ class FakeFirebaseUserRepository : UserApi {
         }
     }
 
-    override fun getUser(uid: String, callback: UserApi.UserLoadCallback<User>) {
+    override fun getUser(uid: String): User {
         val entity = USER_SERVICE_DATA_MAP.get(uid)
         if (entity != null)
-            callback.onSuccess(entity)
+            return entity
         else
-            callback.onError(NotFoundException())
+            throw NotFoundException()
     }
 
-    override fun isUserExists(uid: String, callback: UserApi.UserLoadCallback<Boolean>) {
-        if (USER_SERVICE_DATA_MAP.containsKey(uid))
-            callback.onSuccess(true)
-        else
-            callback.onSuccess(false)
-    }
-
-    override fun subscribeFavouriteStoresOfUser(uid: String): Observable<Pair<Int, Int>> {
-        return Observable.create { emitter ->
-        }
-    }
-
-    override fun unsubscribeFavouriteStoresOfUser(uid: String) {
+    override fun isUserExists(uid: String): Boolean {
+        return USER_SERVICE_DATA_MAP.containsKey(uid)
     }
 }

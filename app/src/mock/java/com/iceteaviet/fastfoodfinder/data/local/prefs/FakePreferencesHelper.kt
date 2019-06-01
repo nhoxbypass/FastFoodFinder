@@ -1,4 +1,4 @@
-package com.iceteaviet.fastfoodfinder.data.prefs
+package com.iceteaviet.fastfoodfinder.data.local.prefs
 
 /**
  * Created by tom on 7/24/18.
@@ -7,7 +7,7 @@ package com.iceteaviet.fastfoodfinder.data.prefs
  * Entry point contains methods that help interacting with application's SharedPreferences
  */
 
-class FakePreferencesHelper : PreferencesHelper {
+class FakePreferencesHelper : PreferencesWrapper {
 
     private val preferenceMap: HashMap<String, Any>
 
@@ -57,44 +57,7 @@ class FakePreferencesHelper : PreferencesHelper {
         return value ?: defaultValue
     }
 
-    override fun getAppLaunchFirstTime(): Boolean {
-        return getBoolean(KEY_APP_LAUNCH_FIRST_TIME, true)
-    }
-
-    override fun setAppLaunchFirstTime(isFirstTime: Boolean) {
-        putBoolean(KEY_APP_LAUNCH_FIRST_TIME, isFirstTime)
-    }
-
-    override fun getNumberOfStores(): Int {
-        return getInt(KEY_NUMBER_OF_STORES, 0)
-    }
-
-    override fun setNumberOfStores(numberOfStores: Int) {
-        putInt(KEY_NUMBER_OF_STORES, numberOfStores)
-    }
-
-    override fun getSearchHistories(): MutableSet<String> {
-        return getStringSet(KEY_SEARCH_HISTORIES, LinkedHashSet())
-    }
-
-    override fun setSearchHistories(set: MutableSet<String>) {
-        setStringSet(KEY_SEARCH_HISTORIES, set)
-    }
-
-    override fun getIfLanguageIsVietnamese(): Boolean {
-        return getBoolean(KEY_LANGUAGE, false)
-    }
-
-    override fun setIfLanguageIsVietnamese(isVietnamese: Boolean) {
-        putBoolean(KEY_LANGUAGE, isVietnamese)
-    }
-
     companion object {
-        private const val PREFS_NAME = "english_now_android"
-        private const val KEY_APP_LAUNCH_FIRST_TIME = "app_launch_first_time"
-        private const val KEY_NUMBER_OF_STORES = "number_of_stores"
-        private const val KEY_SEARCH_HISTORIES = "search_histories"
-        private const val KEY_SEARCH_HISTORIES_SIZE = "search_histories_size"
-        private const val KEY_LANGUAGE = "lang"
+        private const val PREFS_NAME = "fastfood_finder_android"
     }
 }

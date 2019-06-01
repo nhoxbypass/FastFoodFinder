@@ -1,8 +1,8 @@
 package com.iceteaviet.fastfoodfinder.data.remote.user.model
 
 import com.google.firebase.database.Exclude
-import com.iceteaviet.fastfoodfinder.data.local.user.model.UserEntity
-import com.iceteaviet.fastfoodfinder.data.local.user.model.UserStoreListEntity
+import com.iceteaviet.fastfoodfinder.data.local.db.user.model.UserEntity
+import com.iceteaviet.fastfoodfinder.data.local.db.user.model.UserStoreListEntity
 import com.iceteaviet.fastfoodfinder.utils.realmListToList
 import com.iceteaviet.fastfoodfinder.utils.wtf
 

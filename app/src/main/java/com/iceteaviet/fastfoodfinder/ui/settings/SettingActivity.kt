@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.activity_setting.*
 import java.util.*
 
 class SettingActivity : BaseActivity(), SettingContract.View {
-    override lateinit var presenter: SettingContract.Presenter;
+    override lateinit var presenter: SettingContract.Presenter
     private lateinit var txtShareApp: TextView
     private lateinit var txtChangeMetric: TextView
     private lateinit var txtEditProfile: TextView
@@ -42,7 +42,7 @@ class SettingActivity : BaseActivity(), SettingContract.View {
         presenter = SettingPresenter(App.getDataManager(), this)
 
         setupUI()
-        
+
         presenter.onSetupLanguage()
         presenter.onInitSignOutTextView()
 
@@ -51,11 +51,7 @@ class SettingActivity : BaseActivity(), SettingContract.View {
     }
 
     override fun updateLangUI(isVietnamese: Boolean) {
-        if (!isVietnamese) {
-            swChangeLanguage.isChecked = true
-        } else {
-            swChangeLanguage.isChecked = false
-        }
+        swChangeLanguage.isChecked = !isVietnamese
     }
 
     override fun initSignOutTextView(enabled: Boolean) {

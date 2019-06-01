@@ -27,7 +27,7 @@ import kotlinx.android.synthetic.main.fragment_store_info.*
 
 class StoreInfoDialog : DialogFragment(), StoreInfoContract.View {
 
-    override lateinit var presenter: StoreInfoContract.Presenter;
+    override lateinit var presenter: StoreInfoContract.Presenter
     lateinit var cdvh: StoreDetailAdapter.CallDirectionViewHolder
     lateinit var tvStoreName: TextView
     lateinit var tvViewDetail: TextView
@@ -162,6 +162,7 @@ class StoreInfoDialog : DialogFragment(), StoreInfoContract.View {
         presenter.unsubscribe()
 
     }
+
     companion object {
         fun newInstance(store: Store): StoreInfoDialog {
             val args = Bundle()

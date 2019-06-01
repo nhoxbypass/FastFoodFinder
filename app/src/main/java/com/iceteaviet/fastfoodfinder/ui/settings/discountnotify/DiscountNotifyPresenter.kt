@@ -2,7 +2,7 @@ package com.iceteaviet.fastfoodfinder.ui.settings.discountnotify
 
 class DiscountNotifyPresenter : DiscountNotifyContract.Presenter {
 
-    private val discountNotifyView: DiscountNotifyContract.View;
+    private val discountNotifyView: DiscountNotifyContract.View
 
 
     constructor(view: DiscountNotifyContract.View) {

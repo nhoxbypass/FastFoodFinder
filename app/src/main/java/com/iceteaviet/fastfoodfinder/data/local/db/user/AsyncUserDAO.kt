@@ -1,13 +1,10 @@
-package com.iceteaviet.fastfoodfinder.data.local.user
+package com.iceteaviet.fastfoodfinder.data.local.db.user
 
-import android.util.Pair
-import com.iceteaviet.fastfoodfinder.data.domain.user.UserDataSource
-import com.iceteaviet.fastfoodfinder.data.local.user.model.UserEntity
-import com.iceteaviet.fastfoodfinder.data.local.user.model.UserStoreListEntity
+import com.iceteaviet.fastfoodfinder.data.local.db.user.model.UserEntity
+import com.iceteaviet.fastfoodfinder.data.local.db.user.model.UserStoreListEntity
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList
 import com.iceteaviet.fastfoodfinder.utils.exception.NotFoundException
-import io.reactivex.Observable
 import io.reactivex.Single
 import io.realm.Realm
 import io.realm.RealmList
@@ -15,13 +12,13 @@ import io.realm.RealmList
 /**
  * Created by tom on 7/25/18.
  */
-class LocalUserRepository : UserDataSource {
+class AsyncUserDAO {
 
-    override fun insertOrUpdate(name: String, email: String, photoUrl: String, uid: String, storeLists: List<UserStoreList>) {
+    fun insertOrUpdate(name: String, email: String, photoUrl: String, uid: String, storeLists: List<UserStoreList>) {
         insertOrUpdate(User(uid, name, email, photoUrl, storeLists))
     }
 
-    override fun insertOrUpdate(user: User) {
+    fun insertOrUpdate(user: User) {
         val realm = Realm.getDefaultInstance()
 
         realm.executeTransactionAsync {
@@ -36,7 +33,7 @@ class LocalUserRepository : UserDataSource {
         realm.close()
     }
 
-    override fun updateStoreListForUser(uid: String, storeLists: List<UserStoreList>) {
+    fun updateStoreListForUser(uid: String, storeLists: List<UserStoreList>) {
         val realm = Realm.getDefaultInstance()
 
         realm.executeTransactionAsync {
@@ -55,7 +52,7 @@ class LocalUserRepository : UserDataSource {
         realm.close()
     }
 
-    override fun getUser(uid: String): Single<User> {
+    fun getUser(uid: String): Single<User> {
         return Single.create { emitter ->
 
             val realm = Realm.getDefaultInstance()
@@ -72,7 +69,7 @@ class LocalUserRepository : UserDataSource {
         }
     }
 
-    override fun isUserExists(uid: String): Single<Boolean> {
+    fun isUserExists(uid: String): Single<Boolean> {
         return Single.create { emitter ->
             val realm = Realm.getDefaultInstance()
 
@@ -86,32 +83,6 @@ class LocalUserRepository : UserDataSource {
 
             realm.close()
         }
-    }
-
-    @Deprecated("")
-    override fun subscribeFavouriteStoresOfUser(uid: String): Observable<Pair<Int, Int>> {
-        return Observable.create {
-            val realm = Realm.getDefaultInstance()
-
-            realm.where(UserEntity::class.java)
-                    .equalTo(PARAM_UID, uid)
-                    .findAll()
-                    .addChangeListener { userEntities, changeSet -> }
-
-            realm.close()
-        }
-    }
-
-    @Deprecated("")
-    override fun unsubscribeFavouriteStoresOfUser(uid: String) {
-        val realm = Realm.getDefaultInstance()
-
-        realm.where(UserEntity::class.java)
-                .equalTo(PARAM_UID, uid)
-                .findAll()
-                .removeAllChangeListeners()
-
-        realm.close()
     }
 
     companion object {

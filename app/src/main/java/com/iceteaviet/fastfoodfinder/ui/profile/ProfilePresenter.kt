@@ -47,7 +47,7 @@ class ProfilePresenter : BasePresenter<ProfileContract.Presenter>, ProfileContra
             val id = currentUser.getUserStoreLists().size // New id = current size
             val list = UserStoreList(id, ArrayList(), iconId, listName)
             currentUser.addStoreList(list)
-            dataManager.getRemoteUserDataSource().updateStoreListForUser(currentUser.getUid(), currentUser.getUserStoreLists())
+            dataManager.updateStoreListForUser(currentUser.getUid(), currentUser.getUserStoreLists())
 
             profileView.addUserStoreList(list)
             profileView.setStoreListCount(String.format("(%d)", currentUser.getUserStoreLists().size))
@@ -79,7 +79,7 @@ class ProfilePresenter : BasePresenter<ProfileContract.Presenter>, ProfileContra
             return
 
         currentUser.removeStoreList(position)
-        dataManager.getRemoteUserDataSource().updateStoreListForUser(currentUser.getUid(), currentUser.getUserStoreLists())
+        dataManager.updateStoreListForUser(currentUser.getUid(), currentUser.getUserStoreLists())
 
         profileView.setStoreListCount(String.format("(%d)", currentUser.getUserStoreLists().size))
     }
@@ -89,7 +89,7 @@ class ProfilePresenter : BasePresenter<ProfileContract.Presenter>, ProfileContra
         if (!isValidUserUid(uid))
             return
 
-        dataManager.getRemoteUserDataSource().getUser(uid)
+        dataManager.getUser(uid)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : SingleObserver<User> {

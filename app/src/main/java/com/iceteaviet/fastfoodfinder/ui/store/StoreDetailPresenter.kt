@@ -34,16 +34,16 @@ class StoreDetailPresenter : BasePresenter<StoreDetailContract.Presenter>, Store
         currStore?.let {
             storeDetailView.setToolbarTitle(it.title)
 
-            dataManager.getRemoteStoreDataSource().getComments(it.id.toString())
+            dataManager.getComments(it.id.toString())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(object : SingleObserver<MutableList<Comment>> {
+                    .subscribe(object : SingleObserver<List<Comment>> {
                         override fun onSubscribe(d: Disposable) {
                             compositeDisposable.add(d)
                         }
 
-                        override fun onSuccess(commentList: MutableList<Comment>) {
-                            storeDetailView.setStoreComments(commentList.asReversed())
+                        override fun onSuccess(commentList: List<Comment>) {
+                            storeDetailView.setStoreComments(commentList.toMutableList().asReversed())
                         }
 
                         override fun onError(e: Throwable) {
@@ -76,7 +76,7 @@ class StoreDetailPresenter : BasePresenter<StoreDetailContract.Presenter>, Store
             storeDetailView.scrollToCommentList()
 
             // Update comment data
-            dataManager.getRemoteStoreDataSource().insertOrUpdateComment(currStore!!.id.toString(), comment)
+            dataManager.insertOrUpdateComment(currStore!!.id.toString(), comment)
         }
     }
 

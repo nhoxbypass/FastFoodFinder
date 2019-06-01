@@ -5,7 +5,7 @@ import android.os.Parcelable
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.database.Exclude
 import com.google.firebase.database.PropertyName
-import com.iceteaviet.fastfoodfinder.data.local.store.model.StoreEntity
+import com.iceteaviet.fastfoodfinder.data.local.db.store.model.StoreEntity
 
 /**
  * Created by Genius Doan on 11/10/2016.

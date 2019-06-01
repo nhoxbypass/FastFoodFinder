@@ -37,8 +37,8 @@
         android:layout_height="80dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="88dp"
-        android:scaleType="centerCrop"
         android:background="@drawable/bg_rounded_corner_avatar"
+        android:scaleType="centerCrop"
         android:src="@drawable/all_noavatar" />
 
     <TextView

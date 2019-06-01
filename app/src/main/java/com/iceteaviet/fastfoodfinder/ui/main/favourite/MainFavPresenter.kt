@@ -31,7 +31,7 @@ class MainFavPresenter : BasePresenter<MainFavContract.Presenter>, MainFavContra
     }
 
     override fun unsubscribe() {
-        dataManager.getRemoteUserDataSource().unsubscribeFavouriteStoresOfUser(dataManager.getCurrentUserUid())
+        dataManager.unsubscribeFavouriteStoresOfUser(dataManager.getCurrentUserUid())
         super.unsubscribe()
     }
 
@@ -40,8 +40,7 @@ class MainFavPresenter : BasePresenter<MainFavContract.Presenter>, MainFavContra
     }
 
     private fun loadStoreListsFromIds(storeIdList: MutableList<Int>) {
-        dataManager.getLocalStoreDataSource()
-                .findStoresByIds(storeIdList)
+        dataManager.findStoresByIds(storeIdList)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : SingleObserver<List<Store>> {
@@ -60,10 +59,10 @@ class MainFavPresenter : BasePresenter<MainFavContract.Presenter>, MainFavContra
     }
 
     private fun listenFavStoresOfUser(userUid: String) {
-        dataManager.getRemoteUserDataSource().subscribeFavouriteStoresOfUser(userUid)
+        dataManager.subscribeFavouriteStoresOfUser(userUid)
                 .subscribeOn(Schedulers.io())
                 .map { storeIdPair ->
-                    val store = dataManager.getLocalStoreDataSource().findStoresById(storeIdPair.first).blockingGet()[0]
+                    val store = dataManager.findStoresById(storeIdPair.first).blockingGet()[0]
                     UserStoreEvent(store, storeIdPair.second)
                 }
                 .observeOn(AndroidSchedulers.mainThread())

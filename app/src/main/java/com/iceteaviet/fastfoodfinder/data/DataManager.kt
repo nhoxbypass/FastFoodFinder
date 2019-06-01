@@ -1,9 +1,9 @@
 package com.iceteaviet.fastfoodfinder.data
 
 import com.iceteaviet.fastfoodfinder.data.auth.ClientAuth
-import com.iceteaviet.fastfoodfinder.data.domain.store.StoreDataSource
-import com.iceteaviet.fastfoodfinder.data.domain.user.UserDataSource
-import com.iceteaviet.fastfoodfinder.data.prefs.PreferencesHelper
+import com.iceteaviet.fastfoodfinder.data.domain.store.StoreRepository
+import com.iceteaviet.fastfoodfinder.data.domain.user.UserRepository
+import com.iceteaviet.fastfoodfinder.data.local.prefs.PreferencesHelper
 import com.iceteaviet.fastfoodfinder.data.remote.routing.MapsRoutingApiHelper
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
@@ -12,15 +12,7 @@ import io.reactivex.Single
 /**
  * Created by tom on 7/9/18.
  */
-interface DataManager : ClientAuth {
-    fun getLocalStoreDataSource(): StoreDataSource
-
-    fun getRemoteStoreDataSource(): StoreDataSource
-
-    fun getRemoteUserDataSource(): UserDataSource
-
-    fun getLocalUserDataSource(): UserDataSource
-
+interface DataManager : ClientAuth, StoreRepository, UserRepository {
     fun getMapsRoutingApiHelper(): MapsRoutingApiHelper
 
     fun getPreferencesHelper(): PreferencesHelper

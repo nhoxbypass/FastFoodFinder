@@ -1,4 +1,4 @@
-package com.iceteaviet.fastfoodfinder.data.local.store.model
+package com.iceteaviet.fastfoodfinder.data.local.db.store.model
 
 import com.google.android.gms.maps.model.LatLng
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
