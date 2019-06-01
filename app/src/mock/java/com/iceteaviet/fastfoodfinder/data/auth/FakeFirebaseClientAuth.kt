@@ -1,8 +1,6 @@
 package com.iceteaviet.fastfoodfinder.data.auth
 
 import com.google.firebase.auth.AuthCredential
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
 import com.iceteaviet.fastfoodfinder.utils.exception.NotFoundException
 import io.reactivex.Single

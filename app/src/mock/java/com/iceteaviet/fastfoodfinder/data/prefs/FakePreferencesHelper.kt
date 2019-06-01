@@ -1,8 +1,5 @@
 package com.iceteaviet.fastfoodfinder.data.prefs
 
-import android.content.Context
-import android.content.SharedPreferences
-
 /**
  * Created by tom on 7/24/18.
  *
