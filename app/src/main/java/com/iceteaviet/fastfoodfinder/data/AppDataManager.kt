@@ -1,8 +1,8 @@
 package com.iceteaviet.fastfoodfinder.data
 
+import android.content.Context
 import android.util.Pair
 import com.google.firebase.auth.AuthCredential
-import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.data.auth.ClientAuth
 import com.iceteaviet.fastfoodfinder.data.domain.store.StoreRepository
 import com.iceteaviet.fastfoodfinder.data.domain.user.UserRepository
@@ -27,7 +27,7 @@ import io.realm.RealmConfiguration
  * Created by tom on 7/9/18.
  */
 
-class AppDataManager(private val storeRepository: StoreRepository, private val userRepository: UserRepository,
+class AppDataManager(context: Context, private val storeRepository: StoreRepository, private val userRepository: UserRepository,
                      private val clientAuth: ClientAuth,
                      private val mapsRoutingApiHelper: MapsRoutingApiHelper, private val preferencesHelper: PreferencesHelper) : DataManager {
 
@@ -35,7 +35,7 @@ class AppDataManager(private val storeRepository: StoreRepository, private val u
     private lateinit var searchHistory: MutableSet<String>
 
     init {
-        Realm.init(App.getContext())
+        Realm.init(context)
         val config = RealmConfiguration.Builder()
                 .deleteRealmIfMigrationNeeded()
                 .build()

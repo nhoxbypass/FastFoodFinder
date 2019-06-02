@@ -1,5 +1,6 @@
 package com.iceteaviet.fastfoodfinder
 
+import android.content.Context
 import com.google.firebase.database.FirebaseDatabase
 import com.iceteaviet.fastfoodfinder.data.AppDataManager
 import com.iceteaviet.fastfoodfinder.data.DataManager
@@ -28,9 +29,13 @@ import com.iceteaviet.fastfoodfinder.data.remote.user.UserApi
  */
 object Injection {
     fun provideDataManager(): DataManager {
-        return AppDataManager(provideStoreRepository(), provideUserRepository(),
+        return AppDataManager(provideContext(), provideStoreRepository(), provideUserRepository(),
                 provideAuthClient(),
                 provideRoutingApiHelper(), providePreferenceHelper())
+    }
+
+    fun provideContext(): Context {
+        return App.getContext()
     }
 
     fun provideStoreRepository(): StoreRepository {
