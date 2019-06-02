@@ -38,7 +38,7 @@ class CommentActivity : BaseActivity(), CommentContract.View {
     override fun onCreate(@Nullable savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        presenter = CommentPresenter(App.getDataManager(), this)
+        presenter = CommentPresenter(App.getDataManager(), App.getSchedulerProvider(), this)
 
         etComment = et_comment
         tvRemainChar = tv_remain_char

@@ -141,7 +141,7 @@ class EmailRegisterDialog : DialogFragment(), EmailRegisterContract.View, View.O
             val frag = EmailRegisterDialog()
             val args = Bundle()
             frag.arguments = args
-            frag.presenter = EmailRegisterPresenter(App.getDataManager(), frag)
+            frag.presenter = EmailRegisterPresenter(App.getDataManager(), App.getSchedulerProvider(), frag)
             return frag
         }
     }

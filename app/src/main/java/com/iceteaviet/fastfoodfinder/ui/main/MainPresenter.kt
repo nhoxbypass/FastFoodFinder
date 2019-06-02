@@ -6,6 +6,7 @@ import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.data.transport.model.SearchEventResult
 import com.iceteaviet.fastfoodfinder.ui.base.BasePresenter
 import com.iceteaviet.fastfoodfinder.utils.Constant
+import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -17,7 +18,7 @@ class MainPresenter : BasePresenter<MainContract.Presenter>, MainContract.Presen
 
     private val mainView: MainContract.View
 
-    constructor(dataManager: DataManager, mainView: MainContract.View) : super(dataManager) {
+    constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider, mainView: MainContract.View) : super(dataManager, schedulerProvider) {
         this.mainView = mainView
         this.mainView.presenter = this
     }

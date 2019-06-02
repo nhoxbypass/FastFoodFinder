@@ -132,7 +132,7 @@ class MainFavouriteFragment : Fragment(), MainFavContract.View, OnStartDragListe
             val args = Bundle()
             val fragment = MainFavouriteFragment()
             fragment.arguments = args
-            fragment.presenter = MainFavPresenter(App.getDataManager(), fragment)
+            fragment.presenter = MainFavPresenter(App.getDataManager(), App.getSchedulerProvider(), fragment)
             return fragment
         }
     }

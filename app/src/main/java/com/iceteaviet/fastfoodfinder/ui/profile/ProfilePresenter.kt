@@ -6,6 +6,7 @@ import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList
 import com.iceteaviet.fastfoodfinder.ui.base.BasePresenter
 import com.iceteaviet.fastfoodfinder.utils.isValidUserUid
+import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -20,7 +21,7 @@ class ProfilePresenter : BasePresenter<ProfileContract.Presenter>, ProfileContra
     private val profileView: ProfileContract.View
     private var defaultList: MutableList<UserStoreList> = ArrayList() // Default store list (saved, favourite) that every user have
 
-    constructor(dataManager: DataManager, profileView: ProfileContract.View) : super(dataManager) {
+    constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider, profileView: ProfileContract.View) : super(dataManager, schedulerProvider) {
         this.profileView = profileView
         this.profileView.presenter = this
     }

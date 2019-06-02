@@ -23,6 +23,8 @@ import com.iceteaviet.fastfoodfinder.data.remote.store.FirebaseStoreApiHelper
 import com.iceteaviet.fastfoodfinder.data.remote.store.StoreApi
 import com.iceteaviet.fastfoodfinder.data.remote.user.FirebaseUserApiHelper
 import com.iceteaviet.fastfoodfinder.data.remote.user.UserApi
+import com.iceteaviet.fastfoodfinder.utils.rx.AppSchedulerProvider
+import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
 
 /**
  * Enables injection of production implementations at compile time.
@@ -32,6 +34,10 @@ object Injection {
         return AppDataManager(provideContext(), provideStoreRepository(), provideUserRepository(),
                 provideAuthClient(),
                 provideRoutingApiHelper(), providePreferenceHelper())
+    }
+
+    fun provideSchedulerProvider(): SchedulerProvider {
+        return AppSchedulerProvider()
     }
 
     fun provideContext(): Context {

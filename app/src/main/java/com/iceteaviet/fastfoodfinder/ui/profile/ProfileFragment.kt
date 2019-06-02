@@ -210,7 +210,7 @@ class ProfileFragment : Fragment(), ProfileContract.View, View.OnClickListener {
         fun newInstance(): ProfileFragment {
             val extras = Bundle()
             val fragment = ProfileFragment()
-            fragment.presenter = ProfilePresenter(App.getDataManager(), fragment)
+            fragment.presenter = ProfilePresenter(App.getDataManager(), App.getSchedulerProvider(), fragment)
             fragment.arguments = extras
             return fragment
         }

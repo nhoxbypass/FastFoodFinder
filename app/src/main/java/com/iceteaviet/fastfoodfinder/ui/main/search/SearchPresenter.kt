@@ -6,6 +6,7 @@ import com.iceteaviet.fastfoodfinder.data.transport.model.SearchEventResult
 import com.iceteaviet.fastfoodfinder.ui.base.BasePresenter
 import com.iceteaviet.fastfoodfinder.utils.Constant
 import com.iceteaviet.fastfoodfinder.utils.getStoreSearchString
+import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -21,7 +22,7 @@ class SearchPresenter : BasePresenter<SearchContract.Presenter>, SearchContract.
 
     private var searchString: String = ""
 
-    constructor(dataManager: DataManager, searchView: SearchContract.View) : super(dataManager) {
+    constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider, searchView: SearchContract.View) : super(dataManager, schedulerProvider) {
         this.searchView = searchView
         this.searchView.presenter = this
     }

@@ -52,7 +52,7 @@ class MapRoutingActivity : BaseActivity(), MapRoutingContract.View, View.OnClick
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        presenter = MapRoutingPresenter(App.getDataManager(), this)
+        presenter = MapRoutingPresenter(App.getDataManager(), App.getSchedulerProvider(), this)
 
         presenter.fetchDataFromExtra(intent.extras)
 

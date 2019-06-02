@@ -3,6 +3,7 @@ package com.iceteaviet.fastfoodfinder.ui.store.comment
 import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Comment
 import com.iceteaviet.fastfoodfinder.ui.base.BasePresenter
+import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
 
 /**
  * Created by tom on 2019-04-18.
@@ -11,7 +12,7 @@ class CommentPresenter : BasePresenter<CommentContract.Presenter>, CommentContra
 
     private val commentView: CommentContract.View
 
-    constructor(dataManager: DataManager, profileView: CommentContract.View) : super(dataManager) {
+    constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider, profileView: CommentContract.View) : super(dataManager, schedulerProvider) {
         this.commentView = profileView
         this.commentView.presenter = this
     }

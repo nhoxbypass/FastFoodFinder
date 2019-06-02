@@ -206,7 +206,7 @@ class CreateListDialog : DialogFragment(), CreateListContract.View, View.OnClick
             val frag = CreateListDialog()
             val args = Bundle()
             frag.arguments = args
-            frag.presenter = CreateListPresenter(App.getDataManager(), frag)
+            frag.presenter = CreateListPresenter(App.getDataManager(), App.getSchedulerProvider(), frag)
             return frag
         }
     }

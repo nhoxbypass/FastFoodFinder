@@ -5,6 +5,7 @@ import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList
 import com.iceteaviet.fastfoodfinder.ui.base.BasePresenter
+import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
 import com.iceteaviet.fastfoodfinder.utils.ui.getStoreListIconDrawableRes
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -21,7 +22,7 @@ class ListDetailPresenter : BasePresenter<ListDetailContract.Presenter>, ListDet
     private var userStoreList: UserStoreList? = null
     private var photoUrl: String? = null
 
-    constructor(dataManager: DataManager, listDetailView: ListDetailContract.View) : super(dataManager) {
+    constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider, listDetailView: ListDetailContract.View) : super(dataManager, schedulerProvider) {
         this.listDetailView = listDetailView
         this.listDetailView.presenter = this
     }

@@ -3,6 +3,7 @@ package com.iceteaviet.fastfoodfinder.ui.profile.createlist
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.ui.base.BasePresenter
+import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
 
 /**
  * Created by tom on 2019-04-18.
@@ -13,7 +14,7 @@ class CreateListPresenter : BasePresenter<CreateListContract.Presenter>, CreateL
 
     private var iconId = R.drawable.ic_profile_list_1
 
-    constructor(dataManager: DataManager, createListView: CreateListContract.View) : super(dataManager) {
+    constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider, createListView: CreateListContract.View) : super(dataManager, schedulerProvider) {
         this.createListView = createListView
         this.createListView.presenter = this
     }

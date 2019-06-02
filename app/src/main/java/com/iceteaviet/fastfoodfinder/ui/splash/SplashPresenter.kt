@@ -6,6 +6,7 @@ import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
 import com.iceteaviet.fastfoodfinder.ui.base.BasePresenter
 import com.iceteaviet.fastfoodfinder.utils.filterInvalidData
 import com.iceteaviet.fastfoodfinder.utils.isValidUserUid
+import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
 import io.reactivex.Completable
 import io.reactivex.CompletableObserver
 import io.reactivex.Single
@@ -24,7 +25,7 @@ class SplashPresenter : BasePresenter<SplashContract.Presenter>, SplashContract.
     private val splashView: SplashContract.View
     private var startTime: Long = 0L
 
-    constructor(dataManager: DataManager, splashView: SplashContract.View) : super(dataManager) {
+    constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider, splashView: SplashContract.View) : super(dataManager, schedulerProvider) {
         this.splashView = splashView
         this.splashView.presenter = this
     }

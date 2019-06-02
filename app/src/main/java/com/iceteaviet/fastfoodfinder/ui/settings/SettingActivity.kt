@@ -39,7 +39,7 @@ class SettingActivity : BaseActivity(), SettingContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        presenter = SettingPresenter(App.getDataManager(), this)
+        presenter = SettingPresenter(App.getDataManager(), App.getSchedulerProvider(), this)
 
         setupUI()
 

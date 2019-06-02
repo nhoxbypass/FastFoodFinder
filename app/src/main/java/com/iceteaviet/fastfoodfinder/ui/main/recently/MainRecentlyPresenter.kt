@@ -3,6 +3,7 @@ package com.iceteaviet.fastfoodfinder.ui.main.recently
 import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.ui.base.BasePresenter
+import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
 import java.util.*
 
 /**
@@ -12,7 +13,7 @@ class MainRecentlyPresenter : BasePresenter<MainRecentlyContract.Presenter>, Mai
 
     private val mainRecentlyView: MainRecentlyContract.View
 
-    constructor(dataManager: DataManager, mainRecentlyView: MainRecentlyContract.View) : super(dataManager) {
+    constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider, mainRecentlyView: MainRecentlyContract.View) : super(dataManager, schedulerProvider) {
         this.mainRecentlyView = mainRecentlyView
         this.mainRecentlyView.presenter = this
     }

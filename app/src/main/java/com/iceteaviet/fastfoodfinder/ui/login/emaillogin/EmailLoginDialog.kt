@@ -124,7 +124,7 @@ class EmailLoginDialog : DialogFragment(), EmailLoginContract.View, View.OnClick
             val frag = EmailLoginDialog()
             val args = Bundle()
             frag.arguments = args
-            frag.presenter = EmailLoginPresenter(App.getDataManager(), frag)
+            frag.presenter = EmailLoginPresenter(App.getDataManager(), App.getSchedulerProvider(), frag)
             return frag
         }
     }

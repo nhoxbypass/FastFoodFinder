@@ -31,7 +31,7 @@ class ListDetailActivity : BaseActivity(), ListDetailContract.View {
     override fun onCreate(@Nullable savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        presenter = ListDetailPresenter(App.getDataManager(), this)
+        presenter = ListDetailPresenter(App.getDataManager(), App.getSchedulerProvider(), this)
 
         presenter.handleExtras(intent)
         setupUI()

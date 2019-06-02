@@ -1,11 +1,13 @@
 package com.iceteaviet.fastfoodfinder
 
+import android.annotation.SuppressLint
 import android.content.Context
 import androidx.multidex.MultiDexApplication
 import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.location.GoogleLocationManager
 import com.iceteaviet.fastfoodfinder.location.SystemLocationManager
 import com.iceteaviet.fastfoodfinder.utils.initLogger
+import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
 
 /**
  * Created by tom on 7/15/18.
@@ -14,15 +16,20 @@ class App : MultiDexApplication() {
 
     companion object {
         private lateinit var dataManager: DataManager
+        private lateinit var schedulerProvider: SchedulerProvider
+
+        @SuppressLint("StaticFieldLeak")
         private lateinit var context: Context
         lateinit var PACKAGE_NAME: String
 
-        @JvmStatic
         fun getDataManager(): DataManager {
             return dataManager
         }
 
-        @JvmStatic
+        fun getSchedulerProvider(): SchedulerProvider {
+            return schedulerProvider
+        }
+
         fun getContext(): Context {
             return context
         }
@@ -37,6 +44,7 @@ class App : MultiDexApplication() {
         initLogger()
 
         dataManager = Injection.provideDataManager()
+        schedulerProvider = Injection.provideSchedulerProvider()
     }
 
     override fun onTerminate() {

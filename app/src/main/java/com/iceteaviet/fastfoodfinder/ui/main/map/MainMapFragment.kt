@@ -295,7 +295,7 @@ class MainMapFragment : Fragment(), MainMapContract.View, LocationListener {
 
             val fragment = MainMapFragment()
             fragment.arguments = args
-            fragment.presenter = MainMapPresenter(App.getDataManager(), fragment)
+            fragment.presenter = MainMapPresenter(App.getDataManager(), App.getSchedulerProvider(), fragment)
             return fragment
         }
     }

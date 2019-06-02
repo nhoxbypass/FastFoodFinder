@@ -46,7 +46,7 @@ class StoreDetailActivity : BaseActivity(), StoreDetailContract.View, LocationLi
     override fun onCreate(@Nullable savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        presenter = StoreDetailPresenter(App.getDataManager(), this)
+        presenter = StoreDetailPresenter(App.getDataManager(), App.getSchedulerProvider(), this)
 
         setupUI()
         setupEventHandlers()

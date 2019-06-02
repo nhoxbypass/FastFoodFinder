@@ -18,6 +18,7 @@ import com.iceteaviet.fastfoodfinder.ui.main.map.model.MapCameraPosition
 import com.iceteaviet.fastfoodfinder.ui.main.map.model.NearByStore
 import com.iceteaviet.fastfoodfinder.utils.calcDistance
 import com.iceteaviet.fastfoodfinder.utils.getLatLngString
+import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
 import io.reactivex.Observer
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -50,7 +51,7 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
     private var newVisibleStorePublisher: PublishSubject<Store>? = null
     private var cameraPositionPublisher: PublishSubject<MapCameraPosition>? = null
 
-    constructor(dataManager: DataManager, mainMapView: MainMapContract.View) : super(dataManager) {
+    constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider, mainMapView: MainMapContract.View) : super(dataManager, schedulerProvider) {
         this.mainMapView = mainMapView
         this.mainMapView.presenter = this
     }

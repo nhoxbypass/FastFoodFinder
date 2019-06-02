@@ -5,6 +5,7 @@ import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
 import com.iceteaviet.fastfoodfinder.ui.base.BasePresenter
 import com.iceteaviet.fastfoodfinder.utils.isValidEmail
 import com.iceteaviet.fastfoodfinder.utils.isValidPassword
+import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -17,7 +18,7 @@ class EmailLoginPresenter : BasePresenter<EmailLoginContract.Presenter>, EmailLo
 
     private val emailLoginView: EmailLoginContract.View
 
-    constructor(dataManager: DataManager, emailLoginView: EmailLoginContract.View) : super(dataManager) {
+    constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider, emailLoginView: EmailLoginContract.View) : super(dataManager, schedulerProvider) {
         this.emailLoginView = emailLoginView
         this.emailLoginView.presenter = this
     }

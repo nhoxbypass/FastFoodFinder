@@ -9,6 +9,7 @@ import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.Step
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.ui.base.BasePresenter
+import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
 import com.iceteaviet.fastfoodfinder.utils.ui.getStoreLogoDrawableRes
 import java.util.*
 
@@ -28,7 +29,7 @@ class MapRoutingPresenter : BasePresenter<MapRoutingContract.Presenter>, MapRout
 
     private var mapsDirection: MapsDirection? = null
 
-    constructor(dataManager: DataManager, mapRoutingView: MapRoutingContract.View) : super(dataManager) {
+    constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider, mapRoutingView: MapRoutingContract.View) : super(dataManager, schedulerProvider) {
         this.mapRoutingView = mapRoutingView
         this.mapRoutingView.presenter = this
     }

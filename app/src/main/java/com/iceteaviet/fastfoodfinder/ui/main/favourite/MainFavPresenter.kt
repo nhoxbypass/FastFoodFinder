@@ -4,6 +4,7 @@ import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreEvent
 import com.iceteaviet.fastfoodfinder.ui.base.BasePresenter
+import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
 import io.reactivex.Observer
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -17,7 +18,7 @@ class MainFavPresenter : BasePresenter<MainFavContract.Presenter>, MainFavContra
 
     private val mainFavView: MainFavContract.View
 
-    constructor(dataManager: DataManager, mainFavView: MainFavContract.View) : super(dataManager) {
+    constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider, mainFavView: MainFavContract.View) : super(dataManager, schedulerProvider) {
         this.mainFavView = mainFavView
         this.mainFavView.presenter = this
     }

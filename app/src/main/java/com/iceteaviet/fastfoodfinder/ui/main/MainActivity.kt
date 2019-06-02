@@ -59,7 +59,7 @@ class MainActivity : BaseActivity(), MainContract.View, View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        presenter = MainPresenter(App.getDataManager(), this)
+        presenter = MainPresenter(App.getDataManager(), App.getSchedulerProvider(), this)
 
         setupUI()
         setupEventHandlers()

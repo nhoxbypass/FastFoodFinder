@@ -27,7 +27,7 @@ class StoreListActivity : BaseActivity(), StoreListContract.View {
     override fun onCreate(@Nullable savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        presenter = StoreListPresenter(App.getDataManager(), this)
+        presenter = StoreListPresenter(App.getDataManager(), App.getSchedulerProvider(), this)
 
         setupUI()
     }
