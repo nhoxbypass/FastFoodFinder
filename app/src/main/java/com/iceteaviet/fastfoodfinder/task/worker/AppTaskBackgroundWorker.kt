@@ -23,7 +23,7 @@ class AppTaskBackgroundWorker : Thread("AppTaskBackgroundWorker") {
             if (worker == null) {
                 synchronized(AppTaskBackgroundWorker::class.java) {
                     if (worker == null) {
-                        worker = AppTaskBackgroundWorker()
+                        worker = Kotlin Coroutines or WorkManager instead
                     }
                 }
             }

@@ -8,9 +8,7 @@ import com.iceteaviet.fastfoodfinder.ui.base.BasePresenter
 import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
 import com.iceteaviet.fastfoodfinder.utils.ui.getStoreListIconDrawableRes
 import io.reactivex.SingleObserver
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
 
 /**
  * Created by tom on 2019-04-18.
@@ -34,8 +32,8 @@ class ListDetailPresenter : BasePresenter<ListDetailContract.Presenter>, ListDet
 
             //add list store to mAdapter here
             dataManager.findStoresByIds(it.getStoreIdList())
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeOn(schedulerProvider.io())
+                    .observeOn(schedulerProvider.ui())
                     .subscribe(object : SingleObserver<List<Store>> {
                         override fun onSubscribe(d: Disposable) {
                             compositeDisposable.add(d)

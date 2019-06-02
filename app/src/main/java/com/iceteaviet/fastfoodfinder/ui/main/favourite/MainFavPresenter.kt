@@ -7,9 +7,7 @@ import com.iceteaviet.fastfoodfinder.ui.base.BasePresenter
 import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
 import io.reactivex.Observer
 import io.reactivex.SingleObserver
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
 
 /**
  * Created by tom on 2019-04-18.
@@ -42,8 +40,8 @@ class MainFavPresenter : BasePresenter<MainFavContract.Presenter>, MainFavContra
 
     private fun loadStoreListsFromIds(storeIdList: MutableList<Int>) {
         dataManager.findStoresByIds(storeIdList)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.ui())
                 .subscribe(object : SingleObserver<List<Store>> {
                     override fun onSubscribe(d: Disposable) {
                         compositeDisposable.add(d)
@@ -61,12 +59,12 @@ class MainFavPresenter : BasePresenter<MainFavContract.Presenter>, MainFavContra
 
     private fun listenFavStoresOfUser(userUid: String) {
         dataManager.subscribeFavouriteStoresOfUser(userUid)
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(schedulerProvider.io())
                 .map { storeIdPair ->
                     val store = dataManager.findStoresById(storeIdPair.first).blockingGet()[0]
                     UserStoreEvent(store, storeIdPair.second)
                 }
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(schedulerProvider.ui())
                 .subscribe(object : Observer<UserStoreEvent> {
                     override fun onSubscribe(d: Disposable) {
                         compositeDisposable.add(d)

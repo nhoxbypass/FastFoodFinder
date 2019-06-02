@@ -19,7 +19,6 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.SingleObserver
 import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
 import io.realm.Realm
 import io.realm.RealmConfiguration
 
@@ -139,7 +138,6 @@ class AppDataManager(context: Context, private val storeRepository: StoreReposit
                 clientAuth.signInWithEmailAndPassword(Constant.DOWNLOADER_BOT_EMAIL, Constant.DOWNLOADER_BOT_PWD)
                         .toCompletable()
                         .andThen(storeRepository.getAllStores())
-                        .subscribeOn(Schedulers.io())
                         .subscribe(object : SingleObserver<List<Store>> {
                             override fun onSubscribe(d: Disposable) {
                                 emitter.setDisposable(d)

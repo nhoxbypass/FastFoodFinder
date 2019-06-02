@@ -9,9 +9,7 @@ import com.iceteaviet.fastfoodfinder.utils.isLolipopOrHigher
 import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
 import com.iceteaviet.fastfoodfinder.utils.ui.getStoreLogoDrawableRes
 import io.reactivex.SingleObserver
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
 
 
 /**
@@ -63,8 +61,8 @@ class LiveSightPresenter : BasePresenter<LiveSightContract.Presenter>, LiveSight
                 location.longitude - RADIUS,
                 location.latitude + RADIUS,
                 location.longitude + RADIUS)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.ui())
                 .subscribe(object : SingleObserver<List<Store>> {
                     override fun onSubscribe(d: Disposable) {
                         compositeDisposable.add(d)

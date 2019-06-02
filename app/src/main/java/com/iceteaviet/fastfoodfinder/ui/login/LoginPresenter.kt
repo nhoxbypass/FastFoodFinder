@@ -9,9 +9,7 @@ import com.iceteaviet.fastfoodfinder.utils.getDefaultUserStoreLists
 import com.iceteaviet.fastfoodfinder.utils.getNameFromEmail
 import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
 import io.reactivex.SingleObserver
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
 
 /**
  * Created by tom on 2019-04-18.
@@ -48,8 +46,8 @@ class LoginPresenter : BasePresenter<LoginContract.Presenter>, LoginContract.Pre
 
     override fun onLoginSuccess(user: User) {
         dataManager.getUser(user.getUid())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.ui())
                 .subscribe(object : SingleObserver<User> {
                     override fun onSubscribe(d: Disposable) {
                         compositeDisposable.add(d)
@@ -70,8 +68,8 @@ class LoginPresenter : BasePresenter<LoginContract.Presenter>, LoginContract.Pre
 
     override fun onRequestGoogleAccountSuccess(authCredential: AuthCredential, fromLastSignIn: Boolean) {
         dataManager.signInWithCredential(authCredential)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.ui())
                 .subscribe(object : SingleObserver<User> {
                     override fun onSubscribe(d: Disposable) {
                         compositeDisposable.add(d)
@@ -95,8 +93,8 @@ class LoginPresenter : BasePresenter<LoginContract.Presenter>, LoginContract.Pre
     // TODO: Check is new account
     override fun onRequestFacebookAccountSuccess(authCredential: AuthCredential) {
         dataManager.signInWithCredential(authCredential)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.ui())
                 .subscribe(object : SingleObserver<User> {
                     override fun onSubscribe(d: Disposable) {
                         compositeDisposable.add(d)

@@ -11,9 +11,7 @@ import com.iceteaviet.fastfoodfinder.ui.base.BasePresenter
 import com.iceteaviet.fastfoodfinder.utils.getLatLngString
 import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
 import io.reactivex.SingleObserver
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
 import java.util.*
 
 /**
@@ -36,8 +34,8 @@ class StoreDetailPresenter : BasePresenter<StoreDetailContract.Presenter>, Store
             storeDetailView.setToolbarTitle(it.title)
 
             dataManager.getComments(it.id.toString())
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeOn(schedulerProvider.io())
+                    .observeOn(schedulerProvider.ui())
                     .subscribe(object : SingleObserver<List<Comment>> {
                         override fun onSubscribe(d: Disposable) {
                             compositeDisposable.add(d)
@@ -112,8 +110,8 @@ class StoreDetailPresenter : BasePresenter<StoreDetailContract.Presenter>, Store
             queries[GoogleMapsRoutingApiHelper.PARAM_DESTINATION] = destination
 
             dataManager.getMapsRoutingApiHelper().getMapsDirection(queries, it)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeOn(schedulerProvider.io())
+                    .observeOn(schedulerProvider.ui())
                     .subscribe(object : SingleObserver<MapsDirection> {
                         override fun onSubscribe(d: Disposable) {
                             compositeDisposable.add(d)

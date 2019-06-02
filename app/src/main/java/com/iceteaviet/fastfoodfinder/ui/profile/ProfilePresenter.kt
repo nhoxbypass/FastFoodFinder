@@ -8,9 +8,7 @@ import com.iceteaviet.fastfoodfinder.ui.base.BasePresenter
 import com.iceteaviet.fastfoodfinder.utils.isValidUserUid
 import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
 import io.reactivex.SingleObserver
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
 import java.util.*
 
 /**
@@ -91,8 +89,8 @@ class ProfilePresenter : BasePresenter<ProfileContract.Presenter>, ProfileContra
             return
 
         dataManager.getUser(uid)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.ui())
                 .subscribe(object : SingleObserver<User> {
                     override fun onSubscribe(d: Disposable) {
                         compositeDisposable.add(d)

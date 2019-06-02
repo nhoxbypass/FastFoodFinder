@@ -21,7 +21,6 @@ import com.iceteaviet.fastfoodfinder.utils.getLatLngString
 import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
 import io.reactivex.Observer
 import io.reactivex.SingleObserver
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
@@ -130,8 +129,8 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
         queries[GoogleMapsRoutingApiHelper.PARAM_DESTINATION] = destination
 
         dataManager.getMapsRoutingApiHelper().getMapsDirection(queries, store)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.ui())
                 .subscribe(object : SingleObserver<MapsDirection> {
                     override fun onSubscribe(d: Disposable) {
                         compositeDisposable.add(d)
@@ -218,7 +217,7 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
                         visibleStores = getVisibleStore(storeList, it.cameraBounds)
                         generateNearByStoresWithDistance(it.cameraPosition, visibleStores)
                     }
-                    .observeOn(AndroidSchedulers.mainThread())
+                    .observeOn(schedulerProvider.ui())
                     .subscribe(object : Observer<List<NearByStore>> {
                         override fun onSubscribe(d: Disposable) {
                             compositeDisposable.add(d)
@@ -241,7 +240,7 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
 
     private fun subscribeNewVisibleStore() {
         newVisibleStorePublisher?.let {
-            it.subscribeOn(Schedulers.io())
+            it.subscribeOn(schedulerProvider.io())
                     .map { store ->
                         val marker = markerSparseArray.get(store.id)
 
@@ -259,7 +258,7 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
 
                         Pair(marker, store.type)
                     }
-                    .observeOn(AndroidSchedulers.mainThread())
+                    .observeOn(schedulerProvider.ui())
                     .subscribe(object : Observer<Pair<Marker, Int>> {
                         override fun onSubscribe(d: Disposable) {
                             compositeDisposable.add(d)
@@ -281,8 +280,8 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
 
     private fun handleSearchQuickAction(storeType: Int) {
         dataManager.findStoresByType(storeType)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.ui())
                 .subscribe(object : SingleObserver<List<Store>> {
                     override fun onSubscribe(d: Disposable) {
                         compositeDisposable.add(d)
@@ -307,8 +306,8 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
 
     private fun handleSearchQuerySubmitAction(searchString: String) {
         dataManager.findStores(searchString)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.ui())
                 .subscribe(object : SingleObserver<List<Store>> {
                     override fun onSubscribe(d: Disposable) {
                         compositeDisposable.add(d)
@@ -341,8 +340,8 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
 
     private fun loadAllStoresToMap() {
         dataManager.getAllStores()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.ui())
                 .subscribe(object : SingleObserver<List<Store>> {
                     override fun onSubscribe(d: Disposable) {
                         compositeDisposable.add(d)

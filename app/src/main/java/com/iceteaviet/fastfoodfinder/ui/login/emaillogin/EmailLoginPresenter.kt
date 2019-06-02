@@ -7,9 +7,7 @@ import com.iceteaviet.fastfoodfinder.utils.isValidEmail
 import com.iceteaviet.fastfoodfinder.utils.isValidPassword
 import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
 import io.reactivex.SingleObserver
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
 
 /**
  * Created by tom on 2019-04-18.
@@ -33,8 +31,8 @@ class EmailLoginPresenter : BasePresenter<EmailLoginContract.Presenter>, EmailLo
         if (isValidEmail(email)) {
             if (isValidPassword(password)) {
                 dataManager.signInWithEmailAndPassword(email, password)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeOn(schedulerProvider.io())
+                        .observeOn(schedulerProvider.ui())
                         .subscribe(object : SingleObserver<User> {
                             override fun onSubscribe(d: Disposable) {
                                 compositeDisposable.add(d)

@@ -11,10 +11,8 @@ import io.reactivex.Completable
 import io.reactivex.CompletableObserver
 import io.reactivex.Single
 import io.reactivex.SingleObserver
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.BiFunction
-import io.reactivex.schedulers.Schedulers
 
 
 /**
@@ -90,8 +88,8 @@ class SplashPresenter : BasePresenter<SplashContract.Presenter>, SplashContract.
     private fun loadStoresFromServerInternal(): Completable {
         return Completable.create { emitter ->
             dataManager.loadStoresFromServer()
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeOn(schedulerProvider.io())
+                    .observeOn(schedulerProvider.ui())
                     .subscribe(object : SingleObserver<List<Store>> {
                         override fun onSubscribe(d: Disposable) {
                             emitter.setDisposable(d)
@@ -116,8 +114,8 @@ class SplashPresenter : BasePresenter<SplashContract.Presenter>, SplashContract.
     private fun onUserNotSignedIn() {
         // Warm up store data
         dataManager.getAllStores()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.ui())
                 .subscribe(object : SingleObserver<List<Store>> {
                     override fun onSubscribe(d: Disposable) {
                         compositeDisposable.add(d)
@@ -145,8 +143,8 @@ class SplashPresenter : BasePresenter<SplashContract.Presenter>, SplashContract.
                 BiFunction<User, List<Store>, Pair<User, List<Store>>> { user, storeList ->
                     Pair(user, storeList)
                 })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.ui())
                 .subscribe(object : SingleObserver<Pair<User, List<Store>>> {
                     override fun onSubscribe(d: Disposable) {
                         compositeDisposable.add(d)
