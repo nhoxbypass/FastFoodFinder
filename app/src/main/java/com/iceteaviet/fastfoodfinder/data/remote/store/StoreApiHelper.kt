@@ -6,7 +6,7 @@ import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 /**
  * Created by tom on 7/15/18.
  */
-interface StoreApi {
+interface StoreApiHelper {
     interface StoreLoadCallback<T> {
         fun onSuccess(data: T)
 

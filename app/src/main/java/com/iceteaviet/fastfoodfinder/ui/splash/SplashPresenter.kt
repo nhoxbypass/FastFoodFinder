@@ -31,9 +31,9 @@ class SplashPresenter : BasePresenter<SplashContract.Presenter>, SplashContract.
     override fun subscribe() {
         startTime = System.currentTimeMillis()
 
-        if (dataManager.getPreferencesHelper().getAppLaunchFirstTime()) {
+        if (dataManager.getAppLaunchFirstTime()) {
             onAppOpenFirstTime()
-        } else if (dataManager.getPreferencesHelper().getNumberOfStores() == 0) {
+        } else if (dataManager.getNumberOfStores() == 0) {
             loadStoresFromServer()
         } else {
             if (dataManager.isSignedIn()) {
@@ -75,7 +75,7 @@ class SplashPresenter : BasePresenter<SplashContract.Presenter>, SplashContract.
     private fun onAppOpenFirstTime() {
         val disposable = loadStoresFromServerInternal()
                 .subscribe {
-                    dataManager.getPreferencesHelper().setAppLaunchFirstTime(false)
+                    dataManager.setAppLaunchFirstTime(false)
                     splashView.openLoginScreen()
                 }
 
@@ -97,7 +97,7 @@ class SplashPresenter : BasePresenter<SplashContract.Presenter>, SplashContract.
 
                         override fun onSuccess(storeList: List<Store>) {
                             val filteredStoreList = filterInvalidData(storeList.toMutableList())
-                            dataManager.getPreferencesHelper().setNumberOfStores(filteredStoreList.size)
+                            dataManager.setNumberOfStores(filteredStoreList.size)
                             dataManager.setStores(filteredStoreList)
 
                             emitter.onComplete()

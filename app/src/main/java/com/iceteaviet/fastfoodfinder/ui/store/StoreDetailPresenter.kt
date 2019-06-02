@@ -109,7 +109,7 @@ class StoreDetailPresenter : BasePresenter<StoreDetailContract.Presenter>, Store
             queries[GoogleMapsRoutingApiHelper.PARAM_ORIGIN] = origin
             queries[GoogleMapsRoutingApiHelper.PARAM_DESTINATION] = destination
 
-            dataManager.getMapsRoutingApiHelper().getMapsDirection(queries, it)
+            dataManager.getMapsDirection(queries, it)
                     .subscribeOn(schedulerProvider.io())
                     .observeOn(schedulerProvider.ui())
                     .subscribe(object : SingleObserver<MapsDirection> {

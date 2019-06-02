@@ -13,9 +13,9 @@ import java.util.*
 /**
  * Created by tom on 7/17/18.
  */
-class FirebaseStoreApiHelper(private val databaseRef: DatabaseReference) : StoreApi {
+class FirebaseStoreApiHelper(private val databaseRef: DatabaseReference) : StoreApiHelper {
 
-    override fun getAllStores(callback: StoreApi.StoreLoadCallback<List<Store>>) {
+    override fun getAllStores(callback: StoreApiHelper.StoreLoadCallback<List<Store>>) {
         databaseRef.child(CHILD_STORES_LOCATION).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(@NonNull dataSnapshot: DataSnapshot) {
                 callback.onSuccess(parseStoresDataFromFirebase(dataSnapshot))
@@ -27,7 +27,7 @@ class FirebaseStoreApiHelper(private val databaseRef: DatabaseReference) : Store
         })
     }
 
-    override fun getComments(storeId: String, callback: StoreApi.StoreLoadCallback<List<Comment>>) {
+    override fun getComments(storeId: String, callback: StoreApiHelper.StoreLoadCallback<List<Comment>>) {
         databaseRef.child(CHILD_COMMENT_LIST).child(storeId).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(databaseError: DatabaseError) {
                 callback.onError(databaseError.toException())

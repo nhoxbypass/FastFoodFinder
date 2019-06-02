@@ -60,12 +60,12 @@ class SettingPresenter : BasePresenter<SettingContract.Presenter>, SettingContra
     }
 
     override fun onSetupLanguage() {
-        isVietnamese = dataManager.getPreferencesHelper().getIfLanguageIsVietnamese()
+        isVietnamese = dataManager.getIfLanguageIsVietnamese()
         this.settingView.updateLangUI(isVietnamese)
     }
 
     override fun saveLanguagePref() {
-        dataManager.getPreferencesHelper().setIfLanguageIsVietnamese(isVietnamese)
+        dataManager.setIfLanguageIsVietnamese(isVietnamese)
     }
 
     override fun onLoadStoreFromServer() {
@@ -80,7 +80,7 @@ class SettingPresenter : BasePresenter<SettingContract.Presenter>, SettingContra
 
                     override fun onSuccess(storeList: List<Store>) {
                         val filteredStoreList = filterInvalidData(storeList.toMutableList())
-                        dataManager.getPreferencesHelper().setNumberOfStores(filteredStoreList.size)
+                        dataManager.setNumberOfStores(filteredStoreList.size)
                         dataManager.setStores(filteredStoreList)
 
                         settingView.showSuccessLoadingToast("")

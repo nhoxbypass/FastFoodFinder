@@ -8,7 +8,7 @@ import io.reactivex.Observable
 /**
  * Created by tom on 7/15/18.
  */
-interface UserApi {
+interface UserApiHelper {
     interface UserLoadCallback<T> {
         fun onSuccess(data: T)
 

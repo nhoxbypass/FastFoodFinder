@@ -1,12 +1,14 @@
 package com.iceteaviet.fastfoodfinder.data
 
+import android.content.Context
 import android.util.Pair
 import com.google.firebase.auth.AuthCredential
 import com.iceteaviet.fastfoodfinder.data.auth.ClientAuth
+import com.iceteaviet.fastfoodfinder.data.domain.prefs.PreferencesRepository
+import com.iceteaviet.fastfoodfinder.data.domain.routing.MapsRoutingRepository
 import com.iceteaviet.fastfoodfinder.data.domain.store.StoreRepository
 import com.iceteaviet.fastfoodfinder.data.domain.user.UserRepository
-import com.iceteaviet.fastfoodfinder.data.local.prefs.PreferencesHelper
-import com.iceteaviet.fastfoodfinder.data.remote.routing.MapsRoutingApiHelper
+import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Comment
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
@@ -18,9 +20,9 @@ import io.reactivex.Single
  * Created by tom on 2019-05-26.
  */
 
-class FakeDataManager(private val storeRepository: StoreRepository, private val userRepository: UserRepository,
+class FakeDataManager(context: Context, private val storeRepository: StoreRepository, private val userRepository: UserRepository,
                       private val clientAuth: ClientAuth,
-                      private val mapsRoutingApiHelper: MapsRoutingApiHelper, private val preferencesHelper: PreferencesHelper) : DataManager {
+                      private val mapsRoutingRepository: MapsRoutingRepository, private val preferencesRepository: PreferencesRepository) : DataManager {
 
     override fun getAllStores(): Single<List<Store>> {
         return storeRepository.getAllStores()
@@ -102,12 +104,44 @@ class FakeDataManager(private val storeRepository: StoreRepository, private val 
         return userRepository.unsubscribeFavouriteStoresOfUser(uid)
     }
 
-    override fun getMapsRoutingApiHelper(): MapsRoutingApiHelper {
-        return mapsRoutingApiHelper
+    override fun getMapsDirection(queries: Map<String, String>, store: Store): Single<MapsDirection> {
+        return mapsRoutingRepository.getMapsDirection(queries, store)
     }
 
-    override fun getPreferencesHelper(): PreferencesHelper {
-        return preferencesHelper
+    override fun getAppLaunchFirstTime(): Boolean {
+        return preferencesRepository.getAppLaunchFirstTime()
+    }
+
+    override fun setAppLaunchFirstTime(isFirstTime: Boolean) {
+        preferencesRepository.setAppLaunchFirstTime(isFirstTime)
+    }
+
+    override fun getNumberOfStores(): Int {
+        return preferencesRepository.getNumberOfStores()
+    }
+
+    override fun setNumberOfStores(numberOfStores: Int) {
+        return preferencesRepository.setNumberOfStores(numberOfStores)
+    }
+
+    override fun setSearchHistories(set: MutableSet<String>) {
+        preferencesRepository.setSearchHistories(set)
+    }
+
+    override fun getIfLanguageIsVietnamese(): Boolean {
+        return preferencesRepository.getIfLanguageIsVietnamese()
+    }
+
+    override fun setIfLanguageIsVietnamese(isVietnamese: Boolean) {
+        preferencesRepository.setIfLanguageIsVietnamese(isVietnamese)
+    }
+
+    override fun getSearchHistories(): MutableSet<String> {
+        return preferencesRepository.getSearchHistories()
+    }
+
+    override fun addSearchHistories(searchContent: String) {
+        preferencesRepository.addSearchHistories(searchContent)
     }
 
     override fun signUpWithEmailAndPassword(email: String, password: String): Single<User> {
@@ -140,14 +174,6 @@ class FakeDataManager(private val storeRepository: StoreRepository, private val 
     }
 
     override fun setCurrentUser(user: User?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun getSearchHistories(): MutableSet<String> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun addSearchHistories(searchContent: String) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

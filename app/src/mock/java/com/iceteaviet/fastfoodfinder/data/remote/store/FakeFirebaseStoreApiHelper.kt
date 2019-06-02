@@ -9,19 +9,19 @@ import kotlin.collections.ArrayList
 /**
  * Created by tom on 7/17/18.
  */
-class FakeFirebaseStoreRepository : StoreApi {
+class FakeFirebaseStoreApiHelper : StoreApiHelper {
 
     private var STORE_SERVICE_DATA: MutableList<Store> = ArrayList()
     private var STORE_COMMENT_SERVICE_DATA: MutableMap<String, MutableList<Comment>> = TreeMap()
 
-    override fun getAllStores(callback: StoreApi.StoreLoadCallback<List<Store>>) {
+    override fun getAllStores(callback: StoreApiHelper.StoreLoadCallback<List<Store>>) {
         if (!STORE_SERVICE_DATA.isEmpty())
             callback.onSuccess(STORE_SERVICE_DATA)
         else
             callback.onError(NotFoundException())
     }
 
-    override fun getComments(storeId: String, callback: StoreApi.StoreLoadCallback<List<Comment>>) {
+    override fun getComments(storeId: String, callback: StoreApiHelper.StoreLoadCallback<List<Comment>>) {
         callback.onSuccess(STORE_COMMENT_SERVICE_DATA.get(storeId) ?: ArrayList())
     }
 

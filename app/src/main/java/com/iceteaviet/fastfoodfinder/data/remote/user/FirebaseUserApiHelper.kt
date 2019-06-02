@@ -13,7 +13,7 @@ import io.reactivex.Observable
 /**
  * Created by tom on 7/15/18.
  */
-class FirebaseUserApiHelper(private val databaseRef: DatabaseReference) : UserApi {
+class FirebaseUserApiHelper(private val databaseRef: DatabaseReference) : UserApiHelper {
 
     var favouriteStoresListener: ChildEventListener? = null
 
@@ -36,7 +36,7 @@ class FirebaseUserApiHelper(private val databaseRef: DatabaseReference) : UserAp
                 .setValue(storeLists)
     }
 
-    override fun getUser(uid: String, callback: UserApi.UserLoadCallback<User>) {
+    override fun getUser(uid: String, callback: UserApiHelper.UserLoadCallback<User>) {
         databaseRef.child(CHILD_USERS).child(uid).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(@NonNull dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.exists()) {
@@ -56,7 +56,7 @@ class FirebaseUserApiHelper(private val databaseRef: DatabaseReference) : UserAp
         })
     }
 
-    override fun isUserExists(uid: String, callback: UserApi.UserLoadCallback<Boolean>) {
+    override fun isUserExists(uid: String, callback: UserApiHelper.UserLoadCallback<Boolean>) {
         databaseRef.child(CHILD_USERS).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(@NonNull dataSnapshot: DataSnapshot) {
                 if (!dataSnapshot.exists() || !dataSnapshot.hasChild(uid)) {

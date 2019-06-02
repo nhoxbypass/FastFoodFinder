@@ -2,7 +2,7 @@ package com.iceteaviet.fastfoodfinder.data.domain.store
 
 import androidx.annotation.VisibleForTesting
 import com.iceteaviet.fastfoodfinder.data.local.db.store.StoreDataSource
-import com.iceteaviet.fastfoodfinder.data.remote.store.StoreApi
+import com.iceteaviet.fastfoodfinder.data.remote.store.StoreApiHelper
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Comment
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import io.reactivex.Single
@@ -11,7 +11,7 @@ import io.reactivex.SingleOnSubscribe
 /**
  * Created by tom on 2019-06-01.
  */
-class AppStoreRepository(private val storeApi: StoreApi, private val storeDataSource: StoreDataSource) : StoreRepository {
+class AppStoreRepository(private val storeApiHelper: StoreApiHelper, private val storeDataSource: StoreDataSource) : StoreRepository {
 
     /**
      * This method has reduced visibility for testing and is only visible to tests in the same
@@ -34,7 +34,7 @@ class AppStoreRepository(private val storeApi: StoreApi, private val storeDataSo
             cachedStores = storeDataSource.getAllStores()
 
             if (cachedStores.isEmpty()) {
-                storeApi.getAllStores(object : StoreApi.StoreLoadCallback<List<Store>> {
+                storeApiHelper.getAllStores(object : StoreApiHelper.StoreLoadCallback<List<Store>> {
                     override fun onSuccess(data: List<Store>) {
                         cachedStores = data
                         emitter.onSuccess(ArrayList(data))
@@ -111,7 +111,7 @@ class AppStoreRepository(private val storeApi: StoreApi, private val storeDataSo
 
     override fun getComments(storeId: String): Single<List<Comment>> {
         return Single.create { emitter ->
-            storeApi.getComments(storeId, object : StoreApi.StoreLoadCallback<List<Comment>> {
+            storeApiHelper.getComments(storeId, object : StoreApiHelper.StoreLoadCallback<List<Comment>> {
                 override fun onSuccess(data: List<Comment>) {
                     emitter.onSuccess(data)
                 }
@@ -125,7 +125,7 @@ class AppStoreRepository(private val storeApi: StoreApi, private val storeDataSo
     }
 
     override fun insertOrUpdateComment(storeId: String, comment: Comment) {
-        return storeApi.insertOrUpdateComment(storeId, comment)
+        return storeApiHelper.insertOrUpdateComment(storeId, comment)
     }
 
     fun clearCache() {

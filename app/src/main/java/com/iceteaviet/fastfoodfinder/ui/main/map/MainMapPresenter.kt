@@ -128,7 +128,7 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
         queries[GoogleMapsRoutingApiHelper.PARAM_ORIGIN] = origin
         queries[GoogleMapsRoutingApiHelper.PARAM_DESTINATION] = destination
 
-        dataManager.getMapsRoutingApiHelper().getMapsDirection(queries, store)
+        dataManager.getMapsDirection(queries, store)
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
                 .subscribe(object : SingleObserver<MapsDirection> {

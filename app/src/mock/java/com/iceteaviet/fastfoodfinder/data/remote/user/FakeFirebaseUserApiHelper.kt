@@ -10,7 +10,7 @@ import java.util.*
 /**
  * Created by tom on 7/15/18.
  */
-class FakeFirebaseUserRepository : UserApi {
+class FakeFirebaseUserApiHelper : UserApiHelper {
 
     private var USER_SERVICE_DATA_MAP: MutableMap<String, User> = TreeMap()
 
@@ -33,7 +33,7 @@ class FakeFirebaseUserRepository : UserApi {
         }
     }
 
-    override fun getUser(uid: String, callback: UserApi.UserLoadCallback<User>) {
+    override fun getUser(uid: String, callback: UserApiHelper.UserLoadCallback<User>) {
         val entity = USER_SERVICE_DATA_MAP.get(uid)
         if (entity != null)
             callback.onSuccess(entity)
@@ -41,7 +41,7 @@ class FakeFirebaseUserRepository : UserApi {
             callback.onError(NotFoundException())
     }
 
-    override fun isUserExists(uid: String, callback: UserApi.UserLoadCallback<Boolean>) {
+    override fun isUserExists(uid: String, callback: UserApiHelper.UserLoadCallback<Boolean>) {
         if (USER_SERVICE_DATA_MAP.containsKey(uid))
             callback.onSuccess(true)
         else

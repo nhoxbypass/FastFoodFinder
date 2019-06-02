@@ -9,7 +9,7 @@ import kotlin.collections.ArrayList
 /**
  * Created by Genius Doan on 11/20/2016.
  */
-class FakeLocalStoreRepository : StoreDataSource {
+class FakeStoreDAO : StoreDataSource {
 
     private var STORE_SERVICE_DATA: MutableList<Store> = ArrayList()
     private var STORE_SERVICE_DATA_MAP: Map<String, MutableList<Store>> = TreeMap()

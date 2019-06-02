@@ -8,7 +8,7 @@ import java.util.*
 /**
  * Created by tom on 7/25/18.
  */
-class FakeLocalUserRepository : UserDataSource {
+class FakeUserDAO : UserDataSource {
 
     private var USER_SERVICE_DATA_MAP: MutableMap<String, User> = TreeMap()
 
