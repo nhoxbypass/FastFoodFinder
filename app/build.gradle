@@ -110,6 +110,7 @@ dependencies {
     testImplementation "org.powermock:powermock-api-mockito2:$rootProject.ext.powerMockito"
     testImplementation("org.assertj:assertj-core:$rootProject.ext.assertJVersion")
     //testImplementation 'com.google.truth:truth:0.44' // Does not stable
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$rootProject.ext.kotlinMockitoVersion"
 
     // Espresso UI Testing dependencies.
     androidTestImplementation "com.android.support.test.espresso:espresso-core:$rootProject.ext.espressoVersion"
