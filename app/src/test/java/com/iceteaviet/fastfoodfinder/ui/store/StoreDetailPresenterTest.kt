@@ -6,6 +6,7 @@ import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.utils.StoreType
 import com.iceteaviet.fastfoodfinder.utils.getFakeComments
 import com.iceteaviet.fastfoodfinder.utils.rx.TrampolineSchedulerProvider
+import com.nhaarman.mockitokotlin2.eq
 import io.reactivex.Single
 import org.junit.Before
 import org.junit.Test
@@ -43,7 +44,7 @@ class StoreDetailPresenterTest {
         val store = Store(STORE_ID, STORE_TITLE, STORE_ADDRESS, STORE_LAT, STORE_LNG, STORE_TEL, STORE_TYPE)
         storeDetailPresenter.handleExtras(store)
 
-        `when`(dataManager.getComments(ArgumentMatchers.anyString())).thenReturn(
+        `when`(dataManager.getComments(STORE_ID.toString())).thenReturn(
                 Single.just(comments)
         )
 
@@ -72,10 +73,14 @@ class StoreDetailPresenterTest {
         val store = Store(STORE_ID, STORE_TITLE, STORE_ADDRESS, STORE_LAT, STORE_LNG, STORE_TEL, STORE_TYPE)
         storeDetailPresenter.handleExtras(store)
 
+        `when`(dataManager.getMapsDirection(ArgumentMatchers.anyMap(), eq(store))).thenReturn(
+                Single.just(mapsDirection)
+        )
+
         storeDetailPresenter.onNavigationButtonClick()
 
         // Then add note UI is shown
-        verify(storeDetailView).showMapRoutingView(store, MapsDirection())
+        verify(storeDetailView).showMapRoutingView(store, mapsDirection)
     }
 
     @Test
@@ -96,5 +101,7 @@ class StoreDetailPresenterTest {
         private const val STORE_TYPE = StoreType.TYPE_CIRCLE_K
 
         private val comments = getFakeComments()
+
+        private val mapsDirection = MapsDirection()
     }
 }
