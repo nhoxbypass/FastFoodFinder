@@ -44,7 +44,7 @@ class StoreDetailPresenterTest {
         val store = Store(STORE_ID, STORE_TITLE, STORE_ADDRESS, STORE_LAT, STORE_LNG, STORE_TEL, STORE_TYPE)
         storeDetailPresenter.handleExtras(store)
 
-        `when`(dataManager.getComments(STORE_ID.toString())).thenReturn(
+        `when`(dataManager.getComments(eq(STORE_ID.toString()))).thenReturn(
                 Single.just(comments)
         )
 
