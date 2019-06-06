@@ -14,7 +14,7 @@ import com.iceteaviet.fastfoodfinder.location.base.ILocationManager
 /**
  * Created by tom on 2019-05-01.
  */
-class GoogleLocationManager private constructor(context: Context) : AbsLocationManager<LocationListener>(context), ILocationManager<LocationListener>, com.google.android.gms.location.LocationListener, GoogleApiClient.ConnectionCallbacks {
+open class GoogleLocationManager private constructor(context: Context) : AbsLocationManager<LocationListener>(context), ILocationManager<LocationListener>, com.google.android.gms.location.LocationListener, GoogleApiClient.ConnectionCallbacks {
 
     private var locationRequest: LocationRequest? = null
     private var googleApiClient: GoogleApiClient? = null

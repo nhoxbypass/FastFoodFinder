@@ -3,7 +3,6 @@ package com.iceteaviet.fastfoodfinder.ui.main.map
 
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
-import android.location.Location
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -28,8 +27,6 @@ import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
-import com.iceteaviet.fastfoodfinder.location.GoogleLocationManager
-import com.iceteaviet.fastfoodfinder.location.LocationListener
 import com.iceteaviet.fastfoodfinder.ui.main.map.model.NearByStore
 import com.iceteaviet.fastfoodfinder.ui.main.map.storeinfo.StoreInfoDialog
 import com.iceteaviet.fastfoodfinder.utils.*
@@ -42,7 +39,7 @@ import kotlinx.android.synthetic.main.fragment_main_map.*
 /**
  * Main fragment that display a map with near by stores
  */
-class MainMapFragment : Fragment(), MainMapContract.View, LocationListener {
+class MainMapFragment : Fragment(), MainMapContract.View {
     override lateinit var presenter: MainMapContract.Presenter
 
     lateinit var mNearStoreRecyclerView: RecyclerView
@@ -111,26 +108,17 @@ class MainMapFragment : Fragment(), MainMapContract.View, LocationListener {
         googleMap?.isMyLocationEnabled = enabled
     }
 
-    @SuppressLint("MissingPermission")
-    override fun requestLocationUpdates() {
-        GoogleLocationManager.getInstance().subscribeLocationUpdate(this)
-    }
-
     override fun animateMapCamera(location: LatLng, zoomToDetail: Boolean) {
         val zoomLevel = if (zoomToDetail) Constant.DETAILED_ZOOM_LEVEL else DEFAULT_ZOOM_LEVEL
         googleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(location, zoomLevel))
     }
 
-    @SuppressLint("MissingPermission")
-    override fun requestLastLocation() {
-        val lastLocation = GoogleLocationManager.getInstance().getCurrentLocation()
-        if (lastLocation != null) {
-            presenter.onCurrLocationChanged(lastLocation.latitude, lastLocation.longitude)
-        }
-    }
-
     override fun showWarningMessage(stringId: Int) {
         Toast.makeText(context, stringId, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun showCannotGetLocationMessage() {
+        Toast.makeText(context, R.string.cannot_get_curr_location, Toast.LENGTH_SHORT).show()
     }
 
     override fun addMarkersToMap(storeList: MutableList<Store>) {
@@ -195,14 +183,6 @@ class MainMapFragment : Fragment(), MainMapContract.View, LocationListener {
 
     override fun clearMapData() {
         googleMap?.clear()
-    }
-
-    override fun onLocationChanged(location: Location) {
-        presenter.onCurrLocationChanged(location.latitude, location.longitude)
-    }
-
-    override fun onLocationFailed(type: Int) {
-
     }
 
     private fun inflateSupportMapFragment(): SupportMapFragment? {

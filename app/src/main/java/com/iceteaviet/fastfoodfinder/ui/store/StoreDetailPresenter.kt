@@ -66,7 +66,7 @@ class StoreDetailPresenter : BasePresenter<StoreDetailContract.Presenter>, Store
     }
 
     override fun onLocationPermissionGranted() {
-        getCurrentLocation()
+        requestCurrentLocation()
         requestLocationUpdates()
     }
 
@@ -85,7 +85,7 @@ class StoreDetailPresenter : BasePresenter<StoreDetailContract.Presenter>, Store
         GoogleLocationManager.getInstance().subscribeLocationUpdate(this)
     }
 
-    override fun getCurrentLocation() {
+    override fun requestCurrentLocation() {
         val lastLocation = GoogleLocationManager.getInstance().getCurrentLocation()
         if (lastLocation != null) {
             onCurrLocationChanged(lastLocation.latitude, lastLocation.longitude)

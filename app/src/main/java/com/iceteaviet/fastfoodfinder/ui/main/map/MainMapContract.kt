@@ -15,10 +15,9 @@ import com.iceteaviet.fastfoodfinder.ui.main.map.model.NearByStore
 interface MainMapContract {
     interface View : BaseView<Presenter> {
         fun setMyLocationEnabled(enabled: Boolean)
-        fun requestLocationUpdates()
-        fun requestLastLocation()
         fun animateMapCamera(location: LatLng, zoomToDetail: Boolean)
         fun showWarningMessage(@StringRes stringId: Int)
+        fun showCannotGetLocationMessage()
         fun addMarkersToMap(storeList: MutableList<Store>)
         fun setupMap()
         fun setupMapEventHandlers()
@@ -33,6 +32,8 @@ interface MainMapContract {
     interface Presenter : com.iceteaviet.fastfoodfinder.ui.base.Presenter {
         fun onLocationPermissionGranted()
         fun onCurrLocationChanged(latitude: Double, longitude: Double)
+        fun requestLocationUpdates()
+        fun requestCurrentLocation()
         fun onMapCameraMove(cameraPosition: LatLng, bounds: LatLngBounds)
         fun onGetMapAsync()
         fun onDirectionNavigateClick(store: Store)
