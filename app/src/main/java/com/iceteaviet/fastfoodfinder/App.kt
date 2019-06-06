@@ -45,6 +45,8 @@ class App : MultiDexApplication() {
 
         dataManager = Injection.provideDataManager()
         schedulerProvider = Injection.provideSchedulerProvider()
+        GoogleLocationManager.init(getContext())
+        SystemLocationManager.init(getContext())
     }
 
     override fun onTerminate() {

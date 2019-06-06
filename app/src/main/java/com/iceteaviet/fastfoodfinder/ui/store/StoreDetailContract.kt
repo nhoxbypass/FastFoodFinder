@@ -12,8 +12,7 @@ import com.iceteaviet.fastfoodfinder.ui.base.BaseView
 interface StoreDetailContract {
     interface View : BaseView<Presenter> {
         fun setToolbarTitle(title: String)
-        fun requestLocationUpdates()
-        fun getLastLocation()
+        fun showCannotGetLocationMessage()
         fun setStoreComments(listComments: MutableList<Comment>)
         fun addStoreComment(comment: Comment)
         fun setAppBarExpanded(expanded: Boolean)
@@ -27,6 +26,8 @@ interface StoreDetailContract {
 
     interface Presenter : com.iceteaviet.fastfoodfinder.ui.base.Presenter {
         fun onLocationPermissionGranted()
+        fun requestLocationUpdates()
+        fun getCurrentLocation()
         fun handleExtras(extras: Parcelable?)
         fun onAddNewComment(comment: Comment?)
         fun onCurrLocationChanged(latitude: Double, longitude: Double)

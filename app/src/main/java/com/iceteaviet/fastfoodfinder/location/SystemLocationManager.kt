@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Location
 import android.os.Bundle
-import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.location.base.AbsLocationManager
 import com.iceteaviet.fastfoodfinder.location.base.ILocationManager
 
@@ -12,7 +11,7 @@ import com.iceteaviet.fastfoodfinder.location.base.ILocationManager
 /**
  * Created by tom on 2019-05-01.
  */
-class SystemLocationManager private constructor() : AbsLocationManager<SystemLocationListener>(), ILocationManager<SystemLocationListener>, android.location.LocationListener {
+class SystemLocationManager private constructor(context: Context) : AbsLocationManager<SystemLocationListener>(context), ILocationManager<SystemLocationListener>, android.location.LocationListener {
 
     private var locationManager: android.location.LocationManager? = null
 
@@ -24,8 +23,8 @@ class SystemLocationManager private constructor() : AbsLocationManager<SystemLoc
         requestLocationUpdates()
     }
 
-    override fun initLocationProvider() {
-        locationManager = App.getContext().getSystemService(Context.LOCATION_SERVICE) as android.location.LocationManager?
+    override fun initLocationProvider(context: Context) {
+        locationManager = context.getSystemService(Context.LOCATION_SERVICE) as android.location.LocationManager?
     }
 
     @SuppressLint("MissingPermission")
@@ -98,13 +97,22 @@ class SystemLocationManager private constructor() : AbsLocationManager<SystemLoc
         private const val MIN_DISTANCE_CHANGE_FOR_UPDATES: Float = 10f // 10 meters
         private const val MIN_TIME_BW_UPDATES = (1000 * 30).toLong() // 30 seconds
 
+        private var appContext: Context? = null
+
         private var instance: SystemLocationManager? = null
+
+        fun init(context: Context) {
+            appContext = context.applicationContext
+        }
 
         fun getInstance(): SystemLocationManager {
             if (instance == null) {
                 synchronized(SystemLocationManager::class.java) {
                     if (instance == null) {
-                        instance = SystemLocationManager()
+                        if (appContext == null)
+                            throw IllegalStateException("Call `SystemLocationManager.init(Context)` before calling this method.")
+                        else
+                            instance = SystemLocationManager(appContext!!)
                     }
                 }
             }

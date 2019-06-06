@@ -1,9 +1,7 @@
 package com.iceteaviet.fastfoodfinder.ui.store
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.location.Location
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.Toast
@@ -19,8 +17,6 @@ import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Comment
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
-import com.iceteaviet.fastfoodfinder.location.GoogleLocationManager
-import com.iceteaviet.fastfoodfinder.location.LocationListener
 import com.iceteaviet.fastfoodfinder.ui.base.BaseActivity
 import com.iceteaviet.fastfoodfinder.ui.store.comment.CommentActivity
 import com.iceteaviet.fastfoodfinder.ui.store.comment.CommentActivity.Companion.KEY_COMMENT
@@ -31,7 +27,7 @@ import kotlinx.android.synthetic.main.activity_store_detail.*
  * Created by taq on 18/11/2016.
  */
 
-class StoreDetailActivity : BaseActivity(), StoreDetailContract.View, LocationListener {
+class StoreDetailActivity : BaseActivity(), StoreDetailContract.View {
     override lateinit var presenter: StoreDetailContract.Presenter
 
     private lateinit var collapsingToolbar: CollapsingToolbarLayout
@@ -99,18 +95,8 @@ class StoreDetailActivity : BaseActivity(), StoreDetailContract.View, LocationLi
         collapsingToolbar.title = title
     }
 
-    @SuppressLint("MissingPermission")
-    override fun requestLocationUpdates() {
-        GoogleLocationManager.getInstance().subscribeLocationUpdate(this)
-    }
-
-    @SuppressLint("MissingPermission")
-    override fun getLastLocation() {
-        val lastLocation = GoogleLocationManager.getInstance().getCurrentLocation()
-        if (lastLocation != null) {
-            presenter.onCurrLocationChanged(lastLocation.latitude, lastLocation.longitude)
-        } else
-            Toast.makeText(this, R.string.cannot_get_curr_location, Toast.LENGTH_SHORT).show()
+    override fun showCannotGetLocationMessage() {
+        Toast.makeText(this, R.string.cannot_get_curr_location, Toast.LENGTH_SHORT).show()
     }
 
     override fun setStoreComments(listComments: MutableList<Comment>) {
@@ -143,14 +129,6 @@ class StoreDetailActivity : BaseActivity(), StoreDetailContract.View, LocationLi
 
     override fun showMapRoutingView(currStore: Store, mapsDirection: MapsDirection) {
         openRoutingActivity(this, currStore, mapsDirection)
-    }
-
-    override fun onLocationChanged(location: Location) {
-        presenter.onCurrLocationChanged(location.latitude, location.longitude)
-    }
-
-    override fun onLocationFailed(type: Int) {
-
     }
 
     override fun exit() {

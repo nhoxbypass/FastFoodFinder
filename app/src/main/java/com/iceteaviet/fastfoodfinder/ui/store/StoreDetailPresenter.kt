@@ -1,12 +1,16 @@
 package com.iceteaviet.fastfoodfinder.ui.store
 
+import android.location.Location
 import android.os.Parcelable
+import androidx.annotation.VisibleForTesting
 import com.google.android.gms.maps.model.LatLng
 import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.routing.GoogleMapsRoutingApiHelper
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Comment
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
+import com.iceteaviet.fastfoodfinder.location.GoogleLocationManager
+import com.iceteaviet.fastfoodfinder.location.LocationListener
 import com.iceteaviet.fastfoodfinder.ui.base.BasePresenter
 import com.iceteaviet.fastfoodfinder.utils.getLatLngString
 import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
@@ -17,12 +21,14 @@ import java.util.*
 /**
  * Created by tom on 2019-04-18.
  */
-class StoreDetailPresenter : BasePresenter<StoreDetailContract.Presenter>, StoreDetailContract.Presenter {
+class StoreDetailPresenter : BasePresenter<StoreDetailContract.Presenter>, StoreDetailContract.Presenter, LocationListener {
 
     private val storeDetailView: StoreDetailContract.View
 
     private var currLocation: LatLng? = null
-    private var currStore: Store? = null
+
+    @VisibleForTesting
+    var currStore: Store? = null
 
     constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider, storeDetailView: StoreDetailContract.View) : super(dataManager, schedulerProvider) {
         this.storeDetailView = storeDetailView
@@ -52,9 +58,16 @@ class StoreDetailPresenter : BasePresenter<StoreDetailContract.Presenter>, Store
         }
     }
 
+    override fun onLocationChanged(location: Location) {
+        onCurrLocationChanged(location.latitude, location.longitude)
+    }
+
+    override fun onLocationFailed(type: Int) {
+    }
+
     override fun onLocationPermissionGranted() {
-        storeDetailView.getLastLocation()
-        storeDetailView.requestLocationUpdates()
+        getCurrentLocation()
+        requestLocationUpdates()
     }
 
     override fun handleExtras(extras: Parcelable?) {
@@ -65,6 +78,19 @@ class StoreDetailPresenter : BasePresenter<StoreDetailContract.Presenter>, Store
                 storeDetailView.exit()
         } else {
             storeDetailView.exit()
+        }
+    }
+
+    override fun requestLocationUpdates() {
+        GoogleLocationManager.getInstance().subscribeLocationUpdate(this)
+    }
+
+    override fun getCurrentLocation() {
+        val lastLocation = GoogleLocationManager.getInstance().getCurrentLocation()
+        if (lastLocation != null) {
+            onCurrLocationChanged(lastLocation.latitude, lastLocation.longitude)
+        } else {
+            storeDetailView.showCannotGetLocationMessage()
         }
     }
 
