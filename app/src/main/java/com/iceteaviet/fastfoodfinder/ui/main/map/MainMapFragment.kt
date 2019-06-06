@@ -27,6 +27,7 @@ import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
+import com.iceteaviet.fastfoodfinder.location.GoogleLocationManager
 import com.iceteaviet.fastfoodfinder.ui.main.map.model.NearByStore
 import com.iceteaviet.fastfoodfinder.ui.main.map.storeinfo.StoreInfoDialog
 import com.iceteaviet.fastfoodfinder.utils.*
@@ -275,7 +276,8 @@ class MainMapFragment : Fragment(), MainMapContract.View {
 
             val fragment = MainMapFragment()
             fragment.arguments = args
-            fragment.presenter = MainMapPresenter(App.getDataManager(), App.getSchedulerProvider(), fragment)
+            fragment.presenter = MainMapPresenter(App.getDataManager(), App.getSchedulerProvider(),
+                    GoogleLocationManager.getInstance(), fragment)
             return fragment
         }
     }

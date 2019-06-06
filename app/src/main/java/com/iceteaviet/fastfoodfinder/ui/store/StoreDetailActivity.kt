@@ -17,6 +17,7 @@ import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Comment
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
+import com.iceteaviet.fastfoodfinder.location.GoogleLocationManager
 import com.iceteaviet.fastfoodfinder.ui.base.BaseActivity
 import com.iceteaviet.fastfoodfinder.ui.store.comment.CommentActivity
 import com.iceteaviet.fastfoodfinder.ui.store.comment.CommentActivity.Companion.KEY_COMMENT
@@ -42,7 +43,8 @@ class StoreDetailActivity : BaseActivity(), StoreDetailContract.View {
     override fun onCreate(@Nullable savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        presenter = StoreDetailPresenter(App.getDataManager(), App.getSchedulerProvider(), this)
+        presenter = StoreDetailPresenter(App.getDataManager(), App.getSchedulerProvider(),
+                GoogleLocationManager.getInstance(), this)
 
         setupUI()
         setupEventHandlers()

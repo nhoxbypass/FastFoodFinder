@@ -14,8 +14,8 @@ import com.iceteaviet.fastfoodfinder.data.remote.routing.GoogleMapsRoutingApiHel
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.data.transport.model.SearchEventResult
-import com.iceteaviet.fastfoodfinder.location.GoogleLocationManager
 import com.iceteaviet.fastfoodfinder.location.LocationListener
+import com.iceteaviet.fastfoodfinder.location.base.ILocationManager
 import com.iceteaviet.fastfoodfinder.ui.base.BasePresenter
 import com.iceteaviet.fastfoodfinder.ui.main.map.model.MapCameraPosition
 import com.iceteaviet.fastfoodfinder.ui.main.map.model.NearByStore
@@ -53,9 +53,13 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
     private var newVisibleStorePublisher: PublishSubject<Store>? = null
     private var cameraPositionPublisher: PublishSubject<MapCameraPosition>? = null
 
-    constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider, mainMapView: MainMapContract.View) : super(dataManager, schedulerProvider) {
+    private var locationManager: ILocationManager<LocationListener>
+
+    constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider,
+                locationManager: ILocationManager<LocationListener>, mainMapView: MainMapContract.View) : super(dataManager, schedulerProvider) {
         this.mainMapView = mainMapView
         this.mainMapView.presenter = this
+        this.locationManager = locationManager
     }
 
     override fun subscribe() {
@@ -88,7 +92,7 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
     }
 
     override fun requestLocationUpdates() {
-        GoogleLocationManager.getInstance().subscribeLocationUpdate(this)
+        locationManager.subscribeLocationUpdate(this)
     }
 
     override fun onCurrLocationChanged(latitude: Double, longitude: Double) {
@@ -104,7 +108,7 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
     }
 
     override fun requestCurrentLocation() {
-        val lastLocation = GoogleLocationManager.getInstance().getCurrentLocation()
+        val lastLocation = locationManager.getCurrentLocation()
         if (lastLocation != null) {
             onCurrLocationChanged(lastLocation.latitude, lastLocation.longitude)
         } else {

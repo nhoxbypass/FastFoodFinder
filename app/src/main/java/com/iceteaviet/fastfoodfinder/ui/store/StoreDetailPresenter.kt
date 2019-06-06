@@ -9,8 +9,8 @@ import com.iceteaviet.fastfoodfinder.data.remote.routing.GoogleMapsRoutingApiHel
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Comment
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
-import com.iceteaviet.fastfoodfinder.location.GoogleLocationManager
 import com.iceteaviet.fastfoodfinder.location.LocationListener
+import com.iceteaviet.fastfoodfinder.location.base.ILocationManager
 import com.iceteaviet.fastfoodfinder.ui.base.BasePresenter
 import com.iceteaviet.fastfoodfinder.utils.getLatLngString
 import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
@@ -30,9 +30,13 @@ class StoreDetailPresenter : BasePresenter<StoreDetailContract.Presenter>, Store
     @VisibleForTesting
     var currStore: Store? = null
 
-    constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider, storeDetailView: StoreDetailContract.View) : super(dataManager, schedulerProvider) {
+    private var locationManager: ILocationManager<LocationListener>
+
+    constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider,
+                locationManager: ILocationManager<LocationListener>, storeDetailView: StoreDetailContract.View) : super(dataManager, schedulerProvider) {
         this.storeDetailView = storeDetailView
         this.storeDetailView.presenter = this
+        this.locationManager = locationManager
     }
 
     override fun subscribe() {
@@ -82,11 +86,11 @@ class StoreDetailPresenter : BasePresenter<StoreDetailContract.Presenter>, Store
     }
 
     override fun requestLocationUpdates() {
-        GoogleLocationManager.getInstance().subscribeLocationUpdate(this)
+        locationManager.subscribeLocationUpdate(this)
     }
 
     override fun requestCurrentLocation() {
-        val lastLocation = GoogleLocationManager.getInstance().getCurrentLocation()
+        val lastLocation = locationManager.getCurrentLocation()
         if (lastLocation != null) {
             onCurrLocationChanged(lastLocation.latitude, lastLocation.longitude)
         } else {
