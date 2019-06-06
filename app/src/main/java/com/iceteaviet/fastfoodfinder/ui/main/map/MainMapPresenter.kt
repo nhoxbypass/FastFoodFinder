@@ -95,18 +95,6 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
         locationManager.subscribeLocationUpdate(this)
     }
 
-    override fun onCurrLocationChanged(latitude: Double, longitude: Double) {
-        currLocation = LatLng(latitude, longitude).also {
-            if (!isZoomToUser) {
-                // Zoom and show current location in the Google Map
-                // Only zoom-in the first time user location come
-                mainMapView.animateMapCamera(it, false)
-
-                isZoomToUser = true
-            }
-        }
-    }
-
     override fun requestCurrentLocation() {
         val lastLocation = locationManager.getCurrentLocation()
         if (lastLocation != null) {
@@ -204,6 +192,18 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
                 searchEventResult.store?.let {
                     handleSearchStoreClickAction(it)
                 }
+            }
+        }
+    }
+
+    private fun onCurrLocationChanged(latitude: Double, longitude: Double) {
+        currLocation = LatLng(latitude, longitude).also {
+            if (!isZoomToUser) {
+                // Zoom and show current location in the Google Map
+                // Only zoom-in the first time user location come
+                mainMapView.animateMapCamera(it, false)
+
+                isZoomToUser = true
             }
         }
     }

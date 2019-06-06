@@ -30,7 +30,6 @@ interface StoreDetailContract {
         fun requestCurrentLocation()
         fun handleExtras(extras: Parcelable?)
         fun onAddNewComment(comment: Comment?)
-        fun onCurrLocationChanged(latitude: Double, longitude: Double)
         fun onCommentButtonClick()
         fun onCallButtonClick(tel: String?)
         fun onNavigationButtonClick()

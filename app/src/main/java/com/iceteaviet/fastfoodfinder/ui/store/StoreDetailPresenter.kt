@@ -21,7 +21,7 @@ import java.util.*
 /**
  * Created by tom on 2019-04-18.
  */
-class StoreDetailPresenter : BasePresenter<StoreDetailContract.Presenter>, StoreDetailContract.Presenter, LocationListener {
+open class StoreDetailPresenter : BasePresenter<StoreDetailContract.Presenter>, StoreDetailContract.Presenter, LocationListener {
 
     private val storeDetailView: StoreDetailContract.View
 
@@ -109,10 +109,6 @@ class StoreDetailPresenter : BasePresenter<StoreDetailContract.Presenter>, Store
         }
     }
 
-    override fun onCurrLocationChanged(latitude: Double, longitude: Double) {
-        currLocation = LatLng(latitude, longitude)
-    }
-
     override fun onCommentButtonClick() {
         storeDetailView.showCommentEditorView()
     }
@@ -156,5 +152,9 @@ class StoreDetailPresenter : BasePresenter<StoreDetailContract.Presenter>, Store
                         }
                     })
         }
+    }
+
+    private fun onCurrLocationChanged(latitude: Double, longitude: Double) {
+        currLocation = LatLng(latitude, longitude)
     }
 }

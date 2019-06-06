@@ -14,8 +14,7 @@ import org.junit.Before
 import org.junit.Test
 import org.mockito.ArgumentMatchers
 import org.mockito.Mock
-import org.mockito.Mockito.`when`
-import org.mockito.Mockito.verify
+import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
 
 /**
@@ -64,10 +63,12 @@ class StoreDetailPresenterTest {
 
     @Test
     fun onLocationPermissionGrantedTest() {
-        storeDetailPresenter.onLocationPermissionGranted()
+        val spyPresenter = spy(storeDetailPresenter)
 
-        verify(storeDetailPresenter).requestCurrentLocation()
-        verify(storeDetailPresenter).requestLocationUpdates()
+        spyPresenter.onLocationPermissionGranted()
+
+        verify(spyPresenter).requestCurrentLocation()
+        verify(spyPresenter).requestLocationUpdates()
     }
 
     @Test
@@ -91,6 +92,13 @@ class StoreDetailPresenterTest {
         storeDetailPresenter.requestLocationUpdates()
 
         verify(googleLocationManager).subscribeLocationUpdate(storeDetailPresenter)
+    }
+
+    @Test
+    fun requestCurrentLocationTest() {
+        storeDetailPresenter.requestCurrentLocation()
+
+        verify(googleLocationManager).getCurrentLocation()
     }
 
     @Test
