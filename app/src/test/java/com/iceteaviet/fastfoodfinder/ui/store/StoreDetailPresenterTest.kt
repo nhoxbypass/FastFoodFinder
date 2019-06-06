@@ -3,11 +3,13 @@ package com.iceteaviet.fastfoodfinder.ui.store
 import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
+import com.iceteaviet.fastfoodfinder.location.GoogleLocationManager
 import com.iceteaviet.fastfoodfinder.utils.StoreType
 import com.iceteaviet.fastfoodfinder.utils.getFakeComments
 import com.iceteaviet.fastfoodfinder.utils.rx.TrampolineSchedulerProvider
 import com.nhaarman.mockitokotlin2.eq
 import io.reactivex.Single
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
 import org.mockito.ArgumentMatchers
@@ -29,6 +31,9 @@ class StoreDetailPresenterTest {
     @Mock
     private lateinit var dataManager: DataManager
 
+    @Mock
+    private lateinit var googleLocationManager: GoogleLocationManager
+
     @Before
     fun setupPresenter() {
         // Mockito has a very convenient way to inject mocks by using the @Mock annotation. To
@@ -36,7 +41,7 @@ class StoreDetailPresenterTest {
         MockitoAnnotations.initMocks(this)
 
         // Get a reference to the class under test
-        storeDetailPresenter = StoreDetailPresenter(dataManager, TrampolineSchedulerProvider(), storeDetailView)
+        storeDetailPresenter = StoreDetailPresenter(dataManager, TrampolineSchedulerProvider(), googleLocationManager, storeDetailView)
     }
 
     @Test
@@ -55,6 +60,37 @@ class StoreDetailPresenterTest {
         verify(dataManager).getComments(store.id.toString())
 
         verify(storeDetailView).setStoreComments(comments.toMutableList().asReversed())
+    }
+
+    @Test
+    fun onLocationPermissionGrantedTest() {
+        storeDetailPresenter.onLocationPermissionGranted()
+
+        verify(storeDetailPresenter).requestCurrentLocation()
+        verify(storeDetailPresenter).requestLocationUpdates()
+    }
+
+    @Test
+    fun handleExtrasTest() {
+        val store = Store(STORE_ID, STORE_TITLE, STORE_ADDRESS, STORE_LAT, STORE_LNG, STORE_TEL, STORE_TYPE)
+        storeDetailPresenter.handleExtras(store)
+
+        assertThat(storeDetailPresenter.currStore).isEqualTo(store)
+    }
+
+    @Test
+    fun handleExtrasTestWithNull() {
+        storeDetailPresenter.handleExtras(null)
+
+        assertThat(storeDetailPresenter.currStore).isNull()
+        verify(storeDetailView).exit()
+    }
+
+    @Test
+    fun requestLocationUpdatesTest() {
+        storeDetailPresenter.requestLocationUpdates()
+
+        verify(googleLocationManager).subscribeLocationUpdate(storeDetailPresenter)
     }
 
     @Test
