@@ -1,5 +1,6 @@
 package com.iceteaviet.fastfoodfinder.ui.store
 
+import com.google.android.gms.maps.model.LatLng
 import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
@@ -46,12 +47,12 @@ class StoreDetailPresenterTest {
 
     @Test
     fun subscribeTest() {
-        val store = Store(STORE_ID, STORE_TITLE, STORE_ADDRESS, STORE_LAT, STORE_LNG, STORE_TEL, STORE_TYPE)
-        storeDetailPresenter.handleExtras(store)
-
         `when`(dataManager.getComments(eq(STORE_ID.toString()))).thenReturn(
                 Single.just(comments)
         )
+
+        val store = Store(STORE_ID, STORE_TITLE, STORE_ADDRESS, STORE_LAT, STORE_LNG, STORE_TEL, STORE_TYPE)
+        storeDetailPresenter.handleExtras(store)
 
         storeDetailPresenter.subscribe()
 
@@ -84,7 +85,6 @@ class StoreDetailPresenterTest {
     fun handleExtrasTestWithNull() {
         storeDetailPresenter.handleExtras(null)
 
-        assertThat(storeDetailPresenter.currStore).isNull()
         verify(storeDetailView).exit()
     }
 
@@ -123,7 +123,6 @@ class StoreDetailPresenterTest {
 
         storeDetailPresenter.onCallButtonClick()
 
-        // Then add note UI is shown
         verify(storeDetailView).startCallIntent(store.tel)
     }
 
@@ -134,22 +133,22 @@ class StoreDetailPresenterTest {
 
         storeDetailPresenter.onCallButtonClick()
 
-        // Then add note UI is shown
-        verify(storeDetailView).startCallIntent(store.tel)
+        verify(storeDetailView).showInvalidPhoneNumbWarning()
     }
 
     @Test
     fun clickOnNavigationButton_showNavigationScreen() {
         val store = Store(STORE_ID, STORE_TITLE, STORE_ADDRESS, STORE_LAT, STORE_LNG, STORE_TEL, STORE_TYPE)
-        storeDetailPresenter.handleExtras(store)
 
         `when`(dataManager.getMapsDirection(ArgumentMatchers.anyMap(), eq(store))).thenReturn(
                 Single.just(mapsDirection)
         )
 
+        storeDetailPresenter.handleExtras(store)
+        storeDetailPresenter.currLocation = currLocation
+
         storeDetailPresenter.onNavigationButtonClick()
 
-        // Then add note UI is shown
         verify(storeDetailView).showMapRoutingView(store, mapsDirection)
     }
 
@@ -160,16 +159,13 @@ class StoreDetailPresenterTest {
 
         storeDetailPresenter.onNavigationButtonClick()
 
-        doNothing()
-
-        //verifyZeroInteractions(storeDetailView)
+        verifyZeroInteractions(storeDetailView)
     }
 
     @Test
     fun clickOnCommentButton_showCommentEditorScreen() {
         storeDetailPresenter.onCommentButtonClick()
 
-        // Then add note UI is shown
         verify(storeDetailView).showCommentEditorView()
     }
 
@@ -190,6 +186,8 @@ class StoreDetailPresenterTest {
 
         private val comments = getFakeComments()
         private val comment = getFakeComment()
+
+        private val currLocation = LatLng(10.1234, 106.1234)
 
         private val mapsDirection = MapsDirection()
     }

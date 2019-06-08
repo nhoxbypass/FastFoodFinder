@@ -26,7 +26,8 @@ open class StoreDetailPresenter : BasePresenter<StoreDetailContract.Presenter>, 
 
     private val storeDetailView: StoreDetailContract.View
 
-    private var currLocation: LatLng? = null
+    @VisibleForTesting
+    var currLocation: LatLng? = null
 
     @VisibleForTesting
     lateinit var currStore: Store
