@@ -22,6 +22,7 @@ interface StoreDetailContract {
         fun showInvalidPhoneNumbWarning()
         fun showMapRoutingView(currStore: Store, mapsDirection: MapsDirection)
         fun exit()
+        fun showStoreAddedToFavMessage()
     }
 
     interface Presenter : com.iceteaviet.fastfoodfinder.ui.base.Presenter {
@@ -31,7 +32,9 @@ interface StoreDetailContract {
         fun handleExtras(extras: Parcelable?)
         fun onAddNewComment(comment: Comment?)
         fun onCommentButtonClick()
-        fun onCallButtonClick(tel: String?)
+        fun onCallButtonClick()
         fun onNavigationButtonClick()
+        fun onAddToFavButtonClick()
+        fun onSaveButtonClick()
     }
 }

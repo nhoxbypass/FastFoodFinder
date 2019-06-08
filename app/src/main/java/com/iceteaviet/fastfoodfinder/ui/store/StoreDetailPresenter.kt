@@ -13,6 +13,7 @@ import com.iceteaviet.fastfoodfinder.location.LocationListener
 import com.iceteaviet.fastfoodfinder.location.base.ILocationManager
 import com.iceteaviet.fastfoodfinder.ui.base.BasePresenter
 import com.iceteaviet.fastfoodfinder.utils.getLatLngString
+import com.iceteaviet.fastfoodfinder.utils.isValidLocation
 import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
 import io.reactivex.SingleObserver
 import io.reactivex.disposables.Disposable
@@ -28,7 +29,7 @@ open class StoreDetailPresenter : BasePresenter<StoreDetailContract.Presenter>, 
     private var currLocation: LatLng? = null
 
     @VisibleForTesting
-    var currStore: Store? = null
+    lateinit var currStore: Store
 
     private var locationManager: ILocationManager<LocationListener>
 
@@ -40,30 +41,28 @@ open class StoreDetailPresenter : BasePresenter<StoreDetailContract.Presenter>, 
     }
 
     override fun subscribe() {
-        currStore?.let {
-            storeDetailView.setToolbarTitle(it.title)
+        storeDetailView.setToolbarTitle(currStore.title)
 
-            dataManager.getComments(it.id.toString())
-                    .subscribeOn(schedulerProvider.io())
-                    .observeOn(schedulerProvider.ui())
-                    .subscribe(object : SingleObserver<List<Comment>> {
-                        override fun onSubscribe(d: Disposable) {
-                            compositeDisposable.add(d)
-                        }
+        dataManager.getComments(currStore.id.toString())
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.ui())
+                .subscribe(object : SingleObserver<List<Comment>> {
+                    override fun onSubscribe(d: Disposable) {
+                        compositeDisposable.add(d)
+                    }
 
-                        override fun onSuccess(commentList: List<Comment>) {
-                            storeDetailView.setStoreComments(commentList.toMutableList().asReversed())
-                        }
+                    override fun onSuccess(commentList: List<Comment>) {
+                        storeDetailView.setStoreComments(commentList.toMutableList().asReversed())
+                    }
 
-                        override fun onError(e: Throwable) {
-                            e.printStackTrace()
-                        }
-                    })
-        }
+                    override fun onError(e: Throwable) {
+                        e.printStackTrace()
+                    }
+                })
     }
 
     override fun onLocationChanged(location: Location) {
-        onCurrLocationChanged(location.latitude, location.longitude)
+        currLocation = LatLng(location.latitude, location.longitude)
     }
 
     override fun onLocationFailed(type: Int) {
@@ -76,10 +75,7 @@ open class StoreDetailPresenter : BasePresenter<StoreDetailContract.Presenter>, 
 
     override fun handleExtras(extras: Parcelable?) {
         if (extras != null) {
-            currStore = extras as Store?
-
-            if (currStore == null)
-                storeDetailView.exit()
+            currStore = extras as Store
         } else {
             storeDetailView.exit()
         }
@@ -92,7 +88,7 @@ open class StoreDetailPresenter : BasePresenter<StoreDetailContract.Presenter>, 
     override fun requestCurrentLocation() {
         val lastLocation = locationManager.getCurrentLocation()
         if (lastLocation != null) {
-            onCurrLocationChanged(lastLocation.latitude, lastLocation.longitude)
+            currLocation = LatLng(lastLocation.latitude, lastLocation.longitude)
         } else {
             storeDetailView.showCannotGetLocationMessage()
         }
@@ -105,7 +101,7 @@ open class StoreDetailPresenter : BasePresenter<StoreDetailContract.Presenter>, 
             storeDetailView.scrollToCommentList()
 
             // Update comment data
-            dataManager.insertOrUpdateComment(currStore!!.id.toString(), comment)
+            dataManager.insertOrUpdateComment(currStore.id.toString(), comment)
         }
     }
 
@@ -113,48 +109,53 @@ open class StoreDetailPresenter : BasePresenter<StoreDetailContract.Presenter>, 
         storeDetailView.showCommentEditorView()
     }
 
-    override fun onCallButtonClick(tel: String?) {
-        if (tel != null && tel.isNotEmpty()) {
-            storeDetailView.startCallIntent(tel)
+    override fun onCallButtonClick() {
+        if (currStore.tel.isNotEmpty()) {
+            storeDetailView.startCallIntent(currStore.tel)
         } else {
             storeDetailView.showInvalidPhoneNumbWarning()
         }
     }
 
     override fun onNavigationButtonClick() {
-        currStore?.let {
-            val storeLocation = it.getPosition()
-            val queries = HashMap<String, String>()
+        val storeLocation = currStore.getPosition()
+        val queries = HashMap<String, String>()
 
-            val origin: String? = getLatLngString(currLocation)
-            val destination: String? = getLatLngString(storeLocation)
+        if (!isValidLocation(storeLocation) || !isValidLocation(currLocation))
+            return
 
-            if (origin == null || destination == null)
-                return
+        val origin: String? = getLatLngString(currLocation)
+        val destination: String? = getLatLngString(storeLocation)
 
-            queries[GoogleMapsRoutingApiHelper.PARAM_ORIGIN] = origin
-            queries[GoogleMapsRoutingApiHelper.PARAM_DESTINATION] = destination
+        if (origin == null || destination == null)
+            return
 
-            dataManager.getMapsDirection(queries, it)
-                    .subscribeOn(schedulerProvider.io())
-                    .observeOn(schedulerProvider.ui())
-                    .subscribe(object : SingleObserver<MapsDirection> {
-                        override fun onSubscribe(d: Disposable) {
-                            compositeDisposable.add(d)
-                        }
+        queries[GoogleMapsRoutingApiHelper.PARAM_ORIGIN] = origin
+        queries[GoogleMapsRoutingApiHelper.PARAM_DESTINATION] = destination
 
-                        override fun onSuccess(mapsDirection: MapsDirection) {
-                            storeDetailView.showMapRoutingView(it, mapsDirection)
-                        }
+        dataManager.getMapsDirection(queries, currStore)
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.ui())
+                .subscribe(object : SingleObserver<MapsDirection> {
+                    override fun onSubscribe(d: Disposable) {
+                        compositeDisposable.add(d)
+                    }
 
-                        override fun onError(e: Throwable) {
-                            e.printStackTrace()
-                        }
-                    })
-        }
+                    override fun onSuccess(mapsDirection: MapsDirection) {
+                        storeDetailView.showMapRoutingView(currStore, mapsDirection)
+                    }
+
+                    override fun onError(e: Throwable) {
+                        e.printStackTrace()
+                    }
+                })
     }
 
-    private fun onCurrLocationChanged(latitude: Double, longitude: Double) {
-        currLocation = LatLng(latitude, longitude)
+    override fun onAddToFavButtonClick() {
+
+    }
+
+    override fun onSaveButtonClick() {
+
     }
 }

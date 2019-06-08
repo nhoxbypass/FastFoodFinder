@@ -36,6 +36,13 @@ fun calcDistance(startPosition: LatLng, endPosition: LatLng): Double {
     return start.distanceTo(end) / 1000.0
 }
 
+fun isValidLocation(latLng: LatLng?): Boolean {
+    if (latLng == null)
+        return false
+
+    return !latLng.latitude.equals(0.0) || !latLng.longitude.equals(0.0)
+}
+
 /**
  * Convert WSG84 to ECEF location array
  */

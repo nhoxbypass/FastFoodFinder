@@ -5,6 +5,7 @@ import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.location.GoogleLocationManager
 import com.iceteaviet.fastfoodfinder.utils.StoreType
+import com.iceteaviet.fastfoodfinder.utils.getFakeComment
 import com.iceteaviet.fastfoodfinder.utils.getFakeComments
 import com.iceteaviet.fastfoodfinder.utils.rx.TrampolineSchedulerProvider
 import com.nhaarman.mockitokotlin2.eq
@@ -102,11 +103,36 @@ class StoreDetailPresenterTest {
     }
 
     @Test
+    fun onAddNewCommentTest() {
+        val store = Store(STORE_ID, STORE_TITLE, STORE_ADDRESS, STORE_LAT, STORE_LNG, STORE_TEL, STORE_TYPE)
+        storeDetailPresenter.handleExtras(store)
+
+        storeDetailPresenter.onAddNewComment(comment)
+
+        verify(storeDetailView).addStoreComment(comment)
+        verify(storeDetailView).setAppBarExpanded(false)
+        verify(storeDetailView).scrollToCommentList()
+
+        verify(dataManager).insertOrUpdateComment(store.id.toString(), comment)
+    }
+
+    @Test
     fun clickOnCallButton_showCallScreen() {
         val store = Store(STORE_ID, STORE_TITLE, STORE_ADDRESS, STORE_LAT, STORE_LNG, STORE_TEL, STORE_TYPE)
         storeDetailPresenter.handleExtras(store)
 
-        storeDetailPresenter.onCallButtonClick(store.tel)
+        storeDetailPresenter.onCallButtonClick()
+
+        // Then add note UI is shown
+        verify(storeDetailView).startCallIntent(store.tel)
+    }
+
+    @Test
+    fun clickOnCallButton_showInvalidNumber() {
+        val store = Store(STORE_ID, STORE_TITLE, STORE_ADDRESS, STORE_LAT, STORE_LNG, STORE_INVALID_TEL, STORE_TYPE)
+        storeDetailPresenter.handleExtras(store)
+
+        storeDetailPresenter.onCallButtonClick()
 
         // Then add note UI is shown
         verify(storeDetailView).startCallIntent(store.tel)
@@ -128,6 +154,18 @@ class StoreDetailPresenterTest {
     }
 
     @Test
+    fun clickOnNavigationButton_doNothing() {
+        val store = Store(STORE_ID, STORE_TITLE, STORE_ADDRESS, STORE_INVALID_LAT, STORE_INVALID_LNG, STORE_TEL, STORE_TYPE)
+        storeDetailPresenter.handleExtras(store)
+
+        storeDetailPresenter.onNavigationButtonClick()
+
+        doNothing()
+
+        //verifyZeroInteractions(storeDetailView)
+    }
+
+    @Test
     fun clickOnCommentButton_showCommentEditorScreen() {
         storeDetailPresenter.onCommentButtonClick()
 
@@ -142,9 +180,16 @@ class StoreDetailPresenterTest {
         private const val STORE_LAT = "10.773996"
         private const val STORE_LNG = "106.6898035"
         private const val STORE_TEL = "012345678965"
+
         private const val STORE_TYPE = StoreType.TYPE_CIRCLE_K
 
+        private const val STORE_INVALID_TEL = ""
+        private const val STORE_INVALID_ADDRESS = ""
+        private const val STORE_INVALID_LAT = "0"
+        private const val STORE_INVALID_LNG = "0"
+
         private val comments = getFakeComments()
+        private val comment = getFakeComment()
 
         private val mapsDirection = MapsDirection()
     }

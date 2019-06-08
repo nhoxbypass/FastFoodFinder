@@ -49,14 +49,15 @@ class Store : Parcelable {
             position = LatLng(lat.toDouble(), lng.toDouble())
         } catch (e: NumberFormatException) {
             e.printStackTrace()
+            position = LatLng(0.0, 0.0)
         }
     }
 
     constructor(entity: StoreEntity) : this(entity.id, entity.title, entity.address, entity.latitude.toString(), entity.longitude.toString(), entity.telephone, entity.type)
 
     protected constructor(`in`: Parcel) : this(`in`.readInt(), `in`.readString()
-            ?: "", `in`.readString() ?: "", `in`.readString() ?: "", `in`.readString()
-            ?: "", `in`.readString() ?: "", `in`.readInt())
+            ?: "", `in`.readString() ?: "", `in`.readString() ?: "0", `in`.readString()
+            ?: "0", `in`.readString() ?: "", `in`.readInt())
 
 
     @Exclude

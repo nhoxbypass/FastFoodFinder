@@ -137,6 +137,10 @@ class StoreDetailActivity : BaseActivity(), StoreDetailContract.View {
         finish()
     }
 
+    override fun showStoreAddedToFavMessage() {
+        Toast.makeText(this@StoreDetailActivity, R.string.fav_stores_added, Toast.LENGTH_SHORT).show()
+    }
+
     private fun setupUI() {
         collapsingToolbar = collapsing_toolbar
         ivBackdrop = backdrop
@@ -161,21 +165,20 @@ class StoreDetailActivity : BaseActivity(), StoreDetailContract.View {
                 presenter.onCommentButtonClick()
             }
 
-            override fun onCallButtonClick(tel: String?) {
-                presenter.onCallButtonClick(tel)
+            override fun onCallButtonClick() {
+                presenter.onCallButtonClick()
             }
 
             override fun onNavigationButtonClick() {
                 presenter.onNavigationButtonClick()
             }
 
-            override fun onAddToFavButtonClick(storeId: Int) {
-                //TODO gọi hàm lưu vào danh sách yêu thích
-                Toast.makeText(this@StoreDetailActivity, R.string.fav_stores_added, Toast.LENGTH_SHORT).show()
+            override fun onAddToFavButtonClick() {
+                presenter.onAddToFavButtonClick()
             }
 
-            override fun onSaveButtonClick(storeId: Int) {
-                //TODO gọi hàm save
+            override fun onSaveButtonClick() {
+                presenter.onSaveButtonClick()
             }
 
         })

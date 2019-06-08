@@ -44,6 +44,19 @@ fun getFakeComments(): List<Comment> {
     return comments
 }
 
+fun getFakeComment(): Comment {
+    val contents = arrayOf("Octopus salad with bacon, sundries tomatoes, potatoes and some other magic ingredients was absolutely or of this world delicious. I loved it so much I forgot to snap an Instagram photo.", "Loved it here. Great atmosphere, was packed during lunch time. The smoked salmon eggs on bread and salted caramel cupcake were really good. The sunrise drink was like a lukewarm smoothie though.", "Perfect place to work, delicious food and coffee, little bit expensive but staff let you work peacefully. Quite busy/noisy but a wonderful place to discover. Hey, they make their own cupcakes :)", "Great atmosphere, very nice place for a quick snack or a meal. Ask for the meat pies. The lasagna is great too. And always check out the specials on the blackboard", "Very friendly stuff, the fruit juices and food are super good! Very trendy and the shop has nice quality things ! Happy to stumble into this cafeteria :D")
+
+    val mediaUrls = arrayOf("http://i.imgur.com/RHdsWRW.jpg", "http://i.imgur.com/IsfQQhd.jpg", "", "http://i.imgur.com/tNu5G5D.jpg", "http://i.imgur.com/QruogAF.jpg")
+
+    return Comment("Scarlett",
+            "http://i.imgur.com/u9mpkNC.jpg",
+            contents[getRandomInt(0, 4)],
+            mediaUrls[getRandomInt(0, 4)],
+            getRandomDate(),
+            getRandomLong())
+}
+
 private fun getRandomDate(): String {
     val dfDateTime = SimpleDateFormat("EEE MMM dd HH:mm:ss ZZZZZ yyyy", Locale.getDefault())
     val year = getRandomInt(2015, 2016)

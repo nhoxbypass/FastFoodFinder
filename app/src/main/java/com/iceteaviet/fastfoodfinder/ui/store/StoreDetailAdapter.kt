@@ -1,6 +1,5 @@
 package com.iceteaviet.fastfoodfinder.ui.store
 
-import android.content.Context
 import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.View
@@ -19,6 +18,7 @@ import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Comment
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.utils.getRelativeTimeAgo
+import com.iceteaviet.fastfoodfinder.utils.getString
 import kotlinx.android.synthetic.main.item_store_action.view.*
 import kotlinx.android.synthetic.main.item_store_comment.view.*
 import kotlinx.android.synthetic.main.item_store_info.view.*
@@ -68,8 +68,8 @@ class StoreDetailAdapter internal constructor() : RecyclerView.Adapter<RecyclerV
             HEADER -> (holder as HeaderViewHolder).bind(mStore)
             INFO -> (holder as InfoViewHolder).bind(mStore)
             TITLE -> {
-                val title = (holder as TitleViewHolder).context.resources.getString(R.string.tips_from_people_who_has_been_here)
-                holder.bind(if (position == 2) title else "")
+                val title = getString(R.string.tips_from_people_who_has_been_here)
+                (holder as TitleViewHolder).bind(if (position == 2) title else "")
             }
             COMMENT -> (holder as CommentViewHolder).bind(mComments[position - 3])
         }
@@ -91,44 +91,37 @@ class StoreDetailAdapter internal constructor() : RecyclerView.Adapter<RecyclerV
     interface StoreActionListener {
         fun onCommentButtonClick()
 
-        fun onCallButtonClick(tel: String?)
+        fun onCallButtonClick()
 
         fun onNavigationButtonClick()
 
-        fun onAddToFavButtonClick(storeId: Int)
+        fun onAddToFavButtonClick()
 
-        fun onSaveButtonClick(storeId: Int)
+        fun onSaveButtonClick()
     }
 
     internal class HeaderViewHolder(itemView: View, private val listener: StoreActionListener?) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
 
-        var saveButton: TextView = itemView.btn_save
-        var favButton: TextView = itemView.btn_fav
-        var comment: TextView = itemView.comment
-        var btnCall: Button = itemView.btn_call
-
-        private var mStore: Store? = null
+        private var saveButton: TextView = itemView.btn_save
+        private var favButton: TextView = itemView.btn_fav
+        private var comment: TextView = itemView.comment
+        private var btnCall: Button = itemView.btn_call
 
         fun bind(store: Store?) {
-            mStore = store
-
-            if (store == null)
-                return
-
             saveButton.setOnClickListener(this)
             favButton.setOnClickListener(this)
             comment.setOnClickListener {
                 listener?.onCommentButtonClick()
             }
             btnCall.setOnClickListener {
-                listener?.onCallButtonClick(mStore!!.tel)
+                listener?.onCallButtonClick()
             }
         }
 
         override fun onClick(v: View) {
             when (v.id) {
-                R.id.btn_fav -> listener?.onAddToFavButtonClick(mStore!!.id)
-                R.id.btn_save -> listener?.onSaveButtonClick(mStore!!.id)
+                R.id.btn_fav -> listener?.onAddToFavButtonClick()
+                R.id.btn_save -> listener?.onSaveButtonClick()
                 else -> {
                 }
             }
@@ -153,7 +146,7 @@ class StoreDetailAdapter internal constructor() : RecyclerView.Adapter<RecyclerV
                 tvAddress.text = store.address
 
                 cdvh.btnCall.setOnClickListener {
-                    listener?.onCallButtonClick(store.tel)
+                    listener?.onCallButtonClick()
                 }
                 cdvh.btnDirection.setOnClickListener {
                     listener?.onNavigationButtonClick()
@@ -163,13 +156,7 @@ class StoreDetailAdapter internal constructor() : RecyclerView.Adapter<RecyclerV
     }
 
     internal class TitleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-        val context: Context
-        var content: TextView = itemView.content
-
-        init {
-            context = itemView.context
-        }
+        private var content: TextView = itemView.content
 
         fun bind(title: String) {
             content.text = title
