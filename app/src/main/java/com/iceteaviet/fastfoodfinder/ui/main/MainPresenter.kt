@@ -20,7 +20,6 @@ class MainPresenter : BasePresenter<MainContract.Presenter>, MainContract.Presen
 
     constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider, mainView: MainContract.View) : super(dataManager, schedulerProvider) {
         this.mainView = mainView
-        this.mainView.presenter = this
     }
 
     override fun subscribe() {

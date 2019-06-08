@@ -14,7 +14,6 @@ class StoreListPresenter : BasePresenter<StoreListContract.Presenter>, StoreList
 
     constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider, storeListView: StoreListContract.View) : super(dataManager, schedulerProvider) {
         this.storeListView = storeListView
-        this.storeListView.presenter = this
     }
 
     override fun subscribe() {

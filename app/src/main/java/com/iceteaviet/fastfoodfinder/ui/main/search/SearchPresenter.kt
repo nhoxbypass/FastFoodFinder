@@ -22,7 +22,6 @@ class SearchPresenter : BasePresenter<SearchContract.Presenter>, SearchContract.
 
     constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider, searchView: SearchContract.View) : super(dataManager, schedulerProvider) {
         this.searchView = searchView
-        this.searchView.presenter = this
     }
 
     override fun subscribe() {

@@ -18,7 +18,6 @@ class EmailRegisterPresenter : BasePresenter<EmailRegisterContract.Presenter>, E
 
     constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider, emailRegisterView: EmailRegisterContract.View) : super(dataManager, schedulerProvider) {
         this.emailRegisterView = emailRegisterView
-        this.emailRegisterView.presenter = this
     }
 
     override fun subscribe() {

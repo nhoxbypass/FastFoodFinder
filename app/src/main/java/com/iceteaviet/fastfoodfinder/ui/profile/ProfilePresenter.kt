@@ -21,7 +21,6 @@ class ProfilePresenter : BasePresenter<ProfileContract.Presenter>, ProfileContra
 
     constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider, profileView: ProfileContract.View) : super(dataManager, schedulerProvider) {
         this.profileView = profileView
-        this.profileView.presenter = this
     }
 
     override fun subscribe() {

@@ -16,7 +16,6 @@ class UpdateCoverPresenter : BasePresenter<UpdateCoverContract.Presenter>, Updat
 
     constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider, updateCoverView: UpdateCoverContract.View) : super(dataManager, schedulerProvider) {
         this.updateCoverView = updateCoverView
-        this.updateCoverView.presenter = this
     }
 
     override fun subscribe() {

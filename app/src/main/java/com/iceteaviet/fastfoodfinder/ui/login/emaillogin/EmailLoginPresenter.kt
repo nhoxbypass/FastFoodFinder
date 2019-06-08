@@ -18,7 +18,6 @@ class EmailLoginPresenter : BasePresenter<EmailLoginContract.Presenter>, EmailLo
 
     constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider, emailLoginView: EmailLoginContract.View) : super(dataManager, schedulerProvider) {
         this.emailLoginView = emailLoginView
-        this.emailLoginView.presenter = this
     }
 
     override fun subscribe() {

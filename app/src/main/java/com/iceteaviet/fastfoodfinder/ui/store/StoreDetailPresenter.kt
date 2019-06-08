@@ -36,7 +36,6 @@ open class StoreDetailPresenter : BasePresenter<StoreDetailContract.Presenter>, 
     constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider,
                 locationManager: ILocationManager<LocationListener>, storeDetailView: StoreDetailContract.View) : super(dataManager, schedulerProvider) {
         this.storeDetailView = storeDetailView
-        this.storeDetailView.presenter = this
         this.locationManager = locationManager
     }
 

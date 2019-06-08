@@ -15,7 +15,6 @@ class MainRecentlyPresenter : BasePresenter<MainRecentlyContract.Presenter>, Mai
 
     constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider, mainRecentlyView: MainRecentlyContract.View) : super(dataManager, schedulerProvider) {
         this.mainRecentlyView = mainRecentlyView
-        this.mainRecentlyView.presenter = this
     }
 
     override fun subscribe() {

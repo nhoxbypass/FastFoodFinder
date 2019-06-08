@@ -20,7 +20,6 @@ class LoginPresenter : BasePresenter<LoginContract.Presenter>, LoginContract.Pre
 
     constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider, loginView: LoginContract.View) : super(dataManager, schedulerProvider) {
         this.loginView = loginView
-        this.loginView.presenter = this
     }
 
     override fun subscribe() {

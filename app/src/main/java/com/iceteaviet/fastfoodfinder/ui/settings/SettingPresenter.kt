@@ -19,7 +19,6 @@ class SettingPresenter : BasePresenter<SettingContract.Presenter>, SettingContra
 
     constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider, settingView: SettingContract.View) : super(dataManager, schedulerProvider) {
         this.settingView = settingView
-        this.settingView.presenter = this
     }
 
     override fun subscribe() {

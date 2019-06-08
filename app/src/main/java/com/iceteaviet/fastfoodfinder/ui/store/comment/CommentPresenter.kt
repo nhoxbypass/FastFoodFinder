@@ -14,7 +14,6 @@ class CommentPresenter : BasePresenter<CommentContract.Presenter>, CommentContra
 
     constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider, profileView: CommentContract.View) : super(dataManager, schedulerProvider) {
         this.commentView = profileView
-        this.commentView.presenter = this
     }
 
     override fun subscribe() {

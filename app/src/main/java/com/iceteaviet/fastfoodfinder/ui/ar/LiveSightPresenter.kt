@@ -21,7 +21,6 @@ class LiveSightPresenter : BasePresenter<LiveSightContract.Presenter>, LiveSight
 
     constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider, liveSightView: LiveSightContract.View) : super(dataManager, schedulerProvider) {
         this.liveSightView = liveSightView
-        this.liveSightView.presenter = this
     }
 
     override fun subscribe() {

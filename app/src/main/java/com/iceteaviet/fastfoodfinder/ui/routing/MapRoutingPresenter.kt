@@ -31,7 +31,6 @@ class MapRoutingPresenter : BasePresenter<MapRoutingContract.Presenter>, MapRout
 
     constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider, mapRoutingView: MapRoutingContract.View) : super(dataManager, schedulerProvider) {
         this.mapRoutingView = mapRoutingView
-        this.mapRoutingView.presenter = this
     }
 
     override fun subscribe() {

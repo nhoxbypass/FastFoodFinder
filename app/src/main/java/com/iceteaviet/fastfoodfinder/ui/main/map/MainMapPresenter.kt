@@ -58,7 +58,6 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
     constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider,
                 locationManager: ILocationManager<LocationListener>, mainMapView: MainMapContract.View) : super(dataManager, schedulerProvider) {
         this.mainMapView = mainMapView
-        this.mainMapView.presenter = this
         this.locationManager = locationManager
     }
 

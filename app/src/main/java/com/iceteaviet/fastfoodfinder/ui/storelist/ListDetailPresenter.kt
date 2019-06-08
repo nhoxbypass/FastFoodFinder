@@ -22,7 +22,6 @@ class ListDetailPresenter : BasePresenter<ListDetailContract.Presenter>, ListDet
 
     constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider, listDetailView: ListDetailContract.View) : super(dataManager, schedulerProvider) {
         this.listDetailView = listDetailView
-        this.listDetailView.presenter = this
     }
 
     override fun subscribe() {

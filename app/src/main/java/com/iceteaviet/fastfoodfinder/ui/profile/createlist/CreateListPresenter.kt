@@ -16,7 +16,6 @@ class CreateListPresenter : BasePresenter<CreateListContract.Presenter>, CreateL
 
     constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider, createListView: CreateListContract.View) : super(dataManager, schedulerProvider) {
         this.createListView = createListView
-        this.createListView.presenter = this
     }
 
     override fun subscribe() {

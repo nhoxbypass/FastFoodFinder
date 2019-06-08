@@ -18,7 +18,6 @@ class MainFavPresenter : BasePresenter<MainFavContract.Presenter>, MainFavContra
 
     constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider, mainFavView: MainFavContract.View) : super(dataManager, schedulerProvider) {
         this.mainFavView = mainFavView
-        this.mainFavView.presenter = this
     }
 
     override fun subscribe() {

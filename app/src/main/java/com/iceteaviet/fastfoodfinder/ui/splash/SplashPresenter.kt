@@ -1,5 +1,6 @@
 package com.iceteaviet.fastfoodfinder.ui.splash
 
+import androidx.annotation.VisibleForTesting
 import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
@@ -25,7 +26,6 @@ class SplashPresenter : BasePresenter<SplashContract.Presenter>, SplashContract.
 
     constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider, splashView: SplashContract.View) : super(dataManager, schedulerProvider) {
         this.splashView = splashView
-        this.splashView.presenter = this
     }
 
     override fun subscribe() {
@@ -72,7 +72,8 @@ class SplashPresenter : BasePresenter<SplashContract.Presenter>, SplashContract.
         return SplashActivity.SPLASH_DELAY_TIME - (System.currentTimeMillis() - startTime)
     }
 
-    private fun onAppOpenFirstTime() {
+    @VisibleForTesting
+    fun onAppOpenFirstTime() {
         val disposable = loadStoresFromServerInternal()
                 .subscribe {
                     dataManager.setAppLaunchFirstTime(false)
