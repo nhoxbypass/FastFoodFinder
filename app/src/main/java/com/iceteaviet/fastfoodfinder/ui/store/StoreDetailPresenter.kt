@@ -82,6 +82,7 @@ open class StoreDetailPresenter : BasePresenter<StoreDetailContract.Presenter>, 
     }
 
     override fun requestLocationUpdates() {
+        locationManager.requestLocationUpdates()
         locationManager.subscribeLocationUpdate(this)
     }
 

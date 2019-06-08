@@ -11,6 +11,9 @@ abstract class AbsLocationManager<T : LocationListener> protected constructor(co
     protected var listeners: MutableList<T> = ArrayList()
     protected var currLocation: Location? = null
 
+    protected var connected = false
+    protected var requestingLocationUpdate = false
+
     init {
         this.initLocationProvider(context)
     }
@@ -19,10 +22,12 @@ abstract class AbsLocationManager<T : LocationListener> protected constructor(co
 
     protected abstract fun getLastLocation(): Location?
 
-    protected abstract fun requestLocationUpdates()
-
     override fun getCurrentLocation(): Location? {
         return currLocation
+    }
+
+    override fun isConnected(): Boolean {
+        return connected
     }
 
     override fun subscribeLocationUpdate(listener: T) {
@@ -35,5 +40,9 @@ abstract class AbsLocationManager<T : LocationListener> protected constructor(co
 
     override fun terminate() {
         listeners.clear()
+    }
+
+    protected fun isRequestingLocationUpdate(): Boolean {
+        return requestingLocationUpdate
     }
 }

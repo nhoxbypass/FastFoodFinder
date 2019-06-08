@@ -20,6 +20,7 @@ class SystemLocationManager private constructor(context: Context) : AbsLocationM
 
     init {
         currLocation = getLastLocation()
+        connected = true
         requestLocationUpdates()
     }
 
@@ -50,6 +51,9 @@ class SystemLocationManager private constructor(context: Context) : AbsLocationM
 
     @SuppressLint("MissingPermission")
     override fun requestLocationUpdates() {
+        if (!isConnected() || isRequestingLocationUpdate())
+            return
+
         // Get GPS and network status
         val isGPSEnabled = locationManager!!.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER)
         val isNetworkEnabled = locationManager!!.isProviderEnabled(android.location.LocationManager.NETWORK_PROVIDER)

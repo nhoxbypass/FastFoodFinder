@@ -32,7 +32,8 @@ open class GoogleLocationManager private constructor(context: Context) : AbsLoca
 
     @SuppressLint("MissingPermission")
     override fun requestLocationUpdates() {
-        LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this)
+        if (isConnected() && !isRequestingLocationUpdate())
+            LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this)
     }
 
     override fun terminate() {
@@ -43,11 +44,12 @@ open class GoogleLocationManager private constructor(context: Context) : AbsLoca
 
     override fun onConnected(extras: Bundle?) {
         currLocation = getLastLocation()
-        requestLocationUpdates()
+        connected = true
     }
 
     override fun onConnectionSuspended(i: Int) {
         onFailed(FailType.GOOGLE_PLAY_SERVICES_CONNECTION_FAIL)
+        connected = false
     }
 
     override fun onLocationChanged(location: Location) {

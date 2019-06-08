@@ -221,6 +221,7 @@ class LiveSightActivity : BaseActivity(), LiveSightContract.View, SensorEventLis
     }
 
     override fun subscribeLocationUpdate() {
+        SystemLocationManager.getInstance().requestLocationUpdates()
         SystemLocationManager.getInstance().subscribeLocationUpdate(this)
         presenter.onCurrLocationChanged(SystemLocationManager.getInstance().getCurrentLocation()!!)
     }

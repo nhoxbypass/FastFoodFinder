@@ -91,6 +91,7 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
     }
 
     override fun requestLocationUpdates() {
+        locationManager.requestLocationUpdates()
         locationManager.subscribeLocationUpdate(this)
     }
 

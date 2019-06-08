@@ -7,6 +7,8 @@ import android.location.Location
  */
 interface ILocationManager<L> {
     fun getCurrentLocation(): Location?
+    fun isConnected(): Boolean
+    fun requestLocationUpdates()
     fun subscribeLocationUpdate(listener: L)
     fun unsubscribeLocationUpdate(listener: L)
     fun terminate()
