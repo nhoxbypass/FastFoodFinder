@@ -218,14 +218,6 @@ class AppDataManager(context: Context, private val storeRepository: StoreReposit
         preferencesRepository.setAppLaunchFirstTime(isFirstTime)
     }
 
-    override fun getNumberOfStores(): Int {
-        return preferencesRepository.getNumberOfStores()
-    }
-
-    override fun setNumberOfStores(numberOfStores: Int) {
-        return preferencesRepository.setNumberOfStores(numberOfStores)
-    }
-
     override fun setSearchHistories(set: MutableSet<String>) {
         preferencesRepository.setSearchHistories(set)
     }

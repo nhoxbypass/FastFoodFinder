@@ -10,10 +10,6 @@ interface PreferencesRepository {
 
     fun setAppLaunchFirstTime(isFirstTime: Boolean)
 
-    fun getNumberOfStores(): Int
-
-    fun setNumberOfStores(numberOfStores: Int)
-
     fun getSearchHistories(): MutableSet<String>
 
     fun setSearchHistories(set: MutableSet<String>)

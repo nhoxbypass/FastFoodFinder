@@ -8,6 +8,7 @@ import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Pattern
+import kotlin.collections.ArrayList
 
 /**
  * Created by binhlt on 23/11/2016.
@@ -85,6 +86,11 @@ fun getFakeStoreList(): List<Store> {
     stores.add(Store(10, "FamilyMart - Tôn Dật Tiến", "Tôn Dật Tiên, Quận 7, TP. HCM", "10.723322", "106.71498", "3835 3193", StoreType.TYPE_FAMILY_MART))
 
     return stores
+}
+
+fun getFakeUserStoreLists(): List<UserStoreList> {
+    val userStoreLists = getDefaultUserStoreLists()
+    return userStoreLists
 }
 
 /**

@@ -1,6 +1,5 @@
 package com.iceteaviet.fastfoodfinder.ui.splash
 
-import androidx.annotation.VisibleForTesting
 import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
@@ -33,17 +32,15 @@ class SplashPresenter : BasePresenter<SplashContract.Presenter>, SplashContract.
 
         if (dataManager.getAppLaunchFirstTime()) {
             onAppOpenFirstTime()
-        } else if (dataManager.getNumberOfStores() == 0) {
-            loadStoresFromServer()
         } else {
             if (dataManager.isSignedIn()) {
                 val uid = dataManager.getCurrentUserUid()
                 if (isValidUserUid(uid)) {
                     onUserSignedIn(uid)
+                    return
                 }
-            } else {
-                onUserNotSignedIn()
             }
+            onUserNotSignedIn()
         }
     }
 
@@ -72,8 +69,7 @@ class SplashPresenter : BasePresenter<SplashContract.Presenter>, SplashContract.
         return SplashActivity.SPLASH_DELAY_TIME - (System.currentTimeMillis() - startTime)
     }
 
-    @VisibleForTesting
-    fun onAppOpenFirstTime() {
+    private fun onAppOpenFirstTime() {
         val disposable = loadStoresFromServerInternal()
                 .subscribe {
                     dataManager.setAppLaunchFirstTime(false)
@@ -98,7 +94,6 @@ class SplashPresenter : BasePresenter<SplashContract.Presenter>, SplashContract.
 
                         override fun onSuccess(storeList: List<Store>) {
                             val filteredStoreList = filterInvalidData(storeList.toMutableList())
-                            dataManager.setNumberOfStores(filteredStoreList.size)
                             dataManager.setStores(filteredStoreList)
 
                             emitter.onComplete()

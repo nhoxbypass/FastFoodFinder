@@ -22,14 +22,6 @@ class AppPreferencesRepository(private val preferencesHelper: PreferencesHelper)
         preferencesHelper.setAppLaunchFirstTime(isFirstTime)
     }
 
-    override fun getNumberOfStores(): Int {
-        return preferencesHelper.getNumberOfStores()
-    }
-
-    override fun setNumberOfStores(numberOfStores: Int) {
-        preferencesHelper.setNumberOfStores(numberOfStores)
-    }
-
     override fun getSearchHistories(): MutableSet<String> {
         if (searchHistory.isEmpty())
             searchHistory = preferencesHelper.getSearchHistories()
