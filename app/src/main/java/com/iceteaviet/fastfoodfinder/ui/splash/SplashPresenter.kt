@@ -4,6 +4,7 @@ import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
 import com.iceteaviet.fastfoodfinder.ui.base.BasePresenter
+import com.iceteaviet.fastfoodfinder.utils.exception.EmptyDataException
 import com.iceteaviet.fastfoodfinder.utils.filterInvalidData
 import com.iceteaviet.fastfoodfinder.utils.isValidUserUid
 import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
@@ -36,19 +37,26 @@ class SplashPresenter : BasePresenter<SplashContract.Presenter>, SplashContract.
             if (dataManager.isSignedIn()) {
                 val uid = dataManager.getCurrentUserUid()
                 if (isValidUserUid(uid)) {
-                    onUserSignedIn(uid)
+                    loadDataAndOpenMainScreen(uid)
                     return
                 }
             }
-            onUserNotSignedIn()
+            loadDataAndOpenLoginScreen()
         }
     }
 
+    /**
+     * Load stores data from server
+     * Then navigate directly to main screen or login screen base on current authentication status
+     *
+     * Note: It will open main screen directly of user sign in, do not fetch new data of current user,
+     *      you should do it by yourself
+     */
     override fun loadStoresFromServer() {
         loadStoresFromServerInternal()
                 .subscribe(object : CompletableObserver {
                     override fun onComplete() {
-                        if (dataManager.isSignedIn())
+                        if (dataManager.isSignedIn() && isValidUserUid(dataManager.getCurrentUserUid()))
                             splashView.openMainActivityWithDelay(getSplashRemainingTime())
                         else
                             splashView.openLoginScreen()
@@ -70,13 +78,23 @@ class SplashPresenter : BasePresenter<SplashContract.Presenter>, SplashContract.
     }
 
     private fun onAppOpenFirstTime() {
-        val disposable = loadStoresFromServerInternal()
-                .subscribe {
-                    dataManager.setAppLaunchFirstTime(false)
-                    splashView.openLoginScreen()
-                }
+        dataManager.setAppLaunchFirstTime(false)
 
-        compositeDisposable.add(disposable)
+        loadStoresFromServerInternal()
+                .subscribe(object : CompletableObserver {
+                    override fun onComplete() {
+                        splashView.openLoginScreen()
+                    }
+
+                    override fun onSubscribe(d: Disposable) {
+                        compositeDisposable.add(d)
+                    }
+
+                    override fun onError(e: Throwable) {
+                        e.printStackTrace()
+                    }
+
+                })
     }
 
     /**
@@ -93,10 +111,15 @@ class SplashPresenter : BasePresenter<SplashContract.Presenter>, SplashContract.
                         }
 
                         override fun onSuccess(storeList: List<Store>) {
-                            val filteredStoreList = filterInvalidData(storeList.toMutableList())
-                            dataManager.setStores(filteredStoreList)
+                            if (storeList.isNotEmpty()) {
+                                val filteredStoreList = filterInvalidData(storeList.toMutableList())
+                                dataManager.setStores(filteredStoreList)
 
-                            emitter.onComplete()
+                                emitter.onComplete()
+                            } else {
+                                splashView.showRetryDialog()
+                                emitter.onError(EmptyDataException())
+                            }
                         }
 
                         override fun onError(e: Throwable) {
@@ -107,7 +130,7 @@ class SplashPresenter : BasePresenter<SplashContract.Presenter>, SplashContract.
         }
     }
 
-    private fun onUserNotSignedIn() {
+    private fun loadDataAndOpenLoginScreen() {
         // Warm up store data
         dataManager.getAllStores()
                 .subscribeOn(schedulerProvider.io())
@@ -131,7 +154,7 @@ class SplashPresenter : BasePresenter<SplashContract.Presenter>, SplashContract.
                 })
     }
 
-    private fun onUserSignedIn(userUid: String) {
+    private fun loadDataAndOpenMainScreen(userUid: String) {
         // User still signed in, fetch newest user data from server
         // TODO: Support timeout
         Single.zip(dataManager.getUser(userUid),
@@ -153,6 +176,27 @@ class SplashPresenter : BasePresenter<SplashContract.Presenter>, SplashContract.
                             loadStoresFromServer()
                         else
                             splashView.openMainActivityWithDelay(getSplashRemainingTime())
+                    }
+
+                    override fun onError(e: Throwable) {
+                        e.printStackTrace()
+                        splashView.openMainActivityWithDelay(getSplashRemainingTime())
+                    }
+                })
+    }
+
+    private fun loadUserAndOpenMainScreen(userUid: String) {
+        dataManager.getUser(userUid)
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.ui())
+                .subscribe(object : SingleObserver<User> {
+                    override fun onSubscribe(d: Disposable) {
+                        compositeDisposable.add(d)
+                    }
+
+                    override fun onSuccess(user: User) {
+                        dataManager.setCurrentUser(user)
+                        splashView.openMainActivityWithDelay(getSplashRemainingTime())
                     }
 
                     override fun onError(e: Throwable) {
