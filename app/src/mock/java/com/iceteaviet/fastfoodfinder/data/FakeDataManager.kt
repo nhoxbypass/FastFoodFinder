@@ -116,10 +116,6 @@ class FakeDataManager(context: Context, private val storeRepository: StoreReposi
         preferencesRepository.setAppLaunchFirstTime(isFirstTime)
     }
 
-    override fun getNumberOfStores(): Int {
-        return preferencesRepository.getNumberOfStores()
-    }
-
     override fun setSearchHistories(set: MutableSet<String>) {
         preferencesRepository.setSearchHistories(set)
     }
