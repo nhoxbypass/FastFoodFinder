@@ -15,7 +15,6 @@ import android.widget.Toast
 import androidx.annotation.NonNull
 import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
-import com.iceteaviet.fastfoodfinder.location.SystemLocationListener
 import com.iceteaviet.fastfoodfinder.location.SystemLocationManager
 import com.iceteaviet.fastfoodfinder.ui.ar.model.AugmentedPOI
 import com.iceteaviet.fastfoodfinder.ui.base.BaseActivity
@@ -24,7 +23,7 @@ import com.iceteaviet.fastfoodfinder.ui.custom.ar.AROverlayView
 import com.iceteaviet.fastfoodfinder.utils.*
 import kotlinx.android.synthetic.main.activity_ar_camera.*
 
-class LiveSightActivity : BaseActivity(), LiveSightContract.View, SensorEventListener, SystemLocationListener {
+class LiveSightActivity : BaseActivity(), LiveSightContract.View, SensorEventListener {
 
     override lateinit var presenter: LiveSightContract.Presenter
 
@@ -41,7 +40,8 @@ class LiveSightActivity : BaseActivity(), LiveSightContract.View, SensorEventLis
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        presenter = LiveSightPresenter(App.getDataManager(), App.getSchedulerProvider(), this)
+        presenter = LiveSightPresenter(App.getDataManager(), App.getSchedulerProvider(),
+                SystemLocationManager.getInstance(), this)
 
         cameraContainerLayout = camera_container_layout
         surfaceView = surface_view
@@ -109,26 +109,6 @@ class LiveSightActivity : BaseActivity(), LiveSightContract.View, SensorEventLis
 
     override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {
         //do nothing
-    }
-
-    override fun onLocationChanged(location: Location) {
-        presenter.onCurrLocationChanged(location)
-    }
-
-    override fun onLocationFailed(type: Int) {
-
-    }
-
-    override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {
-        d(TAG, "Provider: $provider. Status: $status")
-    }
-
-    override fun onProviderEnabled(provider: String) {
-        d(TAG, "onProviderEnabled$provider")
-    }
-
-    override fun onProviderDisabled(provider: String) {
-        d(TAG, "onProviderDisabled$provider")
     }
 
     override fun requestLocationPermission() {
@@ -218,16 +198,6 @@ class LiveSightActivity : BaseActivity(), LiveSightContract.View, SensorEventLis
         sensorManager?.registerListener(this,
                 sensorManager?.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR),
                 SensorManager.SENSOR_DELAY_FASTEST)
-    }
-
-    override fun subscribeLocationUpdate() {
-        SystemLocationManager.getInstance().requestLocationUpdates()
-        SystemLocationManager.getInstance().subscribeLocationUpdate(this)
-        presenter.onCurrLocationChanged(SystemLocationManager.getInstance().getCurrentLocation()!!)
-    }
-
-    override fun unsubscribeLocationUpdate() {
-        SystemLocationManager.getInstance().unsubscribeLocationUpdate(this)
     }
 
     override fun updateLatestLocation(latestLocation: Location) {

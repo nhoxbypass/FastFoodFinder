@@ -1,8 +1,11 @@
 package com.iceteaviet.fastfoodfinder.ui.ar
 
 import android.location.Location
+import android.os.Bundle
 import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
+import com.iceteaviet.fastfoodfinder.location.SystemLocationListener
+import com.iceteaviet.fastfoodfinder.location.base.ILocationManager
 import com.iceteaviet.fastfoodfinder.ui.ar.model.AugmentedPOI
 import com.iceteaviet.fastfoodfinder.ui.base.BasePresenter
 import com.iceteaviet.fastfoodfinder.utils.isLolipopOrHigher
@@ -15,19 +18,23 @@ import io.reactivex.disposables.Disposable
 /**
  * Created by tom on 2019-04-16.
  */
-class LiveSightPresenter : BasePresenter<LiveSightContract.Presenter>, LiveSightContract.Presenter {
+class LiveSightPresenter : BasePresenter<LiveSightContract.Presenter>, LiveSightContract.Presenter, SystemLocationListener {
 
     private val liveSightView: LiveSightContract.View
 
-    constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider, liveSightView: LiveSightContract.View) : super(dataManager, schedulerProvider) {
+    private val locationManager: ILocationManager<SystemLocationListener>
+
+    constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider,
+                locationManager: ILocationManager<SystemLocationListener>, liveSightView: LiveSightContract.View) : super(dataManager, schedulerProvider) {
         this.liveSightView = liveSightView
+        this.locationManager = locationManager
     }
 
     override fun subscribe() {
         if (isLolipopOrHigher() && !liveSightView.isLocationPermissionGranted()) {
             liveSightView.requestLocationPermission()
         } else {
-            liveSightView.subscribeLocationUpdate()
+            subscribeLocationUpdate()
         }
 
         if (isLolipopOrHigher() && !liveSightView.isCameraPermissionGranted()) {
@@ -41,20 +48,33 @@ class LiveSightPresenter : BasePresenter<LiveSightContract.Presenter>, LiveSight
     }
 
     override fun unsubscribe() {
-        liveSightView.unsubscribeLocationUpdate()
+        unsubscribeLocationUpdate()
         liveSightView.releaseARCamera()
         super.unsubscribe()
     }
 
     override fun onLocationPermissionGranted() {
-        liveSightView.subscribeLocationUpdate()
+        subscribeLocationUpdate()
     }
 
     override fun onCameraPermissionGranted() {
         liveSightView.initARCameraView()
     }
 
-    override fun onCurrLocationChanged(location: Location) {
+    override fun startArCamera() {
+    }
+
+    override fun subscribeLocationUpdate() {
+        locationManager.requestLocationUpdates()
+        locationManager.subscribeLocationUpdate(this)
+        onLocationChanged(locationManager.getCurrentLocation()!!)
+    }
+
+    override fun unsubscribeLocationUpdate() {
+        locationManager.unsubscribeLocationUpdate(this)
+    }
+
+    override fun onLocationChanged(location: Location) {
         liveSightView.updateLatestLocation(location)
         dataManager.getStoreInBounds(location.latitude - RADIUS,
                 location.longitude - RADIUS,
@@ -83,7 +103,16 @@ class LiveSightPresenter : BasePresenter<LiveSightContract.Presenter>, LiveSight
                 })
     }
 
-    override fun startArCamera() {
+    override fun onLocationFailed(type: Int) {
+    }
+
+    override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {
+    }
+
+    override fun onProviderEnabled(provider: String) {
+    }
+
+    override fun onProviderDisabled(provider: String) {
     }
 
     companion object {
