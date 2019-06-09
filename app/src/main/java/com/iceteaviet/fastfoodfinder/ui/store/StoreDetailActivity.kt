@@ -54,11 +54,6 @@ class StoreDetailActivity : BaseActivity(), StoreDetailContract.View {
         super.onResume()
         presenter.handleExtras(intent.getParcelableExtra(KEY_STORE))
         presenter.subscribe()
-        if (isLocationPermissionGranted(this)) {
-            presenter.onLocationPermissionGranted()
-        } else {
-            requestLocationPermission(this)
-        }
     }
 
     override fun onPause() {
@@ -91,6 +86,14 @@ class StoreDetailActivity : BaseActivity(), StoreDetailContract.View {
             else -> {
             }
         }
+    }
+
+    override fun requestLocationPermission() {
+        requestLocationPermission(this)
+    }
+
+    override fun isLocationPermissionGranted(): Boolean {
+        return isLocationPermissionGranted(this)
     }
 
     override fun setToolbarTitle(title: String) {

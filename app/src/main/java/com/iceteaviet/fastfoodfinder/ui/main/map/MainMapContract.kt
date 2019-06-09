@@ -27,6 +27,8 @@ interface MainMapContract {
         fun setNearByStores(nearbyStores: List<NearByStore>)
         fun clearNearByStores()
         fun clearMapData()
+        fun requestLocationPermission()
+        fun isLocationPermissionGranted(): Boolean
     }
 
     interface Presenter : com.iceteaviet.fastfoodfinder.ui.base.Presenter {

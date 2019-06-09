@@ -21,6 +21,7 @@ import com.iceteaviet.fastfoodfinder.ui.main.map.model.MapCameraPosition
 import com.iceteaviet.fastfoodfinder.ui.main.map.model.NearByStore
 import com.iceteaviet.fastfoodfinder.utils.calcDistance
 import com.iceteaviet.fastfoodfinder.utils.getLatLngString
+import com.iceteaviet.fastfoodfinder.utils.isLolipopOrHigher
 import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
 import io.reactivex.Observer
 import io.reactivex.SingleObserver
@@ -62,6 +63,12 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
     }
 
     override fun subscribe() {
+        if (isLolipopOrHigher() && !mainMapView.isLocationPermissionGranted()) {
+            mainMapView.requestLocationPermission()
+        } else {
+            onLocationPermissionGranted()
+        }
+
         EventBus.getDefault().register(this)
 
         newVisibleStorePublisher = PublishSubject.create()
@@ -75,19 +82,19 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
     }
 
     override fun unsubscribe() {
-        super.unsubscribe()
         cameraPositionPublisher?.onComplete()
         cameraPositionPublisher = null
         newVisibleStorePublisher?.onComplete()
         newVisibleStorePublisher = null
         EventBus.getDefault().unregister(this)
         locationManager.unsubscribeLocationUpdate(this)
+        super.unsubscribe()
     }
 
     override fun onLocationPermissionGranted() {
         subscribeLocationUpdate()
-        mainMapView.setMyLocationEnabled(true)
         requestCurrentLocation()
+        mainMapView.setMyLocationEnabled(true)
         locationGranted = true
     }
 

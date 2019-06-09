@@ -41,8 +41,8 @@ class MainPresenter : BasePresenter<MainContract.Presenter>, MainContract.Presen
     }
 
     override fun unsubscribe() {
-        super.unsubscribe()
         EventBus.getDefault().unregister(this)
+        super.unsubscribe()
     }
 
     override fun onProfileMenuItemClick() {

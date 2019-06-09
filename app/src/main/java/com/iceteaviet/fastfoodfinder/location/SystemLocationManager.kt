@@ -11,7 +11,7 @@ import com.iceteaviet.fastfoodfinder.location.base.ILocationManager
 /**
  * Created by tom on 2019-05-01.
  */
-class SystemLocationManager private constructor(context: Context) : AbsLocationManager<SystemLocationListener>(context), ILocationManager<SystemLocationListener>, android.location.LocationListener {
+open class SystemLocationManager private constructor(context: Context) : AbsLocationManager<SystemLocationListener>(context), ILocationManager<SystemLocationListener>, android.location.LocationListener {
 
     private var locationManager: android.location.LocationManager? = null
 

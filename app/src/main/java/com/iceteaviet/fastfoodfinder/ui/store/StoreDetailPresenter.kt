@@ -13,6 +13,7 @@ import com.iceteaviet.fastfoodfinder.location.LocationListener
 import com.iceteaviet.fastfoodfinder.location.base.ILocationManager
 import com.iceteaviet.fastfoodfinder.ui.base.BasePresenter
 import com.iceteaviet.fastfoodfinder.utils.getLatLngString
+import com.iceteaviet.fastfoodfinder.utils.isLolipopOrHigher
 import com.iceteaviet.fastfoodfinder.utils.isValidLocation
 import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
 import io.reactivex.SingleObserver
@@ -59,11 +60,17 @@ open class StoreDetailPresenter : BasePresenter<StoreDetailContract.Presenter>, 
                         e.printStackTrace()
                     }
                 })
+
+        if (isLolipopOrHigher() && !storeDetailView.isLocationPermissionGranted()) {
+            storeDetailView.requestLocationPermission()
+        } else {
+            onLocationPermissionGranted()
+        }
     }
 
     override fun unsubscribe() {
-        super.unsubscribe()
         locationManager.unsubscribeLocationUpdate(this)
+        super.unsubscribe()
     }
 
     override fun onLocationChanged(location: Location) {

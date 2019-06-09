@@ -12,6 +12,7 @@ interface LiveSightContract {
     interface View : BaseView<Presenter> {
         fun requestLocationPermission()
         fun isLocationPermissionGranted(): Boolean
+        fun showCannotGetLocationMessage()
         fun requestCameraPermission()
         fun isCameraPermissionGranted(): Boolean
         fun updateLatestLocation(latestLocation: Location)
@@ -28,5 +29,6 @@ interface LiveSightContract {
         fun onCameraPermissionGranted()
         fun subscribeLocationUpdate()
         fun unsubscribeLocationUpdate()
+        fun requestCurrentLocation()
     }
 }

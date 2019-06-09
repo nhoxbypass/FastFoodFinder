@@ -34,7 +34,7 @@ class LiveSightPresenter : BasePresenter<LiveSightContract.Presenter>, LiveSight
         if (isLolipopOrHigher() && !liveSightView.isLocationPermissionGranted()) {
             liveSightView.requestLocationPermission()
         } else {
-            subscribeLocationUpdate()
+            onLocationPermissionGranted()
         }
 
         if (isLolipopOrHigher() && !liveSightView.isCameraPermissionGranted()) {
@@ -55,6 +55,7 @@ class LiveSightPresenter : BasePresenter<LiveSightContract.Presenter>, LiveSight
 
     override fun onLocationPermissionGranted() {
         subscribeLocationUpdate()
+        requestCurrentLocation()
     }
 
     override fun onCameraPermissionGranted() {
@@ -67,11 +68,19 @@ class LiveSightPresenter : BasePresenter<LiveSightContract.Presenter>, LiveSight
     override fun subscribeLocationUpdate() {
         locationManager.requestLocationUpdates()
         locationManager.subscribeLocationUpdate(this)
-        onLocationChanged(locationManager.getCurrentLocation()!!)
     }
 
     override fun unsubscribeLocationUpdate() {
         locationManager.unsubscribeLocationUpdate(this)
+    }
+
+    override fun requestCurrentLocation() {
+        val lastLocation = locationManager.getCurrentLocation()
+        if (lastLocation != null) {
+            onLocationChanged(lastLocation)
+        } else {
+            liveSightView.showCannotGetLocationMessage()
+        }
     }
 
     override fun onLocationChanged(location: Location) {

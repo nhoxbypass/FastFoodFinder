@@ -127,6 +127,9 @@ class LiveSightActivity : BaseActivity(), LiveSightContract.View, SensorEventLis
         return isCameraPermissionGranted(this)
     }
 
+    override fun showCannotGetLocationMessage() {
+        Toast.makeText(this, R.string.cannot_get_curr_location, Toast.LENGTH_SHORT).show()
+    }
 
     override fun initAROverlayView() {
         if (arOverlayView?.parent != null) {
