@@ -14,6 +14,7 @@ import com.iceteaviet.fastfoodfinder.utils.setFinalStatic
 import com.nhaarman.mockitokotlin2.eq
 import io.reactivex.Single
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.mockito.ArgumentMatchers
@@ -46,6 +47,11 @@ class StoreDetailPresenterTest {
 
         // Get a reference to the class under test
         storeDetailPresenter = StoreDetailPresenter(dataManager, TrampolineSchedulerProvider(), locationManager, storeDetailView)
+    }
+
+    @After
+    fun tearDown() {
+        setFinalStatic(Build.VERSION::class.java.getField("SDK_INT"), 0)
     }
 
     @Test
