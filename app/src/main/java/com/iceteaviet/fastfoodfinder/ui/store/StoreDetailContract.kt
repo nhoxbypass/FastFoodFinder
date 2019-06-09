@@ -11,6 +11,8 @@ import com.iceteaviet.fastfoodfinder.ui.base.BaseView
  */
 interface StoreDetailContract {
     interface View : BaseView<Presenter> {
+        fun requestLocationPermission()
+        fun isLocationPermissionGranted(): Boolean
         fun setToolbarTitle(title: String)
         fun showCannotGetLocationMessage()
         fun setStoreComments(listComments: MutableList<Comment>)

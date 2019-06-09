@@ -75,13 +75,13 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
     }
 
     override fun unsubscribe() {
-        super.unsubscribe()
         cameraPositionPublisher?.onComplete()
         cameraPositionPublisher = null
         newVisibleStorePublisher?.onComplete()
         newVisibleStorePublisher = null
         EventBus.getDefault().unregister(this)
         locationManager.unsubscribeLocationUpdate(this)
+        super.unsubscribe()
     }
 
     override fun onLocationPermissionGranted() {

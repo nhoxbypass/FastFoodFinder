@@ -1,5 +1,6 @@
 package com.iceteaviet.fastfoodfinder.ui.store
 
+import android.os.Build
 import com.google.android.gms.maps.model.LatLng
 import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
@@ -9,6 +10,7 @@ import com.iceteaviet.fastfoodfinder.utils.StoreType
 import com.iceteaviet.fastfoodfinder.utils.getFakeComment
 import com.iceteaviet.fastfoodfinder.utils.getFakeComments
 import com.iceteaviet.fastfoodfinder.utils.rx.TrampolineSchedulerProvider
+import com.iceteaviet.fastfoodfinder.utils.setFinalStatic
 import com.nhaarman.mockitokotlin2.eq
 import io.reactivex.Single
 import org.assertj.core.api.Assertions.assertThat
@@ -18,6 +20,7 @@ import org.mockito.ArgumentMatchers
 import org.mockito.Mock
 import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
+
 
 /**
  * Created by tom on 2019-05-29.
@@ -33,7 +36,7 @@ class StoreDetailPresenterTest {
     private lateinit var dataManager: DataManager
 
     @Mock
-    private lateinit var googleLocationManager: GoogleLocationManager
+    private lateinit var locationManager: GoogleLocationManager
 
     @Before
     fun setupPresenter() {
@@ -42,11 +45,15 @@ class StoreDetailPresenterTest {
         MockitoAnnotations.initMocks(this)
 
         // Get a reference to the class under test
-        storeDetailPresenter = StoreDetailPresenter(dataManager, TrampolineSchedulerProvider(), googleLocationManager, storeDetailView)
+        storeDetailPresenter = StoreDetailPresenter(dataManager, TrampolineSchedulerProvider(), locationManager, storeDetailView)
     }
 
     @Test
-    fun subscribeTest() {
+    fun subscribeTest_locationPermissionGranted() {
+        // Preconditions
+        `when`(storeDetailView.isLocationPermissionGranted()).thenReturn(true)
+
+        // Mocks
         `when`(dataManager.getComments(eq(STORE_ID.toString()))).thenReturn(
                 Single.just(comments)
         )
@@ -57,18 +64,71 @@ class StoreDetailPresenterTest {
         storeDetailPresenter.subscribe()
 
         verify(storeDetailView).setToolbarTitle(STORE_TITLE)
-
         verify(storeDetailView).setStoreComments(comments.toMutableList().asReversed())
+        verify(storeDetailView, never()).requestLocationPermission()
+        verify(locationManager).requestLocationUpdates()
+        verify(locationManager).subscribeLocationUpdate(storeDetailPresenter)
+    }
+
+    @Test
+    fun subscribeTest_devicePreLolipop() {
+        // Preconditions
+        setFinalStatic(Build.VERSION::class.java.getField("SDK_INT"), 18)
+
+        // Mocks
+        `when`(dataManager.getComments(eq(STORE_ID.toString()))).thenReturn(
+                Single.just(comments)
+        )
+
+        val store = Store(STORE_ID, STORE_TITLE, STORE_ADDRESS, STORE_LAT, STORE_LNG, STORE_TEL, STORE_TYPE)
+        storeDetailPresenter.handleExtras(store)
+
+        storeDetailPresenter.subscribe()
+
+        verify(storeDetailView).setToolbarTitle(STORE_TITLE)
+        verify(storeDetailView).setStoreComments(comments.toMutableList().asReversed())
+        verify(storeDetailView, never()).requestLocationPermission()
+        verify(locationManager).requestLocationUpdates()
+        verify(locationManager).subscribeLocationUpdate(storeDetailPresenter)
+    }
+
+    @Test
+    fun subscribeTest_locationPermissionNotGranted() {
+        // Preconditions
+        setFinalStatic(Build.VERSION::class.java.getField("SDK_INT"), 24)
+        `when`(storeDetailView.isLocationPermissionGranted()).thenReturn(false)
+
+        // Mocks
+        `when`(dataManager.getComments(eq(STORE_ID.toString()))).thenReturn(
+                Single.just(comments)
+        )
+
+        val store = Store(STORE_ID, STORE_TITLE, STORE_ADDRESS, STORE_LAT, STORE_LNG, STORE_TEL, STORE_TYPE)
+        storeDetailPresenter.handleExtras(store)
+
+        storeDetailPresenter.subscribe()
+
+        verify(storeDetailView).setToolbarTitle(STORE_TITLE)
+        verify(storeDetailView).setStoreComments(comments.toMutableList().asReversed())
+        verify(storeDetailView).requestLocationPermission()
+        verify(locationManager, never()).requestLocationUpdates()
+        verify(locationManager, never()).subscribeLocationUpdate(storeDetailPresenter)
+    }
+
+    @Test
+    fun unsubscribeTest() {
+        storeDetailPresenter.unsubscribe()
+
+        verify(locationManager).unsubscribeLocationUpdate(storeDetailPresenter)
     }
 
     @Test
     fun onLocationPermissionGrantedTest() {
-        val spyPresenter = spy(storeDetailPresenter)
+        storeDetailPresenter.onLocationPermissionGranted()
 
-        spyPresenter.onLocationPermissionGranted()
-
-        verify(spyPresenter).requestCurrentLocation()
-        verify(spyPresenter).subscribeLocationUpdate()
+        verify(locationManager).getCurrentLocation()
+        verify(locationManager).requestLocationUpdates()
+        verify(locationManager).subscribeLocationUpdate(storeDetailPresenter)
     }
 
     @Test
@@ -90,14 +150,15 @@ class StoreDetailPresenterTest {
     fun requestLocationUpdatesTest() {
         storeDetailPresenter.subscribeLocationUpdate()
 
-        verify(googleLocationManager).subscribeLocationUpdate(storeDetailPresenter)
+        verify(locationManager).requestLocationUpdates()
+        verify(locationManager).subscribeLocationUpdate(storeDetailPresenter)
     }
 
     @Test
     fun requestCurrentLocationTest() {
         storeDetailPresenter.requestCurrentLocation()
 
-        verify(googleLocationManager).getCurrentLocation()
+        verify(locationManager).getCurrentLocation()
     }
 
     @Test
