@@ -56,9 +56,7 @@ class StoreDetailPresenterTest {
 
         storeDetailPresenter.subscribe()
 
-        verify(storeDetailView).setToolbarTitle(store.title)
-
-        verify(dataManager).getComments(store.id.toString())
+        verify(storeDetailView).setToolbarTitle(STORE_TITLE)
 
         verify(storeDetailView).setStoreComments(comments.toMutableList().asReversed())
     }

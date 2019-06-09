@@ -184,25 +184,4 @@ class SplashPresenter : BasePresenter<SplashContract.Presenter>, SplashContract.
                     }
                 })
     }
-
-    private fun loadUserAndOpenMainScreen(userUid: String) {
-        dataManager.getUser(userUid)
-                .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
-                .subscribe(object : SingleObserver<User> {
-                    override fun onSubscribe(d: Disposable) {
-                        compositeDisposable.add(d)
-                    }
-
-                    override fun onSuccess(user: User) {
-                        dataManager.setCurrentUser(user)
-                        splashView.openMainActivityWithDelay(getSplashRemainingTime())
-                    }
-
-                    override fun onError(e: Throwable) {
-                        e.printStackTrace()
-                        splashView.openMainActivityWithDelay(getSplashRemainingTime())
-                    }
-                })
-    }
 }
