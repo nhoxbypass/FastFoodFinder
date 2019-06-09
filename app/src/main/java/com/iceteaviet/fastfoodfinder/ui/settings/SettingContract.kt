@@ -21,7 +21,6 @@ interface SettingContract {
         fun onLoadStoreFromServer()
         fun onSetupLanguage()
         fun saveLanguagePref()
-        fun onLanguageTextViewClick()
-        fun onLanguageSwitchClick()
+        fun onLanguageChanged()
     }
 }

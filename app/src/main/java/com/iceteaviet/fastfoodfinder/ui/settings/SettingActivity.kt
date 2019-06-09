@@ -163,12 +163,12 @@ class SettingActivity : BaseActivity(), SettingContract.View {
         }
 
         swChangeLanguage.setOnClickListener {
-            presenter.onLanguageSwitchClick()
+            presenter.onLanguageChanged()
             presenter.saveLanguagePref()
         }
 
         tvSettingLanguage.setOnClickListener {
-            presenter.onLanguageTextViewClick()
+            presenter.onLanguageChanged()
             presenter.saveLanguagePref()
         }
 

@@ -1,5 +1,6 @@
 package com.iceteaviet.fastfoodfinder.ui.settings
 
+import androidx.annotation.VisibleForTesting
 import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.ui.base.BasePresenter
@@ -14,7 +15,8 @@ import io.reactivex.disposables.Disposable
 class SettingPresenter : BasePresenter<SettingContract.Presenter>, SettingContract.Presenter {
 
     val settingView: SettingContract.View
-    private var isVietnamese = true
+    @VisibleForTesting
+    var isVietnamese = true
 
 
     constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider, settingView: SettingContract.View) : super(dataManager, schedulerProvider) {
@@ -32,20 +34,7 @@ class SettingPresenter : BasePresenter<SettingContract.Presenter>, SettingContra
         dataManager.signOut()
     }
 
-    override fun onLanguageTextViewClick() {
-        settingView.updateLangUI(true)
-        if (isVietnamese) {
-            settingView.updateLangUI(true)
-            isVietnamese = false
-            settingView.loadLanguage("vi")
-        } else {
-            settingView.loadLanguage("en")
-            settingView.updateLangUI(false)
-            isVietnamese = true
-        }
-    }
-
-    override fun onLanguageSwitchClick() {
+    override fun onLanguageChanged() {
         if (isVietnamese) {
             settingView.updateLangUI(true)
             isVietnamese = false
