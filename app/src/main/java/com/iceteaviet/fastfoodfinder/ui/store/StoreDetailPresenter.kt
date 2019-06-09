@@ -61,6 +61,11 @@ open class StoreDetailPresenter : BasePresenter<StoreDetailContract.Presenter>, 
                 })
     }
 
+    override fun unsubscribe() {
+        super.unsubscribe()
+        locationManager.unsubscribeLocationUpdate(this)
+    }
+
     override fun onLocationChanged(location: Location) {
         currLocation = LatLng(location.latitude, location.longitude)
     }
@@ -70,7 +75,7 @@ open class StoreDetailPresenter : BasePresenter<StoreDetailContract.Presenter>, 
 
     override fun onLocationPermissionGranted() {
         requestCurrentLocation()
-        requestLocationUpdates()
+        subscribeLocationUpdate()
     }
 
     override fun handleExtras(extras: Parcelable?) {
@@ -81,7 +86,7 @@ open class StoreDetailPresenter : BasePresenter<StoreDetailContract.Presenter>, 
         }
     }
 
-    override fun requestLocationUpdates() {
+    override fun subscribeLocationUpdate() {
         locationManager.requestLocationUpdates()
         locationManager.subscribeLocationUpdate(this)
     }

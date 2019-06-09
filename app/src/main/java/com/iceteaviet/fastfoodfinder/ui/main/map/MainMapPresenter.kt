@@ -81,16 +81,17 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
         newVisibleStorePublisher?.onComplete()
         newVisibleStorePublisher = null
         EventBus.getDefault().unregister(this)
+        locationManager.unsubscribeLocationUpdate(this)
     }
 
     override fun onLocationPermissionGranted() {
-        requestLocationUpdates()
+        subscribeLocationUpdate()
         mainMapView.setMyLocationEnabled(true)
         requestCurrentLocation()
         locationGranted = true
     }
 
-    override fun requestLocationUpdates() {
+    override fun subscribeLocationUpdate() {
         locationManager.requestLocationUpdates()
         locationManager.subscribeLocationUpdate(this)
     }

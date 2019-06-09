@@ -70,7 +70,7 @@ class StoreDetailPresenterTest {
         spyPresenter.onLocationPermissionGranted()
 
         verify(spyPresenter).requestCurrentLocation()
-        verify(spyPresenter).requestLocationUpdates()
+        verify(spyPresenter).subscribeLocationUpdate()
     }
 
     @Test
@@ -90,7 +90,7 @@ class StoreDetailPresenterTest {
 
     @Test
     fun requestLocationUpdatesTest() {
-        storeDetailPresenter.requestLocationUpdates()
+        storeDetailPresenter.subscribeLocationUpdate()
 
         verify(googleLocationManager).subscribeLocationUpdate(storeDetailPresenter)
     }
