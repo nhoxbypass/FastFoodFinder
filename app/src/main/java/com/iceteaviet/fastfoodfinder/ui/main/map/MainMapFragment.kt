@@ -72,11 +72,6 @@ class MainMapFragment : Fragment(), MainMapContract.View {
     override fun onResume() {
         super.onResume()
         presenter.subscribe()
-        if (isLocationPermissionGranted(context!!)) {
-            presenter.onLocationPermissionGranted()
-        } else {
-            requestLocationPermission(this)
-        }
     }
 
     override fun onPause() {
@@ -102,6 +97,14 @@ class MainMapFragment : Fragment(), MainMapContract.View {
             else -> {
             }
         }
+    }
+
+    override fun requestLocationPermission() {
+        requestLocationPermission(this)
+    }
+
+    override fun isLocationPermissionGranted(): Boolean {
+        return isLocationPermissionGranted(context!!)
     }
 
     @SuppressLint("MissingPermission")
