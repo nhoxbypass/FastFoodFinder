@@ -9,6 +9,7 @@ import com.iceteaviet.fastfoodfinder.location.GoogleLocationManager
 import com.iceteaviet.fastfoodfinder.location.LatLngAlt
 import com.iceteaviet.fastfoodfinder.location.LocationListener
 import com.iceteaviet.fastfoodfinder.utils.StoreType
+import com.iceteaviet.fastfoodfinder.utils.exception.EmptyDataException
 import com.iceteaviet.fastfoodfinder.utils.exception.NotFoundException
 import com.iceteaviet.fastfoodfinder.utils.getFakeComment
 import com.iceteaviet.fastfoodfinder.utils.getFakeComments
@@ -124,6 +125,20 @@ class StoreDetailPresenterTest {
         verify(storeDetailView).requestLocationPermission()
         verify(locationManager, never()).requestLocationUpdates()
         verify(locationManager, never()).subscribeLocationUpdate(storeDetailPresenter)
+    }
+
+    @Test
+    fun subscribeTest_getCommentsError() {
+        // Mocks
+        `when`(dataManager.getComments(eq(STORE_ID.toString()))).thenReturn(Single.error(EmptyDataException()))
+
+        val store = Store(STORE_ID, STORE_TITLE, STORE_ADDRESS, STORE_LAT, STORE_LNG, STORE_TEL, STORE_TYPE)
+        storeDetailPresenter.handleExtras(store)
+
+        storeDetailPresenter.subscribe()
+
+        verify(storeDetailView).setToolbarTitle(STORE_TITLE)
+        verify(storeDetailView, never()).setStoreComments(ArgumentMatchers.anyList())
     }
 
     @Test
