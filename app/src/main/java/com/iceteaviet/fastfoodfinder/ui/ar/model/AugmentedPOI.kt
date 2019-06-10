@@ -1,21 +1,17 @@
 package com.iceteaviet.fastfoodfinder.ui.ar.model
 
-import android.location.Location
-
 import androidx.annotation.DrawableRes
+import com.iceteaviet.fastfoodfinder.location.LatLngAlt
 
 /**
  * Created by Genius Doan on 20/07/2017.
  */
 
-class AugmentedPOI(val name: String, lat: Double, lon: Double, altitude: Double, @param:DrawableRes @field:DrawableRes
+class AugmentedPOI(val name: String, lat: Double, lon: Double, alt: Double, @param:DrawableRes @field:DrawableRes
 val icon: Int) {
-    val location: Location
+    val location: LatLngAlt
 
     init {
-        location = Location(name)
-        location.latitude = lat
-        location.longitude = lon
-        location.altitude = altitude
+        location = LatLngAlt(lat, lon, alt)
     }
 }

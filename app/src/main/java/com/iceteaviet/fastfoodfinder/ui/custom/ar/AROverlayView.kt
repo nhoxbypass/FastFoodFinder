@@ -2,9 +2,9 @@ package com.iceteaviet.fastfoodfinder.ui.custom.ar
 
 import android.content.Context
 import android.graphics.*
-import android.location.Location
 import android.opengl.Matrix
 import android.view.View
+import com.iceteaviet.fastfoodfinder.location.LatLngAlt
 import com.iceteaviet.fastfoodfinder.ui.ar.model.AugmentedPOI
 import com.iceteaviet.fastfoodfinder.utils.convertECEFtoENU
 import com.iceteaviet.fastfoodfinder.utils.convertWSG84toECEF
@@ -18,7 +18,7 @@ class AROverlayView(context: Context) : View(context) {
     private val paint: Paint
     private val cameraCoordinateVector: FloatArray
     private var rotatedProjectionMatrix = FloatArray(16)
-    private var currentLocation: Location? = null
+    private var currentLocation: LatLngAlt? = null
     private val arPoints: MutableList<AugmentedPOI>
     private val arBitmaps: MutableList<Bitmap>
 
@@ -92,7 +92,7 @@ class AROverlayView(context: Context) : View(context) {
         this.invalidate()
     }
 
-    fun updateCurrentLocation(currentLocation: Location) {
+    fun updateCurrentLocation(currentLocation: LatLngAlt) {
         this.currentLocation = currentLocation
         this.invalidate()
     }

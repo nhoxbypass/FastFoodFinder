@@ -2,6 +2,7 @@ package com.iceteaviet.fastfoodfinder.location.base
 
 import android.content.Context
 import android.location.Location
+import com.iceteaviet.fastfoodfinder.location.LatLngAlt
 import com.iceteaviet.fastfoodfinder.location.LocationListener
 
 /**
@@ -22,8 +23,12 @@ abstract class AbsLocationManager<T : LocationListener> protected constructor(co
 
     protected abstract fun getLastLocation(): Location?
 
-    override fun getCurrentLocation(): Location? {
-        return currLocation
+    override fun getCurrentLocation(): LatLngAlt? {
+        currLocation?.let {
+            return LatLngAlt(it.latitude, it.longitude, it.altitude)
+        }
+
+        return null
     }
 
     override fun isConnected(): Boolean {

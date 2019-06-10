@@ -4,7 +4,6 @@ package com.iceteaviet.fastfoodfinder.ui.ar
 import android.content.Context
 import android.content.pm.PackageManager
 import android.hardware.*
-import android.location.Location
 import android.opengl.Matrix
 import android.os.Bundle
 import android.view.SurfaceView
@@ -15,6 +14,7 @@ import android.widget.Toast
 import androidx.annotation.NonNull
 import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
+import com.iceteaviet.fastfoodfinder.location.LatLngAlt
 import com.iceteaviet.fastfoodfinder.location.SystemLocationManager
 import com.iceteaviet.fastfoodfinder.ui.ar.model.AugmentedPOI
 import com.iceteaviet.fastfoodfinder.ui.base.BaseActivity
@@ -203,7 +203,7 @@ class LiveSightActivity : BaseActivity(), LiveSightContract.View, SensorEventLis
                 SensorManager.SENSOR_DELAY_FASTEST)
     }
 
-    override fun updateLatestLocation(latestLocation: Location) {
+    override fun updateLatestLocation(latestLocation: LatLngAlt) {
         arOverlayView?.let {
             it.updateCurrentLocation(latestLocation)
             tv_current_location.text = String.format("lat: %s \nlon: %s \nalt: %s \n",

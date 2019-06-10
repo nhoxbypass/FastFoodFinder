@@ -1,6 +1,5 @@
 package com.iceteaviet.fastfoodfinder.ui.store
 
-import android.location.Location
 import android.os.Parcelable
 import androidx.annotation.VisibleForTesting
 import com.google.android.gms.maps.model.LatLng
@@ -9,6 +8,7 @@ import com.iceteaviet.fastfoodfinder.data.remote.routing.GoogleMapsRoutingApiHel
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Comment
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
+import com.iceteaviet.fastfoodfinder.location.LatLngAlt
 import com.iceteaviet.fastfoodfinder.location.LocationListener
 import com.iceteaviet.fastfoodfinder.location.base.ILocationManager
 import com.iceteaviet.fastfoodfinder.ui.base.BasePresenter
@@ -73,7 +73,7 @@ open class StoreDetailPresenter : BasePresenter<StoreDetailContract.Presenter>, 
         super.unsubscribe()
     }
 
-    override fun onLocationChanged(location: Location) {
+    override fun onLocationChanged(location: LatLngAlt) {
         currLocation = LatLng(location.latitude, location.longitude)
     }
 

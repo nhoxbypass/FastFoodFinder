@@ -1,6 +1,6 @@
 package com.iceteaviet.fastfoodfinder.ui.ar
 
-import android.location.Location
+import com.iceteaviet.fastfoodfinder.location.LatLngAlt
 import com.iceteaviet.fastfoodfinder.ui.ar.model.AugmentedPOI
 import com.iceteaviet.fastfoodfinder.ui.base.BaseView
 
@@ -15,7 +15,7 @@ interface LiveSightContract {
         fun showCannotGetLocationMessage()
         fun requestCameraPermission()
         fun isCameraPermissionGranted(): Boolean
-        fun updateLatestLocation(latestLocation: Location)
+        fun updateLatestLocation(latestLocation: LatLngAlt)
         fun initARCameraView()
         fun initAROverlayView()
         fun initSensorService()

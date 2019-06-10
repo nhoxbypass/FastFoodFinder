@@ -54,7 +54,7 @@ open class GoogleLocationManager private constructor(context: Context) : AbsLoca
 
     override fun onLocationChanged(location: Location) {
         for (listener in listeners) {
-            listener.onLocationChanged(location)
+            listener.onLocationChanged(LatLngAlt(location.latitude, location.longitude, location.altitude))
         }
 
         currLocation = location

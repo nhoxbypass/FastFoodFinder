@@ -1,9 +1,9 @@
 package com.iceteaviet.fastfoodfinder.ui.ar
 
-import android.location.Location
 import android.os.Bundle
 import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
+import com.iceteaviet.fastfoodfinder.location.LatLngAlt
 import com.iceteaviet.fastfoodfinder.location.SystemLocationListener
 import com.iceteaviet.fastfoodfinder.location.base.ILocationManager
 import com.iceteaviet.fastfoodfinder.ui.ar.model.AugmentedPOI
@@ -83,7 +83,7 @@ class LiveSightPresenter : BasePresenter<LiveSightContract.Presenter>, LiveSight
         }
     }
 
-    override fun onLocationChanged(location: Location) {
+    override fun onLocationChanged(location: LatLngAlt) {
         liveSightView.updateLatestLocation(location)
         dataManager.getStoreInBounds(location.latitude - RADIUS,
                 location.longitude - RADIUS,

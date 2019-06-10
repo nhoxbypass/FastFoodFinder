@@ -4,6 +4,7 @@ package com.iceteaviet.fastfoodfinder.utils
 
 import android.location.Location
 import com.google.android.gms.maps.model.LatLng
+import com.iceteaviet.fastfoodfinder.location.LatLngAlt
 
 /**
  * Created by Genius Doan on 20/07/2017.
@@ -46,7 +47,7 @@ fun isValidLocation(latLng: LatLng?): Boolean {
 /**
  * Convert WSG84 to ECEF location array
  */
-fun convertWSG84toECEF(location: Location): FloatArray {
+fun convertWSG84toECEF(location: LatLngAlt): FloatArray {
     val radLat = Math.toRadians(location.latitude)
     val radLon = Math.toRadians(location.longitude)
 
@@ -67,7 +68,7 @@ fun convertWSG84toECEF(location: Location): FloatArray {
 /**
  * Convert ECEF to ENU location array
  */
-fun convertECEFtoENU(currentLocation: Location, ecefCurrentLocation: FloatArray, ecefPOI: FloatArray): FloatArray {
+fun convertECEFtoENU(currentLocation: LatLngAlt, ecefCurrentLocation: FloatArray, ecefPOI: FloatArray): FloatArray {
     val radLat = Math.toRadians(currentLocation.latitude)
     val radLon = Math.toRadians(currentLocation.longitude)
 
