@@ -57,7 +57,7 @@ class SplashPresenter : BasePresenter<SplashContract.Presenter>, SplashContract.
                 .subscribe(object : CompletableObserver {
                     override fun onComplete() {
                         if (dataManager.isSignedIn() && isValidUserUid(dataManager.getCurrentUserUid()))
-                            splashView.openMainActivityWithDelay(getSplashRemainingTime())
+                            splashView.openMainScreenWithDelay(getSplashRemainingTime())
                         else
                             splashView.openLoginScreen()
                     }
@@ -92,6 +92,8 @@ class SplashPresenter : BasePresenter<SplashContract.Presenter>, SplashContract.
 
                     override fun onError(e: Throwable) {
                         e.printStackTrace()
+                        splashView.showGeneralErrorMessage()
+                        splashView.openLoginScreen()
                     }
 
                 })
@@ -149,6 +151,7 @@ class SplashPresenter : BasePresenter<SplashContract.Presenter>, SplashContract.
 
                     override fun onError(e: Throwable) {
                         e.printStackTrace()
+                        splashView.showGeneralErrorMessage()
                         splashView.openLoginScreen()
                     }
                 })
@@ -175,12 +178,13 @@ class SplashPresenter : BasePresenter<SplashContract.Presenter>, SplashContract.
                         if (pair.second.isEmpty())
                             loadStoresFromServer()
                         else
-                            splashView.openMainActivityWithDelay(getSplashRemainingTime())
+                            splashView.openMainScreenWithDelay(getSplashRemainingTime())
                     }
 
                     override fun onError(e: Throwable) {
                         e.printStackTrace()
-                        splashView.openMainActivityWithDelay(getSplashRemainingTime())
+                        splashView.showGeneralErrorMessage()
+                        splashView.openMainScreenWithDelay(getSplashRemainingTime())
                     }
                 })
     }

@@ -127,5 +127,6 @@
     <string name="str_hint_login_account">You can login with your phone number or username</string>
     <string name="str_recover_pass_func">Recover password</string>
     <string name="get_image_from_picker_failed">Failed to get image from file picker</string>
+    <string name="error_general_error_code">Unknown error.\nPlease try again later!</string>
 </resources>
 

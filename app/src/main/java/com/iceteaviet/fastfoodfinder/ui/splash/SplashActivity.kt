@@ -4,11 +4,13 @@ import android.app.AlertDialog
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.widget.Toast
 import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.ui.base.BaseActivity
 import com.iceteaviet.fastfoodfinder.utils.openLoginActivity
 import com.iceteaviet.fastfoodfinder.utils.openMainActivity
+import com.iceteaviet.fastfoodfinder.utils.openSplashActivity
 
 
 class SplashActivity : BaseActivity(), SplashContract.View {
@@ -43,7 +45,7 @@ class SplashActivity : BaseActivity(), SplashContract.View {
         finish()
     }
 
-    override fun openMainActivityWithDelay(delayTime: Long) {
+    override fun openMainScreenWithDelay(delayTime: Long) {
         if (delayTime > 0) {
             Handler(Looper.getMainLooper())
                     .postDelayed({
@@ -54,6 +56,16 @@ class SplashActivity : BaseActivity(), SplashContract.View {
             openMainActivity(this)
             finish()
         }
+    }
+
+    override fun restartSplashScreen() {
+        openSplashActivity(this)
+        finish()
+    }
+
+
+    override fun showGeneralErrorMessage() {
+        Toast.makeText(this, R.string.error_general_error_code, Toast.LENGTH_LONG).show()
     }
 
     override fun showRetryDialog() {

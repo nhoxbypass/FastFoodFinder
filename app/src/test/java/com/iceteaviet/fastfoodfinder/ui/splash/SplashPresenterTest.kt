@@ -3,6 +3,7 @@ package com.iceteaviet.fastfoodfinder.ui.splash
 import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
 import com.iceteaviet.fastfoodfinder.utils.exception.EmptyDataException
+import com.iceteaviet.fastfoodfinder.utils.exception.NotFoundException
 import com.iceteaviet.fastfoodfinder.utils.getFakeStoreList
 import com.iceteaviet.fastfoodfinder.utils.getFakeUserStoreLists
 import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
@@ -93,7 +94,7 @@ class SplashPresenterTest {
         verify(dataManager).setCurrentUser(user)
         verify(dataManager).loadStoresFromServer()
         verify(dataManager).setStores(stores)
-        verify(splashView).openMainActivityWithDelay(ArgumentMatchers.anyLong())
+        verify(splashView).openMainScreenWithDelay(ArgumentMatchers.anyLong())
     }
 
     @Test
@@ -132,7 +133,45 @@ class SplashPresenterTest {
 
         verify(dataManager).setCurrentUser(user)
         verify(dataManager, never()).loadStoresFromServer()
-        verify(splashView).openMainActivityWithDelay(ArgumentMatchers.anyLong())
+        verify(splashView).openMainScreenWithDelay(ArgumentMatchers.anyLong())
+    }
+
+    @Test
+    fun subscribeTest_signedIn_validUser_loadStoresLocalError() {
+        // Preconditions
+        `when`(dataManager.getAppLaunchFirstTime()).thenReturn(false)
+        `when`(dataManager.isSignedIn()).thenReturn(true)
+        `when`(dataManager.getCurrentUserUid()).thenReturn(USER_UID)
+        `when`(dataManager.getAllStores()).thenReturn(Single.error(EmptyDataException()))
+
+        // Mocks
+        `when`(dataManager.getUser(USER_UID)).thenReturn(Single.just(user))
+        `when`(dataManager.getCurrentUserUid()).thenReturn(USER_UID)
+
+        splashPresenter.subscribe()
+
+        verify(dataManager, never()).loadStoresFromServer()
+        verify(splashView).showGeneralErrorMessage()
+        verify(splashView).openMainScreenWithDelay(ArgumentMatchers.anyLong())
+    }
+
+    @Test
+    fun subscribeTest_signedIn_validUser_loadUserServerError() {
+        // Preconditions
+        `when`(dataManager.getAppLaunchFirstTime()).thenReturn(false)
+        `when`(dataManager.isSignedIn()).thenReturn(true)
+        `when`(dataManager.getCurrentUserUid()).thenReturn(USER_UID)
+        `when`(dataManager.getAllStores()).thenReturn(Single.just(stores))
+
+        // Mocks
+        `when`(dataManager.getUser(USER_UID)).thenReturn(Single.error(NotFoundException()))
+        `when`(dataManager.getCurrentUserUid()).thenReturn(USER_UID)
+
+        splashPresenter.subscribe()
+
+        verify(dataManager, never()).loadStoresFromServer()
+        verify(splashView).showGeneralErrorMessage()
+        verify(splashView).openMainScreenWithDelay(ArgumentMatchers.anyLong())
     }
 
     @Test
@@ -192,6 +231,7 @@ class SplashPresenterTest {
         splashPresenter.subscribe()
 
         verify(dataManager, never()).loadStoresFromServer()
+        verify(splashView).showGeneralErrorMessage()
         verify(splashView).openLoginScreen()
     }
 
@@ -220,7 +260,7 @@ class SplashPresenterTest {
 
         splashPresenter.loadStoresFromServer()
 
-        verify(splashView).openMainActivityWithDelay(ArgumentMatchers.anyLong())
+        verify(splashView).openMainScreenWithDelay(ArgumentMatchers.anyLong())
     }
 
     @Test

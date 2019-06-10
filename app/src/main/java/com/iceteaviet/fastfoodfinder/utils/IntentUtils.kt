@@ -13,6 +13,7 @@ import com.iceteaviet.fastfoodfinder.ui.login.LoginActivity
 import com.iceteaviet.fastfoodfinder.ui.main.MainActivity
 import com.iceteaviet.fastfoodfinder.ui.routing.MapRoutingActivity
 import com.iceteaviet.fastfoodfinder.ui.settings.SettingActivity
+import com.iceteaviet.fastfoodfinder.ui.splash.SplashActivity
 import com.iceteaviet.fastfoodfinder.ui.store.StoreDetailActivity
 import com.iceteaviet.fastfoodfinder.ui.storelist.ListDetailActivity
 import com.iceteaviet.fastfoodfinder.ui.storelist.StoreListActivity
@@ -21,6 +22,10 @@ import com.iceteaviet.fastfoodfinder.ui.storelist.StoreListActivity
  * Created by Genius Doan on 21/03/2019.
  */
 
+fun openSplashActivity(activity: Activity) {
+    val intent = Intent(activity, SplashActivity::class.java)
+    activity.startActivity(intent)
+}
 
 fun openLoginActivity(activity: Activity) {
     val intent = Intent(activity, LoginActivity::class.java)
