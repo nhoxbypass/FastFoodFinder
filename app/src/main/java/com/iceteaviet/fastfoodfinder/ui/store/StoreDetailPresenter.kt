@@ -134,14 +134,18 @@ open class StoreDetailPresenter : BasePresenter<StoreDetailContract.Presenter>, 
         val storeLocation = currStore.getPosition()
         val queries = HashMap<String, String>()
 
-        if (!isValidLocation(storeLocation) || !isValidLocation(currLocation))
+        if (!isValidLocation(storeLocation)) {
+            storeDetailView.showInvalidStoreLocationWarning()
             return
+        }
 
-        val origin: String? = getLatLngString(currLocation)
-        val destination: String? = getLatLngString(storeLocation)
-
-        if (origin == null || destination == null)
+        if (!isValidLocation(currLocation)) {
+            storeDetailView.showCannotGetLocationMessage()
             return
+        }
+
+        val origin = getLatLngString(currLocation)
+        val destination = getLatLngString(storeLocation)
 
         queries[GoogleMapsRoutingApiHelper.PARAM_ORIGIN] = origin
         queries[GoogleMapsRoutingApiHelper.PARAM_DESTINATION] = destination
@@ -159,16 +163,14 @@ open class StoreDetailPresenter : BasePresenter<StoreDetailContract.Presenter>, 
                     }
 
                     override fun onError(e: Throwable) {
-                        e.printStackTrace()
+                        storeDetailView.showGeneralErrorMessage()
                     }
                 })
     }
 
     override fun onAddToFavButtonClick() {
-
     }
 
     override fun onSaveButtonClick() {
-
     }
 }

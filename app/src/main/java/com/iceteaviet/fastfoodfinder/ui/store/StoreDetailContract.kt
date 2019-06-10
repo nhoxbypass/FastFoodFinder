@@ -25,6 +25,8 @@ interface StoreDetailContract {
         fun showMapRoutingView(currStore: Store, mapsDirection: MapsDirection)
         fun exit()
         fun showStoreAddedToFavMessage()
+        fun showGeneralErrorMessage()
+        fun showInvalidStoreLocationWarning()
     }
 
     interface Presenter : com.iceteaviet.fastfoodfinder.ui.base.Presenter {

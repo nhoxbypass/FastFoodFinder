@@ -117,4 +117,5 @@
     <string name="str_recover_pass_func">Lấy lại mật khẩu</string>
     <string name="get_image_from_picker_failed">Có lỗi khi truy xuất ảnh từ bộ nhớ</string>
     <string name="error_general_error_code">Có lỗi xảy ra.\nVui lòng thử lại sau!</string>
+    <string name="error_invalid_store_location">Địa chỉ cửa hàng không hợp lệ</string>
 </resources>

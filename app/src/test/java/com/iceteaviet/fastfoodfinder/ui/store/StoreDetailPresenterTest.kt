@@ -6,21 +6,23 @@ import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.location.GoogleLocationManager
+import com.iceteaviet.fastfoodfinder.location.LatLngAlt
+import com.iceteaviet.fastfoodfinder.location.LocationListener
 import com.iceteaviet.fastfoodfinder.utils.StoreType
+import com.iceteaviet.fastfoodfinder.utils.exception.NotFoundException
 import com.iceteaviet.fastfoodfinder.utils.getFakeComment
 import com.iceteaviet.fastfoodfinder.utils.getFakeComments
 import com.iceteaviet.fastfoodfinder.utils.rx.TrampolineSchedulerProvider
 import com.iceteaviet.fastfoodfinder.utils.setFinalStatic
+import com.nhaarman.mockitokotlin2.capture
 import com.nhaarman.mockitokotlin2.eq
 import io.reactivex.Single
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import org.mockito.ArgumentMatchers
-import org.mockito.Mock
+import org.mockito.*
 import org.mockito.Mockito.*
-import org.mockito.MockitoAnnotations
 
 
 /**
@@ -38,6 +40,9 @@ class StoreDetailPresenterTest {
 
     @Mock
     private lateinit var locationManager: GoogleLocationManager
+
+    @Captor
+    private lateinit var locationCallbackCaptor: ArgumentCaptor<LocationListener>
 
     @Before
     fun setupPresenter() {
@@ -161,10 +166,21 @@ class StoreDetailPresenterTest {
     }
 
     @Test
-    fun requestCurrentLocationTest() {
+    fun requestCurrentLocationTest_haveLastLocation() {
+        // Preconditions
+        `when`(locationManager.getCurrentLocation()).thenReturn(location)
+
         storeDetailPresenter.requestCurrentLocation()
 
-        verify(locationManager).getCurrentLocation()
+        assertThat(storeDetailPresenter.currLocation).isNotNull()
+        assertThat(storeDetailPresenter.currLocation).isEqualTo(LatLng(location.latitude, location.longitude))
+    }
+
+    @Test
+    fun requestCurrentLocationTest_notHaveLastLocation() {
+        storeDetailPresenter.requestCurrentLocation()
+
+        verify(storeDetailView).showCannotGetLocationMessage()
     }
 
     @Test
@@ -203,14 +219,13 @@ class StoreDetailPresenterTest {
 
     @Test
     fun clickOnNavigationButton_showNavigationScreen() {
-        val store = Store(STORE_ID, STORE_TITLE, STORE_ADDRESS, STORE_LAT, STORE_LNG, STORE_TEL, STORE_TYPE)
-
-        `when`(dataManager.getMapsDirection(ArgumentMatchers.anyMap(), eq(store))).thenReturn(
-                Single.just(mapsDirection)
-        )
-
-        storeDetailPresenter.handleExtras(store)
+        // Preconditions
         storeDetailPresenter.currLocation = currLocation
+        val store = Store(STORE_ID, STORE_TITLE, STORE_ADDRESS, STORE_LAT, STORE_LNG, STORE_TEL, STORE_TYPE)
+        storeDetailPresenter.handleExtras(store)
+
+        // Mocks
+        `when`(dataManager.getMapsDirection(ArgumentMatchers.anyMap(), eq(store))).thenReturn(Single.just(mapsDirection))
 
         storeDetailPresenter.onNavigationButtonClick()
 
@@ -218,13 +233,42 @@ class StoreDetailPresenterTest {
     }
 
     @Test
-    fun clickOnNavigationButton_doNothing() {
+    fun clickOnNavigationButton_validData_generalError() {
+        // Preconditions
+        storeDetailPresenter.currLocation = currLocation
+        val store = Store(STORE_ID, STORE_TITLE, STORE_ADDRESS, STORE_LAT, STORE_LNG, STORE_TEL, STORE_TYPE)
+        storeDetailPresenter.handleExtras(store)
+
+        // Mocks
+        `when`(dataManager.getMapsDirection(ArgumentMatchers.anyMap(), eq(store))).thenReturn(Single.error(NotFoundException()))
+
+        storeDetailPresenter.onNavigationButtonClick()
+
+        verify(storeDetailView).showGeneralErrorMessage()
+    }
+
+    @Test
+    fun clickOnNavigationButton_invalidStoreLocation() {
+        // Preconditions
         val store = Store(STORE_ID, STORE_TITLE, STORE_ADDRESS, STORE_INVALID_LAT, STORE_INVALID_LNG, STORE_TEL, STORE_TYPE)
         storeDetailPresenter.handleExtras(store)
 
         storeDetailPresenter.onNavigationButtonClick()
 
-        verifyZeroInteractions(storeDetailView)
+        verify(storeDetailView).showInvalidStoreLocationWarning()
+    }
+
+    @Test
+    fun clickOnNavigationButton_nullCurrentLocation() {
+        // Preconditions
+        storeDetailPresenter.currLocation = null
+
+        val store = Store(STORE_ID, STORE_TITLE, STORE_ADDRESS, STORE_LAT, STORE_LNG, STORE_TEL, STORE_TYPE)
+        storeDetailPresenter.handleExtras(store)
+
+        storeDetailPresenter.onNavigationButtonClick()
+
+        verify(storeDetailView).showCannotGetLocationMessage()
     }
 
     @Test
@@ -232,6 +276,21 @@ class StoreDetailPresenterTest {
         storeDetailPresenter.onCommentButtonClick()
 
         verify(storeDetailView).showCommentEditorView()
+    }
+
+    @Test
+    fun onLocationChangeTest() {
+        // Preconditions
+        storeDetailPresenter.onLocationPermissionGranted()
+
+        verify(locationManager).getCurrentLocation()
+        verify(locationManager).requestLocationUpdates()
+        verify(locationManager).subscribeLocationUpdate(capture(locationCallbackCaptor))
+
+        locationCallbackCaptor.value.onLocationChanged(location)
+
+        assertThat(storeDetailPresenter.currLocation).isNotNull()
+        assertThat(storeDetailPresenter.currLocation).isEqualTo(LatLng(location.latitude, location.longitude))
     }
 
     companion object {
@@ -253,6 +312,8 @@ class StoreDetailPresenterTest {
         private val comment = getFakeComment()
 
         private val currLocation = LatLng(10.1234, 106.1234)
+
+        private val location = LatLngAlt(10.1234, 106.1234, 1.0)
 
         private val mapsDirection = MapsDirection()
     }

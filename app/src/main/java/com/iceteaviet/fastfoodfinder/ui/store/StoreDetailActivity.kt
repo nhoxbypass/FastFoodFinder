@@ -144,6 +144,14 @@ class StoreDetailActivity : BaseActivity(), StoreDetailContract.View {
         Toast.makeText(this@StoreDetailActivity, R.string.fav_stores_added, Toast.LENGTH_SHORT).show()
     }
 
+    override fun showGeneralErrorMessage() {
+        Toast.makeText(this, R.string.error_general_error_code, Toast.LENGTH_LONG).show()
+    }
+
+    override fun showInvalidStoreLocationWarning() {
+        Toast.makeText(this, R.string.error_invalid_store_location, Toast.LENGTH_LONG).show()
+    }
+
     private fun setupUI() {
         collapsingToolbar = collapsing_toolbar
         ivBackdrop = backdrop
