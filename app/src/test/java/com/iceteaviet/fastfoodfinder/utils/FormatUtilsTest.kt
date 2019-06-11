@@ -62,10 +62,12 @@ class FormatUtilsTest {
     @Test
     fun normalizeDistrictQuery_en() {
         assertThat(standardizeDistrictQuery("district 8")).contains("quận 8", "Quận 8", "quan 8", "Quan 8", "q8", "District 8", "district 8")
-        assertThat(standardizeDistrictQuery("11 district")).contains("quận 11", "Quận 11", "quan 11", "Quan 11", "q11", "District 11", "district 11")
+        assertThat(standardizeDistrictQuery("11 dist")).contains("quận 11", "Quận 11", "quan 11", "Quan 11", "q11", "District 11", "district 11")
         assertThat(standardizeDistrictQuery(" district Binh Chanh  ")).contains("Bình Chánh", "bình chánh", "Binh Chanh", "binh chanh")
         assertThat(standardizeDistrictQuery("binh Tan district ")).contains("Bình Tân", "bình tân", "Binh Tan", "binh tan")
         assertThat(standardizeDistrictQuery("district thu duc")).contains("Thủ Đức", "thủ đức", "Thu Duc", "thu duc")
+        assertThat(standardizeDistrictQuery("Binh thanh dist")).contains("Bình Thạnh", "bình thạnh", "Binh Thanh", "binh thanh")
+        assertThat(standardizeDistrictQuery("q phunhuan")).contains("Phú Nhuận", "phú nhuận", "Phu Nhuan", "phu nhuan")
     }
 
     @Test
@@ -100,5 +102,15 @@ class FormatUtilsTest {
     @Test
     fun getStoreTypeFromQuery_empty() {
         assertEquals(-1, getStoreTypeFromQuery(""))
+    }
+
+    @Test
+    fun formatDecimalTest() {
+        assertEquals(formatDecimal(1.2345, 1), "1.2")
+        assertEquals(formatDecimal(1.2345, 2), "1.23")
+        assertEquals(formatDecimal(1.2345, 3), "1.234")
+        assertEquals(formatDecimal(1.2345, 4), "1.2345")
+        assertEquals(formatDecimal(1.2345, 5), "1.2345")
+        assertEquals(formatDecimal(1.234567, 5), "1.234567")
     }
 }
