@@ -18,7 +18,6 @@ object Constant {
     const val DEFAULT_ZOOM_LEVEL = 16f
     const val DETAILED_ZOOM_LEVEL = 18f
 
-    @JvmStatic
     val DEFAULT_MAP_TARGET = LatLng(10.773996, 106.6898035)
 
     const val SEARCH_STORE_PREFIX = "search-store-id_"

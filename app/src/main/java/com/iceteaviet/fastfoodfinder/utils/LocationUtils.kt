@@ -49,7 +49,7 @@ fun isValidLat(lat: String): Boolean {
         return false
 
     val latD = lat.toDoubleOrNull()
-    return latD != null && (latD in 0.0..180.0)
+    return latD != null && (latD in 0.0..90.0)
 }
 
 fun isValidLng(lng: String): Boolean {

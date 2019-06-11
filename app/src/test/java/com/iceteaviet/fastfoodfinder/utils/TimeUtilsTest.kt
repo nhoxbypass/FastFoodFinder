@@ -5,6 +5,29 @@ import org.junit.Test
 
 class TimeUtilsTest {
     @Test
+    fun getRelativeTimeAgo_currentTime() {
+        val ts = System.currentTimeMillis()
+
+        assertEquals("just now", getRelativeTimeAgo(ts))
+        assertEquals("just now", getRelativeTimeAgo(ts - 1))
+        assertEquals("just now", getRelativeTimeAgo(ts - 59000))
+    }
+
+    @Test
+    fun getRelativeTimeAgo__currentTime_day() {
+        val ts = System.currentTimeMillis()
+
+        assertEquals("yesterday", getRelativeTimeAgo(ts - 24 * 60 * 60000))
+        assertEquals("2d", getRelativeTimeAgo(ts - 50 * 60 * 60000))
+        assertEquals("6d", getRelativeTimeAgo(ts - 6 * 24 * 60 * 60000))
+    }
+
+    @Test
+    fun getRelativeTimeAgo_currentTime_invalidInput() {
+        assertEquals("", getRelativeTimeAgo(-1))
+    }
+
+    @Test
     fun getRelativeTimeAgo_justNow() {
         val ts = System.currentTimeMillis()
 
@@ -45,7 +68,7 @@ class TimeUtilsTest {
     }
 
     @Test
-    fun isEmpty_invalidInput() {
+    fun getRelativeTimeAgo_invalidInput() {
         val ts = System.currentTimeMillis()
 
         assertEquals("", getRelativeTimeAgo(-1, -1))
