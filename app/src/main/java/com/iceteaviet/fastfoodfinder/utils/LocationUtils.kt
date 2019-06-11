@@ -44,6 +44,22 @@ fun isValidLocation(latLng: LatLng?): Boolean {
     return !latLng.latitude.equals(0.0) || !latLng.longitude.equals(0.0)
 }
 
+fun isValidLat(lat: String): Boolean {
+    if (lat.isBlank())
+        return false
+
+    val latD = lat.toDoubleOrNull()
+    return latD != null && (latD in 0.0..180.0)
+}
+
+fun isValidLng(lng: String): Boolean {
+    if (lng.isBlank())
+        return false
+
+    val lngD = lng.toDoubleOrNull()
+    return lngD != null && (lngD in 0.0..180.0)
+}
+
 /**
  * Convert WSG84 to ECEF location array
  */

@@ -140,16 +140,22 @@ fun getStoreSearchString(storeType: Int): String {
 
 
 fun filterInvalidData(stores: MutableList<Store>): MutableList<Store> {
+    val result = ArrayList<Store>()
+
     for (i in 0 until stores.size) {
         val store = stores.elementAt(i)
-        if (store.id < 0)
-            stores.removeAt(i)
+        if (store.id < 0) {
+            continue
+        }
 
-        if (store.lat.isBlank() || store.lng.isBlank())
-            stores.removeAt(i)
+        if (!isValidLat(store.lat) || !isValidLng(store.lng) || store.address.isBlank()) {
+            continue
+        }
+
+        result.add(store)
     }
 
-    return stores
+    return result
 }
 
 fun isValidUserUid(uid: String): Boolean {

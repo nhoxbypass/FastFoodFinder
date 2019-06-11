@@ -1,6 +1,7 @@
 package com.iceteaviet.fastfoodfinder.utils
 
 
+import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
@@ -94,5 +95,52 @@ class DataUtilsTest {
         assertThat(getStoreSearchString(StoreType.TYPE_FAMILY_MART)).isEqualTo("Family Mart")
         assertThat(getStoreSearchString(StoreType.TYPE_MINI_STOP)).isEqualTo("Mini Stop")
         assertThat(getStoreSearchString(-1)).isEqualTo("")
+    }
+
+    @Test
+    fun filterInvalidDataTest_emptyData() {
+        val stores = ArrayList<Store>()
+
+        assertThat(filterInvalidData(stores)).isEmpty()
+    }
+
+    @Test
+    fun filterInvalidDataTest_invalidData() {
+        val stores = ArrayList<Store>()
+        stores.add(Store(STORE_INVALID_ID, STORE_TITLE, STORE_ADDRESS, STORE_LAT, STORE_LNG, STORE_TEL, STORE_TYPE))
+        stores.add(Store(STORE_ID, STORE_TITLE, STORE_INVALID_ADDRESS, STORE_LAT, STORE_LNG, STORE_TEL, STORE_TYPE))
+        stores.add(Store(STORE_ID, STORE_TITLE, STORE_ADDRESS, STORE_INVALID_LAT, STORE_LNG, STORE_TEL, STORE_TYPE))
+        stores.add(Store(STORE_ID, STORE_TITLE, STORE_ADDRESS, STORE_LAT, STORE_INVALID_LNG, STORE_TEL, STORE_TYPE))
+
+        assertThat(filterInvalidData(stores)).isEmpty()
+    }
+
+    @Test
+    fun filterInvalidDataTest() {
+        val stores = ArrayList<Store>()
+        stores.add(Store(STORE_ID, STORE_TITLE, STORE_ADDRESS, STORE_LAT, STORE_LNG, STORE_TEL, STORE_TYPE))
+        stores.add(Store(STORE_ID, STORE_TITLE, STORE_ADDRESS, "0.0", STORE_LNG, STORE_TEL, STORE_TYPE))
+        stores.add(Store(STORE_ID, STORE_TITLE, STORE_ADDRESS, STORE_LAT, "0.0", STORE_TEL, STORE_TYPE))
+        stores.add(Store(STORE_ID, STORE_TITLE, STORE_ADDRESS, STORE_LAT, STORE_LNG, STORE_INVALID_TEL, STORE_TYPE)) // This is valid store
+
+        assertThat(filterInvalidData(stores)).hasSize(4)
+    }
+
+    companion object {
+        private const val STORE_ID = 123
+        private const val STORE_TITLE = "store_title"
+        private const val STORE_ADDRESS = "store_address"
+        private const val STORE_LAT = "10.773996"
+        private const val STORE_LNG = "106.6898035"
+        private const val STORE_TEL = "012345678965"
+
+        private const val STORE_TYPE = StoreType.TYPE_CIRCLE_K
+
+        private const val STORE_INVALID_ID = -1
+        private const val STORE_INVALID_TEL = ""
+        private const val STORE_INVALID_ADDRESS = ""
+        private const val STORE_INVALID_LAT = "-1"
+        private const val STORE_INVALID_LNG = "-1"
+
     }
 }
