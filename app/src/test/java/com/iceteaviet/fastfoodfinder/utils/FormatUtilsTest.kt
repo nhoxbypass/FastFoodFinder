@@ -62,7 +62,7 @@ class FormatUtilsTest {
     @Test
     fun normalizeDistrictQuery_en() {
         assertThat(standardizeDistrictQuery("district 8")).contains("quận 8", "Quận 8", "quan 8", "Quan 8", "q8", "District 8", "district 8")
-        assertThat(standardizeDistrictQuery("11 dist")).contains("quận 11", "Quận 11", "quan 11", "Quan 11", "q11", "District 11", "district 11")
+        assertThat(standardizeDistrictQuery("dist 11")).contains("quận 11", "Quận 11", "quan 11", "Quan 11", "q11", "District 11", "district 11")
         assertThat(standardizeDistrictQuery(" district Binh Chanh  ")).contains("Bình Chánh", "bình chánh", "Binh Chanh", "binh chanh")
         assertThat(standardizeDistrictQuery("binh Tan district ")).contains("Bình Tân", "bình tân", "Binh Tan", "binh tan")
         assertThat(standardizeDistrictQuery("district thu duc")).contains("Thủ Đức", "thủ đức", "Thu Duc", "thu duc")

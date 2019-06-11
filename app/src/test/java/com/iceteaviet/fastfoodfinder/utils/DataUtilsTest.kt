@@ -93,5 +93,6 @@ class DataUtilsTest {
         assertThat(getStoreSearchString(StoreType.TYPE_SHOP_N_GO)).isEqualTo("Shop and Go")
         assertThat(getStoreSearchString(StoreType.TYPE_FAMILY_MART)).isEqualTo("Family Mart")
         assertThat(getStoreSearchString(StoreType.TYPE_MINI_STOP)).isEqualTo("Mini Stop")
+        assertThat(getStoreSearchString(-1)).isEqualTo("")
     }
 }
