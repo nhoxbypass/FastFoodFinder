@@ -84,14 +84,13 @@ class EmailRegisterPresenterTest {
     fun onSignUpButtonClickedTest_validData_signUpError() {
         // Mocks
         val exception = UnknownException()
-        `when`(dataManager.signUpWithEmailAndPassword(EMAIL, PWD)).thenReturn(Single.error(exception))
+        `when`(dataManager.signUpWithEmailAndPassword(EMAIL, PWD)).thenReturn(Single.error(UnknownException()))
 
         emailRegisterPresenter.onSignUpButtonClicked(EMAIL, PWD, RE_PWD)
 
         verify(emailRegisterView).setInputEnabled(false)
         verify(emailRegisterView).setRegisterButtonProgress(1)
 
-        verify(exception).printStackTrace()
         verify(emailRegisterView).notifyLoginError(exception)
 
         verify(emailRegisterView).setInputEnabled(true)
