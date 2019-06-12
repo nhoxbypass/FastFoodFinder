@@ -1,6 +1,5 @@
 package com.iceteaviet.fastfoodfinder.ui.login
 
-import android.text.TextUtils
 import com.google.firebase.auth.AuthCredential
 import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
@@ -59,6 +58,7 @@ class LoginPresenter : BasePresenter<LoginContract.Presenter>, LoginContract.Pre
 
                     override fun onError(e: Throwable) {
                         e.printStackTrace()
+                        loginView.showGeneralErrorMessage()
                         dataManager.setCurrentUser(user)
                         loginView.showMainView()
                     }
@@ -112,7 +112,7 @@ class LoginPresenter : BasePresenter<LoginContract.Presenter>, LoginContract.Pre
     }
 
     private fun ensureBasicUserData(user: User) {
-        if (TextUtils.isEmpty(user.name)) {
+        if (user.name.isBlank()) {
             user.name = getNameFromEmail(user.email)
         }
 

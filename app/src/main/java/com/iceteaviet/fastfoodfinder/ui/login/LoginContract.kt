@@ -12,6 +12,7 @@ interface LoginContract {
         fun exit()
         fun showMainView()
         fun showSignInFailMessage()
+        fun showGeneralErrorMessage()
     }
 
     interface Presenter : com.iceteaviet.fastfoodfinder.ui.base.Presenter {
