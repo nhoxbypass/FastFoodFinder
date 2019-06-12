@@ -84,7 +84,7 @@ class EmailRegisterPresenterTest {
     fun onSignUpButtonClickedTest_validData_signUpError() {
         // Mocks
         val exception = UnknownException()
-        `when`(dataManager.signUpWithEmailAndPassword(EMAIL, PWD)).thenReturn(Single.error(UnknownException()))
+        `when`(dataManager.signUpWithEmailAndPassword(EMAIL, PWD)).thenReturn(Single.error(exception))
 
         emailRegisterPresenter.onSignUpButtonClicked(EMAIL, PWD, RE_PWD)
 
