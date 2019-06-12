@@ -62,13 +62,21 @@ class LoginPresenterTest {
     }
 
     @Test
+    fun onEmailRegisterSuccessTest() {
+        loginPresenter.onRegisterSuccess(user)
+
+        verify(dataManager).updateCurrentUser(user)
+        verify(loginView).showMainView()
+    }
+
+    @Test
     fun onLoginSuccessTest_getUserSuccess() {
         // Preconditions
         `when`(dataManager.getUser(USER_UID)).thenReturn(Single.just(userFull))
 
         loginPresenter.onLoginSuccess(user)
 
-        verify(dataManager).setCurrentUser(userFull)
+        verify(dataManager).updateCurrentUser(userFull)
         verify(loginView).showMainView()
     }
 
@@ -80,34 +88,19 @@ class LoginPresenterTest {
         loginPresenter.onLoginSuccess(user)
 
         verify(loginView).showGeneralErrorMessage()
-        verify(dataManager).setCurrentUser(user)
+        verify(dataManager, never()).updateCurrentUser(user)
         verify(loginView).showMainView()
     }
 
     @Test
-    fun onRequestGoogleAccountSuccessTest_signInSuccess_getUserSuccess() {
+    fun onRequestGoogleAccountSuccessTest_signInSuccess_newUser() {
         // Preconditions
         `when`(dataManager.signInWithCredential(any())).thenReturn(Single.just(user))
-        `when`(dataManager.getUser(USER_UID)).thenReturn(Single.just(userFull))
 
         loginPresenter.onRequestGoogleAccountSuccess(mock(AuthCredential::class.java), false)
 
-        verify(dataManager).insertOrUpdateUser(user)
-        verify(dataManager).setCurrentUser(userFull)
-        verify(loginView).showMainView()
-    }
-
-    @Test
-    fun onRequestGoogleAccountSuccessTest_signInSuccess_getUserError() {
-        // Preconditions
-        `when`(dataManager.signInWithCredential(any())).thenReturn(Single.just(user))
-        `when`(dataManager.getUser(USER_UID)).thenReturn(Single.error(NotFoundException()))
-
-        loginPresenter.onRequestGoogleAccountSuccess(mock(AuthCredential::class.java), false)
-
-        verify(dataManager).insertOrUpdateUser(user)
-        verify(loginView).showGeneralErrorMessage()
-        verify(dataManager).setCurrentUser(user)
+        verify(dataManager, never()).getUser(USER_UID)
+        verify(dataManager).updateCurrentUser(user)
         verify(loginView).showMainView()
     }
 
@@ -119,8 +112,7 @@ class LoginPresenterTest {
 
         loginPresenter.onRequestGoogleAccountSuccess(mock(AuthCredential::class.java), true)
 
-        verify(dataManager, never()).insertOrUpdateUser(user)
-        verify(dataManager).setCurrentUser(userFull)
+        verify(dataManager).updateCurrentUser(userFull)
         verify(loginView).showMainView()
     }
 
@@ -132,9 +124,8 @@ class LoginPresenterTest {
 
         loginPresenter.onRequestGoogleAccountSuccess(mock(AuthCredential::class.java), true)
 
-        verify(dataManager, never()).insertOrUpdateUser(user)
         verify(loginView).showGeneralErrorMessage()
-        verify(dataManager).setCurrentUser(user)
+        verify(dataManager).updateCurrentUser(user)
         verify(loginView).showMainView()
     }
 
@@ -145,6 +136,42 @@ class LoginPresenterTest {
         `when`(dataManager.signInWithCredential(any())).thenReturn(Single.error(NotFoundException()))
 
         loginPresenter.onRequestGoogleAccountSuccess(mock(AuthCredential::class.java), false)
+
+        verify(loginView).showSignInFailMessage()
+    }
+
+    @Test
+    fun onRequestFacebookAccountSuccessTest_signInSuccess_getUserSuccess() {
+        // Preconditions
+        `when`(dataManager.signInWithCredential(any())).thenReturn(Single.just(user))
+        `when`(dataManager.getUser(USER_UID)).thenReturn(Single.just(userFull))
+
+        loginPresenter.onRequestFacebookAccountSuccess(mock(AuthCredential::class.java))
+
+        verify(dataManager).updateCurrentUser(userFull)
+        verify(loginView).showMainView()
+    }
+
+    @Test
+    fun onRequestFacebookAccountSuccessTest_signInSuccess_fromLastSignIn_getUserError() {
+        // Preconditions
+        `when`(dataManager.signInWithCredential(any())).thenReturn(Single.just(user))
+        `when`(dataManager.getUser(USER_UID)).thenReturn(Single.error(NotFoundException()))
+
+        loginPresenter.onRequestFacebookAccountSuccess(mock(AuthCredential::class.java))
+
+        verify(loginView).showGeneralErrorMessage()
+        verify(dataManager).updateCurrentUser(user)
+        verify(loginView).showMainView()
+    }
+
+
+    @Test
+    fun onRequestFacebookAccountSuccessTest_signInFailed() {
+        // Preconditions
+        `when`(dataManager.signInWithCredential(any())).thenReturn(Single.error(NotFoundException()))
+
+        loginPresenter.onRequestFacebookAccountSuccess(mock(AuthCredential::class.java))
 
         verify(loginView).showSignInFailMessage()
     }

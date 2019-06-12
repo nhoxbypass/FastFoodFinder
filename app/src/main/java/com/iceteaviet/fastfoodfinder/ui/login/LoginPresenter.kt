@@ -34,16 +34,14 @@ class LoginPresenter : BasePresenter<LoginContract.Presenter>, LoginContract.Pre
         loginView.showMainView()
     }
 
-    override fun onEmailRegisterSuccess(user: User) {
+    override fun onRegisterSuccess(user: User) {
         ensureBasicUserData(user)
-
-        dataManager.insertOrUpdateUser(user)
-        dataManager.setCurrentUser(user)
+        dataManager.updateCurrentUser(user)
         loginView.showMainView()
     }
 
-    override fun onLoginSuccess(user: User) {
-        dataManager.getUser(user.getUid())
+    override fun onLoginSuccess(baseUser: User) {
+        dataManager.getUser(baseUser.getUid())
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
                 .subscribe(object : SingleObserver<User> {
@@ -52,14 +50,13 @@ class LoginPresenter : BasePresenter<LoginContract.Presenter>, LoginContract.Pre
                     }
 
                     override fun onSuccess(user: User) {
-                        dataManager.setCurrentUser(user)
+                        dataManager.updateCurrentUser(user)
                         loginView.showMainView()
                     }
 
                     override fun onError(e: Throwable) {
                         e.printStackTrace()
                         loginView.showGeneralErrorMessage()
-                        dataManager.setCurrentUser(user)
                         loginView.showMainView()
                     }
                 })
@@ -76,11 +73,12 @@ class LoginPresenter : BasePresenter<LoginContract.Presenter>, LoginContract.Pre
 
                     override fun onSuccess(user: User) {
                         if (!fromLastSignIn) {
+                            onRegisterSuccess(user)
+                        } else {
                             ensureBasicUserData(user)
-                            dataManager.insertOrUpdateUser(user)
+                            dataManager.updateCurrentUser(user)
+                            onLoginSuccess(user)
                         }
-
-                        onLoginSuccess(user)
                     }
 
                     override fun onError(e: Throwable) {
@@ -101,7 +99,7 @@ class LoginPresenter : BasePresenter<LoginContract.Presenter>, LoginContract.Pre
 
                     override fun onSuccess(user: User) {
                         ensureBasicUserData(user)
-                        dataManager.insertOrUpdateUser(user)
+                        dataManager.updateCurrentUser(user)
                         onLoginSuccess(user)
                     }
 

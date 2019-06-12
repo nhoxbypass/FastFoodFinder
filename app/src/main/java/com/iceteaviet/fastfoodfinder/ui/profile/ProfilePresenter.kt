@@ -96,7 +96,7 @@ class ProfilePresenter : BasePresenter<ProfileContract.Presenter>, ProfileContra
                     }
 
                     override fun onSuccess(user: User) {
-                        dataManager.setCurrentUser(user)
+                        dataManager.updateCurrentUser(user)
                         if (!TextUtils.isEmpty(user.photoUrl))
                             profileView.loadAvatarPhoto(user.photoUrl)
                         profileView.setName(user.name)

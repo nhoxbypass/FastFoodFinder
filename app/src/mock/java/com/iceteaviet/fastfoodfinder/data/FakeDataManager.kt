@@ -146,7 +146,7 @@ class FakeDataManager(context: Context, private val storeRepository: StoreReposi
 
     override fun signOut() {
         clientAuth.signOut()
-        setCurrentUser(null)
+        updateCurrentUser(null)
     }
 
     override fun signInWithEmailAndPassword(email: String, password: String): Single<User> {
@@ -165,7 +165,7 @@ class FakeDataManager(context: Context, private val storeRepository: StoreReposi
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun setCurrentUser(user: User?) {
+    override fun updateCurrentUser(user: User?) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

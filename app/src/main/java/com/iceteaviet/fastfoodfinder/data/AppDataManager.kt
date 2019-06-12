@@ -92,7 +92,7 @@ class AppDataManager(context: Context, private val storeRepository: StoreReposit
 
     override fun signOut() {
         clientAuth.signOut()
-        setCurrentUser(null)
+        updateCurrentUser(null)
     }
 
     override fun signInWithEmailAndPassword(email: String, password: String): Single<User> {
@@ -119,7 +119,7 @@ class AppDataManager(context: Context, private val storeRepository: StoreReposit
         return currentUser
     }
 
-    override fun setCurrentUser(user: User?) {
+    override fun updateCurrentUser(user: User?) {
         currentUser = user
         if (user != null && !user.getUid().isEmpty()) {
             userRepository.insertOrUpdateUser(user)

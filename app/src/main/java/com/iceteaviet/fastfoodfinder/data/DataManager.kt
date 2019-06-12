@@ -17,5 +17,5 @@ interface DataManager : ClientAuth, StoreRepository, UserRepository, MapsRouting
 
     fun getCurrentUser(): User?
 
-    fun setCurrentUser(user: User?)
+    fun updateCurrentUser(user: User?)
 }

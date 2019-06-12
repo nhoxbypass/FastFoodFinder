@@ -91,7 +91,7 @@ class SplashPresenterTest {
 
         splashPresenter.subscribe()
 
-        verify(dataManager).setCurrentUser(user)
+        verify(dataManager).updateCurrentUser(user)
         verify(dataManager).loadStoresFromServer()
         verify(dataManager).setStores(stores)
         verify(splashView).openMainScreenWithDelay(ArgumentMatchers.anyLong())
@@ -111,7 +111,7 @@ class SplashPresenterTest {
 
         splashPresenter.subscribe()
 
-        verify(dataManager).setCurrentUser(user)
+        verify(dataManager).updateCurrentUser(user)
         verify(dataManager).loadStoresFromServer()
         verify(dataManager, never()).setStores(ArgumentMatchers.anyList())
         verify(splashView).showRetryDialog()
@@ -131,7 +131,7 @@ class SplashPresenterTest {
 
         splashPresenter.subscribe()
 
-        verify(dataManager).setCurrentUser(user)
+        verify(dataManager).updateCurrentUser(user)
         verify(dataManager, never()).loadStoresFromServer()
         verify(splashView).openMainScreenWithDelay(ArgumentMatchers.anyLong())
     }

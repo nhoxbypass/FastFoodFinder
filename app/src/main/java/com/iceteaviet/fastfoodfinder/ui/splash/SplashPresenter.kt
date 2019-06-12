@@ -173,7 +173,7 @@ class SplashPresenter : BasePresenter<SplashContract.Presenter>, SplashContract.
                     }
 
                     override fun onSuccess(pair: Pair<User, List<Store>>) {
-                        dataManager.setCurrentUser(pair.first)
+                        dataManager.updateCurrentUser(pair.first)
 
                         if (pair.second.isEmpty())
                             loadStoresFromServer()

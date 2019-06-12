@@ -17,8 +17,8 @@ interface LoginContract {
 
     interface Presenter : com.iceteaviet.fastfoodfinder.ui.base.Presenter {
         fun onSkipButtonClick()
-        fun onEmailRegisterSuccess(user: User)
-        fun onLoginSuccess(user: User)
+        fun onRegisterSuccess(user: User)
+        fun onLoginSuccess(baseUser: User)
         fun onRequestGoogleAccountSuccess(authCredential: AuthCredential, fromLastSignIn: Boolean)
         fun onRequestFacebookAccountSuccess(authCredential: AuthCredential)
     }
