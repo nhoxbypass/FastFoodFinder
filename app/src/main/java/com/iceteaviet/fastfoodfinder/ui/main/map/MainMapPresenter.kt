@@ -1,8 +1,8 @@
 package com.iceteaviet.fastfoodfinder.ui.main.map
 
 import android.text.TextUtils
-import android.util.Pair
 import android.util.SparseArray
+import androidx.core.util.Pair
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.Marker

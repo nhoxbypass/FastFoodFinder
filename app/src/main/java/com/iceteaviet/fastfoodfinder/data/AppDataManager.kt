@@ -1,7 +1,7 @@
 package com.iceteaviet.fastfoodfinder.data
 
 import android.content.Context
-import android.util.Pair
+import androidx.core.util.Pair
 import com.google.firebase.auth.AuthCredential
 import com.iceteaviet.fastfoodfinder.data.auth.ClientAuth
 import com.iceteaviet.fastfoodfinder.data.domain.prefs.PreferencesRepository
@@ -162,7 +162,7 @@ class AppDataManager(context: Context, private val storeRepository: StoreReposit
         return storeRepository.findStoresById(id)
     }
 
-    override fun findStoresByIds(ids: List<Int>): Single<MutableList<Store>> {
+    override fun findStoresByIds(ids: List<Int>): Single<List<Store>> {
         return storeRepository.findStoresByIds(ids)
     }
 

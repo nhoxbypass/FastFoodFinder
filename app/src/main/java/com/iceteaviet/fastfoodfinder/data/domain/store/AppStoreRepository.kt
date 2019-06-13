@@ -98,7 +98,7 @@ class AppStoreRepository(private val storeApiHelper: StoreApiHelper, private val
         }
     }
 
-    override fun findStoresByIds(ids: List<Int>): Single<MutableList<Store>> {
+    override fun findStoresByIds(ids: List<Int>): Single<List<Store>> {
         return Single.create { emitter ->
             emitter.onSuccess(storeDataSource.findStoresByIds(ids))
         }

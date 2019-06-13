@@ -1,6 +1,6 @@
 package com.iceteaviet.fastfoodfinder.data.domain.user
 
-import android.util.Pair
+import androidx.core.util.Pair
 import com.iceteaviet.fastfoodfinder.data.local.db.user.UserDataSource
 import com.iceteaviet.fastfoodfinder.data.remote.user.UserApiHelper
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User

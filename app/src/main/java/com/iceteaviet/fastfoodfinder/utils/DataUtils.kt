@@ -88,8 +88,21 @@ fun getFakeStoreList(): List<Store> {
     return stores
 }
 
+fun getFakeStoreIds(): List<Int> {
+    val storeIds = ArrayList<Int>()
+    storeIds.add(1)
+    storeIds.add(2)
+    storeIds.add(3)
+    storeIds.add(4)
+    return storeIds
+}
+
 fun getFakeUserStoreLists(): List<UserStoreList> {
-    val userStoreLists = getDefaultUserStoreLists()
+    val userStoreLists = ArrayList<UserStoreList>()
+
+    userStoreLists.add(UserStoreList(0, getFakeStoreIds(), 1, "My Saved Places"))
+    userStoreLists.add(UserStoreList(1, getFakeStoreIds(), 2, "My Favourite Places"))
+
     return userStoreLists
 }
 

@@ -27,7 +27,7 @@ class UserStoreList : Parcelable {
     constructor()
 
 
-    constructor(id: Int, storeIdList: MutableList<Int>?, iconId: Int, listName: String) {
+    constructor(id: Int, storeIdList: List<Int>?, iconId: Int, listName: String) {
         this.id = id
         this.iconId = iconId
         this.listName = listName
@@ -35,7 +35,7 @@ class UserStoreList : Parcelable {
         if (storeIdList == null)
             this.storeIdList = ArrayList()
         else
-            this.storeIdList = storeIdList
+            this.storeIdList = storeIdList.toMutableList()
     }
 
     constructor(userStoreListEntity: UserStoreListEntity) {

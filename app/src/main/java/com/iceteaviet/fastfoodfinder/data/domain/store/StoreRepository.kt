@@ -30,7 +30,7 @@ interface StoreRepository {
 
     fun findStoresById(id: Int): Single<MutableList<Store>>
 
-    fun findStoresByIds(ids: List<Int>): Single<MutableList<Store>>
+    fun findStoresByIds(ids: List<Int>): Single<List<Store>>
 
     fun deleteAllStores()
 

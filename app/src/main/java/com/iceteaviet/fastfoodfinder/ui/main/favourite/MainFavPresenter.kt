@@ -24,12 +24,15 @@ class MainFavPresenter : BasePresenter<MainFavContract.Presenter>, MainFavContra
         val currUser = dataManager.getCurrentUser()
         if (currUser != null) {
             loadStoreListsFromIds(currUser.getFavouriteStoreList().getStoreIdList())
-            listenFavStoresOfUser(dataManager.getCurrentUserUid())
+            listenFavStoresOfUser(currUser.getUid())
         }
     }
 
     override fun unsubscribe() {
-        dataManager.unsubscribeFavouriteStoresOfUser(dataManager.getCurrentUserUid())
+        val currUser = dataManager.getCurrentUser()
+        if (currUser != null) {
+            dataManager.unsubscribeFavouriteStoresOfUser(currUser.getUid())
+        }
         super.unsubscribe()
     }
 
@@ -37,7 +40,10 @@ class MainFavPresenter : BasePresenter<MainFavContract.Presenter>, MainFavContra
         mainFavView.showStoreDetailView(store)
     }
 
-    private fun loadStoreListsFromIds(storeIdList: MutableList<Int>) {
+    private fun loadStoreListsFromIds(storeIdList: List<Int>) {
+        if (storeIdList.isEmpty())
+            return
+
         dataManager.findStoresByIds(storeIdList)
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
@@ -88,26 +94,15 @@ class MainFavPresenter : BasePresenter<MainFavContract.Presenter>, MainFavContra
         val store = userStoreEvent.store
         when (userStoreEvent.eventActionCode) {
             UserStoreEvent.ACTION_ADDED -> {
-                val user = dataManager.getCurrentUser()
-                if (user != null && !user.getFavouriteStoreList().getStoreIdList().contains(store.id)) {
-                    mainFavView.addStore(store)
-                    user.getFavouriteStoreList().getStoreIdList().add(store.id)
-                }
+                mainFavView.addStore(store)
             }
 
             UserStoreEvent.ACTION_CHANGED -> {
-                val user = dataManager.getCurrentUser()
-                if (user != null && user.getFavouriteStoreList().getStoreIdList().contains(store.id)) {
-                    mainFavView.updateStore(store)
-                }
+                mainFavView.updateStore(store)
             }
 
             UserStoreEvent.ACTION_REMOVED -> {
-                val user = dataManager.getCurrentUser()
-                if (user != null && user.getFavouriteStoreList().getStoreIdList().contains(store.id)) {
-                    mainFavView.removeStore(store)
-                    user.getFavouriteStoreList().removeStore(store.id)
-                }
+                mainFavView.removeStore(store)
             }
 
             UserStoreEvent.ACTION_MOVED -> {

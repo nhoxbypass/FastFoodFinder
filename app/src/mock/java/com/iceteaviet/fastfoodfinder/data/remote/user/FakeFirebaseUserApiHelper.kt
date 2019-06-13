@@ -1,6 +1,6 @@
 package com.iceteaviet.fastfoodfinder.data.remote.user
 
-import android.util.Pair
+import androidx.core.util.Pair
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList
 import com.iceteaviet.fastfoodfinder.utils.exception.NotFoundException

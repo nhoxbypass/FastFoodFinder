@@ -1,7 +1,7 @@
 package com.iceteaviet.fastfoodfinder.data.remote.user
 
-import android.util.Pair
 import androidx.annotation.NonNull
+import androidx.core.util.Pair
 import com.google.firebase.database.*
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreEvent
