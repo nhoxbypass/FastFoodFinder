@@ -67,8 +67,10 @@ class MainFavPresenter : BasePresenter<MainFavContract.Presenter>, MainFavContra
         dataManager.subscribeFavouriteStoresOfUser(userUid)
                 .subscribeOn(schedulerProvider.io())
                 .map { storeIdPair ->
-                    val store = dataManager.findStoresById(storeIdPair.first).blockingGet()[0]
-                    UserStoreEvent(store, storeIdPair.second)
+                    val id = storeIdPair.first
+                    val eventAC = storeIdPair.second
+                    val store = dataManager.findStoresById(id!!).blockingGet()[0]
+                    UserStoreEvent(store, eventAC!!)
                 }
                 .observeOn(schedulerProvider.ui())
                 .subscribe(object : Observer<UserStoreEvent> {

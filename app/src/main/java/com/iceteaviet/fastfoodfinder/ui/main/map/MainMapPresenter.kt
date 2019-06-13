@@ -301,7 +301,7 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
                         }
 
                         override fun onNext(pair: Pair<Marker, Int>) {
-                            mainMapView.animateMapMarker(pair.first, pair.second)
+                            mainMapView.animateMapMarker(pair.first, pair.second!!)
                         }
 
                         override fun onError(e: Throwable) {
