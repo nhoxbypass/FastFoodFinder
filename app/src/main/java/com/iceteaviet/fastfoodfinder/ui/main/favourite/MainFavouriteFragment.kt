@@ -81,6 +81,10 @@ class MainFavouriteFragment : Fragment(), MainFavContract.View, OnStartDragListe
         openStoreDetailActivity(activity!!, store)
     }
 
+    override fun showGeneralErrorMessage() {
+        Toast.makeText(activity!!, R.string.error_general_error_code, Toast.LENGTH_LONG).show()
+    }
+
     private fun setupUI() {
         recyclerView = rv_favourite_stores
         containerLayout = fl_container

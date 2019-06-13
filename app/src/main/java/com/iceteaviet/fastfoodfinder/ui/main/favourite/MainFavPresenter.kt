@@ -52,6 +52,7 @@ class MainFavPresenter : BasePresenter<MainFavContract.Presenter>, MainFavContra
 
                     override fun onError(e: Throwable) {
                         e.printStackTrace()
+                        mainFavView.showGeneralErrorMessage()
                     }
                 })
     }

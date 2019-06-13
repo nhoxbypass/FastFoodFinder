@@ -14,6 +14,7 @@ interface MainFavContract {
         fun removeStore(store: Store)
         fun showWarningMessage(message: String?)
         fun showStoreDetailView(store: Store)
+        fun showGeneralErrorMessage()
     }
 
     interface Presenter : com.iceteaviet.fastfoodfinder.ui.base.Presenter {
