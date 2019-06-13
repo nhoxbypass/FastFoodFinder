@@ -1,7 +1,9 @@
 package com.iceteaviet.fastfoodfinder.ui.main.favourite
 
+import androidx.core.util.Pair
 import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
+import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreEvent
 import com.iceteaviet.fastfoodfinder.utils.exception.UnknownException
 import com.iceteaviet.fastfoodfinder.utils.getFakeStoreList
 import com.iceteaviet.fastfoodfinder.utils.getFakeUserStoreLists
@@ -45,12 +47,26 @@ class MainFavPresenterTest {
     }
 
     @Test
-    fun subscribeTest_signedIn_getStoresError() {
+    fun subscribeTest_signedIn_emptyStoreList() {
         // Preconditions
         `when`(dataManager.getCurrentUser()).thenReturn(user)
 
         // Mocks
-        `when`(dataManager.findStoresByIds(user.getFavouriteStoreList().getStoreIdList())).thenReturn(Single.error(UnknownException()))
+        `when`(dataManager.subscribeFavouriteStoresOfUser(user.getUid())).thenReturn(Observable.never())
+
+        mainFavPresenter.subscribe()
+
+        verifyZeroInteractions(mainFavView)
+    }
+
+    @Test
+    fun subscribeTest_signedIn_getStoresError() {
+        // Preconditions
+        `when`(dataManager.getCurrentUser()).thenReturn(userFull)
+
+        // Mocks
+        `when`(dataManager.findStoresByIds(userFull.getFavouriteStoreList().getStoreIdList())).thenReturn(Single.error(UnknownException()))
+        `when`(dataManager.subscribeFavouriteStoresOfUser(user.getUid())).thenReturn(Observable.never())
 
         mainFavPresenter.subscribe()
 
@@ -58,14 +74,30 @@ class MainFavPresenterTest {
     }
 
     @Test
-    fun subscribeTest_signedIn_getStoresSuccess_listenStoresError() {
+    fun subscribeTest_signedIn_getStoresError_listenStoresError() {
         // Preconditions
-        `when`(dataManager.getCurrentUser()).thenReturn(user)
+        `when`(dataManager.getCurrentUser()).thenReturn(userFull)
 
         // Mocks
         val ex = UnknownException()
-        `when`(dataManager.findStoresByIds(user.getFavouriteStoreList().getStoreIdList())).thenReturn(Single.error(UnknownException()))
-        `when`(dataManager.subscribeFavouriteStoresOfUser(user.getUid())).thenReturn(Observable.error(ex))
+        `when`(dataManager.findStoresByIds(userFull.getFavouriteStoreList().getStoreIdList())).thenReturn(Single.error(UnknownException()))
+        `when`(dataManager.subscribeFavouriteStoresOfUser(userFull.getUid())).thenReturn(Observable.error(ex))
+
+        mainFavPresenter.subscribe()
+
+        verify(mainFavView).showGeneralErrorMessage()
+        verify(mainFavView).showWarningMessage(ex.message)
+    }
+
+    @Test
+    fun subscribeTest_signedIn_getStoresSuccess_listenStoresError() {
+        // Preconditions
+        `when`(dataManager.getCurrentUser()).thenReturn(userFull)
+
+        // Mocks
+        val ex = UnknownException()
+        `when`(dataManager.findStoresByIds(userFull.getFavouriteStoreList().getStoreIdList())).thenReturn(Single.just(stores))
+        `when`(dataManager.subscribeFavouriteStoresOfUser(userFull.getUid())).thenReturn(Observable.error(ex))
 
         mainFavPresenter.subscribe()
 
@@ -74,17 +106,60 @@ class MainFavPresenterTest {
     }
 
     @Test
-    fun subscribeTest_signedIn_getStoresSuccess_listenStoresSuccess() {
-        /*// Preconditions
-        `when`(dataManager.getCurrentUser()).thenReturn(user)
+    fun subscribeTest_signedIn_getStoresSuccess_listenStoresSuccess_added() {
+        // Preconditions
+        `when`(dataManager.getCurrentUser()).thenReturn(userFull)
 
         // Mocks
-        `when`(dataManager.findStoresByIds(user.getFavouriteStoreList().getStoreIdList())).thenReturn(Single.error(UnknownException()))
-        `when`(dataManager.subscribeFavouriteStoresOfUser(user.getUid())).thenReturn(Observable.just(android.util.Pair(stores.get(0).id, UserStoreEvent.ACTION_ADDED)))
+        val store = stores.get(0)
+        `when`(dataManager.findStoresByIds(userFull.getFavouriteStoreList().getStoreIdList())).thenReturn(Single.just(stores))
+        `when`(dataManager.subscribeFavouriteStoresOfUser(userFull.getUid())).thenReturn(
+                Observable.just(Pair(store.id, UserStoreEvent.ACTION_ADDED))
+        )
+        `when`(dataManager.findStoresById(store.id)).thenReturn(Single.just(arrayListOf(store)))
 
         mainFavPresenter.subscribe()
 
-        verify(mainFavView).addStore(stores)*/
+        verify(mainFavView).setStores(stores)
+        verify(mainFavView).addStore(store)
+    }
+
+    @Test
+    fun subscribeTest_signedIn_getStoresSuccess_listenStoresSuccess_changed() {
+        // Preconditions
+        `when`(dataManager.getCurrentUser()).thenReturn(userFull)
+
+        // Mocks
+        val store = stores.get(0)
+        `when`(dataManager.findStoresByIds(userFull.getFavouriteStoreList().getStoreIdList())).thenReturn(Single.just(stores))
+        `when`(dataManager.subscribeFavouriteStoresOfUser(user.getUid())).thenReturn(
+                Observable.just(Pair(store.id, UserStoreEvent.ACTION_CHANGED))
+        )
+        `when`(dataManager.findStoresById(store.id)).thenReturn(Single.just(arrayListOf(store)))
+
+        mainFavPresenter.subscribe()
+
+        verify(mainFavView).setStores(stores)
+        verify(mainFavView).updateStore(store)
+    }
+
+    @Test
+    fun subscribeTest_signedIn_getStoresSuccess_listenStoresSuccess_removed() {
+        // Preconditions
+        `when`(dataManager.getCurrentUser()).thenReturn(userFull)
+
+        // Mocks
+        val store = stores.get(0)
+        `when`(dataManager.findStoresByIds(userFull.getFavouriteStoreList().getStoreIdList())).thenReturn(Single.just(stores))
+        `when`(dataManager.subscribeFavouriteStoresOfUser(user.getUid())).thenReturn(
+                Observable.just(Pair(store.id, UserStoreEvent.ACTION_REMOVED))
+        )
+        `when`(dataManager.findStoresById(store.id)).thenReturn(Single.just(arrayListOf(store)))
+
+        mainFavPresenter.subscribe()
+
+        verify(mainFavView).setStores(stores)
+        verify(mainFavView).removeStore(store)
     }
 
     companion object {
