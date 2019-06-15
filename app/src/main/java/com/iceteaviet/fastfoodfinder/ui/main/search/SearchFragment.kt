@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ScrollView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
@@ -17,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
-import com.iceteaviet.fastfoodfinder.ui.custom.store.BaseStoreAdapter
+import com.iceteaviet.fastfoodfinder.ui.main.search.model.SearchStoreItem
 import com.iceteaviet.fastfoodfinder.utils.StoreType
 import com.iceteaviet.fastfoodfinder.utils.openStoreListActivity
 import de.hdodenhof.circleimageview.CircleImageView
@@ -85,17 +86,21 @@ class SearchFragment : Fragment(), SearchContract.View {
         presenter.unsubscribe()
     }
 
-    override fun setSearchHistory(searchHistory: List<String>, recentlyStores: List<Store>) {
+    override fun setSearchHistory(searchHistory: List<String>, searchItems: List<SearchStoreItem>) {
         searchAdapter?.setRecentlySearch(searchHistory)
-        recentlySearchAdapter?.setStores(recentlyStores)
+        recentlySearchAdapter?.setSearchItems(searchItems)
     }
 
-    override fun setSearchStores(searchStores: List<Store>) {
-        searchAdapter?.setStores(searchStores)
+    override fun setSearchStores(searchItems: List<SearchStoreItem>) {
+        searchAdapter?.setSearchItems(searchItems)
     }
 
     override fun showStoreListView() {
         openStoreListActivity(activity!!)
+    }
+
+    override fun showGeneralErrorMessage() {
+        Toast.makeText(activity!!, R.string.error_general_error_code, Toast.LENGTH_LONG).show()
     }
 
     private fun setupUI() {
@@ -138,14 +143,14 @@ class SearchFragment : Fragment(), SearchContract.View {
     }
 
     private fun setupEventHandlers() {
-        recentlySearchAdapter?.setOnItemClickListener(object : BaseStoreAdapter.OnItemClickListener {
+        recentlySearchAdapter?.setOnItemClickListener(object : BaseSearchAdapter.OnItemClickListener {
             override fun onClick(store: Store) {
                 presenter.onStoreSearchClick(store)
             }
 
         })
 
-        searchAdapter?.setOnItemClickListener(object : BaseStoreAdapter.OnItemClickListener {
+        searchAdapter?.setOnItemClickListener(object : BaseSearchAdapter.OnItemClickListener {
             override fun onClick(store: Store) {
                 presenter.onStoreSearchClick(store)
             }

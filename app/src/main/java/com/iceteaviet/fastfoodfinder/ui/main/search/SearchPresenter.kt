@@ -4,6 +4,7 @@ import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.data.transport.model.SearchEventResult
 import com.iceteaviet.fastfoodfinder.ui.base.BasePresenter
+import com.iceteaviet.fastfoodfinder.ui.main.search.model.SearchStoreItem
 import com.iceteaviet.fastfoodfinder.utils.Constant
 import com.iceteaviet.fastfoodfinder.utils.getStoreSearchString
 import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
@@ -26,7 +27,8 @@ class SearchPresenter : BasePresenter<SearchContract.Presenter>, SearchContract.
 
     override fun subscribe() {
         val searchHistories = dataManager.getSearchHistories().toList().asReversed()
-        searchView.setSearchHistory(searchHistories, getStoresFromIds(searchHistories))
+        if (searchHistories.isNotEmpty())
+            searchView.setSearchHistory(searchHistories, getStoresFromIds(searchHistories))
     }
 
     override fun onStoreSearchClick(store: Store) {
@@ -51,43 +53,53 @@ class SearchPresenter : BasePresenter<SearchContract.Presenter>, SearchContract.
                     }
 
                     override fun onSuccess(storeList: List<Store>) {
-                        searchView.setSearchStores(storeList)
+                        searchView.setSearchStores(storeListToSearchItems(storeList))
                     }
 
                     override fun onError(e: Throwable) {
                         e.printStackTrace()
+                        searchView.showGeneralErrorMessage()
                     }
                 })
     }
 
     override fun onTopStoreButtonClick() {
-        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun onNearestStoreButtonClick() {
-        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun onTrendingStoreButtonClick() {
-        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun onConvenienceStoreButtonClick() {
-        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    private fun getStoresFromIds(searchHistories: List<String>): List<Store> {
-        val stores: MutableList<Store> = ArrayList()
+    private fun getStoresFromIds(searchHistories: List<String>): List<SearchStoreItem> {
+        val searchItems: MutableList<SearchStoreItem> = ArrayList()
         for (history in searchHistories) {
             if (history.contains(Constant.SEARCH_STORE_PREFIX)) {
-                stores.addAll(dataManager.findStoresById(history.substring(Constant.SEARCH_STORE_PREFIX_LEN).toInt())
-                        .blockingGet())
+                try {
+                    val store = dataManager.findStoreById(history.substring(Constant.SEARCH_STORE_PREFIX_LEN).toInt())
+                            .blockingGet()
+                    searchItems.add(SearchStoreItem(store, ""))
+                } catch (ex: Exception) {
+                    ex.printStackTrace()
+                }
             } else {
-                // Add fake store that represent a search query
-                stores.add(Store(-1, history, "", "0", "0", "", -1))
+                // Add fake search item that represent a search query
+                searchItems.add(SearchStoreItem(null, history))
             }
         }
 
-        return stores
+        return searchItems
+    }
+
+    private fun storeListToSearchItems(stores: List<Store>): List<SearchStoreItem> {
+        val searchItems: MutableList<SearchStoreItem> = ArrayList()
+        for (store in stores) {
+            searchItems.add(SearchStoreItem(store, ""))
+        }
+        return searchItems
     }
 }
