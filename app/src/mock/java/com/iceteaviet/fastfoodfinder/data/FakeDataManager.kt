@@ -32,32 +32,32 @@ class FakeDataManager(context: Context, private val storeRepository: StoreReposi
         storeRepository.setStores(storeList)
     }
 
-    override fun getStoreInBounds(minLat: Double, minLng: Double, maxLat: Double, maxLng: Double): Single<MutableList<Store>> {
+    override fun getStoreInBounds(minLat: Double, minLng: Double, maxLat: Double, maxLng: Double): Single<List<Store>> {
         return storeRepository.getStoreInBounds(minLat, minLng, maxLat, maxLng)
     }
 
-    override fun findStores(queryString: String): Single<MutableList<Store>> {
+    override fun findStores(queryString: String): Single<List<Store>> {
         return storeRepository.findStores(queryString)
     }
 
-    override fun findStoresByCustomAddress(customQuerySearch: List<String>): Single<MutableList<Store>> {
+    override fun findStoresByCustomAddress(customQuerySearch: List<String>): Single<List<Store>> {
         return storeRepository.findStoresByCustomAddress(customQuerySearch)
     }
 
-    override fun findStoresBy(key: String, value: Int): Single<MutableList<Store>> {
+    override fun findStoresBy(key: String, value: Int): Single<List<Store>> {
         return storeRepository.findStoresBy(key, value)
     }
 
-    override fun findStoresBy(key: String, values: List<Int>): Single<MutableList<Store>> {
+    override fun findStoresBy(key: String, values: List<Int>): Single<List<Store>> {
         return storeRepository.findStoresBy(key, values)
     }
 
-    override fun findStoresByType(type: Int): Single<MutableList<Store>> {
+    override fun findStoresByType(type: Int): Single<List<Store>> {
         return storeRepository.findStoresByType(type)
     }
 
-    override fun findStoresById(id: Int): Single<MutableList<Store>> {
-        return storeRepository.findStoresById(id)
+    override fun findStoreById(id: Int): Single<Store> {
+        return storeRepository.findStoreById(id)
     }
 
     override fun findStoresByIds(ids: List<Int>): Single<List<Store>> {

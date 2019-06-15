@@ -186,7 +186,7 @@ class AsyncStoreDAO {
     }
 
 
-    fun findStoresById(id: Int): Single<MutableList<Store>> {
+    fun findStoreById(id: Int): Single<MutableList<Store>> {
         return findStoresBy(PARAM_ID, id)
     }
 

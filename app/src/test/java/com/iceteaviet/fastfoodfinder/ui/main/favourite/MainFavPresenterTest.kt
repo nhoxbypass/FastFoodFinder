@@ -4,6 +4,7 @@ import androidx.core.util.Pair
 import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreEvent
+import com.iceteaviet.fastfoodfinder.utils.exception.NotFoundException
 import com.iceteaviet.fastfoodfinder.utils.exception.UnknownException
 import com.iceteaviet.fastfoodfinder.utils.getFakeStoreList
 import com.iceteaviet.fastfoodfinder.utils.getFakeUserStoreLists
@@ -129,7 +130,7 @@ class MainFavPresenterTest {
         `when`(dataManager.subscribeFavouriteStoresOfUser(userFull.getUid())).thenReturn(
                 Observable.just(Pair(store.id, UserStoreEvent.ACTION_ADDED))
         )
-        `when`(dataManager.findStoresById(store.id)).thenReturn(Single.just(arrayListOf(store)))
+        `when`(dataManager.findStoreById(store.id)).thenReturn(Single.just(store))
 
         mainFavPresenter.subscribe()
 
@@ -148,7 +149,7 @@ class MainFavPresenterTest {
         `when`(dataManager.subscribeFavouriteStoresOfUser(user.getUid())).thenReturn(
                 Observable.just(Pair(store.id, UserStoreEvent.ACTION_CHANGED))
         )
-        `when`(dataManager.findStoresById(store.id)).thenReturn(Single.just(arrayListOf(store)))
+        `when`(dataManager.findStoreById(store.id)).thenReturn(Single.just(store))
 
         mainFavPresenter.subscribe()
 
@@ -167,7 +168,7 @@ class MainFavPresenterTest {
         `when`(dataManager.subscribeFavouriteStoresOfUser(user.getUid())).thenReturn(
                 Observable.just(Pair(store.id, UserStoreEvent.ACTION_REMOVED))
         )
-        `when`(dataManager.findStoresById(store.id)).thenReturn(Single.just(arrayListOf(store)))
+        `when`(dataManager.findStoreById(store.id)).thenReturn(Single.just(store))
 
         mainFavPresenter.subscribe()
 
@@ -190,14 +191,14 @@ class MainFavPresenterTest {
     }
 
     @Test
-    fun subscribeTest_signedIn_emptyStoreList_listenStoresWithEmptyData() {
+    fun subscribeTest_signedIn_emptyStoreList_listenStoresWithErrorData() {
         // Preconditions
         val store = stores.get(0)
         `when`(dataManager.getCurrentUser()).thenReturn(user)
         `when`(dataManager.subscribeFavouriteStoresOfUser(userFull.getUid())).thenReturn(
                 Observable.just(Pair(store.id, UserStoreEvent.ACTION_ADDED))
         )
-        `when`(dataManager.findStoresById(store.id)).thenReturn(Single.just(ArrayList()))
+        `when`(dataManager.findStoreById(store.id)).thenReturn(Single.error(NotFoundException()))
 
         mainFavPresenter.subscribe()
 

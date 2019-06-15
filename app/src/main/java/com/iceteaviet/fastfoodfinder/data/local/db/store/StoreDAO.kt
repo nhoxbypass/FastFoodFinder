@@ -49,7 +49,7 @@ class StoreDAO : StoreDataSource {
         }
     }
 
-    override fun getStoreInBounds(minLat: Double, minLng: Double, maxLat: Double, maxLng: Double): MutableList<Store> {
+    override fun getStoreInBounds(minLat: Double, minLng: Double, maxLat: Double, maxLng: Double): List<Store> {
         val realm = Realm.getDefaultInstance()
         val storeList = ArrayList<Store>()
         // Build the query looking at all users:
@@ -74,7 +74,7 @@ class StoreDAO : StoreDataSource {
         return storeList
     }
 
-    override fun findStores(queryString: String): MutableList<Store> {
+    override fun findStores(queryString: String): List<Store> {
         val storeType = getStoreTypeFromQuery(queryString)
         if (storeType != -1) {
             return findStoresByType(storeType)
@@ -85,7 +85,7 @@ class StoreDAO : StoreDataSource {
         }
     }
 
-    override fun findStoresByCustomAddress(customQuerySearch: List<String>): MutableList<Store> {
+    override fun findStoresByCustomAddress(customQuerySearch: List<String>): List<Store> {
         val realm = Realm.getDefaultInstance()
         val storeList = ArrayList<Store>()
 
@@ -117,7 +117,7 @@ class StoreDAO : StoreDataSource {
         return storeList
     }
 
-    override fun findStoresBy(key: String, value: Int): MutableList<Store> {
+    override fun findStoresBy(key: String, value: Int): List<Store> {
         val realm = Realm.getDefaultInstance()
         val storeList = ArrayList<Store>()
 
@@ -141,7 +141,7 @@ class StoreDAO : StoreDataSource {
         return storeList
     }
 
-    override fun findStoresBy(key: String, values: List<Int>): MutableList<Store> {
+    override fun findStoresBy(key: String, values: List<Int>): List<Store> {
         if (values.isEmpty())
             return ArrayList()
         else {
@@ -171,16 +171,20 @@ class StoreDAO : StoreDataSource {
         }
     }
 
-    override fun findStoresByType(type: Int): MutableList<Store> {
+    override fun findStoresByType(type: Int): List<Store> {
         return findStoresBy(PARAM_TYPE, type)
     }
 
 
-    override fun findStoresById(id: Int): MutableList<Store> {
-        return findStoresBy(PARAM_ID, id)
+    override fun findStoreById(id: Int): Store? {
+        val stores = findStoresBy(PARAM_ID, id)
+        return if (stores.isEmpty())
+            null
+        else
+            stores[0]
     }
 
-    override fun findStoresByIds(ids: List<Int>): MutableList<Store> {
+    override fun findStoresByIds(ids: List<Int>): List<Store> {
         return findStoresBy(PARAM_ID, ids)
     }
 

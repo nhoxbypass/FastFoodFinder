@@ -16,19 +16,19 @@ interface StoreRepository {
 
     fun setStores(storeList: List<Store>)
 
-    fun getStoreInBounds(minLat: Double, minLng: Double, maxLat: Double, maxLng: Double): Single<MutableList<Store>>
+    fun getStoreInBounds(minLat: Double, minLng: Double, maxLat: Double, maxLng: Double): Single<List<Store>>
 
-    fun findStores(queryString: String): Single<MutableList<Store>>
+    fun findStores(queryString: String): Single<List<Store>>
 
-    fun findStoresByCustomAddress(customQuerySearch: List<String>): Single<MutableList<Store>>
+    fun findStoresByCustomAddress(customQuerySearch: List<String>): Single<List<Store>>
 
-    fun findStoresBy(key: String, value: Int): Single<MutableList<Store>>
+    fun findStoresBy(key: String, value: Int): Single<List<Store>>
 
-    fun findStoresBy(key: String, values: List<Int>): Single<MutableList<Store>>
+    fun findStoresBy(key: String, values: List<Int>): Single<List<Store>>
 
-    fun findStoresByType(type: Int): Single<MutableList<Store>>
+    fun findStoresByType(type: Int): Single<List<Store>>
 
-    fun findStoresById(id: Int): Single<MutableList<Store>>
+    fun findStoreById(id: Int): Single<Store>
 
     fun findStoresByIds(ids: List<Int>): Single<List<Store>>
 

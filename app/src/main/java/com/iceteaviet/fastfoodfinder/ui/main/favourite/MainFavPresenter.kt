@@ -4,7 +4,6 @@ import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreEvent
 import com.iceteaviet.fastfoodfinder.ui.base.BasePresenter
-import com.iceteaviet.fastfoodfinder.utils.exception.EmptyDataException
 import com.iceteaviet.fastfoodfinder.utils.exception.EmptyParamsException
 import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
 import io.reactivex.Observer
@@ -75,12 +74,9 @@ class MainFavPresenter : BasePresenter<MainFavContract.Presenter>, MainFavContra
                     if (id == null)
                         throw EmptyParamsException()
 
-                    val stores = dataManager.findStoresById(id).blockingGet()
+                    val store = dataManager.findStoreById(id).blockingGet()
 
-                    if (stores.isEmpty())
-                        throw EmptyDataException()
-
-                    return@map UserStoreEvent(stores[0], eventAC!!)
+                    return@map UserStoreEvent(store, eventAC!!)
                 }
                 .observeOn(schedulerProvider.ui())
                 .subscribe(object : Observer<UserStoreEvent> {

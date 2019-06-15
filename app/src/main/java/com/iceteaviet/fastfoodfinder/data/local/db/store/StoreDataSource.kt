@@ -11,21 +11,21 @@ interface StoreDataSource {
 
     fun setStores(storeList: List<Store>)
 
-    fun getStoreInBounds(minLat: Double, minLng: Double, maxLat: Double, maxLng: Double): MutableList<Store>
+    fun getStoreInBounds(minLat: Double, minLng: Double, maxLat: Double, maxLng: Double): List<Store>
 
-    fun findStores(queryString: String): MutableList<Store>
+    fun findStores(queryString: String): List<Store>
 
-    fun findStoresByCustomAddress(customQuerySearch: List<String>): MutableList<Store>
+    fun findStoresByCustomAddress(customQuerySearch: List<String>): List<Store>
 
-    fun findStoresBy(key: String, value: Int): MutableList<Store>
+    fun findStoresBy(key: String, value: Int): List<Store>
 
-    fun findStoresBy(key: String, values: List<Int>): MutableList<Store>
+    fun findStoresBy(key: String, values: List<Int>): List<Store>
 
-    fun findStoresByType(type: Int): MutableList<Store>
+    fun findStoresByType(type: Int): List<Store>
 
-    fun findStoresById(id: Int): MutableList<Store>
+    fun findStoreById(id: Int): Store?
 
-    fun findStoresByIds(ids: List<Int>): MutableList<Store>
+    fun findStoresByIds(ids: List<Int>): List<Store>
 
     fun deleteAllStores()
 }
