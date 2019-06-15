@@ -13,6 +13,7 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import org.junit.Before
 import org.junit.Test
+import org.mockito.ArgumentMatchers
 import org.mockito.Mock
 import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
@@ -90,6 +91,18 @@ class MainFavPresenterTest {
     }
 
     @Test
+    fun subscribeTest_signedIn_emptyStoreList_listenStoresError() {
+        // Preconditions
+        `when`(dataManager.getCurrentUser()).thenReturn(user)
+        val ex = UnknownException()
+        `when`(dataManager.subscribeFavouriteStoresOfUser(user.getUid())).thenReturn(Observable.error(ex))
+
+        mainFavPresenter.subscribe()
+
+        verify(mainFavView).showWarningMessage(ex.message)
+    }
+
+    @Test
     fun subscribeTest_signedIn_getStoresSuccess_listenStoresError() {
         // Preconditions
         `when`(dataManager.getCurrentUser()).thenReturn(userFull)
@@ -160,6 +173,63 @@ class MainFavPresenterTest {
 
         verify(mainFavView).setStores(stores)
         verify(mainFavView).removeStore(store)
+    }
+
+    @Test
+    fun subscribeTest_signedIn_emptyStoreList_listenStoresWithInvalidData() {
+        // Preconditions
+        val id: Int? = null
+        `when`(dataManager.getCurrentUser()).thenReturn(user)
+        `when`(dataManager.subscribeFavouriteStoresOfUser(user.getUid())).thenReturn(
+                Observable.just(Pair(id, UserStoreEvent.ACTION_ADDED))
+        )
+
+        mainFavPresenter.subscribe()
+
+        verify(mainFavView).showWarningMessage(ArgumentMatchers.any())
+    }
+
+    @Test
+    fun subscribeTest_signedIn_emptyStoreList_listenStoresWithEmptyData() {
+        // Preconditions
+        val store = stores.get(0)
+        `when`(dataManager.getCurrentUser()).thenReturn(user)
+        `when`(dataManager.subscribeFavouriteStoresOfUser(userFull.getUid())).thenReturn(
+                Observable.just(Pair(store.id, UserStoreEvent.ACTION_ADDED))
+        )
+        `when`(dataManager.findStoresById(store.id)).thenReturn(Single.just(ArrayList()))
+
+        mainFavPresenter.subscribe()
+
+        verify(mainFavView).showWarningMessage(ArgumentMatchers.any())
+    }
+
+    @Test
+    fun unsubscribeTest_notSignedIn() {
+        // Preconditions
+        `when`(dataManager.getCurrentUser()).thenReturn(null)
+
+        mainFavPresenter.unsubscribe()
+
+        verify(dataManager, never()).unsubscribeFavouriteStoresOfUser(ArgumentMatchers.anyString())
+    }
+
+    @Test
+    fun unsubscribeTest_signedIn() {
+        // Preconditions
+        `when`(dataManager.getCurrentUser()).thenReturn(user)
+
+        mainFavPresenter.unsubscribe()
+
+        verify(dataManager).unsubscribeFavouriteStoresOfUser(user.getUid())
+    }
+
+    @Test
+    fun onStoreItemClickTest() {
+        val store = stores[0]
+        mainFavPresenter.onStoreItemClick(store)
+
+        verify(mainFavView).showStoreDetailView(store)
     }
 
     companion object {
