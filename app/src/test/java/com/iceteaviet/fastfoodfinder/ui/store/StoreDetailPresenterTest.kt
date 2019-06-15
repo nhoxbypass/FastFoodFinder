@@ -199,6 +199,21 @@ class StoreDetailPresenterTest {
     }
 
     @Test
+    fun onLocationChangeTest() {
+        // Preconditions
+        storeDetailPresenter.onLocationPermissionGranted()
+
+        verify(locationManager).getCurrentLocation()
+        verify(locationManager).requestLocationUpdates()
+        verify(locationManager).subscribeLocationUpdate(capture(locationCallbackCaptor))
+
+        locationCallbackCaptor.value.onLocationChanged(location)
+
+        assertThat(storeDetailPresenter.currLocation).isNotNull()
+        assertThat(storeDetailPresenter.currLocation).isEqualTo(LatLng(location.latitude, location.longitude))
+    }
+
+    @Test
     fun onAddNewCommentTest() {
         val store = Store(STORE_ID, STORE_TITLE, STORE_ADDRESS, STORE_LAT, STORE_LNG, STORE_TEL, STORE_TYPE)
         storeDetailPresenter.handleExtras(store)
@@ -291,21 +306,6 @@ class StoreDetailPresenterTest {
         storeDetailPresenter.onCommentButtonClick()
 
         verify(storeDetailView).showCommentEditorView()
-    }
-
-    @Test
-    fun onLocationChangeTest() {
-        // Preconditions
-        storeDetailPresenter.onLocationPermissionGranted()
-
-        verify(locationManager).getCurrentLocation()
-        verify(locationManager).requestLocationUpdates()
-        verify(locationManager).subscribeLocationUpdate(capture(locationCallbackCaptor))
-
-        locationCallbackCaptor.value.onLocationChanged(location)
-
-        assertThat(storeDetailPresenter.currLocation).isNotNull()
-        assertThat(storeDetailPresenter.currLocation).isEqualTo(LatLng(location.latitude, location.longitude))
     }
 
     companion object {

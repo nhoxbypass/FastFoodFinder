@@ -2,15 +2,17 @@ package com.iceteaviet.fastfoodfinder.ui.ar
 
 import android.os.Build
 import com.iceteaviet.fastfoodfinder.data.DataManager
+import com.iceteaviet.fastfoodfinder.location.LatLngAlt
+import com.iceteaviet.fastfoodfinder.location.SystemLocationListener
 import com.iceteaviet.fastfoodfinder.location.SystemLocationManager
 import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
 import com.iceteaviet.fastfoodfinder.utils.rx.TrampolineSchedulerProvider
 import com.iceteaviet.fastfoodfinder.utils.setFinalStatic
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import org.mockito.Mock
-import org.mockito.Mockito
-import org.mockito.MockitoAnnotations
+import org.mockito.*
+import org.mockito.Mockito.verify
 
 /**
  * Created by tom on 2019-06-09.
@@ -24,6 +26,9 @@ class LiveSightPresenterTest {
 
     @Mock
     private lateinit var locationManager: SystemLocationManager
+
+    @Captor
+    private lateinit var locationCallbackCaptor: ArgumentCaptor<SystemLocationListener>
 
     private lateinit var liveSightPresenter: LiveSightPresenter
 
@@ -41,6 +46,11 @@ class LiveSightPresenterTest {
         liveSightPresenter = LiveSightPresenter(dataManager, schedulerProvider, locationManager, liveSightView)
     }
 
+    @After
+    fun tearDown() {
+        setFinalStatic(Build.VERSION::class.java.getField("SDK_INT"), 0)
+    }
+
     @Test
     fun subscribeTest_locationPermissionGranted() {
         // Preconditions
@@ -48,9 +58,9 @@ class LiveSightPresenterTest {
 
         liveSightPresenter.subscribe()
 
-        Mockito.verify(liveSightView, Mockito.never()).requestLocationPermission()
-        Mockito.verify(locationManager).requestLocationUpdates()
-        Mockito.verify(locationManager).subscribeLocationUpdate(liveSightPresenter)
+        verify(liveSightView, Mockito.never()).requestLocationPermission()
+        verify(locationManager).requestLocationUpdates()
+        verify(locationManager).subscribeLocationUpdate(liveSightPresenter)
     }
 
     @Test
@@ -60,9 +70,9 @@ class LiveSightPresenterTest {
 
         liveSightPresenter.subscribe()
 
-        Mockito.verify(liveSightView, Mockito.never()).requestLocationPermission()
-        Mockito.verify(locationManager).requestLocationUpdates()
-        Mockito.verify(locationManager).subscribeLocationUpdate(liveSightPresenter)
+        verify(liveSightView, Mockito.never()).requestLocationPermission()
+        verify(locationManager).requestLocationUpdates()
+        verify(locationManager).subscribeLocationUpdate(liveSightPresenter)
     }
 
     @Test
@@ -72,12 +82,56 @@ class LiveSightPresenterTest {
 
         liveSightPresenter.subscribe()
 
-        Mockito.verify(liveSightView).requestLocationPermission()
-        Mockito.verify(locationManager, Mockito.never()).requestLocationUpdates()
-        Mockito.verify(locationManager, Mockito.never()).subscribeLocationUpdate(liveSightPresenter)
+        verify(liveSightView).requestLocationPermission()
+        verify(locationManager, Mockito.never()).requestLocationUpdates()
+        verify(locationManager, Mockito.never()).subscribeLocationUpdate(liveSightPresenter)
+    }
+
+    @Test
+    fun onLocationPermissionGrantedTest() {
+        liveSightPresenter.onLocationPermissionGranted()
+
+        verify(locationManager).getCurrentLocation()
+        verify(locationManager).requestLocationUpdates()
+        verify(locationManager).subscribeLocationUpdate(liveSightPresenter)
+    }
+
+    @Test
+    fun requestLocationUpdatesTest() {
+        liveSightPresenter.subscribeLocationUpdate()
+
+        verify(locationManager).requestLocationUpdates()
+        verify(locationManager).subscribeLocationUpdate(liveSightPresenter)
+    }
+
+    @Test
+    fun requestCurrentLocationTest_haveLastLocation() {
+        /*// Preconditions
+        `when`(locationManager.getCurrentLocation()).thenReturn(location)
+
+        liveSightPresenter.requestCurrentLocation()*/
+    }
+
+    @Test
+    fun requestCurrentLocationTest_notHaveLastLocation() {
+        liveSightPresenter.requestCurrentLocation()
+
+        verify(liveSightView).showCannotGetLocationMessage()
+    }
+
+    @Test
+    fun onLocationChangeTest() {
+        /*// Preconditions
+        liveSightPresenter.onLocationPermissionGranted()
+
+        verify(locationManager).getCurrentLocation()
+        verify(locationManager).requestLocationUpdates()
+        verify(locationManager).subscribeLocationUpdate(capture(locationCallbackCaptor))
+
+        locationCallbackCaptor.value.onLocationChanged(location)*/
     }
 
     companion object {
-
+        private val location = LatLngAlt(10.1234, 106.1234, 1.0)
     }
 }
