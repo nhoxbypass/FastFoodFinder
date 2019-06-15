@@ -1,28 +1,27 @@
 package com.iceteaviet.fastfoodfinder.ui.main.map.storeinfo
 
-import android.os.Bundle
+import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
-import com.iceteaviet.fastfoodfinder.ui.store.StoreDetailActivity
+import com.iceteaviet.fastfoodfinder.ui.base.BasePresenter
+import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
 
-class StoreInfoPresenter : StoreInfoContract.Presenter {
-
+class StoreInfoPresenter : BasePresenter<StoreInfoContract.Presenter>, StoreInfoContract.Presenter {
     private var store: Store? = null
     private val storeInfoView: StoreInfoContract.View
 
-    constructor(view: StoreInfoContract.View) {
+    constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider, view: StoreInfoContract.View) : super(dataManager, schedulerProvider) {
         storeInfoView = view
     }
 
     override fun subscribe() {
     }
 
-    override fun unsubscribe() {
-    }
-
-    override fun parseNewIntent(bundle: Bundle?) {
-        if (bundle != null)
-            store = bundle.getParcelable(StoreDetailActivity.KEY_STORE)
-        storeInfoView.updateNewStoreUI(store)
+    override fun handleExtras(store: Store?) {
+        this.store = store
+        if (store != null)
+            storeInfoView.updateNewStoreUI(store)
+        else
+            storeInfoView.exit()
     }
 
     override fun setOnDetailTextViewClick() {

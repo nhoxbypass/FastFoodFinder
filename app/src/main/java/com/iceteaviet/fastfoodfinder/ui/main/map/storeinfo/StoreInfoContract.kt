@@ -1,6 +1,5 @@
 package com.iceteaviet.fastfoodfinder.ui.main.map.storeinfo
 
-import android.os.Bundle
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.ui.base.BaseView
 
@@ -12,11 +11,12 @@ interface StoreInfoContract {
         fun addStoreToFavorite(store: Store)
         fun onDirectionChange(store: Store)
         fun showEmptyTelToast()
+        fun exit()
 
     }
 
     interface Presenter : com.iceteaviet.fastfoodfinder.ui.base.Presenter {
-        fun parseNewIntent(bundle: Bundle?)
+        fun handleExtras(store: Store?)
         fun setOnDetailTextViewClick()
         fun onMakeCallWithPermission()
         fun onAddToFavoriteButtonClick()

@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.fragment.app.DialogFragment
+import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.ui.store.StoreDetailActivity.Companion.KEY_STORE
@@ -57,7 +58,9 @@ class StoreInfoDialog : DialogFragment(), StoreInfoContract.View {
 
         cdvh = StoreDetailAdapter.CallDirectionViewHolder(vCallDirection)
 
-        presenter.parseNewIntent(arguments)
+        arguments?.let {
+            presenter.handleExtras(it.getParcelable(KEY_STORE))
+        }
 
         tvViewDetail.setOnClickListener {
             presenter.setOnDetailTextViewClick()
@@ -150,6 +153,10 @@ class StoreInfoDialog : DialogFragment(), StoreInfoContract.View {
         }
     }
 
+    override fun exit() {
+        this.dismiss()
+    }
+
     // tên chuối thiệt
     interface StoreDialogActionListener {
         fun onDirection(store: Store?)
@@ -169,7 +176,7 @@ class StoreInfoDialog : DialogFragment(), StoreInfoContract.View {
             args.putParcelable(KEY_STORE, store)
             val fragment = StoreInfoDialog()
             fragment.arguments = args
-            fragment.presenter = StoreInfoPresenter(fragment)
+            fragment.presenter = StoreInfoPresenter(App.getDataManager(), App.getSchedulerProvider(), fragment)
             return fragment
         }
     }

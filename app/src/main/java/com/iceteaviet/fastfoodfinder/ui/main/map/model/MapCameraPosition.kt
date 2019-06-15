@@ -6,4 +6,4 @@ import com.google.android.gms.maps.model.LatLngBounds
 /**
  * Created by tom on 2019-04-29.
  */
-class MapCameraPosition(var cameraPosition: LatLng, var cameraBounds: LatLngBounds)
+data class MapCameraPosition(var cameraPosition: LatLng, var cameraBounds: LatLngBounds)
