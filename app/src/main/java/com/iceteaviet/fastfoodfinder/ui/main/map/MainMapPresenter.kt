@@ -2,6 +2,7 @@ package com.iceteaviet.fastfoodfinder.ui.main.map
 
 import android.text.TextUtils
 import android.util.SparseArray
+import androidx.annotation.VisibleForTesting
 import androidx.core.util.Pair
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
@@ -43,7 +44,8 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
 
     private val mainMapView: MainMapContract.View
 
-    private var currLocation: LatLng? = null
+    @VisibleForTesting
+    var currLocation: LatLng? = null
     private var storeList: MutableList<Store> = ArrayList()
     private var visibleStores: List<Store> = ArrayList()
     private var isZoomToUser = false
