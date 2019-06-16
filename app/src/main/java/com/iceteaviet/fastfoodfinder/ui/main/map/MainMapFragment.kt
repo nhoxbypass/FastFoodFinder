@@ -125,7 +125,7 @@ class MainMapFragment : Fragment(), MainMapContract.View {
         Toast.makeText(context, R.string.cannot_get_curr_location, Toast.LENGTH_SHORT).show()
     }
 
-    override fun addMarkersToMap(storeList: MutableList<Store>) {
+    override fun addMarkersToMap(storeList: List<Store>) {
         if (googleMap == null)
             return
 

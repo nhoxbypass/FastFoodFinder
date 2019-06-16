@@ -103,14 +103,89 @@ class MainMapPresenterTest {
     }
 
     @Test
-    fun requestCurrentLocationTest_haveLastLocation() {
+    fun onGetMapAsyncTest_emptyStoreList() {
+        // Preconditions
+        mainMapPresenter.storeList = ArrayList()
+
+        mainMapPresenter.onGetMapAsync()
+
+        verify(mainMapView, never()).addMarkersToMap(ArgumentMatchers.anyList())
+    }
+
+    @Test
+    fun onGetMapAsyncTest_haveStoreList() {
+        // Preconditions
+        mainMapPresenter.storeList = stores
+
+        mainMapPresenter.onGetMapAsync()
+
+        verify(mainMapView).addMarkersToMap(stores)
+    }
+
+    @Test
+    fun onGetMapAsyncTest_locationPermissionNotGranted() {
+        // Preconditions
+        mainMapPresenter.locationGranted = false
+
+        mainMapPresenter.onGetMapAsync()
+
+        verify(mainMapView, never()).setMyLocationEnabled(true)
+    }
+
+    @Test
+    fun onGetMapAsyncTest_locationPermissionGranted_notHaveLastLocation() {
+        // Preconditions
+        mainMapPresenter.locationGranted = true
+
+        mainMapPresenter.onGetMapAsync()
+
+        verify(mainMapView, atLeastOnce()).setMyLocationEnabled(true)
+        verify(mainMapView).setupMapEventHandlers()
+        verify(mainMapView).showCannotGetLocationMessage()
+    }
+
+    @Test
+    fun onGetMapAsyncTest_locationPermissionGranted_haveLastLocation() {
         // Preconditions
         `when`(locationManager.getCurrentLocation()).thenReturn(location)
+        val spyMainMapPresenter = spy(mainMapPresenter)
+        spyMainMapPresenter.locationGranted = true
+
+        spyMainMapPresenter.onGetMapAsync()
+
+        verify(mainMapView, atLeastOnce()).setMyLocationEnabled(true)
+        verify(spyMainMapPresenter, atLeastOnce()).requestCurrentLocation()
+        verify(mainMapView).setupMapEventHandlers()
+        assertThat(spyMainMapPresenter.currLocation).isNotNull()
+        assertThat(spyMainMapPresenter.currLocation).isEqualTo(LatLng(location.latitude, location.longitude))
+        verify(spyMainMapPresenter).subscribeMapCameraPositionChange()
+        verify(spyMainMapPresenter).subscribeNewVisibleStore()
+    }
+
+    @Test
+    fun requestCurrentLocationTest_haveLastLocation_notZoomToUser() {
+        // Preconditions
+        `when`(locationManager.getCurrentLocation()).thenReturn(location)
+        mainMapPresenter.isZoomToUser = false
 
         mainMapPresenter.requestCurrentLocation()
 
         assertThat(mainMapPresenter.currLocation).isNotNull()
         assertThat(mainMapPresenter.currLocation).isEqualTo(LatLng(location.latitude, location.longitude))
+        verify(mainMapView).animateMapCamera(LatLng(location.latitude, location.longitude), false)
+    }
+
+    @Test
+    fun requestCurrentLocationTest_haveLastLocation_zoomToUser() {
+        // Preconditions
+        `when`(locationManager.getCurrentLocation()).thenReturn(location)
+        mainMapPresenter.isZoomToUser = true
+
+        mainMapPresenter.requestCurrentLocation()
+
+        assertThat(mainMapPresenter.currLocation).isNotNull()
+        assertThat(mainMapPresenter.currLocation).isEqualTo(LatLng(location.latitude, location.longitude))
+        verify(mainMapView, never()).animateMapCamera(anyObject(), ArgumentMatchers.anyBoolean())
     }
 
     @Test
@@ -121,18 +196,32 @@ class MainMapPresenterTest {
     }
 
     @Test
-    fun onLocationChangeTest() {
+    fun onLocationPermissionGrantedTest() {
         // Preconditions
         mainMapPresenter.onLocationPermissionGranted()
 
         verify(locationManager).getCurrentLocation()
         verify(locationManager).requestLocationUpdates()
         verify(locationManager).subscribeLocationUpdate(capture(locationCallbackCaptor))
+        verify(mainMapView).setMyLocationEnabled(true)
 
         locationCallbackCaptor.value.onLocationChanged(location)
 
         assertThat(mainMapPresenter.currLocation).isNotNull()
         assertThat(mainMapPresenter.currLocation).isEqualTo(LatLng(location.latitude, location.longitude))
+    }
+
+    @Test
+    fun onLocationChangeTest_notZoomToUser() {
+        // Preconditions
+        mainMapPresenter.locationGranted = true
+        mainMapPresenter.isZoomToUser = false
+
+        mainMapPresenter.onLocationChanged(location)
+
+        assertThat(mainMapPresenter.currLocation).isNotNull()
+        assertThat(mainMapPresenter.currLocation).isEqualTo(LatLng(location.latitude, location.longitude))
+        verify(mainMapView).animateMapCamera(LatLng(location.latitude, location.longitude), false)
     }
 
     @Test
@@ -169,6 +258,11 @@ class MainMapPresenterTest {
         verify(mainMapView).setupMap()
         verify(mainMapView, never()).showWarningMessage(ArgumentMatchers.anyInt())
         verify(mainMapView).addMarkersToMap(stores.toMutableList())
+    }
+
+    // Workaround solution
+    private fun <T> anyObject(): T {
+        return Mockito.anyObject<T>()
     }
 
     companion object {

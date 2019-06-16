@@ -5,13 +5,13 @@ import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
 import com.iceteaviet.fastfoodfinder.utils.exception.UnknownException
 import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
 import com.iceteaviet.fastfoodfinder.utils.rx.TrampolineSchedulerProvider
+import com.nhaarman.mockitokotlin2.atLeastOnce
 import com.nhaarman.mockitokotlin2.verify
 import io.reactivex.Single
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
-import org.mockito.Mockito.times
 import org.mockito.MockitoAnnotations
 
 /**
@@ -108,7 +108,7 @@ class EmailRegisterPresenterTest {
 
         verify(emailRegisterView).notifyRegisterSuccess(user)
 
-        verify(emailRegisterView, times(2)).setInputEnabled(false)
+        verify(emailRegisterView, atLeastOnce()).setInputEnabled(false)
         verify(emailRegisterView).setRegisterButtonProgress(100)
     }
 

@@ -18,7 +18,7 @@ interface MainMapContract {
         fun animateMapCamera(location: LatLng, zoomToDetail: Boolean)
         fun showWarningMessage(@StringRes stringId: Int)
         fun showCannotGetLocationMessage()
-        fun addMarkersToMap(storeList: MutableList<Store>)
+        fun addMarkersToMap(storeList: List<Store>)
         fun setupMap()
         fun setupMapEventHandlers()
         fun showMapRoutingView(currStore: Store, mapsDirection: MapsDirection)

@@ -40,16 +40,19 @@ import kotlin.collections.set
 /**
  * Created by tom on 2019-04-18.
  */
-class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContract.Presenter, LocationListener {
+open class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContract.Presenter, LocationListener {
 
     private val mainMapView: MainMapContract.View
 
     @VisibleForTesting
     var currLocation: LatLng? = null
-    private var storeList: MutableList<Store> = ArrayList()
+    @VisibleForTesting
+    var storeList: List<Store> = ArrayList()
     private var visibleStores: List<Store> = ArrayList()
-    private var isZoomToUser = false
-    private var locationGranted = false
+    @VisibleForTesting
+    var isZoomToUser = false
+    @VisibleForTesting
+    var locationGranted = false
 
     private var markerSparseArray: SparseArray<Marker> = SparseArray() // pair storeId - marker
 
@@ -251,7 +254,8 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
         return res
     }
 
-    private fun subscribeMapCameraPositionChange() {
+    @VisibleForTesting
+    open fun subscribeMapCameraPositionChange() {
         cameraPositionPublisher?.let {
             it.debounce(200, TimeUnit.MILLISECONDS)
                     .subscribeOn(Schedulers.computation())
@@ -280,7 +284,8 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
         }
     }
 
-    private fun subscribeNewVisibleStore() {
+    @VisibleForTesting
+    open fun subscribeNewVisibleStore() {
         newVisibleStorePublisher?.let {
             it.subscribeOn(schedulerProvider.io())
                     .map { store ->
@@ -404,8 +409,7 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
     }
 
     private fun handleSearchStoreClickAction(store: Store) {
-        storeList = ArrayList()
-        storeList.add(store)
+        storeList = arrayListOf(store)
 
         mainMapView.addMarkersToMap(storeList)
         mainMapView.animateMapCamera(store.getPosition(), false)
