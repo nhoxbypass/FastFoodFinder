@@ -2,6 +2,8 @@
 
 package com.iceteaviet.fastfoodfinder.utils
 
+import com.google.gson.Gson
+import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Comment
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList
@@ -137,6 +139,401 @@ fun getFakeUserStoreLists(): List<UserStoreList> {
     userStoreLists.add(UserStoreList(1, getFakeStoreIds(), 2, "My Favourite Places"))
 
     return userStoreLists
+}
+
+fun getFakeMapsDirection(): MapsDirection {
+    val directionData = "{\n" +
+            "   \"routes\":[\n" +
+            "      {\n" +
+            "         \"bounds\":{\n" +
+            "            \"northeast\":{\n" +
+            "               \"lat\":10.7687332,\n" +
+            "               \"lng\":106.7391619\n" +
+            "            },\n" +
+            "            \"southwest\":{\n" +
+            "               \"lat\":10.7357494,\n" +
+            "               \"lng\":106.6997886\n" +
+            "            }\n" +
+            "         },\n" +
+            "         \"copyrights\":\"Dữ liệu bản đồ ©2019\",\n" +
+            "         \"legs\":[\n" +
+            "            {\n" +
+            "               \"distance\":{\n" +
+            "                  \"text\":\"7,6 km\",\n" +
+            "                  \"value\":7586\n" +
+            "               },\n" +
+            "               \"duration\":{\n" +
+            "                  \"text\":\"21 phút\",\n" +
+            "                  \"value\":1279\n" +
+            "               },\n" +
+            "               \"end_address\":\"164 Nguyễn Công Trứ, Phường Nguyễn Thái Bình, Quận 1, Hồ Chí Minh, Việt Nam\",\n" +
+            "               \"end_location\":{\n" +
+            "                  \"lat\":10.7687332,\n" +
+            "                  \"lng\":106.7014437\n" +
+            "               },\n" +
+            "               \"start_address\":\"566 Nguyễn Văn Quỳ, Phú Thuận, Quận 7, Hồ Chí Minh, Việt Nam\",\n" +
+            "               \"start_location\":{\n" +
+            "                  \"lat\":10.7359556,\n" +
+            "                  \"lng\":106.7367226\n" +
+            "               },\n" +
+            "               \"steps\":[\n" +
+            "                  {\n" +
+            "                     \"distance\":{\n" +
+            "                        \"text\":\"57 m\",\n" +
+            "                        \"value\":57\n" +
+            "                     },\n" +
+            "                     \"duration\":{\n" +
+            "                        \"text\":\"1 phút\",\n" +
+            "                        \"value\":20\n" +
+            "                     },\n" +
+            "                     \"end_location\":{\n" +
+            "                        \"lat\":10.7361299,\n" +
+            "                        \"lng\":106.7372125\n" +
+            "                     },\n" +
+            "                     \"html_instructions\":\"Đi về hướng \\u003cb\\u003eĐông\\u003c/b\\u003e lên \\u003cb\\u003eĐường Số 1\\u003c/b\\u003e\\u003cdiv style=\\\"font-size:0.9em\\\"\\u003eĐường bị giới hạn sử dụng\\u003c/div\\u003e\",\n" +
+            "                     \"polyline\":{\n" +
+            "                        \"points\":\"wzo`Ao_njSa@aB\"\n" +
+            "                     },\n" +
+            "                     \"start_location\":{\n" +
+            "                        \"lat\":10.7359556,\n" +
+            "                        \"lng\":106.7367226\n" +
+            "                     },\n" +
+            "                     \"travel_mode\":\"DRIVING\"\n" +
+            "                  },\n" +
+            "                  {\n" +
+            "                     \"distance\":{\n" +
+            "                        \"text\":\"46 m\",\n" +
+            "                        \"value\":46\n" +
+            "                     },\n" +
+            "                     \"duration\":{\n" +
+            "                        \"text\":\"1 phút\",\n" +
+            "                        \"value\":11\n" +
+            "                     },\n" +
+            "                     \"end_location\":{\n" +
+            "                        \"lat\":10.7357494,\n" +
+            "                        \"lng\":106.7373757\n" +
+            "                     },\n" +
+            "                     \"html_instructions\":\"Rẽ \\u003cb\\u003ephải\\u003c/b\\u003e về hướng \\u003cb\\u003eĐường số 2\\u003c/b\\u003e\\u003cdiv style=\\\"font-size:0.9em\\\"\\u003eĐường bị giới hạn sử dụng\\u003c/div\\u003e\",\n" +
+            "                     \"maneuver\":\"turn-right\",\n" +
+            "                     \"polyline\":{\n" +
+            "                        \"points\":\"y{o`AqbnjSjAa@\"\n" +
+            "                     },\n" +
+            "                     \"start_location\":{\n" +
+            "                        \"lat\":10.7361299,\n" +
+            "                        \"lng\":106.7372125\n" +
+            "                     },\n" +
+            "                     \"travel_mode\":\"DRIVING\"\n" +
+            "                  },\n" +
+            "                  {\n" +
+            "                     \"distance\":{\n" +
+            "                        \"text\":\"83 m\",\n" +
+            "                        \"value\":83\n" +
+            "                     },\n" +
+            "                     \"duration\":{\n" +
+            "                        \"text\":\"1 phút\",\n" +
+            "                        \"value\":26\n" +
+            "                     },\n" +
+            "                     \"end_location\":{\n" +
+            "                        \"lat\":10.7360084,\n" +
+            "                        \"lng\":106.7380921\n" +
+            "                     },\n" +
+            "                     \"html_instructions\":\"Rẽ \\u003cb\\u003etrái\\u003c/b\\u003e tại công viên vào \\u003cb\\u003eĐường số 2\\u003c/b\\u003e\\u003cdiv style=\\\"font-size:0.9em\\\"\\u003eĐường bị giới hạn sử dụng\\u003c/div\\u003e\",\n" +
+            "                     \"maneuver\":\"turn-left\",\n" +
+            "                     \"polyline\":{\n" +
+            "                        \"points\":\"myo`AscnjSYiAYcA\"\n" +
+            "                     },\n" +
+            "                     \"start_location\":{\n" +
+            "                        \"lat\":10.7357494,\n" +
+            "                        \"lng\":106.7373757\n" +
+            "                     },\n" +
+            "                     \"travel_mode\":\"DRIVING\"\n" +
+            "                  },\n" +
+            "                  {\n" +
+            "                     \"distance\":{\n" +
+            "                        \"text\":\"0,1 km\",\n" +
+            "                        \"value\":98\n" +
+            "                     },\n" +
+            "                     \"duration\":{\n" +
+            "                        \"text\":\"1 phút\",\n" +
+            "                        \"value\":26\n" +
+            "                     },\n" +
+            "                     \"end_location\":{\n" +
+            "                        \"lat\":10.7368277,\n" +
+            "                        \"lng\":106.737761\n" +
+            "                     },\n" +
+            "                     \"html_instructions\":\"Rẽ \\u003cb\\u003etrái\\u003c/b\\u003e tại ANN CAFE vào \\u003cb\\u003eĐường D4\\u003c/b\\u003e\\u003cdiv style=\\\"font-size:0.9em\\\"\\u003eĐường bị giới hạn sử dụng\\u003c/div\\u003e\\u003cdiv style=\\\"font-size:0.9em\\\"\\u003eBăng qua Milano Coffee (ở phía bên trái)\\u003c/div\\u003e\",\n" +
+            "                     \"maneuver\":\"turn-left\",\n" +
+            "                     \"polyline\":{\n" +
+            "                        \"points\":\"a{o`AahnjScD`A\"\n" +
+            "                     },\n" +
+            "                     \"start_location\":{\n" +
+            "                        \"lat\":10.7360084,\n" +
+            "                        \"lng\":106.7380921\n" +
+            "                     },\n" +
+            "                     \"travel_mode\":\"DRIVING\"\n" +
+            "                  },\n" +
+            "                  {\n" +
+            "                     \"distance\":{\n" +
+            "                        \"text\":\"0,2 km\",\n" +
+            "                        \"value\":165\n" +
+            "                     },\n" +
+            "                     \"duration\":{\n" +
+            "                        \"text\":\"1 phút\",\n" +
+            "                        \"value\":50\n" +
+            "                     },\n" +
+            "                     \"end_location\":{\n" +
+            "                        \"lat\":10.7373779,\n" +
+            "                        \"lng\":106.7391619\n" +
+            "                     },\n" +
+            "                     \"html_instructions\":\"Rẽ \\u003cb\\u003ephải\\u003c/b\\u003e tại COSCO (LYG) Loading Arm vào \\u003cb\\u003eĐường N8\\u003c/b\\u003e\\u003cdiv style=\\\"font-size:0.9em\\\"\\u003eĐường bị giới hạn sử dụng\\u003c/div\\u003e\\u003cdiv style=\\\"font-size:0.9em\\\"\\u003eBăng qua Shop hàng Thái Lan và hàng ngoại nhập (ở phía bên phải)\\u003c/div\\u003e\",\n" +
+            "                     \"maneuver\":\"turn-right\",\n" +
+            "                     \"polyline\":{\n" +
+            "                        \"points\":\"e`p`A_fnjSQu@M_@Sm@Og@Oq@Yy@\"\n" +
+            "                     },\n" +
+            "                     \"start_location\":{\n" +
+            "                        \"lat\":10.7368277,\n" +
+            "                        \"lng\":106.737761\n" +
+            "                     },\n" +
+            "                     \"travel_mode\":\"DRIVING\"\n" +
+            "                  },\n" +
+            "                  {\n" +
+            "                     \"distance\":{\n" +
+            "                        \"text\":\"0,5 km\",\n" +
+            "                        \"value\":508\n" +
+            "                     },\n" +
+            "                     \"duration\":{\n" +
+            "                        \"text\":\"2 phút\",\n" +
+            "                        \"value\":95\n" +
+            "                     },\n" +
+            "                     \"end_location\":{\n" +
+            "                        \"lat\":10.7411401,\n" +
+            "                        \"lng\":106.7365321\n" +
+            "                     },\n" +
+            "                     \"html_instructions\":\"Rẽ \\u003cb\\u003etrái\\u003c/b\\u003e tại Công ty Thost.vn vào \\u003cb\\u003eĐường Đào Trí\\u003c/b\\u003e\\u003cdiv style=\\\"font-size:0.9em\\\"\\u003eBăng qua Cafe Ngọc Tâm (ở phía bên trái)\\u003c/div\\u003e\",\n" +
+            "                     \"maneuver\":\"turn-left\",\n" +
+            "                     \"polyline\":{\n" +
+            "                        \"points\":\"scp`AwnnjSaAp@CBc@Vw@d@_@TuBpA}A~@_CxA_B~@s@b@KF[T]T\"\n" +
+            "                     },\n" +
+            "                     \"start_location\":{\n" +
+            "                        \"lat\":10.7373779,\n" +
+            "                        \"lng\":106.7391619\n" +
+            "                     },\n" +
+            "                     \"travel_mode\":\"DRIVING\"\n" +
+            "                  },\n" +
+            "                  {\n" +
+            "                     \"distance\":{\n" +
+            "                        \"text\":\"0,7 km\",\n" +
+            "                        \"value\":745\n" +
+            "                     },\n" +
+            "                     \"duration\":{\n" +
+            "                        \"text\":\"2 phút\",\n" +
+            "                        \"value\":107\n" +
+            "                     },\n" +
+            "                     \"end_location\":{\n" +
+            "                        \"lat\":10.737817,\n" +
+            "                        \"lng\":106.7306225\n" +
+            "                     },\n" +
+            "                     \"html_instructions\":\"Rẽ \\u003cb\\u003etrái\\u003c/b\\u003e tại Cafê Võng Gầm Cầu Phú Mỹ vào \\u003cb\\u003eNguyễn Văn Quỳ\\u003c/b\\u003e\\u003cdiv style=\\\"font-size:0.9em\\\"\\u003eBăng qua Công Ty TNHH SX TM DV IF (ở phía bên trái)\\u003c/div\\u003e\",\n" +
+            "                     \"maneuver\":\"turn-left\",\n" +
+            "                     \"polyline\":{\n" +
+            "                        \"points\":\"c{p`Ai~mjSNb@HPP`@l@vAjBhE\\\\r@HNBF@@BDFFHH^r@HPp@xAlApC`@`AdA~Bl@pA~@bBLR\"\n" +
+            "                     },\n" +
+            "                     \"start_location\":{\n" +
+            "                        \"lat\":10.7411401,\n" +
+            "                        \"lng\":106.7365321\n" +
+            "                     },\n" +
+            "                     \"travel_mode\":\"DRIVING\"\n" +
+            "                  },\n" +
+            "                  {\n" +
+            "                     \"distance\":{\n" +
+            "                        \"text\":\"2,4 km\",\n" +
+            "                        \"value\":2420\n" +
+            "                     },\n" +
+            "                     \"duration\":{\n" +
+            "                        \"text\":\"7 phút\",\n" +
+            "                        \"value\":419\n" +
+            "                     },\n" +
+            "                     \"end_location\":{\n" +
+            "                        \"lat\":10.7555296,\n" +
+            "                        \"lng\":106.7232546\n" +
+            "                     },\n" +
+            "                     \"html_instructions\":\"Rẽ \\u003cb\\u003ephải\\u003c/b\\u003e tại Khách Sạn Gia Huy vào \\u003cb\\u003eHuỳnh Tấn Phát\\u003c/b\\u003e\\u003cdiv style=\\\"font-size:0.9em\\\"\\u003eBăng qua Clb Bida C2 (ở phía bên phải)\\u003c/div\\u003e\",\n" +
+            "                     \"maneuver\":\"turn-right\",\n" +
+            "                     \"polyline\":{\n" +
+            "                        \"points\":\"kfp`AkyljSKl@k@BWBQ@O@}CVO@aBLe@BSB_E\\\\gCRsAJ}Fd@mAL_AJsCTE@oALI@G?K@wAJE?}@DI@u@Fe@FQ@w@HKAcAJmAHaBDWBw@D}@DK?oBHgAD_CHiBFqADaCJoADY@cADy@Hy@HM@ODMDMFOFOJONGFQVU^IZEREL?BU~AYpBE`@Gb@EVCTU|AQlACJUzAE`@W|AOrACT\"\n" +
+            "                     },\n" +
+            "                     \"start_location\":{\n" +
+            "                        \"lat\":10.737817,\n" +
+            "                        \"lng\":106.7306225\n" +
+            "                     },\n" +
+            "                     \"travel_mode\":\"DRIVING\"\n" +
+            "                  },\n" +
+            "                  {\n" +
+            "                     \"distance\":{\n" +
+            "                        \"text\":\"0,6 km\",\n" +
+            "                        \"value\":602\n" +
+            "                     },\n" +
+            "                     \"duration\":{\n" +
+            "                        \"text\":\"1 phút\",\n" +
+            "                        \"value\":71\n" +
+            "                     },\n" +
+            "                     \"end_location\":{\n" +
+            "                        \"lat\":10.7568754,\n" +
+            "                        \"lng\":106.7183758\n" +
+            "                     },\n" +
+            "                     \"html_instructions\":\"Rẽ \\u003cb\\u003etrái\\u003c/b\\u003e tại Tiệm Vàng Tăng Hồng vào \\u003cb\\u003eCầu Tân Thuận\\u003c/b\\u003e\\u003cdiv style=\\\"font-size:0.9em\\\"\\u003eBăng qua Cửa Hàng Nhôm Kính Cao Cấp Thuận Thành (ở phía bên trái)\\u003c/div\\u003e\",\n" +
+            "                     \"maneuver\":\"turn-left\",\n" +
+            "                     \"polyline\":{\n" +
+            "                        \"points\":\"aus`AikkjSHHVXLVHBFDDDFHDFHNBRBJ?L?JALKZUj@EHWn@m@|AGNEN}@bCUj@Ur@]dAg@zAWt@Q`@GRITKN\"\n" +
+            "                     },\n" +
+            "                     \"start_location\":{\n" +
+            "                        \"lat\":10.7555296,\n" +
+            "                        \"lng\":106.7232546\n" +
+            "                     },\n" +
+            "                     \"travel_mode\":\"DRIVING\"\n" +
+            "                  },\n" +
+            "                  {\n" +
+            "                     \"distance\":{\n" +
+            "                        \"text\":\"1,6 km\",\n" +
+            "                        \"value\":1573\n" +
+            "                     },\n" +
+            "                     \"duration\":{\n" +
+            "                        \"text\":\"3 phút\",\n" +
+            "                        \"value\":201\n" +
+            "                     },\n" +
+            "                     \"end_location\":{\n" +
+            "                        \"lat\":10.7651211,\n" +
+            "                        \"lng\":106.7072401\n" +
+            "                     },\n" +
+            "                     \"html_instructions\":\"Tại Dia Warehouse, tiếp tục vào \\u003cb\\u003eNguyễn Tất Thành\\u003c/b\\u003e\\u003cdiv style=\\\"font-size:0.9em\\\"\\u003eBăng qua Công Ty Tnhh Thúy Nam Phong (ở phía bên trái)\\u003c/div\\u003e\",\n" +
+            "                     \"polyline\":{\n" +
+            "                        \"points\":\"o}s`A{ljjSk@vA_@dAqApD]v@mEdJA@}DbIQ\\\\}A~CqGxMS`@k@dAk@bAa@t@EHGJEDA@OFgA`@cBl@gBp@E@qBl@a@LaA^\"\n" +
+            "                     },\n" +
+            "                     \"start_location\":{\n" +
+            "                        \"lat\":10.7568754,\n" +
+            "                        \"lng\":106.7183758\n" +
+            "                     },\n" +
+            "                     \"travel_mode\":\"DRIVING\"\n" +
+            "                  },\n" +
+            "                  {\n" +
+            "                     \"distance\":{\n" +
+            "                        \"text\":\"0,4 km\",\n" +
+            "                        \"value\":433\n" +
+            "                     },\n" +
+            "                     \"duration\":{\n" +
+            "                        \"text\":\"2 phút\",\n" +
+            "                        \"value\":90\n" +
+            "                     },\n" +
+            "                     \"end_location\":{\n" +
+            "                        \"lat\":10.763467,\n" +
+            "                        \"lng\":106.7037776\n" +
+            "                     },\n" +
+            "                     \"html_instructions\":\"Rẽ \\u003cb\\u003etrái\\u003c/b\\u003e tại Công Ty Tnhh Trader Indochine Viet Nam vào \\u003cb\\u003eHoàng Diệu\\u003c/b\\u003e\\u003cdiv style=\\\"font-size:0.9em\\\"\\u003eBăng qua Cuốn+ (ở phía bên phải)\\u003c/div\\u003e\",\n" +
+            "                     \"maneuver\":\"turn-left\",\n" +
+            "                     \"polyline\":{\n" +
+            "                        \"points\":\"_qu`AgghjSGBGBBLd@xAb@|AHR\\\\jARl@Vj@x@hCX^T^fAvADH\"\n" +
+            "                     },\n" +
+            "                     \"start_location\":{\n" +
+            "                        \"lat\":10.7651211,\n" +
+            "                        \"lng\":106.7072401\n" +
+            "                     },\n" +
+            "                     \"travel_mode\":\"DRIVING\"\n" +
+            "                  },\n" +
+            "                  {\n" +
+            "                     \"distance\":{\n" +
+            "                        \"text\":\"39 m\",\n" +
+            "                        \"value\":39\n" +
+            "                     },\n" +
+            "                     \"duration\":{\n" +
+            "                        \"text\":\"1 phút\",\n" +
+            "                        \"value\":8\n" +
+            "                     },\n" +
+            "                     \"end_location\":{\n" +
+            "                        \"lat\":10.7637206,\n" +
+            "                        \"lng\":106.703531\n" +
+            "                     },\n" +
+            "                     \"html_instructions\":\"Rẽ \\u003cb\\u003ephải\\u003c/b\\u003e tại Áo Cưới Black &amp; White vào \\u003cb\\u003eĐoàn Văn Bơ\\u003c/b\\u003e\",\n" +
+            "                     \"maneuver\":\"turn-right\",\n" +
+            "                     \"polyline\":{\n" +
+            "                        \"points\":\"ufu`AsqgjSONONQP\"\n" +
+            "                     },\n" +
+            "                     \"start_location\":{\n" +
+            "                        \"lat\":10.763467,\n" +
+            "                        \"lng\":106.7037776\n" +
+            "                     },\n" +
+            "                     \"travel_mode\":\"DRIVING\"\n" +
+            "                  },\n" +
+            "                  {\n" +
+            "                     \"distance\":{\n" +
+            "                        \"text\":\"0,6 km\",\n" +
+            "                        \"value\":575\n" +
+            "                     },\n" +
+            "                     \"duration\":{\n" +
+            "                        \"text\":\"1 phút\",\n" +
+            "                        \"value\":87\n" +
+            "                     },\n" +
+            "                     \"end_location\":{\n" +
+            "                        \"lat\":10.7672848,\n" +
+            "                        \"lng\":106.6997886\n" +
+            "                     },\n" +
+            "                     \"html_instructions\":\"Chếch sang \\u003cb\\u003etrái\\u003c/b\\u003e tại Hủ tiếu Nam Vang Nhân Nghĩa vào \\u003cb\\u003eCalmette\\u003c/b\\u003e\\u003cdiv style=\\\"font-size:0.9em\\\"\\u003eBăng qua Nhà May Anh Đức (ở phía bên phải)\\u003c/div\\u003e\",\n" +
+            "                     \"maneuver\":\"turn-slight-left\",\n" +
+            "                     \"polyline\":{\n" +
+            "                        \"points\":\"ghu`AapgjSO^A?S\\\\_AvA_BfCc@p@SV_@\\\\A@OLA@KJiAbA[ZSNYVGDoAx@cAx@]VIFe@\\\\KF\"\n" +
+            "                     },\n" +
+            "                     \"start_location\":{\n" +
+            "                        \"lat\":10.7637206,\n" +
+            "                        \"lng\":106.703531\n" +
+            "                     },\n" +
+            "                     \"travel_mode\":\"DRIVING\"\n" +
+            "                  },\n" +
+            "                  {\n" +
+            "                     \"distance\":{\n" +
+            "                        \"text\":\"0,2 km\",\n" +
+            "                        \"value\":242\n" +
+            "                     },\n" +
+            "                     \"duration\":{\n" +
+            "                        \"text\":\"1 phút\",\n" +
+            "                        \"value\":68\n" +
+            "                     },\n" +
+            "                     \"end_location\":{\n" +
+            "                        \"lat\":10.7687332,\n" +
+            "                        \"lng\":106.7014437\n" +
+            "                     },\n" +
+            "                     \"html_instructions\":\"Rẽ \\u003cb\\u003ephải\\u003c/b\\u003e tại Cửa hàng Huệ Ký vào \\u003cb\\u003eNguyễn Công Trứ\\u003c/b\\u003e\\u003cdiv style=\\\"font-size:0.9em\\\"\\u003eBăng qua Công Ty Tnhh Mitsu National (ở phía bên phải)\\u003c/div\\u003e\\u003cdiv style=\\\"font-size:0.9em\\\"\\u003eĐiểm đến sẽ ở bên trái\\u003c/div\\u003e\",\n" +
+            "                     \"maneuver\":\"turn-right\",\n" +
+            "                     \"polyline\":{\n" +
+            "                        \"points\":\"o~u`AuxfjSGGgAqAwAaBcBuBUW\"\n" +
+            "                     },\n" +
+            "                     \"start_location\":{\n" +
+            "                        \"lat\":10.7672848,\n" +
+            "                        \"lng\":106.6997886\n" +
+            "                     },\n" +
+            "                     \"travel_mode\":\"DRIVING\"\n" +
+            "                  }\n" +
+            "               ],\n" +
+            "               \"traffic_speed_entry\":[\n" +
+            "\n" +
+            "               ],\n" +
+            "               \"via_waypoint\":[\n" +
+            "\n" +
+            "               ]\n" +
+            "            }\n" +
+            "         ],\n" +
+            "         \"overview_polyline\":{\n" +
+            "            \"points\":\"wzo`Ao_njSa@aBjAa@s@mCcD`AQu@a@mA_@yAYy@aAp@g@ZwAz@sLjHyBvAxAnDvCtGVXh@dA~BjFfB`El@pA~@bBLRKl@cAFoE\\\\{Ir@{E^kIr@iHp@yF^w@HcAFcAJoDNyCNaL`@}HX}BNgAJ{@Z_@ZY^U^On@u@bFcAjHcAnHCTHHd@p@PHLNNVBRBXAX_A`CyB`GqB`G{@`Cw@fBqBvFkF|K_EdIuKxT_ChEMPQHyGbCsCz@iAb@GBBLhAvDf@~Aj@xAx@hCX^|AvBDHONa@`@Q^sAtBcCxDs@t@_@\\\\sCfCwA~@aBpAo@d@KFGG_DsDyBmC\"\n" +
+            "         },\n" +
+            "         \"summary\":\"Huỳnh Tấn Phát\",\n" +
+            "         \"warnings\":[\n" +
+            "\n" +
+            "         ],\n" +
+            "         \"waypoint_order\":[\n" +
+            "\n" +
+            "         ]\n" +
+            "      }\n" +
+            "   ]\n" +
+            "}"
+    return Gson().fromJson(directionData, MapsDirection::class.java)
 }
 
 /**

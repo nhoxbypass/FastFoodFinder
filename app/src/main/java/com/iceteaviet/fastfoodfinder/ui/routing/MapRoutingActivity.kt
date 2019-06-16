@@ -54,17 +54,13 @@ class MapRoutingActivity : BaseActivity(), MapRoutingContract.View, View.OnClick
 
         presenter = MapRoutingPresenter(App.getDataManager(), App.getSchedulerProvider(), this)
 
-        presenter.fetchDataFromExtra(intent.extras)
-
-        if (presenter.isRoutingDataValid()) {
-            presenter.setupData()
-            setupUI()
-            setUpMapIfNeeded()
-            setupEventListeners()
-        } else {
-            Toast.makeText(this, R.string.get_map_direction_failed, Toast.LENGTH_SHORT).show()
-            finish()
+        intent.extras?.let {
+            presenter.handleExtras(it.getParcelable(KEY_ROUTE_LIST), it.getParcelable(KEY_DES_STORE))
         }
+
+        setupUI()
+        setUpMapIfNeeded()
+        setupEventListeners()
     }
 
     override fun onResume() {
@@ -129,6 +125,14 @@ class MapRoutingActivity : BaseActivity(), MapRoutingContract.View, View.OnClick
         finish()
     }
 
+    override fun showGetDirectionFailedMessage() {
+        Toast.makeText(this, R.string.get_map_direction_failed, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun showGeneralErrorMessage() {
+        Toast.makeText(this, R.string.error_general_error_code, Toast.LENGTH_LONG).show()
+    }
+
     override fun animateMapCamera(location: LatLng, zoomToDetail: Boolean) {
         val zoomLevel = if (zoomToDetail) DETAILED_ZOOM_LEVEL else DEFAULT_ZOOM_LEVEL
         googleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(location, zoomLevel))
@@ -141,11 +145,12 @@ class MapRoutingActivity : BaseActivity(), MapRoutingContract.View, View.OnClick
                 .icon(BitmapDescriptorFactory.fromResource(icon)))
     }
 
-    override fun drawRoutingPath(currLocation: LatLng, routingGeoPoint: List<LatLng>) {
+    override fun drawRoutingPath(currLocation: LatLng?, routingGeoPoint: List<LatLng>) {
         googleMap?.let {
             //Add position to viewBounds
             val builder = LatLngBounds.Builder()
-            builder.include(currLocation)
+            if (currLocation != null)
+                builder.include(currLocation)
 
             val options = PolylineOptions()
                     .clickable(true)

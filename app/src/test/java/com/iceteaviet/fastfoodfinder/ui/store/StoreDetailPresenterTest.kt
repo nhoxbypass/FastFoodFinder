@@ -307,7 +307,6 @@ class StoreDetailPresenterTest {
         private const val STORE_LAT = "10.773996"
         private const val STORE_LNG = "106.6898035"
         private const val STORE_TEL = "012345678965"
-
         private const val STORE_TYPE = StoreType.TYPE_CIRCLE_K
 
         private const val STORE_INVALID_TEL = ""
