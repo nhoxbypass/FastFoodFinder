@@ -57,9 +57,9 @@ class AppStoreRepository(private val storeApiHelper: StoreApiHelper, private val
         storeDataSource.setStores(storeList)
     }
 
-    override fun getStoreInBounds(minLat: Double, minLng: Double, maxLat: Double, maxLng: Double): Single<List<Store>> {
+    override fun getStoreInBounds(lat: Double, lng: Double, radius: Double): Single<List<Store>> {
         return Single.create { emitter ->
-            emitter.onSuccess(storeDataSource.getStoreInBounds(minLat, minLng, maxLat, maxLng))
+            emitter.onSuccess(storeDataSource.getStoreInBounds(lat, lng, radius))
         }
     }
 

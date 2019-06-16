@@ -1,16 +1,16 @@
 package com.iceteaviet.fastfoodfinder.ui.ar
 
 import android.os.Bundle
+import androidx.annotation.VisibleForTesting
 import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.location.LatLngAlt
 import com.iceteaviet.fastfoodfinder.location.SystemLocationListener
 import com.iceteaviet.fastfoodfinder.location.base.ILocationManager
-import com.iceteaviet.fastfoodfinder.ui.ar.model.AugmentedPOI
 import com.iceteaviet.fastfoodfinder.ui.base.BasePresenter
 import com.iceteaviet.fastfoodfinder.utils.isLolipopOrHigher
 import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
-import com.iceteaviet.fastfoodfinder.utils.ui.getStoreLogoDrawableRes
+import com.iceteaviet.fastfoodfinder.utils.storesToArPoints
 import io.reactivex.SingleObserver
 import io.reactivex.disposables.Disposable
 
@@ -65,15 +65,6 @@ class LiveSightPresenter : BasePresenter<LiveSightContract.Presenter>, LiveSight
     override fun startArCamera() {
     }
 
-    override fun subscribeLocationUpdate() {
-        locationManager.requestLocationUpdates()
-        locationManager.subscribeLocationUpdate(this)
-    }
-
-    override fun unsubscribeLocationUpdate() {
-        locationManager.unsubscribeLocationUpdate(this)
-    }
-
     override fun requestCurrentLocation() {
         val lastLocation = locationManager.getCurrentLocation()
         if (lastLocation != null) {
@@ -85,10 +76,7 @@ class LiveSightPresenter : BasePresenter<LiveSightContract.Presenter>, LiveSight
 
     override fun onLocationChanged(location: LatLngAlt) {
         liveSightView.updateLatestLocation(location)
-        dataManager.getStoreInBounds(location.latitude - RADIUS,
-                location.longitude - RADIUS,
-                location.latitude + RADIUS,
-                location.longitude + RADIUS)
+        dataManager.getStoreInBounds(location.latitude, location.longitude, RADIUS)
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
                 .subscribe(object : SingleObserver<List<Store>> {
@@ -97,17 +85,11 @@ class LiveSightPresenter : BasePresenter<LiveSightContract.Presenter>, LiveSight
                     }
 
                     override fun onSuccess(storeList: List<Store>) {
-                        for (i in storeList.indices) {
-                            liveSightView.addARPoint(AugmentedPOI(storeList[i].title,
-                                    storeList[i].lat.toDouble(),
-                                    storeList[i].lng.toDouble(),
-                                    0.0,
-                                    getStoreLogoDrawableRes(storeList[i].type)))
-                        }
+                        liveSightView.setARPoints(storesToArPoints(storeList))
                     }
 
                     override fun onError(e: Throwable) {
-                        e.printStackTrace()
+                        liveSightView.showGeneralErrorMessage()
                     }
                 })
     }
@@ -124,7 +106,17 @@ class LiveSightPresenter : BasePresenter<LiveSightContract.Presenter>, LiveSight
     override fun onProviderDisabled(provider: String) {
     }
 
+    private fun subscribeLocationUpdate() {
+        locationManager.requestLocationUpdates()
+        locationManager.subscribeLocationUpdate(this)
+    }
+
+    private fun unsubscribeLocationUpdate() {
+        locationManager.unsubscribeLocationUpdate(this)
+    }
+
     companion object {
-        private const val RADIUS = 0.005
+        @VisibleForTesting
+        const val RADIUS = 0.005
     }
 }

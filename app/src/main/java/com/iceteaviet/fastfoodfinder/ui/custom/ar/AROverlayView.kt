@@ -59,7 +59,7 @@ class AROverlayView(context: Context) : View(context) {
         val currentLocationInECEF = convertWSG84toECEF(currentLocation!!)
         var i = 0
         while (i < arPoints.size && i < arBitmaps.size) {
-            val pointInECEF = convertWSG84toECEF(arPoints[i].location)
+            val pointInECEF = convertWSG84toECEF(arPoints[i].getLocation())
             val pointInENU = convertECEFtoENU(currentLocation!!, currentLocationInECEF, pointInECEF)
 
             Matrix.multiplyMV(cameraCoordinateVector, 0, rotatedProjectionMatrix, 0, pointInENU, 0)

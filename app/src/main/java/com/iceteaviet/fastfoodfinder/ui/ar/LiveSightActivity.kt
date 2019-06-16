@@ -131,6 +131,10 @@ class LiveSightActivity : BaseActivity(), LiveSightContract.View, SensorEventLis
         Toast.makeText(this, R.string.cannot_get_curr_location, Toast.LENGTH_SHORT).show()
     }
 
+    override fun showGeneralErrorMessage() {
+        Toast.makeText(this, R.string.error_general_error_code, Toast.LENGTH_LONG).show()
+    }
+
     override fun initAROverlayView() {
         if (arOverlayView?.parent != null) {
             (arOverlayView?.parent as ViewGroup).removeView(arOverlayView)
@@ -154,6 +158,10 @@ class LiveSightActivity : BaseActivity(), LiveSightContract.View, SensorEventLis
 
     override fun addARPoint(arPoi: AugmentedPOI) {
         arOverlayView?.addArPoint(arPoi)
+    }
+
+    override fun setARPoints(arPoints: List<AugmentedPOI>) {
+        arOverlayView?.setArPoints(arPoints)
     }
 
     private fun initCamera() {

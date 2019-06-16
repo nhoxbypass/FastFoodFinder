@@ -18,4 +18,19 @@ class LatLngAlt {
         this.latitude = Math.max(-90.0, Math.min(90.0, lat))
         this.altitude = alt
     }
+
+    override fun equals(other: Any?): Boolean {
+        return if (other is LatLngAlt) {
+            latitude == other.latitude && longitude == other.longitude && altitude == other.altitude
+        } else {
+            false
+        }
+    }
+
+    override fun hashCode(): Int {
+        var result = latitude.hashCode()
+        result = 31 * result + longitude.hashCode()
+        result = 31 * result + altitude.hashCode()
+        return result
+    }
 }

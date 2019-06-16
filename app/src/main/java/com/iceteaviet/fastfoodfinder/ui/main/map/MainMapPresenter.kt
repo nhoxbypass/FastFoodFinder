@@ -89,7 +89,7 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
         newVisibleStorePublisher?.onComplete()
         newVisibleStorePublisher = null
         EventBus.getDefault().unregister(this)
-        locationManager.unsubscribeLocationUpdate(this)
+        unsubscribeLocationUpdate()
         super.unsubscribe()
     }
 
@@ -98,11 +98,6 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
         requestCurrentLocation()
         mainMapView.setMyLocationEnabled(true)
         locationGranted = true
-    }
-
-    override fun subscribeLocationUpdate() {
-        locationManager.requestLocationUpdates()
-        locationManager.subscribeLocationUpdate(this)
     }
 
     override fun requestCurrentLocation() {
@@ -204,6 +199,15 @@ class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContra
                 }
             }
         }
+    }
+
+    private fun subscribeLocationUpdate() {
+        locationManager.requestLocationUpdates()
+        locationManager.subscribeLocationUpdate(this)
+    }
+
+    private fun unsubscribeLocationUpdate() {
+        locationManager.unsubscribeLocationUpdate(this)
     }
 
     private fun onCurrLocationChanged(latitude: Double, longitude: Double) {

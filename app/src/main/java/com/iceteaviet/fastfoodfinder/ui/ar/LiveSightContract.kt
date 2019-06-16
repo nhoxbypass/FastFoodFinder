@@ -13,6 +13,7 @@ interface LiveSightContract {
         fun requestLocationPermission()
         fun isLocationPermissionGranted(): Boolean
         fun showCannotGetLocationMessage()
+        fun showGeneralErrorMessage()
         fun requestCameraPermission()
         fun isCameraPermissionGranted(): Boolean
         fun updateLatestLocation(latestLocation: LatLngAlt)
@@ -21,14 +22,13 @@ interface LiveSightContract {
         fun initSensorService()
         fun releaseARCamera()
         fun addARPoint(arPoi: AugmentedPOI)
+        fun setARPoints(arPoints: List<AugmentedPOI>)
     }
 
     interface Presenter : com.iceteaviet.fastfoodfinder.ui.base.Presenter {
         fun startArCamera()
         fun onLocationPermissionGranted()
         fun onCameraPermissionGranted()
-        fun subscribeLocationUpdate()
-        fun unsubscribeLocationUpdate()
         fun requestCurrentLocation()
     }
 }

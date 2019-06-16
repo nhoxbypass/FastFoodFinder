@@ -26,7 +26,7 @@ class FakeStoreDAO : StoreDataSource {
         }
     }
 
-    override fun getStoreInBounds(minLat: Double, minLng: Double, maxLat: Double, maxLng: Double): List<Store> {
+    override fun getStoreInBounds(lat: Double, lng: Double, radius: Double): List<Store> {
         val storeList = ArrayList<Store>()
         // Build the query looking at all users:
         val query = ""

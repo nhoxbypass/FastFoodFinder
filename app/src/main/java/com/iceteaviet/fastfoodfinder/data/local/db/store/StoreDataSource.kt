@@ -11,7 +11,7 @@ interface StoreDataSource {
 
     fun setStores(storeList: List<Store>)
 
-    fun getStoreInBounds(minLat: Double, minLng: Double, maxLat: Double, maxLng: Double): List<Store>
+    fun getStoreInBounds(lat: Double, lng: Double, radius: Double): List<Store>
 
     fun findStores(queryString: String): List<Store>
 

@@ -16,7 +16,7 @@ interface StoreRepository {
 
     fun setStores(storeList: List<Store>)
 
-    fun getStoreInBounds(minLat: Double, minLng: Double, maxLat: Double, maxLng: Double): Single<List<Store>>
+    fun getStoreInBounds(lat: Double, lng: Double, radius: Double): Single<List<Store>>
 
     fun findStores(queryString: String): Single<List<Store>>
 

@@ -31,7 +31,6 @@ interface StoreDetailContract {
 
     interface Presenter : com.iceteaviet.fastfoodfinder.ui.base.Presenter {
         fun onLocationPermissionGranted()
-        fun subscribeLocationUpdate()
         fun requestCurrentLocation()
         fun handleExtras(extras: Parcelable?)
         fun onAddNewComment(comment: Comment?)

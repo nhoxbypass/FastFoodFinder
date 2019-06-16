@@ -52,7 +52,7 @@ class AsyncStoreDAO {
         }
     }
 
-    fun getStoreInBounds(minLat: Double, minLng: Double, maxLat: Double, maxLng: Double): Single<MutableList<Store>> {
+    fun getStoreInBounds(lat: Double, lng: Double, radius: Double): Single<MutableList<Store>> {
         return Single.create { emitter ->
             val realm = Realm.getDefaultInstance()
             val storeList = ArrayList<Store>()
@@ -60,8 +60,8 @@ class AsyncStoreDAO {
             val query = realm.where(StoreEntity::class.java)
 
             // Add query conditions:
-            query.between(PARAM_LAT, minLat, maxLat)
-            query.between(PARAM_LNG, minLng, maxLng)
+            query.between(PARAM_LAT, lat - radius, lat + radius)
+            query.between(PARAM_LNG, lng - radius, lng + radius)
 
             // Execute the query:
             val results = query.findAll()

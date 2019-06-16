@@ -134,8 +134,8 @@ class AppDataManager(context: Context, private val storeRepository: StoreReposit
         storeRepository.setStores(storeList)
     }
 
-    override fun getStoreInBounds(minLat: Double, minLng: Double, maxLat: Double, maxLng: Double): Single<List<Store>> {
-        return storeRepository.getStoreInBounds(minLat, minLng, maxLat, maxLng)
+    override fun getStoreInBounds(lat: Double, lng: Double, radius: Double): Single<List<Store>> {
+        return storeRepository.getStoreInBounds(lat, lng, radius)
     }
 
     override fun findStores(queryString: String): Single<List<Store>> {

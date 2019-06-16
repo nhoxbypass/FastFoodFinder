@@ -173,14 +173,6 @@ class StoreDetailPresenterTest {
     }
 
     @Test
-    fun requestLocationUpdatesTest() {
-        storeDetailPresenter.subscribeLocationUpdate()
-
-        verify(locationManager).requestLocationUpdates()
-        verify(locationManager).subscribeLocationUpdate(storeDetailPresenter)
-    }
-
-    @Test
     fun requestCurrentLocationTest_haveLastLocation() {
         // Preconditions
         `when`(locationManager.getCurrentLocation()).thenReturn(location)

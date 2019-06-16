@@ -103,14 +103,6 @@ class MainMapPresenterTest {
     }
 
     @Test
-    fun requestLocationUpdatesTest() {
-        mainMapPresenter.subscribeLocationUpdate()
-
-        verify(locationManager).requestLocationUpdates()
-        verify(locationManager).subscribeLocationUpdate(mainMapPresenter)
-    }
-
-    @Test
     fun requestCurrentLocationTest_haveLastLocation() {
         // Preconditions
         `when`(locationManager.getCurrentLocation()).thenReturn(location)

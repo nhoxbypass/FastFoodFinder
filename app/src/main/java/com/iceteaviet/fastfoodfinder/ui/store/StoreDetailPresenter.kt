@@ -69,7 +69,7 @@ open class StoreDetailPresenter : BasePresenter<StoreDetailContract.Presenter>, 
     }
 
     override fun unsubscribe() {
-        locationManager.unsubscribeLocationUpdate(this)
+        unsubscribeLocationUpdate()
         super.unsubscribe()
     }
 
@@ -91,11 +91,6 @@ open class StoreDetailPresenter : BasePresenter<StoreDetailContract.Presenter>, 
         } else {
             storeDetailView.exit()
         }
-    }
-
-    override fun subscribeLocationUpdate() {
-        locationManager.requestLocationUpdates()
-        locationManager.subscribeLocationUpdate(this)
     }
 
     override fun requestCurrentLocation() {
@@ -172,5 +167,14 @@ open class StoreDetailPresenter : BasePresenter<StoreDetailContract.Presenter>, 
     }
 
     override fun onSaveButtonClick() {
+    }
+
+    private fun subscribeLocationUpdate() {
+        locationManager.requestLocationUpdates()
+        locationManager.subscribeLocationUpdate(this)
+    }
+
+    private fun unsubscribeLocationUpdate() {
+        locationManager.unsubscribeLocationUpdate(this)
     }
 }

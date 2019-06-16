@@ -33,7 +33,6 @@ interface MainMapContract {
 
     interface Presenter : com.iceteaviet.fastfoodfinder.ui.base.Presenter {
         fun onLocationPermissionGranted()
-        fun subscribeLocationUpdate()
         fun requestCurrentLocation()
         fun onMapCameraMove(cameraPosition: LatLng, bounds: LatLngBounds)
         fun onGetMapAsync()
