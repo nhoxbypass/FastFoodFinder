@@ -64,7 +64,20 @@ class SearchPresenterTest {
 
         searchPresenter.subscribe()
 
-        verify(searchView).setSearchHistory(searchHistory.toList().asReversed(), ArrayList())
+        verify(searchView).setSearchHistory(searchHistory.toList().asReversed(), searchItems.subList(0, 2))
+    }
+
+    @Test
+    fun subscribeTest_haveSearchHistory_findStoreAllError() {
+        // Preconditions
+        `when`(dataManager.getSearchHistories()).thenReturn(searchHistory)
+
+        // Mocks
+        `when`(dataManager.findStoreById(ArgumentMatchers.anyInt())).thenReturn(Single.error(NotFoundException()))
+
+        searchPresenter.subscribe()
+
+        verify(searchView).setSearchHistory(searchHistory.toList().asReversed(), searchItems.subList(0, 2))
     }
 
     @Test

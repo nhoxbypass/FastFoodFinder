@@ -1,7 +1,7 @@
 package com.iceteaviet.fastfoodfinder.ui.main.map
 
-import android.util.SparseArray
 import androidx.annotation.VisibleForTesting
+import androidx.collection.SparseArrayCompat
 import androidx.core.util.Pair
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
@@ -55,7 +55,7 @@ open class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapC
     var locationGranted = false
 
     @VisibleForTesting
-    var markerSparseArray: SparseArray<Marker> = SparseArray() // pair storeId - marker
+    var markerSparseArray: SparseArrayCompat<Marker> = SparseArrayCompat() // pair storeId - marker
 
     private var newVisibleStorePublisher: PublishSubject<Store>? = null
     private var cameraPositionPublisher: PublishSubject<MapCameraPosition>? = null
