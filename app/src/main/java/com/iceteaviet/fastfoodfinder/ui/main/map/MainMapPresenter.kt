@@ -54,8 +54,10 @@ open class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapC
     @VisibleForTesting
     var locationGranted = false
 
+    // Pair storeId - marker
+    // User SparseArrayCompat to support unit testing: https://stackoverflow.com/questions/37209270/unit-test-sparsearray-using-junit-using-jvm
     @VisibleForTesting
-    var markerSparseArray: SparseArrayCompat<Marker> = SparseArrayCompat() // pair storeId - marker
+    var markerSparseArray: SparseArrayCompat<Marker> = SparseArrayCompat()
 
     private var newVisibleStorePublisher: PublishSubject<Store>? = null
     private var cameraPositionPublisher: PublishSubject<MapCameraPosition>? = null
