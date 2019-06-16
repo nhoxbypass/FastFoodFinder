@@ -121,6 +121,14 @@ class MainMapFragment : Fragment(), MainMapContract.View {
         Toast.makeText(context, stringId, Toast.LENGTH_SHORT).show()
     }
 
+    override fun showGeneralErrorMessage() {
+        Toast.makeText(context, R.string.error_general_error_code, Toast.LENGTH_LONG).show()
+    }
+
+    override fun showInvalidStoreLocationWarning() {
+        Toast.makeText(context, R.string.error_invalid_store_location, Toast.LENGTH_LONG).show()
+    }
+
     override fun showCannotGetLocationMessage() {
         Toast.makeText(context, R.string.cannot_get_curr_location, Toast.LENGTH_SHORT).show()
     }
@@ -234,7 +242,7 @@ class MainMapFragment : Fragment(), MainMapContract.View {
 
         nearByStoreAdapter?.setOnStoreListListener(object : NearByStoreAdapter.StoreListListener {
             override fun onItemClick(store: Store) {
-                presenter.onDirectionNavigateClick(store)
+                presenter.onNavigationButtonClick(store)
             }
         })
     }
@@ -258,7 +266,7 @@ class MainMapFragment : Fragment(), MainMapContract.View {
         dialog.setDialogListen(object : StoreInfoDialog.StoreDialogActionListener {
             override fun onDirection(store: Store?) {
                 if (store != null)
-                    presenter.onDirectionNavigateClick(store)
+                    presenter.onNavigationButtonClick(store)
             }
 
             override fun onAddToFavorite(storeId: Int) {

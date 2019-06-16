@@ -3,15 +3,21 @@ package com.iceteaviet.fastfoodfinder.ui.main.map
 import android.os.Build
 import com.google.android.gms.maps.model.LatLng
 import com.iceteaviet.fastfoodfinder.data.DataManager
+import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
+import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.location.GoogleLocationManager
 import com.iceteaviet.fastfoodfinder.location.LatLngAlt
 import com.iceteaviet.fastfoodfinder.location.LocationListener
+import com.iceteaviet.fastfoodfinder.utils.StoreType
+import com.iceteaviet.fastfoodfinder.utils.exception.NotFoundException
 import com.iceteaviet.fastfoodfinder.utils.exception.UnknownException
+import com.iceteaviet.fastfoodfinder.utils.getFakeMapsDirection
 import com.iceteaviet.fastfoodfinder.utils.getFakeStoreList
 import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
 import com.iceteaviet.fastfoodfinder.utils.rx.TrampolineSchedulerProvider
 import com.iceteaviet.fastfoodfinder.utils.setFinalStatic
 import com.nhaarman.mockitokotlin2.capture
+import com.nhaarman.mockitokotlin2.eq
 import io.reactivex.Single
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
@@ -260,14 +266,88 @@ class MainMapPresenterTest {
         verify(mainMapView).addMarkersToMap(stores.toMutableList())
     }
 
+    @Test
+    fun onNavigationButtonClickTest_showNavigationScreen() {
+        // Preconditions
+        mainMapPresenter.currLocation = latLng
+
+        // Mocks
+        `when`(dataManager.getMapsDirection(ArgumentMatchers.anyMap(), eq(store))).thenReturn(Single.just(mapsDirection))
+
+        mainMapPresenter.onNavigationButtonClick(store)
+
+        verify(mainMapView).showMapRoutingView(store, mapsDirection)
+    }
+
+    @Test
+    fun onNavigationButtonClickTest_validStoreLocation_generalError() {
+        // Preconditions
+        mainMapPresenter.currLocation = latLng
+        val store = Store(STORE_ID, STORE_TITLE, STORE_ADDRESS, STORE_LAT, STORE_LNG, STORE_TEL, STORE_TYPE)
+
+        // Mocks
+        `when`(dataManager.getMapsDirection(ArgumentMatchers.anyMap(), eq(store))).thenReturn(Single.error(NotFoundException()))
+
+        mainMapPresenter.onNavigationButtonClick(store)
+
+        verify(mainMapView).showGeneralErrorMessage()
+    }
+
+    @Test
+    fun onNavigationButtonClickTest_invalidStoreLocation() {
+        // Preconditions
+        val store = Store(STORE_ID, STORE_TITLE, STORE_ADDRESS, STORE_INVALID_LAT, STORE_INVALID_LNG, STORE_TEL, STORE_TYPE)
+
+        mainMapPresenter.onNavigationButtonClick(store)
+
+        verify(mainMapView).showInvalidStoreLocationWarning()
+    }
+
+    @Test
+    fun onNavigationButtonClickTest_nullCurrentLocation() {
+        // Preconditions
+        mainMapPresenter.currLocation = null
+
+        val store = Store(STORE_ID, STORE_TITLE, STORE_ADDRESS, STORE_LAT, STORE_LNG, STORE_TEL, STORE_TYPE)
+
+        mainMapPresenter.onNavigationButtonClick(store)
+
+        verify(mainMapView).showCannotGetLocationMessage()
+    }
+
+    @Test
+    fun onClearOldMapDataTest() {
+        mainMapPresenter.onClearOldMapData()
+
+        assertThat(mainMapPresenter.markerSparseArray.size()).isZero()
+        verify(mainMapView).clearMapData()
+    }
+
     // Workaround solution
     private fun <T> anyObject(): T {
         return Mockito.anyObject<T>()
     }
 
     companion object {
+        private const val STORE_ID = 123
+        private const val STORE_TITLE = "store_title"
+        private const val STORE_ADDRESS = "store_address"
+        private const val STORE_LAT = "10.773996"
+        private const val STORE_LNG = "106.6898035"
+        private const val STORE_TEL = "012345678965"
+        private const val STORE_TYPE = StoreType.TYPE_CIRCLE_K
+
+        private const val STORE_INVALID_LAT = "0"
+        private const val STORE_INVALID_LNG = "0"
+
         private val location = LatLngAlt(10.1234, 106.1234, 1.0)
+        private val latLng = LatLng(10.1234, 106.1234)
 
         private val stores = getFakeStoreList()
+
+        val store = Store(STORE_ID, STORE_TITLE, STORE_ADDRESS, STORE_LAT, STORE_LNG, STORE_TEL, STORE_TYPE)
+
+        private val invalidMapsDirection = MapsDirection()
+        private val mapsDirection = getFakeMapsDirection()
     }
 }

@@ -17,7 +17,9 @@ interface MainMapContract {
         fun setMyLocationEnabled(enabled: Boolean)
         fun animateMapCamera(location: LatLng, zoomToDetail: Boolean)
         fun showWarningMessage(@StringRes stringId: Int)
+        fun showGeneralErrorMessage()
         fun showCannotGetLocationMessage()
+        fun showInvalidStoreLocationWarning()
         fun addMarkersToMap(storeList: List<Store>)
         fun setupMap()
         fun setupMapEventHandlers()
@@ -36,7 +38,7 @@ interface MainMapContract {
         fun requestCurrentLocation()
         fun onMapCameraMove(cameraPosition: LatLng, bounds: LatLngBounds)
         fun onGetMapAsync()
-        fun onDirectionNavigateClick(store: Store)
+        fun onNavigationButtonClick(store: Store)
         fun onMapMarkerAdd(storeId: Int, marker: Marker)
         fun onClearOldMapData()
     }

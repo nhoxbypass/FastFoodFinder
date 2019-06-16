@@ -1,6 +1,5 @@
 package com.iceteaviet.fastfoodfinder.ui.main.map
 
-import android.text.TextUtils
 import android.util.SparseArray
 import androidx.annotation.VisibleForTesting
 import androidx.core.util.Pair
@@ -23,6 +22,7 @@ import com.iceteaviet.fastfoodfinder.ui.main.map.model.NearByStore
 import com.iceteaviet.fastfoodfinder.utils.calcDistance
 import com.iceteaviet.fastfoodfinder.utils.getLatLngString
 import com.iceteaviet.fastfoodfinder.utils.isLolipopOrHigher
+import com.iceteaviet.fastfoodfinder.utils.isValidLocation
 import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
 import io.reactivex.Observer
 import io.reactivex.SingleObserver
@@ -54,7 +54,8 @@ open class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapC
     @VisibleForTesting
     var locationGranted = false
 
-    private var markerSparseArray: SparseArray<Marker> = SparseArray() // pair storeId - marker
+    @VisibleForTesting
+    var markerSparseArray: SparseArray<Marker> = SparseArray() // pair storeId - marker
 
     private var newVisibleStorePublisher: PublishSubject<Store>? = null
     private var cameraPositionPublisher: PublishSubject<MapCameraPosition>? = null
@@ -139,15 +140,22 @@ open class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapC
         subscribeNewVisibleStore()
     }
 
-    override fun onDirectionNavigateClick(store: Store) {
+    override fun onNavigationButtonClick(store: Store) {
         val storeLocation = store.getPosition()
         val queries = HashMap<String, String>()
 
+        if (!isValidLocation(storeLocation)) {
+            mainMapView.showInvalidStoreLocationWarning()
+            return
+        }
+
+        if (!isValidLocation(currLocation)) {
+            mainMapView.showCannotGetLocationMessage()
+            return
+        }
+
         val origin = getLatLngString(currLocation)
         val destination = getLatLngString(storeLocation)
-
-        if (TextUtils.isEmpty(origin) || TextUtils.isEmpty(destination))
-            return
 
         queries[GoogleMapsRoutingApiHelper.PARAM_ORIGIN] = origin
         queries[GoogleMapsRoutingApiHelper.PARAM_DESTINATION] = destination
@@ -165,7 +173,7 @@ open class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapC
                     }
 
                     override fun onError(e: Throwable) {
-                        e.printStackTrace()
+                        mainMapView.showGeneralErrorMessage()
                     }
                 })
     }
