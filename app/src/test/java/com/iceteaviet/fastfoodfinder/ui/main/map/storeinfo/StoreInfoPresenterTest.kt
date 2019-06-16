@@ -5,10 +5,12 @@ import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.utils.StoreType
 import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
 import com.iceteaviet.fastfoodfinder.utils.rx.TrampolineSchedulerProvider
+import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.verify
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
+import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 
 /**
@@ -52,6 +54,59 @@ class StoreInfoPresenterTest {
         storeInfoPresenter.subscribe()
     }
 
+    @Test
+    fun setOnDetailTextViewClickTest() {
+        storeInfoPresenter.setOnDetailTextViewClick()
+        verify(storeInfoView).openStoreDetailActivity(storeInfoPresenter.store)
+    }
+
+    @Test
+    fun onMakeCallWithPermissionTest_Empty_Tel(){
+        storeInfoPresenter.store = store
+        storeInfoPresenter.store!!.tel = ""
+        storeInfoPresenter.onMakeCallWithPermission()
+        verify(storeInfoView).showEmptyTelToast()
+    }
+
+    @Test
+    fun onMakeCallWithPermissionTest_Not_Empty_Tel() {
+        storeInfoPresenter.store = store
+        storeInfoPresenter.onMakeCallWithPermission()
+        verify(storeInfoView).makeNativeCall(STORE_TEL)
+    }
+
+    @Test
+    fun onAddToFavoriteButtonClickTest_Invalid_Store() {
+        storeInfoPresenter.store = null
+        storeInfoPresenter.onAddToFavoriteButtonClick()
+        verify(storeInfoView, Mockito.never()).addStoreToFavorite(any())
+    }
+
+    @Test
+    fun onAddToFavoriteButtonClickTest_Valid_Store() {
+        storeInfoPresenter.store = store
+        storeInfoPresenter.onAddToFavoriteButtonClick()
+        verify(storeInfoView).addStoreToFavorite(store)
+    }
+
+    @Test
+    fun onDirectionButtonClick_Invalid_Store() {
+        // Preconditions
+        storeInfoPresenter.store = null
+
+        storeInfoPresenter.onDirectionButtonClick()
+
+        verify(storeInfoView, Mockito.never()).onDirectionChange(any())
+    }
+
+    @Test
+    fun onDirectionButtonClick_Valid_Store() {
+        storeInfoPresenter.store = store
+
+        storeInfoPresenter.onDirectionButtonClick()
+
+        verify(storeInfoView).onDirectionChange(store)
+    }
 
     companion object {
         private const val STORE_ID = 123
