@@ -4,6 +4,7 @@ import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.ui.main.search.model.SearchStoreItem
 import com.iceteaviet.fastfoodfinder.utils.StoreType
+import com.iceteaviet.fastfoodfinder.utils.exception.NotFoundException
 import com.iceteaviet.fastfoodfinder.utils.exception.UnknownException
 import com.iceteaviet.fastfoodfinder.utils.getFakeSearchStoreItems
 import com.iceteaviet.fastfoodfinder.utils.getFakeStoreList
@@ -51,6 +52,19 @@ class SearchPresenterTest {
         searchPresenter.subscribe()
 
         verifyZeroInteractions(searchView)
+    }
+
+    @Test
+    fun subscribeTest_haveSearchHistory_findStoreError() {
+        // Preconditions
+        `when`(dataManager.getSearchHistories()).thenReturn(searchHistory)
+
+        // Mocks
+        `when`(dataManager.findStoreById(STORE_ID)).thenReturn(Single.error(NotFoundException()))
+
+        searchPresenter.subscribe()
+
+        verify(searchView).setSearchHistory(searchHistory.toList().asReversed(), ArrayList())
     }
 
     @Test
