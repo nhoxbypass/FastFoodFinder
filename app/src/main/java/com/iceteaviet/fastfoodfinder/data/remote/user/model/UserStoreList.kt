@@ -85,6 +85,14 @@ class UserStoreList : Parcelable {
         }
     }
 
+    override fun hashCode(): Int {
+        var result = id
+        result = 31 * result + listName.hashCode()
+        result = 31 * result + iconId
+        result = 31 * result + storeIdList.hashCode()
+        return result
+    }
+
     companion object CREATOR : Parcelable.Creator<UserStoreList> {
         const val ID_SAVED = 0
         const val ID_FAVOURITE = 1
