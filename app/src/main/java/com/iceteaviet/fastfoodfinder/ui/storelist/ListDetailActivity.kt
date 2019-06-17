@@ -1,6 +1,7 @@
 package com.iceteaviet.fastfoodfinder.ui.storelist
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.annotation.Nullable
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -33,8 +34,12 @@ class ListDetailActivity : BaseActivity(), ListDetailContract.View {
 
         presenter = ListDetailPresenter(App.getDataManager(), App.getSchedulerProvider(), this)
 
-        presenter.handleExtras(intent)
-        setupUI()
+        if (intent != null) {
+            presenter.handleExtras(intent.getParcelableExtra(KEY_USER_STORE_LIST), intent.getStringExtra(KEY_USER_PHOTO_URL))
+            setupUI()
+        } else {
+            exit()
+        }
     }
 
     override fun onResume() {
@@ -63,6 +68,10 @@ class ListDetailActivity : BaseActivity(), ListDetailContract.View {
 
     override fun exit() {
         finish()
+    }
+
+    override fun showGeneralErrorMessage() {
+        Toast.makeText(this, R.string.error_general_error_code, Toast.LENGTH_LONG).show()
     }
 
     private fun setupUI() {

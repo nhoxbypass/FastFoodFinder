@@ -1,8 +1,8 @@
 package com.iceteaviet.fastfoodfinder.ui.storelist
 
-import android.content.Intent
 import androidx.annotation.DrawableRes
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
+import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList
 import com.iceteaviet.fastfoodfinder.ui.base.BaseView
 
 /**
@@ -14,9 +14,10 @@ interface ListDetailContract {
         fun exit()
         fun setListNameText(listName: String)
         fun loadStoreIcon(@DrawableRes storeIcon: Int)
+        fun showGeneralErrorMessage()
     }
 
     interface Presenter : com.iceteaviet.fastfoodfinder.ui.base.Presenter {
-        fun handleExtras(intent: Intent?)
+        fun handleExtras(userStoreList: UserStoreList?, photoUrl: String?)
     }
 }

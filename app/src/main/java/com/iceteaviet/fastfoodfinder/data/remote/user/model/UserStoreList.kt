@@ -77,6 +77,14 @@ class UserStoreList : Parcelable {
         parcel.writeList(storeIdList)
     }
 
+    override fun equals(other: Any?): Boolean {
+        return if (other is UserStoreList) {
+            id.equals(other.id) && listName.equals(other.listName) && storeIdList.equals(other.storeIdList)
+        } else {
+            false
+        }
+    }
+
     companion object CREATOR : Parcelable.Creator<UserStoreList> {
         const val ID_SAVED = 0
         const val ID_FAVOURITE = 1

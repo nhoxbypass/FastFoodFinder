@@ -1,6 +1,6 @@
 package com.iceteaviet.fastfoodfinder.ui.storelist
 
-import android.content.Intent
+import androidx.annotation.VisibleForTesting
 import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList
@@ -17,47 +17,45 @@ class ListDetailPresenter : BasePresenter<ListDetailContract.Presenter>, ListDet
 
     private val listDetailView: ListDetailContract.View
 
-    private var userStoreList: UserStoreList? = null
-    private var photoUrl: String? = null
+    @VisibleForTesting
+    lateinit var userStoreList: UserStoreList
+    @VisibleForTesting
+    var photoUrl: String? = null
 
     constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider, listDetailView: ListDetailContract.View) : super(dataManager, schedulerProvider) {
         this.listDetailView = listDetailView
     }
 
     override fun subscribe() {
-        userStoreList?.let {
-            listDetailView.setListNameText(it.listName)
-            listDetailView.loadStoreIcon(getStoreListIconDrawableRes(it.iconId))
+        listDetailView.setListNameText(userStoreList.listName)
+        listDetailView.loadStoreIcon(getStoreListIconDrawableRes(userStoreList.iconId))
 
-            //add list store to mAdapter here
-            dataManager.findStoresByIds(it.getStoreIdList())
-                    .subscribeOn(schedulerProvider.io())
-                    .observeOn(schedulerProvider.ui())
-                    .subscribe(object : SingleObserver<List<Store>> {
-                        override fun onSubscribe(d: Disposable) {
-                            compositeDisposable.add(d)
-                        }
+        //add list store to mAdapter here
+        dataManager.findStoresByIds(userStoreList.getStoreIdList())
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.ui())
+                .subscribe(object : SingleObserver<List<Store>> {
+                    override fun onSubscribe(d: Disposable) {
+                        compositeDisposable.add(d)
+                    }
 
-                        override fun onSuccess(storeList: List<Store>) {
-                            listDetailView.setStores(storeList)
-                        }
+                    override fun onSuccess(storeList: List<Store>) {
+                        listDetailView.setStores(storeList)
+                    }
 
-                        override fun onError(e: Throwable) {
-                            e.printStackTrace()
-                        }
-                    })
-        }
+                    override fun onError(e: Throwable) {
+                        listDetailView.showGeneralErrorMessage()
+                    }
+                })
     }
 
-    override fun handleExtras(intent: Intent?) {
-        if (intent == null) {
+    override fun handleExtras(userStoreList: UserStoreList?, photoUrl: String?) {
+        if (photoUrl == null && userStoreList == null) {
             listDetailView.exit()
             return
         }
 
-        userStoreList = UserStoreList()
-        if (intent.hasExtra(ListDetailActivity.KEY_USER_STORE_LIST))
-            userStoreList = intent.getParcelableExtra(ListDetailActivity.KEY_USER_STORE_LIST)
-        photoUrl = intent.getStringExtra(ListDetailActivity.KEY_USER_PHOTO_URL)
+        this.userStoreList = userStoreList ?: UserStoreList()
+        this.photoUrl = photoUrl ?: ""
     }
 }
