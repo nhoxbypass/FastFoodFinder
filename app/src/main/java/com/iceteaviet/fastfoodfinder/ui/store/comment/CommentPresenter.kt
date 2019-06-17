@@ -19,7 +19,8 @@ class CommentPresenter : BasePresenter<CommentContract.Presenter>, CommentContra
     override fun subscribe() {
     }
 
-    override fun afterCommentTextChanged(text: CharSequence, length: Int) {
+    override fun afterCommentTextChanged(text: CharSequence) {
+        val length = text.length
         val remainChars = MAX_CHAR - length
         commentView.setRemainCharCountText(remainChars.toString())
         if (remainChars < 0) {
@@ -32,14 +33,16 @@ class CommentPresenter : BasePresenter<CommentContract.Presenter>, CommentContra
     }
 
     override fun onPostButtonClick(commentText: CharSequence) {
-        if (commentText.length > MAX_CHAR) {
+        if (commentText.isEmpty() || commentText.length > MAX_CHAR) {
             commentView.showCommentPostFailedWarning()
             return
         }
 
         val currUser = dataManager.getCurrentUser()
-        if (currUser == null)
+        if (currUser == null) {
+            commentView.showCommentPostFailedWarning()
             return
+        }
 
         val comment = Comment(currUser.name, currUser.photoUrl,
                 commentText.toString(), "", System.currentTimeMillis())

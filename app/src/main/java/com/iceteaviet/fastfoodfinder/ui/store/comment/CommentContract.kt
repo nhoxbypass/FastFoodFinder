@@ -18,7 +18,7 @@ interface CommentContract {
     }
 
     interface Presenter : com.iceteaviet.fastfoodfinder.ui.base.Presenter {
-        fun afterCommentTextChanged(text: CharSequence, length: Int)
+        fun afterCommentTextChanged(text: CharSequence)
         fun onPostButtonClick(commentText: CharSequence)
         fun onBackButtonClick(commentText: CharSequence)
     }

@@ -124,7 +124,7 @@ class CommentActivity : BaseActivity(), CommentContract.View {
             }
 
             override fun afterTextChanged(s: Editable) {
-                presenter.afterCommentTextChanged(s.toString(), etComment.text.length)
+                presenter.afterCommentTextChanged(s.toString())
             }
         })
 
