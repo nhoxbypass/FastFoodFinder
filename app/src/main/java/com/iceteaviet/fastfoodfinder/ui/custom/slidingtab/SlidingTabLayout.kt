@@ -1,20 +1,5 @@
 package com.iceteaviet.fastfoodfinder.ui.custom.slidingtab
 
-import android.content.Context
-import android.graphics.Typeface
-import android.os.Build
-import android.util.AttributeSet
-import android.util.TypedValue
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
-import android.widget.FrameLayout
-import android.widget.HorizontalScrollView
-import android.widget.TextView
-import androidx.viewpager.widget.ViewPager
-import com.iceteaviet.fastfoodfinder.ui.custom.slidingtab.SlidingTabLayout.TabColorizer
-
-
 /**
  * To be used with ViewPager to provide a tab indicator component which give constant feedback as to
  * the user's scroll progress.
@@ -34,6 +19,7 @@ import com.iceteaviet.fastfoodfinder.ui.custom.slidingtab.SlidingTabLayout.TabCo
  * The views used as tabs can be customized by calling [.setCustomTabView],
  * providing the layout ID of your custom layout.
  */
+/*
 open class SlidingTabLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : HorizontalScrollView(context, attrs, defStyle) {
 
     private val mTitleOffset: Int
@@ -284,3 +270,4 @@ open class SlidingTabLayout @JvmOverloads constructor(context: Context, attrs: A
     }
 
 }
+*/

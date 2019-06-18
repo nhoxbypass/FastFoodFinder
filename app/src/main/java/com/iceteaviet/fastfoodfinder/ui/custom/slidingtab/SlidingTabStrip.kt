@@ -1,15 +1,6 @@
 package com.iceteaviet.fastfoodfinder.ui.custom.slidingtab
 
-import android.R
-import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
-import android.util.AttributeSet
-import android.util.TypedValue
-import android.widget.LinearLayout
-
-
+/*
 internal class SlidingTabStrip @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) : LinearLayout(context, attrs) {
 
     private val mBottomBorderThickness: Int
@@ -183,3 +174,4 @@ internal class SlidingTabStrip @JvmOverloads constructor(context: Context, attrs
         }
     }
 }
+*/
