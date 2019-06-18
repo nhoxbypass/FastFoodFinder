@@ -18,16 +18,16 @@ abstract class ProcessButton : FlatButton {
     private var mProgress: Int = 0
     var maxProgress: Int = 0
         private set
-    var minProgress: Int = 0
+    private var minProgress: Int = 0
         private set
 
     var progressDrawable: GradientDrawable? = null
     var completeDrawable: GradientDrawable? = null
     var errorDrawable: GradientDrawable? = null
 
-    var loadingText: CharSequence? = null
-    var completeText: CharSequence? = null
-    var errorText: CharSequence? = null
+    private var loadingText: CharSequence? = null
+    private var completeText: CharSequence? = null
+    private var errorText: CharSequence? = null
 
     var progress: Int
         get() = mProgress

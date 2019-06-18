@@ -46,10 +46,7 @@ class ActionProcessButton : ProcessButton {
     private fun init(context: Context) {
         mMode = Mode.ENDLESS
 
-        mColor1 = getColor(R.color.holo_blue_bright)
-        mColor2 = getColor(R.color.holo_green_light)
-        mColor3 = getColor(R.color.holo_orange_light)
-        mColor4 = getColor(R.color.holo_red_light)
+        setColorScheme(getColor(R.color.holo_blue_bright), getColor(R.color.holo_green_light), getColor(R.color.holo_orange_light), getColor(R.color.holo_red_light))
     }
 
     fun setMode(mode: Mode) {
@@ -69,8 +66,8 @@ class ActionProcessButton : ProcessButton {
         }
 
         when (mMode) {
-            ActionProcessButton.Mode.ENDLESS -> drawEndlessProgress(canvas)
-            ActionProcessButton.Mode.PROGRESS -> drawLineProgress(canvas)
+            Mode.ENDLESS -> drawEndlessProgress(canvas)
+            Mode.PROGRESS -> drawLineProgress(canvas)
         }
     }
 
@@ -120,19 +117,12 @@ class ActionProcessButton : ProcessButton {
         private var mRunning: Boolean = false
 
         // Colors used when rendering the animation,
-        private var mColor1: Int = 0
-        private var mColor2: Int = 0
-        private var mColor3: Int = 0
-        private var mColor4: Int = 0
+        private var mColor1: Int = COLOR1
+        private var mColor2: Int = COLOR2
+        private var mColor3: Int = COLOR3
+        private var mColor4: Int = COLOR4
 
         private val mBounds = Rect()
-
-        init {
-            mColor1 = COLOR1
-            mColor2 = COLOR2
-            mColor3 = COLOR3
-            mColor4 = COLOR4
-        }
 
         /**
          * Set the four colors used in the progress animation. The first color will
@@ -302,18 +292,17 @@ class ActionProcessButton : ProcessButton {
         }
 
         companion object {
-
             // Default progress animation colors are grays.
-            private val COLOR1 = -0x4d000000
-            private val COLOR2 = -0x80000000
-            private val COLOR3 = 0x4d000000
-            private val COLOR4 = 0x1a000000
+            private const val COLOR1 = -0x4d000000
+            private const val COLOR2 = -0x80000000
+            private const val COLOR3 = 0x4d000000
+            private const val COLOR4 = 0x1a000000
 
             // The duration of the animation cycle.
-            private val ANIMATION_DURATION_MS = 2000
+            private const val ANIMATION_DURATION_MS = 2000
 
             // The duration of the animation to clear the bar.
-            private val FINISH_ANIMATION_DURATION_MS = 1000
+            private const val FINISH_ANIMATION_DURATION_MS = 1000
 
             // Interpolator for varying the speed of the animation.
             private val INTERPOLATOR = AccelerateDecelerateInterpolator()
