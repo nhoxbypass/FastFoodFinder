@@ -206,6 +206,10 @@ class ProfileFragment : Fragment(), ProfileContract.View, View.OnClickListener {
         openListDetailActivity(activity!!, userStoreList, photoUrl)
     }
 
+    override fun showGeneralErrorMessage() {
+
+    }
+
     companion object {
         fun newInstance(): ProfileFragment {
             val extras = Bundle()

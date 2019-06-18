@@ -1,6 +1,7 @@
 package com.iceteaviet.fastfoodfinder.ui.profile
 
 import android.text.TextUtils
+import androidx.annotation.VisibleForTesting
 import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList
@@ -17,7 +18,8 @@ import java.util.*
 class ProfilePresenter : BasePresenter<ProfileContract.Presenter>, ProfileContract.Presenter {
 
     private val profileView: ProfileContract.View
-    private var defaultList: MutableList<UserStoreList> = ArrayList() // Default store list (saved, favourite) that every user have
+    @VisibleForTesting
+    var defaultList: MutableList<UserStoreList> = ArrayList() // Default store list (saved, favourite) that every user have
 
     constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider, profileView: ProfileContract.View) : super(dataManager, schedulerProvider) {
         this.profileView = profileView
@@ -56,11 +58,15 @@ class ProfilePresenter : BasePresenter<ProfileContract.Presenter>, ProfileContra
     }
 
     override fun onSavedListClick() {
-        onStoreListClick(defaultList[UserStoreList.ID_SAVED])
+        if (UserStoreList.ID_SAVED < defaultList.size && defaultList[UserStoreList.ID_SAVED] != null) {
+            onStoreListClick(defaultList[UserStoreList.ID_SAVED])
+        }
     }
 
     override fun onFavouriteListClick() {
-        onStoreListClick(defaultList[UserStoreList.ID_FAVOURITE])
+        if (UserStoreList.ID_FAVOURITE < defaultList.size && defaultList[UserStoreList.ID_FAVOURITE] != null) {
+            onStoreListClick(defaultList[UserStoreList.ID_FAVOURITE])
+        }
     }
 
     override fun onStoreListClick(listPacket: UserStoreList) {
@@ -97,26 +103,25 @@ class ProfilePresenter : BasePresenter<ProfileContract.Presenter>, ProfileContra
 
                     override fun onSuccess(user: User) {
                         dataManager.updateCurrentUser(user)
-                        if (!TextUtils.isEmpty(user.photoUrl))
+                        if (!user.photoUrl.isBlank())
                             profileView.loadAvatarPhoto(user.photoUrl)
                         profileView.setName(user.name)
                         profileView.setEmail(user.email)
-                        loadStoreLists()
+                        loadStoreLists(user)
 
                         profileView.setSavedStoreCount(user.getSavedStoreList().getStoreIdList().size)
                         profileView.setFavouriteStoreCount(user.getFavouriteStoreList().getStoreIdList().size)
                     }
 
                     override fun onError(e: Throwable) {
-                        e.printStackTrace()
+                        profileView.showGeneralErrorMessage()
                     }
                 })
     }
 
-    private fun loadStoreLists() {
-        val currentUser = dataManager.getCurrentUser()
-        for (i in 0 until currentUser!!.getUserStoreLists().size) {
-            if (i <= 2) {
+    private fun loadStoreLists(currentUser: User) {
+        for (i in 0 until currentUser.getUserStoreLists().size) {
+            if (i <= 1) {
                 // Load default lists
                 defaultList.add(currentUser.getUserStoreLists()[i])
             } else {

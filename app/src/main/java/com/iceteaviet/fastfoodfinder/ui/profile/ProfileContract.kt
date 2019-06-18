@@ -20,6 +20,7 @@ interface ProfileContract {
         fun showCreateNewListDialog()
         fun dismissCreateNewListDialog()
         fun warningListNameExisted()
+        fun showGeneralErrorMessage()
         fun openListDetail(userStoreList: UserStoreList, photoUrl: String)
     }
 
