@@ -1,5 +1,6 @@
 package com.iceteaviet.fastfoodfinder.ui.profile.createlist
 
+import androidx.annotation.VisibleForTesting
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.ui.base.BasePresenter
@@ -12,7 +13,8 @@ class CreateListPresenter : BasePresenter<CreateListContract.Presenter>, CreateL
 
     private val createListView: CreateListContract.View
 
-    private var iconId = R.drawable.ic_profile_list_1
+    @VisibleForTesting
+    var iconId = R.drawable.ic_profile_list_1
 
     constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider, createListView: CreateListContract.View) : super(dataManager, schedulerProvider) {
         this.createListView = createListView
