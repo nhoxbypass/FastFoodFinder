@@ -9,6 +9,7 @@ import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList
 import com.iceteaviet.fastfoodfinder.ui.ar.model.AugmentedPOI
 import com.iceteaviet.fastfoodfinder.ui.main.search.model.SearchStoreItem
+import com.iceteaviet.fastfoodfinder.ui.settings.discountnotify.DiscountNotifyPresenter
 import com.iceteaviet.fastfoodfinder.utils.ui.getStoreLogoDrawableRes
 import java.text.SimpleDateFormat
 import java.util.*
@@ -137,6 +138,17 @@ fun getFakeUserStoreLists(): List<UserStoreList> {
 
     userStoreLists.add(UserStoreList(0, getFakeStoreIds(), 1, "My Saved Places"))
     userStoreLists.add(UserStoreList(1, getFakeStoreIds(), 2, "My Favourite Places"))
+
+    return userStoreLists
+}
+
+fun getFakeUserMultiStoreLists(): List<UserStoreList> {
+    val userStoreLists = ArrayList<UserStoreList>()
+
+    userStoreLists.add(UserStoreList(0, getFakeStoreIds(), 1, "My Saved Places"))
+    userStoreLists.add(UserStoreList(1, getFakeStoreIds(), 2, "My Favourite Places"))
+    userStoreLists.add(UserStoreList(2, getFakeStoreIds(), 3, "My Third List"))
+    userStoreLists.add(UserStoreList(3, getFakeStoreIds(), 4, "My Forth List"))
 
     return userStoreLists
 }
@@ -626,4 +638,15 @@ fun storesToArPoints(stores: List<Store>): List<AugmentedPOI> {
                 getStoreLogoDrawableRes(stores[i].type)))
     }
     return arPoints
+}
+
+fun getStoreNameByKey(key: String): String {
+    return when (key) {
+        DiscountNotifyPresenter.KEY_CIRCLE_K -> "Cirle K"
+        DiscountNotifyPresenter.KEY_BSMART -> "B’s mart"
+        DiscountNotifyPresenter.KEY_FAMILY_MART -> "Family mart"
+        DiscountNotifyPresenter.KEY_MINI_STOP -> "Ministop"
+        DiscountNotifyPresenter.KEY_SHOP_N_GO -> "Shop & Go"
+        else -> "Unknown"
+    }
 }

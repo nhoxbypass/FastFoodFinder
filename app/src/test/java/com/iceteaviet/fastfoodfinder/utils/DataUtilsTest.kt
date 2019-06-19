@@ -126,6 +126,17 @@ class DataUtilsTest {
         assertThat(filterInvalidData(stores)).hasSize(4)
     }
 
+
+    @Test
+    fun getStoreNameByKeyTest() {
+        assertThat(getStoreNameByKey(KEY_CIRCLE_K)).isEqualTo("Cirle K")
+        assertThat(getStoreNameByKey(KEY_BSMART)).isEqualTo("B’s mart")
+        assertThat(getStoreNameByKey(KEY_FAMILY_MART)).isEqualTo("Family mart")
+        assertThat(getStoreNameByKey(KEY_MINI_STOP)).isEqualTo("Ministop")
+        assertThat(getStoreNameByKey(KEY_SHOP_N_GO)).isEqualTo("Shop & Go")
+    }
+
+
     companion object {
         private const val STORE_ID = 123
         private const val STORE_TITLE = "store_title"
@@ -141,6 +152,12 @@ class DataUtilsTest {
         private const val STORE_INVALID_ADDRESS = ""
         private const val STORE_INVALID_LAT = "-1"
         private const val STORE_INVALID_LNG = "-1"
+
+        const val KEY_CIRCLE_K = "circle_k"
+        const val KEY_MINI_STOP = "mini_stop"
+        const val KEY_FAMILY_MART = "family_mark"
+        const val KEY_BSMART = "bsmart"
+        const val KEY_SHOP_N_GO = "shop_n_go"
 
     }
 }

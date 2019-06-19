@@ -39,11 +39,9 @@ class ProfilePresenter : BasePresenter<ProfileContract.Presenter>, ProfileContra
 
     // TODO: Check valid list name using FormatUtils
     override fun onCreateNewList(listName: String, iconId: Int) {
-        val currentUser = dataManager.getCurrentUser()
-        if (currentUser == null)
-            return
+        val currentUser = dataManager.getCurrentUser() ?: return
 
-        if (!isListNameExisted(listName)) {
+        if (!isListNameExisted(listName, currentUser)) {
             val id = currentUser.getUserStoreLists().size // New id = current size
             val list = UserStoreList(id, ArrayList(), iconId, listName)
             currentUser.addStoreList(list)
@@ -133,12 +131,7 @@ class ProfilePresenter : BasePresenter<ProfileContract.Presenter>, ProfileContra
         profileView.setStoreListCount(String.format("(%d)", currentUser.getUserStoreLists().size))
     }
 
-    private fun isListNameExisted(listName: String): Boolean {
-        val user = dataManager.getCurrentUser()
-
-        if (user == null)
-            return true
-
+    private fun isListNameExisted(listName: String, user: User): Boolean {
         val currStoreLists = user.getUserStoreLists()
         for (storeList in currStoreLists) {
             if (listName == storeList.listName) {

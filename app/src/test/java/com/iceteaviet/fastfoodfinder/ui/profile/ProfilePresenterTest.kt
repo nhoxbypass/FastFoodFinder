@@ -4,7 +4,9 @@ import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList
 import com.iceteaviet.fastfoodfinder.utils.exception.NotFoundException
+import com.iceteaviet.fastfoodfinder.utils.getFakeStoreIds
 import com.iceteaviet.fastfoodfinder.utils.getFakeStoreList
+import com.iceteaviet.fastfoodfinder.utils.getFakeUserMultiStoreLists
 import com.iceteaviet.fastfoodfinder.utils.getFakeUserStoreLists
 import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
 import com.iceteaviet.fastfoodfinder.utils.rx.TrampolineSchedulerProvider
@@ -76,6 +78,7 @@ class ProfilePresenterTest {
 
     @Test
     fun subscribe_SignedIn_ValidUserId_EmptyPhotoUrl() {
+        var emptyPhotoUser = User(USER_UID, USER_NAME, USER_EMAIL, "", getFakeUserMultiStoreLists())
         `when`(dataManager.isSignedIn()).thenReturn(true)
         `when`(dataManager.getCurrentUserUid()).thenReturn(USER_UID)
         `when`(dataManager.getUser(USER_UID)).thenReturn(Single.just(emptyPhotoUser))
@@ -89,7 +92,7 @@ class ProfilePresenterTest {
         verify(profileView).setEmail(emptyPhotoUser.email)
         assertThat(profilePresenter.defaultList.size).isEqualTo(2)
         verify(profileView).setUserStoreLists(emptyPhotoUser.getUserStoreLists())
-        verify(profileView).setStoreListCount(String.format("(%d)", 2))
+        verify(profileView).setStoreListCount(String.format("(%d)", 4))
         verify(profileView).setSavedStoreCount(emptyPhotoUser.getSavedStoreList().getStoreIdList().size)
         verify(profileView).setFavouriteStoreCount(emptyPhotoUser.getFavouriteStoreList().getStoreIdList().size)
     }
@@ -235,6 +238,5 @@ class ProfilePresenterTest {
         private val savedList = getFakeUserStoreLists()[0]
         private val favouriteList = getFakeUserStoreLists()[1]
         private val user = User(USER_UID, USER_NAME, USER_EMAIL, USER_PHOTO_URL, getFakeUserStoreLists())
-        private val emptyPhotoUser = User(USER_UID, USER_NAME, USER_EMAIL, "", getFakeUserStoreLists())
     }
 }
