@@ -86,6 +86,16 @@ class MainPresenterTest {
     }
 
     @Test
+    fun onProfileMenuItemClickTest_notSignedIn() {
+        // Preconditions
+        `when`(dataManager.isSignedIn()).thenReturn(false)
+
+        mainPresenter.onProfileMenuItemClick()
+
+        verify(mainView).showLoginView()
+    }
+
+    @Test
     fun onProfileMenuItemClickTest_signedIn() {
         // Preconditions
         `when`(dataManager.isSignedIn()).thenReturn(true)
