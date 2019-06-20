@@ -1,6 +1,5 @@
 package com.iceteaviet.fastfoodfinder.ui.main
 
-import android.text.TextUtils
 import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.data.transport.model.SearchEventResult
@@ -31,12 +30,12 @@ class MainPresenter : BasePresenter<MainContract.Presenter>, MainContract.Presen
             mainView.updateProfileHeader(true)
         } else {
             mainView.updateProfileHeader(false)
-            if (!TextUtils.isEmpty(currUser.photoUrl)) {
-                mainView.loadProfileHeaderAvatar(currUser.photoUrl)
-            }
-
             mainView.setProfileHeaderNameText(currUser.name)
             mainView.setProfileHeaderEmailText(currUser.email)
+
+            if (!currUser.photoUrl.isBlank()) {
+                mainView.loadProfileHeaderAvatar(currUser.photoUrl)
+            }
         }
     }
 
