@@ -211,6 +211,8 @@ open class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapC
                     handleSearchStoreClickAction(it)
                 }
             }
+
+            else -> mainMapView.showGeneralErrorMessage()
         }
     }
 

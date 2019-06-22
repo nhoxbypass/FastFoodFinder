@@ -77,12 +77,14 @@ class MainPresenter : BasePresenter<MainContract.Presenter>, MainContract.Presen
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onSearchResult(searchEventResult: SearchEventResult) {
+        mainView.hideSearchView()
+        mainView.clearFocus()
+
         when (searchEventResult.resultCode) {
             SearchEventResult.SEARCH_ACTION_QUICK -> {
                 handleSearchQuickAction(searchEventResult.searchString)
             }
             SearchEventResult.SEARCH_ACTION_QUERY_SUBMIT -> {
-                mainView.hideSearchView()
                 if (!searchEventResult.searchString.isBlank()) {
                     handleSearchQuerySubmitAction(searchEventResult.searchString)
                 }
@@ -93,7 +95,6 @@ class MainPresenter : BasePresenter<MainContract.Presenter>, MainContract.Presen
             }
 
             SearchEventResult.SEARCH_ACTION_STORE_CLICK -> {
-                mainView.hideSearchView()
                 val store = searchEventResult.store
                 if (store != null) {
                     handleSearchStoreClickAction(store)
@@ -106,25 +107,19 @@ class MainPresenter : BasePresenter<MainContract.Presenter>, MainContract.Presen
 
     private fun handleSearchQuickAction(searchString: String) {
         mainView.setSearchQueryText(searchString)
-        mainView.hideSearchView()
-        mainView.clearFocus()
     }
 
     private fun handleSearchQuerySubmitAction(searchString: String) {
         dataManager.addSearchHistories(searchString)
         mainView.setSearchQueryText(searchString)
-        mainView.clearFocus()
     }
 
     private fun handleSearchCollapseAction() {
-        mainView.hideSearchView()
         mainView.hideKeyboard()
-        mainView.clearFocus()
     }
 
     private fun handleSearchStoreClickAction(store: Store) {
         mainView.setSearchQueryText(store.title)
-        mainView.clearFocus()
 
         dataManager.addSearchHistories(Constant.SEARCH_STORE_PREFIX + store.id)
     }

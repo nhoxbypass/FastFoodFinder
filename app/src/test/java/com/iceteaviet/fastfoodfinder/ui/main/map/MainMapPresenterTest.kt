@@ -458,7 +458,17 @@ class MainMapPresenterTest {
     }
 
     @Test
-    fun onSearchResultTest_actionStoreClick_getAllStoresSuccess() {
+    fun onSearchResultTest_actionStoreClick_nullStore() {
+        // Preconditions
+        val searchEventResult = SearchEventResult(SearchEventResult.SEARCH_ACTION_STORE_CLICK, "")
+
+        mainMapPresenter.onSearchResult(searchEventResult)
+
+        verifyZeroInteractions(mainMapView)
+    }
+
+    @Test
+    fun onSearchResultTest_actionStoreClick() {
         // Preconditions
         val searchEventResult = SearchEventResult(SearchEventResult.SEARCH_ACTION_STORE_CLICK, store.title, store)
 
@@ -468,6 +478,16 @@ class MainMapPresenterTest {
         verify(mainMapView).animateMapCamera(store.getPosition(), false)
         verify(mainMapView).clearNearByStores()
         verify(mainMapView).showDialogStoreInfo(store)
+    }
+
+    @Test
+    fun onSearchResultTest_invalidAction() {
+        // Preconditions
+        val searchEventResult = SearchEventResult(-1)
+
+        mainMapPresenter.onSearchResult(searchEventResult)
+
+        verify(mainMapView).showGeneralErrorMessage()
     }
 
     // Workaround solution
