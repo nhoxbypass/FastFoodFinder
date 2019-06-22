@@ -5,17 +5,15 @@ import com.google.android.gms.maps.model.LatLng
 import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
+import com.iceteaviet.fastfoodfinder.data.transport.model.SearchEventResult
 import com.iceteaviet.fastfoodfinder.location.GoogleLocationManager
 import com.iceteaviet.fastfoodfinder.location.LatLngAlt
 import com.iceteaviet.fastfoodfinder.location.LocationListener
-import com.iceteaviet.fastfoodfinder.utils.StoreType
+import com.iceteaviet.fastfoodfinder.utils.*
 import com.iceteaviet.fastfoodfinder.utils.exception.NotFoundException
 import com.iceteaviet.fastfoodfinder.utils.exception.UnknownException
-import com.iceteaviet.fastfoodfinder.utils.getFakeMapsDirection
-import com.iceteaviet.fastfoodfinder.utils.getFakeStoreList
 import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
 import com.iceteaviet.fastfoodfinder.utils.rx.TrampolineSchedulerProvider
-import com.iceteaviet.fastfoodfinder.utils.setFinalStatic
 import com.nhaarman.mockitokotlin2.capture
 import com.nhaarman.mockitokotlin2.eq
 import io.reactivex.Single
@@ -323,6 +321,155 @@ class MainMapPresenterTest {
         verify(mainMapView).clearMapData()
     }
 
+    @Test
+    fun onSearchResultTest_actionQuick_findStoresError() {
+        // Preconditions
+        val searchEventResult = SearchEventResult(SearchEventResult.SEARCH_ACTION_QUICK, StoreType.TYPE_CIRCLE_K)
+        `when`(dataManager.findStoresByType(StoreType.TYPE_CIRCLE_K)).thenReturn(Single.error(NotFoundException()))
+
+        mainMapPresenter.onSearchResult(searchEventResult)
+
+        verify(mainMapView).showWarningMessage(ArgumentMatchers.anyInt())
+    }
+
+    @Test
+    fun onSearchResultTest_actionQuick_findStoresEmpty() {
+        // Preconditions
+        val searchEventResult = SearchEventResult(SearchEventResult.SEARCH_ACTION_QUICK, StoreType.TYPE_CIRCLE_K)
+        `when`(dataManager.findStoresByType(StoreType.TYPE_CIRCLE_K)).thenReturn(Single.just(ArrayList()))
+
+        mainMapPresenter.onSearchResult(searchEventResult)
+
+        verify(mainMapView).showWarningMessage(ArgumentMatchers.anyInt())
+        verify(mainMapView, never()).addMarkersToMap(ArgumentMatchers.anyList())
+        verify(mainMapView, never()).animateMapCamera(com.nhaarman.mockitokotlin2.any(), eq(false))
+    }
+
+    @Test
+    fun onSearchResultTest_actionQuick_findStoresSuccess() {
+        // Preconditions
+        val searchEventResult = SearchEventResult(SearchEventResult.SEARCH_ACTION_QUICK, StoreType.TYPE_CIRCLE_K)
+        `when`(dataManager.findStoresByType(StoreType.TYPE_CIRCLE_K)).thenReturn(Single.just(circleKStores))
+
+        mainMapPresenter.onSearchResult(searchEventResult)
+
+        verify(mainMapView).addMarkersToMap(circleKStores)
+        verify(mainMapView).animateMapCamera(circleKStores[0].getPosition(), false)
+    }
+
+    @Test
+    fun onSearchResultTest_actionQuerySubmit_empty() {
+        // Preconditions
+        val searchEventResult = SearchEventResult(SearchEventResult.SEARCH_ACTION_QUERY_SUBMIT, "")
+
+        mainMapPresenter.onSearchResult(searchEventResult)
+
+        verifyZeroInteractions(mainMapView)
+    }
+
+    @Test
+    fun onSearchResultTest_actionQuerySubmit_findStoresError() {
+        // Preconditions
+        val queryStr = "circle K"
+        val searchEventResult = SearchEventResult(SearchEventResult.SEARCH_ACTION_QUERY_SUBMIT, queryStr)
+        `when`(dataManager.findStores(queryStr)).thenReturn(Single.error(NotFoundException()))
+
+        mainMapPresenter.onSearchResult(searchEventResult)
+
+        verify(mainMapView).showWarningMessage(ArgumentMatchers.anyInt())
+    }
+
+    @Test
+    fun onSearchResultTest_actionQuerySubmit_findStoresEmpty() {
+        // Preconditions
+        val queryStr = "circle K"
+        val searchEventResult = SearchEventResult(SearchEventResult.SEARCH_ACTION_QUERY_SUBMIT, queryStr)
+        `when`(dataManager.findStores(queryStr)).thenReturn(Single.just(ArrayList()))
+
+        mainMapPresenter.onSearchResult(searchEventResult)
+
+        verify(mainMapView).showWarningMessage(ArgumentMatchers.anyInt())
+        verify(mainMapView, never()).addMarkersToMap(ArgumentMatchers.anyList())
+        verify(mainMapView, never()).animateMapCamera(com.nhaarman.mockitokotlin2.any(), eq(false))
+    }
+
+    @Test
+    fun onSearchResultTest_actionQuerySubmit_findStoresSuccess() {
+        // Preconditions
+        val queryStr = "circle K"
+        val searchEventResult = SearchEventResult(SearchEventResult.SEARCH_ACTION_QUERY_SUBMIT, queryStr)
+        `when`(dataManager.findStores(queryStr)).thenReturn(Single.just(circleKStores))
+
+        mainMapPresenter.onSearchResult(searchEventResult)
+
+        verify(mainMapView).addMarkersToMap(circleKStores)
+        verify(mainMapView).animateMapCamera(circleKStores[0].getPosition(), false)
+    }
+
+    @Test
+    fun onSearchResultTest_actionCollapse_notHaveCurrentLocation() {
+        // Preconditions
+        mainMapPresenter.currLocation = null
+        val searchEventResult = SearchEventResult(SearchEventResult.SEARCH_ACTION_COLLAPSE)
+        `when`(dataManager.getAllStores()).thenReturn(Single.never())
+
+        mainMapPresenter.onSearchResult(searchEventResult)
+
+        verify(mainMapView, never()).animateMapCamera(com.nhaarman.mockitokotlin2.any(), eq(false))
+    }
+
+    @Test
+    fun onSearchResultTest_actionCollapse_getAllStoresError() {
+        // Preconditions
+        mainMapPresenter.currLocation = latLng
+        val searchEventResult = SearchEventResult(SearchEventResult.SEARCH_ACTION_COLLAPSE)
+        `when`(dataManager.getAllStores()).thenReturn(Single.error(UnknownException()))
+
+        mainMapPresenter.onSearchResult(searchEventResult)
+
+        verify(mainMapView).showWarningMessage(ArgumentMatchers.anyInt())
+        verify(mainMapView).animateMapCamera(latLng, false)
+    }
+
+    @Test
+    fun onSearchResultTest_actionCollapse_getAllStoresEmpty() {
+        // Preconditions
+        mainMapPresenter.currLocation = latLng
+        val searchEventResult = SearchEventResult(SearchEventResult.SEARCH_ACTION_COLLAPSE)
+        `when`(dataManager.getAllStores()).thenReturn(Single.just(ArrayList()))
+
+        mainMapPresenter.onSearchResult(searchEventResult)
+
+        verify(mainMapView).showWarningMessage(ArgumentMatchers.anyInt())
+        verify(mainMapView).animateMapCamera(latLng, false)
+    }
+
+    @Test
+    fun onSearchResultTest_actionCollapse_getAllStoresSuccess() {
+        // Preconditions
+        mainMapPresenter.currLocation = latLng
+        val searchEventResult = SearchEventResult(SearchEventResult.SEARCH_ACTION_COLLAPSE)
+        `when`(dataManager.getAllStores()).thenReturn(Single.just(stores))
+
+        mainMapPresenter.onSearchResult(searchEventResult)
+
+        verify(mainMapView).addMarkersToMap(stores)
+        verify(mainMapView).animateMapCamera(latLng, false)
+    }
+
+    @Test
+    fun onSearchResultTest_actionStoreClick_getAllStoresSuccess() {
+        // Preconditions
+        val searchEventResult = SearchEventResult(SearchEventResult.SEARCH_ACTION_STORE_CLICK, store.title, store)
+
+        mainMapPresenter.onSearchResult(searchEventResult)
+
+        verify(mainMapView).addMarkersToMap(arrayListOf(store))
+        verify(mainMapView).animateMapCamera(store.getPosition(), false)
+        verify(mainMapView).clearNearByStores()
+        verify(mainMapView).showDialogStoreInfo(store)
+    }
+
     // Workaround solution
     private fun <T> anyObject(): T {
         return Mockito.anyObject<T>()
@@ -344,6 +491,7 @@ class MainMapPresenterTest {
         private val latLng = LatLng(10.1234, 106.1234)
 
         private val stores = getFakeStoreList()
+        private val circleKStores = getFakeCircleKStoreList()
 
         val store = Store(STORE_ID, STORE_TITLE, STORE_ADDRESS, STORE_LAT, STORE_LNG, STORE_TEL, STORE_TYPE)
 
