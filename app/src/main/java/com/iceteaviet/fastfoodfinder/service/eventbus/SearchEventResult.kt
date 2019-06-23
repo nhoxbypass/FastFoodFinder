@@ -43,6 +43,23 @@ class SearchEventResult : Event {
         this.resultCode = resultCode
     }
 
+    override fun equals(other: Any?): Boolean {
+        return if (other is SearchEventResult) {
+            resultCode.equals(other.resultCode) && searchString.equals(other.searchString)
+                    && storeType.equals(other.storeType) && (store == null || store!!.equals(other.store))
+        } else {
+            false
+        }
+    }
+
+    override fun hashCode(): Int {
+        var result = resultCode
+        result = 31 * result + searchString.hashCode()
+        result = 31 * result + storeType
+        result = 31 * result + (store?.hashCode() ?: 0)
+        return result
+    }
+
     companion object {
         const val SEARCH_ACTION_QUICK = 0
         const val SEARCH_ACTION_QUERY_SUBMIT = 1

@@ -4,7 +4,6 @@ import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
 import com.iceteaviet.fastfoodfinder.service.eventbus.SearchEventResult
-import com.iceteaviet.fastfoodfinder.service.eventbus.core.Event
 import com.iceteaviet.fastfoodfinder.service.eventbus.core.IBus
 import com.iceteaviet.fastfoodfinder.utils.Constant
 import com.iceteaviet.fastfoodfinder.utils.StoreType
@@ -242,6 +241,34 @@ class MainPresenterTest {
         verify(mainView).hideSearchView()
         verify(mainView).clearFocus()
         verify(mainView).showSearchWarningMessage()
+    }
+
+    @Test
+    fun unsubscribeTest() {
+        mainPresenter.unsubscribe()
+
+        verify(bus).unregister(mainPresenter)
+    }
+
+    @Test
+    fun onSearchMenuItemCollapseTest() {
+        mainPresenter.onSearchMenuItemCollapse()
+
+        verify(bus).post(SearchEventResult(SearchEventResult.SEARCH_ACTION_COLLAPSE))
+    }
+
+    @Test
+    fun onSearchQuerySubmitTest_empty() {
+        mainPresenter.onSearchQuerySubmit("")
+
+        verify(bus).post(SearchEventResult(SearchEventResult.SEARCH_ACTION_QUERY_SUBMIT, ""))
+    }
+
+    @Test
+    fun onSearchQuerySubmitTest() {
+        mainPresenter.onSearchQuerySubmit("my search string")
+
+        verify(bus).post(SearchEventResult(SearchEventResult.SEARCH_ACTION_QUERY_SUBMIT, "my search string"))
     }
 
 
