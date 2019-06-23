@@ -238,7 +238,7 @@ class SearchFragment : Fragment(), SearchContract.View {
 
             val fragment = SearchFragment()
             fragment.arguments = args
-            fragment.presenter = SearchPresenter(App.getDataManager(), App.getSchedulerProvider(), fragment)
+            fragment.presenter = SearchPresenter(App.getDataManager(), App.getSchedulerProvider(), App.getBus(), fragment)
             return fragment
         }
     }

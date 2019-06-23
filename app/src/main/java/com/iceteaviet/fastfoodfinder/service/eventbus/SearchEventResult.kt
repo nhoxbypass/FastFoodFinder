@@ -1,11 +1,12 @@
-package com.iceteaviet.fastfoodfinder.data.transport.model
+package com.iceteaviet.fastfoodfinder.service.eventbus
 
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
+import com.iceteaviet.fastfoodfinder.service.eventbus.core.Event
 
 /**
  * Created by Genius Doan on 11/28/2016.
  */
-class SearchEventResult {
+class SearchEventResult : Event {
     var resultCode: Int = 0
         private set
     var searchString: String = ""

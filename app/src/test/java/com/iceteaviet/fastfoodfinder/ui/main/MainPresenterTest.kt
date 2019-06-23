@@ -3,7 +3,9 @@ package com.iceteaviet.fastfoodfinder.ui.main
 import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
-import com.iceteaviet.fastfoodfinder.data.transport.model.SearchEventResult
+import com.iceteaviet.fastfoodfinder.service.eventbus.SearchEventResult
+import com.iceteaviet.fastfoodfinder.service.eventbus.core.Event
+import com.iceteaviet.fastfoodfinder.service.eventbus.core.IBus
 import com.iceteaviet.fastfoodfinder.utils.Constant
 import com.iceteaviet.fastfoodfinder.utils.StoreType
 import com.iceteaviet.fastfoodfinder.utils.getFakeUserStoreLists
@@ -29,6 +31,9 @@ class MainPresenterTest {
     @Mock
     private lateinit var dataManager: DataManager
 
+    @Mock
+    private lateinit var bus: IBus
+
     private lateinit var mainPresenter: MainPresenter
 
     private lateinit var schedulerProvider: SchedulerProvider
@@ -38,7 +43,7 @@ class MainPresenterTest {
         MockitoAnnotations.initMocks(this)
         schedulerProvider = TrampolineSchedulerProvider()
 
-        mainPresenter = MainPresenter(dataManager, schedulerProvider, mainView)
+        mainPresenter = MainPresenter(dataManager, schedulerProvider, bus, mainView)
     }
 
     @Test

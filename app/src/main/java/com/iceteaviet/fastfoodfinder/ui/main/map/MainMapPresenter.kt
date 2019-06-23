@@ -12,10 +12,11 @@ import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.routing.GoogleMapsRoutingApiHelper
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
-import com.iceteaviet.fastfoodfinder.data.transport.model.SearchEventResult
 import com.iceteaviet.fastfoodfinder.location.LatLngAlt
 import com.iceteaviet.fastfoodfinder.location.LocationListener
 import com.iceteaviet.fastfoodfinder.location.base.ILocationManager
+import com.iceteaviet.fastfoodfinder.service.eventbus.SearchEventResult
+import com.iceteaviet.fastfoodfinder.service.eventbus.core.IBus
 import com.iceteaviet.fastfoodfinder.ui.base.BasePresenter
 import com.iceteaviet.fastfoodfinder.ui.main.map.model.MapCameraPosition
 import com.iceteaviet.fastfoodfinder.ui.main.map.model.NearByStore
@@ -29,7 +30,6 @@ import io.reactivex.SingleObserver
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
-import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.util.HashMap
@@ -43,6 +43,7 @@ import kotlin.collections.set
 open class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContract.Presenter, LocationListener {
 
     private val mainMapView: MainMapContract.View
+    private val bus: IBus
 
     @VisibleForTesting
     var currLocation: LatLng? = null
@@ -65,9 +66,10 @@ open class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapC
     private var locationManager: ILocationManager<LocationListener>
 
     constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider,
-                locationManager: ILocationManager<LocationListener>, mainMapView: MainMapContract.View) : super(dataManager, schedulerProvider) {
+                locationManager: ILocationManager<LocationListener>, bus: IBus, mainMapView: MainMapContract.View) : super(dataManager, schedulerProvider) {
         this.mainMapView = mainMapView
         this.locationManager = locationManager
+        this.bus = bus
     }
 
     override fun subscribe() {
@@ -77,7 +79,7 @@ open class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapC
             onLocationPermissionGranted()
         }
 
-        EventBus.getDefault().register(this)
+        bus.register(this)
 
         newVisibleStorePublisher = PublishSubject.create()
         cameraPositionPublisher = PublishSubject.create()
@@ -94,7 +96,7 @@ open class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapC
         cameraPositionPublisher = null
         newVisibleStorePublisher?.onComplete()
         newVisibleStorePublisher = null
-        EventBus.getDefault().unregister(this)
+        bus.unregister(this)
         unsubscribeLocationUpdate()
         super.unsubscribe()
     }

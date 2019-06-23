@@ -5,10 +5,11 @@ import com.google.android.gms.maps.model.LatLng
 import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
-import com.iceteaviet.fastfoodfinder.data.transport.model.SearchEventResult
 import com.iceteaviet.fastfoodfinder.location.GoogleLocationManager
 import com.iceteaviet.fastfoodfinder.location.LatLngAlt
 import com.iceteaviet.fastfoodfinder.location.LocationListener
+import com.iceteaviet.fastfoodfinder.service.eventbus.SearchEventResult
+import com.iceteaviet.fastfoodfinder.service.eventbus.core.IBus
 import com.iceteaviet.fastfoodfinder.utils.*
 import com.iceteaviet.fastfoodfinder.utils.exception.NotFoundException
 import com.iceteaviet.fastfoodfinder.utils.exception.UnknownException
@@ -37,6 +38,9 @@ class MainMapPresenterTest {
     @Mock
     private lateinit var locationManager: GoogleLocationManager
 
+    @Mock
+    private lateinit var bus: IBus
+
     @Captor
     private lateinit var locationCallbackCaptor: ArgumentCaptor<LocationListener>
 
@@ -49,7 +53,7 @@ class MainMapPresenterTest {
         MockitoAnnotations.initMocks(this)
         schedulerProvider = TrampolineSchedulerProvider()
 
-        mainMapPresenter = MainMapPresenter(dataManager, schedulerProvider, locationManager, mainMapView)
+        mainMapPresenter = MainMapPresenter(dataManager, schedulerProvider, locationManager, bus, mainMapView)
     }
 
     @After

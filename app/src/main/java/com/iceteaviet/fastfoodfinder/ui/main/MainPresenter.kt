@@ -2,11 +2,11 @@ package com.iceteaviet.fastfoodfinder.ui.main
 
 import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
-import com.iceteaviet.fastfoodfinder.data.transport.model.SearchEventResult
+import com.iceteaviet.fastfoodfinder.service.eventbus.SearchEventResult
+import com.iceteaviet.fastfoodfinder.service.eventbus.core.IBus
 import com.iceteaviet.fastfoodfinder.ui.base.BasePresenter
 import com.iceteaviet.fastfoodfinder.utils.Constant
 import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
-import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
@@ -16,13 +16,15 @@ import org.greenrobot.eventbus.ThreadMode
 class MainPresenter : BasePresenter<MainContract.Presenter>, MainContract.Presenter {
 
     private val mainView: MainContract.View
+    private val bus: IBus
 
-    constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider, mainView: MainContract.View) : super(dataManager, schedulerProvider) {
+    constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider, bus: IBus, mainView: MainContract.View) : super(dataManager, schedulerProvider) {
         this.mainView = mainView
+        this.bus = bus
     }
 
     override fun subscribe() {
-        EventBus.getDefault().register(this)
+        bus.register(this)
 
         // Initialize auth info
         val currUser = dataManager.getCurrentUser()
@@ -40,7 +42,7 @@ class MainPresenter : BasePresenter<MainContract.Presenter>, MainContract.Presen
     }
 
     override fun unsubscribe() {
-        EventBus.getDefault().unregister(this)
+        bus.unregister(this)
         super.unsubscribe()
     }
 
@@ -68,11 +70,11 @@ class MainPresenter : BasePresenter<MainContract.Presenter>, MainContract.Presen
     }
 
     override fun onSearchMenuItemCollapse() {
-        EventBus.getDefault().post(SearchEventResult(SearchEventResult.SEARCH_ACTION_COLLAPSE))
+        bus.post(SearchEventResult(SearchEventResult.SEARCH_ACTION_COLLAPSE))
     }
 
     override fun onSearchQuerySubmit(query: String) {
-        EventBus.getDefault().post(SearchEventResult(SearchEventResult.SEARCH_ACTION_QUERY_SUBMIT, query))
+        bus.post(SearchEventResult(SearchEventResult.SEARCH_ACTION_QUERY_SUBMIT, query))
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

@@ -2,6 +2,7 @@ package com.iceteaviet.fastfoodfinder.ui.main.search
 
 import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
+import com.iceteaviet.fastfoodfinder.service.eventbus.core.IBus
 import com.iceteaviet.fastfoodfinder.ui.main.search.model.SearchStoreItem
 import com.iceteaviet.fastfoodfinder.utils.StoreType
 import com.iceteaviet.fastfoodfinder.utils.exception.NotFoundException
@@ -32,6 +33,9 @@ class SearchPresenterTest {
     @Mock
     private lateinit var dataManager: DataManager
 
+    @Mock
+    private lateinit var bus: IBus
+
     private lateinit var searchPresenter: SearchPresenter
 
     private lateinit var schedulerProvider: SchedulerProvider
@@ -41,7 +45,7 @@ class SearchPresenterTest {
         MockitoAnnotations.initMocks(this)
         schedulerProvider = TrampolineSchedulerProvider()
 
-        searchPresenter = SearchPresenter(dataManager, schedulerProvider, searchView)
+        searchPresenter = SearchPresenter(dataManager, schedulerProvider, bus, searchView)
     }
 
     @Test

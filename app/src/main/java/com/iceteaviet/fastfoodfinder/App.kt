@@ -6,6 +6,7 @@ import androidx.multidex.MultiDexApplication
 import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.location.GoogleLocationManager
 import com.iceteaviet.fastfoodfinder.location.SystemLocationManager
+import com.iceteaviet.fastfoodfinder.service.eventbus.core.IBus
 import com.iceteaviet.fastfoodfinder.utils.initLogger
 import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
 
@@ -17,6 +18,7 @@ class App : MultiDexApplication() {
     companion object {
         private lateinit var dataManager: DataManager
         private lateinit var schedulerProvider: SchedulerProvider
+        private lateinit var bus: IBus
 
         @SuppressLint("StaticFieldLeak")
         private lateinit var context: Context
@@ -32,6 +34,10 @@ class App : MultiDexApplication() {
 
         fun getContext(): Context {
             return context
+        }
+
+        fun getBus(): IBus {
+            return bus
         }
     }
 
