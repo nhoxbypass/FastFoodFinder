@@ -51,6 +51,7 @@ class App : MultiDexApplication() {
 
         dataManager = Injection.provideDataManager()
         schedulerProvider = Injection.provideSchedulerProvider()
+        bus = Injection.provideEventBus()
         GoogleLocationManager.init(getContext())
         SystemLocationManager.init(getContext())
     }

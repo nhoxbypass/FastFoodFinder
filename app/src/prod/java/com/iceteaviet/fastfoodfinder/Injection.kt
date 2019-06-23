@@ -28,9 +28,12 @@ import com.iceteaviet.fastfoodfinder.data.remote.store.FirebaseStoreApiHelper
 import com.iceteaviet.fastfoodfinder.data.remote.store.StoreApiHelper
 import com.iceteaviet.fastfoodfinder.data.remote.user.FirebaseUserApiHelper
 import com.iceteaviet.fastfoodfinder.data.remote.user.UserApiHelper
+import com.iceteaviet.fastfoodfinder.service.eventbus.core.IBus
+import com.iceteaviet.fastfoodfinder.service.eventbus.core.RobotBus
 import com.iceteaviet.fastfoodfinder.utils.rx.AppSchedulerProvider
 import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
 import io.reactivex.subjects.PublishSubject
+import org.greenrobot.eventbus.EventBus
 
 /**
  * Enables injection of production implementations at compile time.
@@ -48,6 +51,10 @@ object Injection {
 
     fun provideContext(): Context {
         return App.getContext()
+    }
+
+    fun provideEventBus(): IBus {
+        return RobotBus(EventBus.getDefault())
     }
 
     fun <T> providePublishSubject(): PublishSubject<T> {

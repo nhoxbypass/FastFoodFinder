@@ -5,7 +5,7 @@ import org.greenrobot.eventbus.EventBus
 /**
  * Created by tom on 2019-06-23.
  */
-class EventBus(private val bus: EventBus) : IBus {
+class RobotBus(private val bus: EventBus) : IBus {
 
     override fun post(event: Event) {
         bus.post(event)

@@ -26,9 +26,12 @@ import com.iceteaviet.fastfoodfinder.data.remote.store.FakeFirebaseStoreApiHelpe
 import com.iceteaviet.fastfoodfinder.data.remote.store.StoreApiHelper
 import com.iceteaviet.fastfoodfinder.data.remote.user.FakeFirebaseUserApiHelper
 import com.iceteaviet.fastfoodfinder.data.remote.user.UserApiHelper
+import com.iceteaviet.fastfoodfinder.service.eventbus.core.IBus
+import com.iceteaviet.fastfoodfinder.service.eventbus.core.RobotBus
 import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
 import com.iceteaviet.fastfoodfinder.utils.rx.TrampolineSchedulerProvider
 import io.reactivex.subjects.PublishSubject
+import org.greenrobot.eventbus.EventBus
 
 /**
  * Enables injection of mock implementations at compile time. This is useful for testing, since it allows us to use
@@ -47,6 +50,10 @@ object Injection {
 
     fun provideContext(): Context {
         return App.getContext()
+    }
+
+    fun provideEventBus(): IBus {
+        return RobotBus(EventBus.getDefault())
     }
 
     fun <T> providePublishSubject(): PublishSubject<T> {
