@@ -9,16 +9,12 @@ class Comment(var userName: String, var avatar: String, var content: String, var
     @Exclude
     @get:Exclude
     @set:Exclude
-    var id: String? = null
+    var id: String = ""
 
     constructor() : this("", "", "", "", 0L)
 
-    constructor(id: String, userName: String, avatar: String, content: String, mediaUrl: String, timestamp: Long) : this(
-            userName,
-            avatar,
-            content,
-            mediaUrl,
-            timestamp) {
+    constructor(id: String, userName: String, avatar: String, content: String, mediaUrl: String, timestamp: Long)
+            : this(userName, avatar, content, mediaUrl, timestamp) {
         this.id = id
     }
 

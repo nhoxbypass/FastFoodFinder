@@ -64,7 +64,7 @@ class FirebaseStoreApiHelper(private val databaseRef: DatabaseReference) : Store
         for (child in dataSnapshot.children) {
             val comment = child.getValue(Comment::class.java)
             if (comment != null) {
-                comment.id = child.key
+                comment.id = child.key ?: ""
                 commentList.add(comment)
             }
         }
