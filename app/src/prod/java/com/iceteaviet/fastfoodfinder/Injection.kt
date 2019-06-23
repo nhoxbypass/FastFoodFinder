@@ -30,6 +30,7 @@ import com.iceteaviet.fastfoodfinder.data.remote.user.FirebaseUserApiHelper
 import com.iceteaviet.fastfoodfinder.data.remote.user.UserApiHelper
 import com.iceteaviet.fastfoodfinder.utils.rx.AppSchedulerProvider
 import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
+import io.reactivex.subjects.PublishSubject
 
 /**
  * Enables injection of production implementations at compile time.
@@ -47,6 +48,10 @@ object Injection {
 
     fun provideContext(): Context {
         return App.getContext()
+    }
+
+    fun <T> providePublishSubject(): PublishSubject<T> {
+        return PublishSubject.create<T>()
     }
 
     fun provideStoreRepository(): StoreRepository {

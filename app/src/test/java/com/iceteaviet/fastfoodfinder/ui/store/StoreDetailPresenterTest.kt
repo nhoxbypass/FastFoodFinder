@@ -8,13 +8,10 @@ import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.location.GoogleLocationManager
 import com.iceteaviet.fastfoodfinder.location.LatLngAlt
 import com.iceteaviet.fastfoodfinder.location.LocationListener
-import com.iceteaviet.fastfoodfinder.utils.StoreType
+import com.iceteaviet.fastfoodfinder.utils.*
 import com.iceteaviet.fastfoodfinder.utils.exception.EmptyDataException
 import com.iceteaviet.fastfoodfinder.utils.exception.NotFoundException
-import com.iceteaviet.fastfoodfinder.utils.getFakeComment
-import com.iceteaviet.fastfoodfinder.utils.getFakeComments
 import com.iceteaviet.fastfoodfinder.utils.rx.TrampolineSchedulerProvider
-import com.iceteaviet.fastfoodfinder.utils.setFinalStatic
 import com.nhaarman.mockitokotlin2.capture
 import com.nhaarman.mockitokotlin2.eq
 import io.reactivex.Single
@@ -240,6 +237,21 @@ class StoreDetailPresenterTest {
     }
 
     @Test
+    fun clickOnNavigationButton_invalidMapsDirection() {
+        // Preconditions
+        storeDetailPresenter.currLocation = currLocation
+        val store = Store(STORE_ID, STORE_TITLE, STORE_ADDRESS, STORE_LAT, STORE_LNG, STORE_TEL, STORE_TYPE)
+        storeDetailPresenter.handleExtras(store)
+
+        // Mocks
+        `when`(dataManager.getMapsDirection(ArgumentMatchers.anyMap(), eq(store))).thenReturn(Single.just(invalidMapsDirection))
+
+        storeDetailPresenter.onNavigationButtonClick()
+
+        verify(storeDetailView).showGeneralErrorMessage()
+    }
+
+    @Test
     fun clickOnNavigationButton_showNavigationScreen() {
         // Preconditions
         storeDetailPresenter.currLocation = currLocation
@@ -321,6 +333,7 @@ class StoreDetailPresenterTest {
 
         private val location = LatLngAlt(10.1234, 106.1234, 1.0)
 
-        private val mapsDirection = MapsDirection()
+        private val invalidMapsDirection = MapsDirection()
+        private val mapsDirection = getFakeMapsDirection()
     }
 }

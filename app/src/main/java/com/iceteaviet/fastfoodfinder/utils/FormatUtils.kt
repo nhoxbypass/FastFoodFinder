@@ -175,3 +175,8 @@ fun getStoreTypeFromQuery(queryString: String): Int {
 
     return -1
 }
+
+fun roundToDecimals(number: Double, numDecimalPlaces: Int): Double {
+    val factor = Math.pow(10.0, numDecimalPlaces.toDouble())
+    return Math.round(number * factor) / factor
+}

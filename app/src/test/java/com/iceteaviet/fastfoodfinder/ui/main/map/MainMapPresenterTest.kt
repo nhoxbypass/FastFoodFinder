@@ -53,6 +53,9 @@ class MainMapPresenterTest {
     @Captor
     private lateinit var locationCallbackCaptor: ArgumentCaptor<LocationListener>
 
+    @Captor
+    private lateinit var nearByStoreCallbackCaptor: ArgumentCaptor<List<NearByStore>>
+
     private lateinit var mainMapPresenter: MainMapPresenter
 
     private lateinit var schedulerProvider: SchedulerProvider
@@ -301,6 +304,19 @@ class MainMapPresenterTest {
         mainMapPresenter.onNavigationButtonClick(store)
 
         verify(mainMapView).showMapRoutingView(store, mapsDirection)
+    }
+
+    @Test
+    fun onNavigationButtonClickTest_invalidMapsDirection() {
+        // Preconditions
+        mainMapPresenter.currLocation = latLng
+
+        // Mocks
+        `when`(dataManager.getMapsDirection(ArgumentMatchers.anyMap(), eq(store))).thenReturn(Single.just(invalidMapsDirection))
+
+        mainMapPresenter.onNavigationButtonClick(store)
+
+        verify(mainMapView).showGeneralErrorMessage()
     }
 
     @Test
@@ -553,11 +569,9 @@ class MainMapPresenterTest {
     }
 
     @Test
-    fun onMapCameraMoveTest_haveStoreList_haveStoresInBounds() {
+    fun onMapCameraMoveTest_haveStoreList_partialStoresInBounds() {
         // Preconditions
-        val stores = ArrayList(inBoundsStores)
-        stores.add(store)
-        mainMapPresenter.storeList = inBoundsStores
+        mainMapPresenter.storeList = partialInBoundsStores
         mainMapPresenter.subscribeMapCameraPositionChange()
 
         val bounds = LatLngBounds(southwest, northeast)
@@ -588,6 +602,14 @@ class MainMapPresenterTest {
         private val northeast = LatLng(10.4321, 106.4321)
         private val southwest = LatLng(10.1001, 106.1001)
 
+        private val partialInBoundsStores = arrayListOf(
+                Store(1, STORE_TITLE, STORE_ADDRESS, "10.1101", "106.1101", STORE_TEL, STORE_TYPE),
+                Store(5, STORE_TITLE, STORE_ADDRESS, "10.9876", "107.9876", STORE_TEL, STORE_TYPE),
+                Store(2, STORE_TITLE, STORE_ADDRESS, "10.4012", "106.4012", STORE_TEL, STORE_TYPE),
+                Store(3, STORE_TITLE, STORE_ADDRESS, "10.1234", "106.1234", STORE_TEL, STORE_TYPE),
+                Store(6, STORE_TITLE, STORE_ADDRESS, STORE_LAT, STORE_LNG, STORE_TEL, STORE_TYPE),
+                Store(4, STORE_TITLE, STORE_ADDRESS, "10.3214", "106.3214", STORE_TEL, STORE_TYPE)
+        )
         private val inBoundsStores = arrayListOf(
                 Store(1, STORE_TITLE, STORE_ADDRESS, "10.1101", "106.1101", STORE_TEL, STORE_TYPE),
                 Store(2, STORE_TITLE, STORE_ADDRESS, "10.4012", "106.4012", STORE_TEL, STORE_TYPE),
@@ -595,10 +617,10 @@ class MainMapPresenterTest {
                 Store(4, STORE_TITLE, STORE_ADDRESS, "10.3214", "106.3214", STORE_TEL, STORE_TYPE)
         )
         private val nearByStores = arrayListOf(
-                NearByStore(Store(1, STORE_TITLE, STORE_ADDRESS, "10.1101", "106.1101", STORE_TEL, STORE_TYPE), 2.0709774176400737),
-                NearByStore(Store(2, STORE_TITLE, STORE_ADDRESS, "10.4012", "106.4012", STORE_TEL, STORE_TYPE), 43.24740945911383),
+                NearByStore(Store(1, STORE_TITLE, STORE_ADDRESS, "10.1101", "106.1101", STORE_TEL, STORE_TYPE), 2.07098),
+                NearByStore(Store(2, STORE_TITLE, STORE_ADDRESS, "10.4012", "106.4012", STORE_TEL, STORE_TYPE), 43.24741),
                 NearByStore(Store(3, STORE_TITLE, STORE_ADDRESS, "10.1234", "106.1234", STORE_TEL, STORE_TYPE), 0.0),
-                NearByStore(Store(4, STORE_TITLE, STORE_ADDRESS, "10.3214", "106.3214", STORE_TEL, STORE_TYPE), 30.826165963297818)
+                NearByStore(Store(4, STORE_TITLE, STORE_ADDRESS, "10.3214", "106.3214", STORE_TEL, STORE_TYPE), 30.82617)
         )
         private val stores = getFakeStoreList()
         private val circleKStores = getFakeCircleKStoreList()

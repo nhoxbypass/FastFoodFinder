@@ -154,7 +154,10 @@ open class StoreDetailPresenter : BasePresenter<StoreDetailContract.Presenter>, 
                     }
 
                     override fun onSuccess(mapsDirection: MapsDirection) {
-                        storeDetailView.showMapRoutingView(currStore, mapsDirection)
+                        if (mapsDirection.routeList.isNotEmpty())
+                            storeDetailView.showMapRoutingView(currStore, mapsDirection)
+                        else
+                            storeDetailView.showGeneralErrorMessage()
                     }
 
                     override fun onError(e: Throwable) {

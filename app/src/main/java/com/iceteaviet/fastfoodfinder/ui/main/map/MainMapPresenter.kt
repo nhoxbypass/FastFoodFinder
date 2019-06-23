@@ -20,7 +20,7 @@ import com.iceteaviet.fastfoodfinder.service.eventbus.core.IBus
 import com.iceteaviet.fastfoodfinder.ui.base.BasePresenter
 import com.iceteaviet.fastfoodfinder.ui.main.map.model.MapCameraPosition
 import com.iceteaviet.fastfoodfinder.ui.main.map.model.NearByStore
-import com.iceteaviet.fastfoodfinder.utils.calcDistance_v4
+import com.iceteaviet.fastfoodfinder.utils.distanceBetween
 import com.iceteaviet.fastfoodfinder.utils.getLatLngString
 import com.iceteaviet.fastfoodfinder.utils.isLolipopOrHigher
 import com.iceteaviet.fastfoodfinder.utils.isValidLocation
@@ -170,7 +170,10 @@ open class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapC
                     }
 
                     override fun onSuccess(mapsDirection: MapsDirection) {
-                        mainMapView.showMapRoutingView(store, mapsDirection)
+                        if (mapsDirection.routeList.isNotEmpty())
+                            mainMapView.showMapRoutingView(store, mapsDirection)
+                        else
+                            mainMapView.showGeneralErrorMessage()
                     }
 
                     override fun onError(e: Throwable) {
@@ -255,7 +258,7 @@ open class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapC
         val res = ArrayList<NearByStore>()
 
         for (store in stores) {
-            res.add(NearByStore(store, calcDistance_v4(currPos, store.getPosition())))
+            res.add(NearByStore(store, distanceBetween(currPos, store.getPosition())))
         }
 
         return res

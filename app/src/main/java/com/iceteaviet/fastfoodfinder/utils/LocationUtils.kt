@@ -25,52 +25,9 @@ fun getLatLngString(latLng: LatLng?): String {
 
 /**
  * Calculate distance between
+ * @see Location.distanceBetween()
  */
-fun calcDistance(startPosition: LatLng, endPosition: LatLng): Double {
-    val start = Location("pointA")
-    start.latitude = startPosition.latitude
-    start.longitude = startPosition.longitude
-    val end = Location("pointB")
-    end.latitude = endPosition.latitude
-    end.longitude = endPosition.longitude
-
-    return start.distanceTo(end) / 1000.0
-}
-
-fun calcDistance_v2(startPosition: LatLng, endPosition: LatLng): Double {
-    val pk = (180f / Math.PI).toFloat()
-
-    val startLat = startPosition.latitude / pk
-    val startLng = startPosition.longitude / pk
-    val endLat = endPosition.latitude / pk
-    val endLng = endPosition.longitude / pk
-
-    val t1 = Math.cos(startLat) * Math.cos(startLng) * Math.cos(endLat) * Math.cos(endLng)
-    val t2 = Math.cos(startLat) * Math.sin(startLng) * Math.cos(endLat) * Math.sin(endLng)
-    val t3 = Math.sin(startLat) * Math.sin(endLat)
-    val tt = Math.acos(t1 + t2 + t3)
-
-    return 6366000 * tt / 1000.0
-}
-
-fun calcDistance_v3(startPosition: LatLng, endPosition: LatLng): Double {
-    val rlat1 = Math.PI * startPosition.latitude / 180.0f
-    val rlat2 = Math.PI * endPosition.latitude / 180.0f
-    val rlon1 = Math.PI * startPosition.longitude / 180.0f
-    val rlon2 = Math.PI * endPosition.longitude / 180.0f
-
-    val theta = startPosition.longitude - endPosition.longitude
-    val rtheta = Math.PI * theta / 180.0f
-
-    var dist = Math.sin(rlat1) * Math.sin(rlat2) + Math.cos(rlat1) * Math.cos(rlat2) * Math.cos(rtheta)
-    dist = Math.acos(dist)
-    dist = dist * 180.0f / Math.PI
-    dist = dist * 60.0 * 1.1515
-
-    return dist * 1.609344f
-}
-
-fun calcDistance_v4(startPosition: LatLng, endPosition: LatLng): Double {
+fun distanceBetween(startPosition: LatLng, endPosition: LatLng): Double {
     // Based on http://www.ngs.noaa.gov/PUBS_LIB/inverse.pdf
     // using the "Inverse Formula" (section 4)
 
@@ -160,7 +117,7 @@ fun calcDistance_v4(startPosition: LatLng, endPosition: LatLng): Double {
     }
 
     val distance = (b * A * (sigma - deltaSigma))
-    return distance / 1000.0
+    return roundToDecimals(distance / 1000.0, 5)
 }
 
 fun isValidLocation(latLng: LatLng?): Boolean {

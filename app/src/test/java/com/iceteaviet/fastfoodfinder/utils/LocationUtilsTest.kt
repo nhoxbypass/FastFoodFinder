@@ -47,7 +47,10 @@ class LocationUtilsTest {
     }
 
     @Test
-    fun calcDistanceTest() {
-        //assertThat(calcDistance(LatLng(93.5, 103.7), LatLng(67.5, 106.2)))
+    fun distanceBetweenTest() {
+        assertThat(distanceBetween(LatLng(10.1234, 106.1234), LatLng(10.1101, 106.1101))).isEqualTo(2.07098)
+        assertThat(distanceBetween(LatLng(10.1234, 106.1234), LatLng(10.4012, 106.4012))).isEqualTo(43.24741)
+        assertThat(distanceBetween(LatLng(10.1234, 106.1234), LatLng(10.1234, 106.1234))).isEqualTo(0.0)
+        assertThat(distanceBetween(LatLng(10.3214, 106.3214), LatLng(10.1234, 106.1234))).isEqualTo(30.82617)
     }
 }

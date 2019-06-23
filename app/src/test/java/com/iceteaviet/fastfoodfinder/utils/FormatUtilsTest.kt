@@ -113,4 +113,13 @@ class FormatUtilsTest {
         assertEquals(formatDecimal(1.2345, 5), "1.2345")
         assertEquals(formatDecimal(1.234567, 5), "1.234567")
     }
+
+    @Test
+    fun roundToDecimalsTest() {
+        assertThat(roundToDecimals(2.0709774176400737, 5)).isEqualTo(2.07098)
+        assertThat(roundToDecimals(2.0709774176400737, 9)).isEqualTo(2.070977418)
+        assertThat(roundToDecimals(43.24740945911383, 3)).isEqualTo(43.247)
+        assertThat(roundToDecimals(0.0, 5)).isEqualTo(0.0)
+        assertThat(roundToDecimals(30.826165963297818, 6)).isEqualTo(30.826166)
+    }
 }
