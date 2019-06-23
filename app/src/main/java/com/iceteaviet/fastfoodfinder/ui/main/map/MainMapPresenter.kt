@@ -290,7 +290,7 @@ open class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapC
                     }
 
                     override fun onError(e: Throwable) {
-                        e.printStackTrace()
+                        mainMapView.showGeneralErrorMessage()
                     }
 
                     override fun onComplete() {

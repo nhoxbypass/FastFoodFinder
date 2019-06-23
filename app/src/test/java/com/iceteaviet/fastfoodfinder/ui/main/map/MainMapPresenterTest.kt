@@ -533,6 +533,18 @@ class MainMapPresenterTest {
     }
 
     @Test
+    fun cameraPositionPublisherTest_error() {
+        // Preconditions
+        mainMapPresenter.storeList = ArrayList()
+        mainMapPresenter.subscribeMapCameraPositionChange()
+
+        val bounds = LatLngBounds(southwest, northeast)
+        mapCamPublisher.onError(UnknownException())
+
+        verify(mainMapView).showGeneralErrorMessage()
+    }
+
+    @Test
     fun onMapCameraMoveTest_emptyStoreList() {
         // Preconditions
         mainMapPresenter.storeList = ArrayList()
@@ -599,6 +611,7 @@ class MainMapPresenterTest {
 
         private val location = LatLngAlt(10.1234, 106.1234, 1.0)
         private val latLng = LatLng(10.1234, 106.1234)
+        private val invalidLatLng = LatLng(999.0, 999.0)
         private val northeast = LatLng(10.4321, 106.4321)
         private val southwest = LatLng(10.1001, 106.1001)
 
