@@ -20,7 +20,7 @@ import com.iceteaviet.fastfoodfinder.service.eventbus.core.IBus
 import com.iceteaviet.fastfoodfinder.ui.base.BasePresenter
 import com.iceteaviet.fastfoodfinder.ui.main.map.model.MapCameraPosition
 import com.iceteaviet.fastfoodfinder.ui.main.map.model.NearByStore
-import com.iceteaviet.fastfoodfinder.utils.calcDistance
+import com.iceteaviet.fastfoodfinder.utils.calcDistance_v4
 import com.iceteaviet.fastfoodfinder.utils.getLatLngString
 import com.iceteaviet.fastfoodfinder.utils.isLolipopOrHigher
 import com.iceteaviet.fastfoodfinder.utils.isValidLocation
@@ -28,7 +28,6 @@ import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
 import io.reactivex.Observer
 import io.reactivex.SingleObserver
 import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -60,16 +59,18 @@ open class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapC
     @VisibleForTesting
     var markerSparseArray: SparseArrayCompat<Marker> = SparseArrayCompat()
 
-    private var newVisibleStorePublisher: PublishSubject<Store>? = null
-    private var cameraPositionPublisher: PublishSubject<MapCameraPosition>? = null
+    private var newVisibleStorePublisher: PublishSubject<Store>
+    private var cameraPositionPublisher: PublishSubject<MapCameraPosition>
 
     private var locationManager: ILocationManager<LocationListener>
 
     constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider,
-                locationManager: ILocationManager<LocationListener>, bus: IBus, mainMapView: MainMapContract.View) : super(dataManager, schedulerProvider) {
+                locationManager: ILocationManager<LocationListener>, bus: IBus, storePublisher: PublishSubject<Store>, mapCamPublisher: PublishSubject<MapCameraPosition>, mainMapView: MainMapContract.View) : super(dataManager, schedulerProvider) {
         this.mainMapView = mainMapView
         this.locationManager = locationManager
         this.bus = bus
+        this.newVisibleStorePublisher = storePublisher
+        this.cameraPositionPublisher = mapCamPublisher
     }
 
     override fun subscribe() {
@@ -81,8 +82,6 @@ open class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapC
 
         bus.register(this)
 
-        newVisibleStorePublisher = PublishSubject.create()
-        cameraPositionPublisher = PublishSubject.create()
         locationGranted = false
         isZoomToUser = false
 
@@ -92,10 +91,8 @@ open class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapC
     }
 
     override fun unsubscribe() {
-        cameraPositionPublisher?.onComplete()
-        cameraPositionPublisher = null
-        newVisibleStorePublisher?.onComplete()
-        newVisibleStorePublisher = null
+        cameraPositionPublisher.onComplete()
+        newVisibleStorePublisher.onComplete()
         bus.unregister(this)
         unsubscribeLocationUpdate()
         super.unsubscribe()
@@ -126,7 +123,7 @@ open class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapC
     }
 
     override fun onMapCameraMove(cameraPosition: LatLng, bounds: LatLngBounds) {
-        cameraPositionPublisher?.onNext(MapCameraPosition(cameraPosition, bounds))
+        cameraPositionPublisher.onNext(MapCameraPosition(cameraPosition, bounds))
     }
 
     override fun onGetMapAsync() {
@@ -248,10 +245,6 @@ open class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapC
             if (bounds.contains(store.getPosition())) {
                 // Inside visible range
                 stores.add(store)
-                if (!this.visibleStores.contains(store)) {
-                    // New store become visible
-                    newVisibleStorePublisher?.onNext(store)
-                }
             }
         }
 
@@ -262,7 +255,7 @@ open class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapC
         val res = ArrayList<NearByStore>()
 
         for (store in stores) {
-            res.add(NearByStore(store, calcDistance(currPos, store.getPosition())))
+            res.add(NearByStore(store, calcDistance_v4(currPos, store.getPosition())))
         }
 
         return res
@@ -270,73 +263,81 @@ open class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapC
 
     @VisibleForTesting
     open fun subscribeMapCameraPositionChange() {
-        cameraPositionPublisher?.let {
-            it.debounce(200, TimeUnit.MILLISECONDS)
-                    .subscribeOn(Schedulers.computation())
-                    .map {
-                        visibleStores = getVisibleStore(storeList, it.cameraBounds)
-                        generateNearByStoresWithDistance(it.cameraPosition, visibleStores)
+        cameraPositionPublisher.debounce(200, TimeUnit.MILLISECONDS, schedulerProvider.computation())
+                .subscribeOn(schedulerProvider.computation())
+                .map {
+                    val stores = getVisibleStore(storeList, it.cameraBounds)
+                    for (store in stores) {
+                        if (!this.visibleStores.contains(store)) {
+                            // New store become visible
+                            onNewStoreBecomeVisible(store)
+                        }
                     }
-                    .observeOn(schedulerProvider.ui())
-                    .subscribe(object : Observer<List<NearByStore>> {
-                        override fun onSubscribe(d: Disposable) {
-                            compositeDisposable.add(d)
-                        }
+                    visibleStores = stores
+                    generateNearByStoresWithDistance(it.cameraPosition, stores)
+                }
+                .observeOn(schedulerProvider.ui())
+                .subscribe(object : Observer<List<NearByStore>> {
+                    override fun onSubscribe(d: Disposable) {
+                        compositeDisposable.add(d)
+                    }
 
-                        override fun onNext(nearbyStores: List<NearByStore>) {
-                            mainMapView.setNearByStores(nearbyStores)
-                        }
+                    override fun onNext(nearbyStores: List<NearByStore>) {
+                        mainMapView.setNearByStores(nearbyStores)
+                    }
 
-                        override fun onError(e: Throwable) {
-                            e.printStackTrace()
-                        }
+                    override fun onError(e: Throwable) {
+                        e.printStackTrace()
+                    }
 
-                        override fun onComplete() {
+                    override fun onComplete() {
 
-                        }
-                    })
-        }
+                    }
+                })
     }
 
     @VisibleForTesting
     open fun subscribeNewVisibleStore() {
-        newVisibleStorePublisher?.let {
-            it.subscribeOn(schedulerProvider.io())
-                    .map { store ->
-                        val marker = markerSparseArray.get(store.id)
+        newVisibleStorePublisher.subscribeOn(schedulerProvider.io())
+                .map { store ->
+                    val marker = markerSparseArray.get(store.id)
 
-                        // TODO: warm up cache
-                        /*val animator = getMarkerAnimator()
-                        animator.addUpdateListener { animation ->
-                            val scale = animation.animatedValue as Float
-                            try {
-                                getStoreIcon(resources, store.type, Math.round(scale * 75), Math.round(scale * 75)) // warm up cache
-                            } catch (ex: IllegalArgumentException) {
-                                ex.printStackTrace()
-                            }
+                    // TODO: warm up cache
+                    /*val animator = getMarkerAnimator()
+                    animator.addUpdateListener { animation ->
+                        val scale = animation.animatedValue as Float
+                        try {
+                            getStoreIcon(resources, store.type, Math.round(scale * 75), Math.round(scale * 75)) // warm up cache
+                        } catch (ex: IllegalArgumentException) {
+                            ex.printStackTrace()
                         }
-                        animator.start()*/
-
-                        Pair(marker, store.type)
                     }
-                    .observeOn(schedulerProvider.ui())
-                    .subscribe(object : Observer<Pair<Marker, Int>> {
-                        override fun onSubscribe(d: Disposable) {
-                            compositeDisposable.add(d)
-                        }
+                    animator.start()*/
 
-                        override fun onNext(pair: Pair<Marker, Int>) {
-                            mainMapView.animateMapMarker(pair.first, pair.second!!)
-                        }
+                    Pair(marker, store.type)
+                }
+                .observeOn(schedulerProvider.ui())
+                .subscribe(object : Observer<Pair<Marker, Int>> {
+                    override fun onSubscribe(d: Disposable) {
+                        compositeDisposable.add(d)
+                    }
 
-                        override fun onError(e: Throwable) {
-                            e.printStackTrace()
-                        }
+                    override fun onNext(pair: Pair<Marker, Int>) {
+                        mainMapView.animateMapMarker(pair.first, pair.second!!)
+                    }
 
-                        override fun onComplete() {
-                        }
-                    })
-        }
+                    override fun onError(e: Throwable) {
+                        e.printStackTrace()
+                    }
+
+                    override fun onComplete() {
+                    }
+                })
+    }
+
+    @VisibleForTesting
+    fun onNewStoreBecomeVisible(store: Store) {
+        newVisibleStorePublisher.onNext(store)
     }
 
     private fun handleSearchQuickAction(storeType: Int) {

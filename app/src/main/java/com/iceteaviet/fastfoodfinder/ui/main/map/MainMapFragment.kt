@@ -24,6 +24,7 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.iceteaviet.fastfoodfinder.App
+import com.iceteaviet.fastfoodfinder.Injection
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
@@ -280,7 +281,6 @@ class MainMapFragment : Fragment(), MainMapContract.View {
     companion object {
         private val TAG = MainMapFragment::class.java.simpleName
 
-
         fun newInstance(): MainMapFragment {
 
             val args = Bundle()
@@ -288,7 +288,8 @@ class MainMapFragment : Fragment(), MainMapContract.View {
             val fragment = MainMapFragment()
             fragment.arguments = args
             fragment.presenter = MainMapPresenter(App.getDataManager(), App.getSchedulerProvider(),
-                    GoogleLocationManager.getInstance(), App.getBus(), fragment) //
+                    GoogleLocationManager.getInstance(), App.getBus(), Injection.providePublishSubject(),
+                    Injection.providePublishSubject(), fragment)
             return fragment
         }
     }

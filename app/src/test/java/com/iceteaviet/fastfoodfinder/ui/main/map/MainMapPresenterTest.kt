@@ -2,6 +2,8 @@ package com.iceteaviet.fastfoodfinder.ui.main.map
 
 import android.os.Build
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
+import com.iceteaviet.fastfoodfinder.Injection
 import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
@@ -10,6 +12,8 @@ import com.iceteaviet.fastfoodfinder.location.LatLngAlt
 import com.iceteaviet.fastfoodfinder.location.LocationListener
 import com.iceteaviet.fastfoodfinder.service.eventbus.SearchEventResult
 import com.iceteaviet.fastfoodfinder.service.eventbus.core.IBus
+import com.iceteaviet.fastfoodfinder.ui.main.map.model.MapCameraPosition
+import com.iceteaviet.fastfoodfinder.ui.main.map.model.NearByStore
 import com.iceteaviet.fastfoodfinder.utils.*
 import com.iceteaviet.fastfoodfinder.utils.exception.NotFoundException
 import com.iceteaviet.fastfoodfinder.utils.exception.UnknownException
@@ -18,6 +22,7 @@ import com.iceteaviet.fastfoodfinder.utils.rx.TrampolineSchedulerProvider
 import com.nhaarman.mockitokotlin2.capture
 import com.nhaarman.mockitokotlin2.eq
 import io.reactivex.Single
+import io.reactivex.subjects.PublishSubject
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
 import org.junit.Before
@@ -41,6 +46,10 @@ class MainMapPresenterTest {
     @Mock
     private lateinit var bus: IBus
 
+    private lateinit var storePublisher: PublishSubject<Store>
+
+    private lateinit var mapCamPublisher: PublishSubject<MapCameraPosition>
+
     @Captor
     private lateinit var locationCallbackCaptor: ArgumentCaptor<LocationListener>
 
@@ -52,8 +61,10 @@ class MainMapPresenterTest {
     fun setupPresenter() {
         MockitoAnnotations.initMocks(this)
         schedulerProvider = TrampolineSchedulerProvider()
+        storePublisher = Injection.providePublishSubject()
+        mapCamPublisher = Injection.providePublishSubject()
 
-        mainMapPresenter = MainMapPresenter(dataManager, schedulerProvider, locationManager, bus, mainMapView)
+        mainMapPresenter = MainMapPresenter(dataManager, schedulerProvider, locationManager, bus, storePublisher, mapCamPublisher, mainMapView)
     }
 
     @After
@@ -71,6 +82,7 @@ class MainMapPresenterTest {
 
         mainMapPresenter.subscribe()
 
+        verify(bus).register(mainMapPresenter)
         verify(mainMapView).setupMap()
         verify(mainMapView, never()).requestLocationPermission()
         verify(locationManager).requestLocationUpdates()
@@ -87,6 +99,7 @@ class MainMapPresenterTest {
 
         mainMapPresenter.subscribe()
 
+        verify(bus).register(mainMapPresenter)
         verify(mainMapView).setupMap()
         verify(mainMapView, never()).requestLocationPermission()
         verify(locationManager).requestLocationUpdates()
@@ -104,6 +117,7 @@ class MainMapPresenterTest {
 
         mainMapPresenter.subscribe()
 
+        verify(bus).register(mainMapPresenter)
         verify(mainMapView).setupMap()
         verify(mainMapView).requestLocationPermission()
         verify(locationManager, never()).requestLocationUpdates()
@@ -266,6 +280,14 @@ class MainMapPresenterTest {
         verify(mainMapView).setupMap()
         verify(mainMapView, never()).showWarningMessage(ArgumentMatchers.anyInt())
         verify(mainMapView).addMarkersToMap(stores.toMutableList())
+    }
+
+    @Test
+    fun unsubscribeTest() {
+        mainMapPresenter.unsubscribe()
+
+        verify(bus).unregister(mainMapPresenter)
+        verify(locationManager).unsubscribeLocationUpdate(mainMapPresenter)
     }
 
     @Test
@@ -494,6 +516,56 @@ class MainMapPresenterTest {
         verify(mainMapView).showGeneralErrorMessage()
     }
 
+    @Test
+    fun onMapCameraMoveTest_emptyStoreList() {
+        // Preconditions
+        mainMapPresenter.storeList = ArrayList()
+        mainMapPresenter.subscribeMapCameraPositionChange()
+
+        val bounds = LatLngBounds(southwest, northeast)
+        mainMapPresenter.onMapCameraMove(latLng, bounds)
+
+        verify(mainMapView).setNearByStores(ArrayList())
+    }
+
+    @Test
+    fun onMapCameraMoveTest_haveStoreList_noStoreInBounds() {
+        // Preconditions
+        mainMapPresenter.storeList = stores
+        mainMapPresenter.subscribeMapCameraPositionChange()
+
+        val bounds = LatLngBounds(southwest, northeast)
+        mainMapPresenter.onMapCameraMove(latLng, bounds)
+
+        verify(mainMapView).setNearByStores(ArrayList())
+    }
+
+    @Test
+    fun onMapCameraMoveTest_haveStoreList_allStoresInBounds() {
+        // Preconditions
+        mainMapPresenter.storeList = inBoundsStores
+        mainMapPresenter.subscribeMapCameraPositionChange()
+
+        val bounds = LatLngBounds(southwest, northeast)
+        mainMapPresenter.onMapCameraMove(latLng, bounds)
+
+        verify(mainMapView).setNearByStores(nearByStores)
+    }
+
+    @Test
+    fun onMapCameraMoveTest_haveStoreList_haveStoresInBounds() {
+        // Preconditions
+        val stores = ArrayList(inBoundsStores)
+        stores.add(store)
+        mainMapPresenter.storeList = inBoundsStores
+        mainMapPresenter.subscribeMapCameraPositionChange()
+
+        val bounds = LatLngBounds(southwest, northeast)
+        mainMapPresenter.onMapCameraMove(latLng, bounds)
+
+        verify(mainMapView).setNearByStores(nearByStores)
+    }
+
     // Workaround solution
     private fun <T> anyObject(): T {
         return Mockito.anyObject<T>()
@@ -513,7 +585,21 @@ class MainMapPresenterTest {
 
         private val location = LatLngAlt(10.1234, 106.1234, 1.0)
         private val latLng = LatLng(10.1234, 106.1234)
+        private val northeast = LatLng(10.4321, 106.4321)
+        private val southwest = LatLng(10.1001, 106.1001)
 
+        private val inBoundsStores = arrayListOf(
+                Store(1, STORE_TITLE, STORE_ADDRESS, "10.1101", "106.1101", STORE_TEL, STORE_TYPE),
+                Store(2, STORE_TITLE, STORE_ADDRESS, "10.4012", "106.4012", STORE_TEL, STORE_TYPE),
+                Store(3, STORE_TITLE, STORE_ADDRESS, "10.1234", "106.1234", STORE_TEL, STORE_TYPE),
+                Store(4, STORE_TITLE, STORE_ADDRESS, "10.3214", "106.3214", STORE_TEL, STORE_TYPE)
+        )
+        private val nearByStores = arrayListOf(
+                NearByStore(Store(1, STORE_TITLE, STORE_ADDRESS, "10.1101", "106.1101", STORE_TEL, STORE_TYPE), 2.0709774176400737),
+                NearByStore(Store(2, STORE_TITLE, STORE_ADDRESS, "10.4012", "106.4012", STORE_TEL, STORE_TYPE), 43.24740945911383),
+                NearByStore(Store(3, STORE_TITLE, STORE_ADDRESS, "10.1234", "106.1234", STORE_TEL, STORE_TYPE), 0.0),
+                NearByStore(Store(4, STORE_TITLE, STORE_ADDRESS, "10.3214", "106.3214", STORE_TEL, STORE_TYPE), 30.826165963297818)
+        )
         private val stores = getFakeStoreList()
         private val circleKStores = getFakeCircleKStoreList()
 

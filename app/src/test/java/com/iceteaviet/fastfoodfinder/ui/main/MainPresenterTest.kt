@@ -51,6 +51,7 @@ class MainPresenterTest {
 
         mainPresenter.subscribe()
 
+        verify(bus).register(mainPresenter)
         verify(mainView).updateProfileHeader(true)
     }
 
@@ -61,6 +62,7 @@ class MainPresenterTest {
 
         mainPresenter.subscribe()
 
+        verify(bus).register(mainPresenter)
         verify(mainView).updateProfileHeader(true)
     }
 
@@ -73,6 +75,7 @@ class MainPresenterTest {
 
         mainPresenter.subscribe()
 
+        verify(bus).register(mainPresenter)
         verify(mainView).updateProfileHeader(false)
         verify(mainView).setProfileHeaderNameText(USER_NAME)
         verify(mainView).setProfileHeaderEmailText(USER_EMAIL)
@@ -88,6 +91,7 @@ class MainPresenterTest {
 
         mainPresenter.subscribe()
 
+        verify(bus).register(mainPresenter)
         verify(mainView).updateProfileHeader(false)
         verify(mainView).setProfileHeaderNameText(USER_NAME)
         verify(mainView).setProfileHeaderEmailText(USER_EMAIL)
