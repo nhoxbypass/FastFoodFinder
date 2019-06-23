@@ -2,6 +2,7 @@ package com.iceteaviet.fastfoodfinder.ui.main.search
 
 import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
+import com.iceteaviet.fastfoodfinder.service.eventbus.SearchEventResult
 import com.iceteaviet.fastfoodfinder.service.eventbus.core.IBus
 import com.iceteaviet.fastfoodfinder.ui.main.search.model.SearchStoreItem
 import com.iceteaviet.fastfoodfinder.utils.StoreType
@@ -125,6 +126,35 @@ class SearchPresenterTest {
         searchPresenter.onUpdateSearchList("search text")
 
         verify(searchView).setSearchStores(searchStoreItems)
+    }
+
+    @Test
+    fun onStoreSearchClickTest_queryOnly() {
+        val store = Store(-1, STORE_TITLE, STORE_ADDRESS, STORE_LAT, STORE_LNG, STORE_TEL, StoreType.TYPE_CIRCLE_K)
+        searchPresenter.onStoreSearchClick(store)
+
+        verify(bus).post(SearchEventResult(SearchEventResult.SEARCH_ACTION_QUERY_SUBMIT, STORE_TITLE, store))
+    }
+
+    @Test
+    fun onStoreSearchClickTest() {
+        searchPresenter.onStoreSearchClick(store)
+
+        verify(bus).post(SearchEventResult(SearchEventResult.SEARCH_ACTION_STORE_CLICK, STORE_TITLE, store))
+    }
+
+    @Test
+    fun onQuickSearchItemClickTest_invalidStoreType() {
+        searchPresenter.onQuickSearchItemClick(-1)
+
+        verify(bus).post(SearchEventResult(SearchEventResult.SEARCH_ACTION_QUICK, "", -1))
+    }
+
+    @Test
+    fun onQuickSearchItemClickTest() {
+        searchPresenter.onQuickSearchItemClick(StoreType.TYPE_CIRCLE_K)
+
+        verify(bus).post(SearchEventResult(SearchEventResult.SEARCH_ACTION_QUICK, "Circle K", StoreType.TYPE_CIRCLE_K))
     }
 
     companion object {
