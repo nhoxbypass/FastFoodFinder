@@ -20,6 +20,7 @@ import com.iceteaviet.fastfoodfinder.data.local.db.user.UserDAO
 import com.iceteaviet.fastfoodfinder.data.local.db.user.UserDataSource
 import com.iceteaviet.fastfoodfinder.data.local.prefs.AppPreferencesHelper
 import com.iceteaviet.fastfoodfinder.data.local.prefs.AppPreferencesWrapper
+import com.iceteaviet.fastfoodfinder.data.local.prefs.AppPreferencesWrapper.Companion.PREFS_NAME
 import com.iceteaviet.fastfoodfinder.data.local.prefs.PreferencesHelper
 import com.iceteaviet.fastfoodfinder.data.local.prefs.PreferencesWrapper
 import com.iceteaviet.fastfoodfinder.data.remote.routing.GoogleMapsRoutingApiHelper
@@ -94,7 +95,7 @@ object Injection {
     }
 
     fun providePreferenceRepository(): PreferencesRepository {
-        return AppPreferencesRepository(Injection.providePreferenceHelper())
+        return AppPreferencesRepository(providePreferenceHelper())
     }
 
     fun providePreferenceHelper(): PreferencesHelper {
@@ -102,7 +103,7 @@ object Injection {
     }
 
     fun providePreferenceWrapper(): PreferencesWrapper {
-        return AppPreferencesWrapper(App.getContext())
+        return AppPreferencesWrapper(App.getContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE))
     }
 
     fun provideAuthClient(): ClientAuth {

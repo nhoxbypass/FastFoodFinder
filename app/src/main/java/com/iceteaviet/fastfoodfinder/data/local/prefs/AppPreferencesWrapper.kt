@@ -1,6 +1,5 @@
 package com.iceteaviet.fastfoodfinder.data.local.prefs
 
-import android.content.Context
 import android.content.SharedPreferences
 
 /**
@@ -10,13 +9,7 @@ import android.content.SharedPreferences
  * Entry point contains methods that help interacting with application's SharedPreferences
  */
 
-class AppPreferencesWrapper(context: Context) : PreferencesWrapper {
-
-    private val sharedPreferences: SharedPreferences
-
-    init {
-        sharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-    }
+class AppPreferencesWrapper(private val sharedPreferences: SharedPreferences) : PreferencesWrapper {
 
     override fun putString(key: String, value: String) {
         sharedPreferences.edit()
@@ -67,6 +60,6 @@ class AppPreferencesWrapper(context: Context) : PreferencesWrapper {
     }
 
     companion object {
-        private const val PREFS_NAME = "fastfood_finder_android"
+        public const val PREFS_NAME = "fastfood_finder_android"
     }
 }

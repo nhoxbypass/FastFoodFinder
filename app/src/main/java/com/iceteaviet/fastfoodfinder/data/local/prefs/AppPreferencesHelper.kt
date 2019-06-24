@@ -1,5 +1,7 @@
 package com.iceteaviet.fastfoodfinder.data.local.prefs
 
+import androidx.annotation.VisibleForTesting
+
 /**
  * Created by tom on 7/24/18.
  *
@@ -34,9 +36,13 @@ class AppPreferencesHelper(private val preferences: PreferencesWrapper) : Prefer
     }
 
     companion object {
-        private const val KEY_APP_LAUNCH_FIRST_TIME = "app_launch_first_time"
-        private const val KEY_SEARCH_HISTORIES = "search_histories"
-        private const val KEY_SEARCH_HISTORIES_SIZE = "search_histories_size"
-        private const val KEY_LANGUAGE = "lang"
+        @VisibleForTesting
+        const val KEY_APP_LAUNCH_FIRST_TIME = "app_launch_first_time"
+        @VisibleForTesting
+        const val KEY_SEARCH_HISTORIES = "search_histories"
+        @VisibleForTesting
+        const val KEY_SEARCH_HISTORIES_SIZE = "search_histories_size"
+        @VisibleForTesting
+        const val KEY_LANGUAGE = "lang"
     }
 }
