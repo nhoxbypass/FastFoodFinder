@@ -89,15 +89,15 @@ class AppPreferencesHelperTest {
     }
 
     @Test
-    fun sharedPreferencesHelper_SaveAndReadSearchHistories_empty() {
+    fun sharedPreferencesHelper_SaveAndReadSearchHistories() {
         // Save the data to SharedPreferences
-        mockPreferencesHelper.setSearchHistories(LinkedHashSet())
+        mockPreferencesHelper.setSearchHistories(searchHistory)
 
         // Read data from SharedPreferences
         val entry = mockPreferencesHelper.getSearchHistories()
 
         // Make sure both written and retrieved data are equal.
-        assertThat(entry).isEmpty()
+        assertThat(entry).isEqualTo(searchHistory)
     }
 
     @Test
@@ -123,7 +123,7 @@ class AppPreferencesHelperTest {
         Mockito.`when`(mockPreferencesWrapper.getBoolean(eq(AppPreferencesHelper.KEY_APP_LAUNCH_FIRST_TIME), ArgumentMatchers.anyBoolean()))
                 .thenReturn(true)
         Mockito.`when`(mockPreferencesWrapper.getStringSet(eq(AppPreferencesHelper.KEY_SEARCH_HISTORIES), ArgumentMatchers.anySet()))
-                .thenReturn(LinkedHashSet())
+                .thenReturn(searchHistory)
         Mockito.`when`(mockPreferencesWrapper.getBoolean(eq(AppPreferencesHelper.KEY_LANGUAGE), ArgumentMatchers.anyBoolean()))
                 .thenReturn(true)
 
@@ -148,5 +148,9 @@ class AppPreferencesHelperTest {
                 .thenThrow(ClassCastException())
 
         return AppPreferencesHelper(mockBrokenPreferencesWrapper)
+    }
+
+    companion object {
+        private val searchHistory = linkedSetOf("circle K", "bsmart quan 8")
     }
 }
