@@ -6,7 +6,6 @@ apply plugin: 'io.fabric'
 apply plugin: 'com.google.firebase.firebase-perf'
 apply plugin: 'kotlin-android'
 apply plugin: 'realm-android'
-//apply plugin: "com.github.kt3k.coveralls"
 apply from: '../app/coverage.gradle'
 
 android {
@@ -43,20 +42,14 @@ android {
         mock {
             dimension "mock"
             applicationIdSuffix = ".mock"
-            //sourceSets.main.java.srcDirs = ['src/main/kotlin', 'src/mock/kotlin']
         }
         prod {
-            //sourceSets.main.java.srcDirs = ['src/main/kotlin', 'src/prod/kotlin']
+
         }
     }
 
     aaptOptions {
         cruncherEnabled = false
-    }
-
-    sourceSets {
-        main.java.srcDirs = ['src/main/kotlin']
-        test.java.srcDirs = ['src/test/kotlin']
     }
 
     dexOptions {
@@ -105,10 +98,6 @@ buildScan {
     termsOfServiceAgree = 'yes'
 }
 
-//coveralls {
-//    jacocoReportPath = "${buildDir}/reports/jacoco/test/jacocoTestReport.xml"
-//}
-
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
@@ -119,8 +108,9 @@ dependencies {
     testImplementation "org.mockito:mockito-core:$rootProject.ext.mockitoVersion"
     testImplementation "org.powermock:powermock-module-junit4:$rootProject.ext.powerMockito"
     testImplementation "org.powermock:powermock-api-mockito2:$rootProject.ext.powerMockito"
-    testImplementation("org.assertj:assertj-core:$rootProject.ext.assertJVersion")
+    testImplementation "org.assertj:assertj-core:$rootProject.ext.assertJVersion"
     //testImplementation 'com.google.truth:truth:0.44' // Does not stable
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$rootProject.ext.kotlinMockitoVersion"
 
     // Espresso UI Testing dependencies.
     androidTestImplementation "com.android.support.test.espresso:espresso-core:$rootProject.ext.espressoVersion"
