@@ -24,6 +24,9 @@ abstract class AbsLocationManager<T : LocationListener> protected constructor(co
     protected abstract fun getLastLocation(): Location?
 
     override fun getCurrentLocation(): LatLngAlt? {
+        if (currLocation == null)
+            currLocation = getLastLocation()
+
         currLocation?.let {
             return LatLngAlt(it.latitude, it.longitude, it.altitude)
         }

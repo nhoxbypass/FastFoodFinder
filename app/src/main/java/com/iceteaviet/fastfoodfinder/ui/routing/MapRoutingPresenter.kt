@@ -69,22 +69,22 @@ class MapRoutingPresenter : BasePresenter<MapRoutingContract.Presenter>, MapRout
 
     override fun onPrevInstructionClick() {
         currDirectionIndex--
-        if (currDirectionIndex >= 0) {
-            mapRoutingView.scrollToPosition(currDirectionIndex)
-            mapRoutingView.animateMapCamera(stepList[currDirectionIndex].endMapCoordination.location, true)
-        } else {
-            currDirectionIndex = 0
+        if (currDirectionIndex < 0) {
+            currDirectionIndex = stepList.size - 1 // Go back to the end coordination
         }
+
+        mapRoutingView.scrollToPosition(currDirectionIndex)
+        mapRoutingView.animateMapCamera(stepList[currDirectionIndex].endMapCoordination.location, true)
     }
 
     override fun onNextInstructionClick() {
         currDirectionIndex++
-        if (currDirectionIndex < stepList.size) {
-            mapRoutingView.scrollToPosition(currDirectionIndex)
-            mapRoutingView.animateMapCamera(stepList[currDirectionIndex].endMapCoordination.location, true)
-        } else {
-            currDirectionIndex = stepList.size - 1
+        if (currDirectionIndex >= stepList.size) {
+            currDirectionIndex = 0 // Go back to the start coordination
         }
+
+        mapRoutingView.scrollToPosition(currDirectionIndex)
+        mapRoutingView.animateMapCamera(stepList[currDirectionIndex].endMapCoordination.location, true)
     }
 
     override fun onBackArrowButtonPress() {

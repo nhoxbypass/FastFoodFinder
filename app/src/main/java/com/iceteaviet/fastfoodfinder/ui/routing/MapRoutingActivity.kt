@@ -54,13 +54,13 @@ class MapRoutingActivity : BaseActivity(), MapRoutingContract.View, View.OnClick
 
         presenter = MapRoutingPresenter(App.getDataManager(), App.getSchedulerProvider(), this)
 
-        intent.extras?.let {
-            presenter.handleExtras(it.getParcelable(KEY_ROUTE_LIST), it.getParcelable(KEY_DES_STORE))
-        }
-
         setupUI()
         setUpMapIfNeeded()
         setupEventListeners()
+
+        intent.extras?.let {
+            presenter.handleExtras(it.getParcelable(KEY_ROUTE_LIST), it.getParcelable(KEY_DES_STORE))
+        }
     }
 
     override fun onResume() {
