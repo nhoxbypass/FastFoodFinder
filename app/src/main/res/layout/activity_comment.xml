@@ -15,7 +15,7 @@
         android:minHeight="?attr/actionBarSize"
         app:titleTextColor="@color/colorWhite" />
 
-    <EditText
+    <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoEditText
         android:id="@+id/et_comment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

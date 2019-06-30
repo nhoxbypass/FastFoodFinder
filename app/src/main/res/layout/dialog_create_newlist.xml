@@ -46,7 +46,7 @@
         android:layout_marginLeft="16dp"
         android:text="Ex. Beautiful Places, .." />
 
-    <EditText
+    <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoEditText
         android:id="@+id/edtName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
