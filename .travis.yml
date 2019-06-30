@@ -27,7 +27,7 @@ before_install:
   - chmod +x gradlew
 
 script:
-  - ./gradlew build jacocoTestReport test -Pbuild=dev
+  - ./gradlew build jacocoTestReport test -Pbuild=devCI --daemon --scan
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)

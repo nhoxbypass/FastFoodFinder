@@ -6,7 +6,6 @@ apply plugin: 'io.fabric'
 apply plugin: 'com.google.firebase.firebase-perf'
 apply plugin: 'kotlin-android'
 apply plugin: 'realm-android'
-//apply plugin: "com.github.kt3k.coveralls"
 apply from: '../app/coverage.gradle'
 
 android {
@@ -25,7 +24,6 @@ android {
 
     buildTypes {
         release {
-            testCoverageEnabled true
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -34,20 +32,23 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules-debug.pro'
         }
-        dev {
-            testCoverageEnabled true
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+    }
+
+    flavorDimensions "mock"
+
+    // If you need to add more flavors, consider using flavor dimensions.
+    productFlavors {
+        mock {
+            dimension "mock"
+            applicationIdSuffix = ".mock"
+        }
+        prod {
+
         }
     }
 
     aaptOptions {
         cruncherEnabled = false
-    }
-
-    sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
-        test.java.srcDirs += 'src/test/kotlin'
     }
 
     dexOptions {
@@ -57,28 +58,44 @@ android {
     lintOptions {
         abortOnError false
     }
+
+    // Always show the result of every unit test, even if it passes.
+    testOptions.unitTests.all {
+        testLogging {
+            events 'passed', 'skipped', 'failed', 'standardOut', 'standardError'
+        }
+    }
 }
 
 def build_param = "${build}"
-if (build_param != "dev") {
-    //exclude production build
+if (build_param == "devCI") {
+    // Exclude all except mockDebug flavor
     android.variantFilter { variant ->
-        if (variant.buildType.name.equals('dev')) {
-            variant.setIgnore(true);
+        if (variant.getFlavors().get(0).name != 'mock' || variant.buildType.name != 'debug') {
+            variant.setIgnore(true)
+        }
+    }
+} else if (build_param == "releaseCI") {
+    // Exclude all except prodRelease flavor
+    android.variantFilter { variant ->
+        if (variant.getFlavors().get(0).name != 'prod' || variant.buildType.name != 'release') {
+            variant.setIgnore(true)
         }
     }
 } else {
-    //exclude all except production build
+    // Normal local machine dev
+    // Exclude mockRelease as it's not needed.
     android.variantFilter { variant ->
-        if (!variant.buildType.name.equals('dev')) {
-            variant.setIgnore(true);
+        if(variant.buildType.name == 'release' && variant.getFlavors().get(0).name == 'mock') {
+            variant.setIgnore(true)
         }
     }
 }
 
-//coveralls {
-//    jacocoReportPath = "${buildDir}/reports/jacoco/test/jacocoTestReport.xml"
-//}
+buildScan {
+    termsOfServiceUrl = 'https://gradle.com/terms-of-service'
+    termsOfServiceAgree = 'yes'
+}
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
@@ -90,8 +107,9 @@ dependencies {
     testImplementation "org.mockito:mockito-core:$rootProject.ext.mockitoVersion"
     testImplementation "org.powermock:powermock-module-junit4:$rootProject.ext.powerMockito"
     testImplementation "org.powermock:powermock-api-mockito2:$rootProject.ext.powerMockito"
-    testImplementation("org.assertj:assertj-core:$rootProject.ext.assertJVersion")
+    testImplementation "org.assertj:assertj-core:$rootProject.ext.assertJVersion"
     //testImplementation 'com.google.truth:truth:0.44' // Does not stable
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$rootProject.ext.kotlinMockitoVersion"
 
     // Espresso UI Testing dependencies.
     androidTestImplementation "com.android.support.test.espresso:espresso-core:$rootProject.ext.espressoVersion"
