@@ -43,7 +43,7 @@
             android:textSize="36sp"
             android:textStyle="bold" />
 
-        <Button
+        <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoButton
             android:id="@+id/btn_skip"
             android:layout_width="match_parent"
             android:layout_height="40dp"
@@ -83,7 +83,7 @@
                 android:layout_weight="1" />
         </LinearLayout>
 
-        <Button
+        <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoButton
             android:id="@+id/btn_register"
             android:layout_width="match_parent"
             android:layout_height="40dp"
@@ -95,7 +95,7 @@
             android:textAllCaps="true"
             android:textColor="@color/colorWhite" />
 
-        <Button
+        <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoButton
             android:id="@+id/btn_login"
             android:layout_width="match_parent"
             android:layout_height="40dp"

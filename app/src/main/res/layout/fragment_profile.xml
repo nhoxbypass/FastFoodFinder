@@ -15,7 +15,7 @@
         android:src="@drawable/profile_sample_background" />
 
 
-    <Button
+    <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoButton
         android:id="@+id/btnUpdateCoverImage"
         android:layout_width="wrap_content"
         android:layout_height="32dp"

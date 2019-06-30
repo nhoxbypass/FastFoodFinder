@@ -61,7 +61,7 @@
         android:layout_height="0.25dp"
         android:background="#b6b6b6" />
 
-    <Button
+    <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoButton
         android:id="@+id/btn_fav"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
