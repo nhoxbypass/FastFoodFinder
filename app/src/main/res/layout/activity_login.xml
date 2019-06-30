@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.login.LoginActivity">
 
     <ImageView
@@ -21,29 +22,33 @@
         android:layout_height="match_parent"
         android:padding="24dp">
 
-        <TextView
+        <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoTextView
             android:id="@+id/app_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_marginTop="8dp"
+            app:robotoFontFamily="roboto_slab"
+            app:robotoTypeface="roboto_slab_regular"
             android:text="@string/app_login_description"
             android:textAlignment="center"
             android:textColor="@color/colorWhite"
             android:textSize="14sp" />
 
-        <TextView
+        <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_above="@id/app_description"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="160dp"
+            app:robotoFontFamily="roboto_slab"
+            app:robotoTypeface="roboto_slab_regular"
             android:text="@string/app_name_fff"
             android:textColor="@color/colorWhite"
             android:textSize="36sp"
             android:textStyle="bold" />
 
-        <Button
+        <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoButton
             android:id="@+id/btn_skip"
             android:layout_width="match_parent"
             android:layout_height="40dp"
@@ -83,7 +88,7 @@
                 android:layout_weight="1" />
         </LinearLayout>
 
-        <Button
+        <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoButton
             android:id="@+id/btn_register"
             android:layout_width="match_parent"
             android:layout_height="40dp"
@@ -95,7 +100,7 @@
             android:textAllCaps="true"
             android:textColor="@color/colorWhite" />
 
-        <Button
+        <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoButton
             android:id="@+id/btn_login"
             android:layout_width="match_parent"
             android:layout_height="40dp"

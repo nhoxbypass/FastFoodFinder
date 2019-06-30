@@ -15,7 +15,7 @@
         android:src="@drawable/profile_sample_background" />
 
 
-    <Button
+    <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoButton
         android:id="@+id/btnUpdateCoverImage"
         android:layout_width="wrap_content"
         android:layout_height="32dp"
@@ -41,7 +41,7 @@
         android:scaleType="centerCrop"
         android:src="@drawable/all_noavatar" />
 
-    <TextView
+    <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoTextView
         android:id="@+id/tvName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -55,7 +55,7 @@
         android:textSize="20sp"
         android:textStyle="bold" />
 
-    <TextView
+    <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoTextView
         android:id="@+id/tvEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -79,7 +79,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
+            <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
@@ -88,7 +88,7 @@
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
-            <TextView
+            <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoTextView
                 android:id="@+id/tv_numb_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -149,7 +149,7 @@
                         android:layout_marginTop="32dp"
                         android:src="@drawable/ic_profile_addlist" />
 
-                    <TextView
+                    <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
@@ -177,14 +177,14 @@
                 android:layout_below="@+id/ll_list_container_2"
                 android:layout_marginLeft="16dp">
 
-                <TextView
+                <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/list_you_create"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
-                <TextView
+                <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoTextView
                     android:id="@+id/tvNumberList"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

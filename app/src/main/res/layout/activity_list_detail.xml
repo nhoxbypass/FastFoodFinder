@@ -30,7 +30,7 @@
 
     </RelativeLayout>
 
-    <TextView
+    <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoTextView
         android:id="@+id/tvListName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
         android:textSize="24sp"
         android:textStyle="bold" />
 
-    <TextView
+    <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoTextView
         android:id="@+id/tvNumberPlace"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

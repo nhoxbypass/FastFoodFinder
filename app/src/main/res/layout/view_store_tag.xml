@@ -7,7 +7,7 @@
     android:layout_marginTop="4dp"
     android:layout_marginBottom="4dp">
 
-    <TextView
+    <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoTextView
         android:id="@+id/tv_tag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -10,7 +10,6 @@ import androidx.appcompat.widget.AppCompatTextView
  * Implementation of a [TextView] with native support for all the Roboto fonts.
  */
 class RobotoTextView : AppCompatTextView {
-
     /**
      * Constructor that is called when inflating a widget from XML. This is called
      * when a widget is being constructed from an XML file, supplying attributes
@@ -31,7 +30,6 @@ class RobotoTextView : AppCompatTextView {
      */
     @JvmOverloads
     constructor(context: Context, attrs: AttributeSet? = null) : super(context, attrs) {
-
         if (!isInEditMode) {
             RobotoTypefaces.setUpTypeface(this, context, attrs)
         }
@@ -52,7 +50,6 @@ class RobotoTextView : AppCompatTextView {
      * @see .RobotoTextView
      */
     constructor(context: Context, attrs: AttributeSet, defStyle: Int) : super(context, attrs, defStyle) {
-
         if (!isInEditMode) {
             RobotoTypefaces.setUpTypeface(this, context, attrs)
         }

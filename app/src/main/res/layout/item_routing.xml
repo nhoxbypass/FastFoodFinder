@@ -27,7 +27,7 @@
             android:layout_height="1dp"
             android:background="@color/material_gray_500" />
 
-        <TextView
+        <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoTextView
             android:id="@+id/tv_routing_guide"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -36,7 +36,7 @@
             android:textColor="@android:color/black"
             android:textSize="16sp" />
 
-        <TextView
+        <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoTextView
             android:id="@+id/tv_routing_distance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
