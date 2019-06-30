@@ -148,9 +148,9 @@ class MapRoutingPresenterTest {
 
         mapRoutingPresenter.onPrevInstructionClick()
 
-        assertThat(mapRoutingPresenter.currDirectionIndex).isZero()
-        verify(mapRoutingView, never()).scrollToPosition(ArgumentMatchers.anyInt())
-        verify(mapRoutingView, never()).animateMapCamera(any(), ArgumentMatchers.anyBoolean())
+        assertThat(mapRoutingPresenter.currDirectionIndex).isEqualTo(stepList.size - 1) // Go back to the end coord
+        verify(mapRoutingView).scrollToPosition(ArgumentMatchers.anyInt())
+        verify(mapRoutingView).animateMapCamera(any(), ArgumentMatchers.anyBoolean())
     }
 
     @Test
@@ -174,9 +174,9 @@ class MapRoutingPresenterTest {
 
         mapRoutingPresenter.onNextInstructionClick()
 
-        assertThat(mapRoutingPresenter.currDirectionIndex).isEqualTo(stepList.size - 1)
-        verify(mapRoutingView, never()).scrollToPosition(ArgumentMatchers.anyInt())
-        verify(mapRoutingView, never()).animateMapCamera(any(), ArgumentMatchers.anyBoolean())
+        assertThat(mapRoutingPresenter.currDirectionIndex).isEqualTo(0) // Go back to the start coord
+        verify(mapRoutingView).scrollToPosition(ArgumentMatchers.anyInt())
+        verify(mapRoutingView).animateMapCamera(any(), ArgumentMatchers.anyBoolean())
     }
 
     @Test
