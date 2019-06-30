@@ -15,7 +15,7 @@
         android:scaleType="centerCrop"
         android:src="@drawable/ic_default_avatar_menu" />
 
-    <TextView
+    <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoTextView
         android:id="@+id/tv_nav_header_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -24,7 +24,7 @@
         android:textColor="@android:color/white"
         android:textSize="16sp" />
 
-    <TextView
+    <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoTextView
         android:id="@+id/tv_nav_header_screenname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

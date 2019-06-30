@@ -22,7 +22,7 @@
         android:layout_weight="7"
         android:orientation="vertical">
 
-        <TextView
+        <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoTextView
             android:id="@+id/tv_item_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

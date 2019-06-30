@@ -12,7 +12,7 @@
         android:layout_centerInParent="true"
         android:src="@drawable/ic_all_store24h" />
 
-    <TextView
+    <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoTextView
         android:id="@+id/footer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

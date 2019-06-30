@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp">
 
-        <TextView
+        <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoTextView
             android:id="@+id/tv_item_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -27,7 +27,7 @@
             android:textSize="16sp"
             android:textStyle="bold" />
 
-        <TextView
+        <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoTextView
             android:id="@+id/tv_item_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

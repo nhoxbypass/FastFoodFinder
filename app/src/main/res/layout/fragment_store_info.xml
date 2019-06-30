@@ -19,7 +19,7 @@
             android:background="@drawable/detail_shape_border"
             android:src="@drawable/ic_all_store" />
 
-        <TextView
+        <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoTextView
             android:id="@+id/store_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -31,7 +31,7 @@
             android:textSize="24sp" />
     </LinearLayout>
 
-    <TextView
+    <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoTextView
         android:id="@+id/store_address"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -40,7 +40,7 @@
         android:paddingTop="6dp"
         android:text="227 Nguyễn Văn Cừ, Quận 5" />
 
-    <TextView
+    <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="6dp"
@@ -72,7 +72,7 @@
         android:text="@string/add_to_my_favorite"
         android:textColor="@color/colorWhite" />
 
-    <TextView
+    <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoTextView
         android:id="@+id/view_detail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

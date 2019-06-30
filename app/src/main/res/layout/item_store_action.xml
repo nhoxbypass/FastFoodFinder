@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:paddingBottom="6dp">
 
-        <TextView
+        <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoTextView
             android:id="@+id/btn_save"
             style="@style/TextAction"
             android:layout_width="0dp"
@@ -21,7 +21,7 @@
             android:drawableTop="@drawable/state_bookmark_click"
             android:text="@string/save_this" />
 
-        <TextView
+        <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoTextView
             android:id="@+id/btn_fav"
             style="@style/TextAction"
             android:layout_width="0dp"
@@ -30,7 +30,7 @@
             android:drawableTop="@drawable/state_rate_click"
             android:text="@string/add_to_fav" />
 
-        <TextView
+        <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoTextView
             android:id="@+id/comment"
             style="@style/TextAction"
             android:layout_width="0dp"
@@ -59,7 +59,7 @@
             android:layout_centerVertical="true"
             android:orientation="vertical">
 
-            <TextView
+            <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoTextView
                 android:id="@+id/status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -67,7 +67,7 @@
                 android:textColor="@color/googleGreen"
                 android:textStyle="bold" />
 
-            <TextView
+            <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoTextView
                 android:id="@+id/open_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

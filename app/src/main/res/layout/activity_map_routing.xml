@@ -74,7 +74,7 @@
             android:orientation="horizontal"
             android:paddingLeft="16dp">
 
-            <TextView
+            <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoTextView
                 android:id="@+id/tv_routing_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -83,7 +83,7 @@
                 android:textStyle="bold"
                 tools:text="5 mins" />
 
-            <TextView
+            <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoTextView
                 android:id="@+id/tv_routing_distance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -92,7 +92,7 @@
                 tools:text="1.8 kilometers" />
         </LinearLayout>
 
-        <TextView
+        <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoTextView
             android:id="@+id/tv_routing_overview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
