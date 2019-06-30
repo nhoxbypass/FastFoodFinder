@@ -43,8 +43,8 @@ object RobotoTypefaces {
     const val TEXT_STYLE_NORMAL = 0
     const val TEXT_STYLE_ITALIC = 1
 
-    private const val DEFAULT_TYPEFACE = TYPEFACE_ROBOTO_SLAB_REGULAR
-    private const val DEFAULT_FONT_FAMILY = FONT_FAMILY_ROBOTO_SLAB
+    private const val DEFAULT_TYPEFACE = TYPEFACE_ROBOTO_REGULAR
+    private const val DEFAULT_FONT_FAMILY = FONT_FAMILY_ROBOTO
     private const val DEFAULT_TEXT_WEIGHT = TEXT_WEIGHT_NORMAL
     private const val DEFAULT_TEXT_STYLE = TEXT_STYLE_NORMAL
 
@@ -210,9 +210,9 @@ object RobotoTypefaces {
      * @param textView The text view
      * @param typeface The value of "robotoTypeface" attribute
      */
-    fun setUpTypeface(@NonNull textView: TextView, @RobotoTypeface typeface: Int) {
+    /*fun setUpTypeface(@NonNull textView: TextView, @RobotoTypeface typeface: Int) {
         setUpTypeface(textView, obtainTypeface(textView.context, typeface))
-    }
+    }*/
 
     /**
      * Set up typeface for TextView.
@@ -222,10 +222,10 @@ object RobotoTypefaces {
      * @param textWeight The value of "robotoTextWeight" attribute
      * @param textStyle  The value of "robotoTextStyle" attribute
      */
-    fun setUpTypeface(@NonNull textView: TextView, @RobotoFontFamily fontFamily: Int,
+    /*fun setUpTypeface(@NonNull textView: TextView, @RobotoFontFamily fontFamily: Int,
                       @RobotoTextWeight textWeight: Int, @RobotoTextStyle textStyle: Int) {
         setUpTypeface(textView, obtainTypeface(textView.context, fontFamily, textWeight, textStyle))
-    }
+    }*/
 
     /**
      * Set up typeface for TextView. Wrapper over [TextView.setTypeface]
@@ -246,8 +246,8 @@ object RobotoTypefaces {
      * @param paint    The paint
      * @param typeface The specify typeface
      */
-    fun setUpTypeface(@NonNull paint: Paint, @NonNull typeface: Typeface) {
+    /*fun setUpTypeface(@NonNull paint: Paint, @NonNull typeface: Typeface) {
         paint.setFlags(paint.getFlags() or Paint.ANTI_ALIAS_FLAG or Paint.SUBPIXEL_TEXT_FLAG)
         paint.setTypeface(typeface)
-    }
+    }*/
 }

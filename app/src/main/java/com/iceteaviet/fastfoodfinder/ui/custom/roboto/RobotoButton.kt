@@ -10,7 +10,6 @@ import androidx.appcompat.widget.AppCompatButton
  * Created by tom on 2019-06-30.
  */
 class RobotoButton : AppCompatButton {
-
     /**
      * Constructor that is called when inflating a widget from XML. This is called
      * when a widget is being constructed from an XML file, supplying attributes
@@ -31,8 +30,7 @@ class RobotoButton : AppCompatButton {
      */
     @JvmOverloads
     constructor(context: Context, attrs: AttributeSet? = null) : super(context, attrs) {
-
-        if (!isInEditMode()) {
+        if (!isInEditMode) {
             RobotoTypefaces.setUpTypeface(this, context, attrs)
         }
     }
@@ -52,8 +50,7 @@ class RobotoButton : AppCompatButton {
      * @see .RobotoButton
      */
     constructor(context: Context, attrs: AttributeSet, defStyle: Int) : super(context, attrs, defStyle) {
-
-        if (!isInEditMode()) {
+        if (!isInEditMode) {
             RobotoTypefaces.setUpTypeface(this, context, attrs)
         }
     }

@@ -10,7 +10,6 @@ import androidx.appcompat.widget.AppCompatEditText
  * Implementation of a [EditText] with native support for all the Roboto fonts.
  */
 class RobotoEditText : AppCompatEditText {
-
     /**
      * Constructor that is called when inflating a widget from XML. This is called
      * when a widget is being constructed from an XML file, supplying attributes
@@ -31,7 +30,6 @@ class RobotoEditText : AppCompatEditText {
      */
     @JvmOverloads
     constructor(context: Context, attrs: AttributeSet? = null) : super(context, attrs) {
-
         if (!isInEditMode) {
             RobotoTypefaces.setUpTypeface(this, context, attrs)
         }
@@ -52,7 +50,6 @@ class RobotoEditText : AppCompatEditText {
      * @see .RobotoEditText
      */
     constructor(context: Context, attrs: AttributeSet, defStyle: Int) : super(context, attrs, defStyle) {
-
         if (!isInEditMode) {
             RobotoTypefaces.setUpTypeface(this, context, attrs)
         }
