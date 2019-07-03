@@ -41,7 +41,7 @@
             android:theme="@style/AppTheme.NoActionBar.TranslucentStatus" />
         <activity
             android:name=".ui.splash.SplashActivity"
-            android:theme="@style/AppTheme.NoActionBar.TranslucentStatus">
+            android:theme="@style/AppTheme.NoActionBar.TranslucentStatus.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
