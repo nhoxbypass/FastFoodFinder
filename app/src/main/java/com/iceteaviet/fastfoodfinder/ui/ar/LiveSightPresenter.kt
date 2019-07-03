@@ -117,6 +117,6 @@ class LiveSightPresenter : BasePresenter<LiveSightContract.Presenter>, LiveSight
 
     companion object {
         @VisibleForTesting
-        const val RADIUS = 0.005
+        const val RADIUS = 0.01
     }
 }
