@@ -99,7 +99,7 @@ open class GoogleLocationManager private constructor(context: Context) : AbsLoca
         private const val INTERVAL = (1000 * 10).toLong()
         private const val FASTEST_INTERVAL = (1000 * 5).toLong()
 
-        private var appContext: Context? = null
+        private lateinit var appContext: Context
 
         private var instance: GoogleLocationManager? = null
 
@@ -111,10 +111,10 @@ open class GoogleLocationManager private constructor(context: Context) : AbsLoca
             if (instance == null) {
                 synchronized(GoogleLocationManager::class.java) {
                     if (instance == null) {
-                        if (appContext == null)
+                        if (!::appContext.isInitialized)
                             throw IllegalStateException("Call `GoogleLocationManager.init(Context)` before calling this method.")
                         else
-                            instance = GoogleLocationManager(appContext!!)
+                            instance = GoogleLocationManager(appContext)
                     }
                 }
             }

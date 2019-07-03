@@ -23,7 +23,7 @@ class Step constructor(`in`: Parcel) : Parcelable {
     @SerializedName("html_instructions")
     val instruction: String
     @SerializedName("maneuver")
-    var direction: String? = null
+    var direction: String
     @SerializedName("travel_mode")
     val travelMode: String
 
@@ -43,7 +43,7 @@ class Step constructor(`in`: Parcel) : Parcelable {
                 ?: MapCoordination()
         instruction = `in`.readString() ?: ""
         travelMode = `in`.readString() ?: ""
-        direction = `in`.readString()
+        direction = `in`.readString() ?: ""
     }
 
     fun getDistance(): String {

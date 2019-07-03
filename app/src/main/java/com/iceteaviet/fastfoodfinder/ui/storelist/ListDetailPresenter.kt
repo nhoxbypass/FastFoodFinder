@@ -20,7 +20,7 @@ class ListDetailPresenter : BasePresenter<ListDetailContract.Presenter>, ListDet
     @VisibleForTesting
     lateinit var userStoreList: UserStoreList
     @VisibleForTesting
-    var photoUrl: String? = null
+    var photoUrl: String = ""
 
     constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider, listDetailView: ListDetailContract.View) : super(dataManager, schedulerProvider) {
         this.listDetailView = listDetailView

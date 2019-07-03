@@ -101,7 +101,7 @@ open class SystemLocationManager private constructor(context: Context) : AbsLoca
         private const val MIN_DISTANCE_CHANGE_FOR_UPDATES: Float = 10f // 10 meters
         private const val MIN_TIME_BW_UPDATES = (1000 * 30).toLong() // 30 seconds
 
-        private var appContext: Context? = null
+        private lateinit var appContext: Context
 
         private var instance: SystemLocationManager? = null
 
@@ -113,7 +113,7 @@ open class SystemLocationManager private constructor(context: Context) : AbsLoca
             if (instance == null) {
                 synchronized(SystemLocationManager::class.java) {
                     if (instance == null) {
-                        if (appContext == null)
+                        if (!::appContext.isInitialized)
                             throw IllegalStateException("Call `SystemLocationManager.init(Context)` before calling this method.")
                         else
                             instance = SystemLocationManager(appContext!!)

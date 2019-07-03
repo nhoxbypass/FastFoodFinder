@@ -61,9 +61,9 @@ class StoreInfoPresenterTest {
     }
 
     @Test
-    fun onMakeCallWithPermissionTest_Empty_Tel(){
+    fun onMakeCallWithPermissionTest_Empty_Tel() {
+        val store = Store(STORE_ID, STORE_TITLE, STORE_ADDRESS, STORE_LAT, STORE_LNG, "", StoreType.TYPE_CIRCLE_K)
         storeInfoPresenter.store = store
-        storeInfoPresenter.store!!.tel = ""
         storeInfoPresenter.onMakeCallWithPermission()
         verify(storeInfoView).showEmptyTelToast()
     }

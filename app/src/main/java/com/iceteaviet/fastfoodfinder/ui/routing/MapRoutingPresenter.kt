@@ -45,8 +45,8 @@ class MapRoutingPresenter : BasePresenter<MapRoutingContract.Presenter>, MapRout
     }
 
     override fun handleExtras(mapsDirection: MapsDirection?, store: Store?) {
-        if (isRoutingDataValid(mapsDirection, store)) {
-            setupData(mapsDirection!!, store!!)
+        if (store != null && mapsDirection != null && isRoutingDataValid(mapsDirection, store)) {
+            setupData(mapsDirection, store)
             mapRoutingView.setStoreTitle(currStore.title)
             mapRoutingView.setRoutingStepList(stepList)
         } else {
@@ -112,13 +112,11 @@ class MapRoutingPresenter : BasePresenter<MapRoutingContract.Presenter>, MapRout
         mapRoutingView.setTravelSummaryText(String.format("Via %s", mapsDirection.routeList[0].summary))
     }
 
-    private fun isRoutingDataValid(mapsDirection: MapsDirection?, store: Store?): Boolean {
-        if (store == null || !isValidLocation(store.getPosition()))
+    private fun isRoutingDataValid(mapsDirection: MapsDirection, store: Store): Boolean {
+        if (!isValidLocation(store.getPosition()))
             return false
 
-        if (mapsDirection == null
-                || mapsDirection.routeList.isEmpty()
-                || mapsDirection.routeList[0].legList.isEmpty()
+        if (mapsDirection.routeList.isEmpty() || mapsDirection.routeList[0].legList.isEmpty()
                 || mapsDirection.routeList[0].legList[0].stepList.isEmpty()) {
             return false
         }

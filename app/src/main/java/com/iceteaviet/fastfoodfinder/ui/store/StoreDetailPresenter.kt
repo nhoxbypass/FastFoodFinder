@@ -86,8 +86,8 @@ open class StoreDetailPresenter : BasePresenter<StoreDetailContract.Presenter>, 
     }
 
     override fun handleExtras(extras: Parcelable?) {
-        if (extras != null) {
-            currStore = extras as Store
+        if (extras != null && extras is Store) {
+            currStore = extras
         } else {
             storeDetailView.exit()
         }

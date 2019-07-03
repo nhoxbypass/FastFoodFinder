@@ -18,7 +18,7 @@ class CloseConfirmDialog : DialogFragment() {
 
     @NonNull
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        var message: String? = ""
+        var message = ""
 
         if (arguments != null)
             arguments?.let { message = it.getString(MESSAGE) }
