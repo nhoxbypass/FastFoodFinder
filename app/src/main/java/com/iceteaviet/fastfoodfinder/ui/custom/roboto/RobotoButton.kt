@@ -2,14 +2,14 @@ package com.iceteaviet.fastfoodfinder.ui.custom.roboto
 
 import android.content.Context
 import android.util.AttributeSet
-import android.widget.EditText
-import androidx.appcompat.widget.AppCompatEditText
-
+import androidx.appcompat.widget.AppCompatButton
 
 /**
- * Implementation of a [EditText] with native support for all the Roboto fonts.
+ * Implementation of a {@link Button} with native support for all the Roboto fonts.
+ *
+ * Created by tom on 2019-06-30.
  */
-class RobotoEditText : AppCompatEditText {
+class RobotoButton : AppCompatButton {
     /**
      * Constructor that is called when inflating a widget from XML. This is called
      * when a widget is being constructed from an XML file, supplying attributes
@@ -26,7 +26,7 @@ class RobotoEditText : AppCompatEditText {
      * @param context The Context the widget is running in, through which it can
      * access the current theme, resources, etc.
      * @param attrs   The attributes of the XML tag that is inflating the widget.
-     * @see .RobotoEditText
+     * @see .RobotoButton
      */
     @JvmOverloads
     constructor(context: Context, attrs: AttributeSet? = null) : super(context, attrs) {
@@ -47,7 +47,7 @@ class RobotoEditText : AppCompatEditText {
      * will be applied (beyond what is included in the theme). This may
      * either be an attribute resource, whose value will be retrieved
      * from the current theme, or an explicit style resource.
-     * @see .RobotoEditText
+     * @see .RobotoButton
      */
     constructor(context: Context, attrs: AttributeSet, defStyle: Int) : super(context, attrs, defStyle) {
         if (!isInEditMode) {
@@ -55,3 +55,9 @@ class RobotoEditText : AppCompatEditText {
         }
     }
 }
+/**
+ * Simple constructor to use when creating a widget from code.
+ *
+ * @param context The Context the widget is running in, through which it can
+ * access the current theme, resources, etc.
+ */

@@ -50,7 +50,6 @@
         </activity>
         <activity
             android:name=".ui.store.StoreDetailActivity"
-            android:parentActivityName=".ui.main.MainActivity"
             android:theme="@style/AppTheme.NoActionBar.TranslucentStatus" />
         <activity
             android:name=".ui.settings.SettingActivity"

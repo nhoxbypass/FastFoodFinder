@@ -150,7 +150,7 @@ class AsyncStoreDAO {
         }
     }
 
-    fun findStoresBy(key: String, values: List<Int>): Single<MutableList<Store>> {
+    private fun findStoresBy(key: String, values: List<Int>): Single<MutableList<Store>> {
         if (values.isEmpty())
             return Single.error(EmptyParamsException())
         else

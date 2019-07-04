@@ -158,18 +158,18 @@ class FakeDataManager(context: Context, private val storeRepository: StoreReposi
     }
 
     override fun loadStoresFromServer(): Single<List<Store>> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return Single.never()
     }
 
     override fun getCurrentUser(): User? {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return null
     }
 
     override fun updateCurrentUser(user: User?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
     override fun getCurrentUserUid(): String {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return ""
     }
 }

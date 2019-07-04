@@ -57,7 +57,9 @@ abstract class BaseSearchAdapter internal constructor() : RecyclerView.Adapter<B
             itemView.setOnClickListener {
                 val position = adapterPosition
                 val item = searchItems[position]
-                onItemClickListener?.onClick(item.store!!)
+                item.store?.let {
+                    onItemClickListener?.onClick(it)
+                }
             }
         }
 

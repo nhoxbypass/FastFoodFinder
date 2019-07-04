@@ -45,8 +45,8 @@ class MapRoutingPresenter : BasePresenter<MapRoutingContract.Presenter>, MapRout
     }
 
     override fun handleExtras(mapsDirection: MapsDirection?, store: Store?) {
-        if (isRoutingDataValid(mapsDirection, store)) {
-            setupData(mapsDirection!!, store!!)
+        if (store != null && mapsDirection != null && isRoutingDataValid(mapsDirection, store)) {
+            setupData(mapsDirection, store)
             mapRoutingView.setStoreTitle(currStore.title)
             mapRoutingView.setRoutingStepList(stepList)
         } else {
@@ -69,22 +69,22 @@ class MapRoutingPresenter : BasePresenter<MapRoutingContract.Presenter>, MapRout
 
     override fun onPrevInstructionClick() {
         currDirectionIndex--
-        if (currDirectionIndex >= 0) {
-            mapRoutingView.scrollToPosition(currDirectionIndex)
-            mapRoutingView.animateMapCamera(stepList[currDirectionIndex].endMapCoordination.location, true)
-        } else {
-            currDirectionIndex = 0
+        if (currDirectionIndex < 0) {
+            currDirectionIndex = stepList.size - 1 // Go back to the end coordination
         }
+
+        mapRoutingView.scrollToPosition(currDirectionIndex)
+        mapRoutingView.animateMapCamera(stepList[currDirectionIndex].endMapCoordination.location, true)
     }
 
     override fun onNextInstructionClick() {
         currDirectionIndex++
-        if (currDirectionIndex < stepList.size) {
-            mapRoutingView.scrollToPosition(currDirectionIndex)
-            mapRoutingView.animateMapCamera(stepList[currDirectionIndex].endMapCoordination.location, true)
-        } else {
-            currDirectionIndex = stepList.size - 1
+        if (currDirectionIndex >= stepList.size) {
+            currDirectionIndex = 0 // Go back to the start coordination
         }
+
+        mapRoutingView.scrollToPosition(currDirectionIndex)
+        mapRoutingView.animateMapCamera(stepList[currDirectionIndex].endMapCoordination.location, true)
     }
 
     override fun onBackArrowButtonPress() {
@@ -112,13 +112,11 @@ class MapRoutingPresenter : BasePresenter<MapRoutingContract.Presenter>, MapRout
         mapRoutingView.setTravelSummaryText(String.format("Via %s", mapsDirection.routeList[0].summary))
     }
 
-    private fun isRoutingDataValid(mapsDirection: MapsDirection?, store: Store?): Boolean {
-        if (store == null || !isValidLocation(store.getPosition()))
+    private fun isRoutingDataValid(mapsDirection: MapsDirection, store: Store): Boolean {
+        if (!isValidLocation(store.getPosition()))
             return false
 
-        if (mapsDirection == null
-                || mapsDirection.routeList.isEmpty()
-                || mapsDirection.routeList[0].legList.isEmpty()
+        if (mapsDirection.routeList.isEmpty() || mapsDirection.routeList[0].legList.isEmpty()
                 || mapsDirection.routeList[0].legList[0].stepList.isEmpty()) {
             return false
         }

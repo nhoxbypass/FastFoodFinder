@@ -121,7 +121,7 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <TextView
+        <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoTextView
             android:id="@+id/tv_recently"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -146,7 +146,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
-                <Button
+                <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoButton
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -158,7 +158,7 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <TextView
+        <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoTextView
             android:id="@+id/tv_time_suggestion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -179,7 +179,7 @@
                 android:padding="16dp" />
         </androidx.cardview.widget.CardView>
 
-        <TextView
+        <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoTextView
             android:id="@+id/tv_suggestion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -199,7 +199,7 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                <TextView
+                <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoTextView
                     android:id="@+id/tvTop"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -210,7 +210,7 @@
                     android:text="@string/top_picks"
                     android:textColor="@android:color/black" />
 
-                <TextView
+                <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoTextView
                     android:id="@+id/tvNearest"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -221,7 +221,7 @@
                     android:text="@string/nearest"
                     android:textColor="@android:color/black" />
 
-                <TextView
+                <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoTextView
                     android:id="@+id/tvTrending"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -232,7 +232,7 @@
                     android:text="@string/trending"
                     android:textColor="@android:color/black" />
 
-                <TextView
+                <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoTextView
                     android:id="@+id/tvConvenienceStore"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

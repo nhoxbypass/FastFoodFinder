@@ -20,51 +20,33 @@ object RobotoTypefaces {
 
     const val TYPEFACE_ROBOTO_THIN = 0
     const val TYPEFACE_ROBOTO_THIN_ITALIC = 1
-    const val TYPEFACE_ROBOTO_LIGHT = 2
-    const val TYPEFACE_ROBOTO_LIGHT_ITALIC = 3
     const val TYPEFACE_ROBOTO_REGULAR = 4
     const val TYPEFACE_ROBOTO_ITALIC = 5
-    const val TYPEFACE_ROBOTO_MEDIUM = 6
-    const val TYPEFACE_ROBOTO_MEDIUM_ITALIC = 7
     const val TYPEFACE_ROBOTO_BOLD = 8
     const val TYPEFACE_ROBOTO_BOLD_ITALIC = 9
-    const val TYPEFACE_ROBOTO_BLACK = 10
-    const val TYPEFACE_ROBOTO_BLACK_ITALIC = 11
-    const val TYPEFACE_ROBOTO_CONDENSED_LIGHT = 12
-    const val TYPEFACE_ROBOTO_CONDENSED_LIGHT_ITALIC = 13
-    const val TYPEFACE_ROBOTO_CONDENSED_REGULAR = 14
-    const val TYPEFACE_ROBOTO_CONDENSED_ITALIC = 15
-    const val TYPEFACE_ROBOTO_CONDENSED_BOLD = 16
-    const val TYPEFACE_ROBOTO_CONDENSED_BOLD_ITALIC = 17
     const val TYPEFACE_ROBOTO_SLAB_THIN = 18
-    const val TYPEFACE_ROBOTO_SLAB_LIGHT = 19
     const val TYPEFACE_ROBOTO_SLAB_REGULAR = 20
     const val TYPEFACE_ROBOTO_SLAB_BOLD = 21
-    const val TYPEFACE_ROBOTO_MONO_THIN = 22
-    const val TYPEFACE_ROBOTO_MONO_THIN_ITALIC = 23
-    const val TYPEFACE_ROBOTO_MONO_LIGHT = 24
-    const val TYPEFACE_ROBOTO_MONO_LIGHT_ITALIC = 25
-    const val TYPEFACE_ROBOTO_MONO_REGULAR = 26
-    const val TYPEFACE_ROBOTO_MONO_ITALIC = 27
-    const val TYPEFACE_ROBOTO_MONO_MEDIUM = 28
-    const val TYPEFACE_ROBOTO_MONO_MEDIUM_ITALIC = 29
-    const val TYPEFACE_ROBOTO_MONO_BOLD = 30
-    const val TYPEFACE_ROBOTO_MONO_BOLD_ITALIC = 31
 
     const val FONT_FAMILY_ROBOTO = 0
-    const val FONT_FAMILY_ROBOTO_CONDENSED = 1
+    //const val FONT_FAMILY_ROBOTO_CONDENSED = 1
     const val FONT_FAMILY_ROBOTO_SLAB = 2
-    const val FONT_FAMILY_ROBOTO_MONO = 3
+    //const val FONT_FAMILY_ROBOTO_MONO = 3
 
     const val TEXT_WEIGHT_NORMAL = 0
     const val TEXT_WEIGHT_THIN = 1
-    const val TEXT_WEIGHT_LIGHT = 2
-    const val TEXT_WEIGHT_MEDIUM = 3
+    //const val TEXT_WEIGHT_LIGHT = 2
+    //const val TEXT_WEIGHT_MEDIUM = 3
     const val TEXT_WEIGHT_BOLD = 4
-    const val TEXT_WEIGHT_ULTRA_BOLD = 5
+    //const val TEXT_WEIGHT_ULTRA_BOLD = 5
 
     const val TEXT_STYLE_NORMAL = 0
     const val TEXT_STYLE_ITALIC = 1
+
+    private const val DEFAULT_TYPEFACE = TYPEFACE_ROBOTO_REGULAR
+    private const val DEFAULT_FONT_FAMILY = FONT_FAMILY_ROBOTO
+    private const val DEFAULT_TEXT_WEIGHT = TEXT_WEIGHT_NORMAL
+    private const val DEFAULT_TEXT_STYLE = TEXT_STYLE_NORMAL
 
     /**
      * Array of created typefaces for later reused.
@@ -72,15 +54,15 @@ object RobotoTypefaces {
     private val typefacesCache = SparseArray<Typeface>(32)
 
     @Retention(AnnotationRetention.SOURCE)
-    @IntDef(TYPEFACE_ROBOTO_THIN, TYPEFACE_ROBOTO_THIN_ITALIC, TYPEFACE_ROBOTO_LIGHT, TYPEFACE_ROBOTO_LIGHT_ITALIC, TYPEFACE_ROBOTO_REGULAR, TYPEFACE_ROBOTO_ITALIC, TYPEFACE_ROBOTO_MEDIUM, TYPEFACE_ROBOTO_MEDIUM_ITALIC, TYPEFACE_ROBOTO_BOLD, TYPEFACE_ROBOTO_BOLD_ITALIC, TYPEFACE_ROBOTO_BLACK, TYPEFACE_ROBOTO_BLACK_ITALIC, TYPEFACE_ROBOTO_CONDENSED_LIGHT, TYPEFACE_ROBOTO_CONDENSED_LIGHT_ITALIC, TYPEFACE_ROBOTO_CONDENSED_REGULAR, TYPEFACE_ROBOTO_CONDENSED_ITALIC, TYPEFACE_ROBOTO_CONDENSED_BOLD, TYPEFACE_ROBOTO_CONDENSED_BOLD_ITALIC, TYPEFACE_ROBOTO_SLAB_THIN, TYPEFACE_ROBOTO_SLAB_LIGHT, TYPEFACE_ROBOTO_SLAB_REGULAR, TYPEFACE_ROBOTO_SLAB_BOLD, TYPEFACE_ROBOTO_MONO_THIN, TYPEFACE_ROBOTO_MONO_THIN_ITALIC, TYPEFACE_ROBOTO_MONO_LIGHT, TYPEFACE_ROBOTO_MONO_LIGHT_ITALIC, TYPEFACE_ROBOTO_MONO_REGULAR, TYPEFACE_ROBOTO_MONO_ITALIC, TYPEFACE_ROBOTO_MONO_MEDIUM, TYPEFACE_ROBOTO_MONO_MEDIUM_ITALIC, TYPEFACE_ROBOTO_MONO_BOLD, TYPEFACE_ROBOTO_MONO_BOLD_ITALIC)
+    @IntDef(TYPEFACE_ROBOTO_THIN, TYPEFACE_ROBOTO_THIN_ITALIC, /*TYPEFACE_ROBOTO_LIGHT, TYPEFACE_ROBOTO_LIGHT_ITALIC,*/ TYPEFACE_ROBOTO_REGULAR, TYPEFACE_ROBOTO_ITALIC, /*TYPEFACE_ROBOTO_MEDIUM, TYPEFACE_ROBOTO_MEDIUM_ITALIC,*/ TYPEFACE_ROBOTO_BOLD, TYPEFACE_ROBOTO_BOLD_ITALIC, /*TYPEFACE_ROBOTO_BLACK, TYPEFACE_ROBOTO_BLACK_ITALIC,*/ TYPEFACE_ROBOTO_SLAB_THIN, /*TYPEFACE_ROBOTO_SLAB_LIGHT,*/ TYPEFACE_ROBOTO_SLAB_REGULAR, TYPEFACE_ROBOTO_SLAB_BOLD)
     annotation class RobotoTypeface
 
     @Retention(AnnotationRetention.SOURCE)
-    @IntDef(FONT_FAMILY_ROBOTO, FONT_FAMILY_ROBOTO_CONDENSED, FONT_FAMILY_ROBOTO_SLAB, FONT_FAMILY_ROBOTO_MONO)
+    @IntDef(FONT_FAMILY_ROBOTO, /*FONT_FAMILY_ROBOTO_CONDENSED,*/ FONT_FAMILY_ROBOTO_SLAB/*, FONT_FAMILY_ROBOTO_MONO*/)
     annotation class RobotoFontFamily
 
     @Retention(AnnotationRetention.SOURCE)
-    @IntDef(TEXT_WEIGHT_NORMAL, TEXT_WEIGHT_THIN, TEXT_WEIGHT_LIGHT, TEXT_WEIGHT_MEDIUM, TEXT_WEIGHT_BOLD, TEXT_WEIGHT_ULTRA_BOLD)
+    @IntDef(TEXT_WEIGHT_NORMAL, TEXT_WEIGHT_THIN, /*TEXT_WEIGHT_LIGHT, TEXT_WEIGHT_MEDIUM,*/ TEXT_WEIGHT_BOLD/*, TEXT_WEIGHT_ULTRA_BOLD*/)
     annotation class RobotoTextWeight
 
 
@@ -123,94 +105,29 @@ object RobotoTypefaces {
                 when (textWeight) {
                     TEXT_WEIGHT_NORMAL -> typeface = TYPEFACE_ROBOTO_REGULAR
                     TEXT_WEIGHT_THIN -> typeface = TYPEFACE_ROBOTO_THIN
-                    TEXT_WEIGHT_LIGHT -> typeface = TYPEFACE_ROBOTO_LIGHT
-                    TEXT_WEIGHT_MEDIUM -> typeface = TYPEFACE_ROBOTO_MEDIUM
                     TEXT_WEIGHT_BOLD -> typeface = TYPEFACE_ROBOTO_BOLD
-                    TEXT_WEIGHT_ULTRA_BOLD -> typeface = TYPEFACE_ROBOTO_BLACK
-                    else -> throw IllegalArgumentException("`robotoTextWeight` attribute value " + textWeight +
-                            " is not supported for this fontFamily " + fontFamily +
-                            " and textStyle " + textStyle)
+                    else -> throw IllegalArgumentException("`robotoTextWeight` attribute value " + textWeight + " is not supported for this fontFamily " + fontFamily + " and textStyle " + textStyle)
                 }
             } else if (textStyle == TEXT_STYLE_ITALIC) {
                 when (textWeight) {
                     TEXT_WEIGHT_NORMAL -> typeface = TYPEFACE_ROBOTO_ITALIC
                     TEXT_WEIGHT_THIN -> typeface = TYPEFACE_ROBOTO_THIN_ITALIC
-                    TEXT_WEIGHT_LIGHT -> typeface = TYPEFACE_ROBOTO_LIGHT_ITALIC
-                    TEXT_WEIGHT_MEDIUM -> typeface = TYPEFACE_ROBOTO_MEDIUM_ITALIC
                     TEXT_WEIGHT_BOLD -> typeface = TYPEFACE_ROBOTO_BOLD_ITALIC
-                    TEXT_WEIGHT_ULTRA_BOLD -> typeface = TYPEFACE_ROBOTO_BLACK_ITALIC
-                    else -> throw IllegalArgumentException("`robotoTextWeight` attribute value " + textWeight +
-                            " is not supported for this fontFamily " + fontFamily +
-                            " and textStyle " + textStyle)
+                    else -> throw IllegalArgumentException("`robotoTextWeight` attribute value " + textWeight + " is not supported for this fontFamily " + fontFamily + " and textStyle " + textStyle)
                 }
             } else {
-                throw IllegalArgumentException("`robotoTextStyle` attribute value " + textStyle +
-                        " is not supported for this fontFamily " + fontFamily)
-            }
-        } else if (fontFamily == FONT_FAMILY_ROBOTO_CONDENSED) {
-            if (textStyle == TEXT_STYLE_NORMAL) {
-                when (textWeight) {
-                    TEXT_WEIGHT_NORMAL -> typeface = TYPEFACE_ROBOTO_CONDENSED_REGULAR
-                    TEXT_WEIGHT_THIN -> typeface = TYPEFACE_ROBOTO_CONDENSED_LIGHT
-                    TEXT_WEIGHT_BOLD -> typeface = TYPEFACE_ROBOTO_CONDENSED_BOLD
-                    else -> throw IllegalArgumentException("`robotoTextWeight` attribute value " + textWeight +
-                            " is not supported for this fontFamily " + fontFamily +
-                            " and textStyle " + textStyle)
-                }
-            } else if (textStyle == TEXT_STYLE_ITALIC) {
-                when (textWeight) {
-                    TEXT_WEIGHT_NORMAL -> typeface = TYPEFACE_ROBOTO_CONDENSED_ITALIC
-                    TEXT_WEIGHT_THIN -> typeface = TYPEFACE_ROBOTO_CONDENSED_LIGHT_ITALIC
-                    TEXT_WEIGHT_BOLD -> typeface = TYPEFACE_ROBOTO_CONDENSED_BOLD_ITALIC
-                    else -> throw IllegalArgumentException("`robotoTextWeight` attribute value " + textWeight +
-                            " is not supported for this fontFamily " + fontFamily +
-                            " and textStyle " + textStyle)
-                }
-            } else {
-                throw IllegalArgumentException("`robotoTextStyle` attribute value " + textStyle +
-                        " is not supported for this fontFamily " + fontFamily)
+                throw IllegalArgumentException("`robotoTextStyle` attribute value " + textStyle + " is not supported for this fontFamily " + fontFamily)
             }
         } else if (fontFamily == FONT_FAMILY_ROBOTO_SLAB) {
             if (textStyle == TEXT_STYLE_NORMAL) {
                 when (textWeight) {
                     TEXT_WEIGHT_NORMAL -> typeface = TYPEFACE_ROBOTO_SLAB_REGULAR
                     TEXT_WEIGHT_THIN -> typeface = TYPEFACE_ROBOTO_SLAB_THIN
-                    TEXT_WEIGHT_LIGHT -> typeface = TYPEFACE_ROBOTO_SLAB_LIGHT
                     TEXT_WEIGHT_BOLD -> typeface = TYPEFACE_ROBOTO_SLAB_BOLD
-                    else -> throw IllegalArgumentException("`robotoTextWeight` attribute value " + textWeight +
-                            " is not supported for this fontFamily " + fontFamily +
-                            " and textStyle " + textStyle)
+                    else -> throw IllegalArgumentException("`robotoTextWeight` attribute value " + textWeight + " is not supported for this fontFamily " + fontFamily + " and textStyle " + textStyle)
                 }
             } else {
-                throw IllegalArgumentException("`robotoTextStyle` attribute value " + textStyle +
-                        " is not supported for this fontFamily " + fontFamily)
-            }
-        } else if (fontFamily == FONT_FAMILY_ROBOTO_MONO) {
-            if (textStyle == TEXT_STYLE_NORMAL) {
-                when (textWeight) {
-                    TEXT_WEIGHT_NORMAL -> typeface = TYPEFACE_ROBOTO_MONO_REGULAR
-                    TEXT_WEIGHT_THIN -> typeface = TYPEFACE_ROBOTO_MONO_THIN
-                    TEXT_WEIGHT_LIGHT -> typeface = TYPEFACE_ROBOTO_MONO_LIGHT
-                    TEXT_WEIGHT_MEDIUM -> typeface = TYPEFACE_ROBOTO_MONO_MEDIUM
-                    TEXT_WEIGHT_BOLD -> typeface = TYPEFACE_ROBOTO_MONO_BOLD
-                    else -> throw IllegalArgumentException("`robotoTextWeight` attribute value " + textWeight +
-                            " is not supported for this fontFamily " + fontFamily +
-                            " and textStyle " + textStyle)
-                }
-            } else if (textStyle == TEXT_STYLE_ITALIC) {
-                when (textWeight) {
-                    TEXT_WEIGHT_NORMAL -> typeface = TYPEFACE_ROBOTO_MONO_ITALIC
-                    TEXT_WEIGHT_THIN -> typeface = TYPEFACE_ROBOTO_MONO_THIN_ITALIC
-                    TEXT_WEIGHT_LIGHT -> typeface = TYPEFACE_ROBOTO_MONO_LIGHT_ITALIC
-                    TEXT_WEIGHT_MEDIUM -> typeface = TYPEFACE_ROBOTO_MONO_MEDIUM_ITALIC
-                    TEXT_WEIGHT_BOLD -> typeface = TYPEFACE_ROBOTO_MONO_BOLD_ITALIC
-                    else -> throw IllegalArgumentException("`robotoTextWeight` attribute value " + textWeight +
-                            " is not supported for this fontFamily " + fontFamily +
-                            " and textStyle " + textStyle)
-                }
-            } else {
-                throw IllegalArgumentException("`robotoTextStyle` attribute value " + textStyle +
-                        " is not supported for this fontFamily " + fontFamily)
+                throw IllegalArgumentException("`robotoTextStyle` attribute value " + textStyle + " is not supported for this fontFamily " + fontFamily)
             }
         } else {
             throw IllegalArgumentException("Unknown `robotoFontFamily` attribute value $fontFamily")
@@ -232,36 +149,13 @@ object RobotoTypefaces {
         when (typeface) {
             TYPEFACE_ROBOTO_THIN -> path = "fonts/Roboto-Thin.ttf"
             TYPEFACE_ROBOTO_THIN_ITALIC -> path = "fonts/Roboto-ThinItalic.ttf"
-            TYPEFACE_ROBOTO_LIGHT -> path = "fonts/Roboto-Light.ttf"
-            TYPEFACE_ROBOTO_LIGHT_ITALIC -> path = "fonts/Roboto-LightItalic.ttf"
             TYPEFACE_ROBOTO_REGULAR -> path = "fonts/Roboto-Regular.ttf"
             TYPEFACE_ROBOTO_ITALIC -> path = "fonts/Roboto-Italic.ttf"
-            TYPEFACE_ROBOTO_MEDIUM -> path = "fonts/Roboto-Medium.ttf"
-            TYPEFACE_ROBOTO_MEDIUM_ITALIC -> path = "fonts/Roboto-MediumItalic.ttf"
             TYPEFACE_ROBOTO_BOLD -> path = "fonts/Roboto-Bold.ttf"
             TYPEFACE_ROBOTO_BOLD_ITALIC -> path = "fonts/Roboto-BoldItalic.ttf"
-            TYPEFACE_ROBOTO_BLACK -> path = "fonts/Roboto-Black.ttf"
-            TYPEFACE_ROBOTO_BLACK_ITALIC -> path = "fonts/Roboto-BlackItalic.ttf"
-            TYPEFACE_ROBOTO_CONDENSED_LIGHT -> path = "fonts/RobotoCondensed-Light.ttf"
-            TYPEFACE_ROBOTO_CONDENSED_LIGHT_ITALIC -> path = "fonts/RobotoCondensed-LightItalic.ttf"
-            TYPEFACE_ROBOTO_CONDENSED_REGULAR -> path = "fonts/RobotoCondensed-Regular.ttf"
-            TYPEFACE_ROBOTO_CONDENSED_ITALIC -> path = "fonts/RobotoCondensed-Italic.ttf"
-            TYPEFACE_ROBOTO_CONDENSED_BOLD -> path = "fonts/RobotoCondensed-Bold.ttf"
-            TYPEFACE_ROBOTO_CONDENSED_BOLD_ITALIC -> path = "fonts/RobotoCondensed-BoldItalic.ttf"
             TYPEFACE_ROBOTO_SLAB_THIN -> path = "fonts/RobotoSlab-Thin.ttf"
-            TYPEFACE_ROBOTO_SLAB_LIGHT -> path = "fonts/RobotoSlab-Light.ttf"
             TYPEFACE_ROBOTO_SLAB_REGULAR -> path = "fonts/RobotoSlab-Regular.ttf"
             TYPEFACE_ROBOTO_SLAB_BOLD -> path = "fonts/RobotoSlab-Bold.ttf"
-            TYPEFACE_ROBOTO_MONO_THIN -> path = "fonts/RobotoMono-Thin.ttf"
-            TYPEFACE_ROBOTO_MONO_THIN_ITALIC -> path = "fonts/RobotoMono-ThinItalic.ttf"
-            TYPEFACE_ROBOTO_MONO_LIGHT -> path = "fonts/RobotoMono-Light.ttf"
-            TYPEFACE_ROBOTO_MONO_LIGHT_ITALIC -> path = "fonts/RobotoMono-LightItalic.ttf"
-            TYPEFACE_ROBOTO_MONO_REGULAR -> path = "fonts/RobotoMono-Regular.ttf"
-            TYPEFACE_ROBOTO_MONO_ITALIC -> path = "fonts/RobotoMono-Italic.ttf"
-            TYPEFACE_ROBOTO_MONO_MEDIUM -> path = "fonts/RobotoMono-Medium.ttf"
-            TYPEFACE_ROBOTO_MONO_MEDIUM_ITALIC -> path = "fonts/RobotoMono-MediumItalic.ttf"
-            TYPEFACE_ROBOTO_MONO_BOLD -> path = "fonts/RobotoMono-Bold.ttf"
-            TYPEFACE_ROBOTO_MONO_BOLD_ITALIC -> path = "fonts/RobotoMono-BoldItalic.ttf"
             else -> throw IllegalArgumentException("Unknown `robotoTypeface` attribute value $typeface")
         }
         return Typeface.createFromAsset(context.getAssets(), path)
@@ -277,12 +171,12 @@ object RobotoTypefaces {
     @NonNull
     fun obtainTypeface(@NonNull context: Context, @NonNull attrs: TypedArray): Typeface? {
         if (attrs.hasValue(R.styleable.RobotoTextView_robotoTypeface)) {
-            @RobotoTypeface val typefaceValue = attrs.getInt(R.styleable.RobotoTextView_robotoTypeface, TYPEFACE_ROBOTO_REGULAR)
+            @RobotoTypeface val typefaceValue = attrs.getInt(R.styleable.RobotoTextView_robotoTypeface, DEFAULT_TYPEFACE)
             return obtainTypeface(context, typefaceValue)
         } else {
-            @RobotoFontFamily val fontFamily = attrs.getInt(R.styleable.RobotoTextView_robotoFontFamily, FONT_FAMILY_ROBOTO)
-            @RobotoTextWeight val textWeight = attrs.getInt(R.styleable.RobotoTextView_robotoTextWeight, TEXT_WEIGHT_NORMAL)
-            @RobotoTextStyle val textStyle = attrs.getInt(R.styleable.RobotoTextView_robotoTextStyle, TEXT_STYLE_NORMAL)
+            @RobotoFontFamily val fontFamily = attrs.getInt(R.styleable.RobotoTextView_robotoFontFamily, DEFAULT_FONT_FAMILY)
+            @RobotoTextWeight val textWeight = attrs.getInt(R.styleable.RobotoTextView_robotoTextWeight, DEFAULT_TEXT_WEIGHT)
+            @RobotoTextStyle val textStyle = attrs.getInt(R.styleable.RobotoTextView_robotoTextStyle, DEFAULT_TEXT_STYLE)
             return obtainTypeface(context, fontFamily, textWeight, textStyle)
         }
     }
@@ -316,9 +210,9 @@ object RobotoTypefaces {
      * @param textView The text view
      * @param typeface The value of "robotoTypeface" attribute
      */
-    fun setUpTypeface(@NonNull textView: TextView, @RobotoTypeface typeface: Int) {
+    /*fun setUpTypeface(@NonNull textView: TextView, @RobotoTypeface typeface: Int) {
         setUpTypeface(textView, obtainTypeface(textView.context, typeface))
-    }
+    }*/
 
     /**
      * Set up typeface for TextView.
@@ -328,10 +222,10 @@ object RobotoTypefaces {
      * @param textWeight The value of "robotoTextWeight" attribute
      * @param textStyle  The value of "robotoTextStyle" attribute
      */
-    fun setUpTypeface(@NonNull textView: TextView, @RobotoFontFamily fontFamily: Int,
+    /*fun setUpTypeface(@NonNull textView: TextView, @RobotoFontFamily fontFamily: Int,
                       @RobotoTextWeight textWeight: Int, @RobotoTextStyle textStyle: Int) {
         setUpTypeface(textView, obtainTypeface(textView.context, fontFamily, textWeight, textStyle))
-    }
+    }*/
 
     /**
      * Set up typeface for TextView. Wrapper over [TextView.setTypeface]
@@ -352,8 +246,8 @@ object RobotoTypefaces {
      * @param paint    The paint
      * @param typeface The specify typeface
      */
-    fun setUpTypeface(@NonNull paint: Paint, @NonNull typeface: Typeface) {
+    /*fun setUpTypeface(@NonNull paint: Paint, @NonNull typeface: Typeface) {
         paint.setFlags(paint.getFlags() or Paint.ANTI_ALIAS_FLAG or Paint.SUBPIXEL_TEXT_FLAG)
         paint.setTypeface(typeface)
-    }
+    }*/
 }

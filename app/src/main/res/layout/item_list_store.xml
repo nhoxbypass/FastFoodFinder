@@ -21,7 +21,7 @@
         android:layout_weight="6"
         android:orientation="vertical">
 
-        <TextView
+        <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoTextView
             android:id="@+id/tv_item_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -30,14 +30,14 @@
             android:textSize="16sp"
             android:textStyle="bold" />
 
-        <TextView
+        <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoTextView
             android:id="@+id/tv_item_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:text="cofe" />
 
-        <TextView
+        <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoTextView
             android:id="@+id/tv_item_tel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -45,7 +45,7 @@
             android:text="tel: 01689040391" />
     </LinearLayout>
 
-    <Button
+    <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoButton
         android:id="@+id/btnRate"
         android:layout_width="0dp"
         android:layout_height="32dp"

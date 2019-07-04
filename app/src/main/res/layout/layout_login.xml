@@ -76,7 +76,7 @@
             android:textColor="@color/colorPrimary"
             android:textSize="14sp"
             app:robotoFontFamily="roboto"
-            app:robotoTextWeight="medium" />
+            app:robotoTextWeight="bold" />
 
     </LinearLayout>
 

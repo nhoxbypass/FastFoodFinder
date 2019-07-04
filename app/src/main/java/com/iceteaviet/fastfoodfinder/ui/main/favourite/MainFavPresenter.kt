@@ -71,12 +71,12 @@ class MainFavPresenter : BasePresenter<MainFavContract.Presenter>, MainFavContra
                     val id = storeIdPair.first
                     val eventAC = storeIdPair.second
 
-                    if (id == null)
+                    if (id == null || eventAC == null)
                         throw EmptyParamsException()
 
                     val store = dataManager.findStoreById(id).blockingGet()
 
-                    return@map UserStoreEvent(store, eventAC!!)
+                    return@map UserStoreEvent(store, eventAC)
                 }
                 .observeOn(schedulerProvider.ui())
                 .subscribe(object : Observer<UserStoreEvent> {

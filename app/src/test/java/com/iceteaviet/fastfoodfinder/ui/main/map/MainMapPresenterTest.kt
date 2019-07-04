@@ -166,7 +166,7 @@ class MainMapPresenterTest {
 
         verify(mainMapView, atLeastOnce()).setMyLocationEnabled(true)
         verify(mainMapView).setupMapEventHandlers()
-        verify(mainMapView).showCannotGetLocationMessage()
+        verify(mainMapView, never()).animateMapCamera(anyObject(), ArgumentMatchers.anyBoolean())
     }
 
     @Test
@@ -217,7 +217,7 @@ class MainMapPresenterTest {
     fun requestCurrentLocationTest_notHaveLastLocation() {
         mainMapPresenter.requestCurrentLocation()
 
-        verify(mainMapView).showCannotGetLocationMessage()
+        verify(mainMapView, never()).animateMapCamera(anyObject(), ArgumentMatchers.anyBoolean())
     }
 
     @Test

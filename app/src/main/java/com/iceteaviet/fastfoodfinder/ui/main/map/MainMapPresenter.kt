@@ -74,6 +74,8 @@ open class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapC
     }
 
     override fun subscribe() {
+        resetState()
+
         if (isLolipopOrHigher() && !mainMapView.isLocationPermissionGranted()) {
             mainMapView.requestLocationPermission()
         } else {
@@ -81,9 +83,6 @@ open class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapC
         }
 
         bus.register(this)
-
-        locationGranted = false
-        isZoomToUser = false
 
         mainMapView.setupMap()
 
@@ -109,8 +108,6 @@ open class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapC
         val lastLocation = locationManager.getCurrentLocation()
         if (lastLocation != null) {
             onCurrLocationChanged(lastLocation.latitude, lastLocation.longitude)
-        } else {
-            mainMapView.showCannotGetLocationMessage()
         }
     }
 
@@ -216,6 +213,11 @@ open class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapC
 
             else -> mainMapView.showGeneralErrorMessage()
         }
+    }
+
+    private fun resetState() {
+        locationGranted = false
+        isZoomToUser = false
     }
 
     private fun subscribeLocationUpdate() {
@@ -326,7 +328,11 @@ open class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapC
                     }
 
                     override fun onNext(pair: Pair<Marker, Int>) {
-                        mainMapView.animateMapMarker(pair.first, pair.second!!)
+                        val marker = pair.first
+                        val storeType = pair.second
+
+                        if (marker != null && storeType != null)
+                            mainMapView.animateMapMarker(marker, storeType)
                     }
 
                     override fun onError(e: Throwable) {
