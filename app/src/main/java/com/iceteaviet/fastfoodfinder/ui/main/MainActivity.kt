@@ -367,12 +367,18 @@ class MainActivity : BaseActivity(), MainContract.View, View.OnClickListener {
     private fun replaceFragment(fragment: Fragment, actionBarTitle: String) {
         // Insert the fragment by replacing any existing fragment
         val fragmentManager = supportFragmentManager
-        fragmentManager
-                .beginTransaction()
-                .add(R.id.fl_fragment_placeholder, fragment)
-                .addToBackStack(null) // Add this transaction to the back stack
-                .commit()
-        fragmentManager.executePendingTransactions()
+        val oldFragment = supportFragmentManager.findFragmentByTag("profile_screen")
+
+        if (oldFragment == null || !oldFragment.isAdded || oldFragment.isRemoving) {
+            fragmentManager
+                    .beginTransaction()
+                    .replace(R.id.fl_fragment_placeholder, fragment, "profile_screen")
+                    .addToBackStack(null) // Add this transaction to the back stack
+                    .commit()
+            fragmentManager.executePendingTransactions()
+        } else {
+            // fragment already added
+        }
 
         // Set action bar title
         title = actionBarTitle
