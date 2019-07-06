@@ -171,8 +171,8 @@ class MapRoutingActivity : BaseActivity(), MapRoutingContract.View, View.OnClick
 
             // Build the viewbounds contain all markers
             val bounds = builder.build()
-
-            zoomToShowAllMarker(bounds, it)
+            val padding = 48 // offset from edges of the map in pixels
+            zoomToShowAllMarker(bounds, it, padding)
         }
     }
 
@@ -251,12 +251,11 @@ class MapRoutingActivity : BaseActivity(), MapRoutingContract.View, View.OnClick
         }
     }
 
-    private fun zoomToShowAllMarker(bounds: LatLngBounds, googleMap: GoogleMap) {
+    private fun zoomToShowAllMarker(bounds: LatLngBounds, googleMap: GoogleMap, padding: Int) {
         val displayMetrics = resources.displayMetrics
 
         val width = displayMetrics.widthPixels
         val height = displayMetrics.heightPixels - convertDpToPx(160f)
-        val padding = 24 // offset from edges of the map in pixels
         val cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height.toInt(), padding)
 
         googleMap.animateCamera(cu)
