@@ -11,6 +11,9 @@ import io.reactivex.Single
 
 /**
  * Created by tom on 7/9/18.
+ *
+ * Central data access point.
+ * We may not need this if we use few repository. But it's important when we have many repositories
  */
 interface DataManager : ClientAuth, StoreRepository, UserRepository, MapsRoutingRepository, PreferencesRepository {
     fun loadStoresFromServer(): Single<List<Store>>
