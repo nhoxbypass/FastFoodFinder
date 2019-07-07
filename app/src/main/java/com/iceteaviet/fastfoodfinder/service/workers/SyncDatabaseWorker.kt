@@ -38,7 +38,6 @@ class SyncDatabaseWorker(ctx: Context, params: WorkerParameters) : RxWorker(ctx,
             dataManager.loadStoresFromServer()
                     .subscribe(object : SingleObserver<List<Store>> {
                         override fun onSubscribe(d: Disposable) {
-                            Thread.sleep(5000)
                         }
 
                         override fun onSuccess(storeList: List<Store>) {
