@@ -10,6 +10,7 @@ ext {
     appCompat = '1.1.0-rc01'
     supportLibraryVersion = '27.1.1'
     playService = '17.0.0'
+    workManager = '2.0.1'
 
     glideVersion = '4.7.1'
     gsonVersion = '2.8.5'
