@@ -36,5 +36,6 @@ class UiUtilsTest {
         assertThat(getDirectionImage(null)).isEqualTo(R.drawable.ic_routing_up)
         assertThat(getDirectionImage("")).isEqualTo(R.drawable.ic_routing_up)
         assertThat(getDirectionImage(" ")).isEqualTo(R.drawable.ic_routing_up)
+        assertThat(getDirectionImage("null")).isEqualTo(R.drawable.ic_routing_up)
     }
 }

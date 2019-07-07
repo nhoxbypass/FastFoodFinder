@@ -58,15 +58,6 @@ fun getDirectionImage(direction: String?): Int {
     }
 }
 
-fun getMarkerAnimator(): ValueAnimator {
-    val animator = ValueAnimator.ofFloat(0.1f, 1f)
-    animator.duration = 1000
-    animator.startDelay = 500
-    animator.interpolator = BounceInterpolator()
-
-    return animator
-}
-
 /**
  * Animate marker icon
  */
@@ -74,7 +65,12 @@ fun animateMarker(resources: Resources, marker: Marker?, storeType: Int) {
     if (marker == null)
         return
 
-    val animator = getMarkerAnimator()
+    // Prepare animation
+    val animator = ValueAnimator.ofFloat(0.1f, 1f)
+    animator.duration = 1000
+    animator.startDelay = 500
+    animator.interpolator = BounceInterpolator()
+
     animator.addUpdateListener { animation ->
         val scale = animation.animatedValue as Float
         try {

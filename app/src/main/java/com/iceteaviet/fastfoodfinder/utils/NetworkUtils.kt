@@ -16,7 +16,7 @@ fun isInternetConnected(): Boolean {
     val command = "ping -c 1 google.com"
     try {
         return Runtime.getRuntime().exec(command).waitFor() == 0
-    } catch (e: Exception) {
+    } catch (e: Throwable) {
         return false
     }
 

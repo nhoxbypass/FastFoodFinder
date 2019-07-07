@@ -5,12 +5,10 @@ import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList
 import com.iceteaviet.fastfoodfinder.utils.exception.NotFoundException
 import com.iceteaviet.fastfoodfinder.utils.getFakeStoreIds
-import com.iceteaviet.fastfoodfinder.utils.getFakeStoreList
 import com.iceteaviet.fastfoodfinder.utils.getFakeUserMultiStoreLists
 import com.iceteaviet.fastfoodfinder.utils.getFakeUserStoreLists
 import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
 import com.iceteaviet.fastfoodfinder.utils.rx.TrampolineSchedulerProvider
-import com.nhaarman.mockitokotlin2.anyArray
 import com.nhaarman.mockitokotlin2.anyOrNull
 import io.reactivex.Single
 import org.assertj.core.api.Assertions.assertThat
@@ -20,9 +18,7 @@ import org.mockito.ArgumentMatchers
 import org.mockito.Mock
 import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
-import java.util.ArrayList
-import org.mockito.ArgumentCaptor
-
+import java.util.*
 
 
 class ProfilePresenterTest {
@@ -205,6 +201,26 @@ class ProfilePresenterTest {
     }
 
     @Test
+    fun onStoreListClick_NullUser() {
+        `when`(dataManager.getCurrentUser()).thenReturn(null)
+
+        profilePresenter.onStoreListClick(testList)
+
+        verify(profileView, never()).openListDetail(anyOrNull(), anyString())
+    }
+
+    @Test
+    fun onStoreListClick_NotNullUser() {
+        val user = User(USER_UID, USER_NAME, USER_EMAIL, USER_PHOTO_URL, getFakeUserStoreLists())
+        `when`(dataManager.getCurrentUser()).thenReturn(user)
+        profilePresenter.defaultList = getFakeUserStoreLists().toMutableList()
+
+        profilePresenter.onStoreListClick(testList)
+
+        verify(profileView).openListDetail(testList, user.photoUrl)
+    }
+
+    @Test
     fun onStoreListLongClickTest_NullUser() {
         `when`(dataManager.getCurrentUser()).thenReturn(null)
 
@@ -237,6 +253,9 @@ class ProfilePresenterTest {
 
         private val savedList = getFakeUserStoreLists()[0]
         private val favouriteList = getFakeUserStoreLists()[1]
+
+        private val testList = UserStoreList(2, getFakeStoreIds(), 3, "My Third List")
+
         private val user = User(USER_UID, USER_NAME, USER_EMAIL, USER_PHOTO_URL, getFakeUserStoreLists())
     }
 }
