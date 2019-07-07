@@ -46,18 +46,17 @@ class SyncDatabaseWorker(ctx: Context, params: WorkerParameters) : RxWorker(ctx,
                             dataManager.setStores(filteredStoreList)
 
                             if (!filteredStoreList.isEmpty()) {
-                                emitter.onSuccess(Result.success())
                                 notiManager.showStoreSyncStatusNotification(
                                         String.format(applicationContext.getString(R.string.update_database_successfull_with_count), filteredStoreList.size),
                                         applicationContext.getString(R.string.str_update_app_db))
-                                return
+                                emitter.onSuccess(Result.success())
+                            } else {
+                                emitter.onSuccess(Result.retry())
                             }
-
-                            emitter.onSuccess(Result.failure())
                         }
 
                         override fun onError(e: Throwable) {
-                            emitter.onError(e)
+                            emitter.onSuccess(Result.failure())
                         }
                     })
         }

@@ -73,9 +73,9 @@ class App : MultiDexApplication() {
                 .setRequiredNetworkType(NetworkType.CONNECTED)
                 .build()
 
-        val myWorkBuilder = PeriodicWorkRequest.Builder(SyncDatabaseWorker::class.java, 1, TimeUnit.MINUTES)
+        val myWorkBuilder = PeriodicWorkRequest.Builder(SyncDatabaseWorker::class.java, 1, TimeUnit.DAYS)
                 .setBackoffCriteria(BackoffPolicy.EXPONENTIAL, 1, TimeUnit.HOURS) // Backoff retry after 1 hour
-        //.setConstraints(constraints)
+                .setConstraints(constraints)
 
         val myWork = myWorkBuilder.build()
         WorkManager.getInstance()
