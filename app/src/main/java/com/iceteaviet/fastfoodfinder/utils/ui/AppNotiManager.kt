@@ -16,7 +16,7 @@ import com.iceteaviet.fastfoodfinder.utils.getSplashScreenIntent
  * Created by tom on 2019-07-07.
  */
 
-class AppNotiManager private constructor(private val context: Context) : NotiManager {
+class AppNotiManager constructor(private val context: Context) : NotiManager {
     override fun showStoreSyncStatusNotification(message: String, title: String) {
         val intent = getSplashScreenIntent(context).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -24,14 +24,14 @@ class AppNotiManager private constructor(private val context: Context) : NotiMan
         val pendingIntent = PendingIntent.getActivity(context, 0, intent, 0)
 
         val notification = makeStatusNotification(message, title, DB_SYNC_NOTIFICATION_CHANNEL_ID,
-                DB_SYNC_NOTIFICATION_CHANNEL_NAME, DB_SYNC_NOTIFICATION_CHANNEL_DESCRIPTION, pendingIntent, appContext, R.drawable.ic_cloud_update_done)
+                DB_SYNC_NOTIFICATION_CHANNEL_NAME, DB_SYNC_NOTIFICATION_CHANNEL_DESCRIPTION, pendingIntent, R.drawable.ic_cloud_update_done)
 
         NotificationManagerCompat.from(context).notify(STORE_DB_SYNC_NOTIFICATION_ID, notification)
     }
 
     override fun showStoreSyncProgressStatusNotification(message: String, title: String) {
         val notification = makeProgressStatusNotification(message, title, DB_SYNC_NOTIFICATION_CHANNEL_ID,
-                DB_SYNC_NOTIFICATION_CHANNEL_NAME, DB_SYNC_NOTIFICATION_CHANNEL_DESCRIPTION, appContext, R.drawable.ic_cloud_update)
+                DB_SYNC_NOTIFICATION_CHANNEL_NAME, DB_SYNC_NOTIFICATION_CHANNEL_DESCRIPTION, R.drawable.ic_cloud_update)
 
         NotificationManagerCompat.from(context).notify(STORE_DB_SYNC_NOTIFICATION_ID, notification)
     }
@@ -46,7 +46,7 @@ class AppNotiManager private constructor(private val context: Context) : NotiMan
     private fun makeStatusNotification(message: String, title: String,
                                        notificationChannelId: String, notificationChannelName: String,
                                        notificationChannelDes: String, pendingIntent: PendingIntent?,
-                                       context: Context, iconId: Int = R.drawable.ic_all_store24h_red): Notification {
+                                       iconId: Int = R.drawable.ic_all_store24h_red): Notification {
 
         // Make a channel if necessary
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -58,9 +58,9 @@ class AppNotiManager private constructor(private val context: Context) : NotiMan
 
             // Add the channel
             val notificationManager =
-                    context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager?
+                    context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-            notificationManager?.createNotificationChannel(channel)
+            notificationManager.createNotificationChannel(channel)
         }
 
         // Create the notification
@@ -78,23 +78,29 @@ class AppNotiManager private constructor(private val context: Context) : NotiMan
         return builder.build()
     }
 
+    /**
+     * Create a Notification that is shown with a progress bar
+     *
+     * @param message Message shown on the notification
+     * @param context Context needed to create Toast
+     */
     private fun makeProgressStatusNotification(message: String, title: String,
                                                notificationChannelId: String, notificationChannelName: String,
-                                               notificationChannelDes: String, context: Context, iconId: Int = R.drawable.ic_all_store24h_red): Notification {
+                                               notificationChannelDes: String, iconId: Int = R.drawable.ic_all_store24h_red): Notification {
 
         // Make a channel if necessary
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             // Create the NotificationChannel, but only on API 26+ because
             // the NotificationChannel class is new and not in the support library
-            val importance = NotificationManager.IMPORTANCE_HIGH
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
             val channel = NotificationChannel(notificationChannelId, notificationChannelName, importance)
             channel.description = notificationChannelDes
 
             // Add the channel
             val notificationManager =
-                    context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager?
+                    context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-            notificationManager?.createNotificationChannel(channel)
+            notificationManager.createNotificationChannel(channel)
         }
 
         // Create the notification
@@ -115,27 +121,5 @@ class AppNotiManager private constructor(private val context: Context) : NotiMan
         private const val DB_SYNC_NOTIFICATION_CHANNEL_ID = "DB_SYNC_NOTIFICATION_CHANNEL_ID"
 
         private const val STORE_DB_SYNC_NOTIFICATION_ID = 1
-
-        private lateinit var appContext: Context
-
-        private var instance: AppNotiManager? = null
-
-        fun init(context: Context) {
-            appContext = context.applicationContext
-        }
-
-        fun getInstance(): AppNotiManager {
-            if (instance == null) {
-                synchronized(AppNotiManager::class.java) {
-                    if (instance == null) {
-                        if (!::appContext.isInitialized)
-                            throw IllegalStateException("Call `AppNotiManager.init(Context)` before calling this method.")
-                        else
-                            instance = AppNotiManager(appContext)
-                    }
-                }
-            }
-            return instance!!
-        }
     }
 }

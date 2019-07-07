@@ -1,18 +1,17 @@
 package com.iceteaviet.fastfoodfinder.service.workers
 
 import android.content.Context
-import androidx.work.RxWorker
-import androidx.work.WorkerParameters
+import androidx.work.*
 import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.utils.filterInvalidData
-import com.iceteaviet.fastfoodfinder.utils.ui.AppNotiManager
 import com.iceteaviet.fastfoodfinder.utils.ui.NotiManager
 import io.reactivex.Single
 import io.reactivex.SingleObserver
 import io.reactivex.disposables.Disposable
+import java.util.concurrent.TimeUnit
 
 
 /**
@@ -28,7 +27,7 @@ class SyncDatabaseWorker(ctx: Context, params: WorkerParameters) : RxWorker(ctx,
     init {
         // TODO: Inject these dependencies
         dataManager = App.getDataManager()
-        notiManager = AppNotiManager.getInstance()
+        notiManager = App.getNotiManager()
     }
 
     override fun createWork(): Single<Result> {
@@ -58,6 +57,20 @@ class SyncDatabaseWorker(ctx: Context, params: WorkerParameters) : RxWorker(ctx,
                             emitter.onSuccess(Result.failure())
                         }
                     })
+        }
+    }
+
+    companion object {
+        fun prepareSyncDBWorker(): PeriodicWorkRequest {
+            val constraints = Constraints.Builder()
+                    .setRequiredNetworkType(NetworkType.CONNECTED)
+                    .build()
+
+            val myWorkBuilder = PeriodicWorkRequest.Builder(SyncDatabaseWorker::class.java, 1, TimeUnit.DAYS)
+                    .setBackoffCriteria(BackoffPolicy.EXPONENTIAL, 1, TimeUnit.HOURS) // Backoff retry after 1 hour
+                    .setConstraints(constraints)
+
+            return myWorkBuilder.build()
         }
     }
 }
