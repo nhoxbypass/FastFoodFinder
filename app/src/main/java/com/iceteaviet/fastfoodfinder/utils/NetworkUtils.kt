@@ -3,7 +3,7 @@
 package com.iceteaviet.fastfoodfinder.utils
 
 import android.content.Context
-import android.net.ConnectivityManager
+import com.iceteaviet.fastfoodfinder.utils.extension.getConnectivityManager
 import java.io.IOException
 
 /**
@@ -31,8 +31,8 @@ fun isInternetConnected(): Boolean {
  * Check connected to any network (but don't need to have Internet access)
  */
 fun isNetworkReachable(context: Context): Boolean {
-    val conMgr = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-    val networkInfo = conMgr.activeNetworkInfo
+    val conMgr = context.getConnectivityManager()
+    val networkInfo = conMgr?.activeNetworkInfo
 
     return networkInfo != null && networkInfo.isConnected
 }

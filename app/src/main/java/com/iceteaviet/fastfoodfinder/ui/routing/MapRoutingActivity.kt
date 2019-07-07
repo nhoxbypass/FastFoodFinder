@@ -20,12 +20,12 @@ import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.Step
 import com.iceteaviet.fastfoodfinder.ui.base.BaseActivity
-import com.iceteaviet.fastfoodfinder.ui.custom.extension.attachSnapHelperToListener
 import com.iceteaviet.fastfoodfinder.ui.custom.snaphelper.OnSnapListener
 import com.iceteaviet.fastfoodfinder.ui.custom.snaphelper.OnSnapPositionChangeListener
 import com.iceteaviet.fastfoodfinder.utils.Constant.DEFAULT_ZOOM_LEVEL
 import com.iceteaviet.fastfoodfinder.utils.Constant.DETAILED_ZOOM_LEVEL
 import com.iceteaviet.fastfoodfinder.utils.convertDpToPx
+import com.iceteaviet.fastfoodfinder.utils.extension.attachSnapHelperToListener
 import kotlinx.android.synthetic.main.activity_map_routing.*
 
 

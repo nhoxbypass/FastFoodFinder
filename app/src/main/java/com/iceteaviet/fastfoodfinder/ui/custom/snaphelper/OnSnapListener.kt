@@ -2,7 +2,7 @@ package com.iceteaviet.fastfoodfinder.ui.custom.snaphelper
 
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SnapHelper
-import com.iceteaviet.fastfoodfinder.ui.custom.extension.getSnapPosition
+import com.iceteaviet.fastfoodfinder.utils.extension.getSnapPosition
 
 /**
  * Created by tom on 2019-07-06.

@@ -10,6 +10,7 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.iceteaviet.fastfoodfinder.R
+import com.iceteaviet.fastfoodfinder.utils.extension.getNotificationManager
 import com.iceteaviet.fastfoodfinder.utils.getSplashScreenIntent
 
 /**
@@ -57,10 +58,8 @@ class AppNotiManager constructor(private val context: Context) : NotiManager {
             channel.description = notificationChannelDes
 
             // Add the channel
-            val notificationManager =
-                    context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-            notificationManager.createNotificationChannel(channel)
+            val notificationManager = context.getNotificationManager()
+            notificationManager?.createNotificationChannel(channel)
         }
 
         // Create the notification
@@ -97,10 +96,8 @@ class AppNotiManager constructor(private val context: Context) : NotiManager {
             channel.description = notificationChannelDes
 
             // Add the channel
-            val notificationManager =
-                    context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-            notificationManager.createNotificationChannel(channel)
+            val notificationManager = context.getNotificationManager()
+            notificationManager?.createNotificationChannel(channel)
         }
 
         // Create the notification
