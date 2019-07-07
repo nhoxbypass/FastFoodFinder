@@ -52,7 +52,10 @@
     <string name="search_error">Lỗi tìm kiếm!</string>
     <string name="type_name_store">Nhập tên cửa hàng…</string>
     <string name="update_database_successfull">Cập nhật dữ liệu cửa hàng thành công</string>
-    <string name="update_database_failed">"Cập nhật dữ liệu cửa hàng thất bại: "</string>
+    <string name="update_database_successfull_with_count">Cập nhật thành công dữ liệu của %s cửa hàng</string>
+    <string name="str_update_app_db">Cập nhật dữ liệu ứng dụng</string>
+    <string name="str_updating_store_db">Đang cập nhật dữ liệu cửa hàng</string>
+    <string name="update_database_failed">Cập nhật dữ liệu cửa hàng thất bại: </string>
     <string name="want_undo">Phục hồi?</string>
     <string name="undo">Phục hồi</string>
     <string name="delete_favourite_location">Xóa địa điểm</string>
