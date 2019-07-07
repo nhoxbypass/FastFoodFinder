@@ -7,17 +7,19 @@ import org.junit.Test
 class FormatUtilsTest {
     @Test
     fun getTrimmedShortInstruction_normal() {
-        assertEquals("some text", getTrimmedShortInstruction("some text"))
+        assertThat(getTrimmedShortInstruction("some text")).isEqualTo("some text")
+        assertThat(getTrimmedShortInstruction("  some text")).isEqualTo("  some text")
+        assertThat(getTrimmedShortInstruction("some text  ")).isEqualTo("some text")
     }
 
     @Test
     fun getTrimmedShortInstruction_empty() {
-        assertEquals("", getTrimmedShortInstruction(""))
+        assertThat(getTrimmedShortInstruction("")).isEmpty()
     }
 
     @Test
     fun getTrimmedShortInstruction_null() {
-        assertEquals("", getTrimmedShortInstruction(null))
+        assertThat(getTrimmedShortInstruction(null)).isEmpty()
     }
 
     @Test
@@ -82,6 +84,7 @@ class FormatUtilsTest {
         assertEquals(StoreType.TYPE_CIRCLE_K, getStoreTypeFromQuery(" circleK"))
 
         assertEquals(StoreType.TYPE_BSMART, getStoreTypeFromQuery("bmart"))
+        assertEquals(StoreType.TYPE_BSMART, getStoreTypeFromQuery("bsmart"))
         assertEquals(StoreType.TYPE_BSMART, getStoreTypeFromQuery("bs'mart"))
         assertEquals(StoreType.TYPE_BSMART, getStoreTypeFromQuery("b's mart"))
 

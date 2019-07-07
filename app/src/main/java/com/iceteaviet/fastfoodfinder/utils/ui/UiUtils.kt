@@ -42,7 +42,7 @@ fun getStoreLogoDrawableRes(type: Int): Int {
  * Get direction image
  */
 fun getDirectionImage(direction: String?): Int {
-    if (direction == null)
+    if (direction == null || direction.isBlank())
         return R.drawable.ic_routing_up
 
     return if (direction == "straight") {
@@ -93,6 +93,7 @@ fun getStoreIcon(resources: Resources, type: Int, width: Int, height: Int): Bitm
     var key = type.toString()
     if (width != -1 && height != -1)
         key = "$type-$width-$height"
+
     synchronized(cache) {
         var result: BitmapDescriptor? = cache.get(key)
         if (result == null) {
@@ -106,7 +107,6 @@ fun getStoreIcon(resources: Resources, type: Int, width: Int, height: Int): Bitm
             result = BitmapDescriptorFactory.fromBitmap(bitmap)
             cache.put(key, result)
         }
-
         return result!!
     }
 }
@@ -139,19 +139,16 @@ fun getRandomStoreImages(numb: Int): List<Int> {
     val res = ArrayList<Int>()
 
     val r = Random()
-
     for (i in 0..numb) {
         val id = STORE_IMAGES[r.nextInt(4)]
         if (!res.contains(id))
             res.add(id)
     }
-
     if (res.size < numb) {
         for (i in res.size..numb) {
             res.add(R.drawable.all_placeholder)
         }
     }
-
     return res
 }
 
@@ -159,18 +156,10 @@ fun getRandomStoreImages(numb: Int): List<Int> {
  * Get resource id of store logo drawable
  */
 val STORE_ICON_DRAWABLE_ARRAY: MutableList<Int> = Arrays.asList(
-        R.drawable.ic_all_store24h,
-        R.drawable.ic_profile_saved,
-        R.drawable.ic_profile_favourite,
-        R.drawable.ic_profile_list_2,
-        R.drawable.ic_profile_list_4,
-        R.drawable.ic_profile_list_5,
-        R.drawable.ic_profile_list_6,
-        R.drawable.ic_profile_list_7,
-        R.drawable.ic_profile_list_8,
-        R.drawable.ic_profile_list_9,
-        R.drawable.ic_profile_list_10,
-        R.drawable.ic_profile_list_11,
+        R.drawable.ic_all_store24h, R.drawable.ic_profile_saved, R.drawable.ic_profile_favourite,
+        R.drawable.ic_profile_list_2, R.drawable.ic_profile_list_4, R.drawable.ic_profile_list_5,
+        R.drawable.ic_profile_list_6, R.drawable.ic_profile_list_7, R.drawable.ic_profile_list_8,
+        R.drawable.ic_profile_list_9, R.drawable.ic_profile_list_10, R.drawable.ic_profile_list_11,
         R.drawable.ic_profile_list_3)
 
 fun getStoreListIconDrawableRes(storeIconId: Int): Int {

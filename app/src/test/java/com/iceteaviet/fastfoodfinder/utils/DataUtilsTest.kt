@@ -134,6 +134,10 @@ class DataUtilsTest {
         assertThat(getStoreNameByKey(KEY_FAMILY_MART)).isEqualTo("Family mart")
         assertThat(getStoreNameByKey(KEY_MINI_STOP)).isEqualTo("Ministop")
         assertThat(getStoreNameByKey(KEY_SHOP_N_GO)).isEqualTo("Shop & Go")
+
+        assertThat(getStoreNameByKey(null)).isEmpty()
+        assertThat(getStoreNameByKey("")).isEmpty()
+        assertThat(getStoreNameByKey("-1")).isEmpty()
     }
 
 
