@@ -35,10 +35,12 @@
 
         <activity
             android:name=".ui.main.MainActivity"
+            android:screenOrientation="sensorPortrait"
             android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar.TranslucentStatus" />
         <activity
             android:name=".ui.login.LoginActivity"
+            android:screenOrientation="sensorPortrait"
             android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar.TranslucentStatus" />
         <activity
