@@ -57,12 +57,15 @@ class FormatUtilsTest {
 
         assertThat(standardizeDistrictQuery(" quan tan binh  ")).contains("Tân Bình", "tân bình", "Tan Binh", "tan binh")
         assertThat(standardizeDistrictQuery(" tanbinh  ")).contains("Tân Bình", "tân bình", "Tan Binh", "tan binh")
+        assertThat(standardizeDistrictQuery(" q tân bình")).contains("Tân Bình", "tân bình", "Tan Binh", "tan binh")
 
         assertThat(standardizeDistrictQuery("tân phú")).contains("Tân Phú", "tân phú", "Tan Phu", "tan phu")
         assertThat(standardizeDistrictQuery("q tan phu")).contains("Tân Phú", "tân phú", "Tan Phu", "tan phu")
+        assertThat(standardizeDistrictQuery("quan tanphu")).contains("Tân Phú", "tân phú", "Tan Phu", "tan phu")
 
         assertThat(standardizeDistrictQuery("quận gò vấp")).contains("gò vấp", "Gò Vấp", "go vap", "Go Vap")
         assertThat(standardizeDistrictQuery(" quan go vap")).contains("gò vấp", "Gò Vấp", "go vap", "Go Vap")
+        assertThat(standardizeDistrictQuery("quan govap ")).contains("gò vấp", "Gò Vấp", "go vap", "Go Vap")
 
         assertThat(standardizeDistrictQuery("quan 3")).contains("quận 3", "Quận 3", "quan 3", "Quan 3", "q3", "District 3", "district 3")
         assertThat(standardizeDistrictQuery("quan 5")).contains("quận 5", "Quận 5", "quan 5", "Quan 5", "q5", "District 5", "district 5")
@@ -75,9 +78,11 @@ class FormatUtilsTest {
 
         assertThat(standardizeDistrictQuery(" district Binh Chanh  ")).contains("Bình Chánh", "bình chánh", "Binh Chanh", "binh chanh")
         assertThat(standardizeDistrictQuery(" binh chanh")).contains("Bình Chánh", "bình chánh", "Binh Chanh", "binh chanh")
+        assertThat(standardizeDistrictQuery(" binhchanh ")).contains("Bình Chánh", "bình chánh", "Binh Chanh", "binh chanh")
 
         assertThat(standardizeDistrictQuery("binh Tan district ")).contains("Bình Tân", "bình tân", "Binh Tan", "binh tan")
         assertThat(standardizeDistrictQuery("binhtan district ")).contains("Bình Tân", "bình tân", "Binh Tan", "binh tan")
+        assertThat(standardizeDistrictQuery("Binh tan  ")).contains("Bình Tân", "bình tân", "Binh Tan", "binh tan")
 
         assertThat(standardizeDistrictQuery("district thu duc")).contains("Thủ Đức", "thủ đức", "Thu Duc", "thu duc")
         assertThat(standardizeDistrictQuery(" thuduc")).contains("Thủ Đức", "thủ đức", "Thu Duc", "thu duc")
@@ -87,7 +92,7 @@ class FormatUtilsTest {
 
         assertThat(standardizeDistrictQuery("q phunhuan")).contains("Phú Nhuận", "phú nhuận", "Phu Nhuan", "phu nhuan")
         assertThat(standardizeDistrictQuery("q phu nhuan")).contains("Phú Nhuận", "phú nhuận", "Phu Nhuan", "phu nhuan")
-        assertThat(standardizeDistrictQuery("q phunhuan ")).contains("Phú Nhuận", "phú nhuận", "Phu Nhuan", "phu nhuan")
+        assertThat(standardizeDistrictQuery("q Phu Nhuan  ")).contains("Phú Nhuận", "phú nhuận", "Phu Nhuan", "phu nhuan")
     }
 
     @Test
@@ -106,6 +111,8 @@ class FormatUtilsTest {
         assertEquals(StoreType.TYPE_BSMART, getStoreTypeFromQuery("bs'mart"))
         assertEquals(StoreType.TYPE_BSMART, getStoreTypeFromQuery("b'smart"))
         assertEquals(StoreType.TYPE_BSMART, getStoreTypeFromQuery("b's mart"))
+        assertEquals(StoreType.TYPE_BSMART, getStoreTypeFromQuery("b smart"))
+        assertEquals(StoreType.TYPE_BSMART, getStoreTypeFromQuery("bs mart"))
 
         assertEquals(StoreType.TYPE_SHOP_N_GO, getStoreTypeFromQuery("shopngo"))
         assertEquals(StoreType.TYPE_SHOP_N_GO, getStoreTypeFromQuery(" shop n go"))
