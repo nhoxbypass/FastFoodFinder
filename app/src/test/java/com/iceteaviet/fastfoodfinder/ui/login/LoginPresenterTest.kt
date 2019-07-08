@@ -62,6 +62,17 @@ class LoginPresenterTest {
     }
 
     @Test
+    fun onEmailRegisterSuccessTest_emptyName() {
+        val userFullEmptyName = User(USER_UID, "", USER_EMAIL, USER_PHOTO_URL, getFakeUserStoreLists())
+        val userFull = User(USER_UID, "myemail", USER_EMAIL, USER_PHOTO_URL, getFakeUserStoreLists())
+
+        loginPresenter.onRegisterSuccess(userFullEmptyName)
+
+        verify(dataManager).updateCurrentUser(userFull)
+        verify(loginView).showMainView()
+    }
+
+    @Test
     fun onEmailRegisterSuccessTest() {
         loginPresenter.onRegisterSuccess(user)
 

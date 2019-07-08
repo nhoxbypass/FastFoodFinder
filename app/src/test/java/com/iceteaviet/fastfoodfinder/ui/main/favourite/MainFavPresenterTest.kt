@@ -120,6 +120,43 @@ class MainFavPresenterTest {
     }
 
     @Test
+    fun subscribeTest_signedIn_getStoresSuccess_listenStoresSuccess_nullActionCode() {
+        // Preconditions
+        `when`(dataManager.getCurrentUser()).thenReturn(userFull)
+        val ac: Int? = null
+
+        // Mocks
+        val store = stores.get(0)
+        `when`(dataManager.findStoresByIds(userFull.getFavouriteStoreList().getStoreIdList())).thenReturn(Single.just(stores))
+        `when`(dataManager.subscribeFavouriteStoresOfUser(userFull.getUid())).thenReturn(
+                Observable.just(Pair(store.id, ac))
+        )
+        `when`(dataManager.findStoreById(store.id)).thenReturn(Single.never())
+
+        mainFavPresenter.subscribe()
+
+        verify(mainFavView).showWarningMessage(ArgumentMatchers.any())
+    }
+
+    @Test
+    fun subscribeTest_signedIn_getStoresSuccess_listenStoresSuccess_invalidActionCode() {
+        // Preconditions
+        `when`(dataManager.getCurrentUser()).thenReturn(userFull)
+
+        // Mocks
+        val store = stores.get(0)
+        `when`(dataManager.findStoresByIds(userFull.getFavouriteStoreList().getStoreIdList())).thenReturn(Single.just(stores))
+        `when`(dataManager.subscribeFavouriteStoresOfUser(userFull.getUid())).thenReturn(
+                Observable.just(Pair(store.id, -1))
+        )
+        `when`(dataManager.findStoreById(store.id)).thenReturn(Single.never())
+
+        mainFavPresenter.subscribe()
+
+        verify(mainFavView).showWarningMessage(ArgumentMatchers.any())
+    }
+
+    @Test
     fun subscribeTest_signedIn_getStoresSuccess_listenStoresSuccess_added() {
         // Preconditions
         `when`(dataManager.getCurrentUser()).thenReturn(userFull)
@@ -136,6 +173,25 @@ class MainFavPresenterTest {
 
         verify(mainFavView).setStores(stores)
         verify(mainFavView).addStore(store)
+    }
+
+    @Test
+    fun subscribeTest_signedIn_getStoresSuccess_listenStoresSuccess_added_invalidStoreId() {
+        // Preconditions
+        `when`(dataManager.getCurrentUser()).thenReturn(userFull)
+        val storeId: Int? = null
+
+        // Mocks
+        val store = stores.get(0)
+        `when`(dataManager.findStoresByIds(userFull.getFavouriteStoreList().getStoreIdList())).thenReturn(Single.just(stores))
+        `when`(dataManager.subscribeFavouriteStoresOfUser(userFull.getUid())).thenReturn(
+                Observable.just(Pair(storeId, UserStoreEvent.ACTION_ADDED))
+        )
+        `when`(dataManager.findStoreById(store.id)).thenReturn(Single.never())
+
+        mainFavPresenter.subscribe()
+
+        verify(mainFavView).showWarningMessage(ArgumentMatchers.any())
     }
 
     @Test

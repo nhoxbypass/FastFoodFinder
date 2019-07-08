@@ -3,7 +3,8 @@
 package com.iceteaviet.fastfoodfinder.utils
 
 import android.content.Context
-import android.net.ConnectivityManager
+import com.iceteaviet.fastfoodfinder.utils.extension.getConnectivityManager
+import com.iceteaviet.fastfoodfinder.utils.shell.AppShell
 import java.io.IOException
 
 /**
@@ -16,23 +17,22 @@ import java.io.IOException
 fun isInternetConnected(): Boolean {
     val command = "ping -c 1 google.com"
     try {
-        return Runtime.getRuntime().exec(command).waitFor() == 0
-    } catch (e: InterruptedException) {
-        e.printStackTrace()
+        return AppShell.exec(command).waitFor() == 0
+    } catch (se: SecurityException) {
         return false
-    } catch (e: IOException) {
-        e.printStackTrace()
+    } catch (ioEx: IOException) {
+        return false
+    } catch (interruptException: InterruptedException) {
         return false
     }
-
 }
 
 /**
  * Check connected to any network (but don't need to have Internet access)
  */
 fun isNetworkReachable(context: Context): Boolean {
-    val conMgr = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-    val networkInfo = conMgr.activeNetworkInfo
+    val conMgr = context.getConnectivityManager()
+    val networkInfo = conMgr?.activeNetworkInfo
 
     return networkInfo != null && networkInfo.isConnected
 }

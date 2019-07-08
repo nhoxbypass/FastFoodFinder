@@ -1,14 +1,11 @@
 package com.iceteaviet.fastfoodfinder.ui.main
 
-import android.app.SearchManager
-import android.content.Context
 import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -30,6 +27,8 @@ import com.iceteaviet.fastfoodfinder.ui.base.BaseActivity
 import com.iceteaviet.fastfoodfinder.ui.main.search.SearchFragment
 import com.iceteaviet.fastfoodfinder.ui.profile.ProfileFragment
 import com.iceteaviet.fastfoodfinder.utils.e
+import com.iceteaviet.fastfoodfinder.utils.extension.getInputMethodManager
+import com.iceteaviet.fastfoodfinder.utils.extension.getSearchManager
 import com.iceteaviet.fastfoodfinder.utils.openARLiveSightActivity
 import com.iceteaviet.fastfoodfinder.utils.openLoginActivity
 import com.iceteaviet.fastfoodfinder.utils.openSettingsActivity
@@ -142,8 +141,8 @@ class MainActivity : BaseActivity(), MainContract.View, View.OnClickListener {
         // Check if no view has focus:
         val view = this.currentFocus
         if (view != null) {
-            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(view.windowToken, 0)
+            val imm = getInputMethodManager()
+            imm?.hideSoftInputFromWindow(view.windowToken, 0)
         }
     }
 
@@ -278,11 +277,11 @@ class MainActivity : BaseActivity(), MainContract.View, View.OnClickListener {
         menuInflater.inflate(R.menu.menu_main, menu)
         searchItem = menu.findItem(R.id.action_search) ?: return null
 
-        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        val searchManager = getSearchManager()
 
         searchView = MenuItemCompat.getActionView(searchItem) as SearchView
 
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
+        searchView.setSearchableInfo(searchManager?.getSearchableInfo(componentName))
 
         searchView.queryHint = getString(R.string.type_name_store)
         searchView.setBackgroundColor(ContextCompat.getColor(this, R.color.material_red_700))

@@ -46,8 +46,19 @@ class MapRoutingPresenterTest {
     }
 
     @Test
-    fun handleExtrasTest_null() {
+    fun handleExtrasTest_allNull() {
         mapRoutingPresenter.handleExtras(null, null)
+
+        verify(mapRoutingView).exit()
+        verify(mapRoutingView).showGetDirectionFailedMessage()
+    }
+
+    @Test
+    fun handleExtrasTest_nullMapsDirection() {
+        // Preconditions
+        mapRoutingPresenter.handleExtras(null, store)
+
+        mapRoutingPresenter.subscribe()
 
         verify(mapRoutingView).exit()
         verify(mapRoutingView).showGetDirectionFailedMessage()

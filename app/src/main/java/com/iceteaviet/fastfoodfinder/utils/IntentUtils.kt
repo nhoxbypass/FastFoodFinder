@@ -3,6 +3,7 @@
 package com.iceteaviet.fastfoodfinder.utils
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -94,4 +95,8 @@ fun makeNativeCall(activity: Activity, tel: String) {
 
 fun getImagePickerIntent(): Intent {
     return Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+}
+
+fun getSplashScreenIntent(context: Context): Intent {
+    return Intent(context, SplashActivity::class.java)
 }

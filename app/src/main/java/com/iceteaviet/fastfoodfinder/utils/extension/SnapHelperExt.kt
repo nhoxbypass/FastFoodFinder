@@ -1,4 +1,4 @@
-package com.iceteaviet.fastfoodfinder.ui.custom.extension
+package com.iceteaviet.fastfoodfinder.utils.extension
 
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SnapHelper

@@ -1,7 +1,6 @@
 package com.iceteaviet.fastfoodfinder.ui.ar
 
 
-import android.content.Context
 import android.content.pm.PackageManager
 import android.hardware.*
 import android.opengl.Matrix
@@ -21,6 +20,7 @@ import com.iceteaviet.fastfoodfinder.ui.base.BaseActivity
 import com.iceteaviet.fastfoodfinder.ui.custom.ar.ARCamera
 import com.iceteaviet.fastfoodfinder.ui.custom.ar.AROverlayView
 import com.iceteaviet.fastfoodfinder.utils.*
+import com.iceteaviet.fastfoodfinder.utils.extension.getSensorManager
 import kotlinx.android.synthetic.main.activity_ar_camera.*
 
 class LiveSightActivity : BaseActivity(), LiveSightContract.View, SensorEventListener {
@@ -200,7 +200,7 @@ class LiveSightActivity : BaseActivity(), LiveSightContract.View, SensorEventLis
 
     override fun initSensorService() {
         if (sensorManager == null)
-            sensorManager = this.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+            sensorManager = this.getSensorManager()
 
         registerSensorListeners()
     }

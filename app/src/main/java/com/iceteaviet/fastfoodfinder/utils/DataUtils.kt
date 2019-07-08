@@ -648,13 +648,13 @@ fun storesToArPoints(stores: List<Store>): List<AugmentedPOI> {
     return arPoints
 }
 
-fun getStoreNameByKey(key: String): String {
-    return when (key) {
-        DiscountNotifyPresenter.KEY_CIRCLE_K -> "Cirle K"
-        DiscountNotifyPresenter.KEY_BSMART -> "B’s mart"
-        DiscountNotifyPresenter.KEY_FAMILY_MART -> "Family mart"
-        DiscountNotifyPresenter.KEY_MINI_STOP -> "Ministop"
-        DiscountNotifyPresenter.KEY_SHOP_N_GO -> "Shop & Go"
-        else -> "Unknown"
+fun getStoreNameByKey(key: String?): String {
+    when (key) {
+        DiscountNotifyPresenter.KEY_CIRCLE_K -> return "Cirle K"
+        DiscountNotifyPresenter.KEY_BSMART -> return "B’s mart"
+        DiscountNotifyPresenter.KEY_FAMILY_MART -> return "Family mart"
+        DiscountNotifyPresenter.KEY_MINI_STOP -> return "Ministop"
+        DiscountNotifyPresenter.KEY_SHOP_N_GO -> return "Shop & Go"
+        else -> return ""
     }
 }
