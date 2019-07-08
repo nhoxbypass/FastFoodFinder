@@ -74,6 +74,16 @@ class NetworkUtilsTest {
     }
 
     @Test
+    fun isInternetConnectedTest_waitForNegative() {
+        `when`(Runtime.getRuntime()).thenReturn(mockRuntime)
+
+        `when`(mockRuntime.exec("ping -c 1 google.com")).thenReturn(mockProcess)
+        `when`(mockProcess.waitFor()).thenReturn(-1)
+
+        assertThat(isInternetConnected()).isFalse()
+    }
+
+    @Test
     fun isInternetConnectedTest() {
         `when`(Runtime.getRuntime()).thenReturn(mockRuntime)
 
