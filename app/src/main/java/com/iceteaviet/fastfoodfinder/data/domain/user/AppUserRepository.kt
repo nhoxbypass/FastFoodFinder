@@ -24,6 +24,7 @@ class AppUserRepository(private val userApiHelper: UserApiHelper, private val us
     }
 
     override fun updateStoreListForUser(uid: String, storeLists: List<UserStoreList>) {
+        userApiHelper.updateStoreListForUser(uid, storeLists)
         userDataSource.updateStoreListForUser(uid, storeLists)
     }
 
