@@ -35,12 +35,17 @@
 
         <activity
             android:name=".ui.main.MainActivity"
+            android:screenOrientation="sensorPortrait"
+            android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar.TranslucentStatus" />
         <activity
             android:name=".ui.login.LoginActivity"
+            android:screenOrientation="sensorPortrait"
+            android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar.TranslucentStatus" />
         <activity
             android:name=".ui.splash.SplashActivity"
+            android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar.TranslucentStatus.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -50,17 +55,21 @@
         </activity>
         <activity
             android:name=".ui.store.StoreDetailActivity"
+            android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar.TranslucentStatus" />
         <activity
             android:name=".ui.settings.SettingActivity"
+            android:launchMode="singleTop"
             android:configChanges="locale" />
         <activity android:name=".ui.routing.MapRoutingActivity" />
         <activity
             android:name=".ui.store.comment.CommentActivity"
+            android:launchMode="singleTop"
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".ui.storelist.StoreListActivity" />
         <activity
             android:name=".ui.storelist.ListDetailActivity"
+            android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar.TranslucentStatus" />
         <activity android:name=".ui.ar.LiveSightActivity"></activity>
     </application>

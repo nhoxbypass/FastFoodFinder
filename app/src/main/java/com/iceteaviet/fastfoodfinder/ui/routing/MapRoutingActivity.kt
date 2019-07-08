@@ -20,6 +20,9 @@ import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.Step
 import com.iceteaviet.fastfoodfinder.ui.base.BaseActivity
+import com.iceteaviet.fastfoodfinder.ui.custom.extension.attachSnapHelperToListener
+import com.iceteaviet.fastfoodfinder.ui.custom.snaphelper.OnSnapListener
+import com.iceteaviet.fastfoodfinder.ui.custom.snaphelper.OnSnapPositionChangeListener
 import com.iceteaviet.fastfoodfinder.utils.Constant.DEFAULT_ZOOM_LEVEL
 import com.iceteaviet.fastfoodfinder.utils.Constant.DETAILED_ZOOM_LEVEL
 import com.iceteaviet.fastfoodfinder.utils.convertDpToPx
@@ -39,6 +42,7 @@ class MapRoutingActivity : BaseActivity(), MapRoutingContract.View, View.OnClick
     private lateinit var nextInstruction: ImageButton
     private lateinit var routingButtonContainer: LinearLayout
 
+    private val snapHelper = LinearSnapHelper() // The item is fullscreen, may be using PagerSnapHelper is better?
     private var bottomSheetBehavior: BottomSheetBehavior<*>? = null
     private var googleMap: GoogleMap? = null
     private var mapFragment: SupportMapFragment? = null
@@ -117,7 +121,7 @@ class MapRoutingActivity : BaseActivity(), MapRoutingContract.View, View.OnClick
         bottomSheetBehavior?.state = BottomSheetBehavior.STATE_COLLAPSED
     }
 
-    override fun scrollToPosition(directionIndex: Int) {
+    override fun scrollTopBannerToPosition(directionIndex: Int) {
         topRecyclerView.smoothScrollToPosition(directionIndex)
     }
 
@@ -171,8 +175,8 @@ class MapRoutingActivity : BaseActivity(), MapRoutingContract.View, View.OnClick
 
             // Build the viewbounds contain all markers
             val bounds = builder.build()
-
-            zoomToShowAllMarker(bounds, it)
+            val padding = 48 // offset from edges of the map in pixels
+            zoomToShowAllMarker(bounds, it, padding)
         }
     }
 
@@ -206,7 +210,6 @@ class MapRoutingActivity : BaseActivity(), MapRoutingContract.View, View.OnClick
         val topLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         topRecyclerView.layoutManager = topLayoutManager
         topRecyclerView.adapter = topRoutingAdapter
-        val snapHelper = LinearSnapHelper()
         snapHelper.attachToRecyclerView(topRecyclerView)
     }
 
@@ -233,6 +236,12 @@ class MapRoutingActivity : BaseActivity(), MapRoutingContract.View, View.OnClick
         }
         bottomRoutingAdapter.setOnNavigationItemClickListener(listener)
         topRoutingAdapter.setOnNavigationItemClickListener(listener)
+
+        topRecyclerView.attachSnapHelperToListener(snapHelper, object : OnSnapPositionChangeListener {
+            override fun onSnapPositionChange(position: Int) {
+                presenter.onTopRoutingBannerPositionChange(position)
+            }
+        }, OnSnapListener.Behavior.NOTIFY_ON_SCROLL_STATE_IDLE_BY_DRAGGING)
     }
 
     private fun setUpMapIfNeeded() {
@@ -251,12 +260,11 @@ class MapRoutingActivity : BaseActivity(), MapRoutingContract.View, View.OnClick
         }
     }
 
-    private fun zoomToShowAllMarker(bounds: LatLngBounds, googleMap: GoogleMap) {
+    private fun zoomToShowAllMarker(bounds: LatLngBounds, googleMap: GoogleMap, padding: Int) {
         val displayMetrics = resources.displayMetrics
 
         val width = displayMetrics.widthPixels
         val height = displayMetrics.heightPixels - convertDpToPx(160f)
-        val padding = 24 // offset from edges of the map in pixels
         val cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height.toInt(), padding)
 
         googleMap.animateCamera(cu)

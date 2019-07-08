@@ -15,7 +15,7 @@
     <!--android:paddingRight="8dp"-->
     <!--android:paddingTop="8dp" />-->
 
-    <com.iceteaviet.fastfoodfinder.ui.custom.HorizontalFlowLayout
+    <RelativeLayout
         android:id="@+id/tag_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -16,7 +16,7 @@ interface MapRoutingContract {
         fun setRoutingStepList(stepList: List<Step>)
         fun enterPreviewMode()
         fun exitPreviewMode()
-        fun scrollToPosition(directionIndex: Int)
+        fun scrollTopBannerToPosition(directionIndex: Int)
         fun exit()
         fun showGetDirectionFailedMessage()
         fun showGeneralErrorMessage()
@@ -31,6 +31,7 @@ interface MapRoutingContract {
     interface Presenter : com.iceteaviet.fastfoodfinder.ui.base.Presenter {
         fun handleExtras(mapsDirection: MapsDirection?, store: Store?)
         fun onNavigationRowClick(index: Int)
+        fun onTopRoutingBannerPositionChange(position: Int)
         fun onPrevInstructionClick()
         fun onNextInstructionClick()
         fun onBackArrowButtonPress()

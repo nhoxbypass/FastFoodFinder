@@ -7,12 +7,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.Nullable
 import androidx.fragment.app.DialogFragment
 import com.iceteaviet.fastfoodfinder.R
-import com.iceteaviet.fastfoodfinder.ui.custom.HorizontalFlowLayout
 import kotlinx.android.synthetic.main.dialog_store_filter.*
 import kotlinx.android.synthetic.main.view_store_tag.view.*
 
@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.view_store_tag.view.*
  */
 
 class DiscountNotifyDialog : DialogFragment(), DiscountNotifyContract.View {
-    private lateinit var tagContainer: HorizontalFlowLayout
+    private lateinit var tagContainer: RelativeLayout
     override lateinit var presenter: DiscountNotifyContract.Presenter
 
     @Nullable

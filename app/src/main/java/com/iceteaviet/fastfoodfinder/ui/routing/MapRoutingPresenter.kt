@@ -67,13 +67,22 @@ class MapRoutingPresenter : BasePresenter<MapRoutingContract.Presenter>, MapRout
         inPreviewMode = true
     }
 
+    override fun onTopRoutingBannerPositionChange(position: Int) {
+        if (position < 0 || position >= stepList.size) {
+            return
+        }
+        currDirectionIndex = position
+        mapRoutingView.scrollTopBannerToPosition(currDirectionIndex)
+        mapRoutingView.animateMapCamera(stepList[currDirectionIndex].endMapCoordination.location, true)
+    }
+
     override fun onPrevInstructionClick() {
         currDirectionIndex--
         if (currDirectionIndex < 0) {
             currDirectionIndex = stepList.size - 1 // Go back to the end coordination
         }
 
-        mapRoutingView.scrollToPosition(currDirectionIndex)
+        mapRoutingView.scrollTopBannerToPosition(currDirectionIndex)
         mapRoutingView.animateMapCamera(stepList[currDirectionIndex].endMapCoordination.location, true)
     }
 
@@ -83,7 +92,7 @@ class MapRoutingPresenter : BasePresenter<MapRoutingContract.Presenter>, MapRout
             currDirectionIndex = 0 // Go back to the start coordination
         }
 
-        mapRoutingView.scrollToPosition(currDirectionIndex)
+        mapRoutingView.scrollTopBannerToPosition(currDirectionIndex)
         mapRoutingView.animateMapCamera(stepList[currDirectionIndex].endMapCoordination.location, true)
     }
 

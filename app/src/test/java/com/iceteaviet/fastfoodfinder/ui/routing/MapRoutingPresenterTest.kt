@@ -20,6 +20,7 @@ import org.mockito.ArgumentMatchers
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.Mockito.verify
+import org.mockito.Mockito.verifyZeroInteractions
 import org.mockito.MockitoAnnotations
 
 /**
@@ -122,7 +123,7 @@ class MapRoutingPresenterTest {
     fun onNavigationRowClickTest_bigIndex() {
         // Preconditions
         mapRoutingPresenter.stepList = stepList
-        mapRoutingPresenter.onNavigationRowClick(1000)
+        mapRoutingPresenter.onNavigationRowClick(stepList.size)
 
         verify(mapRoutingView).showGeneralErrorMessage()
         verify(mapRoutingView, never()).animateMapCamera(any(), ArgumentMatchers.anyBoolean())
@@ -141,6 +142,44 @@ class MapRoutingPresenterTest {
     }
 
     @Test
+    fun onTopRoutingBannerPositionChangeTest_negativeIndex() {
+        // Preconditions
+        mapRoutingPresenter.stepList = stepList
+        mapRoutingPresenter.onTopRoutingBannerPositionChange(-1)
+
+        verifyZeroInteractions(mapRoutingView)
+    }
+
+    @Test
+    fun onTopRoutingBannerPositionChangeTest_bigIndex() {
+        // Preconditions
+        mapRoutingPresenter.stepList = stepList
+        mapRoutingPresenter.onTopRoutingBannerPositionChange(stepList.size)
+
+        verifyZeroInteractions(mapRoutingView)
+    }
+
+    @Test
+    fun onTopRoutingBannerPositionChangeTest_zeroIndex() {
+        // Preconditions
+        mapRoutingPresenter.stepList = stepList
+        mapRoutingPresenter.onTopRoutingBannerPositionChange(0)
+
+        verify(mapRoutingView).scrollTopBannerToPosition(0)
+        verify(mapRoutingView).animateMapCamera(stepList[0].endMapCoordination.location, true)
+    }
+
+    @Test
+    fun onTopRoutingBannerPositionChangeTest_normalIndex() {
+        // Preconditions
+        mapRoutingPresenter.stepList = stepList
+        mapRoutingPresenter.onTopRoutingBannerPositionChange(2)
+
+        verify(mapRoutingView).scrollTopBannerToPosition(2)
+        verify(mapRoutingView).animateMapCamera(stepList[2].endMapCoordination.location, true)
+    }
+
+    @Test
     fun onPrevInstructionClickTest_negativeIndex() {
         // Preconditions
         mapRoutingPresenter.stepList = stepList
@@ -149,7 +188,7 @@ class MapRoutingPresenterTest {
         mapRoutingPresenter.onPrevInstructionClick()
 
         assertThat(mapRoutingPresenter.currDirectionIndex).isEqualTo(stepList.size - 1) // Go back to the end coord
-        verify(mapRoutingView).scrollToPosition(ArgumentMatchers.anyInt())
+        verify(mapRoutingView).scrollTopBannerToPosition(ArgumentMatchers.anyInt())
         verify(mapRoutingView).animateMapCamera(any(), ArgumentMatchers.anyBoolean())
     }
 
@@ -162,7 +201,7 @@ class MapRoutingPresenterTest {
         mapRoutingPresenter.onPrevInstructionClick()
 
         assertThat(mapRoutingPresenter.currDirectionIndex).isEqualTo(1)
-        verify(mapRoutingView).scrollToPosition(1)
+        verify(mapRoutingView).scrollTopBannerToPosition(1)
         verify(mapRoutingView).animateMapCamera(stepList[1].endMapCoordination.location, true)
     }
 
@@ -175,7 +214,7 @@ class MapRoutingPresenterTest {
         mapRoutingPresenter.onNextInstructionClick()
 
         assertThat(mapRoutingPresenter.currDirectionIndex).isEqualTo(0) // Go back to the start coord
-        verify(mapRoutingView).scrollToPosition(ArgumentMatchers.anyInt())
+        verify(mapRoutingView).scrollTopBannerToPosition(ArgumentMatchers.anyInt())
         verify(mapRoutingView).animateMapCamera(any(), ArgumentMatchers.anyBoolean())
     }
 
@@ -188,7 +227,7 @@ class MapRoutingPresenterTest {
         mapRoutingPresenter.onNextInstructionClick()
 
         assertThat(mapRoutingPresenter.currDirectionIndex).isEqualTo(2)
-        verify(mapRoutingView).scrollToPosition(2)
+        verify(mapRoutingView).scrollTopBannerToPosition(2)
         verify(mapRoutingView).animateMapCamera(stepList[2].endMapCoordination.location, true)
     }
 
