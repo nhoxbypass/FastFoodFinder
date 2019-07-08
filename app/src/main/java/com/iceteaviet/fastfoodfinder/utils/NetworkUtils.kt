@@ -4,6 +4,8 @@ package com.iceteaviet.fastfoodfinder.utils
 
 import android.content.Context
 import com.iceteaviet.fastfoodfinder.utils.extension.getConnectivityManager
+import com.iceteaviet.fastfoodfinder.utils.shell.AppShell
+import java.io.IOException
 
 /**
  * Created by Genius Doan on 22/07/2017.
@@ -15,11 +17,14 @@ import com.iceteaviet.fastfoodfinder.utils.extension.getConnectivityManager
 fun isInternetConnected(): Boolean {
     val command = "ping -c 1 google.com"
     try {
-        return Runtime.getRuntime().exec(command).waitFor() == 0
-    } catch (e: Throwable) {
+        return AppShell.exec(command).waitFor() == 0
+    } catch (se: SecurityException) {
+        return false
+    } catch (ioEx: IOException) {
+        return false
+    } catch (interruptException: InterruptedException) {
         return false
     }
-
 }
 
 /**
