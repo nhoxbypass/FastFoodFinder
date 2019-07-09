@@ -3,6 +3,7 @@ package com.iceteaviet.fastfoodfinder.ui.store
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.annotation.NonNull
@@ -86,6 +87,13 @@ class StoreDetailActivity : BaseActivity(), StoreDetailContract.View {
             else -> {
             }
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            android.R.id.home -> finish()
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun requestLocationPermission() {
