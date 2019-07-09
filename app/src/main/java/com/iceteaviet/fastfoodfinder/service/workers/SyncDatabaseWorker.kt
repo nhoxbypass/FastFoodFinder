@@ -66,8 +66,8 @@ class SyncDatabaseWorker(ctx: Context, params: WorkerParameters) : RxWorker(ctx,
                     .setRequiredNetworkType(NetworkType.CONNECTED)
                     .build()
 
-            val myWorkBuilder = PeriodicWorkRequest.Builder(SyncDatabaseWorker::class.java, 1, TimeUnit.DAYS)
-                    .setBackoffCriteria(BackoffPolicy.EXPONENTIAL, 1, TimeUnit.HOURS) // Backoff retry after 1 hour
+            val myWorkBuilder = PeriodicWorkRequest.Builder(SyncDatabaseWorker::class.java, 7, TimeUnit.DAYS)
+                    .setBackoffCriteria(BackoffPolicy.EXPONENTIAL, 1, TimeUnit.DAYS) // Backoff retry after 1 day
                     .setConstraints(constraints)
 
             return myWorkBuilder.build()
