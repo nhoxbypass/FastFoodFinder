@@ -76,26 +76,10 @@ class MainMapPresenterTest {
     }
 
     @Test
-    fun subscribeTest_locationPermissionGranted() {
-        // Preconditions
-        Mockito.`when`(mainMapView.isLocationPermissionGranted()).thenReturn(true)
-
-        // Mocks
-        `when`(dataManager.getAllStores()).thenReturn(Single.never())
-
-        mainMapPresenter.subscribe()
-
-        verify(bus).register(mainMapPresenter)
-        verify(mainMapView).setupMap()
-        verify(mainMapView, never()).requestLocationPermission()
-        verify(locationManager).requestLocationUpdates()
-        verify(locationManager).subscribeLocationUpdate(mainMapPresenter)
-    }
-
-    @Test
     fun subscribeTest_devicePreLolipop() {
         // Preconditions
-        setFinalStatic(Build.VERSION::class.java.getField("SDK_INT"), 18)
+        setFinalStatic(Build.VERSION::class.java.getField("SDK_INT"), 19)
+        Mockito.`when`(mainMapView.isLocationPermissionGranted()).thenReturn(false)
 
         // Mocks
         `when`(dataManager.getAllStores()).thenReturn(Single.never())
@@ -112,7 +96,7 @@ class MainMapPresenterTest {
     @Test
     fun subscribeTest_locationPermissionNotGranted() {
         // Preconditions
-        setFinalStatic(Build.VERSION::class.java.getField("SDK_INT"), 24)
+        setFinalStatic(Build.VERSION::class.java.getField("SDK_INT"), 23)
         Mockito.`when`(mainMapView.isLocationPermissionGranted()).thenReturn(false)
 
         // Mocks
@@ -125,6 +109,24 @@ class MainMapPresenterTest {
         verify(mainMapView).requestLocationPermission()
         verify(locationManager, never()).requestLocationUpdates()
         verify(locationManager, never()).subscribeLocationUpdate(mainMapPresenter)
+    }
+
+    @Test
+    fun subscribeTest_locationPermissionGranted() {
+        // Preconditions
+        setFinalStatic(Build.VERSION::class.java.getField("SDK_INT"), 23)
+        Mockito.`when`(mainMapView.isLocationPermissionGranted()).thenReturn(true)
+
+        // Mocks
+        `when`(dataManager.getAllStores()).thenReturn(Single.never())
+
+        mainMapPresenter.subscribe()
+
+        verify(bus).register(mainMapPresenter)
+        verify(mainMapView).setupMap()
+        verify(mainMapView, never()).requestLocationPermission()
+        verify(locationManager).requestLocationUpdates()
+        verify(locationManager).subscribeLocationUpdate(mainMapPresenter)
     }
 
     @Test

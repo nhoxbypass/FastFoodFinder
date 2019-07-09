@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item>
+        <color android:color="@color/googleRed" />
+    </item>
+
+    <item
+        android:width="80dp"
+        android:height="80dp"
+        android:bottom="48dp"
+        android:drawable="@drawable/ic_all_store24h"
+        android:gravity="center" />
+</layer-list>

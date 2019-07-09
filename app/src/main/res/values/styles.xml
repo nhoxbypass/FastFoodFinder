@@ -8,7 +8,11 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="AppTheme.NoActionBar.TranslucentStatus" parent="AppTheme.NoActionBar"></style>
+    <style name="AppTheme.NoActionBar.TranslucentStatus" parent="AppTheme.NoActionBar" />
+
+    <style name="AppTheme.NoActionBar.TranslucentStatus.Splash" parent="AppTheme.NoActionBar.TranslucentStatus">
+        <item name="android:windowBackground">@drawable/splash_window_background</item>
+    </style>
 
     <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->

@@ -5,6 +5,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
+import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList
 import com.iceteaviet.fastfoodfinder.location.GoogleLocationManager
 import com.iceteaviet.fastfoodfinder.location.LatLngAlt
 import com.iceteaviet.fastfoodfinder.location.LocationListener
@@ -58,31 +59,9 @@ class StoreDetailPresenterTest {
     }
 
     @Test
-    fun subscribeTest_locationPermissionGranted() {
-        // Preconditions
-        `when`(storeDetailView.isLocationPermissionGranted()).thenReturn(true)
-
-        // Mocks
-        `when`(dataManager.getComments(eq(STORE_ID.toString()))).thenReturn(
-                Single.just(comments)
-        )
-
-        val store = Store(STORE_ID, STORE_TITLE, STORE_ADDRESS, STORE_LAT, STORE_LNG, STORE_TEL, STORE_TYPE)
-        storeDetailPresenter.handleExtras(store)
-
-        storeDetailPresenter.subscribe()
-
-        verify(storeDetailView).setToolbarTitle(STORE_TITLE)
-        verify(storeDetailView).setStoreComments(comments.toMutableList().asReversed())
-        verify(storeDetailView, never()).requestLocationPermission()
-        verify(locationManager).requestLocationUpdates()
-        verify(locationManager).subscribeLocationUpdate(storeDetailPresenter)
-    }
-
-    @Test
     fun subscribeTest_devicePreLolipop() {
         // Preconditions
-        setFinalStatic(Build.VERSION::class.java.getField("SDK_INT"), 18)
+        setFinalStatic(Build.VERSION::class.java.getField("SDK_INT"), 19)
 
         // Mocks
         `when`(dataManager.getComments(eq(STORE_ID.toString()))).thenReturn(
@@ -104,7 +83,7 @@ class StoreDetailPresenterTest {
     @Test
     fun subscribeTest_locationPermissionNotGranted() {
         // Preconditions
-        setFinalStatic(Build.VERSION::class.java.getField("SDK_INT"), 24)
+        setFinalStatic(Build.VERSION::class.java.getField("SDK_INT"), 23)
         `when`(storeDetailView.isLocationPermissionGranted()).thenReturn(false)
 
         // Mocks
@@ -122,6 +101,29 @@ class StoreDetailPresenterTest {
         verify(storeDetailView).requestLocationPermission()
         verify(locationManager, never()).requestLocationUpdates()
         verify(locationManager, never()).subscribeLocationUpdate(storeDetailPresenter)
+    }
+
+    @Test
+    fun subscribeTest_locationPermissionGranted() {
+        // Preconditions
+        setFinalStatic(Build.VERSION::class.java.getField("SDK_INT"), 23)
+        `when`(storeDetailView.isLocationPermissionGranted()).thenReturn(true)
+
+        // Mocks
+        `when`(dataManager.getComments(eq(STORE_ID.toString()))).thenReturn(
+                Single.just(comments)
+        )
+
+        val store = Store(STORE_ID, STORE_TITLE, STORE_ADDRESS, STORE_LAT, STORE_LNG, STORE_TEL, STORE_TYPE)
+        storeDetailPresenter.handleExtras(store)
+
+        storeDetailPresenter.subscribe()
+
+        verify(storeDetailView).setToolbarTitle(STORE_TITLE)
+        verify(storeDetailView).setStoreComments(comments.toMutableList().asReversed())
+        verify(storeDetailView, never()).requestLocationPermission()
+        verify(locationManager).requestLocationUpdates()
+        verify(locationManager).subscribeLocationUpdate(storeDetailPresenter)
     }
 
     @Test
@@ -155,18 +157,25 @@ class StoreDetailPresenterTest {
     }
 
     @Test
+    fun handleExtrasTest_Null() {
+        storeDetailPresenter.handleExtras(null)
+
+        verify(storeDetailView).exit()
+    }
+
+    @Test
+    fun handleExtrasTest_WrongObject() {
+        storeDetailPresenter.handleExtras(UserStoreList())
+
+        verify(storeDetailView).exit()
+    }
+
+    @Test
     fun handleExtrasTest() {
         val store = Store(STORE_ID, STORE_TITLE, STORE_ADDRESS, STORE_LAT, STORE_LNG, STORE_TEL, STORE_TYPE)
         storeDetailPresenter.handleExtras(store)
 
         assertThat(storeDetailPresenter.currStore).isEqualTo(store)
-    }
-
-    @Test
-    fun handleExtrasTestWithNull() {
-        storeDetailPresenter.handleExtras(null)
-
-        verify(storeDetailView).exit()
     }
 
     @Test
@@ -200,6 +209,20 @@ class StoreDetailPresenterTest {
 
         assertThat(storeDetailPresenter.currLocation).isNotNull()
         assertThat(storeDetailPresenter.currLocation).isEqualTo(LatLng(location.latitude, location.longitude))
+    }
+
+    @Test
+    fun onAddNewCommentTest_nullComment() {
+        val store = Store(STORE_ID, STORE_TITLE, STORE_ADDRESS, STORE_LAT, STORE_LNG, STORE_TEL, STORE_TYPE)
+        storeDetailPresenter.handleExtras(store)
+
+        storeDetailPresenter.onAddNewComment(null)
+
+        verify(storeDetailView, never()).addStoreComment(comment)
+        verify(storeDetailView, never()).setAppBarExpanded(false)
+        verify(storeDetailView, never()).scrollToCommentList()
+
+        verify(dataManager, never()).insertOrUpdateComment(store.id.toString(), comment)
     }
 
     @Test

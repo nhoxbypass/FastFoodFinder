@@ -84,4 +84,22 @@ class User {
         wtf(User::class.java.name, "Cannot find saved list !!!")
         return UserStoreList()
     }
+
+    override fun equals(other: Any?): Boolean {
+        return if (other is User) {
+            uid.equals(other.uid) && name.equals(other.name) && email.equals(other.email)
+                    && photoUrl.equals(other.photoUrl) && userStoreLists.equals(other.userStoreLists)
+        } else {
+            false
+        }
+    }
+
+    override fun hashCode(): Int {
+        var result = name.hashCode()
+        result = 31 * result + email.hashCode()
+        result = 31 * result + uid.hashCode()
+        result = 31 * result + photoUrl.hashCode()
+        result = 31 * result + userStoreLists.hashCode()
+        return result
+    }
 }

@@ -50,7 +50,7 @@ class StoreDetailAdapter internal constructor() : RecyclerView.Adapter<RecyclerV
 
     fun setComments(comments: MutableList<Comment>) {
         mComments = comments
-        notifyItemRangeInserted(3, comments.size)
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(@NonNull parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

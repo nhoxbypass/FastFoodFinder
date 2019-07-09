@@ -169,8 +169,7 @@ fun getStoreTypeFromQuery(queryString: String): Int {
             || trimmedQuery == "shop n go" || trimmedQuery == "shopngo")
         return StoreType.TYPE_SHOP_N_GO
     else if (trimmedQuery == "bsmart" || trimmedQuery == "b smart" || trimmedQuery == "bs mart"
-            || trimmedQuery == "bmart" || trimmedQuery == "b'smart" || trimmedQuery == "b's mart"
-            || trimmedQuery == "bs'mart")
+            || trimmedQuery == "bmart" || trimmedQuery == "b'smart" || trimmedQuery == "b's mart" || trimmedQuery == "bs'mart")
         return StoreType.TYPE_BSMART
 
     return -1

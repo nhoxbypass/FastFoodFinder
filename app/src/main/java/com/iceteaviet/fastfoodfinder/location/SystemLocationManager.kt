@@ -6,6 +6,7 @@ import android.location.Location
 import android.os.Bundle
 import com.iceteaviet.fastfoodfinder.location.base.AbsLocationManager
 import com.iceteaviet.fastfoodfinder.location.base.ILocationManager
+import com.iceteaviet.fastfoodfinder.utils.extension.getLocationManager
 
 
 /**
@@ -25,7 +26,7 @@ open class SystemLocationManager private constructor(context: Context) : AbsLoca
     }
 
     override fun initLocationProvider(context: Context) {
-        locationManager = context.getSystemService(Context.LOCATION_SERVICE) as android.location.LocationManager?
+        locationManager = context.getLocationManager()
     }
 
     @SuppressLint("MissingPermission")

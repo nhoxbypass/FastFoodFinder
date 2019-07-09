@@ -40,11 +40,17 @@ class UserDAO : UserDataSource {
                     .equalTo(PARAM_UID, uid)
                     .findFirst()
             if (entity != null) {
-                val userStoreListEntities = RealmList<UserStoreListEntity>()
+                /*val userStoreListEntities = RealmList<UserStoreListEntity>()
                 for (i in storeLists.indices) {
                     userStoreListEntities.add(UserStoreListEntity(storeLists[i]))
                 }
-                entity.userStoreLists = userStoreListEntities
+                val managedList = it.copyToRealm(userStoreListEntities)
+                entity.userStoreLists.addAll(managedList)*/
+
+                entity.userStoreLists = RealmList()
+                for (i in storeLists.indices) {
+                    entity.userStoreLists.add(UserStoreListEntity(storeLists[i]))
+                }
             }
         }
 

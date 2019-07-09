@@ -73,9 +73,9 @@ class LoginPresenter : BasePresenter<LoginContract.Presenter>, LoginContract.Pre
 
                     override fun onSuccess(user: User) {
                         if (!fromLastSignIn) {
+                            // New user registering
                             onRegisterSuccess(user)
                         } else {
-                            ensureBasicUserData(user)
                             dataManager.updateCurrentUser(user)
                             onLoginSuccess(user)
                         }

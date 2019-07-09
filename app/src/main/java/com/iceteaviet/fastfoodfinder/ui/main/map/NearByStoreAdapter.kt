@@ -70,7 +70,8 @@ class NearByStoreAdapter @JvmOverloads internal constructor(@NonNull diffCallbac
 
         init {
             itemView.setOnClickListener {
-                listener?.onItemClick(nearByStores[adapterPosition].store)
+                if (listener != null && adapterPosition >= 0)
+                    listener.onItemClick(nearByStores[adapterPosition].store)
             }
         }
 
