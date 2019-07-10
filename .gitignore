@@ -57,6 +57,8 @@ captures/
 # Google Services (e.g. APIs or Firebase)
 app/google-services.json
 
+app/src/main/res/values/secret.xml
+
 # Freeline
 freeline.py
 freeline/
@@ -81,5 +83,3 @@ lint/tmp/
 
 # MacOS
 .DS_Store
-
-app/src/main/res/value/secret.xml
