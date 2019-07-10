@@ -81,3 +81,5 @@ lint/tmp/
 
 # MacOS
 .DS_Store
+
+app/src/main/res/value/secret.xml
