@@ -335,6 +335,13 @@ class StoreDetailPresenterTest {
         verify(storeDetailView).showCommentEditorView()
     }
 
+    @Test
+    fun onBackButtonClickTest() {
+        storeDetailPresenter.onBackButtonClick()
+
+        verify(storeDetailView).exit()
+    }
+
     companion object {
         private const val STORE_ID = 123
         private const val STORE_TITLE = "store_title"

@@ -172,6 +172,10 @@ open class StoreDetailPresenter : BasePresenter<StoreDetailContract.Presenter>, 
     override fun onSaveButtonClick() {
     }
 
+    override fun onBackButtonClick() {
+        storeDetailView.exit()
+    }
+
     private fun subscribeLocationUpdate() {
         locationManager.requestLocationUpdates()
         locationManager.subscribeLocationUpdate(this)
