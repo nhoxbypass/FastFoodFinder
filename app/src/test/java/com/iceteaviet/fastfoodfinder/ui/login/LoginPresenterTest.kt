@@ -104,6 +104,20 @@ class LoginPresenterTest {
     }
 
     @Test
+    fun onRequestGoogleAccountSuccessTest_signInSuccess_newUser_emptyName() {
+        // Preconditions
+        val userFullEmptyName = User(USER_UID, "", USER_EMAIL, USER_PHOTO_URL, getFakeUserStoreLists())
+        val userFull = User(USER_UID, "myemail", USER_EMAIL, USER_PHOTO_URL, getFakeUserStoreLists())
+        `when`(dataManager.signInWithCredential(any())).thenReturn(Single.just(userFullEmptyName))
+
+        loginPresenter.onRequestGoogleAccountSuccess(mock(AuthCredential::class.java), false)
+
+        verify(dataManager, never()).getUser(USER_UID)
+        verify(dataManager).updateCurrentUser(userFull)
+        verify(loginView).showMainView()
+    }
+
+    @Test
     fun onRequestGoogleAccountSuccessTest_signInSuccess_newUser() {
         // Preconditions
         `when`(dataManager.signInWithCredential(any())).thenReturn(Single.just(user))
