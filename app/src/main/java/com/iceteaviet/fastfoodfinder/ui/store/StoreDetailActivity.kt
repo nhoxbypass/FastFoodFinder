@@ -91,7 +91,7 @@ class StoreDetailActivity : BaseActivity(), StoreDetailContract.View {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
-            android.R.id.home -> finish()
+            android.R.id.home -> presenter.onBackButtonClick()
         }
         return super.onOptionsItemSelected(item)
     }
