@@ -152,6 +152,21 @@ class LoginPresenterTest {
     }
 
     @Test
+    fun onRequestFacebookAccountSuccessTest_signInSuccess_emptyName_getUserSuccess() {
+        val userFullEmptyName = User(USER_UID, "", USER_EMAIL, USER_PHOTO_URL, getFakeUserStoreLists())
+        val userFull = User(USER_UID, "myemail", USER_EMAIL, USER_PHOTO_URL, getFakeUserStoreLists())
+
+        // Preconditions
+        `when`(dataManager.signInWithCredential(any())).thenReturn(Single.just(userFullEmptyName))
+        `when`(dataManager.getUser(USER_UID)).thenReturn(Single.just(userFull))
+
+        loginPresenter.onRequestFacebookAccountSuccess(mock(AuthCredential::class.java))
+
+        verify(dataManager, atLeastOnce()).updateCurrentUser(userFull)
+        verify(loginView).showMainView()
+    }
+
+    @Test
     fun onRequestFacebookAccountSuccessTest_signInSuccess_getUserSuccess() {
         // Preconditions
         `when`(dataManager.signInWithCredential(any())).thenReturn(Single.just(user))

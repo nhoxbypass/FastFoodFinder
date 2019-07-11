@@ -18,7 +18,6 @@ import org.mockito.ArgumentMatchers
 import org.mockito.Mock
 import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
-import java.util.*
 
 
 class ProfilePresenterTest {
@@ -181,6 +180,17 @@ class ProfilePresenterTest {
     }
 
     @Test
+    fun onSavedListClickTest_NotNullUser_emptyList() {
+        val user = User(USER_UID, USER_NAME, USER_EMAIL, USER_PHOTO_URL, ArrayList())
+        `when`(dataManager.getCurrentUser()).thenReturn(user)
+        profilePresenter.defaultList = ArrayList()
+
+        profilePresenter.onSavedListClick()
+
+        verifyZeroInteractions(profileView)
+    }
+
+    @Test
     fun onFavouriteListClick_NullUser() {
         `when`(dataManager.getCurrentUser()).thenReturn(null)
 
@@ -198,6 +208,17 @@ class ProfilePresenterTest {
         profilePresenter.onFavouriteListClick()
 
         verify(profileView).openListDetail(favouriteList, user.photoUrl)
+    }
+
+    @Test
+    fun onFavouriteListClick_NotNullUser_emptyList() {
+        val user = User(USER_UID, USER_NAME, USER_EMAIL, USER_PHOTO_URL, ArrayList())
+        `when`(dataManager.getCurrentUser()).thenReturn(user)
+        profilePresenter.defaultList = ArrayList()
+
+        profilePresenter.onFavouriteListClick()
+
+        verifyZeroInteractions(profileView)
     }
 
     @Test
