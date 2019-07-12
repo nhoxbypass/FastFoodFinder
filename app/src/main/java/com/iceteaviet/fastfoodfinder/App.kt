@@ -2,6 +2,7 @@ package com.iceteaviet.fastfoodfinder
 
 import android.annotation.SuppressLint
 import android.content.Context
+import androidx.annotation.VisibleForTesting
 import androidx.multidex.MultiDexApplication
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.WorkManager
@@ -10,6 +11,7 @@ import com.iceteaviet.fastfoodfinder.location.GoogleLocationManager
 import com.iceteaviet.fastfoodfinder.location.SystemLocationManager
 import com.iceteaviet.fastfoodfinder.service.eventbus.core.IBus
 import com.iceteaviet.fastfoodfinder.service.workers.SyncDatabaseWorker
+import com.iceteaviet.fastfoodfinder.utils.getAppSignatureSHA1
 import com.iceteaviet.fastfoodfinder.utils.initLogger
 import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
 import com.iceteaviet.fastfoodfinder.utils.ui.AppNotiManager
@@ -31,7 +33,18 @@ class App : MultiDexApplication() {
 
         @SuppressLint("StaticFieldLeak")
         private lateinit var context: Context
+        @VisibleForTesting
         lateinit var PACKAGE_NAME: String
+        @VisibleForTesting
+        lateinit var SHA1: String
+
+        fun getPackageName(): String {
+            return PACKAGE_NAME
+        }
+
+        fun getSignatureSHA1(): String {
+            return SHA1
+        }
 
         fun getDataManager(): DataManager {
             return dataManager
@@ -58,6 +71,7 @@ class App : MultiDexApplication() {
         super.onCreate()
 
         PACKAGE_NAME = applicationContext.packageName
+        SHA1 = getAppSignatureSHA1(this)
         context = applicationContext
 
         initLogger()

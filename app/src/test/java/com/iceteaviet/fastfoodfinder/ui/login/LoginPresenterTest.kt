@@ -104,6 +104,20 @@ class LoginPresenterTest {
     }
 
     @Test
+    fun onRequestGoogleAccountSuccessTest_signInSuccess_newUser_emptyName() {
+        // Preconditions
+        val userFullEmptyName = User(USER_UID, "", USER_EMAIL, USER_PHOTO_URL, getFakeUserStoreLists())
+        val userFull = User(USER_UID, "myemail", USER_EMAIL, USER_PHOTO_URL, getFakeUserStoreLists())
+        `when`(dataManager.signInWithCredential(any())).thenReturn(Single.just(userFullEmptyName))
+
+        loginPresenter.onRequestGoogleAccountSuccess(mock(AuthCredential::class.java), false)
+
+        verify(dataManager, never()).getUser(USER_UID)
+        verify(dataManager).updateCurrentUser(userFull)
+        verify(loginView).showMainView()
+    }
+
+    @Test
     fun onRequestGoogleAccountSuccessTest_signInSuccess_newUser() {
         // Preconditions
         `when`(dataManager.signInWithCredential(any())).thenReturn(Single.just(user))
@@ -149,6 +163,21 @@ class LoginPresenterTest {
         loginPresenter.onRequestGoogleAccountSuccess(mock(AuthCredential::class.java), false)
 
         verify(loginView).showSignInFailMessage()
+    }
+
+    @Test
+    fun onRequestFacebookAccountSuccessTest_signInSuccess_emptyName_getUserSuccess() {
+        val userFullEmptyName = User(USER_UID, "", USER_EMAIL, USER_PHOTO_URL, getFakeUserStoreLists())
+        val userFull = User(USER_UID, "myemail", USER_EMAIL, USER_PHOTO_URL, getFakeUserStoreLists())
+
+        // Preconditions
+        `when`(dataManager.signInWithCredential(any())).thenReturn(Single.just(userFullEmptyName))
+        `when`(dataManager.getUser(USER_UID)).thenReturn(Single.just(userFull))
+
+        loginPresenter.onRequestFacebookAccountSuccess(mock(AuthCredential::class.java))
+
+        verify(dataManager, atLeastOnce()).updateCurrentUser(userFull)
+        verify(loginView).showMainView()
     }
 
     @Test

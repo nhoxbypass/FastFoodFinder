@@ -1,6 +1,5 @@
 package com.iceteaviet.fastfoodfinder.ui.profile
 
-import android.text.TextUtils
 import androidx.annotation.VisibleForTesting
 import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
@@ -56,13 +55,13 @@ class ProfilePresenter : BasePresenter<ProfileContract.Presenter>, ProfileContra
     }
 
     override fun onSavedListClick() {
-        if (UserStoreList.ID_SAVED < defaultList.size && defaultList[UserStoreList.ID_SAVED] != null) {
+        if (UserStoreList.ID_SAVED < defaultList.size) {
             onStoreListClick(defaultList[UserStoreList.ID_SAVED])
         }
     }
 
     override fun onFavouriteListClick() {
-        if (UserStoreList.ID_FAVOURITE < defaultList.size && defaultList[UserStoreList.ID_FAVOURITE] != null) {
+        if (UserStoreList.ID_FAVOURITE < defaultList.size) {
             onStoreListClick(defaultList[UserStoreList.ID_FAVOURITE])
         }
     }

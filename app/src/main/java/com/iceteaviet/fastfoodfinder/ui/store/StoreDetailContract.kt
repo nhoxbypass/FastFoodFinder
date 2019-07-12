@@ -39,5 +39,6 @@ interface StoreDetailContract {
         fun onNavigationButtonClick()
         fun onAddToFavButtonClick()
         fun onSaveButtonClick()
+        fun onBackButtonClick()
     }
 }

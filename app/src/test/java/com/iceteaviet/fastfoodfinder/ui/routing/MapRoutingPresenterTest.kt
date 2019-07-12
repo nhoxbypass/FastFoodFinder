@@ -6,6 +6,8 @@ import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.utils.StoreType
+import com.iceteaviet.fastfoodfinder.utils.getFakeEmptyLegMapsDirection
+import com.iceteaviet.fastfoodfinder.utils.getFakeEmptyStepMapsDirection
 import com.iceteaviet.fastfoodfinder.utils.getFakeMapsDirection
 import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
 import com.iceteaviet.fastfoodfinder.utils.rx.TrampolineSchedulerProvider
@@ -68,6 +70,30 @@ class MapRoutingPresenterTest {
     fun handleExtrasTest_invalidMapsDirection() {
         // Preconditions
         mapRoutingPresenter.handleExtras(invalidMapsDirection, store)
+
+        mapRoutingPresenter.subscribe()
+
+        verify(mapRoutingView).exit()
+        verify(mapRoutingView).showGetDirectionFailedMessage()
+    }
+
+    @Test
+    fun handleExtrasTest_emptyLegListMapsDirection() {
+        // Preconditions
+        val emptyLegListMapsDirection = getFakeEmptyLegMapsDirection()
+        mapRoutingPresenter.handleExtras(emptyLegListMapsDirection, store)
+
+        mapRoutingPresenter.subscribe()
+
+        verify(mapRoutingView).exit()
+        verify(mapRoutingView).showGetDirectionFailedMessage()
+    }
+
+    @Test
+    fun handleExtrasTest_emptyStepListMapsDirection() {
+        // Preconditions
+        val emptyStepListMapsDirection = getFakeEmptyStepMapsDirection()
+        mapRoutingPresenter.handleExtras(emptyStepListMapsDirection, store)
 
         mapRoutingPresenter.subscribe()
 

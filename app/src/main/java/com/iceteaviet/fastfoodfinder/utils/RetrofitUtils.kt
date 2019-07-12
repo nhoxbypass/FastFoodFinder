@@ -2,6 +2,7 @@
 
 package com.iceteaviet.fastfoodfinder.utils
 
+import com.iceteaviet.fastfoodfinder.App
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -15,9 +16,12 @@ import retrofit2.converter.gson.GsonConverterFactory
  * Get Retrofit instance
  */
 fun get(apiKey: String, baseUrl: String): Retrofit {
+    val pkgName = App.getPackageName()
+    val cert = App.getSignatureSHA1()
+
     return Retrofit.Builder()
             .baseUrl(baseUrl)
-            .client(getClient(apiKey))
+            .client(getGoogleServicesClient(apiKey, pkgName, cert))
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 }
@@ -25,9 +29,9 @@ fun get(apiKey: String, baseUrl: String): Retrofit {
 /**
  * Get OkHttpClient to construct Retrofit
  */
-private fun getClient(apiKey: String): OkHttpClient {
+private fun getGoogleServicesClient(apiKey: String, pkgName: String, cert: String): OkHttpClient {
     return OkHttpClient.Builder()
-            .addInterceptor(apiKeyInterceptor(apiKey))
+            .addInterceptor(getGoogleServicesInterceptor(apiKey, pkgName, cert))
             .build()
 
 }
@@ -35,7 +39,7 @@ private fun getClient(apiKey: String): OkHttpClient {
 /**
  * Return an Http Interceptor which contain api key
  */
-private fun apiKeyInterceptor(apiKey: String): Interceptor {
+private fun getGoogleServicesInterceptor(apiKey: String, pkgName: String, cert: String): Interceptor {
     return Interceptor { chain ->
         var request = chain.request()
 
@@ -45,6 +49,8 @@ private fun apiKeyInterceptor(apiKey: String): Interceptor {
                 .build()
 
         request = request.newBuilder()
+                .header("X-Android-Package", pkgName)
+                .header("X-Android-Cert", cert) // SHA-1
                 .url(httpUrl)
                 .build()
 
