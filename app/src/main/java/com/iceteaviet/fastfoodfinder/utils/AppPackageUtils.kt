@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.text.TextUtils
 import java.security.MessageDigest
+import java.security.NoSuchAlgorithmException
 
 
 /**
@@ -15,7 +16,9 @@ import java.security.MessageDigest
 private var signature: String = ""
 
 fun getAppSignatureSHA1(context: Context): String {
-    if (!TextUtils.isEmpty(signature)) return signature
+    if (!TextUtils.isEmpty(signature))
+        return signature
+
     try {
         val pm = context.packageManager
         val info = pm.getPackageInfo(context.packageName, PackageManager.GET_SIGNATURES)
@@ -37,7 +40,9 @@ fun getAppSignatureSHA1(context: Context): String {
         }
         signature = hexString.toString()
         return signature
-    } catch (e: Exception) {
+    } catch (e: PackageManager.NameNotFoundException) {
+        e.printStackTrace()
+    } catch (e: NoSuchAlgorithmException) {
         e.printStackTrace()
     }
 
