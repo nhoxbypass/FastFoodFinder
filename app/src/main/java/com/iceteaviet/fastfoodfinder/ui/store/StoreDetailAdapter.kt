@@ -144,13 +144,13 @@ class StoreDetailAdapter internal constructor() : RecyclerView.Adapter<RecyclerV
             mStore?.let { store ->
                 tvName.text = store.title
                 tvAddress.text = store.address
+            }
 
-                cdvh.btnCall.setOnClickListener {
-                    listener?.onCallButtonClick()
-                }
-                cdvh.btnDirection.setOnClickListener {
-                    listener?.onNavigationButtonClick()
-                }
+            cdvh.btnCall.setOnClickListener {
+                listener?.onCallButtonClick()
+            }
+            cdvh.btnDirection.setOnClickListener {
+                listener?.onNavigationButtonClick()
             }
         }
     }

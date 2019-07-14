@@ -72,7 +72,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="4dp"
-                android:text="08:00 AM - 10:00 PM" />
+                android:text="@string/str_open_24_hours" />
         </LinearLayout>
 
         <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoButton
