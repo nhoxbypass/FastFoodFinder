@@ -5,6 +5,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
+import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList
 import com.iceteaviet.fastfoodfinder.location.GoogleLocationManager
 import com.iceteaviet.fastfoodfinder.location.LatLngAlt
@@ -59,6 +60,23 @@ class StoreDetailPresenterTest {
     }
 
     @Test
+    fun subscribeTest_User_null() {
+        // Preconditions
+        `when`(dataManager.getCurrentUser()).thenReturn(null)
+
+        val store = Store(STORE_ID, STORE_TITLE, STORE_ADDRESS, STORE_LAT, STORE_LNG, STORE_TEL, STORE_TYPE)
+        storeDetailPresenter.handleExtras(store)
+
+        // Mocks
+        `when`(dataManager.getComments(eq(STORE_ID.toString()))).thenReturn(Single.never())
+
+        storeDetailPresenter.subscribe()
+
+        // Vefify
+        verify(storeDetailView).updateSignInState(false)
+    }
+
+    @Test
     fun subscribeTest_devicePreLolipop() {
         // Preconditions
         setFinalStatic(Build.VERSION::class.java.getField("SDK_INT"), 19)
@@ -104,8 +122,9 @@ class StoreDetailPresenterTest {
     }
 
     @Test
-    fun subscribeTest_locationPermissionGranted() {
+    fun subscribeTest_locationPermissionGranted_nullCurrentUser() {
         // Preconditions
+        `when`(dataManager.getCurrentUser()).thenReturn(null)
         setFinalStatic(Build.VERSION::class.java.getField("SDK_INT"), 23)
         `when`(storeDetailView.isLocationPermissionGranted()).thenReturn(true)
 
@@ -119,6 +138,32 @@ class StoreDetailPresenterTest {
 
         storeDetailPresenter.subscribe()
 
+        verify(storeDetailView).updateSignInState(false)
+        verify(storeDetailView).setToolbarTitle(STORE_TITLE)
+        verify(storeDetailView).setStoreComments(comments.toMutableList().asReversed())
+        verify(storeDetailView, never()).requestLocationPermission()
+        verify(locationManager).requestLocationUpdates()
+        verify(locationManager).subscribeLocationUpdate(storeDetailPresenter)
+    }
+
+    @Test
+    fun subscribeTest_locationPermissionGranted_haveCurrentUser() {
+        // Preconditions
+        `when`(dataManager.getCurrentUser()).thenReturn(user)
+        setFinalStatic(Build.VERSION::class.java.getField("SDK_INT"), 23)
+        `when`(storeDetailView.isLocationPermissionGranted()).thenReturn(true)
+
+        // Mocks
+        `when`(dataManager.getComments(eq(STORE_ID.toString()))).thenReturn(
+                Single.just(comments)
+        )
+
+        val store = Store(STORE_ID, STORE_TITLE, STORE_ADDRESS, STORE_LAT, STORE_LNG, STORE_TEL, STORE_TYPE)
+        storeDetailPresenter.handleExtras(store)
+
+        storeDetailPresenter.subscribe()
+
+        verify(storeDetailView).updateSignInState(true)
         verify(storeDetailView).setToolbarTitle(STORE_TITLE)
         verify(storeDetailView).setStoreComments(comments.toMutableList().asReversed())
         verify(storeDetailView, never()).requestLocationPermission()
@@ -356,12 +401,19 @@ class StoreDetailPresenterTest {
         private const val STORE_INVALID_LAT = "0"
         private const val STORE_INVALID_LNG = "0"
 
+        private const val USER_UID = "123"
+        private const val USER_NAME = "My name"
+        private const val USER_EMAIL = "myemail@gmail.com"
+        private const val USER_PHOTO_URL = "photourl.jpg"
+
         private val comments = getFakeComments()
         private val comment = getFakeComment()
 
         private val currLocation = LatLng(10.1234, 106.1234)
 
         private val location = LatLngAlt(10.1234, 106.1234, 1.0)
+
+        private val user = User(USER_UID, USER_NAME, USER_EMAIL, USER_PHOTO_URL, getFakeUserStoreLists())
 
         private val invalidMapsDirection = MapsDirection()
         private val mapsDirection = getFakeMapsDirection()

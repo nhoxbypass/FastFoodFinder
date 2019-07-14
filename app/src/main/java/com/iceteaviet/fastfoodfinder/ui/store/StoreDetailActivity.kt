@@ -160,6 +160,10 @@ class StoreDetailActivity : BaseActivity(), StoreDetailContract.View {
         Toast.makeText(this, R.string.error_invalid_store_location, Toast.LENGTH_LONG).show()
     }
 
+    override fun updateSignInState(isSignedIn: Boolean) {
+        adapter?.setIsSignedIn(isSignedIn)
+    }
+
     private fun setupUI() {
         collapsingToolbar = collapsing_toolbar
         ivBackdrop = backdrop

@@ -132,5 +132,6 @@
     <string name="get_image_from_picker_failed">Failed to get image from file picker</string>
     <string name="error_general_error_code">Unknown error.\nPlease try again later!</string>
     <string name="error_invalid_store_location">Invalid store location</string>
+    <string name="str_open_24_hours">Open 24 hours</string>
 </resources>
 

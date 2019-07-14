@@ -15,6 +15,7 @@ interface CommentContract {
         fun exitWithResult(comment: Parcelable)
         fun exit()
         fun showCloseConfirmDialog()
+        fun showGeneralErrorMessage()
     }
 
     interface Presenter : com.iceteaviet.fastfoodfinder.ui.base.Presenter {

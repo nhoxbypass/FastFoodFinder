@@ -31,8 +31,10 @@ import kotlinx.android.synthetic.main.layout_call_direction.view.*
 
 class StoreDetailAdapter internal constructor() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var mComments: MutableList<Comment> = ArrayList()
-    private var mListener: StoreActionListener? = null
     private var mStore: Store? = null
+    private var isSignedIn = false
+
+    private var mListener: StoreActionListener? = null
 
     fun setListener(listener: StoreActionListener) {
         mListener = listener
@@ -53,6 +55,12 @@ class StoreDetailAdapter internal constructor() : RecyclerView.Adapter<RecyclerV
         notifyDataSetChanged()
     }
 
+    fun setIsSignedIn(isSigned: Boolean) {
+        if (this.isSignedIn == isSigned) return
+        this.isSignedIn = isSigned
+        notifyItemChanged(0)
+    }
+
     override fun onCreateViewHolder(@NonNull parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             HEADER -> HeaderViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_store_action, parent, false), mListener)
@@ -65,13 +73,21 @@ class StoreDetailAdapter internal constructor() : RecyclerView.Adapter<RecyclerV
 
     override fun onBindViewHolder(@NonNull holder: RecyclerView.ViewHolder, position: Int) {
         when (getItemViewType(position)) {
-            HEADER -> (holder as HeaderViewHolder).bind(mStore)
-            INFO -> (holder as InfoViewHolder).bind(mStore)
-            TITLE -> {
-                val title = getString(R.string.tips_from_people_who_has_been_here)
-                (holder as TitleViewHolder).bind(if (position == 2) title else "")
+            HEADER -> if (holder is HeaderViewHolder) {
+                holder.bind(mStore, isSignedIn)
             }
-            COMMENT -> (holder as CommentViewHolder).bind(mComments[position - 3])
+            INFO -> if (holder is InfoViewHolder) {
+                holder.bind(mStore)
+            }
+            TITLE -> {
+                if (holder is TitleViewHolder) {
+                    val title = getString(R.string.tips_from_people_who_has_been_here)
+                    holder.bind(if (position == 2) title else "")
+                }
+            }
+            COMMENT -> if (holder is CommentViewHolder) {
+                holder.bind(mComments[position - 3])
+            }
         }
     }
 
@@ -107,7 +123,11 @@ class StoreDetailAdapter internal constructor() : RecyclerView.Adapter<RecyclerV
         private var comment: TextView = itemView.comment
         private var btnCall: Button = itemView.btn_call
 
-        fun bind(store: Store?) {
+        fun bind(store: Store?, isSigned: Boolean) {
+            saveButton.isEnabled = isSigned
+            favButton.isEnabled = isSigned
+            comment.isEnabled = isSigned
+
             saveButton.setOnClickListener(this)
             favButton.setOnClickListener(this)
             comment.setOnClickListener {
@@ -144,13 +164,13 @@ class StoreDetailAdapter internal constructor() : RecyclerView.Adapter<RecyclerV
             mStore?.let { store ->
                 tvName.text = store.title
                 tvAddress.text = store.address
+            }
 
-                cdvh.btnCall.setOnClickListener {
-                    listener?.onCallButtonClick()
-                }
-                cdvh.btnDirection.setOnClickListener {
-                    listener?.onNavigationButtonClick()
-                }
+            cdvh.btnCall.setOnClickListener {
+                listener?.onCallButtonClick()
+            }
+            cdvh.btnDirection.setOnClickListener {
+                listener?.onNavigationButtonClick()
             }
         }
     }

@@ -90,7 +90,7 @@ class CommentPresenterTest {
 
         commentPresenter.onPostButtonClick("this is my comment")
 
-        verify(commentView).showCommentPostFailedWarning()
+        verify(commentView).showGeneralErrorMessage()
         verifyNoMoreInteractions(commentView)
     }
 

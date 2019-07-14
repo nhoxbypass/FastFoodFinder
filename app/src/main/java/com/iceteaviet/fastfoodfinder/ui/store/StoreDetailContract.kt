@@ -27,6 +27,7 @@ interface StoreDetailContract {
         fun showStoreAddedToFavMessage()
         fun showGeneralErrorMessage()
         fun showInvalidStoreLocationWarning()
+        fun updateSignInState(isSignedIn: Boolean)
     }
 
     interface Presenter : com.iceteaviet.fastfoodfinder.ui.base.Presenter {

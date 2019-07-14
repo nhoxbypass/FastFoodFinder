@@ -9,6 +9,7 @@ import android.os.Parcelable
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.MenuItem
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -51,6 +52,7 @@ class CommentActivity : BaseActivity(), CommentContract.View {
     override fun onResume() {
         super.onResume()
         presenter.subscribe()
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
     }
 
     override fun onPause() {
@@ -76,6 +78,10 @@ class CommentActivity : BaseActivity(), CommentContract.View {
         Toast.makeText(this,
                 getString(R.string.cannot_post_comment, CommentPresenter.MAX_CHAR),
                 Toast.LENGTH_SHORT).show()
+    }
+
+    override fun showGeneralErrorMessage() {
+        Toast.makeText(this, R.string.error_general_error_code, Toast.LENGTH_LONG).show()
     }
 
     override fun exitWithResult(comment: Parcelable) {

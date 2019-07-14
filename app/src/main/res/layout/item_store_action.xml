@@ -4,13 +4,11 @@
     android:layout_height="wrap_content"
     android:background="@color/colorWhite"
     android:orientation="vertical"
-    android:paddingTop="10dp"
     android:paddingBottom="6dp">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="6dp">
+        android:layout_height="wrap_content">
 
         <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoTextView
             android:id="@+id/btn_save"
@@ -19,6 +17,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:drawableTop="@drawable/state_bookmark_click"
+            android:paddingTop="10dp"
+            android:paddingBottom="6dp"
             android:text="@string/save_this" />
 
         <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoTextView
@@ -28,6 +28,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:drawableTop="@drawable/state_rate_click"
+            android:paddingTop="10dp"
+            android:paddingBottom="6dp"
             android:text="@string/add_to_fav" />
 
         <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoTextView
@@ -36,7 +38,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:drawableTop="@drawable/ic_detail_pencil"
+            android:drawableTop="@drawable/state_comment"
+            android:paddingTop="10dp"
+            android:paddingBottom="6dp"
             android:text="@string/comment" />
 
     </LinearLayout>
@@ -72,7 +76,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="4dp"
-                android:text="08:00 AM - 10:00 PM" />
+                android:text="@string/str_open_24_hours" />
         </LinearLayout>
 
         <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoButton

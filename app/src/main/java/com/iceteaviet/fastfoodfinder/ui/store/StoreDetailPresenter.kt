@@ -44,6 +44,10 @@ open class StoreDetailPresenter : BasePresenter<StoreDetailContract.Presenter>, 
     override fun subscribe() {
         storeDetailView.setToolbarTitle(currStore.title)
 
+        val currUser = dataManager.getCurrentUser()
+
+        storeDetailView.updateSignInState(currUser != null)
+
         dataManager.getComments(currStore.id.toString())
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())

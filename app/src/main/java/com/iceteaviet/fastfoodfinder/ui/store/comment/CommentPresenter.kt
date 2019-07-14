@@ -40,7 +40,7 @@ class CommentPresenter : BasePresenter<CommentContract.Presenter>, CommentContra
 
         val currUser = dataManager.getCurrentUser()
         if (currUser == null) {
-            commentView.showCommentPostFailedWarning()
+            commentView.showGeneralErrorMessage()
             return
         }
 
