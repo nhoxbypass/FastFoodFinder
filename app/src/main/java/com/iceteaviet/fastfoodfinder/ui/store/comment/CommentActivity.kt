@@ -78,6 +78,10 @@ class CommentActivity : BaseActivity(), CommentContract.View {
                 Toast.LENGTH_SHORT).show()
     }
 
+    override fun showGeneralErrorMessage() {
+        Toast.makeText(this, R.string.error_general_error_code, Toast.LENGTH_LONG).show()
+    }
+
     override fun exitWithResult(comment: Parcelable) {
         val data = Intent()
         val extras = Bundle()
