@@ -4,9 +4,11 @@
 [![codecov](https://codecov.io/gh/HCMUSAssignmentWarehouse/FastFoodFinder/branch/develop/graph/badge.svg)](https://codecov.io/gh/HCMUSAssignmentWarehouse/FastFoodFinder)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/5ae8369fb08c4d009d6fd95ce752b23c)](https://www.codacy.com/app/nhoxbypass/FastFoodFinder?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=HCMUS-AssignmentWarehouse/FastFoodFinder&amp;utm_campaign=Badge_Grade)
 
-**Fastfood Finder** is an awesome android app that allows a users to find some fast food stores or convinient stores around where their standing. And with this app he can do the other fantastic things.
+**Fastfood Finder** is an awesome android app that allows a users to find some fast food stores or convenient stores around where their standing. And with this app he can do the other fantastic things.
 
 The source code is well-programmed with **MVP architecture, SOLID principle & lots of design patterns**.
+
+Well-unit-tested with **JUnit, Mockito, PowerMock**.
 
 Time spent: **180** hours spent in total
 
@@ -20,7 +22,7 @@ The basic **required** functionality:
 * [x] Show list of 10 nearest store in bottom sheet below the map, sort ascending by the distance from user to this store. User can click on each item to show the way to this store (routing). 
 * [x] Swipe to "recent" tab. Show recently tab that searched or selected by user.
 * [ ] Have a button to quickly show the nearest store base on user settings
-* [x] If user have logged in, user can swipe to the "Favourited" tab, to show list of stores that user visited and favourited.
+* [x] If user have logged in, user can swipe to the "Favourite" tab, to show list of stores that user visited and favourite.
 * [ ] User can filter stores that display in map by pressing the filter icon in Toolbar, and fulfill the Filter dialog.
 * [x] User can click on a store in the map to show the basic detail, overview of this store to determine to go or choose another store.
 * [ ] User can navigate to other activity to see the list of district, and some advanced filter. User can select and see the list of stores fit user need.
@@ -28,7 +30,7 @@ The basic **required** functionality:
 
 The **extended** features are implemented:
 
-* [x] User can toggle navigation drawer to see their profile. If user doesn't logged in. They can loggin by email, gmail or facebook.
+* [x] User can toggle navigation drawer to see their profile. If user doesn't logged in. They can login by email, Gmail or facebook.
 * [x] User can toggle the navigation drawer to select "Last visit", "Profile Detail", "Favourite list", "Settings", etc,...
 * [ ] Update to newest stores data, user can routing event dont have Internet
 * [x] User can search for store name, addresses,... in the search view in toolbar
@@ -50,11 +52,14 @@ https://www.youtube.com/watch?v=QSXAEoJX9t8
 
 Describe any challenges encountered while building the app.
 
-## Open-source libraries used
+## Libraries used
 
 - [Retrofit](https://square.github.io/retrofit/) - A type-safe HTTP client for Android and Java
 - [Glide](https://github.com/bumptech/glide) - An image loading and caching library for Android
-- [Butter Knife](http://jakewharton.github.io/butterknife/) - Field and method binding for Android views
+- [WorkManager](https://developer.android.com/topic/libraries/architecture/workmanager) - Makes it easy to schedule deferrable, asynchronous tasks that are expected to run even if the app exits or device restarts.
+- [RxJava2](https://github.com/ReactiveX/RxJava) - Reactive Extensions for the JVM – a library for composing asynchronous and event-based programs using observable sequences for the Java VM.
+- [EventBus](https://github.com/greenrobot/EventBus) - Event bus for Android and Java that simplifies communication between Activities, Fragments, Threads, Services, etc. Less code, better quality.
+- [Realm](https://realm.io/products/realm-database/) - BUILD BETTER APPS FASTER™
 
 ## License
 
