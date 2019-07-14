@@ -9,6 +9,7 @@ import android.os.Parcelable
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.MenuItem
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -51,6 +52,7 @@ class CommentActivity : BaseActivity(), CommentContract.View {
     override fun onResume() {
         super.onResume()
         presenter.subscribe()
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
     }
 
     override fun onPause() {
