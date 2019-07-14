@@ -46,7 +46,9 @@ open class StoreDetailPresenter : BasePresenter<StoreDetailContract.Presenter>, 
 
         val currUser = dataManager.getCurrentUser()
 
-        storeDetailView.updateSignInState(currUser != null)
+        if (currUser != null) {
+            storeDetailView.updateSignInState(true)
+        }
 
         dataManager.getComments(currStore.id.toString())
                 .subscribeOn(schedulerProvider.io())
