@@ -47,7 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:background="@color/googleRed"
+            android:background="@drawable/bg_post_comment_button"
             android:enabled="false"
             android:text="Post"
             android:textColor="@android:color/white" />
