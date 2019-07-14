@@ -73,13 +73,21 @@ class StoreDetailAdapter internal constructor() : RecyclerView.Adapter<RecyclerV
 
     override fun onBindViewHolder(@NonNull holder: RecyclerView.ViewHolder, position: Int) {
         when (getItemViewType(position)) {
-            HEADER -> (holder as HeaderViewHolder).bind(mStore, isSignedIn)
-            INFO -> (holder as InfoViewHolder).bind(mStore)
-            TITLE -> {
-                val title = getString(R.string.tips_from_people_who_has_been_here)
-                (holder as TitleViewHolder).bind(if (position == 2) title else "")
+            HEADER -> if (holder is HeaderViewHolder) {
+                holder.bind(mStore, isSignedIn)
             }
-            COMMENT -> (holder as CommentViewHolder).bind(mComments[position - 3])
+            INFO -> if (holder is InfoViewHolder) {
+                holder.bind(mStore)
+            }
+            TITLE -> {
+                if (holder is TitleViewHolder) {
+                    val title = getString(R.string.tips_from_people_who_has_been_here)
+                    holder.bind(if (position == 2) title else "")
+                }
+            }
+            COMMENT -> if (holder is CommentViewHolder) {
+                holder.bind(mComments[position - 3])
+            }
         }
     }
 
