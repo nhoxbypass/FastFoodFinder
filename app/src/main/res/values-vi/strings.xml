@@ -122,4 +122,5 @@
     <string name="error_general_error_code">Có lỗi xảy ra.\nVui lòng thử lại sau!</string>
     <string name="error_invalid_store_location">Địa chỉ cửa hàng không hợp lệ</string>
     <string name="str_open_24_hours">Mở cửa 24 giờ</string>
+    <string name="str_login_request">Bạn cần đăng nhập để thực hiện chức năng này!</string>
 </resources>

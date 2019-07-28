@@ -207,6 +207,10 @@ class StoreDetailActivity : BaseActivity(), StoreDetailContract.View {
         })
     }
 
+    override fun showLoginRequestToast() {
+        Toast.makeText(applicationContext, getString(R.string.str_login_request), Toast.LENGTH_SHORT).show()
+    }
+
     companion object {
         const val KEY_STORE = "key_store"
         const val RC_ADD_COMMENT = 113

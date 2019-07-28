@@ -28,6 +28,7 @@ interface StoreDetailContract {
         fun showGeneralErrorMessage()
         fun showInvalidStoreLocationWarning()
         fun updateSignInState(isSignedIn: Boolean)
+        fun showLoginRequestToast()
     }
 
     interface Presenter : com.iceteaviet.fastfoodfinder.ui.base.Presenter {
