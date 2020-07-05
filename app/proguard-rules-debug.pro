@@ -11,14 +11,6 @@
 ############################## Kotlin ##############################
 
 
-############################## Crashlytic ##############################
--keepattributes *Annotation*
--keepattributes SourceFile,LineNumberTable
--keep public class * extends java.lang.Exception
-
--keep class com.crashlytics.** { *; }
--dontwarn com.crashlytics.**
-
 ############################## Retrofit & Okhttp3 ##############################
 
 # Retrofit does reflection on generic parameters. InnerClasses is required to use Signature and
