@@ -7,10 +7,6 @@
 
 -dontobfuscate
 
-
-############################## Kotlin ##############################
-
-
 ############################## Retrofit & Okhttp3 ##############################
 
 # Retrofit does reflection on generic parameters. InnerClasses is required to use Signature and
