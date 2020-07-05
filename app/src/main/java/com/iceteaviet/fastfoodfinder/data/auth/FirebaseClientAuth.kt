@@ -25,7 +25,11 @@ class FirebaseClientAuth : ClientAuth {
     override fun signUpWithEmailAndPassword(email: String, password: String): Single<User> {
         return Single.create { emitter ->
             mAuth.createUserWithEmailAndPassword(email, password)
-                    .addOnSuccessListener { emitter.onSuccess(convertFirebaseUserToUser(it.user)) }
+                    .addOnSuccessListener {
+                        it.user?.let { user ->
+                            emitter.onSuccess(convertFirebaseUserToUser(user))
+                        }
+                    }
                     .addOnFailureListener { e -> emitter.onError(e) }
                     .addOnCanceledListener { emitter.onError(Exception("Cancel")) }
         }
@@ -43,7 +47,11 @@ class FirebaseClientAuth : ClientAuth {
     override fun signInWithEmailAndPassword(email: String, password: String): Single<User> {
         return Single.create { emitter ->
             mAuth.signInWithEmailAndPassword(email, password)
-                    .addOnSuccessListener { authResult -> emitter.onSuccess(convertFirebaseUserToUser(authResult.user)) }
+                    .addOnSuccessListener { authResult ->
+                        authResult.user?.let {
+                            emitter.onSuccess(convertFirebaseUserToUser(it))
+                        }
+                    }
                     .addOnFailureListener { e -> emitter.onError(e) }
                     .addOnCanceledListener { emitter.onError(Exception("Cancel")) }
         }
@@ -52,7 +60,11 @@ class FirebaseClientAuth : ClientAuth {
     override fun signInWithCredential(authCredential: AuthCredential): Single<User> {
         return Single.create { emitter ->
             mAuth.signInWithCredential(authCredential)
-                    .addOnSuccessListener { authResult -> emitter.onSuccess(convertFirebaseUserToUser(authResult.user)) }
+                    .addOnSuccessListener { authResult ->
+                        authResult.user?.let {
+                            emitter.onSuccess(convertFirebaseUserToUser(it))
+                        }
+                    }
                     .addOnFailureListener { e -> emitter.onError(e) }
                     .addOnCanceledListener { emitter.onError(Exception("Cancel")) }
         }

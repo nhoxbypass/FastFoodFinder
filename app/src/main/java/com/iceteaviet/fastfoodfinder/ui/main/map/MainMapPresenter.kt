@@ -31,7 +31,7 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.PublishSubject
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import java.util.HashMap
+import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 import kotlin.collections.set
@@ -322,12 +322,12 @@ open class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapC
                     Pair(marker, store.type)
                 }
                 .observeOn(schedulerProvider.ui())
-                .subscribe(object : Observer<Pair<Marker, Int>> {
+                .subscribe(object : Observer<Pair<Marker?, Int>> {
                     override fun onSubscribe(d: Disposable) {
                         compositeDisposable.add(d)
                     }
 
-                    override fun onNext(pair: Pair<Marker, Int>) {
+                    override fun onNext(pair: Pair<Marker?, Int>) {
                         val marker = pair.first
                         val storeType = pair.second
 
