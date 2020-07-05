@@ -118,7 +118,12 @@ open class StoreDetailPresenter : BasePresenter<StoreDetailContract.Presenter>, 
     }
 
     override fun onCommentButtonClick() {
-        storeDetailView.showCommentEditorView()
+        val currUser = dataManager.getCurrentUser()
+        if (currUser != null) {
+            storeDetailView.showCommentEditorView()
+        } else {
+            storeDetailView.showLoginRequestToast()
+        }
     }
 
     override fun onCallButtonClick() {
@@ -171,9 +176,17 @@ open class StoreDetailPresenter : BasePresenter<StoreDetailContract.Presenter>, 
     }
 
     override fun onAddToFavButtonClick() {
+        val currUser = dataManager.getCurrentUser()
+        if (currUser == null) {
+            storeDetailView.showLoginRequestToast()
+        }
     }
 
     override fun onSaveButtonClick() {
+        val currUser = dataManager.getCurrentUser()
+        if (currUser == null) {
+            storeDetailView.showLoginRequestToast()
+        }
     }
 
     override fun onBackButtonClick() {

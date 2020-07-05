@@ -16,7 +16,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:drawableTop="@drawable/state_bookmark_click"
+            android:drawableTop="@drawable/ic_detail_bookmark"
             android:paddingTop="10dp"
             android:paddingBottom="6dp"
             android:text="@string/save_this" />
@@ -38,7 +38,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:drawableTop="@drawable/state_comment"
+            android:drawableTop="@drawable/ic_detail_pencil"
             android:paddingTop="10dp"
             android:paddingBottom="6dp"
             android:text="@string/comment" />

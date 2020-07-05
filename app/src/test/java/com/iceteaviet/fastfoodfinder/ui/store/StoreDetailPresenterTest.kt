@@ -374,11 +374,64 @@ class StoreDetailPresenterTest {
     }
 
     @Test
-    fun clickOnCommentButton_showCommentEditorScreen() {
+    fun clickOnCommentButton_not_signined() {
+        `when`(dataManager.getCurrentUser()).thenReturn(null)
+
+        storeDetailPresenter.onCommentButtonClick()
+
+        verify(storeDetailView).showLoginRequestToast()
+        verify(storeDetailView, never()).showCommentEditorView()
+    }
+
+    @Test
+    fun clickOnCommentButton_signined() {
+        val user = User(USER_UID, USER_NAME, USER_EMAIL, USER_PHOTO_URL, getFakeUserStoreLists())
+        `when`(dataManager.getCurrentUser()).thenReturn(user)
+
         storeDetailPresenter.onCommentButtonClick()
 
         verify(storeDetailView).showCommentEditorView()
+        verify(storeDetailView, never()).showLoginRequestToast()
     }
+
+    @Test
+    fun onAddToFavButtonClick_not_signined() {
+        `when`(dataManager.getCurrentUser()).thenReturn(null)
+
+        storeDetailPresenter.onCommentButtonClick()
+
+        verify(storeDetailView).showLoginRequestToast()
+    }
+
+    @Test
+    fun onAddToFavButtonClick_signined() {
+        val user = User(USER_UID, USER_NAME, USER_EMAIL, USER_PHOTO_URL, getFakeUserStoreLists())
+        `when`(dataManager.getCurrentUser()).thenReturn(user)
+
+        storeDetailPresenter.onCommentButtonClick()
+
+        verify(storeDetailView, never()).showLoginRequestToast()
+    }
+
+    @Test
+    fun onSaveButtonClick_not_signined() {
+        `when`(dataManager.getCurrentUser()).thenReturn(null)
+
+        storeDetailPresenter.onCommentButtonClick()
+
+        verify(storeDetailView).showLoginRequestToast()
+    }
+
+    @Test
+    fun onSaveButtonClick_signined() {
+        val user = User(USER_UID, USER_NAME, USER_EMAIL, USER_PHOTO_URL, getFakeUserStoreLists())
+        `when`(dataManager.getCurrentUser()).thenReturn(user)
+
+        storeDetailPresenter.onCommentButtonClick()
+
+        verify(storeDetailView, never()).showLoginRequestToast()
+    }
+
 
     @Test
     fun onBackButtonClickTest() {

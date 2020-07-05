@@ -1,6 +1,7 @@
 package com.iceteaviet.fastfoodfinder.ui.store
 
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,7 @@ import com.bumptech.glide.request.target.BitmapImageViewTarget
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Comment
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
+import com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoTextView
 import com.iceteaviet.fastfoodfinder.utils.getRelativeTimeAgo
 import com.iceteaviet.fastfoodfinder.utils.getString
 import kotlinx.android.synthetic.main.item_store_action.view.*
@@ -120,13 +122,29 @@ class StoreDetailAdapter internal constructor() : RecyclerView.Adapter<RecyclerV
 
         private var saveButton: TextView = itemView.btn_save
         private var favButton: TextView = itemView.btn_fav
-        private var comment: TextView = itemView.comment
+        private var comment: RobotoTextView = itemView.comment
         private var btnCall: Button = itemView.btn_call
 
         fun bind(store: Store?, isSigned: Boolean) {
-            saveButton.isEnabled = isSigned
-            favButton.isEnabled = isSigned
-            comment.isEnabled = isSigned
+            if (!isSigned) {
+                saveButton.setCompoundDrawablesWithIntrinsicBounds(null, itemView.context.resources.getDrawable(R.drawable.ic_detail_bookmark_disable), null, null);
+                saveButton.setTextColor(Color.parseColor("#BDBDBD"))
+
+                favButton.setCompoundDrawablesWithIntrinsicBounds(null, itemView.context.resources.getDrawable(R.drawable.ic_detail_love_disable), null, null);
+                favButton.setTextColor(Color.parseColor("#BDBDBD"))
+//
+                comment.setCompoundDrawablesWithIntrinsicBounds(null, itemView.context.resources.getDrawable(R.drawable.ic_detail_pencil_disable), null, null);
+                comment.setTextColor(Color.parseColor("#BDBDBD"))
+            } else {
+                saveButton.setCompoundDrawablesWithIntrinsicBounds(null, itemView.context.resources.getDrawable(R.drawable.ic_detail_bookmark), null, null);
+                saveButton.setTextColor(Color.parseColor("#757575"))
+
+                favButton.setCompoundDrawablesWithIntrinsicBounds(null, itemView.context.resources.getDrawable(R.drawable.state_rate_click), null, null);
+                favButton.setTextColor(Color.parseColor("#757575"))
+
+                comment.setCompoundDrawablesWithIntrinsicBounds(null, itemView.context.resources.getDrawable(R.drawable.ic_detail_pencil), null, null);
+                comment.setTextColor(Color.parseColor("#757575"))
+            }
 
             saveButton.setOnClickListener(this)
             favButton.setOnClickListener(this)
