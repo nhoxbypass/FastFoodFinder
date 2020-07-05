@@ -3,7 +3,6 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.google.firebase.firebase-perf'
-apply plugin: 'kotlin-android'
 apply plugin: 'realm-android'
 apply from: '../app/coverage.gradle'
 
@@ -19,6 +18,11 @@ android {
         multiDexEnabled true
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     buildTypes {
@@ -127,7 +131,6 @@ dependencies {
 
     //// App dependencies
     // AndroidX
-    implementation "androidx.multidex:multidex:$rootProject.multiDexVersion"
     implementation "androidx.appcompat:appcompat:$rootProject.appCompat"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.cardview:cardview:1.0.0'

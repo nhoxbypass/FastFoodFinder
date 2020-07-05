@@ -1,9 +1,9 @@
 package com.iceteaviet.fastfoodfinder
 
 import android.annotation.SuppressLint
+import android.app.Application
 import android.content.Context
 import androidx.annotation.VisibleForTesting
-import androidx.multidex.MultiDexApplication
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.WorkManager
 import com.iceteaviet.fastfoodfinder.data.DataManager
@@ -21,7 +21,7 @@ import com.iceteaviet.fastfoodfinder.utils.ui.NotiManager
 /**
  * Created by tom on 7/15/18.
  */
-class App : MultiDexApplication() {
+class App : Application() {
 
     companion object {
         private const val SYNC_DB_JOB_TAG = "SYNC_DB_JOB_TAG"

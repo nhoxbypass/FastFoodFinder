@@ -1,6 +1,6 @@
 ext {
     // Sdk and tools
-    minSdkVersion = 19
+    minSdkVersion = 21
     targetSdkVersion = 28
     compileSdkVersion = 28
     buildToolsVersion = '28.0.3'
@@ -20,9 +20,7 @@ ext {
     circleImageViewVersion = '2.2.0'
     realmAndroidVersion = '7.0.1'
     fbSdkVersion = '4.34.0'
-    multiDexVersion = '2.0.1'
 
-    crashlytics = '2.10.1'
     timberVersion = '4.7.1'
 
     // Testing dependencies
