@@ -21,7 +21,7 @@ class UserStoreList : Parcelable {
         listName = `in`.readString() ?: ""
         iconId = `in`.readInt()
         storeIdList = ArrayList()
-        `in`.readList(storeIdList, Int::class.java.classLoader)
+        `in`.readList(storeIdList as List<*>, Int::class.java.classLoader)
     }
 
     constructor()
@@ -74,7 +74,7 @@ class UserStoreList : Parcelable {
         parcel.writeInt(id)
         parcel.writeString(listName)
         parcel.writeInt(iconId)
-        parcel.writeList(storeIdList)
+        parcel.writeList(storeIdList as List<*>?)
     }
 
     override fun equals(other: Any?): Boolean {
