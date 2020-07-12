@@ -4,9 +4,9 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Location
 import android.os.Bundle
+import com.iceteaviet.fastfoodfinder.androidext.getLocationManager
 import com.iceteaviet.fastfoodfinder.location.base.AbsLocationManager
 import com.iceteaviet.fastfoodfinder.location.base.ILocationManager
-import com.iceteaviet.fastfoodfinder.utils.extension.getLocationManager
 
 
 /**
@@ -114,10 +114,10 @@ open class SystemLocationManager private constructor(context: Context) : AbsLoca
             if (instance == null) {
                 synchronized(SystemLocationManager::class.java) {
                     if (instance == null) {
-                        if (!::appContext.isInitialized)
+                        if (!Companion::appContext.isInitialized)
                             throw IllegalStateException("Call `SystemLocationManager.init(Context)` before calling this method.")
                         else
-                            instance = SystemLocationManager(appContext!!)
+                            instance = SystemLocationManager(appContext)
                     }
                 }
             }

@@ -127,6 +127,7 @@ dependencies {
 
     // Modules
     implementation project(path: ':androidext')
+    implementation project(path: ':location')
 
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$rootProject.ext.kotlinVersion"
@@ -143,7 +144,6 @@ dependencies {
 
     // Google Play Services
     implementation "com.google.android.gms:play-services-maps:$rootProject.playService"
-    implementation "com.google.android.gms:play-services-location:$rootProject.playService"
     implementation "com.google.android.gms:play-services-auth:$rootProject.playService"
     implementation 'com.google.maps.android:android-maps-utils:0.5'
 

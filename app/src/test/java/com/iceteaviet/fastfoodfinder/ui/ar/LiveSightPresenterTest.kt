@@ -32,10 +32,10 @@ class LiveSightPresenterTest {
     private lateinit var dataManager: DataManager
 
     @Mock
-    private lateinit var locationManager: com.iceteaviet.fastfoodfinder.location.SystemLocationManager
+    private lateinit var locationManager: SystemLocationManager
 
     @Captor
-    private lateinit var locationCallbackCaptor: ArgumentCaptor<com.iceteaviet.fastfoodfinder.location.SystemLocationListener>
+    private lateinit var locationCallbackCaptor: ArgumentCaptor<SystemLocationListener>
 
     private lateinit var liveSightPresenter: LiveSightPresenter
 
@@ -268,7 +268,7 @@ class LiveSightPresenterTest {
     }
 
     companion object {
-        private val location = com.iceteaviet.fastfoodfinder.location.LatLngAlt(10.1234, 106.1234, 1.0)
+        private val location = LatLngAlt(10.1234, 106.1234, 1.0)
 
         private val stores = getFakeStoreList()
         private val arPoints = getFakeArPoints()

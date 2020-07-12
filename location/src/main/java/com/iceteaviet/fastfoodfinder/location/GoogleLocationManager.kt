@@ -111,7 +111,7 @@ open class GoogleLocationManager private constructor(context: Context) : AbsLoca
             if (instance == null) {
                 synchronized(GoogleLocationManager::class.java) {
                     if (instance == null) {
-                        if (!::appContext.isInitialized)
+                        if (!Companion::appContext.isInitialized)
                             throw IllegalStateException("Call `GoogleLocationManager.init(Context)` before calling this method.")
                         else
                             instance = GoogleLocationManager(appContext)

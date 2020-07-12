@@ -41,7 +41,7 @@ class LiveSightActivity : BaseActivity(), LiveSightContract.View, SensorEventLis
         super.onCreate(savedInstanceState)
 
         presenter = LiveSightPresenter(App.getDataManager(), App.getSchedulerProvider(),
-                com.iceteaviet.fastfoodfinder.location.SystemLocationManager.getInstance(), this)
+                SystemLocationManager.getInstance(), this)
 
         cameraContainerLayout = camera_container_layout
         surfaceView = surface_view
@@ -211,7 +211,7 @@ class LiveSightActivity : BaseActivity(), LiveSightContract.View, SensorEventLis
                 SensorManager.SENSOR_DELAY_FASTEST)
     }
 
-    override fun updateLatestLocation(latestLocation: com.iceteaviet.fastfoodfinder.location.LatLngAlt) {
+    override fun updateLatestLocation(latestLocation: LatLngAlt) {
         arOverlayView?.let {
             it.updateCurrentLocation(latestLocation)
             tv_current_location.text = String.format("lat: %s \nlon: %s \nalt: %s \n",

@@ -16,7 +16,7 @@ interface LiveSightContract {
         fun showGeneralErrorMessage()
         fun requestCameraPermission()
         fun isCameraPermissionGranted(): Boolean
-        fun updateLatestLocation(latestLocation: com.iceteaviet.fastfoodfinder.location.LatLngAlt)
+        fun updateLatestLocation(latestLocation: LatLngAlt)
         fun initARCameraView()
         fun initAROverlayView()
         fun initSensorService()

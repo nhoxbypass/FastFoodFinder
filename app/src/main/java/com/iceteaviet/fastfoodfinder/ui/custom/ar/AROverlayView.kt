@@ -18,7 +18,7 @@ class AROverlayView(context: Context) : View(context) {
     private val paint: Paint
     private val cameraCoordinateVector: FloatArray
     private var rotatedProjectionMatrix = FloatArray(16)
-    private var currentLocation: com.iceteaviet.fastfoodfinder.location.LatLngAlt? = null
+    private var currentLocation: LatLngAlt? = null
     private val arPoints: MutableList<AugmentedPOI>
     private val arBitmaps: MutableList<Bitmap>
 
@@ -92,7 +92,7 @@ class AROverlayView(context: Context) : View(context) {
         this.invalidate()
     }
 
-    fun updateCurrentLocation(currentLocation: com.iceteaviet.fastfoodfinder.location.LatLngAlt) {
+    fun updateCurrentLocation(currentLocation: LatLngAlt) {
         this.currentLocation = currentLocation
         this.invalidate()
     }

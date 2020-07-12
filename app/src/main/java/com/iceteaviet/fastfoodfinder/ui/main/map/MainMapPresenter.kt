@@ -39,7 +39,7 @@ import kotlin.collections.set
 /**
  * Created by tom on 2019-04-18.
  */
-open class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContract.Presenter, com.iceteaviet.fastfoodfinder.location.LocationListener {
+open class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContract.Presenter, LocationListener {
 
     private val mainMapView: MainMapContract.View
     private val bus: IBus
@@ -64,10 +64,10 @@ open class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapC
     private var newVisibleStorePublisher: PublishSubject<Store>
     private var cameraPositionPublisher: PublishSubject<MapCameraPosition>
 
-    private var locationManager: ILocationManager<com.iceteaviet.fastfoodfinder.location.LocationListener>
+    private var locationManager: ILocationManager<LocationListener>
 
     constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider,
-                locationManager: ILocationManager<com.iceteaviet.fastfoodfinder.location.LocationListener>, bus: IBus, storePublisher: PublishSubject<Store>, mapCamPublisher: PublishSubject<MapCameraPosition>, mainMapView: MainMapContract.View) : super(dataManager, schedulerProvider) {
+                locationManager: ILocationManager<LocationListener>, bus: IBus, storePublisher: PublishSubject<Store>, mapCamPublisher: PublishSubject<MapCameraPosition>, mainMapView: MainMapContract.View) : super(dataManager, schedulerProvider) {
         this.mainMapView = mainMapView
         this.locationManager = locationManager
         this.bus = bus
@@ -113,7 +113,7 @@ open class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapC
         }
     }
 
-    override fun onLocationChanged(location: com.iceteaviet.fastfoodfinder.location.LatLngAlt) {
+    override fun onLocationChanged(location: LatLngAlt) {
         onCurrLocationChanged(location.latitude, location.longitude)
     }
 

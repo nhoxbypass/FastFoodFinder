@@ -39,10 +39,10 @@ class StoreDetailPresenterTest {
     private lateinit var dataManager: DataManager
 
     @Mock
-    private lateinit var locationManager: com.iceteaviet.fastfoodfinder.location.GoogleLocationManager
+    private lateinit var locationManager: GoogleLocationManager
 
     @Captor
-    private lateinit var locationCallbackCaptor: ArgumentCaptor<com.iceteaviet.fastfoodfinder.location.LocationListener>
+    private lateinit var locationCallbackCaptor: ArgumentCaptor<LocationListener>
 
     @Before
     fun setupPresenter() {
@@ -464,7 +464,7 @@ class StoreDetailPresenterTest {
 
         private val currLocation = LatLng(10.1234, 106.1234)
 
-        private val location = com.iceteaviet.fastfoodfinder.location.LatLngAlt(10.1234, 106.1234, 1.0)
+        private val location = LatLngAlt(10.1234, 106.1234, 1.0)
 
         private val user = User(USER_UID, USER_NAME, USER_EMAIL, USER_PHOTO_URL, getFakeUserStoreLists())
 
