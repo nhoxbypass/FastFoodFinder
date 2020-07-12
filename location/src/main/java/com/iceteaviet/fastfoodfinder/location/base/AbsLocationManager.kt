@@ -8,8 +8,8 @@ import com.iceteaviet.fastfoodfinder.location.LocationListener
 /**
  * Created by tom on 2019-05-01.
  */
-abstract class AbsLocationManager<T : LocationListener> protected constructor(context: Context) : ILocationManager<T> {
-    protected var listeners: MutableList<T> = ArrayList()
+abstract class AbsLocationManager protected constructor(context: Context) : ILocationManager {
+    protected var listeners: MutableList<LocationListener> = ArrayList()
     protected var currLocation: Location? = null
 
     protected var connected = false
@@ -38,11 +38,11 @@ abstract class AbsLocationManager<T : LocationListener> protected constructor(co
         return connected
     }
 
-    override fun subscribeLocationUpdate(listener: T) {
+    override fun subscribeLocationUpdate(listener: LocationListener) {
         listeners.add(listener)
     }
 
-    override fun unsubscribeLocationUpdate(listener: T) {
+    override fun unsubscribeLocationUpdate(listener: LocationListener) {
         listeners.remove(listener)
     }
 

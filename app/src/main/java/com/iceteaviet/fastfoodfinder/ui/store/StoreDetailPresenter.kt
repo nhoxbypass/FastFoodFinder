@@ -33,10 +33,10 @@ open class StoreDetailPresenter : BasePresenter<StoreDetailContract.Presenter>, 
     @VisibleForTesting
     lateinit var currStore: Store
 
-    private var locationManager: ILocationManager<LocationListener>
+    private var locationManager: ILocationManager
 
     constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider,
-                locationManager: ILocationManager<LocationListener>, storeDetailView: StoreDetailContract.View) : super(dataManager, schedulerProvider) {
+                locationManager: ILocationManager, storeDetailView: StoreDetailContract.View) : super(dataManager, schedulerProvider) {
         this.storeDetailView = storeDetailView
         this.locationManager = locationManager
     }

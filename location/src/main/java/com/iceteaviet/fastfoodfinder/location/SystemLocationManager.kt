@@ -14,7 +14,7 @@ import com.iceteaviet.fastfoodfinder.location.base.ILocationManager
  * Created by tom on 2019-05-01.
  */
 open class SystemLocationManager private constructor(context: Context)
-    : AbsLocationManager<SystemLocationListener>(context), ILocationManager<SystemLocationListener> {
+    : AbsLocationManager(context), ILocationManager {
 
     private var locationManager: LocationManager? = null
 
@@ -31,21 +31,12 @@ open class SystemLocationManager private constructor(context: Context)
         }
 
         override fun onProviderDisabled(provider: String) {
-            for (listener in listeners) {
-                listener.onProviderDisabled(provider)
-            }
         }
 
         override fun onProviderEnabled(provider: String) {
-            for (listener in listeners) {
-                listener.onProviderEnabled(provider)
-            }
         }
 
         override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {
-            for (listener in listeners) {
-                listener.onStatusChanged(provider, status, extras)
-            }
         }
     }
 

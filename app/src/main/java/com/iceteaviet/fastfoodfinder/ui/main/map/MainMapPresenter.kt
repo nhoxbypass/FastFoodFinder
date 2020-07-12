@@ -64,10 +64,10 @@ open class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapC
     private var newVisibleStorePublisher: PublishSubject<Store>
     private var cameraPositionPublisher: PublishSubject<MapCameraPosition>
 
-    private var locationManager: ILocationManager<LocationListener>
+    private var locationManager: ILocationManager
 
     constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider,
-                locationManager: ILocationManager<LocationListener>, bus: IBus, storePublisher: PublishSubject<Store>, mapCamPublisher: PublishSubject<MapCameraPosition>, mainMapView: MainMapContract.View) : super(dataManager, schedulerProvider) {
+                locationManager: ILocationManager, bus: IBus, storePublisher: PublishSubject<Store>, mapCamPublisher: PublishSubject<MapCameraPosition>, mainMapView: MainMapContract.View) : super(dataManager, schedulerProvider) {
         this.mainMapView = mainMapView
         this.locationManager = locationManager
         this.bus = bus
