@@ -119,6 +119,7 @@ dependencies {
     implementation(project(":core:analytics"))
     implementation(project(":core:logger"))
     implementation(project(":core:common"))
+    implementation(project(":core:location"))
 
     // Dependencies for local unit tests
     testImplementation("junit:junit:4.13.2")
