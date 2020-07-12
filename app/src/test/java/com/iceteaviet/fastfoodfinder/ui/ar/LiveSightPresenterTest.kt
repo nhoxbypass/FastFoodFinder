@@ -2,7 +2,7 @@ package com.iceteaviet.fastfoodfinder.ui.ar
 
 import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.core.location.LatLngAlt
-import com.iceteaviet.fastfoodfinder.core.location.SystemLocationListener
+import com.iceteaviet.fastfoodfinder.core.location.LocationListener
 import com.iceteaviet.fastfoodfinder.core.location.SystemLocationManager
 import com.iceteaviet.fastfoodfinder.utils.exception.UnknownException
 import com.iceteaviet.fastfoodfinder.utils.getFakeArPoints
@@ -39,7 +39,7 @@ class LiveSightPresenterTest {
     private lateinit var locationManager: SystemLocationManager
 
     @Captor
-    private lateinit var locationCallbackCaptor: ArgumentCaptor<SystemLocationListener>
+    private lateinit var locationCallbackCaptor: ArgumentCaptor<LocationListener>
 
     private lateinit var liveSightPresenter: LiveSightPresenter
 
