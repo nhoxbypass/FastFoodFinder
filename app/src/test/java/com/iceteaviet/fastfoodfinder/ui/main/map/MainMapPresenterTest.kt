@@ -41,7 +41,7 @@ class MainMapPresenterTest {
     private lateinit var dataManager: DataManager
 
     @Mock
-    private lateinit var locationManager: GoogleLocationManager
+    private lateinit var locationManager: com.iceteaviet.fastfoodfinder.location.GoogleLocationManager
 
     @Mock
     private lateinit var bus: IBus
@@ -51,7 +51,7 @@ class MainMapPresenterTest {
     private lateinit var mapCamPublisher: PublishSubject<MapCameraPosition>
 
     @Captor
-    private lateinit var locationCallbackCaptor: ArgumentCaptor<LocationListener>
+    private lateinit var locationCallbackCaptor: ArgumentCaptor<com.iceteaviet.fastfoodfinder.location.LocationListener>
 
     @Captor
     private lateinit var nearByStoreCallbackCaptor: ArgumentCaptor<List<NearByStore>>
@@ -611,7 +611,7 @@ class MainMapPresenterTest {
         private const val STORE_INVALID_LAT = "0"
         private const val STORE_INVALID_LNG = "0"
 
-        private val location = LatLngAlt(10.1234, 106.1234, 1.0)
+        private val location = com.iceteaviet.fastfoodfinder.location.LatLngAlt(10.1234, 106.1234, 1.0)
         private val latLng = LatLng(10.1234, 106.1234)
         private val invalidLatLng = LatLng(999.0, 999.0)
         private val northeast = LatLng(10.4321, 106.4321)

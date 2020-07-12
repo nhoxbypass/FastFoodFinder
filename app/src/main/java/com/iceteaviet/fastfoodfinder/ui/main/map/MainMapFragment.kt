@@ -288,7 +288,7 @@ class MainMapFragment : Fragment(), MainMapContract.View {
             val fragment = MainMapFragment()
             fragment.arguments = args
             fragment.presenter = MainMapPresenter(App.getDataManager(), App.getSchedulerProvider(),
-                    GoogleLocationManager.getInstance(), App.getBus(), Injection.providePublishSubject(),
+                    com.iceteaviet.fastfoodfinder.location.GoogleLocationManager.getInstance(), App.getBus(), Injection.providePublishSubject(),
                     Injection.providePublishSubject(), fragment)
             return fragment
         }

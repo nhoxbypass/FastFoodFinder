@@ -45,7 +45,7 @@ class StoreDetailActivity : BaseActivity(), StoreDetailContract.View {
         super.onCreate(savedInstanceState)
 
         presenter = StoreDetailPresenter(App.getDataManager(), App.getSchedulerProvider(),
-                GoogleLocationManager.getInstance(), this)
+                com.iceteaviet.fastfoodfinder.location.GoogleLocationManager.getInstance(), this)
 
         setupUI()
         setupEventHandlers()

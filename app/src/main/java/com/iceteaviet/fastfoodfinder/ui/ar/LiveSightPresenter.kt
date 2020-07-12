@@ -18,14 +18,14 @@ import io.reactivex.disposables.Disposable
 /**
  * Created by tom on 2019-04-16.
  */
-class LiveSightPresenter : BasePresenter<LiveSightContract.Presenter>, LiveSightContract.Presenter, SystemLocationListener {
+class LiveSightPresenter : BasePresenter<LiveSightContract.Presenter>, LiveSightContract.Presenter, com.iceteaviet.fastfoodfinder.location.SystemLocationListener {
 
     private val liveSightView: LiveSightContract.View
 
-    private val locationManager: ILocationManager<SystemLocationListener>
+    private val locationManager: ILocationManager<com.iceteaviet.fastfoodfinder.location.SystemLocationListener>
 
     constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider,
-                locationManager: ILocationManager<SystemLocationListener>, liveSightView: LiveSightContract.View) : super(dataManager, schedulerProvider) {
+                locationManager: ILocationManager<com.iceteaviet.fastfoodfinder.location.SystemLocationListener>, liveSightView: LiveSightContract.View) : super(dataManager, schedulerProvider) {
         this.liveSightView = liveSightView
         this.locationManager = locationManager
     }
@@ -74,7 +74,7 @@ class LiveSightPresenter : BasePresenter<LiveSightContract.Presenter>, LiveSight
         }
     }
 
-    override fun onLocationChanged(location: LatLngAlt) {
+    override fun onLocationChanged(location: com.iceteaviet.fastfoodfinder.location.LatLngAlt) {
         liveSightView.updateLatestLocation(location)
         dataManager.getStoreInBounds(location.latitude, location.longitude, RADIUS)
                 .subscribeOn(schedulerProvider.io())

@@ -125,6 +125,9 @@ dependencies {
 
     implementation "com.android.support.test.espresso:espresso-idling-resource:$rootProject.ext.espressoVersion"
 
+    // Modules
+    implementation project(path: ':androidext')
+
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$rootProject.ext.kotlinVersion"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$rootProject.ext.kotlinCouroutinesVersion"

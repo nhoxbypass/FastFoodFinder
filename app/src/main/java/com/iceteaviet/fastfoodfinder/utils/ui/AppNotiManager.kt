@@ -10,7 +10,7 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.iceteaviet.fastfoodfinder.R
-import com.iceteaviet.fastfoodfinder.utils.extension.getNotificationManager
+import com.iceteaviet.fastfoodfinder.androidext.getNotificationManager
 import com.iceteaviet.fastfoodfinder.utils.getSplashScreenIntent
 
 /**

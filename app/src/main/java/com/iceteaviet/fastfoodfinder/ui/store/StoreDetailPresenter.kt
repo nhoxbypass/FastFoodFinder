@@ -23,7 +23,7 @@ import java.util.*
 /**
  * Created by tom on 2019-04-18.
  */
-open class StoreDetailPresenter : BasePresenter<StoreDetailContract.Presenter>, StoreDetailContract.Presenter, LocationListener {
+open class StoreDetailPresenter : BasePresenter<StoreDetailContract.Presenter>, StoreDetailContract.Presenter, com.iceteaviet.fastfoodfinder.location.LocationListener {
 
     private val storeDetailView: StoreDetailContract.View
 
@@ -33,10 +33,10 @@ open class StoreDetailPresenter : BasePresenter<StoreDetailContract.Presenter>, 
     @VisibleForTesting
     lateinit var currStore: Store
 
-    private var locationManager: ILocationManager<LocationListener>
+    private var locationManager: ILocationManager<com.iceteaviet.fastfoodfinder.location.LocationListener>
 
     constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider,
-                locationManager: ILocationManager<LocationListener>, storeDetailView: StoreDetailContract.View) : super(dataManager, schedulerProvider) {
+                locationManager: ILocationManager<com.iceteaviet.fastfoodfinder.location.LocationListener>, storeDetailView: StoreDetailContract.View) : super(dataManager, schedulerProvider) {
         this.storeDetailView = storeDetailView
         this.locationManager = locationManager
     }
@@ -77,7 +77,7 @@ open class StoreDetailPresenter : BasePresenter<StoreDetailContract.Presenter>, 
         super.unsubscribe()
     }
 
-    override fun onLocationChanged(location: LatLngAlt) {
+    override fun onLocationChanged(location: com.iceteaviet.fastfoodfinder.location.LatLngAlt) {
         currLocation = LatLng(location.latitude, location.longitude)
     }
 

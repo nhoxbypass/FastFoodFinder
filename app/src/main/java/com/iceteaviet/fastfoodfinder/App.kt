@@ -81,8 +81,8 @@ class App : Application() {
         bus = Injection.provideEventBus()
         notiManager = AppNotiManager(getContext())
 
-        GoogleLocationManager.init(getContext())
-        SystemLocationManager.init(getContext())
+        com.iceteaviet.fastfoodfinder.location.GoogleLocationManager.init(getContext())
+        com.iceteaviet.fastfoodfinder.location.SystemLocationManager.init(getContext())
 
         scheduleSyncDBWorker()
     }
@@ -95,8 +95,8 @@ class App : Application() {
 
 
     override fun onTerminate() {
-        GoogleLocationManager.getInstance().terminate()
-        SystemLocationManager.getInstance().terminate()
+        com.iceteaviet.fastfoodfinder.location.GoogleLocationManager.getInstance().terminate()
+        com.iceteaviet.fastfoodfinder.location.SystemLocationManager.getInstance().terminate()
         super.onTerminate()
     }
 }

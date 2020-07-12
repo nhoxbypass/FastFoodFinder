@@ -3,7 +3,7 @@
 package com.iceteaviet.fastfoodfinder.utils
 
 import android.content.Context
-import com.iceteaviet.fastfoodfinder.utils.extension.getConnectivityManager
+import com.iceteaviet.fastfoodfinder.androidext.getConnectivityManager
 import com.iceteaviet.fastfoodfinder.utils.shell.AppShell
 import java.io.IOException
 

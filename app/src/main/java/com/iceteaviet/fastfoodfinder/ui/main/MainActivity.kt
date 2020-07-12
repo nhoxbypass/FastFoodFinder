@@ -23,12 +23,12 @@ import com.bumptech.glide.Glide
 import com.google.android.material.navigation.NavigationView
 import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
+import com.iceteaviet.fastfoodfinder.androidext.getInputMethodManager
+import com.iceteaviet.fastfoodfinder.androidext.getSearchManager
 import com.iceteaviet.fastfoodfinder.ui.base.BaseActivity
 import com.iceteaviet.fastfoodfinder.ui.main.search.SearchFragment
 import com.iceteaviet.fastfoodfinder.ui.profile.ProfileFragment
 import com.iceteaviet.fastfoodfinder.utils.e
-import com.iceteaviet.fastfoodfinder.utils.extension.getInputMethodManager
-import com.iceteaviet.fastfoodfinder.utils.extension.getSearchManager
 import com.iceteaviet.fastfoodfinder.utils.openARLiveSightActivity
 import com.iceteaviet.fastfoodfinder.utils.openLoginActivity
 import com.iceteaviet.fastfoodfinder.utils.openSettingsActivity

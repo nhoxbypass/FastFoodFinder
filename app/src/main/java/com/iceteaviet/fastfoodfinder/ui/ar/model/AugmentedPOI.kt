@@ -8,13 +8,13 @@ import com.iceteaviet.fastfoodfinder.location.LatLngAlt
  */
 
 class AugmentedPOI(val name: String, lat: Double, lon: Double, alt: Double, @param:DrawableRes @field:DrawableRes val icon: Int) {
-    private val location: LatLngAlt
+    private val location: com.iceteaviet.fastfoodfinder.location.LatLngAlt
 
     init {
-        location = LatLngAlt(lat, lon, alt)
+        location = com.iceteaviet.fastfoodfinder.location.LatLngAlt(lat, lon, alt)
     }
 
-    fun getLocation(): LatLngAlt {
+    fun getLocation(): com.iceteaviet.fastfoodfinder.location.LatLngAlt {
         return location
     }
 

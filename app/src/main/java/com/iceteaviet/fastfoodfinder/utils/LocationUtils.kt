@@ -146,7 +146,7 @@ fun isValidLng(lng: String): Boolean {
 /**
  * Convert WSG84 to ECEF location array
  */
-fun convertWSG84toECEF(location: LatLngAlt): FloatArray {
+fun convertWSG84toECEF(location: com.iceteaviet.fastfoodfinder.location.LatLngAlt): FloatArray {
     val radLat = Math.toRadians(location.latitude)
     val radLon = Math.toRadians(location.longitude)
 
@@ -167,7 +167,7 @@ fun convertWSG84toECEF(location: LatLngAlt): FloatArray {
 /**
  * Convert ECEF to ENU location array
  */
-fun convertECEFtoENU(currentLocation: LatLngAlt, ecefCurrentLocation: FloatArray, ecefPOI: FloatArray): FloatArray {
+fun convertECEFtoENU(currentLocation: com.iceteaviet.fastfoodfinder.location.LatLngAlt, ecefCurrentLocation: FloatArray, ecefPOI: FloatArray): FloatArray {
     val radLat = Math.toRadians(currentLocation.latitude)
     val radLon = Math.toRadians(currentLocation.longitude)
 
