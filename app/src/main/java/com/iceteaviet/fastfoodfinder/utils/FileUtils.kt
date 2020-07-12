@@ -18,10 +18,9 @@ import java.io.IOException
 fun getBitmapFromUri(context: Context, uri: Uri): Bitmap? {
     val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
 
-    val cursor = context.contentResolver.query(uri,
-            filePathColumn, null, null, null)
-    cursor.moveToFirst()
-    cursor.close()
+    /*val cursor = context.contentResolver.query(uri, filePathColumn, null, null, null)
+    cursor?.moveToFirst()
+    cursor?.close()*/
 
     var bmp: Bitmap? = null
     try {

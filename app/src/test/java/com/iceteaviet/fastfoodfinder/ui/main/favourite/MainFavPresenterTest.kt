@@ -123,13 +123,12 @@ class MainFavPresenterTest {
     fun subscribeTest_signedIn_getStoresSuccess_listenStoresSuccess_nullActionCode() {
         // Preconditions
         `when`(dataManager.getCurrentUser()).thenReturn(userFull)
-        val ac: Int? = null
 
         // Mocks
         val store = stores.get(0)
         `when`(dataManager.findStoresByIds(userFull.getFavouriteStoreList().getStoreIdList())).thenReturn(Single.just(stores))
         `when`(dataManager.subscribeFavouriteStoresOfUser(userFull.getUid())).thenReturn(
-                Observable.just(Pair(store.id, ac))
+                Observable.just(Pair(store.id, -1))
         )
         `when`(dataManager.findStoreById(store.id)).thenReturn(Single.never())
 
@@ -179,7 +178,7 @@ class MainFavPresenterTest {
     fun subscribeTest_signedIn_getStoresSuccess_listenStoresSuccess_added_invalidStoreId() {
         // Preconditions
         `when`(dataManager.getCurrentUser()).thenReturn(userFull)
-        val storeId: Int? = null
+        val storeId = -1
 
         // Mocks
         val store = stores.get(0)
@@ -235,7 +234,7 @@ class MainFavPresenterTest {
     @Test
     fun subscribeTest_signedIn_emptyStoreList_listenStoresWithInvalidData() {
         // Preconditions
-        val id: Int? = null
+        val id = -1
         `when`(dataManager.getCurrentUser()).thenReturn(user)
         `when`(dataManager.subscribeFavouriteStoresOfUser(user.getUid())).thenReturn(
                 Observable.just(Pair(id, UserStoreEvent.ACTION_ADDED))

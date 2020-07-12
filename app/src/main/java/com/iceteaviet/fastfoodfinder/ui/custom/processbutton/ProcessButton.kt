@@ -150,10 +150,12 @@ abstract class ProcessButton : FlatButton {
 
     override fun onSaveInstanceState(): Parcelable? {
         val superState = super.onSaveInstanceState()
-        val savedState = SavedState(superState)
-        savedState.mProgress = mProgress
-
-        return savedState
+        if (superState != null) {
+            val savedState = SavedState(superState)
+            savedState.mProgress = mProgress
+            return savedState
+        }
+        return null
     }
 
     override fun onRestoreInstanceState(state: Parcelable) {

@@ -20,8 +20,9 @@ class CloseConfirmDialog : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         var message = ""
 
-        if (arguments != null)
-            arguments?.let { message = it.getString(MESSAGE) }
+        arguments?.let {
+            message = it.getString(MESSAGE, "")
+        }
 
         val alertDialogBuilder = AlertDialog.Builder(activity!!)
         alertDialogBuilder.setMessage(message)
