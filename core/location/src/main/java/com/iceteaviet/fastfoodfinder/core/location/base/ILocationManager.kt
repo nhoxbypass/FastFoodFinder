@@ -1,6 +1,6 @@
-package com.iceteaviet.fastfoodfinder.location.base
+package com.iceteaviet.fastfoodfinder.core.location.base
 
-import com.iceteaviet.fastfoodfinder.location.LatLngAlt
+import com.iceteaviet.fastfoodfinder.core.location.LatLngAlt
 
 /**
  * Created by tom on 2019-05-01.

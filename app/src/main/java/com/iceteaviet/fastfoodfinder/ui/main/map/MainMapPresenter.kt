@@ -12,9 +12,9 @@ import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.routing.GoogleMapsRoutingApiHelper
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
-import com.iceteaviet.fastfoodfinder.location.LatLngAlt
-import com.iceteaviet.fastfoodfinder.location.LocationListener
-import com.iceteaviet.fastfoodfinder.location.base.ILocationManager
+import com.iceteaviet.fastfoodfinder.core.location.LatLngAlt
+import com.iceteaviet.fastfoodfinder.core.location.LocationListener
+import com.iceteaviet.fastfoodfinder.core.location.base.ILocationManager
 import com.iceteaviet.fastfoodfinder.service.eventbus.SearchEventResult
 import com.iceteaviet.fastfoodfinder.service.eventbus.core.IBus
 import com.iceteaviet.fastfoodfinder.ui.base.BasePresenter

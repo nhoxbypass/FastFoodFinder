@@ -1,9 +1,9 @@
 package com.iceteaviet.fastfoodfinder.ui.ar
 
 import com.iceteaviet.fastfoodfinder.data.DataManager
-import com.iceteaviet.fastfoodfinder.location.LatLngAlt
-import com.iceteaviet.fastfoodfinder.location.SystemLocationListener
-import com.iceteaviet.fastfoodfinder.location.SystemLocationManager
+import com.iceteaviet.fastfoodfinder.core.location.LatLngAlt
+import com.iceteaviet.fastfoodfinder.core.location.SystemLocationListener
+import com.iceteaviet.fastfoodfinder.core.location.SystemLocationManager
 import com.iceteaviet.fastfoodfinder.utils.exception.UnknownException
 import com.iceteaviet.fastfoodfinder.utils.getFakeArPoints
 import com.iceteaviet.fastfoodfinder.utils.getFakeStoreList

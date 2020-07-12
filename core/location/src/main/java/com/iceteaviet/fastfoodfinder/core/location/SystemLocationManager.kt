@@ -1,17 +1,18 @@
-package com.iceteaviet.fastfoodfinder.location
+package com.iceteaviet.fastfoodfinder.core.location
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Location
 import android.os.Bundle
 import com.iceteaviet.fastfoodfinder.core.common.ext.getLocationManager
-import com.iceteaviet.fastfoodfinder.location.base.AbsLocationManager
-import com.iceteaviet.fastfoodfinder.location.base.ILocationManager
+import com.iceteaviet.fastfoodfinder.core.location.base.AbsLocationManager
+import com.iceteaviet.fastfoodfinder.core.location.base.ILocationManager
 
 /**
  * Created by tom on 2019-05-01.
  */
-open class SystemLocationManager private constructor(context: Context) : AbsLocationManager<SystemLocationListener>(context), ILocationManager<SystemLocationListener>, android.location.LocationListener {
+open class SystemLocationManager private constructor(context: Context) : AbsLocationManager<SystemLocationListener>(context), ILocationManager<SystemLocationListener>,
+    android.location.LocationListener {
 
     private var locationManager: android.location.LocationManager? = null
 
@@ -59,15 +60,19 @@ open class SystemLocationManager private constructor(context: Context) : AbsLoca
         val isNetworkEnabled = locationManager!!.isProviderEnabled(android.location.LocationManager.NETWORK_PROVIDER)
 
         if (isNetworkEnabled) {
-            locationManager?.requestLocationUpdates(android.location.LocationManager.NETWORK_PROVIDER,
+            locationManager?.requestLocationUpdates(
+                android.location.LocationManager.NETWORK_PROVIDER,
                 minTime,
-                minDistance, this)
+                minDistance, this
+            )
         }
 
         if (isGPSEnabled) {
-            locationManager?.requestLocationUpdates(android.location.LocationManager.GPS_PROVIDER,
+            locationManager?.requestLocationUpdates(
+                android.location.LocationManager.GPS_PROVIDER,
                 minTime,
-                minDistance, this)
+                minDistance, this
+            )
         }
     }
 
@@ -114,10 +119,11 @@ open class SystemLocationManager private constructor(context: Context) : AbsLoca
             if (instance == null) {
                 synchronized(SystemLocationManager::class.java) {
                     if (instance == null) {
-                        if (!::appContext.isInitialized)
+                        if (!Companion::appContext.isInitialized) {
                             throw IllegalStateException("Call `SystemLocationManager.init(Context)` before calling this method.")
-                        else
+                        } else {
                             instance = SystemLocationManager(appContext)
+                        }
                     }
                 }
             }

@@ -30,8 +30,10 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:common"))
+
     // Google Play Services
-    implementation("com.google.android.gms:play-services-location:21.3.0")
+    implementation(libs.google.play.services.location)
 
     // Local unit tests
     testImplementation(libs.bundles.local.unit.test)

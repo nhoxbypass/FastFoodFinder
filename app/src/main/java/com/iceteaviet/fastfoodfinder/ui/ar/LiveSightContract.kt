@@ -1,6 +1,6 @@
 package com.iceteaviet.fastfoodfinder.ui.ar
 
-import com.iceteaviet.fastfoodfinder.location.LatLngAlt
+import com.iceteaviet.fastfoodfinder.core.location.LatLngAlt
 import com.iceteaviet.fastfoodfinder.ui.ar.model.AugmentedPOI
 import com.iceteaviet.fastfoodfinder.ui.base.BaseView
 

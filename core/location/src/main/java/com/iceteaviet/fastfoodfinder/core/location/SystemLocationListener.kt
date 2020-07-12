@@ -1,4 +1,4 @@
-package com.iceteaviet.fastfoodfinder.location
+package com.iceteaviet.fastfoodfinder.core.location
 
 import android.os.Bundle
 

@@ -1,4 +1,4 @@
-package com.iceteaviet.fastfoodfinder.location
+package com.iceteaviet.fastfoodfinder.core.location
 
 import androidx.annotation.IntDef
 
@@ -6,7 +6,18 @@ import androidx.annotation.IntDef
 /**
  * Created by tom on 2019-05-01.
  */
-@IntDef(FailType.UNKNOWN, FailType.TIMEOUT, FailType.PERMISSION_DENIED, FailType.NETWORK_NOT_AVAILABLE, FailType.GOOGLE_PLAY_SERVICES_NOT_AVAILABLE, FailType.GOOGLE_PLAY_SERVICES_CONNECTION_FAIL, FailType.GOOGLE_PLAY_SERVICES_SETTINGS_DIALOG, FailType.GOOGLE_PLAY_SERVICES_SETTINGS_DENIED, FailType.VIEW_DETACHED, FailType.VIEW_NOT_REQUIRED_TYPE)
+@IntDef(
+    FailType.UNKNOWN,
+    FailType.TIMEOUT,
+    FailType.PERMISSION_DENIED,
+    FailType.NETWORK_NOT_AVAILABLE,
+    FailType.GOOGLE_PLAY_SERVICES_NOT_AVAILABLE,
+    FailType.GOOGLE_PLAY_SERVICES_CONNECTION_FAIL,
+    FailType.GOOGLE_PLAY_SERVICES_SETTINGS_DIALOG,
+    FailType.GOOGLE_PLAY_SERVICES_SETTINGS_DENIED,
+    FailType.VIEW_DETACHED,
+    FailType.VIEW_NOT_REQUIRED_TYPE
+)
 @Retention(AnnotationRetention.SOURCE)
 annotation class FailType {
     companion object {

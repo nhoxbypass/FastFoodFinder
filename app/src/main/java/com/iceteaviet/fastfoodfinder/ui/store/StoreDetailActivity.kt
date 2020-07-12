@@ -13,11 +13,11 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
+import com.iceteaviet.fastfoodfinder.core.location.GoogleLocationManager
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Comment
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.databinding.ActivityStoreDetailBinding
-import com.iceteaviet.fastfoodfinder.location.GoogleLocationManager
 import com.iceteaviet.fastfoodfinder.ui.base.BaseActivity
 import com.iceteaviet.fastfoodfinder.ui.store.comment.CommentActivity
 import com.iceteaviet.fastfoodfinder.ui.store.comment.CommentActivity.Companion.KEY_COMMENT

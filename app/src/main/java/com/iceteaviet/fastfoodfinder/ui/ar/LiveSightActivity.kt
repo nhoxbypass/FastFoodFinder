@@ -18,8 +18,8 @@ import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.core.common.ext.getSensorManager
 import com.iceteaviet.fastfoodfinder.databinding.ActivityArCameraBinding
-import com.iceteaviet.fastfoodfinder.location.LatLngAlt
-import com.iceteaviet.fastfoodfinder.location.SystemLocationManager
+import com.iceteaviet.fastfoodfinder.core.location.LatLngAlt
+import com.iceteaviet.fastfoodfinder.core.location.SystemLocationManager
 import com.iceteaviet.fastfoodfinder.ui.ar.model.AugmentedPOI
 import com.iceteaviet.fastfoodfinder.ui.base.BaseActivity
 import com.iceteaviet.fastfoodfinder.ui.custom.ar.ARCamera

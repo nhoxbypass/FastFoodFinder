@@ -1,5 +1,4 @@
-package com.iceteaviet.fastfoodfinder.location
-
+package com.iceteaviet.fastfoodfinder.core.location
 
 /**
  * Created by tom on 2019-05-01.

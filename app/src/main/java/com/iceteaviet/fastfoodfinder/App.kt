@@ -6,9 +6,9 @@ import android.content.Context
 import androidx.annotation.VisibleForTesting
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.WorkManager
+import com.iceteaviet.fastfoodfinder.core.location.GoogleLocationManager
 import com.iceteaviet.fastfoodfinder.data.DataManager
-import com.iceteaviet.fastfoodfinder.location.GoogleLocationManager
-import com.iceteaviet.fastfoodfinder.location.SystemLocationManager
+import com.iceteaviet.fastfoodfinder.core.location.SystemLocationManager
 import com.iceteaviet.fastfoodfinder.service.eventbus.core.IBus
 import com.iceteaviet.fastfoodfinder.service.workers.SyncDatabaseWorker
 import com.iceteaviet.fastfoodfinder.utils.getAppSignatureSHA1

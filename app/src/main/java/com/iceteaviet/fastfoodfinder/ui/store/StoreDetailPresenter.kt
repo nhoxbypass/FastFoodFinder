@@ -8,9 +8,9 @@ import com.iceteaviet.fastfoodfinder.data.remote.routing.GoogleMapsRoutingApiHel
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Comment
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
-import com.iceteaviet.fastfoodfinder.location.LatLngAlt
-import com.iceteaviet.fastfoodfinder.location.LocationListener
-import com.iceteaviet.fastfoodfinder.location.base.ILocationManager
+import com.iceteaviet.fastfoodfinder.core.location.LatLngAlt
+import com.iceteaviet.fastfoodfinder.core.location.LocationListener
+import com.iceteaviet.fastfoodfinder.core.location.base.ILocationManager
 import com.iceteaviet.fastfoodfinder.ui.base.BasePresenter
 import com.iceteaviet.fastfoodfinder.utils.getLatLngString
 import com.iceteaviet.fastfoodfinder.utils.isLolipopOrHigher

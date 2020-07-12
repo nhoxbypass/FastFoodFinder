@@ -9,7 +9,7 @@ import android.graphics.Paint
 import android.graphics.Typeface
 import android.opengl.Matrix
 import android.view.View
-import com.iceteaviet.fastfoodfinder.location.LatLngAlt
+import com.iceteaviet.fastfoodfinder.core.location.LatLngAlt
 import com.iceteaviet.fastfoodfinder.ui.ar.model.AugmentedPOI
 import com.iceteaviet.fastfoodfinder.utils.convertECEFtoENU
 import com.iceteaviet.fastfoodfinder.utils.convertWSG84toECEF

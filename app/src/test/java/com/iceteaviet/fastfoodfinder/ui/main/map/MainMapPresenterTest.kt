@@ -3,12 +3,12 @@ package com.iceteaviet.fastfoodfinder.ui.main.map
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.iceteaviet.fastfoodfinder.Injection
+import com.iceteaviet.fastfoodfinder.core.location.GoogleLocationManager
 import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
-import com.iceteaviet.fastfoodfinder.location.GoogleLocationManager
-import com.iceteaviet.fastfoodfinder.location.LatLngAlt
-import com.iceteaviet.fastfoodfinder.location.LocationListener
+import com.iceteaviet.fastfoodfinder.core.location.LatLngAlt
+import com.iceteaviet.fastfoodfinder.core.location.LocationListener
 import com.iceteaviet.fastfoodfinder.service.eventbus.SearchEventResult
 import com.iceteaviet.fastfoodfinder.service.eventbus.core.IBus
 import com.iceteaviet.fastfoodfinder.ui.main.map.model.MapCameraPosition

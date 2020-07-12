@@ -4,9 +4,9 @@ import android.os.Bundle
 import androidx.annotation.VisibleForTesting
 import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
-import com.iceteaviet.fastfoodfinder.location.LatLngAlt
-import com.iceteaviet.fastfoodfinder.location.SystemLocationListener
-import com.iceteaviet.fastfoodfinder.location.base.ILocationManager
+import com.iceteaviet.fastfoodfinder.core.location.LatLngAlt
+import com.iceteaviet.fastfoodfinder.core.location.SystemLocationListener
+import com.iceteaviet.fastfoodfinder.core.location.base.ILocationManager
 import com.iceteaviet.fastfoodfinder.ui.base.BasePresenter
 import com.iceteaviet.fastfoodfinder.utils.isLolipopOrHigher
 import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider

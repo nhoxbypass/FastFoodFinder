@@ -1,9 +1,9 @@
-package com.iceteaviet.fastfoodfinder.location.base
+package com.iceteaviet.fastfoodfinder.core.location.base
 
 import android.content.Context
 import android.location.Location
-import com.iceteaviet.fastfoodfinder.location.LatLngAlt
-import com.iceteaviet.fastfoodfinder.location.LocationListener
+import com.iceteaviet.fastfoodfinder.core.location.LatLngAlt
+import com.iceteaviet.fastfoodfinder.core.location.LocationListener
 
 /**
  * Created by tom on 2019-05-01.

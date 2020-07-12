@@ -24,10 +24,10 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.Injection
 import com.iceteaviet.fastfoodfinder.R
+import com.iceteaviet.fastfoodfinder.core.location.GoogleLocationManager
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.databinding.FragmentMainMapBinding
-import com.iceteaviet.fastfoodfinder.location.GoogleLocationManager
 import com.iceteaviet.fastfoodfinder.ui.main.map.model.NearByStore
 import com.iceteaviet.fastfoodfinder.ui.main.map.storeinfo.StoreInfoDialog
 import com.iceteaviet.fastfoodfinder.utils.Constant

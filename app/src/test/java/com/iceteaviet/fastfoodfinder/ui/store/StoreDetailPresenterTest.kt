@@ -1,14 +1,14 @@
 package com.iceteaviet.fastfoodfinder.ui.store
 
 import com.google.android.gms.maps.model.LatLng
+import com.iceteaviet.fastfoodfinder.core.location.GoogleLocationManager
 import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList
-import com.iceteaviet.fastfoodfinder.location.GoogleLocationManager
-import com.iceteaviet.fastfoodfinder.location.LatLngAlt
-import com.iceteaviet.fastfoodfinder.location.LocationListener
+import com.iceteaviet.fastfoodfinder.core.location.LatLngAlt
+import com.iceteaviet.fastfoodfinder.core.location.LocationListener
 import com.iceteaviet.fastfoodfinder.utils.StoreType
 import com.iceteaviet.fastfoodfinder.utils.exception.EmptyDataException
 import com.iceteaviet.fastfoodfinder.utils.exception.NotFoundException

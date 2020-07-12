@@ -1,4 +1,4 @@
-package com.iceteaviet.fastfoodfinder.location
+package com.iceteaviet.fastfoodfinder.core.location
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -7,14 +7,15 @@ import android.os.Bundle
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
-import com.iceteaviet.fastfoodfinder.location.base.AbsLocationManager
-import com.iceteaviet.fastfoodfinder.location.base.ILocationManager
+import com.iceteaviet.fastfoodfinder.core.location.base.AbsLocationManager
+import com.iceteaviet.fastfoodfinder.core.location.base.ILocationManager
 
 
 /**
  * Created by tom on 2019-05-01.
  */
-open class GoogleLocationManager private constructor(context: Context) : AbsLocationManager<LocationListener>(context), ILocationManager<LocationListener>, com.google.android.gms.location.LocationListener, GoogleApiClient.ConnectionCallbacks {
+open class GoogleLocationManager private constructor(context: Context) : AbsLocationManager<LocationListener>(context), ILocationManager<LocationListener>,
+    com.google.android.gms.location.LocationListener, GoogleApiClient.ConnectionCallbacks {
 
     private var locationRequest: LocationRequest? = null
     private var googleApiClient: GoogleApiClient? = null
@@ -111,10 +112,11 @@ open class GoogleLocationManager private constructor(context: Context) : AbsLoca
             if (instance == null) {
                 synchronized(GoogleLocationManager::class.java) {
                     if (instance == null) {
-                        if (!::appContext.isInitialized)
+                        if (!::appContext.isInitialized) {
                             throw IllegalStateException("Call `GoogleLocationManager.init(Context)` before calling this method.")
-                        else
+                        } else {
                             instance = GoogleLocationManager(appContext)
+                        }
                     }
                 }
             }

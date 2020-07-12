@@ -1,7 +1,7 @@
 package com.iceteaviet.fastfoodfinder.ui.ar.model
 
 import androidx.annotation.DrawableRes
-import com.iceteaviet.fastfoodfinder.location.LatLngAlt
+import com.iceteaviet.fastfoodfinder.core.location.LatLngAlt
 
 /**
  * Created by Genius Doan on 20/07/2017.
