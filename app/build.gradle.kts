@@ -124,6 +124,7 @@ dependencies {
     implementation(project(":data:model"))
     implementation(project(":data:database"))
     implementation(project(":data:datastore"))
+    implementation(project(":data:stores"))
 
     // Dependencies for local unit tests
     testImplementation("junit:junit:4.13.2")
