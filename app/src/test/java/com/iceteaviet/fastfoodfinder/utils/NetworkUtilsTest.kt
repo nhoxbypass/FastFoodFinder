@@ -4,7 +4,7 @@ package com.iceteaviet.fastfoodfinder.utils
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
-import com.iceteaviet.fastfoodfinder.utils.extension.getConnectivityManager
+import com.iceteaviet.fastfoodfinder.androidext.getConnectivityManager
 import com.iceteaviet.fastfoodfinder.utils.shell.AppShell
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before

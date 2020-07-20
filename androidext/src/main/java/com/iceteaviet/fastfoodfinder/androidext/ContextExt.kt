@@ -1,4 +1,4 @@
-package com.iceteaviet.fastfoodfinder.utils.extension
+package com.iceteaviet.fastfoodfinder.androidext
 
 import android.app.NotificationManager
 import android.app.SearchManager

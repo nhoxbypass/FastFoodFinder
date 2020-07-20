@@ -10,17 +10,33 @@ ext {
     // App dependencies
     appCompat = '1.3.0-alpha01'
     supportLibraryVersion = '27.1.1'
+
     playService = '17.0.0'
+
+    // Jetpack
     workManager = '2.3.4'
 
+    // UI
+    circleImageViewVersion = '2.2.0'
     glideVersion = '4.11.0'
+
+    // API
     gsonVersion = '2.8.5'
     retrofitVersion = '2.9.0'
-    eventBusVersion = '3.1.1'
-    circleImageViewVersion = '2.2.0'
+
+    // DB
     realmAndroidVersion = '7.0.1'
+
+    // Code flows
+    eventBusVersion = '3.1.1'
+    rxJavaVersion = '2.2.9'
+    rxAndroidVersion = '2.1.1'
+    rxKotlinVersion = '2.2.0'
+
+    // SDK
     fbSdkVersion = '4.34.0'
 
+    // Logging
     timberVersion = '4.7.1'
 
     // Testing dependencies

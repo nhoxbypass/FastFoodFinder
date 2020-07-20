@@ -1,11 +1,10 @@
 package com.iceteaviet.fastfoodfinder.ui.ar
 
-import android.os.Bundle
 import androidx.annotation.VisibleForTesting
 import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.location.LatLngAlt
-import com.iceteaviet.fastfoodfinder.location.SystemLocationListener
+import com.iceteaviet.fastfoodfinder.location.LocationListener
 import com.iceteaviet.fastfoodfinder.location.base.ILocationManager
 import com.iceteaviet.fastfoodfinder.ui.base.BasePresenter
 import com.iceteaviet.fastfoodfinder.utils.isLolipopOrHigher
@@ -18,14 +17,14 @@ import io.reactivex.disposables.Disposable
 /**
  * Created by tom on 2019-04-16.
  */
-class LiveSightPresenter : BasePresenter<LiveSightContract.Presenter>, LiveSightContract.Presenter, SystemLocationListener {
+class LiveSightPresenter : BasePresenter<LiveSightContract.Presenter>, LiveSightContract.Presenter, LocationListener {
 
     private val liveSightView: LiveSightContract.View
 
-    private val locationManager: ILocationManager<SystemLocationListener>
+    private val locationManager: ILocationManager
 
     constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider,
-                locationManager: ILocationManager<SystemLocationListener>, liveSightView: LiveSightContract.View) : super(dataManager, schedulerProvider) {
+                locationManager: ILocationManager, liveSightView: LiveSightContract.View) : super(dataManager, schedulerProvider) {
         this.liveSightView = liveSightView
         this.locationManager = locationManager
     }
@@ -95,15 +94,6 @@ class LiveSightPresenter : BasePresenter<LiveSightContract.Presenter>, LiveSight
     }
 
     override fun onLocationFailed(type: Int) {
-    }
-
-    override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {
-    }
-
-    override fun onProviderEnabled(provider: String) {
-    }
-
-    override fun onProviderDisabled(provider: String) {
     }
 
     private fun subscribeLocationUpdate() {

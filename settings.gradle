@@ -3,3 +3,6 @@ plugins {
 }
 
 include ':app'
+include ':location'
+include ':androidext'
+include ':data'

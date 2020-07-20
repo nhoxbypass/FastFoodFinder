@@ -125,8 +125,12 @@ dependencies {
 
     implementation "com.android.support.test.espresso:espresso-idling-resource:$rootProject.ext.espressoVersion"
 
+    // Modules
+    implementation project(path: ':androidext')
+    implementation project(path: ':location')
+
     // Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$rootProject.ext.kotlinVersion"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$rootProject.ext.kotlinVersion"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$rootProject.ext.kotlinCouroutinesVersion"
 
     //// App dependencies
@@ -140,7 +144,6 @@ dependencies {
 
     // Google Play Services
     implementation "com.google.android.gms:play-services-maps:$rootProject.playService"
-    implementation "com.google.android.gms:play-services-location:$rootProject.playService"
     implementation "com.google.android.gms:play-services-auth:$rootProject.playService"
     implementation 'com.google.maps.android:android-maps-utils:0.5'
 
@@ -161,12 +164,12 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofitVersion"
 
-    // Code flow
+    // Event bus
     implementation "org.greenrobot:eventbus:$rootProject.eventBusVersion"
-
-    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
-    implementation 'io.reactivex.rxjava2:rxjava:2.2.9'
-    implementation 'io.reactivex.rxjava2:rxkotlin:2.2.0'
+    // RxJava
+    implementation "io.reactivex.rxjava2:rxandroid:$rootProject.rxAndroidVersion"
+    implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxJavaVersion"
+    implementation "io.reactivex.rxjava2:rxkotlin:$rootProject.rxKotlinVersion"
 
     // DB
     implementation "io.realm:realm-android-library:$rootProject.realmAndroidVersion"

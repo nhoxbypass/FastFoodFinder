@@ -1,0 +1,31 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+}
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+    }
+}
+
+dependencies {
+    implementation project(":androidext")
+
+    // Kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$rootProject.ext.kotlinVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$rootProject.ext.kotlinCouroutinesVersion"
+
+    // AndroidX
+    implementation "androidx.appcompat:appcompat:$rootProject.appCompat"
+
+    // Google Play Services
+    implementation "com.google.android.gms:play-services-location:$rootProject.playService"
+
+    // Testing
+    testImplementation "junit:junit:$rootProject.ext.junitVersion"
+}

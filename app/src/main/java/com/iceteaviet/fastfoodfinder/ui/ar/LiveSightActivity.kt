@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.annotation.NonNull
 import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
+import com.iceteaviet.fastfoodfinder.androidext.getSensorManager
 import com.iceteaviet.fastfoodfinder.location.LatLngAlt
 import com.iceteaviet.fastfoodfinder.location.SystemLocationManager
 import com.iceteaviet.fastfoodfinder.ui.ar.model.AugmentedPOI
@@ -20,7 +21,6 @@ import com.iceteaviet.fastfoodfinder.ui.base.BaseActivity
 import com.iceteaviet.fastfoodfinder.ui.custom.ar.ARCamera
 import com.iceteaviet.fastfoodfinder.ui.custom.ar.AROverlayView
 import com.iceteaviet.fastfoodfinder.utils.*
-import com.iceteaviet.fastfoodfinder.utils.extension.getSensorManager
 import kotlinx.android.synthetic.main.activity_ar_camera.*
 
 class LiveSightActivity : BaseActivity(), LiveSightContract.View, SensorEventListener {

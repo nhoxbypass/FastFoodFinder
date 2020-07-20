@@ -14,10 +14,36 @@ import com.iceteaviet.fastfoodfinder.location.base.ILocationManager
 /**
  * Created by tom on 2019-05-01.
  */
-open class GoogleLocationManager private constructor(context: Context) : AbsLocationManager<LocationListener>(context), ILocationManager<LocationListener>, com.google.android.gms.location.LocationListener, GoogleApiClient.ConnectionCallbacks {
+open class GoogleLocationManager private constructor(context: Context)
+    : AbsLocationManager(context), ILocationManager {
 
     private var locationRequest: LocationRequest? = null
     private var googleApiClient: GoogleApiClient? = null
+
+    /**
+     * Will be trigger by Google Fused Location Api & manual when Location Api service connected
+     */
+    private val googleLocationListener = com.google.android.gms.location.LocationListener { location ->
+        currLocation = location
+        for (listener in listeners) {
+            listener.onLocationChanged(LatLngAlt(location.latitude, location.longitude, location.altitude))
+        }
+    }
+
+    private val clientConnectionCallbacks = object : GoogleApiClient.ConnectionCallbacks {
+        override fun onConnected(extras: Bundle?) {
+            connected = true
+            currLocation = getLastLocation()
+            currLocation?.let {
+                googleLocationListener.onLocationChanged(it)
+            }
+        }
+
+        override fun onConnectionSuspended(i: Int) {
+            onFailed(FailType.GOOGLE_PLAY_SERVICES_CONNECTION_FAIL)
+            connected = false
+        }
+    }
 
     override fun initLocationProvider(context: Context) {
         locationRequest = createLocationRequest()
@@ -33,37 +59,13 @@ open class GoogleLocationManager private constructor(context: Context) : AbsLoca
     @SuppressLint("MissingPermission")
     override fun requestLocationUpdates() {
         if (isConnected() && !isRequestingLocationUpdate())
-            LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this)
+            LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, googleLocationListener)
     }
 
     override fun terminate() {
         super.terminate()
         googleApiClient?.disconnect()
-        LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this)
-    }
-
-    override fun onConnected(extras: Bundle?) {
-        connected = true
-        currLocation = getLastLocation()
-        currLocation?.let {
-            onLocationChanged(it)
-        }
-    }
-
-    override fun onConnectionSuspended(i: Int) {
-        onFailed(FailType.GOOGLE_PLAY_SERVICES_CONNECTION_FAIL)
-        connected = false
-    }
-
-    /**
-     * Will be trigger by Google Fused Location Api & manual when Location Api service connected
-     */
-    override fun onLocationChanged(location: Location) {
-        currLocation = location
-
-        for (listener in listeners) {
-            listener.onLocationChanged(LatLngAlt(location.latitude, location.longitude, location.altitude))
-        }
+        LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, googleLocationListener)
     }
 
 
@@ -81,7 +83,7 @@ open class GoogleLocationManager private constructor(context: Context) : AbsLoca
 
     private fun createGoogleApiClient(context: Context): GoogleApiClient {
         return GoogleApiClient.Builder(context)
-                .addConnectionCallbacks(this)
+                .addConnectionCallbacks(clientConnectionCallbacks)
                 .addOnConnectionFailedListener {
                     onFailed(FailType.GOOGLE_PLAY_SERVICES_CONNECTION_FAIL)
                 }
@@ -111,7 +113,7 @@ open class GoogleLocationManager private constructor(context: Context) : AbsLoca
             if (instance == null) {
                 synchronized(GoogleLocationManager::class.java) {
                     if (instance == null) {
-                        if (!::appContext.isInitialized)
+                        if (!Companion::appContext.isInitialized)
                             throw IllegalStateException("Call `GoogleLocationManager.init(Context)` before calling this method.")
                         else
                             instance = GoogleLocationManager(appContext)
