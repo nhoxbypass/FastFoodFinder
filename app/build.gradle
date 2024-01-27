@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.google.firebase.firebase-perf'
 apply plugin: 'realm-android'
@@ -9,6 +8,7 @@ apply from: '../app/coverage.gradle'
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
+    namespace 'com.iceteaviet.fastfoodfinder'
     defaultConfig {
         applicationId "com.iceteaviet.fastfoodfinder"
         minSdkVersion rootProject.ext.minSdkVersion
@@ -17,12 +17,12 @@ android {
         versionName "19.07.03"
         multiDexEnabled true
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 
     buildTypes {
@@ -115,44 +115,43 @@ dependencies {
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$rootProject.ext.kotlinMockitoVersion"
 
     // Espresso UI Testing dependencies.
-    androidTestImplementation "com.android.support.test.espresso:espresso-core:$rootProject.ext.espressoVersion"
-    androidTestImplementation "com.android.support.test.espresso:espresso-contrib:$rootProject.ext.espressoVersion"
-    androidTestImplementation "com.android.support.test.espresso:espresso-intents:$rootProject.ext.espressoVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.ext.espressoVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:$rootProject.ext.espressoVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-intents:$rootProject.ext.espressoVersion"
 
-    // Android Testing Support Library's runner and rules
-    androidTestImplementation "com.android.support.test:runner:$rootProject.ext.runnerVersion"
-    androidTestImplementation "com.android.support.test:rules:$rootProject.ext.rulesVersion"
+    // Android Testing Library's runner and rules
+    androidTestImplementation "androidx.test:runner:$rootProject.ext.runnerVersion"
+    androidTestImplementation "androidx.test:rules:$rootProject.ext.rulesVersion"
 
-    implementation "com.android.support.test.espresso:espresso-idling-resource:$rootProject.ext.espressoVersion"
+    implementation "androidx.test.espresso:espresso-idling-resource:$rootProject.ext.espressoVersion"
 
     // Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$rootProject.ext.kotlinVersion"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$rootProject.ext.kotlinVersion"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$rootProject.ext.kotlinCouroutinesVersion"
 
     //// App dependencies
     // AndroidX
     implementation "androidx.appcompat:appcompat:$rootProject.appCompat"
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation "androidx.work:work-runtime-ktx:$workManager"
     implementation "androidx.work:work-rxjava2:$workManager"
 
     // Google Play Services
     implementation "com.google.android.gms:play-services-maps:$rootProject.playService"
-    implementation "com.google.android.gms:play-services-location:$rootProject.playService"
-    implementation "com.google.android.gms:play-services-auth:$rootProject.playService"
+    implementation "com.google.android.gms:play-services-location:$rootProject.playServiceLocation"
+    implementation "com.google.android.gms:play-services-auth:$rootProject.playServiceAuth"
     implementation 'com.google.maps.android:android-maps-utils:0.5'
 
     // Firebase
-    implementation 'com.google.firebase:firebase-core:17.4.3'
-    implementation 'com.google.firebase:firebase-database:19.3.1'
-    implementation 'com.google.firebase:firebase-auth:19.3.1'
-    implementation 'com.google.firebase:firebase-perf:19.0.7'
-    implementation 'com.google.firebase:firebase-crashlytics:17.1.0'
+    implementation 'com.google.firebase:firebase-core:21.1.1'
+    implementation 'com.google.firebase:firebase-database:20.3.0'
+    implementation 'com.google.firebase:firebase-auth:22.3.1'
+    implementation 'com.google.firebase:firebase-perf:20.5.1'
+    implementation 'com.google.firebase:firebase-crashlytics:18.6.1'
 
     // UI
-    implementation 'com.google.android.material:material:1.3.0-alpha01'
+    implementation 'com.google.android.material:material:1.11.0'
     implementation "com.github.bumptech.glide:glide:$rootProject.glideVersion"
     implementation "de.hdodenhof:circleimageview:$rootProject.circleImageViewVersion"
 
@@ -164,9 +163,9 @@ dependencies {
     // Code flow
     implementation "org.greenrobot:eventbus:$rootProject.eventBusVersion"
 
-    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
-    implementation 'io.reactivex.rxjava2:rxjava:2.2.9'
-    implementation 'io.reactivex.rxjava2:rxkotlin:2.2.0'
+    implementation 'io.reactivex.rxjava3:rxandroid:3.0.2'
+    implementation 'io.reactivex.rxjava3:rxjava:3.1.5'
+    implementation 'io.reactivex.rxjava3:rxkotlin:3.0.1'
 
     // DB
     implementation "io.realm:realm-android-library:$rootProject.realmAndroidVersion"
@@ -182,13 +181,6 @@ kapt {
     generateStubs = true
 }
 
-/*
-Resolves dependency versions across test and production APKs, specifically, transitive
-dependencies. This is required since Espresso internally has a dependency on support-annotations.
-*/
-configurations.all {
-    resolutionStrategy.force "com.android.support:support-annotations:$rootProject.supportLibraryVersion"
-}
 
 apply plugin: 'com.google.gms.google-services'
 
