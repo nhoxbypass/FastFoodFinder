@@ -4,8 +4,8 @@ ext {
     targetSdkVersion = 34
     compileSdkVersion = 34
     buildToolsVersion = '34.0.0'
-    kotlinVersion = '1.3.72'
-    kotlinCouroutinesVersion = '1.3.7'
+    kotlinVersion = '1.8.22'
+    kotlinCouroutinesVersion = '1.7.0'
 
     // App dependencies
     appCompat = '1.3.0-alpha01'
