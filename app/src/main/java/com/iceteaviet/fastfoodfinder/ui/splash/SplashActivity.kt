@@ -48,10 +48,10 @@ class SplashActivity : BaseActivity(), SplashContract.View {
     override fun openMainScreenWithDelay(delayTime: Long) {
         if (delayTime > 0) {
             Handler(Looper.getMainLooper())
-                    .postDelayed({
-                        openMainActivity(this)
-                        finish()
-                    }, delayTime)
+                .postDelayed({
+                    openMainActivity(this)
+                    finish()
+                }, delayTime)
         } else {
             openMainActivity(this)
             finish()
@@ -70,17 +70,17 @@ class SplashActivity : BaseActivity(), SplashContract.View {
 
     override fun showRetryDialog() {
         AlertDialog.Builder(this)
-                .setTitle(getString(R.string.title_retry_update_db))
-                .setMessage(getString(R.string.msg_retry_update_db))
-                .setPositiveButton(android.R.string.yes) { dialog, _ ->
-                    dialog.dismiss()
-                    presenter.loadStoresFromServer()
-                }
-                .setNegativeButton(android.R.string.no) { dialog, _ ->
-                    dialog.dismiss()
-                    exit()
-                }
-                .show()
+            .setTitle(getString(R.string.title_retry_update_db))
+            .setMessage(getString(R.string.msg_retry_update_db))
+            .setPositiveButton(android.R.string.yes) { dialog, _ ->
+                dialog.dismiss()
+                presenter.loadStoresFromServer()
+            }
+            .setNegativeButton(android.R.string.no) { dialog, _ ->
+                dialog.dismiss()
+                exit()
+            }
+            .show()
     }
 
     override val layoutId: Int

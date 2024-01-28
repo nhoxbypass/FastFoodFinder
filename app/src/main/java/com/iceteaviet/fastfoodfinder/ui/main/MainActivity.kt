@@ -10,7 +10,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import androidx.annotation.Nullable
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
@@ -23,6 +22,7 @@ import com.bumptech.glide.Glide
 import com.google.android.material.navigation.NavigationView
 import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
+import com.iceteaviet.fastfoodfinder.databinding.ActivityMainBinding
 import com.iceteaviet.fastfoodfinder.ui.base.BaseActivity
 import com.iceteaviet.fastfoodfinder.ui.main.search.SearchFragment
 import com.iceteaviet.fastfoodfinder.ui.profile.ProfileFragment
@@ -33,10 +33,14 @@ import com.iceteaviet.fastfoodfinder.utils.openARLiveSightActivity
 import com.iceteaviet.fastfoodfinder.utils.openLoginActivity
 import com.iceteaviet.fastfoodfinder.utils.openSettingsActivity
 import de.hdodenhof.circleimageview.CircleImageView
-import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity(), MainContract.View, View.OnClickListener {
     override lateinit var presenter: MainContract.Presenter
+
+    /**
+     * Views Ref
+     */
+    private lateinit var binding: ActivityMainBinding
 
     lateinit var mNavigationView: NavigationView
     lateinit var drawerLayout: DrawerLayout
@@ -70,7 +74,7 @@ class MainActivity : BaseActivity(), MainContract.View, View.OnClickListener {
         fragmentManager.beginTransaction().replace(R.id.fl_fragment_placeholder, MainFragment.newInstance()).commit()
     }
 
-    override fun onPostCreate(@Nullable savedInstanceState: Bundle?) {
+    override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
         mDrawerToggle?.syncState()
     }
@@ -202,8 +206,8 @@ class MainActivity : BaseActivity(), MainContract.View, View.OnClickListener {
     override fun loadProfileHeaderAvatar(photoUrl: String) {
         navHeaderAvatar?.let {
             Glide.with(this)
-                    .load(photoUrl)
-                    .into(it)
+                .load(photoUrl)
+                .into(it)
         }
     }
 
@@ -217,11 +221,11 @@ class MainActivity : BaseActivity(), MainContract.View, View.OnClickListener {
 
     override fun onClick(view: View) {
         when (view.id) {
-            R.id.search_close_btn -> {
+            /*R.id.search_close_btn -> {
                 if (!searchFragment!!.isVisible) {
                     MenuItemCompat.collapseActionView(searchItem)
                 }
-            }
+            }*/
 
             R.id.btn_nav_header_signin -> {
                 presenter.onSignInMenuItemClick()
@@ -236,9 +240,9 @@ class MainActivity : BaseActivity(), MainContract.View, View.OnClickListener {
     }
 
     private fun setupUI() {
-        mNavigationView = nav_view
-        drawerLayout = drawer_layout
-        mToolbar = toolbar
+        mNavigationView = binding.navView
+        drawerLayout = binding.drawerLayout
+        mToolbar = binding.toolbar
 
         setSupportActionBar(mToolbar)
 
@@ -314,7 +318,7 @@ class MainActivity : BaseActivity(), MainContract.View, View.OnClickListener {
             }
         })
 
-        searchView.findViewById<View>(R.id.search_close_btn).setOnClickListener(this)
+        //searchView.findViewById<View>(R.id.search_close_btn).setOnClickListener(this)
 
         //Set event expand search view
         MenuItemCompat.setOnActionExpandListener(searchItem, object : MenuItemCompat.OnActionExpandListener {
@@ -343,20 +347,24 @@ class MainActivity : BaseActivity(), MainContract.View, View.OnClickListener {
                 presenter.onProfileMenuItemClick()
                 return
             }
+
             R.id.menu_action_map -> {
                 if (supportFragmentManager.backStackEntryCount > 0) {
                     supportFragmentManager.popBackStack()
                 }
                 return
             }
+
             R.id.menu_action_ar -> {
                 presenter.onARLiveSightMenuItemClick()
                 return
             }
+
             R.id.menu_action_setting -> {
                 presenter.onSettingsMenuItemClick()
                 return
             }
+
             else -> {
                 e(TAG, "Wrong menu item id")
             }
@@ -370,10 +378,10 @@ class MainActivity : BaseActivity(), MainContract.View, View.OnClickListener {
 
         if (oldFragment == null || !oldFragment.isAdded || oldFragment.isRemoving) {
             fragmentManager
-                    .beginTransaction()
-                    .replace(R.id.fl_fragment_placeholder, fragment, "profile_screen")
-                    .addToBackStack(null) // Add this transaction to the back stack
-                    .commit()
+                .beginTransaction()
+                .replace(R.id.fl_fragment_placeholder, fragment, "profile_screen")
+                .addToBackStack(null) // Add this transaction to the back stack
+                .commit()
             fragmentManager.executePendingTransactions()
         } else {
             // fragment already added

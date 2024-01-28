@@ -30,7 +30,7 @@ fun getAppSignatureSHA1(context: Context): String {
         val hexString = StringBuffer()
         for (j in publicKey.indices) {
             val appendString = Integer
-                    .toHexString(0xFF and publicKey[j].toInt())
+                .toHexString(0xFF and publicKey[j].toInt())
             if (appendString.length == 1)
                 hexString.append("0")
             hexString.append(appendString)

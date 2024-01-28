@@ -15,8 +15,8 @@ class StoreDAO : StoreDataSource {
     override fun getAllStores(): List<Store> {
         val realm = Realm.getDefaultInstance()
         val results = realm
-                .where(StoreEntity::class.java)
-                .findAll()
+            .where(StoreEntity::class.java)
+            .findAll()
 
         val stores = ArrayList<Store>()
         for (i in results.indices) {
@@ -36,8 +36,8 @@ class StoreDAO : StoreDataSource {
             val realm = Realm.getDefaultInstance()
             realm.executeTransactionAsync {
                 it.where(StoreEntity::class.java)
-                        .findAll()
-                        .deleteAllFromRealm()
+                    .findAll()
+                    .deleteAllFromRealm()
 
                 for (i in storeList.indices) {
                     val storeEntity = it.createObject(StoreEntity::class.java)
@@ -191,8 +191,8 @@ class StoreDAO : StoreDataSource {
     override fun deleteAllStores() {
         val realm = Realm.getDefaultInstance()
         realm.where(StoreEntity::class.java)
-                .findAll()
-                .deleteAllFromRealm()
+            .findAll()
+            .deleteAllFromRealm()
 
         realm.close()
     }

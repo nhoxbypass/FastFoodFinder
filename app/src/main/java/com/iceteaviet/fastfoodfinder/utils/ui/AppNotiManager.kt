@@ -17,7 +17,7 @@ import com.iceteaviet.fastfoodfinder.utils.getSplashScreenIntent
  * Created by tom on 2019-07-07.
  */
 
-class AppNotiManager constructor(private val context: Context) : NotiManager {
+class AppNotiManager(private val context: Context) : NotiManager {
     override fun showStoreSyncStatusNotification(message: String, title: String) {
         val intent = getSplashScreenIntent(context).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -25,14 +25,14 @@ class AppNotiManager constructor(private val context: Context) : NotiManager {
         val pendingIntent = PendingIntent.getActivity(context, 0, intent, 0)
 
         val notification = makeStatusNotification(message, title, DB_SYNC_NOTIFICATION_CHANNEL_ID,
-                DB_SYNC_NOTIFICATION_CHANNEL_NAME, DB_SYNC_NOTIFICATION_CHANNEL_DESCRIPTION, pendingIntent, R.drawable.ic_cloud_update_done)
+            DB_SYNC_NOTIFICATION_CHANNEL_NAME, DB_SYNC_NOTIFICATION_CHANNEL_DESCRIPTION, pendingIntent, R.drawable.ic_cloud_update_done)
 
         NotificationManagerCompat.from(context).notify(STORE_DB_SYNC_NOTIFICATION_ID, notification)
     }
 
     override fun showStoreSyncProgressStatusNotification(message: String, title: String) {
         val notification = makeProgressStatusNotification(message, title, DB_SYNC_NOTIFICATION_CHANNEL_ID,
-                DB_SYNC_NOTIFICATION_CHANNEL_NAME, DB_SYNC_NOTIFICATION_CHANNEL_DESCRIPTION, R.drawable.ic_cloud_update)
+            DB_SYNC_NOTIFICATION_CHANNEL_NAME, DB_SYNC_NOTIFICATION_CHANNEL_DESCRIPTION, R.drawable.ic_cloud_update)
 
         NotificationManagerCompat.from(context).notify(STORE_DB_SYNC_NOTIFICATION_ID, notification)
     }
@@ -64,12 +64,12 @@ class AppNotiManager constructor(private val context: Context) : NotiManager {
 
         // Create the notification
         val builder = NotificationCompat.Builder(context, notificationChannelId)
-                .setSmallIcon(iconId)
-                .setContentTitle(title)
-                .setContentText(message)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setVibrate(LongArray(0))
-                .setAutoCancel(true)
+            .setSmallIcon(iconId)
+            .setContentTitle(title)
+            .setContentText(message)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setVibrate(LongArray(0))
+            .setAutoCancel(true)
 
         if (pendingIntent != null)
             builder.setContentIntent(pendingIntent)
@@ -102,12 +102,12 @@ class AppNotiManager constructor(private val context: Context) : NotiManager {
 
         // Create the notification
         val builder = NotificationCompat.Builder(context, notificationChannelId)
-                .setSmallIcon(iconId)
-                .setContentTitle(title)
-                .setContentText(message)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setAutoCancel(false)
-                .setProgress(0, 0, true) // display an indeterminate progress bar (a bar that does not indicate percentage complete)
+            .setSmallIcon(iconId)
+            .setContentTitle(title)
+            .setContentText(message)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setAutoCancel(false)
+            .setProgress(0, 0, true) // display an indeterminate progress bar (a bar that does not indicate percentage complete)
 
         return builder.build()
     }

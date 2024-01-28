@@ -12,9 +12,10 @@ import com.iceteaviet.fastfoodfinder.ui.main.search.model.SearchStoreItem
 import com.iceteaviet.fastfoodfinder.ui.settings.discountnotify.DiscountNotifyPresenter
 import com.iceteaviet.fastfoodfinder.utils.ui.getStoreLogoDrawableRes
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.GregorianCalendar
+import java.util.Locale
+import java.util.Random
 import java.util.regex.Pattern
-import kotlin.collections.ArrayList
 
 /**
  * Created by binhlt on 23/11/2016.
@@ -42,11 +43,11 @@ fun getFakeComments(): List<Comment> {
     for (i in 0 until getRandomInt(3, 5)) {
         val index = getRandomInt(0, 4)
         comments.add(Comment(names[index],
-                avatars[index],
-                contents[getRandomInt(0, 4)],
-                mediaUrls[getRandomInt(0, 4)],
-                getRandomDate(),
-                getRandomLong()))
+            avatars[index],
+            contents[getRandomInt(0, 4)],
+            mediaUrls[getRandomInt(0, 4)],
+            getRandomDate(),
+            getRandomLong()))
     }
     return comments
 }
@@ -57,11 +58,11 @@ fun getFakeComment(): Comment {
     val mediaUrls = arrayOf("http://i.imgur.com/RHdsWRW.jpg", "http://i.imgur.com/IsfQQhd.jpg", "", "http://i.imgur.com/tNu5G5D.jpg", "http://i.imgur.com/QruogAF.jpg")
 
     return Comment("Scarlett",
-            "http://i.imgur.com/u9mpkNC.jpg",
-            contents[getRandomInt(0, 4)],
-            mediaUrls[getRandomInt(0, 4)],
-            getRandomDate(),
-            getRandomLong())
+        "http://i.imgur.com/u9mpkNC.jpg",
+        contents[getRandomInt(0, 4)],
+        mediaUrls[getRandomInt(0, 4)],
+        getRandomDate(),
+        getRandomLong())
 }
 
 private fun getRandomDate(): String {
@@ -163,138 +164,138 @@ fun getFakeUserMultiStoreLists(): List<UserStoreList> {
 
 fun getFakeMapsDirection(): MapsDirection {
     val directionData = "{\n" +
-            "  \"routes\": [\n" +
-            "    {\n" +
-            "      \"legs\": [\n" +
-            "        {\n" +
-            "          \"distance\": {\n" +
-            "            \"text\": \"7,6 km\",\n" +
-            "            \"value\": 7586\n" +
-            "          },\n" +
-            "          \"duration\": {\n" +
-            "            \"text\": \"21 phút\",\n" +
-            "            \"value\": 1279\n" +
-            "          },\n" +
-            "          \"start_address\": \"566 Nguyễn Văn Quỳ, Phú Thuận, Quận 7, Hồ Chí Minh, Việt Nam\",\n" +
-            "          \"end_address\": \"164 Nguyễn Công Trứ, Phường Nguyễn Thái Bình, Quận 1, Hồ Chí Minh, Việt Nam\",\n" +
-            "          \"steps\": [\n" +
-            "            {\n" +
-            "              \"distance\": {\n" +
-            "                \"text\": \"0,4 km\",\n" +
-            "                \"value\": 433\n" +
-            "              },\n" +
-            "              \"duration\": {\n" +
-            "                \"text\": \"2 phút\",\n" +
-            "                \"value\": 90\n" +
-            "              },\n" +
-            "              \"start_location\": {\n" +
-            "                \"lat\": 10.7651211,\n" +
-            "                \"lng\": 106.7072401\n" +
-            "              },\n" +
-            "              \"end_location\": {\n" +
-            "                \"lat\": 10.763467,\n" +
-            "                \"lng\": 106.7037776\n" +
-            "              },\n" +
-            "              \"html_instructions\": \"Rẽ <b>trái</b> tại Công Ty Tnhh Trader Indochine Viet Nam vào <b>Hoàng Diệu</b><div style=\\\"font-size:0.9em\\\">Băng qua Cuốn+ (ở phía bên phải)</div>\",\n" +
-            "              \"maneuver\": \"turn-left\",\n" +
-            "              \"travel_mode\": \"DRIVING\"\n" +
-            "            },\n" +
-            "            {\n" +
-            "              \"distance\": {\n" +
-            "                \"text\": \"39 m\",\n" +
-            "                \"value\": 39\n" +
-            "              },\n" +
-            "              \"duration\": {\n" +
-            "                \"text\": \"1 phút\",\n" +
-            "                \"value\": 8\n" +
-            "              },\n" +
-            "              \"start_location\": {\n" +
-            "                \"lat\": 10.763467,\n" +
-            "                \"lng\": 106.7037776\n" +
-            "              },\n" +
-            "              \"end_location\": {\n" +
-            "                \"lat\": 10.7637206,\n" +
-            "                \"lng\": 106.703531\n" +
-            "              },\n" +
-            "              \"html_instructions\": \"Rẽ <b>phải</b> tại Áo Cưới Black &amp; White vào <b>Đoàn Văn Bơ</b>\",\n" +
-            "              \"maneuver\": \"turn-right\",\n" +
-            "              \"travel_mode\": \"DRIVING\"\n" +
-            "            },\n" +
-            "            {\n" +
-            "              \"distance\": {\n" +
-            "                \"text\": \"0,6 km\",\n" +
-            "                \"value\": 575\n" +
-            "              },\n" +
-            "              \"duration\": {\n" +
-            "                \"text\": \"1 phút\",\n" +
-            "                \"value\": 87\n" +
-            "              },\n" +
-            "              \"start_location\": {\n" +
-            "                \"lat\": 10.7637206,\n" +
-            "                \"lng\": 106.703531\n" +
-            "              },\n" +
-            "              \"end_location\": {\n" +
-            "                \"lat\": 10.7672848,\n" +
-            "                \"lng\": 106.6997886\n" +
-            "              },\n" +
-            "              \"html_instructions\": \"Chếch sang <b>trái</b> tại Hủ tiếu Nam Vang Nhân Nghĩa vào <b>Calmette</b><div style=\\\"font-size:0.9em\\\">Băng qua Nhà May Anh Đức (ở phía bên phải)</div>\",\n" +
-            "              \"maneuver\": \"turn-slight-left\",\n" +
-            "              \"travel_mode\": \"DRIVING\"\n" +
-            "            }\n" +
-            "          ]\n" +
-            "        }\n" +
-            "      ],\n" +
-            "      \"summary\": \"Huỳnh Tấn Phát\",\n" +
-            "      \"overview_polyline\": {\n" +
-            "        \"points\": \"wzo`Ao_njSa@aBjAa@s@mCcD`AQu@a@mA_@yAYy@aAp@g@ZwAz@sLjHyBvAxAnDvCtGVXh@dA~BjFfB`El@pA~@bBLRKl@cAFoE\\\\{Ir@{E^kIr@iHp@yF^w@HcAFcAJoDNyCNaL`@}HX}BNgAJ{@Z_@ZY^U^On@u@bFcAjHcAnHCTHHd@p@PHLNNVBRBXAX_A`CyB`GqB`G{@`Cw@fBqBvFkF|K_EdIuKxT_ChEMPQHyGbCsCz@iAb@GBBLhAvDf@~Aj@xAx@hCX^|AvBDHONa@`@Q^sAtBcCxDs@t@_@\\\\sCfCwA~@aBpAo@d@KFGG_DsDyBmC\"\n" +
-            "      }\n" +
-            "    }\n" +
-            "  ]\n" +
-            "}"
+        "  \"routes\": [\n" +
+        "    {\n" +
+        "      \"legs\": [\n" +
+        "        {\n" +
+        "          \"distance\": {\n" +
+        "            \"text\": \"7,6 km\",\n" +
+        "            \"value\": 7586\n" +
+        "          },\n" +
+        "          \"duration\": {\n" +
+        "            \"text\": \"21 phút\",\n" +
+        "            \"value\": 1279\n" +
+        "          },\n" +
+        "          \"start_address\": \"566 Nguyễn Văn Quỳ, Phú Thuận, Quận 7, Hồ Chí Minh, Việt Nam\",\n" +
+        "          \"end_address\": \"164 Nguyễn Công Trứ, Phường Nguyễn Thái Bình, Quận 1, Hồ Chí Minh, Việt Nam\",\n" +
+        "          \"steps\": [\n" +
+        "            {\n" +
+        "              \"distance\": {\n" +
+        "                \"text\": \"0,4 km\",\n" +
+        "                \"value\": 433\n" +
+        "              },\n" +
+        "              \"duration\": {\n" +
+        "                \"text\": \"2 phút\",\n" +
+        "                \"value\": 90\n" +
+        "              },\n" +
+        "              \"start_location\": {\n" +
+        "                \"lat\": 10.7651211,\n" +
+        "                \"lng\": 106.7072401\n" +
+        "              },\n" +
+        "              \"end_location\": {\n" +
+        "                \"lat\": 10.763467,\n" +
+        "                \"lng\": 106.7037776\n" +
+        "              },\n" +
+        "              \"html_instructions\": \"Rẽ <b>trái</b> tại Công Ty Tnhh Trader Indochine Viet Nam vào <b>Hoàng Diệu</b><div style=\\\"font-size:0.9em\\\">Băng qua Cuốn+ (ở phía bên phải)</div>\",\n" +
+        "              \"maneuver\": \"turn-left\",\n" +
+        "              \"travel_mode\": \"DRIVING\"\n" +
+        "            },\n" +
+        "            {\n" +
+        "              \"distance\": {\n" +
+        "                \"text\": \"39 m\",\n" +
+        "                \"value\": 39\n" +
+        "              },\n" +
+        "              \"duration\": {\n" +
+        "                \"text\": \"1 phút\",\n" +
+        "                \"value\": 8\n" +
+        "              },\n" +
+        "              \"start_location\": {\n" +
+        "                \"lat\": 10.763467,\n" +
+        "                \"lng\": 106.7037776\n" +
+        "              },\n" +
+        "              \"end_location\": {\n" +
+        "                \"lat\": 10.7637206,\n" +
+        "                \"lng\": 106.703531\n" +
+        "              },\n" +
+        "              \"html_instructions\": \"Rẽ <b>phải</b> tại Áo Cưới Black &amp; White vào <b>Đoàn Văn Bơ</b>\",\n" +
+        "              \"maneuver\": \"turn-right\",\n" +
+        "              \"travel_mode\": \"DRIVING\"\n" +
+        "            },\n" +
+        "            {\n" +
+        "              \"distance\": {\n" +
+        "                \"text\": \"0,6 km\",\n" +
+        "                \"value\": 575\n" +
+        "              },\n" +
+        "              \"duration\": {\n" +
+        "                \"text\": \"1 phút\",\n" +
+        "                \"value\": 87\n" +
+        "              },\n" +
+        "              \"start_location\": {\n" +
+        "                \"lat\": 10.7637206,\n" +
+        "                \"lng\": 106.703531\n" +
+        "              },\n" +
+        "              \"end_location\": {\n" +
+        "                \"lat\": 10.7672848,\n" +
+        "                \"lng\": 106.6997886\n" +
+        "              },\n" +
+        "              \"html_instructions\": \"Chếch sang <b>trái</b> tại Hủ tiếu Nam Vang Nhân Nghĩa vào <b>Calmette</b><div style=\\\"font-size:0.9em\\\">Băng qua Nhà May Anh Đức (ở phía bên phải)</div>\",\n" +
+        "              \"maneuver\": \"turn-slight-left\",\n" +
+        "              \"travel_mode\": \"DRIVING\"\n" +
+        "            }\n" +
+        "          ]\n" +
+        "        }\n" +
+        "      ],\n" +
+        "      \"summary\": \"Huỳnh Tấn Phát\",\n" +
+        "      \"overview_polyline\": {\n" +
+        "        \"points\": \"wzo`Ao_njSa@aBjAa@s@mCcD`AQu@a@mA_@yAYy@aAp@g@ZwAz@sLjHyBvAxAnDvCtGVXh@dA~BjFfB`El@pA~@bBLRKl@cAFoE\\\\{Ir@{E^kIr@iHp@yF^w@HcAFcAJoDNyCNaL`@}HX}BNgAJ{@Z_@ZY^U^On@u@bFcAjHcAnHCTHHd@p@PHLNNVBRBXAX_A`CyB`GqB`G{@`Cw@fBqBvFkF|K_EdIuKxT_ChEMPQHyGbCsCz@iAb@GBBLhAvDf@~Aj@xAx@hCX^|AvBDHONa@`@Q^sAtBcCxDs@t@_@\\\\sCfCwA~@aBpAo@d@KFGG_DsDyBmC\"\n" +
+        "      }\n" +
+        "    }\n" +
+        "  ]\n" +
+        "}"
     return Gson().fromJson(directionData, MapsDirection::class.java)
 }
 
 fun getFakeEmptyLegMapsDirection(): MapsDirection {
     val directionData = "{\n" +
-            "  \"routes\": [\n" +
-            "    {\n" +
-            "      \"legs\": [],\n" +
-            "      \"summary\": \"Huỳnh Tấn Phát\",\n" +
-            "      \"overview_polyline\": {\n" +
-            "        \"points\": \"wzo`Ao_njSa@aBjAa@s@mCcD`AQu@a@mA_@yAYy@aAp@g@ZwAz@sLjHyBvAxAnDvCtGVXh@dA~BjFfB`El@pA~@bBLRKl@cAFoE\\\\{Ir@{E^kIr@iHp@yF^w@HcAFcAJoDNyCNaL`@}HX}BNgAJ{@Z_@ZY^U^On@u@bFcAjHcAnHCTHHd@p@PHLNNVBRBXAX_A`CyB`GqB`G{@`Cw@fBqBvFkF|K_EdIuKxT_ChEMPQHyGbCsCz@iAb@GBBLhAvDf@~Aj@xAx@hCX^|AvBDHONa@`@Q^sAtBcCxDs@t@_@\\\\sCfCwA~@aBpAo@d@KFGG_DsDyBmC\"\n" +
-            "      }\n" +
-            "    }\n" +
-            "  ]\n" +
-            "}"
+        "  \"routes\": [\n" +
+        "    {\n" +
+        "      \"legs\": [],\n" +
+        "      \"summary\": \"Huỳnh Tấn Phát\",\n" +
+        "      \"overview_polyline\": {\n" +
+        "        \"points\": \"wzo`Ao_njSa@aBjAa@s@mCcD`AQu@a@mA_@yAYy@aAp@g@ZwAz@sLjHyBvAxAnDvCtGVXh@dA~BjFfB`El@pA~@bBLRKl@cAFoE\\\\{Ir@{E^kIr@iHp@yF^w@HcAFcAJoDNyCNaL`@}HX}BNgAJ{@Z_@ZY^U^On@u@bFcAjHcAnHCTHHd@p@PHLNNVBRBXAX_A`CyB`GqB`G{@`Cw@fBqBvFkF|K_EdIuKxT_ChEMPQHyGbCsCz@iAb@GBBLhAvDf@~Aj@xAx@hCX^|AvBDHONa@`@Q^sAtBcCxDs@t@_@\\\\sCfCwA~@aBpAo@d@KFGG_DsDyBmC\"\n" +
+        "      }\n" +
+        "    }\n" +
+        "  ]\n" +
+        "}"
     return Gson().fromJson(directionData, MapsDirection::class.java)
 }
 
 fun getFakeEmptyStepMapsDirection(): MapsDirection {
     val directionData = "{\n" +
-            "  \"routes\": [\n" +
-            "    {\n" +
-            "      \"legs\": [\n" +
-            "        {\n" +
-            "          \"distance\": {\n" +
-            "            \"text\": \"7,6 km\",\n" +
-            "            \"value\": 7586\n" +
-            "          },\n" +
-            "          \"duration\": {\n" +
-            "            \"text\": \"21 phút\",\n" +
-            "            \"value\": 1279\n" +
-            "          },\n" +
-            "          \"start_address\": \"566 Nguyễn Văn Quỳ, Phú Thuận, Quận 7, Hồ Chí Minh, Việt Nam\",\n" +
-            "          \"end_address\": \"164 Nguyễn Công Trứ, Phường Nguyễn Thái Bình, Quận 1, Hồ Chí Minh, Việt Nam\",\n" +
-            "          \"steps\": []\n" +
-            "        }\n" +
-            "      ],\n" +
-            "      \"summary\": \"Huỳnh Tấn Phát\",\n" +
-            "      \"overview_polyline\": {\n" +
-            "        \"points\": \"wzo`Ao_njSa@aBjAa@s@mCcD`AQu@a@mA_@yAYy@aAp@g@ZwAz@sLjHyBvAxAnDvCtGVXh@dA~BjFfB`El@pA~@bBLRKl@cAFoE\\\\{Ir@{E^kIr@iHp@yF^w@HcAFcAJoDNyCNaL`@}HX}BNgAJ{@Z_@ZY^U^On@u@bFcAjHcAnHCTHHd@p@PHLNNVBRBXAX_A`CyB`GqB`G{@`Cw@fBqBvFkF|K_EdIuKxT_ChEMPQHyGbCsCz@iAb@GBBLhAvDf@~Aj@xAx@hCX^|AvBDHONa@`@Q^sAtBcCxDs@t@_@\\\\sCfCwA~@aBpAo@d@KFGG_DsDyBmC\"\n" +
-            "      }\n" +
-            "    }\n" +
-            "  ]\n" +
-            "}"
+        "  \"routes\": [\n" +
+        "    {\n" +
+        "      \"legs\": [\n" +
+        "        {\n" +
+        "          \"distance\": {\n" +
+        "            \"text\": \"7,6 km\",\n" +
+        "            \"value\": 7586\n" +
+        "          },\n" +
+        "          \"duration\": {\n" +
+        "            \"text\": \"21 phút\",\n" +
+        "            \"value\": 1279\n" +
+        "          },\n" +
+        "          \"start_address\": \"566 Nguyễn Văn Quỳ, Phú Thuận, Quận 7, Hồ Chí Minh, Việt Nam\",\n" +
+        "          \"end_address\": \"164 Nguyễn Công Trứ, Phường Nguyễn Thái Bình, Quận 1, Hồ Chí Minh, Việt Nam\",\n" +
+        "          \"steps\": []\n" +
+        "        }\n" +
+        "      ],\n" +
+        "      \"summary\": \"Huỳnh Tấn Phát\",\n" +
+        "      \"overview_polyline\": {\n" +
+        "        \"points\": \"wzo`Ao_njSa@aBjAa@s@mCcD`AQu@a@mA_@yAYy@aAp@g@ZwAz@sLjHyBvAxAnDvCtGVXh@dA~BjFfB`El@pA~@bBLRKl@cAFoE\\\\{Ir@{E^kIr@iHp@yF^w@HcAFcAJoDNyCNaL`@}HX}BNgAJ{@Z_@ZY^U^On@u@bFcAjHcAnHCTHHd@p@PHLNNVBRBXAX_A`CyB`GqB`G{@`Cw@fBqBvFkF|K_EdIuKxT_ChEMPQHyGbCsCz@iAb@GBBLhAvDf@~Aj@xAx@hCX^|AvBDHONa@`@Q^sAtBcCxDs@t@_@\\\\sCfCwA~@aBpAo@d@KFGG_DsDyBmC\"\n" +
+        "      }\n" +
+        "    }\n" +
+        "  ]\n" +
+        "}"
     return Gson().fromJson(directionData, MapsDirection::class.java)
 }
 
@@ -382,10 +383,10 @@ fun storesToArPoints(stores: List<Store>): List<AugmentedPOI> {
     val arPoints = ArrayList<AugmentedPOI>()
     for (i in stores.indices) {
         arPoints.add(AugmentedPOI(stores[i].title,
-                stores[i].lat.toDouble(),
-                stores[i].lng.toDouble(),
-                0.0,
-                getStoreLogoDrawableRes(stores[i].type)))
+            stores[i].lat.toDouble(),
+            stores[i].lng.toDouble(),
+            0.0,
+            getStoreLogoDrawableRes(stores[i].type)))
     }
     return arPoints
 }

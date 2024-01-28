@@ -61,14 +61,14 @@ open class SystemLocationManager private constructor(context: Context) : AbsLoca
 
         if (isNetworkEnabled) {
             locationManager?.requestLocationUpdates(android.location.LocationManager.NETWORK_PROVIDER,
-                    minTime,
-                    minDistance, this)
+                minTime,
+                minDistance, this)
         }
 
         if (isGPSEnabled) {
             locationManager?.requestLocationUpdates(android.location.LocationManager.GPS_PROVIDER,
-                    minTime,
-                    minDistance, this)
+                minTime,
+                minDistance, this)
         }
     }
 
@@ -117,7 +117,7 @@ open class SystemLocationManager private constructor(context: Context) : AbsLoca
                         if (!::appContext.isInitialized)
                             throw IllegalStateException("Call `SystemLocationManager.init(Context)` before calling this method.")
                         else
-                            instance = SystemLocationManager(appContext!!)
+                            instance = SystemLocationManager(appContext)
                     }
                 }
             }

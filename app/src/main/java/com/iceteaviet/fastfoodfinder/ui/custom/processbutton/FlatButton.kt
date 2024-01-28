@@ -54,11 +54,11 @@ open class FlatButton : AppCompatButton {
             cornerRadius = attr.getDimension(R.styleable.FlatButton_pb_cornerRadius, defValue)
 
             normalDrawable.addState(intArrayOf(android.R.attr.state_pressed),
-                    createPressedDrawable(attr))
+                createPressedDrawable(attr))
             normalDrawable.addState(intArrayOf(android.R.attr.state_focused),
-                    createPressedDrawable(attr))
+                createPressedDrawable(attr))
             normalDrawable.addState(intArrayOf(android.R.attr.state_selected),
-                    createPressedDrawable(attr))
+                createPressedDrawable(attr))
             normalDrawable.addState(intArrayOf(), createNormalDrawable(attr))
 
         } finally {
@@ -116,7 +116,7 @@ open class FlatButton : AppCompatButton {
         return resources.getColor(id)
     }
 
-    protected fun getTypedArray(context: Context, attributeSet: AttributeSet, attr: IntArray): TypedArray? {
+    protected fun getTypedArray(context: Context, attributeSet: AttributeSet, attr: IntArray): TypedArray {
         return context.obtainStyledAttributes(attributeSet, attr, 0, 0)
     }
 

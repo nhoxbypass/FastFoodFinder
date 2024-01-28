@@ -4,17 +4,15 @@ import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.os.IBinder
-import androidx.annotation.Nullable
 
 /**
  * Created by tom on 8/7/18.
  */
 class SyncService : Service() {
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-        return Service.START_STICKY
+        return START_STICKY
     }
 
-    @Nullable
     override fun onBind(intent: Intent): IBinder? {
         return null
     }

@@ -1,6 +1,5 @@
 package com.iceteaviet.fastfoodfinder.data.remote.store
 
-import androidx.annotation.NonNull
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -8,7 +7,6 @@ import com.google.firebase.database.ValueEventListener
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Comment
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.utils.getStoreType
-import java.util.*
 
 /**
  * Created by tom on 7/17/18.
@@ -17,11 +15,11 @@ class FirebaseStoreApiHelper(private val databaseRef: DatabaseReference) : Store
 
     override fun getAllStores(callback: StoreApiHelper.StoreLoadCallback<List<Store>>) {
         databaseRef.child(CHILD_STORES_LOCATION).addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(@NonNull dataSnapshot: DataSnapshot) {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
                 callback.onSuccess(parseStoresDataFromFirebase(dataSnapshot))
             }
 
-            override fun onCancelled(@NonNull databaseError: DatabaseError) {
+            override fun onCancelled(databaseError: DatabaseError) {
                 callback.onError(databaseError.toException())
             }
         })

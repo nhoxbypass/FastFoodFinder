@@ -15,6 +15,7 @@ import io.reactivex.disposables.Disposable
 class SettingPresenter : BasePresenter<SettingContract.Presenter>, SettingContract.Presenter {
 
     val settingView: SettingContract.View
+
     @VisibleForTesting
     var isVietnamese = true
 
@@ -58,26 +59,26 @@ class SettingPresenter : BasePresenter<SettingContract.Presenter>, SettingContra
 
     override fun onLoadStoreFromServer() {
         dataManager.loadStoresFromServer()
-                .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
-                .subscribe(object : SingleObserver<List<Store>> {
-                    override fun onSubscribe(d: Disposable) {
-                        compositeDisposable.add(d)
-                        settingView.updateLoadingProgressView(true)
-                    }
+            .subscribeOn(schedulerProvider.io())
+            .observeOn(schedulerProvider.ui())
+            .subscribe(object : SingleObserver<List<Store>> {
+                override fun onSubscribe(d: Disposable) {
+                    compositeDisposable.add(d)
+                    settingView.updateLoadingProgressView(true)
+                }
 
-                    override fun onSuccess(storeList: List<Store>) {
-                        val filteredStoreList = filterInvalidData(storeList.toMutableList())
-                        dataManager.setStores(filteredStoreList)
+                override fun onSuccess(storeList: List<Store>) {
+                    val filteredStoreList = filterInvalidData(storeList.toMutableList())
+                    dataManager.setStores(filteredStoreList)
 
-                        settingView.showSuccessLoadingToast("")
-                        settingView.updateLoadingProgressView(false)
-                    }
+                    settingView.showSuccessLoadingToast("")
+                    settingView.updateLoadingProgressView(false)
+                }
 
-                    override fun onError(e: Throwable) {
-                        settingView.showFailedLoadingToast(e.message)
-                        settingView.updateLoadingProgressView(false)
-                    }
-                })
+                override fun onError(e: Throwable) {
+                    settingView.showFailedLoadingToast(e.message)
+                    settingView.updateLoadingProgressView(false)
+                }
+            })
     }
 }

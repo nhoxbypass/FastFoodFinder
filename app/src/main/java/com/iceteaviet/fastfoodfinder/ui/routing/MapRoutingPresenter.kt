@@ -12,7 +12,6 @@ import com.iceteaviet.fastfoodfinder.ui.base.BasePresenter
 import com.iceteaviet.fastfoodfinder.utils.isValidLocation
 import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
 import com.iceteaviet.fastfoodfinder.utils.ui.getStoreLogoDrawableRes
-import java.util.*
 
 /**
  * Created by tom on 2019-04-18.
@@ -23,14 +22,19 @@ class MapRoutingPresenter : BasePresenter<MapRoutingContract.Presenter>, MapRout
 
     @VisibleForTesting
     var inPreviewMode = false
+
     @VisibleForTesting
     var currLocation: LatLng? = null
+
     @VisibleForTesting
     lateinit var currStore: Store
+
     @VisibleForTesting
     var stepList: List<Step> = ArrayList()
+
     @VisibleForTesting
     var geoPointList: List<LatLng> = ArrayList()
+
     @VisibleForTesting
     var currDirectionIndex = 0
 
@@ -111,7 +115,7 @@ class MapRoutingPresenter : BasePresenter<MapRoutingContract.Presenter>, MapRout
         currLocation?.let {
             mapRoutingView.animateMapCamera(it, false)
             mapRoutingView.addMapMarker(it, "Your location",
-                    "Your current location, please follow the line", R.drawable.ic_map_bluedot)
+                "Your current location, please follow the line", R.drawable.ic_map_bluedot)
         }
 
         mapRoutingView.drawRoutingPath(currLocation, geoPointList)
@@ -126,7 +130,7 @@ class MapRoutingPresenter : BasePresenter<MapRoutingContract.Presenter>, MapRout
             return false
 
         if (mapsDirection.routeList.isEmpty() || mapsDirection.routeList[0].legList.isEmpty()
-                || mapsDirection.routeList[0].legList[0].stepList.isEmpty()) {
+            || mapsDirection.routeList[0].legList[0].stepList.isEmpty()) {
             return false
         }
 

@@ -88,6 +88,6 @@
         android:padding="16dp"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_arrow_right"
-        app:civ_fill_color="@color/colorPrimary" />
+        app:civ_circle_background_color="@color/colorPrimary" />
 
 </FrameLayout>

@@ -68,6 +68,13 @@ android {
             events 'passed', 'skipped', 'failed', 'standardOut', 'standardError'
         }
     }
+
+    buildFeatures {
+        viewBinding = true
+        dataBinding true
+        buildConfig = true
+        aidl true
+    }
 }
 
 def build_param = "${build}"

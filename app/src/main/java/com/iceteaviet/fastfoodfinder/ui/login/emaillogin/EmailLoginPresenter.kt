@@ -30,24 +30,24 @@ class EmailLoginPresenter : BasePresenter<EmailLoginContract.Presenter>, EmailLo
         if (isValidEmail(email)) {
             if (isValidPassword(password)) {
                 dataManager.signInWithEmailAndPassword(email, password)
-                        .subscribeOn(schedulerProvider.io())
-                        .observeOn(schedulerProvider.ui())
-                        .subscribe(object : SingleObserver<User> {
-                            override fun onSubscribe(d: Disposable) {
-                                compositeDisposable.add(d)
-                            }
+                    .subscribeOn(schedulerProvider.io())
+                    .observeOn(schedulerProvider.ui())
+                    .subscribe(object : SingleObserver<User> {
+                        override fun onSubscribe(d: Disposable) {
+                            compositeDisposable.add(d)
+                        }
 
-                            override fun onSuccess(user: User) {
-                                setLoginProgressState(2)
-                                emailLoginView.notifyLoginSuccess(user)
-                            }
+                        override fun onSuccess(user: User) {
+                            setLoginProgressState(2)
+                            emailLoginView.notifyLoginSuccess(user)
+                        }
 
-                            override fun onError(e: Throwable) {
-                                e.printStackTrace()
-                                setLoginProgressState(-1)
-                                emailLoginView.notifyLoginError(e)
-                            }
-                        })
+                        override fun onError(e: Throwable) {
+                            e.printStackTrace()
+                            setLoginProgressState(-1)
+                            emailLoginView.notifyLoginError(e)
+                        }
+                    })
             } else {
                 emailLoginView.showInvalidPasswordError()
                 setLoginProgressState(0)

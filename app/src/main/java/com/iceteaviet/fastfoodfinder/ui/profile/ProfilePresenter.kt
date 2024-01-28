@@ -9,7 +9,6 @@ import com.iceteaviet.fastfoodfinder.utils.isValidUserUid
 import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
 import io.reactivex.SingleObserver
 import io.reactivex.disposables.Disposable
-import java.util.*
 
 /**
  * Created by tom on 2019-04-18.
@@ -17,6 +16,7 @@ import java.util.*
 class ProfilePresenter : BasePresenter<ProfileContract.Presenter>, ProfileContract.Presenter {
 
     private val profileView: ProfileContract.View
+
     @VisibleForTesting
     var defaultList: MutableList<UserStoreList> = ArrayList() // Default store list (saved, favourite) that every user have
 
@@ -91,29 +91,29 @@ class ProfilePresenter : BasePresenter<ProfileContract.Presenter>, ProfileContra
             return
 
         dataManager.getUser(uid)
-                .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
-                .subscribe(object : SingleObserver<User> {
-                    override fun onSubscribe(d: Disposable) {
-                        compositeDisposable.add(d)
-                    }
+            .subscribeOn(schedulerProvider.io())
+            .observeOn(schedulerProvider.ui())
+            .subscribe(object : SingleObserver<User> {
+                override fun onSubscribe(d: Disposable) {
+                    compositeDisposable.add(d)
+                }
 
-                    override fun onSuccess(user: User) {
-                        dataManager.updateCurrentUser(user)
-                        if (!user.photoUrl.isBlank())
-                            profileView.loadAvatarPhoto(user.photoUrl)
-                        profileView.setName(user.name)
-                        profileView.setEmail(user.email)
-                        loadStoreLists(user)
+                override fun onSuccess(user: User) {
+                    dataManager.updateCurrentUser(user)
+                    if (!user.photoUrl.isBlank())
+                        profileView.loadAvatarPhoto(user.photoUrl)
+                    profileView.setName(user.name)
+                    profileView.setEmail(user.email)
+                    loadStoreLists(user)
 
-                        profileView.setSavedStoreCount(user.getSavedStoreList().getStoreIdList().size)
-                        profileView.setFavouriteStoreCount(user.getFavouriteStoreList().getStoreIdList().size)
-                    }
+                    profileView.setSavedStoreCount(user.getSavedStoreList().getStoreIdList().size)
+                    profileView.setFavouriteStoreCount(user.getFavouriteStoreList().getStoreIdList().size)
+                }
 
-                    override fun onError(e: Throwable) {
-                        profileView.showGeneralErrorMessage()
-                    }
-                })
+                override fun onError(e: Throwable) {
+                    profileView.showGeneralErrorMessage()
+                }
+            })
     }
 
     private fun loadStoreLists(currentUser: User) {

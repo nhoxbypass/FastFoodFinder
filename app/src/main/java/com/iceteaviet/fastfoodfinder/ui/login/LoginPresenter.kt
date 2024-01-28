@@ -42,71 +42,71 @@ class LoginPresenter : BasePresenter<LoginContract.Presenter>, LoginContract.Pre
 
     override fun onLoginSuccess(baseUser: User) {
         dataManager.getUser(baseUser.getUid())
-                .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
-                .subscribe(object : SingleObserver<User> {
-                    override fun onSubscribe(d: Disposable) {
-                        compositeDisposable.add(d)
-                    }
+            .subscribeOn(schedulerProvider.io())
+            .observeOn(schedulerProvider.ui())
+            .subscribe(object : SingleObserver<User> {
+                override fun onSubscribe(d: Disposable) {
+                    compositeDisposable.add(d)
+                }
 
-                    override fun onSuccess(user: User) {
-                        dataManager.updateCurrentUser(user)
-                        loginView.showMainView()
-                    }
+                override fun onSuccess(user: User) {
+                    dataManager.updateCurrentUser(user)
+                    loginView.showMainView()
+                }
 
-                    override fun onError(e: Throwable) {
-                        e.printStackTrace()
-                        loginView.showGeneralErrorMessage()
-                        loginView.showMainView()
-                    }
-                })
+                override fun onError(e: Throwable) {
+                    e.printStackTrace()
+                    loginView.showGeneralErrorMessage()
+                    loginView.showMainView()
+                }
+            })
     }
 
     override fun onRequestGoogleAccountSuccess(authCredential: AuthCredential, fromLastSignIn: Boolean) {
         dataManager.signInWithCredential(authCredential)
-                .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
-                .subscribe(object : SingleObserver<User> {
-                    override fun onSubscribe(d: Disposable) {
-                        compositeDisposable.add(d)
-                    }
+            .subscribeOn(schedulerProvider.io())
+            .observeOn(schedulerProvider.ui())
+            .subscribe(object : SingleObserver<User> {
+                override fun onSubscribe(d: Disposable) {
+                    compositeDisposable.add(d)
+                }
 
-                    override fun onSuccess(user: User) {
-                        if (!fromLastSignIn) {
-                            // New user registering
-                            onRegisterSuccess(user)
-                        } else {
-                            dataManager.updateCurrentUser(user)
-                            onLoginSuccess(user)
-                        }
+                override fun onSuccess(user: User) {
+                    if (!fromLastSignIn) {
+                        // New user registering
+                        onRegisterSuccess(user)
+                    } else {
+                        dataManager.updateCurrentUser(user)
+                        onLoginSuccess(user)
                     }
+                }
 
-                    override fun onError(e: Throwable) {
-                        loginView.showSignInFailMessage()
-                    }
-                })
+                override fun onError(e: Throwable) {
+                    loginView.showSignInFailMessage()
+                }
+            })
     }
 
     // TODO: Check is new account
     override fun onRequestFacebookAccountSuccess(authCredential: AuthCredential) {
         dataManager.signInWithCredential(authCredential)
-                .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
-                .subscribe(object : SingleObserver<User> {
-                    override fun onSubscribe(d: Disposable) {
-                        compositeDisposable.add(d)
-                    }
+            .subscribeOn(schedulerProvider.io())
+            .observeOn(schedulerProvider.ui())
+            .subscribe(object : SingleObserver<User> {
+                override fun onSubscribe(d: Disposable) {
+                    compositeDisposable.add(d)
+                }
 
-                    override fun onSuccess(user: User) {
-                        ensureBasicUserData(user)
-                        dataManager.updateCurrentUser(user)
-                        onLoginSuccess(user)
-                    }
+                override fun onSuccess(user: User) {
+                    ensureBasicUserData(user)
+                    dataManager.updateCurrentUser(user)
+                    onLoginSuccess(user)
+                }
 
-                    override fun onError(e: Throwable) {
-                        loginView.showSignInFailMessage()
-                    }
-                })
+                override fun onError(e: Throwable) {
+                    loginView.showSignInFailMessage()
+                }
+            })
     }
 
     private fun ensureBasicUserData(user: User) {

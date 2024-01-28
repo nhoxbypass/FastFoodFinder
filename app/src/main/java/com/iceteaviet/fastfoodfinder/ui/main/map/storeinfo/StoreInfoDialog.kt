@@ -4,23 +4,26 @@ import android.app.Dialog
 import android.content.pm.PackageManager
 import android.graphics.Point
 import android.os.Bundle
-import android.view.*
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.Window
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
-import androidx.annotation.NonNull
-import androidx.annotation.Nullable
 import androidx.fragment.app.DialogFragment
 import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
+import com.iceteaviet.fastfoodfinder.databinding.FragmentStoreInfoBinding
 import com.iceteaviet.fastfoodfinder.ui.store.StoreDetailActivity.Companion.KEY_STORE
 import com.iceteaviet.fastfoodfinder.ui.store.StoreDetailAdapter
 import com.iceteaviet.fastfoodfinder.utils.REQUEST_CALL_PHONE
 import com.iceteaviet.fastfoodfinder.utils.isCallPhonePermissionGranted
 import com.iceteaviet.fastfoodfinder.utils.makeNativeCall
 import com.iceteaviet.fastfoodfinder.utils.requestCallPhonePermission
-import kotlinx.android.synthetic.main.fragment_store_info.*
 
 /**
  * Created by taq on 26/11/2016.
@@ -29,6 +32,12 @@ import kotlinx.android.synthetic.main.fragment_store_info.*
 class StoreInfoDialog : DialogFragment(), StoreInfoContract.View {
 
     override lateinit var presenter: StoreInfoContract.Presenter
+
+    /**
+     * Views Ref
+     */
+    private lateinit var binding: FragmentStoreInfoBinding
+
     lateinit var cdvh: StoreDetailAdapter.CallDirectionViewHolder
     lateinit var tvStoreName: TextView
     lateinit var tvViewDetail: TextView
@@ -42,19 +51,18 @@ class StoreInfoDialog : DialogFragment(), StoreInfoContract.View {
         mListener = listener
     }
 
-    @Nullable
-    override fun onCreateView(@NonNull inflater: LayoutInflater, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.fragment_store_info, container)
     }
 
-    override fun onViewCreated(@NonNull view: View, @Nullable savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        tvStoreName = store_name
-        tvViewDetail = view_detail
-        tvStoreAddress = store_address
-        vCallDirection = call_direction
-        btnAddToFavorite = btn_fav
+        tvStoreName = binding.storeName
+        tvViewDetail = binding.viewDetail
+        tvStoreAddress = binding.storeAddress
+        vCallDirection = binding.callDirection.root
+        btnAddToFavorite = binding.btnFav
 
         cdvh = StoreDetailAdapter.CallDirectionViewHolder(vCallDirection)
 
@@ -67,7 +75,7 @@ class StoreInfoDialog : DialogFragment(), StoreInfoContract.View {
         }
 
         cdvh.btnCall.setOnClickListener {
-            if (isCallPhonePermissionGranted(context!!))
+            if (isCallPhonePermissionGranted(requireContext()))
                 presenter.onMakeCallWithPermission()
             else
                 requestCallPhonePermission(this)
@@ -91,7 +99,7 @@ class StoreInfoDialog : DialogFragment(), StoreInfoContract.View {
     }
 
     override fun makeNativeCall(tel: String) {
-        makeNativeCall(activity!!, tel)
+        makeNativeCall(requireActivity(), tel)
     }
 
     override fun showEmptyTelToast() {
@@ -99,7 +107,7 @@ class StoreInfoDialog : DialogFragment(), StoreInfoContract.View {
     }
 
     override fun openStoreDetailActivity(store: Store?) {
-        com.iceteaviet.fastfoodfinder.utils.openStoreDetailActivity(activity!!, store!!)
+        com.iceteaviet.fastfoodfinder.utils.openStoreDetailActivity(requireActivity(), store!!)
     }
 
     override fun updateNewStoreUI(store: Store?) {
@@ -110,7 +118,6 @@ class StoreInfoDialog : DialogFragment(), StoreInfoContract.View {
         tvStoreAddress.text = store.address
     }
 
-    @NonNull
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState)
         dialog.window?.requestFeature(Window.FEATURE_NO_TITLE)
@@ -135,7 +142,7 @@ class StoreInfoDialog : DialogFragment(), StoreInfoContract.View {
         presenter.subscribe()
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, @NonNull permissions: Array<String>, @NonNull grantResults: IntArray) {
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         when (requestCode) {

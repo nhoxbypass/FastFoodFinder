@@ -19,7 +19,6 @@ abstract class ProcessButton : FlatButton {
     var maxProgress: Int = 0
         private set
     private var minProgress: Int = 0
-        private set
 
     var progressDrawable: GradientDrawable? = null
     var completeDrawable: GradientDrawable? = null
@@ -85,7 +84,7 @@ abstract class ProcessButton : FlatButton {
     }
 
     private fun initAttributes(context: Context, attributeSet: AttributeSet) {
-        val attr = getTypedArray(context, attributeSet, R.styleable.ProcessButton) ?: return
+        val attr = getTypedArray(context, attributeSet, R.styleable.ProcessButton)
 
         try {
             loadingText = attr.getString(R.styleable.ProcessButton_pb_textProgress)
@@ -173,7 +172,7 @@ abstract class ProcessButton : FlatButton {
      * A [android.os.Parcelable] representing the [com.dd.processbutton.ProcessButton]'s
      * state.
      */
-    class SavedState : View.BaseSavedState {
+    class SavedState : BaseSavedState {
 
         var mProgress: Int = 0
 

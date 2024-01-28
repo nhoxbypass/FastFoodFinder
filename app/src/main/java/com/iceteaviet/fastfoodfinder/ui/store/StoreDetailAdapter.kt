@@ -9,7 +9,6 @@ import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.annotation.NonNull
 import androidx.cardview.widget.CardView
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
 import androidx.recyclerview.widget.RecyclerView
@@ -21,11 +20,6 @@ import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoTextView
 import com.iceteaviet.fastfoodfinder.utils.getRelativeTimeAgo
 import com.iceteaviet.fastfoodfinder.utils.getString
-import kotlinx.android.synthetic.main.item_store_action.view.*
-import kotlinx.android.synthetic.main.item_store_comment.view.*
-import kotlinx.android.synthetic.main.item_store_info.view.*
-import kotlinx.android.synthetic.main.item_store_title.view.*
-import kotlinx.android.synthetic.main.layout_call_direction.view.*
 
 /**
  * Created by binhlt on 23/11/2016.
@@ -63,7 +57,7 @@ class StoreDetailAdapter internal constructor() : RecyclerView.Adapter<RecyclerV
         notifyItemChanged(0)
     }
 
-    override fun onCreateViewHolder(@NonNull parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             HEADER -> HeaderViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_store_action, parent, false), mListener)
             INFO -> InfoViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_store_info, parent, false), mListener)
@@ -73,20 +67,23 @@ class StoreDetailAdapter internal constructor() : RecyclerView.Adapter<RecyclerV
         }
     }
 
-    override fun onBindViewHolder(@NonNull holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (getItemViewType(position)) {
             HEADER -> if (holder is HeaderViewHolder) {
                 holder.bind(mStore, isSignedIn)
             }
+
             INFO -> if (holder is InfoViewHolder) {
                 holder.bind(mStore)
             }
+
             TITLE -> {
                 if (holder is TitleViewHolder) {
                     val title = getString(R.string.tips_from_people_who_has_been_here)
                     holder.bind(if (position == 2) title else "")
                 }
             }
+
             COMMENT -> if (holder is CommentViewHolder) {
                 holder.bind(mComments[position - 3])
             }
@@ -120,29 +117,29 @@ class StoreDetailAdapter internal constructor() : RecyclerView.Adapter<RecyclerV
 
     internal class HeaderViewHolder(itemView: View, private val listener: StoreActionListener?) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
 
-        private var saveButton: TextView = itemView.btn_save
-        private var favButton: TextView = itemView.btn_fav
-        private var comment: RobotoTextView = itemView.comment
-        private var btnCall: Button = itemView.btn_call
+        private var saveButton: TextView = itemView.findViewById(R.id.btn_save)
+        private var favButton: TextView = itemView.findViewById(R.id.btn_fav)
+        private var comment: RobotoTextView = itemView.findViewById(R.id.comment)
+        private var btnCall: Button = itemView.findViewById(R.id.btn_call)
 
         fun bind(store: Store?, isSigned: Boolean) {
             if (!isSigned) {
-                saveButton.setCompoundDrawablesWithIntrinsicBounds(null, itemView.context.resources.getDrawable(R.drawable.ic_detail_bookmark_disable), null, null);
+                saveButton.setCompoundDrawablesWithIntrinsicBounds(null, itemView.context.resources.getDrawable(R.drawable.ic_detail_bookmark_disable), null, null)
                 saveButton.setTextColor(Color.parseColor("#BDBDBD"))
 
-                favButton.setCompoundDrawablesWithIntrinsicBounds(null, itemView.context.resources.getDrawable(R.drawable.ic_detail_love_disable), null, null);
+                favButton.setCompoundDrawablesWithIntrinsicBounds(null, itemView.context.resources.getDrawable(R.drawable.ic_detail_love_disable), null, null)
                 favButton.setTextColor(Color.parseColor("#BDBDBD"))
 //
-                comment.setCompoundDrawablesWithIntrinsicBounds(null, itemView.context.resources.getDrawable(R.drawable.ic_detail_pencil_disable), null, null);
+                comment.setCompoundDrawablesWithIntrinsicBounds(null, itemView.context.resources.getDrawable(R.drawable.ic_detail_pencil_disable), null, null)
                 comment.setTextColor(Color.parseColor("#BDBDBD"))
             } else {
-                saveButton.setCompoundDrawablesWithIntrinsicBounds(null, itemView.context.resources.getDrawable(R.drawable.ic_detail_bookmark), null, null);
+                saveButton.setCompoundDrawablesWithIntrinsicBounds(null, itemView.context.resources.getDrawable(R.drawable.ic_detail_bookmark), null, null)
                 saveButton.setTextColor(Color.parseColor("#757575"))
 
-                favButton.setCompoundDrawablesWithIntrinsicBounds(null, itemView.context.resources.getDrawable(R.drawable.state_rate_click), null, null);
+                favButton.setCompoundDrawablesWithIntrinsicBounds(null, itemView.context.resources.getDrawable(R.drawable.state_rate_click), null, null)
                 favButton.setTextColor(Color.parseColor("#757575"))
 
-                comment.setCompoundDrawablesWithIntrinsicBounds(null, itemView.context.resources.getDrawable(R.drawable.ic_detail_pencil), null, null);
+                comment.setCompoundDrawablesWithIntrinsicBounds(null, itemView.context.resources.getDrawable(R.drawable.ic_detail_pencil), null, null)
                 comment.setTextColor(Color.parseColor("#757575"))
             }
 
@@ -170,9 +167,9 @@ class StoreDetailAdapter internal constructor() : RecyclerView.Adapter<RecyclerV
     internal class InfoViewHolder(itemView: View, private val listener: StoreActionListener?) : RecyclerView.ViewHolder(itemView) {
 
         private val cdvh: CallDirectionViewHolder
-        var tvName: TextView = itemView.store_name
-        var tvAddress: TextView = itemView.store_address
-        var vCallDirection: View = itemView.call_direction
+        var tvName: TextView = itemView.findViewById(R.id.store_name)
+        var tvAddress: TextView = itemView.findViewById(R.id.store_address)
+        var vCallDirection: View = itemView.findViewById(R.id.call_direction)
 
         init {
             cdvh = CallDirectionViewHolder(vCallDirection)
@@ -194,7 +191,7 @@ class StoreDetailAdapter internal constructor() : RecyclerView.Adapter<RecyclerV
     }
 
     internal class TitleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private var content: TextView = itemView.content
+        private var content: TextView = itemView.findViewById(R.id.content)
 
         fun bind(title: String) {
             content.text = title
@@ -203,32 +200,32 @@ class StoreDetailAdapter internal constructor() : RecyclerView.Adapter<RecyclerV
 
     internal class CommentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        var ivProfile: ImageView = itemView.profile_image
-        var tvUserName: TextView = itemView.user_name
-        var tvTime: TextView = itemView.time_post
-        var tvContent: TextView = itemView.tv_content
-        var container: CardView = itemView.container
-        var ivMedia: ImageView = itemView.media
+        var ivProfile: ImageView = itemView.findViewById(R.id.profile_image)
+        var tvUserName: TextView = itemView.findViewById(R.id.user_name)
+        var tvTime: TextView = itemView.findViewById(R.id.time_post)
+        var tvContent: TextView = itemView.findViewById(R.id.tv_content)
+        var container: CardView = itemView.findViewById(R.id.container)
+        var ivMedia: ImageView = itemView.findViewById(R.id.media)
 
         fun bind(comment: Comment) {
             val context = ivProfile.context
             Glide.with(context)
-                    .asBitmap()
-                    .load(comment.avatar)
-                    .into<BitmapImageViewTarget>(object : BitmapImageViewTarget(ivProfile) {
-                        override fun setResource(resource: Bitmap?) {
-                            val bitmap = RoundedBitmapDrawableFactory.create(context.resources, resource)
-                            bitmap.cornerRadius = 8f
-                            ivProfile.setImageDrawable(bitmap)
-                        }
-                    })
+                .asBitmap()
+                .load(comment.avatar)
+                .into<BitmapImageViewTarget>(object : BitmapImageViewTarget(ivProfile) {
+                    override fun setResource(resource: Bitmap?) {
+                        val bitmap = RoundedBitmapDrawableFactory.create(context.resources, resource)
+                        bitmap.cornerRadius = 8f
+                        ivProfile.setImageDrawable(bitmap)
+                    }
+                })
 
             val mediaUrl = comment.mediaUrl
             if (!mediaUrl.isEmpty()) {
                 container.visibility = View.VISIBLE
                 Glide.with(context)
-                        .load(mediaUrl)
-                        .into(ivMedia)
+                    .load(mediaUrl)
+                    .into(ivMedia)
             } else {
                 container.visibility = View.GONE
             }
@@ -240,8 +237,8 @@ class StoreDetailAdapter internal constructor() : RecyclerView.Adapter<RecyclerV
     }
 
     class CallDirectionViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var btnCall: FrameLayout = itemView.call
-        var btnDirection: FrameLayout = itemView.direction
+        var btnCall: FrameLayout = itemView.findViewById(R.id.call)
+        var btnDirection: FrameLayout = itemView.findViewById(R.id.direction)
     }
 
     companion object {

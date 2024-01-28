@@ -1,7 +1,7 @@
 package com.iceteaviet.fastfoodfinder.data.domain.prefs
 
 import com.iceteaviet.fastfoodfinder.data.local.prefs.PreferencesHelper
-import java.util.*
+import java.util.TreeSet
 
 /**
  * Created by tom on 7/24/18.

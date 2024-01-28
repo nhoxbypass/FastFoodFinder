@@ -27,19 +27,19 @@ open class GoogleLocationManager private constructor(context: Context) : AbsLoca
 
     @SuppressLint("MissingPermission")
     override fun getLastLocation(): Location? {
-        return LocationServices.FusedLocationApi.getLastLocation(googleApiClient)
+        return LocationServices.FusedLocationApi.getLastLocation(googleApiClient!!)
     }
 
     @SuppressLint("MissingPermission")
     override fun requestLocationUpdates() {
         if (isConnected() && !isRequestingLocationUpdate())
-            LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this)
+            LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient!!, locationRequest!!, this)
     }
 
     override fun terminate() {
         super.terminate()
         googleApiClient?.disconnect()
-        LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this)
+        LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient!!, this)
     }
 
     override fun onConnected(extras: Bundle?) {
@@ -81,12 +81,12 @@ open class GoogleLocationManager private constructor(context: Context) : AbsLoca
 
     private fun createGoogleApiClient(context: Context): GoogleApiClient {
         return GoogleApiClient.Builder(context)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener {
-                    onFailed(FailType.GOOGLE_PLAY_SERVICES_CONNECTION_FAIL)
-                }
-                .addApi(LocationServices.API)
-                .build()
+            .addConnectionCallbacks(this)
+            .addOnConnectionFailedListener {
+                onFailed(FailType.GOOGLE_PLAY_SERVICES_CONNECTION_FAIL)
+            }
+            .addApi(LocationServices.API)
+            .build()
     }
 
     private fun onFailed(failType: Int) {

@@ -6,14 +6,12 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.NonNull
-import androidx.annotation.Nullable
 import androidx.fragment.app.DialogFragment
 import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
+import com.iceteaviet.fastfoodfinder.databinding.DialogRegisterBinding
 import com.iceteaviet.fastfoodfinder.ui.custom.processbutton.ActionProcessButton
-import kotlinx.android.synthetic.main.dialog_register.*
 
 /**
  * Created by nhoxbypass on 03/29/2018.
@@ -21,14 +19,18 @@ import kotlinx.android.synthetic.main.dialog_register.*
 class EmailRegisterDialog : DialogFragment(), EmailRegisterContract.View, View.OnClickListener, View.OnTouchListener {
     override lateinit var presenter: EmailRegisterContract.Presenter
 
+    /**
+     * Views Ref
+     */
+    private lateinit var binding: DialogRegisterBinding
+
     private var mListener: OnRegisterCompleteListener? = null
 
     fun setOnRegisterCompleteListener(listener: OnRegisterCompleteListener) {
         mListener = listener
     }
 
-    @Nullable
-    override fun onCreateView(@NonNull inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.dialog_register, container, false)
     }
 
@@ -43,7 +45,7 @@ class EmailRegisterDialog : DialogFragment(), EmailRegisterContract.View, View.O
         dialog?.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
-    override fun onViewCreated(@NonNull view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupUI()
         setupEventHandlers()
@@ -62,7 +64,7 @@ class EmailRegisterDialog : DialogFragment(), EmailRegisterContract.View, View.O
     override fun onClick(v: View) {
         when (v.id) {
             R.id.btn_sign_up -> {
-                presenter.onSignUpButtonClicked(input_email.text.toString(), input_password.text.toString(), input_repassword.text.toString())
+                presenter.onSignUpButtonClicked(binding.inputEmail.text.toString(), binding.inputPassword.text.toString(), binding.inputRepassword.text.toString())
             }
         }
     }
@@ -71,15 +73,15 @@ class EmailRegisterDialog : DialogFragment(), EmailRegisterContract.View, View.O
         if (event.action == MotionEvent.ACTION_DOWN) {
             when (v.id) {
                 R.id.input_email -> {
-                    input_layout_email.error = ""
+                    binding.inputLayoutEmail.error = ""
                 }
 
                 R.id.input_password -> {
-                    input_layout_password.error = ""
+                    binding.inputLayoutPassword.error = ""
                 }
 
                 R.id.input_repassword -> {
-                    input_layout_repassword.error = ""
+                    binding.inputLayoutRepassword.error = ""
                 }
             }
         }
@@ -88,28 +90,28 @@ class EmailRegisterDialog : DialogFragment(), EmailRegisterContract.View, View.O
     }
 
     override fun setRegisterButtonProgress(progress: Int) {
-        btn_sign_up.progress = progress
+        binding.btnSignUp.progress = progress
     }
 
     override fun setInputEnabled(enabled: Boolean) {
-        input_layout_email.isEnabled = enabled
-        input_layout_password.isEnabled = enabled
-        input_layout_repassword.isEnabled = enabled
-        input_email.isEnabled = enabled
-        input_password.isEnabled = enabled
-        input_repassword.isEnabled = enabled
+        binding.inputLayoutEmail.isEnabled = enabled
+        binding.inputLayoutPassword.isEnabled = enabled
+        binding.inputLayoutRepassword.isEnabled = enabled
+        binding.inputEmail.isEnabled = enabled
+        binding.inputPassword.isEnabled = enabled
+        binding.inputRepassword.isEnabled = enabled
     }
 
     override fun showInvalidPasswordError() {
-        input_layout_password.error = getString(R.string.invalid_password)
+        binding.inputLayoutPassword.error = getString(R.string.invalid_password)
     }
 
     override fun showInvalidRePasswordError() {
-        input_layout_repassword.error = getString(R.string.confirm_pwd_not_match)
+        binding.inputLayoutRepassword.error = getString(R.string.confirm_pwd_not_match)
     }
 
     override fun showInvalidEmailError() {
-        input_layout_email.error = getString(R.string.invalid_email)
+        binding.inputLayoutEmail.error = getString(R.string.invalid_email)
     }
 
     override fun notifyRegisterSuccess(user: User) {
@@ -121,14 +123,14 @@ class EmailRegisterDialog : DialogFragment(), EmailRegisterContract.View, View.O
     }
 
     private fun setupUI() {
-        btn_sign_up.setMode(ActionProcessButton.Mode.ENDLESS)
+        binding.btnSignUp.setMode(ActionProcessButton.Mode.ENDLESS)
     }
 
     private fun setupEventHandlers() {
-        btn_sign_up.setOnClickListener(this)
-        input_email.setOnTouchListener(this)
-        input_password.setOnTouchListener(this)
-        input_repassword.setOnTouchListener(this)
+        binding.btnSignUp.setOnClickListener(this)
+        binding.inputEmail.setOnTouchListener(this)
+        binding.inputPassword.setOnTouchListener(this)
+        binding.inputRepassword.setOnTouchListener(this)
     }
 
     interface OnRegisterCompleteListener {
@@ -145,5 +147,4 @@ class EmailRegisterDialog : DialogFragment(), EmailRegisterContract.View, View.O
             return frag
         }
     }
-
 }

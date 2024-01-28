@@ -24,7 +24,7 @@ const val REQUEST_CAMERA = 1003
  */
 fun requestLocationPermission(activity: Activity) {
     ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
-            REQUEST_LOCATION)
+        REQUEST_LOCATION)
 }
 
 /**
@@ -32,7 +32,7 @@ fun requestLocationPermission(activity: Activity) {
  */
 fun requestLocationPermission(fragment: Fragment) {
     fragment.requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
-            REQUEST_LOCATION)
+        REQUEST_LOCATION)
 }
 
 /**
@@ -47,7 +47,7 @@ fun isLocationPermissionGranted(context: Context): Boolean {
  */
 fun requestCallPhonePermission(fragment: Fragment) {
     fragment.requestPermissions(arrayOf(Manifest.permission.CALL_PHONE),
-            REQUEST_CALL_PHONE)
+        REQUEST_CALL_PHONE)
 }
 
 /**
@@ -62,7 +62,7 @@ fun isCallPhonePermissionGranted(context: Context): Boolean {
  */
 fun requestCameraPermission(activity: Activity) {
     ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.CAMERA),
-            REQUEST_CAMERA)
+        REQUEST_CAMERA)
 }
 
 /**

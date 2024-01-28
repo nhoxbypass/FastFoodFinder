@@ -38,7 +38,7 @@
                         android:clickable="true"
                         android:src="@drawable/logo_circlek_red"
                         app:civ_border_color="@color/googleRed"
-                        app:civ_fill_color="@color/googleRed" />
+                        app:civ_circle_background_color="@color/googleRed" />
 
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/btn_search_family_mart"
@@ -49,7 +49,7 @@
                         android:clickable="true"
                         android:src="@drawable/logo_familymart_red"
                         app:civ_border_color="@color/googleRed"
-                        app:civ_fill_color="@color/googleRed" />
+                        app:civ_circle_background_color="@color/googleRed" />
 
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/btn_search_mini_stop"
@@ -60,7 +60,7 @@
                         android:clickable="true"
                         android:src="@drawable/logo_ministop_red"
                         app:civ_border_color="@color/googleRed"
-                        app:civ_fill_color="@color/googleRed" />
+                        app:civ_circle_background_color="@color/googleRed" />
 
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/btn_load_more"
@@ -71,7 +71,7 @@
                         android:clickable="true"
                         android:src="@drawable/ic_search_loadmore"
                         app:civ_border_color="@color/googleRed"
-                        app:civ_fill_color="@color/googleRed" />
+                        app:civ_circle_background_color="@color/googleRed" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -89,7 +89,7 @@
                         android:layout_weight="1"
                         android:src="@drawable/logo_shopngo_red"
                         app:civ_border_color="@color/googleRed"
-                        app:civ_fill_color="@color/googleRed" />
+                        app:civ_circle_background_color="@color/googleRed" />
 
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/btn_search_bsmart"
@@ -98,7 +98,7 @@
                         android:layout_weight="1"
                         android:src="@drawable/logo_bsmart_red"
                         app:civ_border_color="@color/googleRed"
-                        app:civ_fill_color="@color/googleRed" />
+                        app:civ_circle_background_color="@color/googleRed" />
 
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/btn_search_unknown1"
@@ -107,7 +107,7 @@
                         android:layout_weight="1"
                         android:src="@drawable/ic_profile_saved"
                         app:civ_border_color="@color/googleRed"
-                        app:civ_fill_color="@color/googleRed" />
+                        app:civ_circle_background_color="@color/googleRed" />
 
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/btm_search_unknown2"
@@ -116,7 +116,7 @@
                         android:layout_weight="1"
                         android:src="@drawable/ic_profile_favourite"
                         app:civ_border_color="@color/googleRed"
-                        app:civ_fill_color="@color/googleRed" />
+                        app:civ_circle_background_color="@color/googleRed" />
                 </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>

@@ -86,6 +86,7 @@ class MainPresenter : BasePresenter<MainContract.Presenter>, MainContract.Presen
             SearchEventResult.SEARCH_ACTION_QUICK -> {
                 handleSearchQuickAction(searchEventResult.searchString)
             }
+
             SearchEventResult.SEARCH_ACTION_QUERY_SUBMIT -> {
                 if (!searchEventResult.searchString.isBlank()) {
                     handleSearchQuerySubmitAction(searchEventResult.searchString)

@@ -3,7 +3,6 @@ package com.iceteaviet.fastfoodfinder.ui.custom.dialog
 import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
-import androidx.annotation.NonNull
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.iceteaviet.fastfoodfinder.R
@@ -16,7 +15,6 @@ class CloseConfirmDialog : DialogFragment() {
 
     private var listener: OnClickListener? = null
 
-    @NonNull
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         var message = ""
 
@@ -24,7 +22,7 @@ class CloseConfirmDialog : DialogFragment() {
             message = it.getString(MESSAGE, "")
         }
 
-        val alertDialogBuilder = AlertDialog.Builder(activity!!)
+        val alertDialogBuilder = AlertDialog.Builder(requireActivity())
         alertDialogBuilder.setMessage(message)
         alertDialogBuilder.setPositiveButton(R.string.ok) { dialog, _ ->
             listener?.onOkClick(dialog)

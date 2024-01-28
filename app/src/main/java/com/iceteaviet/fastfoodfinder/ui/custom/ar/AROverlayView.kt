@@ -1,14 +1,18 @@
 package com.iceteaviet.fastfoodfinder.ui.custom.ar
 
 import android.content.Context
-import android.graphics.*
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.Typeface
 import android.opengl.Matrix
 import android.view.View
 import com.iceteaviet.fastfoodfinder.location.LatLngAlt
 import com.iceteaviet.fastfoodfinder.ui.ar.model.AugmentedPOI
 import com.iceteaviet.fastfoodfinder.utils.convertECEFtoENU
 import com.iceteaviet.fastfoodfinder.utils.convertWSG84toECEF
-import java.util.*
 
 /**
  * Created by Genius Doan on 20/07/2017.

@@ -68,6 +68,7 @@ class ActionProcessButton : ProcessButton {
         when (mMode) {
             Mode.ENDLESS -> drawEndlessProgress(canvas)
             Mode.PROGRESS -> drawLineProgress(canvas)
+            null -> TODO()
         }
     }
 

@@ -38,10 +38,13 @@ class AppPreferencesHelper(private val preferences: PreferencesWrapper) : Prefer
     companion object {
         @VisibleForTesting
         const val KEY_APP_LAUNCH_FIRST_TIME = "app_launch_first_time"
+
         @VisibleForTesting
         const val KEY_SEARCH_HISTORIES = "search_histories"
+
         @VisibleForTesting
         const val KEY_SEARCH_HISTORIES_SIZE = "search_histories_size"
+
         @VisibleForTesting
         const val KEY_LANGUAGE = "lang"
     }

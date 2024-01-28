@@ -10,15 +10,19 @@ import com.google.gson.annotations.SerializedName
 /**
  * Created by Genius Doan on 11/11/2016.
  */
-class Leg constructor(`in`: Parcel) : Parcelable {
+class Leg(`in`: Parcel) : Parcelable {
     @SerializedName("distance")
     private val distance: JsonObject
+
     @SerializedName("duration")
     private val duration: JsonObject
+
     @SerializedName("start_address")
     val startAddress: String
+
     @SerializedName("end_address")
     val endAddress: String
+
     @SerializedName("steps")
     val stepList: List<Step>
 

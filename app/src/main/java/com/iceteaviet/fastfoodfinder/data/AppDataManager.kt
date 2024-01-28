@@ -36,8 +36,8 @@ class AppDataManager(context: Context, private val storeRepository: StoreReposit
     init {
         Realm.init(context)
         val config = RealmConfiguration.Builder()
-                .deleteRealmIfMigrationNeeded()
-                .build()
+            .deleteRealmIfMigrationNeeded()
+            .build()
         Realm.setDefaultConfiguration(config)
     }
 
@@ -48,23 +48,23 @@ class AppDataManager(context: Context, private val storeRepository: StoreReposit
             return Single.create { emitter ->
                 // Not signed in
                 clientAuth.signInWithEmailAndPassword(Constant.DOWNLOADER_BOT_EMAIL, Constant.DOWNLOADER_BOT_PWD)
-                        .toCompletable()
-                        .andThen(storeRepository.getAllStores())
-                        .subscribe(object : SingleObserver<List<Store>> {
-                            override fun onSubscribe(d: Disposable) {
-                                emitter.setDisposable(d)
-                            }
+                    .toCompletable()
+                    .andThen(storeRepository.getAllStores())
+                    .subscribe(object : SingleObserver<List<Store>> {
+                        override fun onSubscribe(d: Disposable) {
+                            emitter.setDisposable(d)
+                        }
 
-                            override fun onSuccess(storeList: List<Store>) {
-                                signOut()
-                                emitter.onSuccess(storeList)
-                            }
+                        override fun onSuccess(storeList: List<Store>) {
+                            signOut()
+                            emitter.onSuccess(storeList)
+                        }
 
-                            override fun onError(e: Throwable) {
-                                signOut()
-                                emitter.onError(e)
-                            }
-                        })
+                        override fun onError(e: Throwable) {
+                            signOut()
+                            emitter.onError(e)
+                        }
+                    })
             }
         }
     }
@@ -109,7 +109,7 @@ class AppDataManager(context: Context, private val storeRepository: StoreReposit
             if (isValidUserUid(uid)) {
                 try {
                     currentUser = userRepository.getUser(uid)
-                            .blockingGet()
+                        .blockingGet()
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }

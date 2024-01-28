@@ -18,7 +18,6 @@ import com.iceteaviet.fastfoodfinder.utils.isValidLocation
 import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
 import io.reactivex.SingleObserver
 import io.reactivex.disposables.Disposable
-import java.util.*
 
 /**
  * Created by tom on 2019-04-18.
@@ -49,21 +48,21 @@ open class StoreDetailPresenter : BasePresenter<StoreDetailContract.Presenter>, 
         storeDetailView.updateSignInState(currUser != null)
 
         dataManager.getComments(currStore.id.toString())
-                .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
-                .subscribe(object : SingleObserver<List<Comment>> {
-                    override fun onSubscribe(d: Disposable) {
-                        compositeDisposable.add(d)
-                    }
+            .subscribeOn(schedulerProvider.io())
+            .observeOn(schedulerProvider.ui())
+            .subscribe(object : SingleObserver<List<Comment>> {
+                override fun onSubscribe(d: Disposable) {
+                    compositeDisposable.add(d)
+                }
 
-                    override fun onSuccess(commentList: List<Comment>) {
-                        storeDetailView.setStoreComments(commentList.toMutableList().asReversed())
-                    }
+                override fun onSuccess(commentList: List<Comment>) {
+                    storeDetailView.setStoreComments(commentList.toMutableList().asReversed())
+                }
 
-                    override fun onError(e: Throwable) {
-                        e.printStackTrace()
-                    }
-                })
+                override fun onError(e: Throwable) {
+                    e.printStackTrace()
+                }
+            })
 
         if (isLolipopOrHigher() && !storeDetailView.isLocationPermissionGranted()) {
             storeDetailView.requestLocationPermission()
@@ -155,24 +154,24 @@ open class StoreDetailPresenter : BasePresenter<StoreDetailContract.Presenter>, 
         queries[GoogleMapsRoutingApiHelper.PARAM_DESTINATION] = destination
 
         dataManager.getMapsDirection(queries, currStore)
-                .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
-                .subscribe(object : SingleObserver<MapsDirection> {
-                    override fun onSubscribe(d: Disposable) {
-                        compositeDisposable.add(d)
-                    }
+            .subscribeOn(schedulerProvider.io())
+            .observeOn(schedulerProvider.ui())
+            .subscribe(object : SingleObserver<MapsDirection> {
+                override fun onSubscribe(d: Disposable) {
+                    compositeDisposable.add(d)
+                }
 
-                    override fun onSuccess(mapsDirection: MapsDirection) {
-                        if (mapsDirection.routeList.isNotEmpty())
-                            storeDetailView.showMapRoutingView(currStore, mapsDirection)
-                        else
-                            storeDetailView.showGeneralErrorMessage()
-                    }
-
-                    override fun onError(e: Throwable) {
+                override fun onSuccess(mapsDirection: MapsDirection) {
+                    if (mapsDirection.routeList.isNotEmpty())
+                        storeDetailView.showMapRoutingView(currStore, mapsDirection)
+                    else
                         storeDetailView.showGeneralErrorMessage()
-                    }
-                })
+                }
+
+                override fun onError(e: Throwable) {
+                    storeDetailView.showGeneralErrorMessage()
+                }
+            })
     }
 
     override fun onAddToFavButtonClick() {

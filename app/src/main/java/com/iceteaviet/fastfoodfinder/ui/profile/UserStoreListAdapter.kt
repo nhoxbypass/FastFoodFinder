@@ -3,14 +3,12 @@ package com.iceteaviet.fastfoodfinder.ui.profile
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.NonNull
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList
 import com.iceteaviet.fastfoodfinder.ui.custom.store.StoreListView
 import com.iceteaviet.fastfoodfinder.utils.ui.getStoreListIconDrawableRes
-import java.util.*
 
 /**
  * Created by MyPC on 12/5/2016.
@@ -44,13 +42,13 @@ class UserStoreListAdapter internal constructor() : RecyclerView.Adapter<UserSto
         mListener = onItemClickListener
     }
 
-    override fun onCreateViewHolder(@NonNull parent: ViewGroup, viewType: Int): StoreListViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StoreListViewHolder {
         val itemView = LayoutInflater.from(parent.context)
-                .inflate(R.layout.view_new_list, parent, false)
+            .inflate(R.layout.view_new_list, parent, false)
         return StoreListViewHolder(itemView)
     }
 
-    override fun onBindViewHolder(@NonNull holder: StoreListViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: StoreListViewHolder, position: Int) {
         val listPacket = mListPackets[position]
         holder.bindData(listPacket)
     }
@@ -78,20 +76,20 @@ class UserStoreListAdapter internal constructor() : RecyclerView.Adapter<UserSto
                 val position = adapterPosition
                 //final UserStoreList userStoreList = mListPackets.get(position);
                 AlertDialog.Builder(itemView.context)
-                        .setTitle(R.string.delete_favourite_location)
-                        .setMessage(R.string.are_you_sure)
-                        .setPositiveButton(android.R.string.yes) { dialog, _ ->
-                            mListPackets.removeAt(position)
-                            notifyDataSetChanged()
-                            mOnItemLongClickListener?.onLongClick(position)
-                            dialog.dismiss()
-                        }
-                        .setNegativeButton(android.R.string.no) { dialog, _ ->
-                            //do nothing
-                            dialog.dismiss()
-                        }
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .show()
+                    .setTitle(R.string.delete_favourite_location)
+                    .setMessage(R.string.are_you_sure)
+                    .setPositiveButton(android.R.string.yes) { dialog, _ ->
+                        mListPackets.removeAt(position)
+                        notifyDataSetChanged()
+                        mOnItemLongClickListener?.onLongClick(position)
+                        dialog.dismiss()
+                    }
+                    .setNegativeButton(android.R.string.no) { dialog, _ ->
+                        //do nothing
+                        dialog.dismiss()
+                    }
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show()
                 true
             }
         }

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/googleRed"
     tools:context=".ui.splash.SplashActivity">
 
@@ -19,12 +19,12 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        app:robotoFontFamily="roboto_slab"
-        app:robotoTypeface="roboto_slab_regular"
         android:layout_marginBottom="8dp"
         android:text="@string/splash_footer"
         android:textColor="@color/colorWhite"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        app:robotoFontFamily="roboto_slab"
+        app:robotoTypeface="roboto_slab_regular" />
 
     <ProgressBar
         android:layout_width="24dp"

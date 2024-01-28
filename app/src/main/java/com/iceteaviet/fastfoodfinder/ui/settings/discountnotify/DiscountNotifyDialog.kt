@@ -10,11 +10,9 @@ import android.view.ViewGroup
 import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
-import androidx.annotation.Nullable
 import androidx.fragment.app.DialogFragment
 import com.iceteaviet.fastfoodfinder.R
-import kotlinx.android.synthetic.main.dialog_store_filter.*
-import kotlinx.android.synthetic.main.view_store_tag.view.*
+import com.iceteaviet.fastfoodfinder.databinding.DialogStoreFilterBinding
 
 /**
  * Created by taq on 8/12/2016.
@@ -24,15 +22,19 @@ class DiscountNotifyDialog : DialogFragment(), DiscountNotifyContract.View {
     private lateinit var tagContainer: RelativeLayout
     override lateinit var presenter: DiscountNotifyContract.Presenter
 
-    @Nullable
-    override fun onCreateView(inflater: LayoutInflater, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View {
+    /**
+     * Views Ref
+     */
+    private lateinit var binding: DialogStoreFilterBinding
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.dialog_store_filter, container)
     }
 
-    override fun onViewCreated(view: View, @Nullable savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        tagContainer = tag_container
+        tagContainer = binding.tagContainer
 
         dialog?.setTitle(R.string.subscription)
         presenter.onSetupTagContainer()
@@ -40,8 +42,8 @@ class DiscountNotifyDialog : DialogFragment(), DiscountNotifyContract.View {
     }
 
     fun setUpViewListener() {
-        btnCancel.setOnClickListener { presenter.onCancelButtonClick() }
-        btnDone.setOnClickListener { presenter.onDoneButtonClick() }
+        binding.btnCancel.setOnClickListener { presenter.onCancelButtonClick() }
+        binding.btnDone.setOnClickListener { presenter.onDoneButtonClick() }
     }
 
     override fun cancelDialog() {
@@ -78,7 +80,7 @@ class DiscountNotifyDialog : DialogFragment(), DiscountNotifyContract.View {
     }
 
     inner class TagViewHolder internal constructor(private val itemView: View) {
-        val tag: TextView = itemView.tv_tag
+        val tag: TextView = itemView.findViewById(R.id.tv_tag)
 
         init {
             tag.setOnClickListener { v ->

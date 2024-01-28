@@ -2,10 +2,12 @@ package com.iceteaviet.fastfoodfinder.ui.profile
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
-import androidx.annotation.NonNull
-import androidx.annotation.Nullable
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -13,17 +15,22 @@ import com.bumptech.glide.Glide
 import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList
+import com.iceteaviet.fastfoodfinder.databinding.FragmentProfileBinding
 import com.iceteaviet.fastfoodfinder.ui.custom.store.StoreListView
 import com.iceteaviet.fastfoodfinder.ui.profile.cover.UpdateCoverImageDialog
 import com.iceteaviet.fastfoodfinder.ui.profile.createlist.CreateListDialog
 import com.iceteaviet.fastfoodfinder.utils.openListDetailActivity
 import com.iceteaviet.fastfoodfinder.utils.openLoginActivity
 import de.hdodenhof.circleimageview.CircleImageView
-import kotlinx.android.synthetic.main.fragment_profile.*
 
 // TODO: Check fragment lifecycle to support go to login screen when auth token invalid
 class ProfileFragment : Fragment(), ProfileContract.View, View.OnClickListener {
     override lateinit var presenter: ProfileContract.Presenter
+
+    /**
+     * Views Ref
+     */
+    private lateinit var binding: FragmentProfileBinding
 
     lateinit var ivAvatarProfile: CircleImageView
     lateinit var cvSavePlace: StoreListView
@@ -34,17 +41,16 @@ class ProfileFragment : Fragment(), ProfileContract.View, View.OnClickListener {
     private var mDialogCreate: CreateListDialog? = null
     private var storeListAdapter: UserStoreListAdapter? = null
 
-    override fun onCreate(@Nullable savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
     }
 
-    @Nullable
-    override fun onCreateView(@NonNull inflater: LayoutInflater, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.fragment_profile, container, false)
     }
 
-    override fun onViewCreated(@NonNull view: View, @Nullable savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         storeListAdapter = UserStoreListAdapter()
@@ -80,8 +86,8 @@ class ProfileFragment : Fragment(), ProfileContract.View, View.OnClickListener {
             }
 
             R.id.btnUpdateCoverImage -> {
-                mDialog?.show(fragmentManager!!, "")
-                btnUpdateCoverImage.visibility = View.GONE
+                mDialog?.show(requireFragmentManager(), "")
+                binding.btnUpdateCoverImage.visibility = View.GONE
                 return
             }
         }
@@ -91,7 +97,7 @@ class ProfileFragment : Fragment(), ProfileContract.View, View.OnClickListener {
         btnCreateNew.setOnClickListener(this)
         cvSavePlace.setOnClickListener(this)
         cvFavouritePlace.setOnClickListener(this)
-        btnUpdateCoverImage.setOnClickListener(this)
+        binding.btnUpdateCoverImage.setOnClickListener(this)
 
         storeListAdapter?.setOnItemLongClickListener(object : UserStoreListAdapter.OnItemLongClickListener {
             override fun onLongClick(position: Int) {
@@ -108,31 +114,31 @@ class ProfileFragment : Fragment(), ProfileContract.View, View.OnClickListener {
         mDialog?.setOnButtonClickListener(object : UpdateCoverImageDialog.OnButtonClickListener {
             override fun onOkClick(selectedImage: Drawable?) {
                 if (selectedImage != null)
-                    ivCoverImage.setImageDrawable(selectedImage)
+                    binding.ivCoverImage.setImageDrawable(selectedImage)
 
-                btnUpdateCoverImage.visibility = View.VISIBLE
+                binding.btnUpdateCoverImage.visibility = View.VISIBLE
             }
 
             override fun onCancelClick() {
-                btnUpdateCoverImage.visibility = View.VISIBLE
+                binding.btnUpdateCoverImage.visibility = View.VISIBLE
             }
         })
     }
 
     private fun setupUI() {
-        ivAvatarProfile = iv_profile_avatar
-        cvSavePlace = cv_saved_places
-        cvFavouritePlace = cv_favourite_places
-        btnCreateNew = cvCreateNew
+        ivAvatarProfile = binding.ivProfileAvatar
+        cvSavePlace = binding.cvSavedPlaces
+        cvFavouritePlace = binding.cvFavouritePlaces
+        btnCreateNew = binding.cvCreateNew
 
         val mLayoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-        rvListPacket.adapter = storeListAdapter
-        rvListPacket.layoutManager = mLayoutManager
+        binding.rvListPacket.adapter = storeListAdapter
+        binding.rvListPacket.layoutManager = mLayoutManager
 
         mDialog = UpdateCoverImageDialog.newInstance()
 
-        tvName.setText(R.string.unregistered_user)
-        tvEmail.setText(R.string.unregistered_email)
+        binding.tvName.setText(R.string.unregistered_user)
+        binding.tvEmail.setText(R.string.unregistered_email)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -142,26 +148,26 @@ class ProfileFragment : Fragment(), ProfileContract.View, View.OnClickListener {
     }
 
     override fun openLoginActivity() {
-        openLoginActivity(activity!!)
-        activity!!.finish()
+        openLoginActivity(requireActivity())
+        requireActivity().finish()
     }
 
     override fun loadAvatarPhoto(photoUrl: String) {
-        Glide.with(activity!!)
-                .load(photoUrl)
-                .into(ivAvatarProfile)
+        Glide.with(requireActivity())
+            .load(photoUrl)
+            .into(ivAvatarProfile)
     }
 
     override fun setName(name: String) {
-        tvName.text = name
+        binding.tvName.text = name
     }
 
     override fun setEmail(email: String) {
-        tvEmail.text = email
+        binding.tvEmail.text = email
     }
 
     override fun setStoreListCount(storeCount: String) {
-        tvNumberList.text = storeCount
+        binding.tvNumberList.text = storeCount
     }
 
     override fun setSavedStoreCount(size: Int) {
@@ -182,7 +188,7 @@ class ProfileFragment : Fragment(), ProfileContract.View, View.OnClickListener {
 
     override fun showCreateNewListDialog() {
         mDialogCreate = CreateListDialog.newInstance()
-        mDialogCreate?.show(fragmentManager!!, "")
+        mDialogCreate?.show(requireFragmentManager(), "")
         mDialogCreate?.setOnButtonClickListener(object : CreateListDialog.OnCreateListListener {
             override fun onCreateButtonClick(name: String, iconId: Int, dialog: CreateListDialog) {
                 presenter.onCreateNewList(name, iconId)
@@ -203,7 +209,7 @@ class ProfileFragment : Fragment(), ProfileContract.View, View.OnClickListener {
     }
 
     override fun openListDetail(userStoreList: UserStoreList, photoUrl: String) {
-        openListDetailActivity(activity!!, userStoreList, photoUrl)
+        openListDetailActivity(requireActivity(), userStoreList, photoUrl)
     }
 
     override fun showGeneralErrorMessage() {

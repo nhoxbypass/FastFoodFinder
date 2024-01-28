@@ -1,6 +1,5 @@
 package com.iceteaviet.fastfoodfinder.data.remote.routing
 
-import androidx.annotation.NonNull
 import com.iceteaviet.fastfoodfinder.data.remote.ApiEndPoint
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
@@ -23,7 +22,7 @@ class GoogleMapsRoutingApiHelper(googleMapBrowserKey: String) : MapsRoutingApiHe
 
     override fun getMapsDirection(queries: Map<String, String>, store: Store, callback: MapsRoutingApiHelper.RoutingLoadCallback<MapsDirection>) {
         mMapDirectionApi.getDirection(queries).enqueue(object : Callback<MapsDirection> {
-            override fun onResponse(@NonNull call: Call<MapsDirection>, @NonNull response: Response<MapsDirection>) {
+            override fun onResponse(call: Call<MapsDirection>, response: Response<MapsDirection>) {
                 val body = response.body()
                 if (body != null)
                     callback.onSuccess(body)
@@ -31,7 +30,7 @@ class GoogleMapsRoutingApiHelper(googleMapBrowserKey: String) : MapsRoutingApiHe
                     callback.onError(NotFoundException())
             }
 
-            override fun onFailure(@NonNull call: Call<MapsDirection>, @NonNull t: Throwable) {
+            override fun onFailure(call: Call<MapsDirection>, t: Throwable) {
                 callback.onError(t)
             }
         })

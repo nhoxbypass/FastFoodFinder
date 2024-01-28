@@ -9,8 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.Toast
-import androidx.annotation.NonNull
-import androidx.annotation.Nullable
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -28,14 +26,18 @@ import com.iceteaviet.fastfoodfinder.Injection
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
+import com.iceteaviet.fastfoodfinder.databinding.FragmentMainMapBinding
 import com.iceteaviet.fastfoodfinder.location.GoogleLocationManager
 import com.iceteaviet.fastfoodfinder.ui.main.map.model.NearByStore
 import com.iceteaviet.fastfoodfinder.ui.main.map.storeinfo.StoreInfoDialog
-import com.iceteaviet.fastfoodfinder.utils.*
+import com.iceteaviet.fastfoodfinder.utils.Constant
 import com.iceteaviet.fastfoodfinder.utils.Constant.DEFAULT_ZOOM_LEVEL
+import com.iceteaviet.fastfoodfinder.utils.REQUEST_LOCATION
+import com.iceteaviet.fastfoodfinder.utils.isLocationPermissionGranted
+import com.iceteaviet.fastfoodfinder.utils.openRoutingActivity
+import com.iceteaviet.fastfoodfinder.utils.requestLocationPermission
 import com.iceteaviet.fastfoodfinder.utils.ui.animateMarker
 import com.iceteaviet.fastfoodfinder.utils.ui.getStoreIcon
-import kotlinx.android.synthetic.main.fragment_main_map.*
 
 
 /**
@@ -43,6 +45,11 @@ import kotlinx.android.synthetic.main.fragment_main_map.*
  */
 class MainMapFragment : Fragment(), MainMapContract.View {
     override lateinit var presenter: MainMapContract.Presenter
+
+    /**
+     * Views Ref
+     */
+    private lateinit var binding: FragmentMainMapBinding
 
     lateinit var mNearStoreRecyclerView: RecyclerView
     lateinit var mBottomSheetContainer: LinearLayout
@@ -53,18 +60,17 @@ class MainMapFragment : Fragment(), MainMapContract.View {
     private var nearByStoreAdapter: NearByStoreAdapter? = null
 
 
-    override fun onActivityCreated(@Nullable savedInstanceState: Bundle?) {
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         mMapFragment = inflateSupportMapFragment()
     }
 
-    @Nullable
-    override fun onCreateView(@NonNull inflater: LayoutInflater, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_main_map, container, false)
     }
 
-    override fun onViewCreated(view: View, @Nullable savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         setupUI()
@@ -90,7 +96,7 @@ class MainMapFragment : Fragment(), MainMapContract.View {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     presenter.onLocationPermissionGranted()
                 } else {
-                    Toast.makeText(context!!, R.string.permission_denied, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), R.string.permission_denied, Toast.LENGTH_SHORT).show()
                 }
                 return
             }
@@ -105,7 +111,7 @@ class MainMapFragment : Fragment(), MainMapContract.View {
     }
 
     override fun isLocationPermissionGranted(): Boolean {
-        return isLocationPermissionGranted(context!!)
+        return isLocationPermissionGranted(requireContext())
     }
 
     @SuppressLint("MissingPermission")
@@ -144,10 +150,10 @@ class MainMapFragment : Fragment(), MainMapContract.View {
         for (i in storeList.indices) {
             val store = storeList[i]
             val marker = googleMap!!.addMarker(MarkerOptions().position(store.getPosition()) // addMarker 30ms
-                    .title(store.title)
-                    .snippet(store.address)
-                    .icon(getStoreIcon(resources, store.type, -1, -1))) // fromBitmap 25 -> 100ms
-            marker.tag = store
+                .title(store.title)
+                .snippet(store.address)
+                .icon(getStoreIcon(resources, store.type, -1, -1))) // fromBitmap 25 -> 100ms
+            marker!!.tag = store
             presenter.onMapMarkerAdd(store.id, marker)
         }
     }
@@ -166,7 +172,7 @@ class MainMapFragment : Fragment(), MainMapContract.View {
                 //Animate marker icons when camera move
                 googleMap.setOnCameraMoveListener {
                     presenter.onMapCameraMove(googleMap.cameraPosition.target,
-                            googleMap.projection.visibleRegion.latLngBounds)
+                        googleMap.projection.visibleRegion.latLngBounds)
                 }
 
                 presenter.onGetMapAsync()
@@ -179,7 +185,7 @@ class MainMapFragment : Fragment(), MainMapContract.View {
     }
 
     override fun showMapRoutingView(currStore: Store, mapsDirection: MapsDirection) {
-        openRoutingActivity(activity!!, currStore, mapsDirection)
+        openRoutingActivity(requireActivity(), currStore, mapsDirection)
     }
 
     override fun animateMapMarker(marker: Marker?, storeType: Int) {
@@ -198,23 +204,23 @@ class MainMapFragment : Fragment(), MainMapContract.View {
         googleMap?.clear()
     }
 
-    private fun inflateSupportMapFragment(): SupportMapFragment? {
+    private fun inflateSupportMapFragment(): SupportMapFragment {
         val fragmentManager = childFragmentManager
         var fragment = fragmentManager.findFragmentById(R.id.maps_container)
         var mapFragment: SupportMapFragment?
 
         if (fragment === null) {
             val cameraPosition = CameraPosition.builder()
-                    .target(Constant.DEFAULT_MAP_TARGET)
-                    .zoom(16f)
-                    .build()
+                .target(Constant.DEFAULT_MAP_TARGET)
+                .zoom(16f)
+                .build()
             val options = GoogleMapOptions()
             options.mapType(GoogleMap.MAP_TYPE_NORMAL)
-                    .camera(cameraPosition)
-                    .compassEnabled(true)
-                    .rotateGesturesEnabled(true)
-                    .zoomGesturesEnabled(true)
-                    .tiltGesturesEnabled(true)
+                .camera(cameraPosition)
+                .compassEnabled(true)
+                .rotateGesturesEnabled(true)
+                .zoomGesturesEnabled(true)
+                .tiltGesturesEnabled(true)
             mapFragment = SupportMapFragment.newInstance(options)
             fragmentManager.beginTransaction().replace(R.id.map_placeholder, mapFragment as Fragment).commit() // TODO: Check
             fragmentManager.executePendingTransactions()
@@ -227,8 +233,8 @@ class MainMapFragment : Fragment(), MainMapContract.View {
 
 
     private fun setupUI() {
-        mNearStoreRecyclerView = rv_bottom_sheet
-        mBottomSheetContainer = ll_bottom_sheet
+        mNearStoreRecyclerView = binding.rvBottomSheet
+        mBottomSheetContainer = binding.llBottomSheet
 
         nearByStoreAdapter = NearByStoreAdapter()
 
@@ -288,8 +294,8 @@ class MainMapFragment : Fragment(), MainMapContract.View {
             val fragment = MainMapFragment()
             fragment.arguments = args
             fragment.presenter = MainMapPresenter(App.getDataManager(), App.getSchedulerProvider(),
-                    GoogleLocationManager.getInstance(), App.getBus(), Injection.providePublishSubject(),
-                    Injection.providePublishSubject(), fragment)
+                GoogleLocationManager.getInstance(), App.getBus(), Injection.providePublishSubject(),
+                Injection.providePublishSubject(), fragment)
             return fragment
         }
     }

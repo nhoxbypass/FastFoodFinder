@@ -17,8 +17,8 @@ import com.google.android.gms.maps.model.Marker
 import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.utils.StoreType
-import java.util.*
-import kotlin.collections.ArrayList
+import java.util.Arrays
+import java.util.Random
 
 /**
  * Created by tom on 7/10/18.
@@ -84,6 +84,7 @@ fun animateMarker(resources: Resources, marker: Marker?, storeType: Int) {
 
 
 private var cache: LruCache<String, BitmapDescriptor> = LruCache(((Runtime.getRuntime().maxMemory() / 1024 / 8).toInt()))
+
 // -1 is default width & height
 fun getStoreIcon(resources: Resources, type: Int, width: Int, height: Int): BitmapDescriptor {
     var key = type.toString()
@@ -103,7 +104,7 @@ fun getStoreIcon(resources: Resources, type: Int, width: Int, height: Int): Bitm
             result = BitmapDescriptorFactory.fromBitmap(bitmap)
             cache.put(key, result)
         }
-        return result!!
+        return result
     }
 }
 
@@ -129,7 +130,7 @@ fun resizeMarkerBitmap(imageBitmap: Bitmap, width: Int, height: Int): Bitmap {
 }
 
 val STORE_IMAGES = arrayListOf(R.drawable.detail_sample_food_1, R.drawable.detail_sample_food_2,
-        R.drawable.detail_sample_food_3, R.drawable.detail_sample_food_4)
+    R.drawable.detail_sample_food_3, R.drawable.detail_sample_food_4)
 
 fun getRandomStoreImages(numb: Int): List<Int> {
     val res = ArrayList<Int>()
@@ -152,11 +153,11 @@ fun getRandomStoreImages(numb: Int): List<Int> {
  * Get resource id of store logo drawable
  */
 val STORE_ICON_DRAWABLE_ARRAY: MutableList<Int> = Arrays.asList(
-        R.drawable.ic_all_store24h, R.drawable.ic_profile_saved, R.drawable.ic_profile_favourite,
-        R.drawable.ic_profile_list_2, R.drawable.ic_profile_list_4, R.drawable.ic_profile_list_5,
-        R.drawable.ic_profile_list_6, R.drawable.ic_profile_list_7, R.drawable.ic_profile_list_8,
-        R.drawable.ic_profile_list_9, R.drawable.ic_profile_list_10, R.drawable.ic_profile_list_11,
-        R.drawable.ic_profile_list_3)
+    R.drawable.ic_all_store24h, R.drawable.ic_profile_saved, R.drawable.ic_profile_favourite,
+    R.drawable.ic_profile_list_2, R.drawable.ic_profile_list_4, R.drawable.ic_profile_list_5,
+    R.drawable.ic_profile_list_6, R.drawable.ic_profile_list_7, R.drawable.ic_profile_list_8,
+    R.drawable.ic_profile_list_9, R.drawable.ic_profile_list_10, R.drawable.ic_profile_list_11,
+    R.drawable.ic_profile_list_3)
 
 fun getStoreListIconDrawableRes(storeIconId: Int): Int {
     return STORE_ICON_DRAWABLE_ARRAY[storeIconId]
