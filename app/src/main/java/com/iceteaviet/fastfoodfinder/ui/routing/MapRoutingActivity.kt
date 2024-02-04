@@ -14,11 +14,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.*
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
+import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.Polyline
+import com.google.android.gms.maps.model.PolylineOptions
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.Step
+import com.iceteaviet.fastfoodfinder.databinding.ActivityMapRoutingBinding
 import com.iceteaviet.fastfoodfinder.ui.base.BaseActivity
 import com.iceteaviet.fastfoodfinder.ui.custom.snaphelper.OnSnapListener
 import com.iceteaviet.fastfoodfinder.ui.custom.snaphelper.OnSnapPositionChangeListener
@@ -26,11 +32,15 @@ import com.iceteaviet.fastfoodfinder.utils.Constant.DEFAULT_ZOOM_LEVEL
 import com.iceteaviet.fastfoodfinder.utils.Constant.DETAILED_ZOOM_LEVEL
 import com.iceteaviet.fastfoodfinder.utils.convertDpToPx
 import com.iceteaviet.fastfoodfinder.utils.extension.attachSnapHelperToListener
-import kotlinx.android.synthetic.main.activity_map_routing.*
 
 
 class MapRoutingActivity : BaseActivity(), MapRoutingContract.View, View.OnClickListener {
     override lateinit var presenter: MapRoutingContract.Presenter
+
+    /**
+     * Views Ref
+     */
+    private lateinit var binding: ActivityMapRoutingBinding
 
     private lateinit var txtTravelTime: TextView
     private lateinit var txtTravelDistance: TextView
@@ -144,9 +154,9 @@ class MapRoutingActivity : BaseActivity(), MapRoutingContract.View, View.OnClick
 
     override fun addMapMarker(location: LatLng, title: String, description: String, icon: Int) {
         googleMap?.addMarker(MarkerOptions().position(location)
-                .title(title)
-                .snippet(description)
-                .icon(BitmapDescriptorFactory.fromResource(icon)))
+            .title(title)
+            .snippet(description)
+            .icon(BitmapDescriptorFactory.fromResource(icon)))
     }
 
     override fun drawRoutingPath(currLocation: LatLng?, routingGeoPoint: List<LatLng>) {
@@ -157,11 +167,11 @@ class MapRoutingActivity : BaseActivity(), MapRoutingContract.View, View.OnClick
                 builder.include(currLocation)
 
             val options = PolylineOptions()
-                    .clickable(true)
-                    .color(ContextCompat.getColor(this, R.color.googleBlue))
-                    .width(12f)
-                    .geodesic(true)
-                    .zIndex(5f)
+                .clickable(true)
+                .color(ContextCompat.getColor(this, R.color.googleBlue))
+                .width(12f)
+                .geodesic(true)
+                .zIndex(5f)
 
             for (i in routingGeoPoint.indices) {
                 val geoPoint = routingGeoPoint[i]
@@ -196,7 +206,7 @@ class MapRoutingActivity : BaseActivity(), MapRoutingContract.View, View.OnClick
         findViews()
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetContainer)
 
-        setSupportActionBar(toolbar)
+        setSupportActionBar(binding.toolbar)
         // add back arrow to mToolbar
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
@@ -214,15 +224,15 @@ class MapRoutingActivity : BaseActivity(), MapRoutingContract.View, View.OnClick
     }
 
     private fun findViews() {
-        txtTravelTime = tv_routing_time
-        txtTravelDistance = tv_routing_distance
-        txtTravelOverview = tv_routing_overview
-        bottomRecyclerView = rv_bottom_sheet
-        topRecyclerView = rv_direction_instruction
-        bottomSheetContainer = ll_bottom_sheet
-        prevInstruction = btn_prev_instruction
-        nextInstruction = btn_next_instruction
-        routingButtonContainer = ll_routing_button_container
+        txtTravelTime = binding.tvRoutingTime
+        txtTravelDistance = binding.tvRoutingDistance
+        txtTravelOverview = binding.tvRoutingOverview
+        bottomRecyclerView = binding.rvBottomSheet
+        topRecyclerView = binding.rvDirectionInstruction
+        bottomSheetContainer = binding.llBottomSheet
+        prevInstruction = binding.btnPrevInstruction
+        nextInstruction = binding.btnNextInstruction
+        routingButtonContainer = binding.llRoutingButtonContainer
     }
 
     private fun setupEventListeners() {

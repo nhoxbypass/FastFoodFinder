@@ -54,23 +54,23 @@ class SplashPresenter : BasePresenter<SplashContract.Presenter>, SplashContract.
      */
     override fun loadStoresFromServer() {
         loadStoresFromServerInternal()
-                .subscribe(object : CompletableObserver {
-                    override fun onComplete() {
-                        if (dataManager.isSignedIn() && isValidUserUid(dataManager.getCurrentUserUid()))
-                            splashView.openMainScreenWithDelay(getSplashRemainingTime())
-                        else
-                            splashView.openLoginScreen()
-                    }
+            .subscribe(object : CompletableObserver {
+                override fun onComplete() {
+                    if (dataManager.isSignedIn() && isValidUserUid(dataManager.getCurrentUserUid()))
+                        splashView.openMainScreenWithDelay(getSplashRemainingTime())
+                    else
+                        splashView.openLoginScreen()
+                }
 
-                    override fun onSubscribe(d: Disposable) {
-                        compositeDisposable.add(d)
-                    }
+                override fun onSubscribe(d: Disposable) {
+                    compositeDisposable.add(d)
+                }
 
-                    override fun onError(e: Throwable) {
-                        e.printStackTrace()
-                    }
+                override fun onError(e: Throwable) {
+                    e.printStackTrace()
+                }
 
-                })
+            })
     }
 
     private fun getSplashRemainingTime(): Long {
@@ -81,22 +81,22 @@ class SplashPresenter : BasePresenter<SplashContract.Presenter>, SplashContract.
         dataManager.setAppLaunchFirstTime(false)
 
         loadStoresFromServerInternal()
-                .subscribe(object : CompletableObserver {
-                    override fun onComplete() {
-                        splashView.openLoginScreen()
-                    }
+            .subscribe(object : CompletableObserver {
+                override fun onComplete() {
+                    splashView.openLoginScreen()
+                }
 
-                    override fun onSubscribe(d: Disposable) {
-                        compositeDisposable.add(d)
-                    }
+                override fun onSubscribe(d: Disposable) {
+                    compositeDisposable.add(d)
+                }
 
-                    override fun onError(e: Throwable) {
-                        e.printStackTrace()
-                        splashView.showGeneralErrorMessage()
-                        splashView.openLoginScreen()
-                    }
+                override fun onError(e: Throwable) {
+                    e.printStackTrace()
+                    splashView.showGeneralErrorMessage()
+                    splashView.openLoginScreen()
+                }
 
-                })
+            })
     }
 
     /**
@@ -105,87 +105,87 @@ class SplashPresenter : BasePresenter<SplashContract.Presenter>, SplashContract.
     private fun loadStoresFromServerInternal(): Completable {
         return Completable.create { emitter ->
             dataManager.loadStoresFromServer()
-                    .subscribeOn(schedulerProvider.io())
-                    .observeOn(schedulerProvider.ui())
-                    .subscribe(object : SingleObserver<List<Store>> {
-                        override fun onSubscribe(d: Disposable) {
-                            emitter.setDisposable(d)
-                        }
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.ui())
+                .subscribe(object : SingleObserver<List<Store>> {
+                    override fun onSubscribe(d: Disposable) {
+                        emitter.setDisposable(d)
+                    }
 
-                        override fun onSuccess(storeList: List<Store>) {
-                            if (storeList.isNotEmpty()) {
-                                val filteredStoreList = filterInvalidData(storeList.toMutableList())
-                                dataManager.setStores(filteredStoreList)
+                    override fun onSuccess(storeList: List<Store>) {
+                        if (storeList.isNotEmpty()) {
+                            val filteredStoreList = filterInvalidData(storeList.toMutableList())
+                            dataManager.setStores(filteredStoreList)
 
-                                emitter.onComplete()
-                            } else {
-                                splashView.showRetryDialog()
-                                emitter.onError(EmptyDataException())
-                            }
-                        }
-
-                        override fun onError(e: Throwable) {
+                            emitter.onComplete()
+                        } else {
                             splashView.showRetryDialog()
-                            emitter.onError(e)
+                            emitter.onError(EmptyDataException())
                         }
-                    })
+                    }
+
+                    override fun onError(e: Throwable) {
+                        splashView.showRetryDialog()
+                        emitter.onError(e)
+                    }
+                })
         }
     }
 
     private fun loadDataAndOpenLoginScreen() {
         // Warm up store data
         dataManager.getAllStores()
-                .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
-                .subscribe(object : SingleObserver<List<Store>> {
-                    override fun onSubscribe(d: Disposable) {
-                        compositeDisposable.add(d)
-                    }
+            .subscribeOn(schedulerProvider.io())
+            .observeOn(schedulerProvider.ui())
+            .subscribe(object : SingleObserver<List<Store>> {
+                override fun onSubscribe(d: Disposable) {
+                    compositeDisposable.add(d)
+                }
 
-                    override fun onSuccess(storeList: List<Store>) {
-                        if (storeList.isEmpty())
-                            loadStoresFromServer()
-                        else
-                            splashView.openLoginScreen()
-                    }
-
-                    override fun onError(e: Throwable) {
-                        e.printStackTrace()
-                        splashView.showGeneralErrorMessage()
+                override fun onSuccess(storeList: List<Store>) {
+                    if (storeList.isEmpty())
+                        loadStoresFromServer()
+                    else
                         splashView.openLoginScreen()
-                    }
-                })
+                }
+
+                override fun onError(e: Throwable) {
+                    e.printStackTrace()
+                    splashView.showGeneralErrorMessage()
+                    splashView.openLoginScreen()
+                }
+            })
     }
 
     private fun loadDataAndOpenMainScreen(userUid: String) {
         // User still signed in, fetch newest user data from server
         // TODO: Support timeout
         Single.zip(dataManager.getUser(userUid),
-                dataManager.getAllStores(),
-                BiFunction<User, List<Store>, Pair<User, List<Store>>> { user, storeList ->
-                    Pair(user, storeList)
-                })
-                .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
-                .subscribe(object : SingleObserver<Pair<User, List<Store>>> {
-                    override fun onSubscribe(d: Disposable) {
-                        compositeDisposable.add(d)
-                    }
+            dataManager.getAllStores(),
+            BiFunction<User, List<Store>, Pair<User, List<Store>>> { user, storeList ->
+                Pair(user, storeList)
+            })
+            .subscribeOn(schedulerProvider.io())
+            .observeOn(schedulerProvider.ui())
+            .subscribe(object : SingleObserver<Pair<User, List<Store>>> {
+                override fun onSubscribe(d: Disposable) {
+                    compositeDisposable.add(d)
+                }
 
-                    override fun onSuccess(pair: Pair<User, List<Store>>) {
-                        dataManager.updateCurrentUser(pair.first)
+                override fun onSuccess(pair: Pair<User, List<Store>>) {
+                    dataManager.updateCurrentUser(pair.first)
 
-                        if (pair.second.isEmpty())
-                            loadStoresFromServer()
-                        else
-                            splashView.openMainScreenWithDelay(getSplashRemainingTime())
-                    }
-
-                    override fun onError(e: Throwable) {
-                        e.printStackTrace()
-                        splashView.showGeneralErrorMessage()
+                    if (pair.second.isEmpty())
+                        loadStoresFromServer()
+                    else
                         splashView.openMainScreenWithDelay(getSplashRemainingTime())
-                    }
-                })
+                }
+
+                override fun onError(e: Throwable) {
+                    e.printStackTrace()
+                    splashView.showGeneralErrorMessage()
+                    splashView.openMainScreenWithDelay(getSplashRemainingTime())
+                }
+            })
     }
 }

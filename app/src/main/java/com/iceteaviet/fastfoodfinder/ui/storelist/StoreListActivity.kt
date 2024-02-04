@@ -1,21 +1,25 @@
 package com.iceteaviet.fastfoodfinder.ui.storelist
 
 import android.os.Bundle
-import androidx.annotation.Nullable
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
+import com.iceteaviet.fastfoodfinder.databinding.ActivityStoreListBinding
 import com.iceteaviet.fastfoodfinder.ui.base.BaseActivity
-import kotlinx.android.synthetic.main.activity_store_list.*
 
 /**
  * Created by MyPC on 11/30/2016.
  */
 class StoreListActivity : BaseActivity(), StoreListContract.View {
     override lateinit var presenter: StoreListContract.Presenter
+
+    /**
+     * Views Ref
+     */
+    private lateinit var binding: ActivityStoreListBinding
 
     lateinit var recyclerView: RecyclerView
 
@@ -24,7 +28,7 @@ class StoreListActivity : BaseActivity(), StoreListContract.View {
 
     private var adapter: StoreListAdapter? = null
 
-    override fun onCreate(@Nullable savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         presenter = StoreListPresenter(App.getDataManager(), App.getSchedulerProvider(), this)
@@ -33,7 +37,7 @@ class StoreListActivity : BaseActivity(), StoreListContract.View {
     }
 
     private fun setupUI() {
-        recyclerView = rv_top_list
+        recyclerView = binding.rvTopList
 
         adapter = StoreListAdapter()
         val layoutManager = LinearLayoutManager(applicationContext)

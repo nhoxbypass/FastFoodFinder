@@ -2,7 +2,11 @@ package com.iceteaviet.fastfoodfinder.ui.ar
 
 
 import android.content.pm.PackageManager
-import android.hardware.*
+import android.hardware.Camera
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.opengl.Matrix
 import android.os.Bundle
 import android.view.SurfaceView
@@ -10,22 +14,32 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.Toast
-import androidx.annotation.NonNull
 import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
+import com.iceteaviet.fastfoodfinder.databinding.ActivityArCameraBinding
 import com.iceteaviet.fastfoodfinder.location.LatLngAlt
 import com.iceteaviet.fastfoodfinder.location.SystemLocationManager
 import com.iceteaviet.fastfoodfinder.ui.ar.model.AugmentedPOI
 import com.iceteaviet.fastfoodfinder.ui.base.BaseActivity
 import com.iceteaviet.fastfoodfinder.ui.custom.ar.ARCamera
 import com.iceteaviet.fastfoodfinder.ui.custom.ar.AROverlayView
-import com.iceteaviet.fastfoodfinder.utils.*
+import com.iceteaviet.fastfoodfinder.utils.REQUEST_CAMERA
+import com.iceteaviet.fastfoodfinder.utils.REQUEST_LOCATION
 import com.iceteaviet.fastfoodfinder.utils.extension.getSensorManager
-import kotlinx.android.synthetic.main.activity_ar_camera.*
+import com.iceteaviet.fastfoodfinder.utils.formatDecimal
+import com.iceteaviet.fastfoodfinder.utils.isCameraPermissionGranted
+import com.iceteaviet.fastfoodfinder.utils.isLocationPermissionGranted
+import com.iceteaviet.fastfoodfinder.utils.requestCameraPermission
+import com.iceteaviet.fastfoodfinder.utils.requestLocationPermission
 
 class LiveSightActivity : BaseActivity(), LiveSightContract.View, SensorEventListener {
 
     override lateinit var presenter: LiveSightContract.Presenter
+
+    /**
+     * Views Ref
+     */
+    private lateinit var binding: ActivityArCameraBinding
 
     private var surfaceView: SurfaceView? = null
     private var cameraContainerLayout: FrameLayout? = null
@@ -41,10 +55,10 @@ class LiveSightActivity : BaseActivity(), LiveSightContract.View, SensorEventLis
         super.onCreate(savedInstanceState)
 
         presenter = LiveSightPresenter(App.getDataManager(), App.getSchedulerProvider(),
-                SystemLocationManager.getInstance(), this)
+            SystemLocationManager.getInstance(), this)
 
-        cameraContainerLayout = camera_container_layout
-        surfaceView = surface_view
+        cameraContainerLayout = binding.cameraContainerLayout
+        surfaceView = binding.surfaceView
         arOverlayView = AROverlayView(this)
     }
 
@@ -64,7 +78,7 @@ class LiveSightActivity : BaseActivity(), LiveSightContract.View, SensorEventLis
         super.onDestroy()
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, @NonNull permissions: Array<String>, @NonNull grantResults: IntArray) {
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         when (requestCode) {
@@ -207,17 +221,17 @@ class LiveSightActivity : BaseActivity(), LiveSightContract.View, SensorEventLis
 
     private fun registerSensorListeners() {
         sensorManager?.registerListener(this,
-                sensorManager?.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR),
-                SensorManager.SENSOR_DELAY_FASTEST)
+            sensorManager?.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR),
+            SensorManager.SENSOR_DELAY_FASTEST)
     }
 
     override fun updateLatestLocation(latestLocation: LatLngAlt) {
         arOverlayView?.let {
             it.updateCurrentLocation(latestLocation)
-            tv_current_location.text = String.format("lat: %s \nlon: %s \nalt: %s \n",
-                    formatDecimal(latestLocation.latitude, 4),
-                    formatDecimal(latestLocation.longitude, 4),
-                    formatDecimal(latestLocation.altitude, 4))
+            binding.tvCurrentLocation.text = String.format("lat: %s \nlon: %s \nalt: %s \n",
+                formatDecimal(latestLocation.latitude, 4),
+                formatDecimal(latestLocation.longitude, 4),
+                formatDecimal(latestLocation.altitude, 4))
         }
     }
 

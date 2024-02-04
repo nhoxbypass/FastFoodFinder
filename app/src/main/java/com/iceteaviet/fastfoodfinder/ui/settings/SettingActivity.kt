@@ -5,18 +5,28 @@ import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.widget.*
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.ProgressBar
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.widget.SwitchCompat
 import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
+import com.iceteaviet.fastfoodfinder.databinding.ActivitySettingBinding
 import com.iceteaviet.fastfoodfinder.ui.base.BaseActivity
 import com.iceteaviet.fastfoodfinder.ui.settings.discountnotify.DiscountNotifyDialog
 import com.iceteaviet.fastfoodfinder.utils.openLoginActivity
-import kotlinx.android.synthetic.main.activity_setting.*
-import java.util.*
+import java.util.Locale
 
 class SettingActivity : BaseActivity(), SettingContract.View {
     override lateinit var presenter: SettingContract.Presenter
+
+    /**
+     * Views Ref
+     */
+    private lateinit var binding: ActivitySettingBinding
+
     private lateinit var txtShareApp: TextView
     private lateinit var txtChangeMetric: TextView
     private lateinit var txtEditProfile: TextView
@@ -77,7 +87,7 @@ class SettingActivity : BaseActivity(), SettingContract.View {
         }
 
         baseContext.resources.updateConfiguration(configuration,
-                baseContext.resources.displayMetrics)
+            baseContext.resources.displayMetrics)
         refreshUI()
     }
 
@@ -118,24 +128,24 @@ class SettingActivity : BaseActivity(), SettingContract.View {
     }
 
     private fun findViews() {
-        txtShareApp = tv_setting_share_app
-        txtChangeMetric = tv_setting_change_metric
-        txtEditProfile = tv_setting_edit_profile
-        txtChangePassword = tv_setting_change_password
-        txtChangeEmail = tv_setting_change_email
-        txtSetNotification = tv_setting_notification
-        txtSetEmailNotification = tv_setting_notification_email
-        layoutUpdateDb = ll_setting_update_db
-        progressBarUpdateDb = progress_bar_update_db
-        imageUpdateDb = iv_update_db
-        txtAboutApp = tv_setting_about_app
-        txtRateApp = tv_setting_rate_app
-        txtFeedBack = tv_setting_feedback
-        txtPrivacyPolicy = tv_setting_privacy_policy
-        txtTermOfUse = tv_setting_term_of_use
-        txtSignOut = tv_setting_sign_out
-        swChangeLanguage = sw_languages
-        tvSettingLanguage = tv_setting_english
+        txtShareApp = binding.tvSettingShareApp
+        txtChangeMetric = binding.tvSettingChangeMetric
+        txtEditProfile = binding.tvSettingEditProfile
+        txtChangePassword = binding.tvSettingChangePassword
+        txtChangeEmail = binding.tvSettingChangeEmail
+        txtSetNotification = binding.tvSettingNotification
+        txtSetEmailNotification = binding.tvSettingNotificationEmail
+        layoutUpdateDb = binding.llSettingUpdateDb
+        progressBarUpdateDb = binding.progressBarUpdateDb
+        imageUpdateDb = binding.ivUpdateDb
+        txtAboutApp = binding.tvSettingAboutApp
+        txtRateApp = binding.tvSettingRateApp
+        txtFeedBack = binding.tvSettingFeedback
+        txtPrivacyPolicy = binding.tvSettingPrivacyPolicy
+        txtTermOfUse = binding.tvSettingTermOfUse
+        txtSignOut = binding.tvSettingSignOut
+        swChangeLanguage = binding.swLanguages
+        tvSettingLanguage = binding.tvSettingEnglish
     }
 
     private fun refreshUI() {

@@ -17,8 +17,8 @@ class AsyncStoreDAO {
         return Single.create { emitter ->
             val realm = Realm.getDefaultInstance()
             val results = realm
-                    .where(StoreEntity::class.java)
-                    .findAll()
+                .where(StoreEntity::class.java)
+                .findAll()
 
             val stores = ArrayList<Store>()
             for (i in results.indices) {
@@ -39,8 +39,8 @@ class AsyncStoreDAO {
             val realm = Realm.getDefaultInstance()
             realm.executeTransactionAsync {
                 it.where(StoreEntity::class.java)
-                        .findAll()
-                        .deleteAllFromRealm()
+                    .findAll()
+                    .deleteAllFromRealm()
 
                 for (i in storeList.indices) {
                     val storeEntity = it.createObject(StoreEntity::class.java)
@@ -197,8 +197,8 @@ class AsyncStoreDAO {
     fun deleteAllStores() {
         val realm = Realm.getDefaultInstance()
         realm.where(StoreEntity::class.java)
-                .findAll()
-                .deleteAllFromRealm()
+            .findAll()
+            .deleteAllFromRealm()
 
         realm.close()
     }

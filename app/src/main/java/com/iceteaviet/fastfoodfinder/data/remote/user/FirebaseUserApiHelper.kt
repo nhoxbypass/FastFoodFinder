@@ -1,8 +1,11 @@
 package com.iceteaviet.fastfoodfinder.data.remote.user
 
-import androidx.annotation.NonNull
 import androidx.core.util.Pair
-import com.google.firebase.database.*
+import com.google.firebase.database.ChildEventListener
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreEvent
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList
@@ -25,20 +28,20 @@ class FirebaseUserApiHelper(private val databaseRef: DatabaseReference) : UserAp
 
     override fun insertOrUpdate(user: User) {
         databaseRef.child(CHILD_USERS)
-                .child(user.getUid())
-                .setValue(user)
+            .child(user.getUid())
+            .setValue(user)
     }
 
     override fun updateStoreListForUser(uid: String, storeLists: List<UserStoreList>) {
         databaseRef.child(CHILD_USERS)
-                .child(uid)
-                .child(CHILD_USERS_STORE_LIST)
-                .setValue(storeLists)
+            .child(uid)
+            .child(CHILD_USERS_STORE_LIST)
+            .setValue(storeLists)
     }
 
     override fun getUser(uid: String, callback: UserApiHelper.UserLoadCallback<User>) {
         databaseRef.child(CHILD_USERS).child(uid).addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(@NonNull dataSnapshot: DataSnapshot) {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.exists()) {
                     val user = dataSnapshot.getValue(User::class.java)
                     if (user != null)
@@ -50,7 +53,7 @@ class FirebaseUserApiHelper(private val databaseRef: DatabaseReference) : UserAp
                 }
             }
 
-            override fun onCancelled(@NonNull databaseError: DatabaseError) {
+            override fun onCancelled(databaseError: DatabaseError) {
                 callback.onError(databaseError.toException())
             }
         })
@@ -58,7 +61,7 @@ class FirebaseUserApiHelper(private val databaseRef: DatabaseReference) : UserAp
 
     override fun isUserExists(uid: String, callback: UserApiHelper.UserLoadCallback<Boolean>) {
         databaseRef.child(CHILD_USERS).addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(@NonNull dataSnapshot: DataSnapshot) {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (!dataSnapshot.exists() || !dataSnapshot.hasChild(uid)) {
                     // Not exists
                     callback.onSuccess(false)
@@ -67,7 +70,7 @@ class FirebaseUserApiHelper(private val databaseRef: DatabaseReference) : UserAp
                 }
             }
 
-            override fun onCancelled(@NonNull databaseError: DatabaseError) {
+            override fun onCancelled(databaseError: DatabaseError) {
                 e(TAG, "Error checking user exists")
                 callback.onError(databaseError.toException())
             }
@@ -77,44 +80,44 @@ class FirebaseUserApiHelper(private val databaseRef: DatabaseReference) : UserAp
     override fun subscribeFavouriteStoresOfUser(uid: String): Observable<Pair<Int, Int>> {
         return Observable.create { emitter ->
             favouriteStoresListener = databaseRef.child(CHILD_USERS)
-                    .child(uid)
-                    .child(CHILD_USERS_STORE_LIST)
-                    .child(UserStoreList.ID_FAVOURITE.toString())
-                    .child(CHILD_STORE_ID_LIST).addChildEventListener(object : ChildEventListener {
-                        override fun onChildAdded(@NonNull dataSnapshot: DataSnapshot, s: String?) {
-                            if (dataSnapshot.exists())
-                                emitter.onNext(Pair<Int, Int>(dataSnapshot.getValue(Int::class.java), UserStoreEvent.ACTION_ADDED))
-                        }
+                .child(uid)
+                .child(CHILD_USERS_STORE_LIST)
+                .child(UserStoreList.ID_FAVOURITE.toString())
+                .child(CHILD_STORE_ID_LIST).addChildEventListener(object : ChildEventListener {
+                    override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
+                        if (dataSnapshot.exists())
+                            emitter.onNext(Pair<Int, Int>(dataSnapshot.getValue(Int::class.java), UserStoreEvent.ACTION_ADDED))
+                    }
 
-                        override fun onChildChanged(@NonNull dataSnapshot: DataSnapshot, s: String?) {
-                            if (dataSnapshot.exists())
-                                emitter.onNext(Pair<Int, Int>(dataSnapshot.getValue(Int::class.java), UserStoreEvent.ACTION_CHANGED))
-                        }
+                    override fun onChildChanged(dataSnapshot: DataSnapshot, s: String?) {
+                        if (dataSnapshot.exists())
+                            emitter.onNext(Pair<Int, Int>(dataSnapshot.getValue(Int::class.java), UserStoreEvent.ACTION_CHANGED))
+                    }
 
-                        override fun onChildRemoved(@NonNull dataSnapshot: DataSnapshot) {
-                            if (dataSnapshot.exists())
-                                emitter.onNext(Pair<Int, Int>(dataSnapshot.getValue(Int::class.java), UserStoreEvent.ACTION_REMOVED))
-                        }
+                    override fun onChildRemoved(dataSnapshot: DataSnapshot) {
+                        if (dataSnapshot.exists())
+                            emitter.onNext(Pair<Int, Int>(dataSnapshot.getValue(Int::class.java), UserStoreEvent.ACTION_REMOVED))
+                    }
 
-                        override fun onChildMoved(@NonNull dataSnapshot: DataSnapshot, s: String?) {
-                            if (dataSnapshot.exists())
-                                emitter.onNext(Pair<Int, Int>(dataSnapshot.getValue(Int::class.java), UserStoreEvent.ACTION_MOVED))
-                        }
+                    override fun onChildMoved(dataSnapshot: DataSnapshot, s: String?) {
+                        if (dataSnapshot.exists())
+                            emitter.onNext(Pair<Int, Int>(dataSnapshot.getValue(Int::class.java), UserStoreEvent.ACTION_MOVED))
+                    }
 
-                        override fun onCancelled(@NonNull databaseError: DatabaseError) {
-                            emitter.onError(databaseError.toException())
-                        }
-                    })
+                    override fun onCancelled(databaseError: DatabaseError) {
+                        emitter.onError(databaseError.toException())
+                    }
+                })
         }
     }
 
     override fun unsubscribeFavouriteStoresOfUser(uid: String) {
         favouriteStoresListener?.let {
             databaseRef.child(CHILD_USERS)
-                    .child(uid)
-                    .child(CHILD_USERS_STORE_LIST)
-                    .child(UserStoreList.ID_FAVOURITE.toString())
-                    .child(CHILD_STORE_ID_LIST).removeEventListener(it)
+                .child(uid)
+                .child(CHILD_USERS_STORE_LIST)
+                .child(UserStoreList.ID_FAVOURITE.toString())
+                .child(CHILD_STORE_ID_LIST).removeEventListener(it)
         }
     }
 

@@ -88,7 +88,7 @@ class User {
     override fun equals(other: Any?): Boolean {
         return if (other is User) {
             uid.equals(other.uid) && name.equals(other.name) && email.equals(other.email)
-                    && photoUrl.equals(other.photoUrl) && userStoreLists.equals(other.userStoreLists)
+                && photoUrl.equals(other.photoUrl) && userStoreLists.equals(other.userStoreLists)
         } else {
             false
         }

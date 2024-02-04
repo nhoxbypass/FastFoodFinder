@@ -57,9 +57,9 @@ class GoogleAuthHelper(private var activity: Activity, private var apiKey: Strin
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         val client: GoogleSignInClient
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(apiKey)
-                .requestEmail()
-                .build()
+            .requestIdToken(apiKey)
+            .requestEmail()
+            .build()
 
         // Build a GoogleSignInClient with the options specified by gso.
         client = GoogleSignIn.getClient(activity, gso)

@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.annotation.NonNull
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,12 +17,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
+import com.iceteaviet.fastfoodfinder.databinding.FragmentSearchBinding
 import com.iceteaviet.fastfoodfinder.ui.main.search.model.SearchStoreItem
 import com.iceteaviet.fastfoodfinder.utils.StoreType
 import com.iceteaviet.fastfoodfinder.utils.openStoreListActivity
 import de.hdodenhof.circleimageview.CircleImageView
-import kotlinx.android.synthetic.main.fragment_search.*
-
 
 /**
  * Search fragment
@@ -32,6 +30,11 @@ import kotlinx.android.synthetic.main.fragment_search.*
  */
 class SearchFragment : Fragment(), SearchContract.View {
     override lateinit var presenter: SearchContract.Presenter
+
+    /**
+     * Views Ref
+     */
+    private lateinit var binding: FragmentSearchBinding
 
     private lateinit var quickSearchCircleK: CircleImageView
     private lateinit var quickSearchFamilyMart: CircleImageView
@@ -63,7 +66,7 @@ class SearchFragment : Fragment(), SearchContract.View {
 
     private var isLoadMoreVisible: Boolean = false
 
-    override fun onCreateView(@NonNull inflater: LayoutInflater, container: ViewGroup?,
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_search, container, false)
@@ -96,11 +99,11 @@ class SearchFragment : Fragment(), SearchContract.View {
     }
 
     override fun showStoreListView() {
-        openStoreListActivity(activity!!)
+        openStoreListActivity(requireActivity())
     }
 
     override fun showGeneralErrorMessage() {
-        Toast.makeText(activity!!, R.string.error_general_error_code, Toast.LENGTH_LONG).show()
+        Toast.makeText(requireActivity(), R.string.error_general_error_code, Toast.LENGTH_LONG).show()
     }
 
     private fun setupUI() {
@@ -120,26 +123,26 @@ class SearchFragment : Fragment(), SearchContract.View {
     }
 
     private fun findViews() {
-        cvActionContainer = cv_action_container
-        cvRecentlyContainer = cv_recently_container
-        cvTimeSuggestionContainer = cv_time_suggestion_container
-        cvSuggestionContainer = cv_suggestion_container
-        cvSearchContainer = cv_search_container
-        tvRecently = tv_recently
-        tvTimeSuggestion = tv_time_suggestion
-        tvSuggestion = tv_suggestion
-        quickSearchCircleK = btn_search_circle_k
-        quickSearchFamilyMart = btn_search_family_mart
-        quickSearchMiniStop = btn_search_mini_stop
-        quickSearchLoadMore = btn_load_more
-        quickSearchBsMart = btn_search_bsmart
-        quickSearchShopNGo = btn_search_shop_n_go
-        cardViewQuickSearch = cv_action_container
-        searchMoreLayout = ll_load_more_container
-        searchContainer = sv_search_container
-        rvRecentlyStores = rv_recently_stores
-        rvSuggestedStores = rv_suggested_stores
-        rvSearch = rv_search
+        cvActionContainer = binding.cvActionContainer
+        cvRecentlyContainer = binding.cvRecentlyContainer
+        cvTimeSuggestionContainer = binding.cvTimeSuggestionContainer
+        cvSuggestionContainer = binding.cvSuggestionContainer
+        cvSearchContainer = binding.cvSearchContainer
+        tvRecently = binding.tvRecently
+        tvTimeSuggestion = binding.tvTimeSuggestion
+        tvSuggestion = binding.tvSuggestion
+        quickSearchCircleK = binding.btnSearchCircleK
+        quickSearchFamilyMart = binding.btnSearchFamilyMart
+        quickSearchMiniStop = binding.btnSearchMiniStop
+        quickSearchLoadMore = binding.btnLoadMore
+        quickSearchBsMart = binding.btnSearchBsmart
+        quickSearchShopNGo = binding.btnSearchShopNGo
+        cardViewQuickSearch = binding.cvActionContainer
+        searchMoreLayout = binding.llLoadMoreContainer
+        searchContainer = binding.svSearchContainer
+        rvRecentlyStores = binding.rvRecentlyStores
+        rvSuggestedStores = binding.rvSuggestedStores
+        rvSearch = binding.rvSearch
     }
 
     private fun setupEventHandlers() {
@@ -185,17 +188,16 @@ class SearchFragment : Fragment(), SearchContract.View {
             }
         }
 
-        tvTop.setOnClickListener {
+        binding.tvTop.setOnClickListener {
             presenter.onTopStoreButtonClick()
         }
-
-        tvNearest.setOnClickListener {
+        binding.tvNearest.setOnClickListener {
             presenter.onNearestStoreButtonClick()
         }
-        tvTrending.setOnClickListener {
+        binding.tvTrending.setOnClickListener {
             presenter.onTrendingStoreButtonClick()
         }
-        tvConvenienceStore.setOnClickListener {
+        binding.tvConvenienceStore.setOnClickListener {
             presenter.onConvenienceStoreButtonClick()
         }
     }

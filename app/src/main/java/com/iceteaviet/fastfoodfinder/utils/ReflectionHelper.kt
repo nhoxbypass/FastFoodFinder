@@ -10,11 +10,11 @@ import java.lang.reflect.Modifier
 
 @Throws(Exception::class)
 fun setFinalStatic(field: Field, newValue: Any) {
-    field.setAccessible(true)
+    field.isAccessible = true
 
     val modifiersField = Field::class.java.getDeclaredField("modifiers")
-    modifiersField.setAccessible(true)
-    modifiersField.setInt(field, field.getModifiers() and Modifier.FINAL.inv())
+    modifiersField.isAccessible = true
+    modifiersField.setInt(field, field.modifiers and Modifier.FINAL.inv())
 
     field.set(null, newValue)
 }

@@ -19,6 +19,7 @@ class ListDetailPresenter : BasePresenter<ListDetailContract.Presenter>, ListDet
 
     @VisibleForTesting
     lateinit var userStoreList: UserStoreList
+
     @VisibleForTesting
     var photoUrl: String = ""
 
@@ -32,21 +33,21 @@ class ListDetailPresenter : BasePresenter<ListDetailContract.Presenter>, ListDet
 
         //add list store to mAdapter here
         dataManager.findStoresByIds(userStoreList.getStoreIdList())
-                .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
-                .subscribe(object : SingleObserver<List<Store>> {
-                    override fun onSubscribe(d: Disposable) {
-                        compositeDisposable.add(d)
-                    }
+            .subscribeOn(schedulerProvider.io())
+            .observeOn(schedulerProvider.ui())
+            .subscribe(object : SingleObserver<List<Store>> {
+                override fun onSubscribe(d: Disposable) {
+                    compositeDisposable.add(d)
+                }
 
-                    override fun onSuccess(storeList: List<Store>) {
-                        listDetailView.setStores(storeList)
-                    }
+                override fun onSuccess(storeList: List<Store>) {
+                    listDetailView.setStores(storeList)
+                }
 
-                    override fun onError(e: Throwable) {
-                        listDetailView.showGeneralErrorMessage()
-                    }
-                })
+                override fun onError(e: Throwable) {
+                    listDetailView.showGeneralErrorMessage()
+                }
+            })
     }
 
     override fun handleExtras(userStoreList: UserStoreList?, photoUrl: String?) {

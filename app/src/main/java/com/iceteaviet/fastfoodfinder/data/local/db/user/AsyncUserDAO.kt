@@ -23,8 +23,8 @@ class AsyncUserDAO {
 
         realm.executeTransactionAsync {
             it.where(UserEntity::class.java)
-                    .findAll()
-                    .deleteAllFromRealm()
+                .findAll()
+                .deleteAllFromRealm()
 
             val userEntity = it.createObject(UserEntity::class.java)
             userEntity.map(user)
@@ -38,8 +38,8 @@ class AsyncUserDAO {
 
         realm.executeTransactionAsync {
             val entity = it.where(UserEntity::class.java)
-                    .equalTo(PARAM_UID, uid)
-                    .findFirst()
+                .equalTo(PARAM_UID, uid)
+                .findFirst()
             if (entity != null) {
                 val userStoreListEntities = RealmList<UserStoreListEntity>()
                 for (i in storeLists.indices) {
@@ -58,8 +58,8 @@ class AsyncUserDAO {
             val realm = Realm.getDefaultInstance()
 
             val entity = realm.where(UserEntity::class.java)
-                    .equalTo(PARAM_UID, uid)
-                    .findFirst()
+                .equalTo(PARAM_UID, uid)
+                .findFirst()
             if (entity != null)
                 emitter.onSuccess(User(entity))
             else
@@ -74,8 +74,8 @@ class AsyncUserDAO {
             val realm = Realm.getDefaultInstance()
 
             val count = realm.where(UserEntity::class.java)
-                    .equalTo(PARAM_UID, uid)
-                    .count()
+                .equalTo(PARAM_UID, uid)
+                .count()
             if (count > 0)
                 emitter.onSuccess(true)
             else

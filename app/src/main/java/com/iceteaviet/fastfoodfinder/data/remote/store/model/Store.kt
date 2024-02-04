@@ -15,22 +15,29 @@ class Store : Parcelable {
     @get:Exclude
     @set:Exclude
     var type: Int = 0
+
     @PropertyName("id")
     var id: Int = 0
+
     @PropertyName("title")
     @set:PropertyName("title")
     var title: String = ""
+
     @PropertyName("address")
     var address: String = ""
+
     @PropertyName("lat")
     @set:PropertyName("lat")
     var lat: String = ""
+
     @PropertyName("lng")
     @set:PropertyName("lng")
     var lng: String = ""
+
     @PropertyName("tel")
     @set:PropertyName("tel")
     var tel: String = ""
+
     @Exclude
     private lateinit var position: LatLng
 
@@ -56,8 +63,8 @@ class Store : Parcelable {
     constructor(entity: StoreEntity) : this(entity.id, entity.title, entity.address, entity.latitude.toString(), entity.longitude.toString(), entity.telephone, entity.type)
 
     protected constructor(`in`: Parcel) : this(`in`.readInt(), `in`.readString()
-            ?: "", `in`.readString() ?: "", `in`.readString() ?: "0", `in`.readString()
-            ?: "0", `in`.readString() ?: "", `in`.readInt())
+        ?: "", `in`.readString() ?: "", `in`.readString() ?: "0", `in`.readString()
+        ?: "0", `in`.readString() ?: "", `in`.readInt())
 
 
     @Exclude

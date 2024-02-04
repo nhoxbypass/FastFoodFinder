@@ -18,11 +18,11 @@ import de.hdodenhof.circleimageview.CircleImageView
 /**
  * Created by tom on 10/12/18.
  */
-class StoreListView constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : CardView(context, attrs, defStyleAttr) {
+class StoreListView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : CardView(context, attrs, defStyleAttr) {
 
     constructor(context: Context) : this(context, null)
 
-    constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, R.attr.cardViewStyle)
+    constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, androidx.cardview.R.attr.cardViewStyle)
 
     private var imageView1: ImageView
     private var imageView2: ImageView
@@ -61,28 +61,28 @@ class StoreListView constructor(context: Context, attrs: AttributeSet?, defStyle
         addView(ivIcon)
 
         context.theme.obtainStyledAttributes(attrs, R.styleable.StoreListView, 0, 0)
-                .apply {
-                    try {
-                        tvName.text = getString(R.styleable.StoreListView_name)
-                        tvCount.text = String.format(context.getString(R.string.count_places),
-                                getInteger(R.styleable.StoreListView_count, 0).toString())
-                        ivIcon.setImageDrawable(getDrawable(R.styleable.StoreListView_icon))
+            .apply {
+                try {
+                    tvName.text = getString(R.styleable.StoreListView_name)
+                    tvCount.text = String.format(context.getString(R.string.count_places),
+                        getInteger(R.styleable.StoreListView_count, 0).toString())
+                    ivIcon.setImageDrawable(getDrawable(R.styleable.StoreListView_icon))
 
-                        val highlightName = getBoolean(R.styleable.StoreListView_highlightName, false)
-                        if (highlightName) {
-                            tvName.setTypeface(null, Typeface.BOLD)
-                            tvName.setTextColor(Color.parseColor("#304FFE"))
-                        }
-                    } finally {
-                        recycle()
+                    val highlightName = getBoolean(R.styleable.StoreListView_highlightName, false)
+                    if (highlightName) {
+                        tvName.setTypeface(null, Typeface.BOLD)
+                        tvName.setTextColor(Color.parseColor("#304FFE"))
                     }
+                } finally {
+                    recycle()
                 }
+            }
 
         initRandomImages()
     }
 
     // TODO: Check calling on onDraw()
-    override fun onDraw(canvas: Canvas?) {
+    override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
         val infoHeight = tvName.height + tvCount.height + DEFAULT_TEXT_PADDING_TOP_BOTTOM * 3

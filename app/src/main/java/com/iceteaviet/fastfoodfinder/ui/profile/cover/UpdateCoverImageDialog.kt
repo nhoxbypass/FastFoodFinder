@@ -12,15 +12,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.Toast
-import androidx.annotation.NonNull
-import androidx.annotation.Nullable
 import androidx.fragment.app.DialogFragment
 import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
+import com.iceteaviet.fastfoodfinder.databinding.DialogChooseImageBinding
 import com.iceteaviet.fastfoodfinder.utils.getBitmapFromUri
 import com.iceteaviet.fastfoodfinder.utils.getImagePickerIntent
 import com.iceteaviet.fastfoodfinder.utils.ui.getDrawable
-import kotlinx.android.synthetic.main.dialog_choose_image.*
 
 /**
  * Created by MyPC on 11/29/2016.
@@ -28,14 +26,18 @@ import kotlinx.android.synthetic.main.dialog_choose_image.*
 class UpdateCoverImageDialog : DialogFragment(), UpdateCoverContract.View, View.OnClickListener {
     override lateinit var presenter: UpdateCoverContract.Presenter
 
+    /**
+     * Views Ref
+     */
+    private lateinit var binding: DialogChooseImageBinding
+
     private var listener: OnButtonClickListener? = null
 
     fun setOnButtonClickListener(listener: OnButtonClickListener) {
         this.listener = listener
     }
 
-    @Nullable
-    override fun onCreateView(@NonNull inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.dialog_choose_image, container, false)
     }
 
@@ -51,7 +53,7 @@ class UpdateCoverImageDialog : DialogFragment(), UpdateCoverContract.View, View.
         dialog?.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
-    override fun onViewCreated(@NonNull view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupEventListeners()
     }
@@ -67,17 +69,17 @@ class UpdateCoverImageDialog : DialogFragment(), UpdateCoverContract.View, View.
     }
 
     private fun setupEventListeners() {
-        btnBrowser.setOnClickListener(this)
+        binding.btnBrowser.setOnClickListener(this)
 
-        ivOne.setOnClickListener(this)
-        ivTwo.setOnClickListener(this)
-        ivThree.setOnClickListener(this)
-        ivFour.setOnClickListener(this)
-        ivFive.setOnClickListener(this)
-        ivSix.setOnClickListener(this)
+        binding.ivOne.setOnClickListener(this)
+        binding.ivTwo.setOnClickListener(this)
+        binding.ivThree.setOnClickListener(this)
+        binding.ivFour.setOnClickListener(this)
+        binding.ivFive.setOnClickListener(this)
+        binding.ivSix.setOnClickListener(this)
 
-        btnDone.setOnClickListener(this)
-        btnCancel.setOnClickListener(this)
+        binding.btnDone.setOnClickListener(this)
+        binding.btnCancel.setOnClickListener(this)
     }
 
     override fun onClick(v: View) {
@@ -85,27 +87,35 @@ class UpdateCoverImageDialog : DialogFragment(), UpdateCoverContract.View, View.
             R.id.btnBrowser -> {
                 presenter.onImageBrowserButtonClick()
             }
+
             R.id.ivOne -> {
                 presenter.onCoverImageSelect(getDrawable(R.drawable.profile_sample_background)!!)
             }
+
             R.id.ivTwo -> {
                 presenter.onCoverImageSelect(getDrawable(R.drawable.all_sample_avatar)!!)
             }
+
             R.id.ivThree -> {
                 presenter.onCoverImageSelect(getDrawable(R.drawable.profile_sample_background_3)!!)
             }
+
             R.id.ivFour -> {
                 presenter.onCoverImageSelect(getDrawable(R.drawable.profile_sample_background_4)!!)
             }
+
             R.id.ivFive -> {
                 presenter.onCoverImageSelect(getDrawable(R.drawable.profile_sample_background_5)!!)
             }
+
             R.id.ivSix -> {
                 presenter.onCoverImageSelect(getDrawable(R.drawable.profile_sample_background_6)!!)
             }
+
             R.id.btnDone -> {
                 presenter.onDoneButtonClick()
             }
+
             R.id.btnCancel -> {
                 cancel()
             }
@@ -117,11 +127,11 @@ class UpdateCoverImageDialog : DialogFragment(), UpdateCoverContract.View, View.
         when (requestCode) {
             RESULT_LOAD_IMAGE -> {
                 if (resultCode == Activity.RESULT_OK && data != null && data.data != null) {
-                    val bmp: Bitmap? = getBitmapFromUri(activity!!, data.data!!)
+                    val bmp: Bitmap? = getBitmapFromUri(requireActivity(), data.data!!)
                     if (bmp != null)
                         presenter.onCoverImageSelect(BitmapDrawable(resources, bmp))
                     else
-                        Toast.makeText(activity!!, getString(R.string.get_image_from_picker_failed), Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireActivity(), getString(R.string.get_image_from_picker_failed), Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -132,7 +142,7 @@ class UpdateCoverImageDialog : DialogFragment(), UpdateCoverContract.View, View.
     }
 
     override fun setSelectedImage(selectedImage: Drawable) {
-        ivChosenImage.setImageDrawable(selectedImage)
+        binding.ivChosenImage.setImageDrawable(selectedImage)
     }
 
     override fun dismissWithResult(selectedImage: Drawable?) {
@@ -161,5 +171,4 @@ class UpdateCoverImageDialog : DialogFragment(), UpdateCoverContract.View, View.
             return frag
         }
     }
-
 }

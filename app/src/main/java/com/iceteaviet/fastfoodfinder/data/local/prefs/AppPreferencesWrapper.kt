@@ -13,8 +13,8 @@ class AppPreferencesWrapper(private val sharedPreferences: SharedPreferences) : 
 
     override fun putString(key: String, value: String) {
         sharedPreferences.edit()
-                .putString(key, value)
-                .apply()
+            .putString(key, value)
+            .apply()
     }
 
     override fun getString(key: String, defaultValue: String): String {
@@ -24,8 +24,8 @@ class AppPreferencesWrapper(private val sharedPreferences: SharedPreferences) : 
 
     override fun putBoolean(key: String, value: Boolean) {
         sharedPreferences.edit()
-                .putBoolean(key, value)
-                .apply()
+            .putBoolean(key, value)
+            .apply()
     }
 
     override fun getBoolean(key: String, defaultValue: Boolean): Boolean {
@@ -34,8 +34,8 @@ class AppPreferencesWrapper(private val sharedPreferences: SharedPreferences) : 
 
     override fun putInt(key: String, value: Int) {
         sharedPreferences.edit()
-                .putInt(key, value)
-                .apply()
+            .putInt(key, value)
+            .apply()
     }
 
     override fun getInt(key: String, defaultValue: Int): Int {
@@ -50,8 +50,8 @@ class AppPreferencesWrapper(private val sharedPreferences: SharedPreferences) : 
 
         // Then store the StringSet itself
         sharedPreferences.edit()
-                .putStringSet(key, set)
-                .apply()
+            .putStringSet(key, set)
+            .apply()
     }
 
     override fun getStringSet(key: String, defaultValue: MutableSet<String>): MutableSet<String> {
@@ -60,6 +60,6 @@ class AppPreferencesWrapper(private val sharedPreferences: SharedPreferences) : 
     }
 
     companion object {
-        public const val PREFS_NAME = "fastfood_finder_android"
+        const val PREFS_NAME = "fastfood_finder_android"
     }
 }

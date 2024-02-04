@@ -6,13 +6,11 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.NonNull
-import androidx.annotation.Nullable
 import androidx.fragment.app.DialogFragment
 import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
-import kotlinx.android.synthetic.main.dialog_login.*
+import com.iceteaviet.fastfoodfinder.databinding.DialogLoginBinding
 
 /**
  * Created by nhoxbypass on 03/29/2018.
@@ -20,14 +18,18 @@ import kotlinx.android.synthetic.main.dialog_login.*
 class EmailLoginDialog : DialogFragment(), EmailLoginContract.View, View.OnClickListener, View.OnTouchListener {
     override lateinit var presenter: EmailLoginContract.Presenter
 
+    /**
+     * Views Ref
+     */
+    private lateinit var binding: DialogLoginBinding
+
     private var mListener: OnLoginCompleteListener? = null
 
     fun setOnLoginCompleteListener(listener: OnLoginCompleteListener) {
         mListener = listener
     }
 
-    @Nullable
-    override fun onCreateView(@NonNull inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.dialog_login, container, false)
     }
 
@@ -37,7 +39,7 @@ class EmailLoginDialog : DialogFragment(), EmailLoginContract.View, View.OnClick
         return dialog
     }
 
-    override fun onViewCreated(@NonNull view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupEventHandlers()
     }
@@ -60,7 +62,7 @@ class EmailLoginDialog : DialogFragment(), EmailLoginContract.View, View.OnClick
     override fun onClick(v: View) {
         when (v.id) {
             R.id.btn_sign_in -> {
-                presenter.onSignInButtonClicked(input_email.text.toString(), input_password.text.toString())
+                presenter.onSignInButtonClicked(binding.inputEmail.text.toString(), binding.inputPassword.text.toString())
             }
         }
     }
@@ -69,11 +71,11 @@ class EmailLoginDialog : DialogFragment(), EmailLoginContract.View, View.OnClick
         if (event.action == MotionEvent.ACTION_DOWN) {
             when (v.id) {
                 R.id.input_email -> {
-                    input_layout_email.error = ""
+                    binding.inputLayoutEmail.error = ""
                 }
 
                 R.id.input_password -> {
-                    input_layout_password.error = ""
+                    binding.inputLayoutPassword.error = ""
                 }
             }
         }
@@ -82,22 +84,22 @@ class EmailLoginDialog : DialogFragment(), EmailLoginContract.View, View.OnClick
     }
 
     override fun setLoginButtonProgress(progress: Int) {
-        btn_sign_in.progress = progress
+        binding.btnSignIn.progress = progress
     }
 
     override fun setInputEnabled(enabled: Boolean) {
-        input_layout_email.isEnabled = enabled
-        input_layout_password.isEnabled = enabled
-        input_email.isEnabled = enabled
-        input_password.isEnabled = enabled
+        binding.inputLayoutEmail.isEnabled = enabled
+        binding.inputLayoutPassword.isEnabled = enabled
+        binding.inputEmail.isEnabled = enabled
+        binding.inputPassword.isEnabled = enabled
     }
 
     override fun showInvalidPasswordError() {
-        input_layout_password.error = getString(R.string.invalid_password)
+        binding.inputLayoutPassword.error = getString(R.string.invalid_password)
     }
 
     override fun showInvalidEmailError() {
-        input_layout_email.error = getString(R.string.invalid_email)
+        binding.inputLayoutEmail.error = getString(R.string.invalid_email)
     }
 
     override fun notifyLoginSuccess(user: User) {
@@ -109,9 +111,9 @@ class EmailLoginDialog : DialogFragment(), EmailLoginContract.View, View.OnClick
     }
 
     private fun setupEventHandlers() {
-        btn_sign_in.setOnClickListener(this)
-        input_email.setOnTouchListener(this)
-        input_password.setOnTouchListener(this)
+        binding.btnSignIn.setOnClickListener(this)
+        binding.inputEmail.setOnTouchListener(this)
+        binding.inputPassword.setOnTouchListener(this)
     }
 
     interface OnLoginCompleteListener {
@@ -128,5 +130,4 @@ class EmailLoginDialog : DialogFragment(), EmailLoginContract.View, View.OnClick
             return frag
         }
     }
-
 }

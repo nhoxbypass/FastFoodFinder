@@ -5,8 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import androidx.annotation.NonNull
-import androidx.annotation.Nullable
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -15,17 +13,21 @@ import androidx.recyclerview.widget.RecyclerView
 import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
+import com.iceteaviet.fastfoodfinder.databinding.FragmentMainRecentlyBinding
 import com.iceteaviet.fastfoodfinder.ui.custom.itemtouchhelper.OnStartDragListener
 import com.iceteaviet.fastfoodfinder.ui.custom.itemtouchhelper.SimpleItemTouchHelperCallback
 import com.iceteaviet.fastfoodfinder.utils.openStoreDetailActivity
-import kotlinx.android.synthetic.main.fragment_main_recently.*
-import java.util.*
 
 /**
  * Created by MyPC on 11/20/2016.
  */
 class MainRecentlyFragment : Fragment(), MainRecentlyContract.View, OnStartDragListener {
     override lateinit var presenter: MainRecentlyContract.Presenter
+
+    /**
+     * Views Ref
+     */
+    private lateinit var binding: FragmentMainRecentlyBinding
 
     lateinit var recyclerView: RecyclerView
     lateinit var containerLayout: FrameLayout
@@ -34,14 +36,13 @@ class MainRecentlyFragment : Fragment(), MainRecentlyContract.View, OnStartDragL
     private var mItemTouchHelper: ItemTouchHelper? = null
     private val isFABChangeClicked = false // TODO: Check usage of this
 
-    @Nullable
-    override fun onCreateView(@NonNull inflater: LayoutInflater, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.fragment_main_recently, container, false)
     }
 
-    override fun onViewCreated(@NonNull view: View, @Nullable savedInstanceState: Bundle?) {
-        recyclerView = rv_recently_stores
-        containerLayout = fl_container
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        recyclerView = binding.rvRecentlyStores
+        containerLayout = binding.flContainer
 
         setupUI()
         setupEventHandlers()
@@ -62,7 +63,7 @@ class MainRecentlyFragment : Fragment(), MainRecentlyContract.View, OnStartDragL
     }
 
     override fun showStoreDetailView(store: Store) {
-        openStoreDetailActivity(activity!!, store)
+        openStoreDetailActivity(requireActivity(), store)
     }
 
     private fun setupUI() {
@@ -94,8 +95,6 @@ class MainRecentlyFragment : Fragment(), MainRecentlyContract.View, OnStartDragL
     }
 
     companion object {
-
-
         fun newInstance(): MainRecentlyFragment {
             val args = Bundle()
             val fragment = MainRecentlyFragment()

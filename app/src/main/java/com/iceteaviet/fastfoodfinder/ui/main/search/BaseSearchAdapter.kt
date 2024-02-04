@@ -4,7 +4,6 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.ui.main.search.model.SearchStoreItem
-import java.util.*
 
 /**
  * Created by Tom on 15/06/2019.

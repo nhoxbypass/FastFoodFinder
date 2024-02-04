@@ -7,23 +7,26 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TextView
-import androidx.annotation.NonNull
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.MotionEventCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
+import com.iceteaviet.fastfoodfinder.databinding.ItemRecentlyLocationBinding
 import com.iceteaviet.fastfoodfinder.ui.custom.itemtouchhelper.ItemTouchHelperAdapter
 import com.iceteaviet.fastfoodfinder.ui.custom.itemtouchhelper.ItemTouchHelperViewHolder
 import com.iceteaviet.fastfoodfinder.ui.custom.itemtouchhelper.OnStartDragListener
-import kotlinx.android.synthetic.main.item_recently_location.view.*
-import java.util.*
 
 /**
  * Created by MyPC on 11/16/2016.
  */
 class RecentlyStoreAdapter internal constructor(private val mDragStartListener: OnStartDragListener, frameLayout: FrameLayout) : RecyclerView.Adapter<RecentlyStoreAdapter.RecentlyStoreViewHolder>(), ItemTouchHelperAdapter {
+    /**
+     * Views Ref
+     */
+    private lateinit var binding: ItemRecentlyLocationBinding
+
     private val mStoreList: MutableList<Store>
     private val mContainerView: View
     private var mOnItemClickListener: OnItemClickListener? = null
@@ -33,9 +36,9 @@ class RecentlyStoreAdapter internal constructor(private val mDragStartListener: 
         mContainerView = frameLayout
     }
 
-    override fun onCreateViewHolder(@NonNull parent: ViewGroup, viewType: Int): RecentlyStoreViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecentlyStoreViewHolder {
         val itemView = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_recently_location, parent, false)
+            .inflate(R.layout.item_recently_location, parent, false)
         return RecentlyStoreViewHolder(itemView)
     }
 
@@ -49,12 +52,12 @@ class RecentlyStoreAdapter internal constructor(private val mDragStartListener: 
         //notifyDataSetChanged();
         notifyItemRemoved(position)
         Snackbar.make(mContainerView, R.string.want_undo, Snackbar.LENGTH_LONG)
-                .setAction(R.string.undo) {
-                    mStoreList.add(position, store)
-                    notifyItemInserted(position)
-                }
-                .setDuration(30000)
-                .show()
+            .setAction(R.string.undo) {
+                mStoreList.add(position, store)
+                notifyItemInserted(position)
+            }
+            .setDuration(30000)
+            .show()
 
     }
 
@@ -102,8 +105,8 @@ class RecentlyStoreAdapter internal constructor(private val mDragStartListener: 
     }
 
     inner class RecentlyStoreViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), ItemTouchHelperViewHolder {
-        var txtTitle: TextView = itemView.tv_item_title
-        var txtAddress: TextView = itemView.tv_item_address
+        var txtTitle: TextView = binding.tvItemTitle
+        var txtAddress: TextView = binding.tvItemAddress
 
         init {
             itemView.setOnClickListener {
@@ -115,20 +118,20 @@ class RecentlyStoreAdapter internal constructor(private val mDragStartListener: 
             itemView.setOnLongClickListener {
                 val position = adapterPosition
                 AlertDialog.Builder(itemView.context)
-                        .setTitle(R.string.delete_favourite_location)
-                        .setMessage(R.string.are_you_sure)
-                        .setPositiveButton(android.R.string.yes) { dialog, _ ->
-                            mStoreList.removeAt(position)
-                            notifyDataSetChanged()
-                            Snackbar.make(itemView, R.string.undo, Snackbar.LENGTH_INDEFINITE).show()
-                            dialog.dismiss()
-                        }
-                        .setNegativeButton(android.R.string.no) { dialog, _ ->
-                            //do nothing
-                            dialog.dismiss()
-                        }
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .show()
+                    .setTitle(R.string.delete_favourite_location)
+                    .setMessage(R.string.are_you_sure)
+                    .setPositiveButton(android.R.string.yes) { dialog, _ ->
+                        mStoreList.removeAt(position)
+                        notifyDataSetChanged()
+                        Snackbar.make(itemView, R.string.undo, Snackbar.LENGTH_INDEFINITE).show()
+                        dialog.dismiss()
+                    }
+                    .setNegativeButton(android.R.string.no) { dialog, _ ->
+                        //do nothing
+                        dialog.dismiss()
+                    }
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show()
                 true
             }
         }
@@ -146,5 +149,4 @@ class RecentlyStoreAdapter internal constructor(private val mDragStartListener: 
             txtAddress.text = store.address
         }
     }
-
 }

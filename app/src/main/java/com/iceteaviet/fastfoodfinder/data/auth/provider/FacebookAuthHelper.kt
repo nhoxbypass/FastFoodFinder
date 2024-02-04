@@ -19,14 +19,14 @@ class FacebookAuthHelper(private var loginButton: LoginButton) : AbsAuthHelper<A
     private var callBackManager: CallbackManager? = null
 
     init {
-        loginButton.setReadPermissions("email", "public_profile")
+        arrayOf<String?>("email", "public_profile")
         FacebookSdk.sdkInitialize(App.getContext())
         setupAuthProvider()
     }
 
     override fun setupAuthProvider() {
         callBackManager = setupFacebookSignInClient()
-        loginButton.registerCallback(callBackManager, object : FacebookCallback<LoginResult> {
+        loginButton.registerCallback(callBackManager!!, object : FacebookCallback<LoginResult> {
             override fun onSuccess(loginResult: LoginResult) {
                 listener?.onSuccess(FacebookAuthProvider.getCredential(loginResult.accessToken.token), false)
             }

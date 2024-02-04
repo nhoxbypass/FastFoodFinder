@@ -10,12 +10,14 @@ import com.google.gson.annotations.SerializedName
 /**
  * Created by Genius Doan on 11/11/2016.
  */
-class Route constructor(`in`: Parcel) : Parcelable {
+class Route(`in`: Parcel) : Parcelable {
 
     @SerializedName("legs")
     val legList: List<Leg>
+
     @SerializedName("summary")
     val summary: String
+
     @SerializedName("overview_polyline")
     var encodedPolyline: JsonObject
 

@@ -3,7 +3,7 @@
 package com.iceteaviet.fastfoodfinder.utils
 
 import java.text.DecimalFormat
-import java.util.*
+import java.util.Locale
 
 /**
  * Created by tom on 7/10/18.
@@ -71,7 +71,7 @@ fun formatDecimal(decimal: Double, numbOfDecimalPlates: Int): String {
  */
 fun standardizeDistrictQuery(queryString: String): List<String> {
     val result = ArrayList<String>()
-    var trimmedQuery = queryString.toLowerCase().trim()
+    var trimmedQuery = queryString.lowercase(Locale.getDefault()).trim()
 
     if (trimmedQuery.isEmpty())
         return result
@@ -135,7 +135,7 @@ fun standardizeDistrictQuery(queryString: String): List<String> {
         result.add("Binh Tan")
         result.add("binh tan")
     } else if ((trimmedQuery >= "1" && trimmedQuery <= "9")
-            || trimmedQuery == "10" || trimmedQuery == "11" || trimmedQuery == "12") {
+        || trimmedQuery == "10" || trimmedQuery == "11" || trimmedQuery == "12") {
         result.add("Quận $trimmedQuery")
         result.add("quận $trimmedQuery")
         result.add("Quan $trimmedQuery")
@@ -157,7 +157,7 @@ fun standardizeDistrictQuery(queryString: String): List<String> {
  * The query string should be lowercase & trimmed before calling this method
  */
 fun getStoreTypeFromQuery(queryString: String): Int {
-    val trimmedQuery = queryString.toLowerCase().trim()
+    val trimmedQuery = queryString.lowercase(Locale.getDefault()).trim()
 
     if (trimmedQuery == "circle k" || trimmedQuery == "circlek")
         return StoreType.TYPE_CIRCLE_K
@@ -166,10 +166,10 @@ fun getStoreTypeFromQuery(queryString: String): Int {
     else if (trimmedQuery == "family mart" || trimmedQuery == "familymart" || trimmedQuery == "famima")
         return StoreType.TYPE_FAMILY_MART
     else if (trimmedQuery == "shop and go" || trimmedQuery == "shopandgo"
-            || trimmedQuery == "shop n go" || trimmedQuery == "shopngo")
+        || trimmedQuery == "shop n go" || trimmedQuery == "shopngo")
         return StoreType.TYPE_SHOP_N_GO
     else if (trimmedQuery == "bsmart" || trimmedQuery == "b smart" || trimmedQuery == "bs mart"
-            || trimmedQuery == "bmart" || trimmedQuery == "b'smart" || trimmedQuery == "b's mart" || trimmedQuery == "bs'mart")
+        || trimmedQuery == "bmart" || trimmedQuery == "b'smart" || trimmedQuery == "b's mart" || trimmedQuery == "bs'mart")
         return StoreType.TYPE_BSMART
 
     return -1

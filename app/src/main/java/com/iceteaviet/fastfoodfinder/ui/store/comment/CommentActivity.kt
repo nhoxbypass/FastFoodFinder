@@ -15,19 +15,22 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.ColorInt
-import androidx.annotation.Nullable
 import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
+import com.iceteaviet.fastfoodfinder.databinding.ActivityCommentBinding
 import com.iceteaviet.fastfoodfinder.ui.base.BaseActivity
 import com.iceteaviet.fastfoodfinder.ui.custom.dialog.CloseConfirmDialog
-import kotlinx.android.synthetic.main.activity_comment.*
 
 /**
  * Created by binhlt on 29/11/2016.
  */
-
 class CommentActivity : BaseActivity(), CommentContract.View {
     override lateinit var presenter: CommentContract.Presenter
+
+    /**
+     * Views Ref
+     */
+    private lateinit var binding: ActivityCommentBinding
 
     lateinit var etComment: EditText
     lateinit var tvRemainChar: TextView
@@ -36,14 +39,14 @@ class CommentActivity : BaseActivity(), CommentContract.View {
     override val layoutId: Int
         get() = R.layout.activity_comment
 
-    override fun onCreate(@Nullable savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         presenter = CommentPresenter(App.getDataManager(), App.getSchedulerProvider(), this)
 
-        etComment = et_comment
-        tvRemainChar = tv_remain_char
-        btnPost = btn_post
+        etComment = binding.etComment
+        tvRemainChar = binding.tvRemainChar
+        btnPost = binding.btnPost
 
         setupToolbar()
         setupEventHandlers()
@@ -76,8 +79,8 @@ class CommentActivity : BaseActivity(), CommentContract.View {
 
     override fun showCommentPostFailedWarning() {
         Toast.makeText(this,
-                getString(R.string.cannot_post_comment, CommentPresenter.MAX_CHAR),
-                Toast.LENGTH_SHORT).show()
+            getString(R.string.cannot_post_comment, CommentPresenter.MAX_CHAR),
+            Toast.LENGTH_SHORT).show()
     }
 
     override fun showGeneralErrorMessage() {
@@ -113,7 +116,7 @@ class CommentActivity : BaseActivity(), CommentContract.View {
     }
 
     private fun setupToolbar() {
-        setSupportActionBar(toolbar)
+        setSupportActionBar(binding.toolbar)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_all_close)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setTitle(R.string.add_comment_or_photo)
@@ -150,6 +153,7 @@ class CommentActivity : BaseActivity(), CommentContract.View {
     }
 
     override fun onBackPressed() {
+        super.onBackPressed()
         presenter.onBackButtonClick(etComment.text)
     }
 

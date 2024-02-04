@@ -4,7 +4,11 @@ import android.app.Activity
 import android.content.Context
 import android.hardware.Camera
 import android.opengl.Matrix
-import android.view.*
+import android.view.Surface
+import android.view.SurfaceHolder
+import android.view.SurfaceView
+import android.view.View
+import android.view.ViewGroup
 import com.iceteaviet.fastfoodfinder.utils.e
 import java.io.IOException
 
@@ -124,11 +128,11 @@ class ARCamera(context: Context, surfaceView: SurfaceView) : ViewGroup(context),
             if (width * previewHeight > height * previewWidth) {
                 val scaledChildWidth = previewWidth * height / previewHeight
                 child.layout((width - scaledChildWidth) / 2, 0,
-                        (width + scaledChildWidth) / 2, height)
+                    (width + scaledChildWidth) / 2, height)
             } else {
                 val scaledChildHeight = previewHeight * width / previewWidth
                 child.layout(0, (height - scaledChildHeight) / 2,
-                        width, (height + scaledChildHeight) / 2)
+                    width, (height + scaledChildHeight) / 2)
             }
         }
     }

@@ -33,8 +33,10 @@ class App : Application() {
 
         @SuppressLint("StaticFieldLeak")
         private lateinit var context: Context
+
         @VisibleForTesting
         lateinit var PACKAGE_NAME: String
+
         @VisibleForTesting
         lateinit var SHA1: String
 
@@ -90,7 +92,7 @@ class App : Application() {
     private fun scheduleSyncDBWorker() {
         val work = SyncDatabaseWorker.prepareSyncDBWorker()
         WorkManager.getInstance()
-                .enqueueUniquePeriodicWork(SYNC_DB_JOB_TAG, ExistingPeriodicWorkPolicy.KEEP, work)
+            .enqueueUniquePeriodicWork(SYNC_DB_JOB_TAG, ExistingPeriodicWorkPolicy.KEEP, work)
     }
 
 

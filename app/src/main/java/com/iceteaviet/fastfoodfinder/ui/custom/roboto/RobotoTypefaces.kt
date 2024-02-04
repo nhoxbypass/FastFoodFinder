@@ -8,8 +8,6 @@ import android.util.AttributeSet
 import android.util.SparseArray
 import android.widget.TextView
 import androidx.annotation.IntDef
-import androidx.annotation.NonNull
-import androidx.annotation.Nullable
 import com.iceteaviet.fastfoodfinder.R
 
 
@@ -29,12 +27,14 @@ object RobotoTypefaces {
     const val TYPEFACE_ROBOTO_SLAB_BOLD = 21
 
     const val FONT_FAMILY_ROBOTO = 0
+
     //const val FONT_FAMILY_ROBOTO_CONDENSED = 1
     const val FONT_FAMILY_ROBOTO_SLAB = 2
     //const val FONT_FAMILY_ROBOTO_MONO = 3
 
     const val TEXT_WEIGHT_NORMAL = 0
     const val TEXT_WEIGHT_THIN = 1
+
     //const val TEXT_WEIGHT_LIGHT = 2
     //const val TEXT_WEIGHT_MEDIUM = 3
     const val TEXT_WEIGHT_BOLD = 4
@@ -77,8 +77,7 @@ object RobotoTypefaces {
      * @param typefaceValue The value of "robotoTypeface" attribute
      * @return specify [Typeface] or throws IllegalArgumentException if unknown `robotoTypeface` attribute value.
      */
-    @NonNull
-    fun obtainTypeface(@NonNull context: Context, @RobotoTypeface typefaceValue: Int): Typeface? {
+    fun obtainTypeface(context: Context, @RobotoTypeface typefaceValue: Int): Typeface {
         var typeface: Typeface? = typefacesCache.get(typefaceValue)
         if (typeface == null) {
             typeface = createTypeface(context, typefaceValue)
@@ -96,8 +95,7 @@ object RobotoTypefaces {
      * @param textStyle  The value of "robotoTextStyle" attribute
      * @return specify [Typeface] or throws IllegalArgumentException.
      */
-    @NonNull
-    fun obtainTypeface(@NonNull context: Context, @RobotoFontFamily fontFamily: Int,
+    fun obtainTypeface(context: Context, @RobotoFontFamily fontFamily: Int,
                        @RobotoTextWeight textWeight: Int, @RobotoTextStyle textStyle: Int): Typeface? {
         @RobotoTypeface val typeface: Int
         if (fontFamily == FONT_FAMILY_ROBOTO) {
@@ -143,8 +141,7 @@ object RobotoTypefaces {
      * @param typeface The value of "robotoTypeface" attribute
      * @return Roboto [Typeface] or throws IllegalArgumentException if unknown `robotoTypeface` attribute value.
      */
-    @NonNull
-    private fun createTypeface(@NonNull context: Context, @RobotoTypeface typeface: Int): Typeface {
+    private fun createTypeface(context: Context, @RobotoTypeface typeface: Int): Typeface {
         val path: String
         when (typeface) {
             TYPEFACE_ROBOTO_THIN -> path = "fonts/Roboto-Thin.ttf"
@@ -158,7 +155,7 @@ object RobotoTypefaces {
             TYPEFACE_ROBOTO_SLAB_BOLD -> path = "fonts/RobotoSlab-Bold.ttf"
             else -> throw IllegalArgumentException("Unknown `robotoTypeface` attribute value $typeface")
         }
-        return Typeface.createFromAsset(context.getAssets(), path)
+        return Typeface.createFromAsset(context.assets, path)
     }
 
     /**
@@ -168,8 +165,7 @@ object RobotoTypefaces {
      * @param attrs   The styled attribute values in this Context's theme.
      * @return specify [Typeface]
      */
-    @NonNull
-    fun obtainTypeface(@NonNull context: Context, @NonNull attrs: TypedArray): Typeface? {
+    fun obtainTypeface(context: Context, attrs: TypedArray): Typeface? {
         if (attrs.hasValue(R.styleable.RobotoTextView_robotoTypeface)) {
             @RobotoTypeface val typefaceValue = attrs.getInt(R.styleable.RobotoTextView_robotoTypeface, DEFAULT_TYPEFACE)
             return obtainTypeface(context, typefaceValue)
@@ -189,7 +185,7 @@ object RobotoTypefaces {
      * access the current theme, resources, etc.
      * @param attrs    The attributes of the XML tag that is inflating the widget.
      */
-    fun setUpTypeface(@NonNull textView: TextView, @NonNull context: Context, @Nullable attrs: AttributeSet?) {
+    fun setUpTypeface(textView: TextView, context: Context, attrs: AttributeSet?) {
         val typeface: Typeface?
         if (attrs != null) {
             val a = context.obtainStyledAttributes(attrs, R.styleable.RobotoTextView)
@@ -234,7 +230,7 @@ object RobotoTypefaces {
      * @param textView The text view
      * @param typeface The specify typeface
      */
-    fun setUpTypeface(@NonNull textView: TextView, @NonNull typeface: Typeface?) {
+    fun setUpTypeface(textView: TextView, typeface: Typeface?) {
         textView.paintFlags = textView.paintFlags or Paint.ANTI_ALIAS_FLAG or Paint.SUBPIXEL_TEXT_FLAG
         textView.typeface = typeface
     }

@@ -7,12 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.Toast
-import androidx.annotation.NonNull
-import androidx.annotation.Nullable
 import androidx.fragment.app.DialogFragment
 import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
-import kotlinx.android.synthetic.main.dialog_create_newlist.*
+import com.iceteaviet.fastfoodfinder.databinding.DialogCreateNewlistBinding
 
 /**
  * Created by MyPC on 11/30/2016.
@@ -20,18 +18,22 @@ import kotlinx.android.synthetic.main.dialog_create_newlist.*
 class CreateListDialog : DialogFragment(), CreateListContract.View, View.OnClickListener {
     override lateinit var presenter: CreateListContract.Presenter
 
+    /**
+     * Views Ref
+     */
+    private lateinit var binding: DialogCreateNewlistBinding
+
     private var listener: OnCreateListListener? = null
 
     fun setOnButtonClickListener(listener: OnCreateListListener) {
         this.listener = listener
     }
 
-    @Nullable
-    override fun onCreateView(@NonNull inflater: LayoutInflater, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.dialog_create_newlist, container, false)
     }
 
-    override fun onViewCreated(@NonNull view: View, @Nullable savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupEventListeners()
     }
@@ -47,19 +49,19 @@ class CreateListDialog : DialogFragment(), CreateListContract.View, View.OnClick
     }
 
     private fun setupEventListeners() {
-        ivQuit.setOnClickListener(this)
-        btnDone.setOnClickListener(this)
+        binding.ivQuit.setOnClickListener(this)
+        binding.btnDone.setOnClickListener(this)
 
-        icon1.setOnClickListener(this)
-        icon2.setOnClickListener(this)
-        icon3.setOnClickListener(this)
-        icon4.setOnClickListener(this)
-        icon5.setOnClickListener(this)
-        icon6.setOnClickListener(this)
-        icon7.setOnClickListener(this)
-        icon8.setOnClickListener(this)
-        icon9.setOnClickListener(this)
-        icon10.setOnClickListener(this)
+        binding.icon1.setOnClickListener(this)
+        binding.icon2.setOnClickListener(this)
+        binding.icon3.setOnClickListener(this)
+        binding.icon4.setOnClickListener(this)
+        binding.icon5.setOnClickListener(this)
+        binding.icon6.setOnClickListener(this)
+        binding.icon7.setOnClickListener(this)
+        binding.icon8.setOnClickListener(this)
+        binding.icon9.setOnClickListener(this)
+        binding.icon10.setOnClickListener(this)
     }
 
     override fun onClick(v: View) {
@@ -69,7 +71,7 @@ class CreateListDialog : DialogFragment(), CreateListContract.View, View.OnClick
             }
 
             R.id.btnDone -> {
-                presenter.onDoneButtonClick(edtName.text.toString())
+                presenter.onDoneButtonClick(binding.edtName.text.toString())
             }
 
             R.id.icon1 -> {
@@ -128,47 +130,56 @@ class CreateListDialog : DialogFragment(), CreateListContract.View, View.OnClick
 
     override fun updateSelectedIconUI(iconId: Int) {
         // Clear old selected icons
-        showAsNotSelectedIcon(icon1)
-        showAsNotSelectedIcon(icon2)
-        showAsNotSelectedIcon(icon3)
-        showAsNotSelectedIcon(icon4)
-        showAsNotSelectedIcon(icon5)
-        showAsNotSelectedIcon(icon6)
-        showAsNotSelectedIcon(icon7)
-        showAsNotSelectedIcon(icon8)
-        showAsNotSelectedIcon(icon9)
-        showAsNotSelectedIcon(icon10)
+        showAsNotSelectedIcon(binding.icon1)
+        showAsNotSelectedIcon(binding.icon2)
+        showAsNotSelectedIcon(binding.icon3)
+        showAsNotSelectedIcon(binding.icon4)
+        showAsNotSelectedIcon(binding.icon5)
+        showAsNotSelectedIcon(binding.icon6)
+        showAsNotSelectedIcon(binding.icon7)
+        showAsNotSelectedIcon(binding.icon8)
+        showAsNotSelectedIcon(binding.icon9)
+        showAsNotSelectedIcon(binding.icon10)
 
         when (iconId) {
             1 -> {
-                showAsSelectedIcon(icon1)
+                showAsSelectedIcon(binding.icon1)
             }
+
             2 -> {
-                showAsSelectedIcon(icon2)
+                showAsSelectedIcon(binding.icon2)
             }
+
             3 -> {
-                showAsSelectedIcon(icon3)
+                showAsSelectedIcon(binding.icon3)
             }
+
             4 -> {
-                showAsSelectedIcon(icon4)
+                showAsSelectedIcon(binding.icon4)
             }
+
             5 -> {
-                showAsSelectedIcon(icon5)
+                showAsSelectedIcon(binding.icon5)
             }
+
             6 -> {
-                showAsSelectedIcon(icon6)
+                showAsSelectedIcon(binding.icon6)
             }
+
             7 -> {
-                showAsSelectedIcon(icon7)
+                showAsSelectedIcon(binding.icon7)
             }
+
             8 -> {
-                showAsSelectedIcon(icon8)
+                showAsSelectedIcon(binding.icon8)
             }
+
             9 -> {
-                showAsSelectedIcon(icon9)
+                showAsSelectedIcon(binding.icon9)
             }
+
             10 -> {
-                showAsSelectedIcon(icon10)
+                showAsSelectedIcon(binding.icon10)
             }
         }
     }

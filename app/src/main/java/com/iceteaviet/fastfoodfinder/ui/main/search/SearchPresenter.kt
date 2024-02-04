@@ -47,22 +47,22 @@ class SearchPresenter : BasePresenter<SearchContract.Presenter>, SearchContract.
 
     override fun onUpdateSearchList(searchText: String) {
         dataManager.findStores(searchText)
-                .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
-                .subscribe(object : SingleObserver<List<Store>> {
-                    override fun onSubscribe(d: Disposable) {
-                        compositeDisposable.add(d)
-                    }
+            .subscribeOn(schedulerProvider.io())
+            .observeOn(schedulerProvider.ui())
+            .subscribe(object : SingleObserver<List<Store>> {
+                override fun onSubscribe(d: Disposable) {
+                    compositeDisposable.add(d)
+                }
 
-                    override fun onSuccess(storeList: List<Store>) {
-                        searchView.setSearchStores(storeListToSearchItems(storeList))
-                    }
+                override fun onSuccess(storeList: List<Store>) {
+                    searchView.setSearchStores(storeListToSearchItems(storeList))
+                }
 
-                    override fun onError(e: Throwable) {
-                        e.printStackTrace()
-                        searchView.showGeneralErrorMessage()
-                    }
-                })
+                override fun onError(e: Throwable) {
+                    e.printStackTrace()
+                    searchView.showGeneralErrorMessage()
+                }
+            })
     }
 
     override fun onTopStoreButtonClick() {
@@ -83,7 +83,7 @@ class SearchPresenter : BasePresenter<SearchContract.Presenter>, SearchContract.
             if (history.contains(Constant.SEARCH_STORE_PREFIX)) {
                 try {
                     val store = dataManager.findStoreById(history.substring(Constant.SEARCH_STORE_PREFIX_LEN).toInt())
-                            .blockingGet()
+                        .blockingGet()
                     searchItems.add(SearchStoreItem(store, ""))
                 } catch (ex: Exception) {
                     ex.printStackTrace()

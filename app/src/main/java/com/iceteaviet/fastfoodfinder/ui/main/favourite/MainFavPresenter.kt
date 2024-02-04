@@ -46,56 +46,56 @@ class MainFavPresenter : BasePresenter<MainFavContract.Presenter>, MainFavContra
             return
 
         dataManager.findStoresByIds(storeIdList)
-                .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
-                .subscribe(object : SingleObserver<List<Store>> {
-                    override fun onSubscribe(d: Disposable) {
-                        compositeDisposable.add(d)
-                    }
+            .subscribeOn(schedulerProvider.io())
+            .observeOn(schedulerProvider.ui())
+            .subscribe(object : SingleObserver<List<Store>> {
+                override fun onSubscribe(d: Disposable) {
+                    compositeDisposable.add(d)
+                }
 
-                    override fun onSuccess(storeList: List<Store>) {
-                        mainFavView.setStores(storeList)
-                    }
+                override fun onSuccess(storeList: List<Store>) {
+                    mainFavView.setStores(storeList)
+                }
 
-                    override fun onError(e: Throwable) {
-                        e.printStackTrace()
-                        mainFavView.showGeneralErrorMessage()
-                    }
-                })
+                override fun onError(e: Throwable) {
+                    e.printStackTrace()
+                    mainFavView.showGeneralErrorMessage()
+                }
+            })
     }
 
     private fun listenFavStoresOfUser(userUid: String) {
         dataManager.subscribeFavouriteStoresOfUser(userUid)
-                .subscribeOn(schedulerProvider.io())
-                .map { storeIdPair ->
-                    val id = storeIdPair.first
-                    val eventAC = storeIdPair.second
+            .subscribeOn(schedulerProvider.io())
+            .map { storeIdPair ->
+                val id = storeIdPair.first
+                val eventAC = storeIdPair.second
 
-                    if (id == null || eventAC == null || eventAC < 0)
-                        throw EmptyParamsException()
+                if (id == null || eventAC == null || eventAC < 0)
+                    throw EmptyParamsException()
 
-                    val store = dataManager.findStoreById(id).blockingGet()
+                val store = dataManager.findStoreById(id).blockingGet()
 
-                    return@map UserStoreEvent(store, eventAC)
+                return@map UserStoreEvent(store, eventAC)
+            }
+            .observeOn(schedulerProvider.ui())
+            .subscribe(object : Observer<UserStoreEvent> {
+                override fun onSubscribe(d: Disposable) {
+                    compositeDisposable.add(d)
                 }
-                .observeOn(schedulerProvider.ui())
-                .subscribe(object : Observer<UserStoreEvent> {
-                    override fun onSubscribe(d: Disposable) {
-                        compositeDisposable.add(d)
-                    }
 
-                    override fun onNext(userStoreEvent: UserStoreEvent) {
-                        handleUserStoreEvent(userStoreEvent)
-                    }
+                override fun onNext(userStoreEvent: UserStoreEvent) {
+                    handleUserStoreEvent(userStoreEvent)
+                }
 
-                    override fun onError(e: Throwable) {
-                        mainFavView.showWarningMessage(e.message)
-                    }
+                override fun onError(e: Throwable) {
+                    mainFavView.showWarningMessage(e.message)
+                }
 
-                    override fun onComplete() {
+                override fun onComplete() {
 
-                    }
-                })
+                }
+            })
     }
 
     private fun handleUserStoreEvent(userStoreEvent: UserStoreEvent) {

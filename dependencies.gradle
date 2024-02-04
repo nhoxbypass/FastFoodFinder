@@ -1,36 +1,38 @@
 ext {
     // Sdk and tools
     minSdkVersion = 21
-    targetSdkVersion = 29
-    compileSdkVersion = 29
-    buildToolsVersion = '29.0.3'
-    kotlinVersion = '1.3.72'
-    kotlinCouroutinesVersion = '1.3.7'
+    targetSdkVersion = 34
+    compileSdkVersion = 34
+    buildToolsVersion = '34.0.0'
+    kotlinVersion = '1.8.22'
+    kotlinCouroutinesVersion = '1.7.0'
 
     // App dependencies
-    appCompat = '1.3.0-alpha01'
+    appCompat = '1.6.1'
     supportLibraryVersion = '27.1.1'
-    playService = '17.0.0'
-    workManager = '2.3.4'
+    playService = '18.2.0'
+    playServiceLocation = '21.1.0'
+    playServiceAuth = '20.7.0'
+    workManager = '2.9.0'
 
-    glideVersion = '4.11.0'
-    gsonVersion = '2.8.5'
+    glideVersion = '4.16.0'
+    gsonVersion = '2.10.1'
     retrofitVersion = '2.9.0'
-    eventBusVersion = '3.1.1'
-    circleImageViewVersion = '2.2.0'
-    realmAndroidVersion = '7.0.1'
-    fbSdkVersion = '4.34.0'
+    eventBusVersion = '3.3.1'
+    circleImageViewVersion = '3.1.0'
+    realmAndroidVersion = '10.17.0'
+    fbSdkVersion = '16.3.0'
 
-    timberVersion = '4.7.1'
+    timberVersion = '5.0.1'
 
     // Testing dependencies
-    junitVersion = '4.12'
-    robolectricVersion = '4.2'
-    mockitoVersion = '3.0.0'
+    junitVersion = '4.13.2'
+    robolectricVersion = '4.11.1'
+    mockitoVersion = '5.10.0'
     kotlinMockitoVersion = '2.2.0'
-    powerMockito = '2.0.0'
-    runnerVersion = '1.0.2'
-    rulesVersion = '1.0.2'
-    espressoVersion = '3.0.2'
+    powerMockito = '2.0.9'
+    runnerVersion = '1.5.2'
+    rulesVersion = '1.5.0'
+    espressoVersion = '3.5.1'
     assertJVersion = '3.11.1'
 }

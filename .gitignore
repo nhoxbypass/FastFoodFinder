@@ -56,6 +56,9 @@ captures/
 
 # Google Services (e.g. APIs or Firebase)
 app/google-services.json
+app/main/google-services.json
+app/mock/google-services.json
+app/prod/google-services.json
 
 app/src/main/res/values/secret.xml
 

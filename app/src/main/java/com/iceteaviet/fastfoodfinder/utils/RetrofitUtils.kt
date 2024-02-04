@@ -20,10 +20,10 @@ fun get(apiKey: String, baseUrl: String): Retrofit {
     val cert = App.getSignatureSHA1()
 
     return Retrofit.Builder()
-            .baseUrl(baseUrl)
-            .client(getGoogleServicesClient(apiKey, pkgName, cert))
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+        .baseUrl(baseUrl)
+        .client(getGoogleServicesClient(apiKey, pkgName, cert))
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
 }
 
 /**
@@ -31,8 +31,8 @@ fun get(apiKey: String, baseUrl: String): Retrofit {
  */
 private fun getGoogleServicesClient(apiKey: String, pkgName: String, cert: String): OkHttpClient {
     return OkHttpClient.Builder()
-            .addInterceptor(getGoogleServicesInterceptor(apiKey, pkgName, cert))
-            .build()
+        .addInterceptor(getGoogleServicesInterceptor(apiKey, pkgName, cert))
+        .build()
 
 }
 
@@ -44,15 +44,15 @@ private fun getGoogleServicesInterceptor(apiKey: String, pkgName: String, cert: 
         var request = chain.request()
 
         val httpUrl = request.url()
-                .newBuilder()
-                .addQueryParameter("key", apiKey)
-                .build()
+            .newBuilder()
+            .addQueryParameter("key", apiKey)
+            .build()
 
         request = request.newBuilder()
-                .header("X-Android-Package", pkgName)
-                .header("X-Android-Cert", cert) // SHA-1
-                .url(httpUrl)
-                .build()
+            .header("X-Android-Package", pkgName)
+            .header("X-Android-Cert", cert) // SHA-1
+            .url(httpUrl)
+            .build()
 
         chain.proceed(request)
     }

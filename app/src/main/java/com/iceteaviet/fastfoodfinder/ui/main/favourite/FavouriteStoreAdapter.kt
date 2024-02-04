@@ -7,23 +7,28 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TextView
-import androidx.annotation.NonNull
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.MotionEventCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
+import com.iceteaviet.fastfoodfinder.databinding.ItemFavouriteLocationBinding
 import com.iceteaviet.fastfoodfinder.ui.custom.itemtouchhelper.ItemTouchHelperAdapter
 import com.iceteaviet.fastfoodfinder.ui.custom.itemtouchhelper.ItemTouchHelperViewHolder
 import com.iceteaviet.fastfoodfinder.ui.custom.itemtouchhelper.OnStartDragListener
-import kotlinx.android.synthetic.main.item_favourite_location.view.*
-import java.util.*
+import java.util.Collections
 
 /**
  * Created by MyPC on 11/16/2016.
  */
 class FavouriteStoreAdapter internal constructor(private val mDragStartListener: OnStartDragListener, view: FrameLayout) : RecyclerView.Adapter<FavouriteStoreAdapter.FavouriteStoreViewHolder>(), ItemTouchHelperAdapter {
+
+    /**
+     * Views Ref
+     */
+    private lateinit var binding: ItemFavouriteLocationBinding
+
     private val mContainerView: View
     private val mStoreList: MutableList<Store>
     private var mOnItemClickListener: OnItemClickListener? = null
@@ -33,9 +38,9 @@ class FavouriteStoreAdapter internal constructor(private val mDragStartListener:
         mContainerView = view
     }
 
-    override fun onCreateViewHolder(@NonNull parent: ViewGroup, viewType: Int): FavouriteStoreViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavouriteStoreViewHolder {
         val itemView = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_favourite_location, parent, false)
+            .inflate(R.layout.item_favourite_location, parent, false)
         return FavouriteStoreViewHolder(itemView)
     }
 
@@ -43,12 +48,12 @@ class FavouriteStoreAdapter internal constructor(private val mDragStartListener:
         Collections.swap(mStoreList, fromPosition, toPosition)
         notifyItemMoved(fromPosition, toPosition)
         Snackbar.make(mContainerView, R.string.want_undo, Snackbar.LENGTH_LONG)
-                .setAction(R.string.undo) {
-                    Collections.swap(mStoreList, toPosition, fromPosition)
-                    notifyItemMoved(toPosition, fromPosition)
-                }
-                .setDuration(30000)
-                .show()
+            .setAction(R.string.undo) {
+                Collections.swap(mStoreList, toPosition, fromPosition)
+                notifyItemMoved(toPosition, fromPosition)
+            }
+            .setDuration(30000)
+            .show()
         return true
     }
 
@@ -58,12 +63,12 @@ class FavouriteStoreAdapter internal constructor(private val mDragStartListener:
         notifyDataSetChanged()
         notifyItemRemoved(position)
         Snackbar.make(mContainerView, R.string.want_undo, Snackbar.LENGTH_LONG)
-                .setAction(R.string.undo) {
-                    mStoreList.add(position, store)
-                    notifyItemInserted(position)
-                }
-                .setDuration(30000)
-                .show()
+            .setAction(R.string.undo) {
+                mStoreList.add(position, store)
+                notifyItemInserted(position)
+            }
+            .setDuration(30000)
+            .show()
     }
 
     fun setOnItemClickListener(listener: OnItemClickListener) {
@@ -105,7 +110,7 @@ class FavouriteStoreAdapter internal constructor(private val mDragStartListener:
         }
     }
 
-    override fun onBindViewHolder(@NonNull holder: FavouriteStoreViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: FavouriteStoreViewHolder, position: Int) {
         val store = mStoreList[position]
         holder.setData(store)
     }
@@ -125,8 +130,8 @@ class FavouriteStoreAdapter internal constructor(private val mDragStartListener:
     }
 
     inner class FavouriteStoreViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), ItemTouchHelperViewHolder {
-        var txtTitle: TextView = itemView.tv_item_title
-        var txtAddress: TextView = itemView.tv_item_address
+        var txtTitle: TextView = binding.tvItemTitle
+        var txtAddress: TextView = binding.tvItemAddress
 
         init {
             itemView.setOnClickListener {
@@ -138,20 +143,20 @@ class FavouriteStoreAdapter internal constructor(private val mDragStartListener:
             itemView.setOnLongClickListener {
                 val position = adapterPosition
                 AlertDialog.Builder(itemView.context)
-                        .setTitle(R.string.delete_favourite_location)
-                        .setMessage(R.string.are_you_sure)
-                        .setPositiveButton(android.R.string.yes) { dialog, _ ->
-                            mStoreList.removeAt(position)
-                            notifyDataSetChanged()
-                            Snackbar.make(itemView, R.string.undo, Snackbar.LENGTH_INDEFINITE).show()
-                            dialog.dismiss()
-                        }
-                        .setNegativeButton(android.R.string.no) { dialog, _ ->
-                            //do nothing
-                            dialog.dismiss()
-                        }
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .show()
+                    .setTitle(R.string.delete_favourite_location)
+                    .setMessage(R.string.are_you_sure)
+                    .setPositiveButton(android.R.string.yes) { dialog, _ ->
+                        mStoreList.removeAt(position)
+                        notifyDataSetChanged()
+                        Snackbar.make(itemView, R.string.undo, Snackbar.LENGTH_INDEFINITE).show()
+                        dialog.dismiss()
+                    }
+                    .setNegativeButton(android.R.string.no) { dialog, _ ->
+                        //do nothing
+                        dialog.dismiss()
+                    }
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show()
                 true
             }
 
@@ -176,5 +181,4 @@ class FavouriteStoreAdapter internal constructor(private val mDragStartListener:
             txtAddress.text = store.address
         }
     }
-
 }

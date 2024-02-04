@@ -6,8 +6,6 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.Toast
-import androidx.annotation.NonNull
-import androidx.annotation.Nullable
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -18,12 +16,16 @@ import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Comment
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
+import com.iceteaviet.fastfoodfinder.databinding.ActivityStoreDetailBinding
 import com.iceteaviet.fastfoodfinder.location.GoogleLocationManager
 import com.iceteaviet.fastfoodfinder.ui.base.BaseActivity
 import com.iceteaviet.fastfoodfinder.ui.store.comment.CommentActivity
 import com.iceteaviet.fastfoodfinder.ui.store.comment.CommentActivity.Companion.KEY_COMMENT
-import com.iceteaviet.fastfoodfinder.utils.*
-import kotlinx.android.synthetic.main.activity_store_detail.*
+import com.iceteaviet.fastfoodfinder.utils.REQUEST_LOCATION
+import com.iceteaviet.fastfoodfinder.utils.isLocationPermissionGranted
+import com.iceteaviet.fastfoodfinder.utils.makeNativeCall
+import com.iceteaviet.fastfoodfinder.utils.openRoutingActivity
+import com.iceteaviet.fastfoodfinder.utils.requestLocationPermission
 
 /**
  * Created by taq on 18/11/2016.
@@ -31,6 +33,11 @@ import kotlinx.android.synthetic.main.activity_store_detail.*
 
 class StoreDetailActivity : BaseActivity(), StoreDetailContract.View {
     override lateinit var presenter: StoreDetailContract.Presenter
+
+    /**
+     * Views Ref
+     */
+    private lateinit var binding: ActivityStoreDetailBinding
 
     private lateinit var collapsingToolbar: CollapsingToolbarLayout
     private lateinit var ivBackdrop: ImageView
@@ -41,11 +48,11 @@ class StoreDetailActivity : BaseActivity(), StoreDetailContract.View {
     override val layoutId: Int
         get() = R.layout.activity_store_detail
 
-    override fun onCreate(@Nullable savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         presenter = StoreDetailPresenter(App.getDataManager(), App.getSchedulerProvider(),
-                GoogleLocationManager.getInstance(), this)
+            GoogleLocationManager.getInstance(), this)
 
         setupUI()
         setupEventHandlers()
@@ -70,7 +77,7 @@ class StoreDetailActivity : BaseActivity(), StoreDetailContract.View {
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, @NonNull permissions: Array<String>, @NonNull grantResults: IntArray) {
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         when (requestCode) {
@@ -89,8 +96,8 @@ class StoreDetailActivity : BaseActivity(), StoreDetailContract.View {
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
             android.R.id.home -> presenter.onBackButtonClick()
         }
         return super.onOptionsItemSelected(item)
@@ -121,7 +128,7 @@ class StoreDetailActivity : BaseActivity(), StoreDetailContract.View {
     }
 
     override fun setAppBarExpanded(expanded: Boolean) {
-        appbar?.setExpanded(expanded)
+        binding.appbar.setExpanded(expanded)
     }
 
     override fun scrollToCommentList() {
@@ -165,21 +172,21 @@ class StoreDetailActivity : BaseActivity(), StoreDetailContract.View {
     }
 
     private fun setupUI() {
-        collapsingToolbar = collapsing_toolbar
-        ivBackdrop = backdrop
-        rvContent = content
+        collapsingToolbar = binding.collapsingToolbar
+        ivBackdrop = binding.backdrop
+        rvContent = binding.content
 
         adapter = StoreDetailAdapter()
         rvContent.adapter = adapter
         rvContent.layoutManager = LinearLayoutManager(this)
 
-        setSupportActionBar(toolbar)
+        setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         Glide.with(this)
-                .load(R.drawable.detail_sample_circlekcover)
-                .apply(RequestOptions().centerCrop())
-                .into(ivBackdrop)
+            .load(R.drawable.detail_sample_circlekcover)
+            .apply(RequestOptions().centerCrop())
+            .into(ivBackdrop)
     }
 
     private fun setupEventHandlers() {
@@ -214,6 +221,7 @@ class StoreDetailActivity : BaseActivity(), StoreDetailContract.View {
     companion object {
         const val KEY_STORE = "key_store"
         const val RC_ADD_COMMENT = 113
+
         private val TAG = StoreDetailActivity::class.java.simpleName
     }
 }

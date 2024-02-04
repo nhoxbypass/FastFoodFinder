@@ -9,9 +9,10 @@ import com.google.gson.annotations.SerializedName
 /**
  * Created by Genius Doan on 11/11/2016.
  */
-class MapCoordination constructor() : Parcelable {
+class MapCoordination() : Parcelable {
     @SerializedName("lat")
     var latitude: Double = 0.0
+
     @SerializedName("lng")
     var longitude: Double = 0.0
 

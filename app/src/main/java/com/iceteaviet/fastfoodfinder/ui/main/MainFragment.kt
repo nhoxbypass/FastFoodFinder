@@ -7,34 +7,36 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.NonNull
-import androidx.annotation.Nullable
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import com.iceteaviet.fastfoodfinder.R
+import com.iceteaviet.fastfoodfinder.databinding.FragmentMainBinding
 import com.iceteaviet.fastfoodfinder.utils.d
-import kotlinx.android.synthetic.main.fragment_main.*
-
 
 /**
  * A simple [Fragment] subclass.
  */
 class MainFragment : Fragment() {
+    /**
+     * Views Ref
+     */
+    private lateinit var binding: FragmentMainBinding
+
     private lateinit var mTabLayout: TabLayout
     private lateinit var mViewPager: ViewPager
 
-    override fun onCreateView(@NonNull inflater: LayoutInflater, container: ViewGroup?,
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_main, container, false)
     }
 
-    override fun onViewCreated(@NonNull view: View, @Nullable savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mTabLayout = tab_layout
-        mViewPager = view_pager
+        mTabLayout = binding.tabLayout
+        mViewPager = binding.viewPager
 
         val mPagerAdapter = MainPagerAdapter(childFragmentManager)
         mViewPager.adapter = mPagerAdapter
@@ -65,15 +67,12 @@ class MainFragment : Fragment() {
                 d(TAG, "onTabReselected")
             }
         })
-
-
     }
 
     companion object {
         private val TAG = MainFragment::class.java.simpleName
 
         fun newInstance(): MainFragment {
-
             val args = Bundle()
 
             val fragment = MainFragment()

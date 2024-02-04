@@ -48,24 +48,24 @@ class EmailRegisterPresenter : BasePresenter<EmailRegisterContract.Presenter>, E
 
     private fun startRegister(email: String, password: String) {
         dataManager.signUpWithEmailAndPassword(email, password)
-                .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
-                .subscribe(object : SingleObserver<User> {
-                    override fun onSubscribe(d: Disposable) {
-                        compositeDisposable.add(d)
-                    }
+            .subscribeOn(schedulerProvider.io())
+            .observeOn(schedulerProvider.ui())
+            .subscribe(object : SingleObserver<User> {
+                override fun onSubscribe(d: Disposable) {
+                    compositeDisposable.add(d)
+                }
 
-                    override fun onSuccess(user: User) {
-                        setRegisterProgressState(2)
-                        emailRegisterView.notifyRegisterSuccess(user)
-                    }
+                override fun onSuccess(user: User) {
+                    setRegisterProgressState(2)
+                    emailRegisterView.notifyRegisterSuccess(user)
+                }
 
-                    override fun onError(e: Throwable) {
-                        e.printStackTrace()
-                        setRegisterProgressState(-1)
-                        emailRegisterView.notifyLoginError(e)
-                    }
-                })
+                override fun onError(e: Throwable) {
+                    e.printStackTrace()
+                    setRegisterProgressState(-1)
+                    emailRegisterView.notifyLoginError(e)
+                }
+            })
     }
 
     private fun setRegisterProgressState(state: Int) {

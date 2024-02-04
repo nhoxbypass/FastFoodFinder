@@ -77,21 +77,21 @@ class LiveSightPresenter : BasePresenter<LiveSightContract.Presenter>, LiveSight
     override fun onLocationChanged(location: LatLngAlt) {
         liveSightView.updateLatestLocation(location)
         dataManager.getStoreInBounds(location.latitude, location.longitude, RADIUS)
-                .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
-                .subscribe(object : SingleObserver<List<Store>> {
-                    override fun onSubscribe(d: Disposable) {
-                        compositeDisposable.add(d)
-                    }
+            .subscribeOn(schedulerProvider.io())
+            .observeOn(schedulerProvider.ui())
+            .subscribe(object : SingleObserver<List<Store>> {
+                override fun onSubscribe(d: Disposable) {
+                    compositeDisposable.add(d)
+                }
 
-                    override fun onSuccess(storeList: List<Store>) {
-                        liveSightView.setARPoints(storesToArPoints(storeList))
-                    }
+                override fun onSuccess(storeList: List<Store>) {
+                    liveSightView.setARPoints(storesToArPoints(storeList))
+                }
 
-                    override fun onError(e: Throwable) {
-                        liveSightView.showGeneralErrorMessage()
-                    }
-                })
+                override fun onError(e: Throwable) {
+                    liveSightView.showGeneralErrorMessage()
+                }
+            })
     }
 
     override fun onLocationFailed(type: Int) {

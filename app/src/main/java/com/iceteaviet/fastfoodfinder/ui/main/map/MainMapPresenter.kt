@@ -31,9 +31,7 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.PublishSubject
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import java.util.*
 import java.util.concurrent.TimeUnit
-import kotlin.collections.ArrayList
 import kotlin.collections.set
 
 /**
@@ -46,11 +44,14 @@ open class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapC
 
     @VisibleForTesting
     var currLocation: LatLng? = null
+
     @VisibleForTesting
     var storeList: List<Store> = ArrayList()
     private var visibleStores: List<Store> = ArrayList()
+
     @VisibleForTesting
     var isZoomToUser = false
+
     @VisibleForTesting
     var locationGranted = false
 
@@ -159,24 +160,24 @@ open class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapC
         queries[GoogleMapsRoutingApiHelper.PARAM_DESTINATION] = destination
 
         dataManager.getMapsDirection(queries, store)
-                .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
-                .subscribe(object : SingleObserver<MapsDirection> {
-                    override fun onSubscribe(d: Disposable) {
-                        compositeDisposable.add(d)
-                    }
+            .subscribeOn(schedulerProvider.io())
+            .observeOn(schedulerProvider.ui())
+            .subscribe(object : SingleObserver<MapsDirection> {
+                override fun onSubscribe(d: Disposable) {
+                    compositeDisposable.add(d)
+                }
 
-                    override fun onSuccess(mapsDirection: MapsDirection) {
-                        if (mapsDirection.routeList.isNotEmpty())
-                            mainMapView.showMapRoutingView(store, mapsDirection)
-                        else
-                            mainMapView.showGeneralErrorMessage()
-                    }
-
-                    override fun onError(e: Throwable) {
+                override fun onSuccess(mapsDirection: MapsDirection) {
+                    if (mapsDirection.routeList.isNotEmpty())
+                        mainMapView.showMapRoutingView(store, mapsDirection)
+                    else
                         mainMapView.showGeneralErrorMessage()
-                    }
-                })
+                }
+
+                override fun onError(e: Throwable) {
+                    mainMapView.showGeneralErrorMessage()
+                }
+            })
     }
 
     override fun onClearOldMapData() {
@@ -194,6 +195,7 @@ open class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapC
             SearchEventResult.SEARCH_ACTION_QUICK -> {
                 handleSearchQuickAction(searchEventResult.storeType)
             }
+
             SearchEventResult.SEARCH_ACTION_QUERY_SUBMIT -> {
                 if (searchEventResult.searchString.isBlank())
                     return
@@ -269,79 +271,79 @@ open class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapC
     @VisibleForTesting
     open fun subscribeMapCameraPositionChange() {
         cameraPositionPublisher.debounce(200, TimeUnit.MILLISECONDS, schedulerProvider.computation())
-                .subscribeOn(schedulerProvider.computation())
-                .map {
-                    val stores = getVisibleStore(storeList, it.cameraBounds)
-                    for (store in stores) {
-                        if (!this.visibleStores.contains(store)) {
-                            // New store become visible
-                            onNewStoreBecomeVisible(store)
-                        }
+            .subscribeOn(schedulerProvider.computation())
+            .map {
+                val stores = getVisibleStore(storeList, it.cameraBounds)
+                for (store in stores) {
+                    if (!this.visibleStores.contains(store)) {
+                        // New store become visible
+                        onNewStoreBecomeVisible(store)
                     }
-                    visibleStores = stores
-                    generateNearByStoresWithDistance(it.cameraPosition, stores)
                 }
-                .observeOn(schedulerProvider.ui())
-                .subscribe(object : Observer<List<NearByStore>> {
-                    override fun onSubscribe(d: Disposable) {
-                        compositeDisposable.add(d)
-                    }
+                visibleStores = stores
+                generateNearByStoresWithDistance(it.cameraPosition, stores)
+            }
+            .observeOn(schedulerProvider.ui())
+            .subscribe(object : Observer<List<NearByStore>> {
+                override fun onSubscribe(d: Disposable) {
+                    compositeDisposable.add(d)
+                }
 
-                    override fun onNext(nearbyStores: List<NearByStore>) {
-                        mainMapView.setNearByStores(nearbyStores)
-                    }
+                override fun onNext(nearbyStores: List<NearByStore>) {
+                    mainMapView.setNearByStores(nearbyStores)
+                }
 
-                    override fun onError(e: Throwable) {
-                        mainMapView.showGeneralErrorMessage()
-                    }
+                override fun onError(e: Throwable) {
+                    mainMapView.showGeneralErrorMessage()
+                }
 
-                    override fun onComplete() {
+                override fun onComplete() {
 
-                    }
-                })
+                }
+            })
     }
 
     @VisibleForTesting
     open fun subscribeNewVisibleStore() {
         newVisibleStorePublisher.subscribeOn(schedulerProvider.io())
-                .map { store ->
-                    val marker = markerSparseArray.get(store.id)
+            .map { store ->
+                val marker = markerSparseArray.get(store.id)
 
-                    // TODO: warm up cache
-                    /*val animator = getMarkerAnimator()
-                    animator.addUpdateListener { animation ->
-                        val scale = animation.animatedValue as Float
-                        try {
-                            getStoreIcon(resources, store.type, Math.round(scale * 75), Math.round(scale * 75)) // warm up cache
-                        } catch (ex: IllegalArgumentException) {
-                            ex.printStackTrace()
-                        }
+                // TODO: warm up cache
+                /*val animator = getMarkerAnimator()
+                animator.addUpdateListener { animation ->
+                    val scale = animation.animatedValue as Float
+                    try {
+                        getStoreIcon(resources, store.type, Math.round(scale * 75), Math.round(scale * 75)) // warm up cache
+                    } catch (ex: IllegalArgumentException) {
+                        ex.printStackTrace()
                     }
-                    animator.start()*/
-
-                    Pair(marker, store.type)
                 }
-                .observeOn(schedulerProvider.ui())
-                .subscribe(object : Observer<Pair<Marker?, Int>> {
-                    override fun onSubscribe(d: Disposable) {
-                        compositeDisposable.add(d)
-                    }
+                animator.start()*/
 
-                    override fun onNext(pair: Pair<Marker?, Int>) {
-                        val marker = pair.first
-                        val storeType = pair.second
+                Pair(marker, store.type)
+            }
+            .observeOn(schedulerProvider.ui())
+            .subscribe(object : Observer<Pair<Marker?, Int>> {
+                override fun onSubscribe(d: Disposable) {
+                    compositeDisposable.add(d)
+                }
 
-                        if (marker != null && storeType != null)
-                            mainMapView.animateMapMarker(marker, storeType)
-                    }
+                override fun onNext(pair: Pair<Marker?, Int>) {
+                    val marker = pair.first
+                    val storeType = pair.second
 
-                    override fun onError(e: Throwable) {
-                        e.printStackTrace()
-                    }
+                    if (marker != null && storeType != null)
+                        mainMapView.animateMapMarker(marker, storeType)
+                }
 
-                    override fun onComplete() {
-                    }
-                })
+                override fun onError(e: Throwable) {
+                    e.printStackTrace()
+                }
+
+                override fun onComplete() {
+                }
+            })
     }
 
     @VisibleForTesting
@@ -351,54 +353,54 @@ open class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapC
 
     private fun handleSearchQuickAction(storeType: Int) {
         dataManager.findStoresByType(storeType)
-                .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
-                .subscribe(object : SingleObserver<List<Store>> {
-                    override fun onSubscribe(d: Disposable) {
-                        compositeDisposable.add(d)
+            .subscribeOn(schedulerProvider.io())
+            .observeOn(schedulerProvider.ui())
+            .subscribe(object : SingleObserver<List<Store>> {
+                override fun onSubscribe(d: Disposable) {
+                    compositeDisposable.add(d)
+                }
+
+                override fun onSuccess(storeList: List<Store>) {
+                    if (storeList.isEmpty()) {
+                        mainMapView.showWarningMessage(R.string.store_not_found)
+                        return
                     }
 
-                    override fun onSuccess(storeList: List<Store>) {
-                        if (storeList.isEmpty()) {
-                            mainMapView.showWarningMessage(R.string.store_not_found)
-                            return
-                        }
+                    this@MainMapPresenter.storeList = storeList.toMutableList()
+                    mainMapView.addMarkersToMap(this@MainMapPresenter.storeList)
+                    mainMapView.animateMapCamera(storeList[0].getPosition(), false)
+                }
 
-                        this@MainMapPresenter.storeList = storeList.toMutableList()
-                        mainMapView.addMarkersToMap(this@MainMapPresenter.storeList)
-                        mainMapView.animateMapCamera(storeList[0].getPosition(), false)
-                    }
-
-                    override fun onError(e: Throwable) {
-                        mainMapView.showWarningMessage(R.string.get_store_data_failed)
-                    }
-                })
+                override fun onError(e: Throwable) {
+                    mainMapView.showWarningMessage(R.string.get_store_data_failed)
+                }
+            })
     }
 
     private fun handleSearchQuerySubmitAction(searchString: String) {
         dataManager.findStores(searchString)
-                .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
-                .subscribe(object : SingleObserver<List<Store>> {
-                    override fun onSubscribe(d: Disposable) {
-                        compositeDisposable.add(d)
+            .subscribeOn(schedulerProvider.io())
+            .observeOn(schedulerProvider.ui())
+            .subscribe(object : SingleObserver<List<Store>> {
+                override fun onSubscribe(d: Disposable) {
+                    compositeDisposable.add(d)
+                }
+
+                override fun onSuccess(storeList: List<Store>) {
+                    if (storeList.isEmpty()) {
+                        mainMapView.showWarningMessage(R.string.store_not_found)
+                        return
                     }
 
-                    override fun onSuccess(storeList: List<Store>) {
-                        if (storeList.isEmpty()) {
-                            mainMapView.showWarningMessage(R.string.store_not_found)
-                            return
-                        }
+                    this@MainMapPresenter.storeList = storeList.toMutableList()
+                    mainMapView.addMarkersToMap(this@MainMapPresenter.storeList)
+                    mainMapView.animateMapCamera(storeList[0].getPosition(), false)
+                }
 
-                        this@MainMapPresenter.storeList = storeList.toMutableList()
-                        mainMapView.addMarkersToMap(this@MainMapPresenter.storeList)
-                        mainMapView.animateMapCamera(storeList[0].getPosition(), false)
-                    }
-
-                    override fun onError(e: Throwable) {
-                        mainMapView.showWarningMessage(R.string.get_store_data_failed)
-                    }
-                })
+                override fun onError(e: Throwable) {
+                    mainMapView.showWarningMessage(R.string.get_store_data_failed)
+                }
+            })
     }
 
     private fun handleSearchCollapseAction() {
@@ -411,25 +413,25 @@ open class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapC
 
     private fun loadAllStoresToMap() {
         dataManager.getAllStores()
-                .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
-                .subscribe(object : SingleObserver<List<Store>> {
-                    override fun onSubscribe(d: Disposable) {
-                        compositeDisposable.add(d)
-                    }
+            .subscribeOn(schedulerProvider.io())
+            .observeOn(schedulerProvider.ui())
+            .subscribe(object : SingleObserver<List<Store>> {
+                override fun onSubscribe(d: Disposable) {
+                    compositeDisposable.add(d)
+                }
 
-                    override fun onSuccess(storeList: List<Store>) {
-                        this@MainMapPresenter.storeList = storeList.toMutableList()
-                        if (storeList.isEmpty())
-                            mainMapView.showWarningMessage(R.string.get_store_data_failed)
-                        else
-                            mainMapView.addMarkersToMap(this@MainMapPresenter.storeList)
-                    }
-
-                    override fun onError(e: Throwable) {
+                override fun onSuccess(storeList: List<Store>) {
+                    this@MainMapPresenter.storeList = storeList.toMutableList()
+                    if (storeList.isEmpty())
                         mainMapView.showWarningMessage(R.string.get_store_data_failed)
-                    }
-                })
+                    else
+                        mainMapView.addMarkersToMap(this@MainMapPresenter.storeList)
+                }
+
+                override fun onError(e: Throwable) {
+                    mainMapView.showWarningMessage(R.string.get_store_data_failed)
+                }
+            })
     }
 
     private fun handleSearchStoreClickAction(store: Store) {

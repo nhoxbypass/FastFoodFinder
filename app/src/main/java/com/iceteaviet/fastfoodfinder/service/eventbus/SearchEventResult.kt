@@ -46,7 +46,7 @@ class SearchEventResult : Event {
     override fun equals(other: Any?): Boolean {
         return if (other is SearchEventResult) {
             resultCode.equals(other.resultCode) && searchString.equals(other.searchString)
-                    && storeType.equals(other.storeType) && (store == null || store!!.equals(other.store))
+                && storeType.equals(other.storeType) && (store == null || store!!.equals(other.store))
         } else {
             false
         }

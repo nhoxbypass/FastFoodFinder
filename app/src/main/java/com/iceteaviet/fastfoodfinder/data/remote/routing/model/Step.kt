@@ -10,20 +10,26 @@ import com.google.gson.annotations.SerializedName
 /**
  * Created by Genius Doan on 11/11/2016.
  */
-class Step constructor(`in`: Parcel) : Parcelable {
+class Step(`in`: Parcel) : Parcelable {
 
     @SerializedName("distance")
     private val distance: JsonObject
+
     @SerializedName("duration")
     private val duration: JsonObject
+
     @SerializedName("start_location")
     val startMapCoordination: MapCoordination
+
     @SerializedName("end_location")
     val endMapCoordination: MapCoordination
+
     @SerializedName("html_instructions")
     val instruction: String
+
     @SerializedName("maneuver")
     var direction: String
+
     @SerializedName("travel_mode")
     val travelMode: String
 
@@ -38,9 +44,9 @@ class Step constructor(`in`: Parcel) : Parcelable {
         distance = parser.parse(`in`.readString()).asJsonObject
         duration = parser.parse(`in`.readString()).asJsonObject
         startMapCoordination = `in`.readParcelable(MapCoordination::class.java.classLoader)
-                ?: MapCoordination()
+            ?: MapCoordination()
         endMapCoordination = `in`.readParcelable(MapCoordination::class.java.classLoader)
-                ?: MapCoordination()
+            ?: MapCoordination()
         instruction = `in`.readString() ?: ""
         travelMode = `in`.readString() ?: ""
         direction = `in`.readString() ?: ""

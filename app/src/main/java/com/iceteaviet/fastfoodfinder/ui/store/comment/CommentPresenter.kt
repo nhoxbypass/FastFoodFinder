@@ -45,7 +45,7 @@ class CommentPresenter : BasePresenter<CommentContract.Presenter>, CommentContra
         }
 
         val comment = Comment(currUser.name, currUser.photoUrl,
-                commentText.toString(), "", System.currentTimeMillis())
+            commentText.toString(), "", System.currentTimeMillis())
         commentView.exitWithResult(comment)
     }
 
