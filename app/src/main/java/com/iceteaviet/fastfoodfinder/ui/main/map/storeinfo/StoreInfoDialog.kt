@@ -52,6 +52,7 @@ class StoreInfoDialog : DialogFragment(), StoreInfoContract.View {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        binding = FragmentStoreInfoBinding.inflate(inflater)
         return inflater.inflate(R.layout.fragment_store_info, container)
     }
 

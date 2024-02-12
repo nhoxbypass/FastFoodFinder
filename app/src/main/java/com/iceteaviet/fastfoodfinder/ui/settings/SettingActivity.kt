@@ -51,6 +51,7 @@ class SettingActivity : BaseActivity(), SettingContract.View {
 
         presenter = SettingPresenter(App.getDataManager(), App.getSchedulerProvider(), this)
 
+        binding = ActivitySettingBinding.inflate(layoutInflater)
         setupUI()
 
         presenter.onSetupLanguage()

@@ -37,6 +37,7 @@ class MainRecentlyFragment : Fragment(), MainRecentlyContract.View, OnStartDragL
     private val isFABChangeClicked = false // TODO: Check usage of this
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        binding = FragmentMainRecentlyBinding.inflate(inflater, container, false)
         return inflater.inflate(R.layout.fragment_main_recently, container, false)
     }
 

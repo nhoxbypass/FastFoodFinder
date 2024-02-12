@@ -69,6 +69,7 @@ class SearchFragment : Fragment(), SearchContract.View {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
         // Inflate the layout for this fragment
+        binding = FragmentSearchBinding.inflate(inflater, container, false)
         return inflater.inflate(R.layout.fragment_search, container, false)
     }
 

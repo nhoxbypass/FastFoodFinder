@@ -44,6 +44,7 @@ class CommentActivity : BaseActivity(), CommentContract.View {
 
         presenter = CommentPresenter(App.getDataManager(), App.getSchedulerProvider(), this)
 
+        binding = ActivityCommentBinding.inflate(layoutInflater)
         etComment = binding.etComment
         tvRemainChar = binding.tvRemainChar
         btnPost = binding.btnPost

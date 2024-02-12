@@ -38,6 +38,7 @@ class RoutingAdapter internal constructor(type: Int) : RecyclerView.Adapter<Rout
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RoutingViewHolder {
+        binding = ItemRoutingBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         val convertView = LayoutInflater.from(parent.context).inflate(R.layout.item_routing, parent, false)
         return RoutingViewHolder(convertView, mListener)
     }

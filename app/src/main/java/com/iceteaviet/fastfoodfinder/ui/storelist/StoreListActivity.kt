@@ -33,6 +33,7 @@ class StoreListActivity : BaseActivity(), StoreListContract.View {
 
         presenter = StoreListPresenter(App.getDataManager(), App.getSchedulerProvider(), this)
 
+        binding = ActivityStoreListBinding.inflate(layoutInflater)
         setupUI()
     }
 

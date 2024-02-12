@@ -30,6 +30,7 @@ class EmailLoginDialog : DialogFragment(), EmailLoginContract.View, View.OnClick
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        binding = DialogLoginBinding.inflate(inflater, container, false)
         return inflater.inflate(R.layout.dialog_login, container, false)
     }
 
