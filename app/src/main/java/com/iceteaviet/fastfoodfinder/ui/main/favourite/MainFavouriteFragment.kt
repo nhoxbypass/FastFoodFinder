@@ -40,6 +40,7 @@ class MainFavouriteFragment : Fragment(), MainFavContract.View, OnStartDragListe
     private var mItemTouchHelper: ItemTouchHelper? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        binding = FragmentMainFavouritedBinding.inflate(inflater, container, false)
         return inflater.inflate(R.layout.fragment_main_favourited, container, false)
     }
 

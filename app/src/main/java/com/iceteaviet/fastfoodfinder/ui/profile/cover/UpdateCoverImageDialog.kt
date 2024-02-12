@@ -38,6 +38,7 @@ class UpdateCoverImageDialog : DialogFragment(), UpdateCoverContract.View, View.
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        binding = DialogChooseImageBinding.inflate(inflater, container, false)
         return inflater.inflate(R.layout.dialog_choose_image, container, false)
     }
 

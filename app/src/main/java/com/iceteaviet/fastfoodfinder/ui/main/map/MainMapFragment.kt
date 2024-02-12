@@ -67,6 +67,7 @@ class MainMapFragment : Fragment(), MainMapContract.View {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         // Inflate the layout for this fragment
+        binding = FragmentMainMapBinding.inflate(inflater, container, false)
         return inflater.inflate(R.layout.fragment_main_map, container, false)
     }
 

@@ -31,6 +31,7 @@ class EmailRegisterDialog : DialogFragment(), EmailRegisterContract.View, View.O
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        binding = DialogRegisterBinding.inflate(inflater, container, false)
         return inflater.inflate(R.layout.dialog_register, container, false)
     }
 
