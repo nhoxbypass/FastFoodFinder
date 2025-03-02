@@ -6,12 +6,12 @@ apply plugin: 'realm-android'
 apply from: '../app/coverage.gradle'
 
 android {
-    compileSdk rootProject.ext.compileSdkVersion
+    compileSdk 35
     namespace 'com.iceteaviet.fastfoodfinder'
     defaultConfig {
         applicationId "com.iceteaviet.fastfoodfinder"
         minSdkVersion 28
-        targetSdkVersion rootProject.ext.targetSdkVersion
+        targetSdkVersion 35
         versionCode 19
         versionName "24.02.01.r2"
         multiDexEnabled true
