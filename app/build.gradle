@@ -31,9 +31,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
-            testCoverageEnabled true
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules-debug.pro'
+            enableUnitTestCoverage true
+            enableAndroidTestCoverage true
         }
     }
 
@@ -50,17 +51,11 @@ android {
         }
     }
 
-    aaptOptions {
-        cruncherEnabled = false
-    }
 
     dexOptions {
         javaMaxHeapSize = "4g"
     }
 
-    lintOptions {
-        abortOnError false
-    }
 
     // Always show the result of every unit test, even if it passes.
     testOptions.unitTests.all {
@@ -74,6 +69,9 @@ android {
         dataBinding true
         buildConfig = true
         aidl true
+    }
+    lint {
+        abortOnError false
     }
 }
 
