@@ -6,9 +6,9 @@ ext {
     // App dependencies
     appCompat = '1.6.1'
     supportLibraryVersion = '27.1.1'
-    playService = '18.2.0'
-    playServiceLocation = '21.1.0'
-    playServiceAuth = '20.7.0'
+    playService = '19.1.0'
+    playServiceLocation = '21.3.0'
+    playServiceAuth = '21.3.0'
     workManager = '2.9.0'
 
     glideVersion = '4.16.0'
