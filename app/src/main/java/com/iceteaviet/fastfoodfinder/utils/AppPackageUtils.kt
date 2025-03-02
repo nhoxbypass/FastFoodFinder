@@ -23,8 +23,8 @@ fun getAppSignatureSHA1(context: Context): String {
         val pm = context.packageManager
         val info = pm.getPackageInfo(context.packageName, PackageManager.GET_SIGNATURES)
 
-        val signatures = info.signatures
-        val cert = signatures[0].toByteArray()
+        val signatures = info.signingInfo!!.signingCertificateHistory[0]
+        val cert = signatures.toByteArray()
         val md = MessageDigest.getInstance("SHA1")
         val publicKey = md.digest(cert)
         val hexString = StringBuffer()

@@ -125,6 +125,7 @@ class StoreInfoDialog : DialogFragment(), StoreInfoContract.View {
         return dialog
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         dialog?.window?.attributes?.windowAnimations = R.style.DialogAnimation
@@ -143,6 +144,7 @@ class StoreInfoDialog : DialogFragment(), StoreInfoContract.View {
         presenter.subscribe()
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 

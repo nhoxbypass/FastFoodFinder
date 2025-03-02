@@ -92,6 +92,7 @@ open class SystemLocationManager private constructor(context: Context) : AbsLoca
         }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {
         for (listener in listeners) {
             listener.onStatusChanged(provider, status, extras)

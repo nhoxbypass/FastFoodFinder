@@ -60,6 +60,7 @@ class MainMapFragment : Fragment(), MainMapContract.View {
     private var nearByStoreAdapter: NearByStoreAdapter? = null
 
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         mMapFragment = inflateSupportMapFragment()
@@ -87,6 +88,7 @@ class MainMapFragment : Fragment(), MainMapContract.View {
         presenter.unsubscribe()
     }
 
+    @Deprecated("Deprecated in Java")
     @SuppressLint("MissingPermission")
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)

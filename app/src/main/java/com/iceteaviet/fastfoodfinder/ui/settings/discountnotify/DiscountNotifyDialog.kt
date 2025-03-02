@@ -65,6 +65,7 @@ class DiscountNotifyDialog : DialogFragment(), DiscountNotifyContract.View {
         presenter.unsubscribe()
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityCreated(arg0: Bundle?) {
         super.onActivityCreated(arg0)
         dialog?.window?.attributes?.windowAnimations = R.style.DialogAnimationUpDown
