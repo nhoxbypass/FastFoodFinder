@@ -9,7 +9,7 @@ ext {
     playService = '19.1.0'
     playServiceLocation = '21.3.0'
     playServiceAuth = '21.3.0'
-    workManager = '2.9.0'
+    workManager = '2.10.0'
 
     glideVersion = '4.16.0'
     gsonVersion = '2.10.1'

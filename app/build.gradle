@@ -131,7 +131,7 @@ dependencies {
     // AndroidX
     implementation "androidx.appcompat:appcompat:$rootProject.appCompat"
     implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.constraintlayout:constraintlayout:2.2.1'
     implementation "androidx.work:work-runtime-ktx:$workManager"
     implementation "androidx.work:work-rxjava2:$workManager"
 
