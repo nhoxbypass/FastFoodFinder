@@ -10,7 +10,7 @@ android {
     namespace 'com.iceteaviet.fastfoodfinder'
     defaultConfig {
         applicationId "com.iceteaviet.fastfoodfinder"
-        minSdkVersion rootProject.ext.minSdkVersion
+        minSdkVersion 28
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 19
         versionName "24.02.01.r2"
