@@ -1,7 +1,7 @@
 {
   "project_info": {
-    "project_number": "",
-    "project_id": ""
+    "project_number": "12345",
+    "project_id": "my-project-12345"
   },
   "client": [
     {
@@ -13,11 +13,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "",
+          "client_id": "oauth_client_client_id_3",
           "client_type": 3
         },
         {
-          "client_id": "",
+          "client_id": "oauth_client_client_id_1",
           "client_type": 1,
           "android_info": {
             "package_name": "com.iceteaviet.fastfoodfinder.mock",
