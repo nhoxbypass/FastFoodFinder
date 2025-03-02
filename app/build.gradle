@@ -6,8 +6,7 @@ apply plugin: 'realm-android'
 apply from: '../app/coverage.gradle'
 
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
+    compileSdk rootProject.ext.compileSdkVersion
     namespace 'com.iceteaviet.fastfoodfinder'
     defaultConfig {
         applicationId "com.iceteaviet.fastfoodfinder"
@@ -50,12 +49,6 @@ android {
 
         }
     }
-
-
-    dexOptions {
-        javaMaxHeapSize = "4g"
-    }
-
 
     // Always show the result of every unit test, even if it passes.
     testOptions.unitTests.all {
