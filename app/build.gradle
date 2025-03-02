@@ -6,13 +6,12 @@ apply plugin: 'realm-android'
 apply from: '../app/coverage.gradle'
 
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
+    compileSdk 35
     namespace 'com.iceteaviet.fastfoodfinder'
     defaultConfig {
         applicationId "com.iceteaviet.fastfoodfinder"
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
+        minSdkVersion 28
+        targetSdkVersion 35
         versionCode 19
         versionName "24.02.01.r2"
         multiDexEnabled true
@@ -31,9 +30,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
-            testCoverageEnabled true
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules-debug.pro'
+            enableUnitTestCoverage true
+            enableAndroidTestCoverage true
         }
     }
 
@@ -50,18 +50,6 @@ android {
         }
     }
 
-    aaptOptions {
-        cruncherEnabled = false
-    }
-
-    dexOptions {
-        javaMaxHeapSize = "4g"
-    }
-
-    lintOptions {
-        abortOnError false
-    }
-
     // Always show the result of every unit test, even if it passes.
     testOptions.unitTests.all {
         testLogging {
@@ -74,6 +62,9 @@ android {
         dataBinding true
         buildConfig = true
         aidl true
+    }
+    lint {
+        abortOnError false
     }
 }
 
@@ -140,7 +131,7 @@ dependencies {
     // AndroidX
     implementation "androidx.appcompat:appcompat:$rootProject.appCompat"
     implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.constraintlayout:constraintlayout:2.2.1'
     implementation "androidx.work:work-runtime-ktx:$workManager"
     implementation "androidx.work:work-rxjava2:$workManager"
 
@@ -152,13 +143,13 @@ dependencies {
 
     // Firebase
     implementation 'com.google.firebase:firebase-core:21.1.1'
-    implementation 'com.google.firebase:firebase-database:20.3.0'
-    implementation 'com.google.firebase:firebase-auth:22.3.1'
-    implementation 'com.google.firebase:firebase-perf:20.5.1'
-    implementation 'com.google.firebase:firebase-crashlytics:18.6.1'
+    implementation 'com.google.firebase:firebase-database:21.0.0'
+    implementation 'com.google.firebase:firebase-auth:23.2.0'
+    implementation 'com.google.firebase:firebase-perf:21.0.4'
+    implementation 'com.google.firebase:firebase-crashlytics:19.4.1'
 
     // UI
-    implementation 'com.google.android.material:material:1.11.0'
+    implementation 'com.google.android.material:material:1.12.0'
     implementation "com.github.bumptech.glide:glide:$rootProject.glideVersion"
     implementation "de.hdodenhof:circleimageview:$rootProject.circleImageViewVersion"
 

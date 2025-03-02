@@ -142,6 +142,7 @@ class ProfileFragment : Fragment(), ProfileContract.View, View.OnClickListener {
         binding.tvEmail.setText(R.string.unregistered_email)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         val item = menu.findItem(R.id.action_search)

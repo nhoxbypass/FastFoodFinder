@@ -153,6 +153,7 @@ class CommentActivity : BaseActivity(), CommentContract.View {
         return super.onOptionsItemSelected(item)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         super.onBackPressed()
         presenter.onBackButtonClick(etComment.text)

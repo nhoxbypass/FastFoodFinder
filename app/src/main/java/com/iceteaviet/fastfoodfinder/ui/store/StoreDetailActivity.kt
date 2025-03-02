@@ -70,6 +70,7 @@ class StoreDetailActivity : BaseActivity(), StoreDetailContract.View {
         presenter.unsubscribe()
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == RESULT_OK && requestCode == RC_ADD_COMMENT && data != null) {
