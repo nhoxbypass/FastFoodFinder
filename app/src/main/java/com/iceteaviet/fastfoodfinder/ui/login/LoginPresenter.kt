@@ -89,7 +89,8 @@ class LoginPresenter : BasePresenter<LoginContract.Presenter>, LoginContract.Pre
 
     // TODO: Check is new account
     override fun onRequestFacebookAccountSuccess(authCredential: AuthCredential) {
-        dataManager.signInWithCredential(authCredential)
+        // DO Nothing
+        /*dataManager.signInWithCredential(authCredential)
             .subscribeOn(schedulerProvider.io())
             .observeOn(schedulerProvider.ui())
             .subscribe(object : SingleObserver<User> {
@@ -106,7 +107,7 @@ class LoginPresenter : BasePresenter<LoginContract.Presenter>, LoginContract.Pre
                 override fun onError(e: Throwable) {
                     loginView.showSignInFailMessage()
                 }
-            })
+            })*/
     }
 
     private fun ensureBasicUserData(user: User) {

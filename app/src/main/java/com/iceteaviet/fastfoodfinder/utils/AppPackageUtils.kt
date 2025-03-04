@@ -4,47 +4,54 @@ package com.iceteaviet.fastfoodfinder.utils
 
 import android.content.Context
 import android.content.pm.PackageManager
-import android.text.TextUtils
+import timber.log.Timber
 import java.security.MessageDigest
-import java.security.NoSuchAlgorithmException
 
 
 /**
  * Created by Genius Doan on 21/03/2019.
  */
+private const val TAG = "SignatureUtils"
 
 private var signature: String = ""
 
 fun getAppSignatureSHA1(context: Context): String {
-    if (!TextUtils.isEmpty(signature))
+    if (signature.isEmpty()) {
         return signature
-
-    try {
-        val pm = context.packageManager
-        val info = pm.getPackageInfo(context.packageName, PackageManager.GET_SIGNATURES)
-
-        val signatures = info.signingInfo!!.signingCertificateHistory[0]
-        val cert = signatures.toByteArray()
-        val md = MessageDigest.getInstance("SHA1")
-        val publicKey = md.digest(cert)
-        val hexString = StringBuffer()
-        for (j in publicKey.indices) {
-            val appendString = Integer
-                .toHexString(0xFF and publicKey[j].toInt())
-            if (appendString.length == 1)
-                hexString.append("0")
-            hexString.append(appendString)
-            /*if (j<publicKey.length-1) {
-                    hexString.append(':');
-                }*/
-        }
-        signature = hexString.toString()
-        return signature
-    } catch (e: PackageManager.NameNotFoundException) {
-        e.printStackTrace()
-    } catch (e: NoSuchAlgorithmException) {
-        e.printStackTrace()
     }
 
-    return ""
+    return try {
+        val pm = context.packageManager
+        val info = pm.getPackageInfo(
+            context.packageName,
+            PackageManager.GET_SIGNING_CERTIFICATES
+        )
+
+        val signingInfo = info.signingInfo
+        if (signingInfo == null) {
+            Timber.e(TAG, "Signing info is null")
+            return ""
+        }
+
+        val signatures = signingInfo.signingCertificateHistory
+        if (signatures == null || signatures.isEmpty()) {
+            Timber.e(TAG, "No signing certificates found")
+            return ""
+        }
+
+        val cert = signatures[0].toByteArray()
+        val md = MessageDigest.getInstance("SHA1")
+        val publicKey = md.digest(cert)
+
+        val hexString = StringBuilder()
+        for (byte in publicKey) {
+            val appendString = String.format("%02x", byte)
+            hexString.append(appendString)
+        }
+
+        signature = hexString.toString()
+        signature
+    } catch (e: Exception) {
+        throw e
+    }
 }

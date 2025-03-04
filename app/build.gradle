@@ -168,9 +168,6 @@ dependencies {
     // DB
     implementation "io.realm:realm-android-library:$rootProject.realmAndroidVersion"
 
-    // FB SDK
-    implementation "com.facebook.android:facebook-android-sdk:$rootProject.fbSdkVersion"
-
     // Logging
     implementation "com.jakewharton.timber:timber:$rootProject.timberVersion"
 }

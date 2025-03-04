@@ -1,25 +1,16 @@
 package com.iceteaviet.fastfoodfinder.data.auth.provider
 
-import android.content.Intent
-import com.facebook.CallbackManager
-import com.facebook.FacebookCallback
-import com.facebook.FacebookException
-import com.facebook.FacebookSdk
-import com.facebook.login.LoginResult
-import com.facebook.login.widget.LoginButton
-import com.google.firebase.auth.AuthCredential
-import com.google.firebase.auth.FacebookAuthProvider
-import com.iceteaviet.fastfoodfinder.App
-
 /**
  * Created by tom on 2019-05-03.
  */
+/*
 class FacebookAuthHelper(private var loginButton: LoginButton) : AbsAuthHelper<AuthCredential>(), AuthHelper<AuthCredential> {
 
     private var callBackManager: CallbackManager? = null
 
     init {
         arrayOf<String?>("email", "public_profile")
+        FacebookSdk.setClientToken(getString(R.string.facebook_app_id))
         FacebookSdk.sdkInitialize(App.getContext())
         setupAuthProvider()
     }
@@ -52,4 +43,4 @@ class FacebookAuthHelper(private var loginButton: LoginButton) : AbsAuthHelper<A
         val callbackManager = CallbackManager.Factory.create()
         return callbackManager
     }
-}
+}*/
