@@ -51,10 +51,11 @@ class StoreDetailActivity : BaseActivity(), StoreDetailContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        presenter = StoreDetailPresenter(App.getDataManager(), App.getSchedulerProvider(),
-            GoogleLocationManager.getInstance(), this)
-
         binding = ActivityStoreDetailBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        presenter = StoreDetailPresenter(App.getDataManager(), App.getSchedulerProvider(), GoogleLocationManager.getInstance(), this)
+
         setupUI()
         setupEventHandlers()
     }

@@ -52,8 +52,7 @@ class NearByStoreAdapter @JvmOverloads internal constructor(diffCallback: DiffUt
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StoreViewHolder {
         binding = ItemStoreBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        val convertView = LayoutInflater.from(parent.context).inflate(R.layout.item_store, parent, false)
-        return StoreViewHolder(convertView, listener)
+        return StoreViewHolder(binding.root, listener)
     }
 
     override fun onBindViewHolder(holder: StoreViewHolder, position: Int) {

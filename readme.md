@@ -30,7 +30,7 @@ The basic **required** functionality:
 
 The **extended** features are implemented:
 
-* [x] User can toggle navigation drawer to see their profile. If the user is not logged in. They can log in by email, Gmail, or Facebook.
+* [x] User can toggle navigation drawer to see their profile. If the user is not logged in. They can log in by email, Gmail.
 * [x] User can toggle the navigation drawer to select "Last visit", "Profile Detail", "Favourite list", "Settings", etc.
 * [ ] Update to newest stores data, user can routing event dont have Internet
 * [x] User can search for store name, addresses,... in the search view in toolbar

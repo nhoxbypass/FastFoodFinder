@@ -66,9 +66,11 @@ class MapRoutingActivity : BaseActivity(), MapRoutingContract.View, View.OnClick
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        binding = ActivityMapRoutingBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         presenter = MapRoutingPresenter(App.getDataManager(), App.getSchedulerProvider(), this)
 
-        binding = ActivityMapRoutingBinding.inflate(layoutInflater)
         setupUI()
         setUpMapIfNeeded()
         setupEventListeners()

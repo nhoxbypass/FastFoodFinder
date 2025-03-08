@@ -49,9 +49,11 @@ class SettingActivity : BaseActivity(), SettingContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        binding = ActivitySettingBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         presenter = SettingPresenter(App.getDataManager(), App.getSchedulerProvider(), this)
 
-        binding = ActivitySettingBinding.inflate(layoutInflater)
         setupUI()
 
         presenter.onSetupLanguage()

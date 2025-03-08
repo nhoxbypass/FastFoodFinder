@@ -29,7 +29,7 @@ class DiscountNotifyDialog : DialogFragment(), DiscountNotifyContract.View {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DialogStoreFilterBinding.inflate(layoutInflater)
-        return inflater.inflate(R.layout.dialog_store_filter, container)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -165,57 +165,6 @@ class LoginPresenterTest {
         verify(loginView).showSignInFailMessage()
     }
 
-    @Test
-    fun onRequestFacebookAccountSuccessTest_signInSuccess_emptyName_getUserSuccess() {
-        val userFullEmptyName = User(USER_UID, "", USER_EMAIL, USER_PHOTO_URL, getFakeUserStoreLists())
-        val userFull = User(USER_UID, "myemail", USER_EMAIL, USER_PHOTO_URL, getFakeUserStoreLists())
-
-        // Preconditions
-        `when`(dataManager.signInWithCredential(any())).thenReturn(Single.just(userFullEmptyName))
-        `when`(dataManager.getUser(USER_UID)).thenReturn(Single.just(userFull))
-
-        loginPresenter.onRequestFacebookAccountSuccess(mock(AuthCredential::class.java))
-
-        verify(dataManager, atLeastOnce()).updateCurrentUser(userFull)
-        verify(loginView).showMainView()
-    }
-
-    @Test
-    fun onRequestFacebookAccountSuccessTest_signInSuccess_getUserSuccess() {
-        // Preconditions
-        `when`(dataManager.signInWithCredential(any())).thenReturn(Single.just(user))
-        `when`(dataManager.getUser(USER_UID)).thenReturn(Single.just(userFull))
-
-        loginPresenter.onRequestFacebookAccountSuccess(mock(AuthCredential::class.java))
-
-        verify(dataManager).updateCurrentUser(userFull)
-        verify(loginView).showMainView()
-    }
-
-    @Test
-    fun onRequestFacebookAccountSuccessTest_signInSuccess_fromLastSignIn_getUserError() {
-        // Preconditions
-        `when`(dataManager.signInWithCredential(any())).thenReturn(Single.just(user))
-        `when`(dataManager.getUser(USER_UID)).thenReturn(Single.error(NotFoundException()))
-
-        loginPresenter.onRequestFacebookAccountSuccess(mock(AuthCredential::class.java))
-
-        verify(loginView).showGeneralErrorMessage()
-        verify(dataManager).updateCurrentUser(user)
-        verify(loginView).showMainView()
-    }
-
-
-    @Test
-    fun onRequestFacebookAccountSuccessTest_signInFailed() {
-        // Preconditions
-        `when`(dataManager.signInWithCredential(any())).thenReturn(Single.error(NotFoundException()))
-
-        loginPresenter.onRequestFacebookAccountSuccess(mock(AuthCredential::class.java))
-
-        verify(loginView).showSignInFailMessage()
-    }
-
     companion object {
         private const val USER_UID = "123"
         private const val USER_NAME = "My name"

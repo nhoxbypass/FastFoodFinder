@@ -59,40 +59,18 @@
             android:textAllCaps="true"
             android:textColor="@color/colorWhite" />
 
-        <LinearLayout
-            android:id="@+id/ll_3rd_party_btn"
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/btn_google_signin"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_above="@id/btn_skip"
-            android:layout_marginBottom="8dp"
-            android:orientation="horizontal">
-
-            <com.facebook.login.widget.LoginButton
-                android:id="@+id/btn_facebook_signin"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_weight="1"
-                android:paddingLeft="8dp"
-                android:paddingTop="12dp"
-                android:paddingRight="8dp"
-                android:paddingBottom="12dp"
-                android:textColor="@color/colorWhite"
-                android:textSize="12sp" />
-
-            <com.google.android.gms.common.SignInButton
-                android:id="@+id/btn_google_signin"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_marginLeft="8dp"
-                android:layout_weight="1" />
-        </LinearLayout>
+            android:layout_marginBottom="8dp" />
 
         <com.iceteaviet.fastfoodfinder.ui.custom.roboto.RobotoButton
             android:id="@+id/btn_register"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_above="@id/ll_3rd_party_btn"
+            android:layout_above="@id/btn_google_signin"
             android:layout_gravity="bottom"
             android:layout_marginBottom="8dp"
             android:background="@color/googleBlue"

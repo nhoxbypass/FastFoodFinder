@@ -22,7 +22,7 @@ class AppNotiManager(private val context: Context) : NotiManager {
         val intent = getSplashScreenIntent(context).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
-        val pendingIntent = PendingIntent.getActivity(context, 0, intent, 0)
+        val pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
 
         val notification = makeStatusNotification(message, title, DB_SYNC_NOTIFICATION_CHANNEL_ID,
             DB_SYNC_NOTIFICATION_CHANNEL_NAME, DB_SYNC_NOTIFICATION_CHANNEL_DESCRIPTION, pendingIntent, R.drawable.ic_cloud_update_done)

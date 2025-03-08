@@ -31,7 +31,7 @@ class CreateListDialog : DialogFragment(), CreateListContract.View, View.OnClick
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DialogCreateNewlistBinding.inflate(inflater, container, false)
-        return inflater.inflate(R.layout.dialog_create_newlist, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
