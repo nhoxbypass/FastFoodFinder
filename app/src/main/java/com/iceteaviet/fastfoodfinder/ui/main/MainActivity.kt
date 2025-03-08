@@ -62,9 +62,11 @@ class MainActivity : BaseActivity(), MainContract.View, View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         presenter = MainPresenter(App.getDataManager(), App.getSchedulerProvider(), App.getBus(), this)
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
         setupUI()
         setupEventHandlers()
 

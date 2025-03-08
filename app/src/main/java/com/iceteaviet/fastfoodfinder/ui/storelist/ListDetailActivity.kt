@@ -36,9 +36,10 @@ class ListDetailActivity : BaseActivity(), ListDetailContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        presenter = ListDetailPresenter(App.getDataManager(), App.getSchedulerProvider(), this)
-
         binding = ActivityListDetailBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        presenter = ListDetailPresenter(App.getDataManager(), App.getSchedulerProvider(), this)
 
         if (intent != null) {
             presenter.handleExtras(intent.getParcelableExtra(KEY_USER_STORE_LIST), intent.getStringExtra(KEY_USER_PHOTO_URL))

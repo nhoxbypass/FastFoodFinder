@@ -48,7 +48,7 @@ class ProfileFragment : Fragment(), ProfileContract.View, View.OnClickListener {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentProfileBinding.inflate(inflater, container, false)
-        return inflater.inflate(R.layout.fragment_profile, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

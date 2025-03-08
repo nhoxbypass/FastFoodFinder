@@ -40,9 +40,7 @@ class FavouriteStoreAdapter internal constructor(private val mDragStartListener:
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavouriteStoreViewHolder {
         binding = ItemFavouriteLocationBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        val itemView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_favourite_location, parent, false)
-        return FavouriteStoreViewHolder(itemView)
+        return FavouriteStoreViewHolder(binding.root)
     }
 
     override fun onItemMove(fromPosition: Int, toPosition: Int): Boolean {

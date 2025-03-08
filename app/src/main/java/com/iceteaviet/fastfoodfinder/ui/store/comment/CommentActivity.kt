@@ -42,9 +42,11 @@ class CommentActivity : BaseActivity(), CommentContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        binding = ActivityCommentBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         presenter = CommentPresenter(App.getDataManager(), App.getSchedulerProvider(), this)
 
-        binding = ActivityCommentBinding.inflate(layoutInflater)
         etComment = binding.etComment
         tvRemainChar = binding.tvRemainChar
         btnPost = binding.btnPost

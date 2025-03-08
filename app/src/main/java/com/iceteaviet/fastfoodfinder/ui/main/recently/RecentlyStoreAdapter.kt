@@ -38,9 +38,7 @@ class RecentlyStoreAdapter internal constructor(private val mDragStartListener: 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecentlyStoreViewHolder {
         binding = ItemRecentlyLocationBinding.inflate(LayoutInflater.from(parent.context))
-        val itemView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_recently_location, parent, false)
-        return RecentlyStoreViewHolder(itemView)
+        return RecentlyStoreViewHolder(binding.root)
     }
 
     override fun onItemMove(fromPosition: Int, toPosition: Int): Boolean {

@@ -54,10 +54,11 @@ class LiveSightActivity : BaseActivity(), LiveSightContract.View, SensorEventLis
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        presenter = LiveSightPresenter(App.getDataManager(), App.getSchedulerProvider(),
-            SystemLocationManager.getInstance(), this)
-
         binding = ActivityArCameraBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        presenter = LiveSightPresenter(App.getDataManager(), App.getSchedulerProvider(), SystemLocationManager.getInstance(), this)
+
         cameraContainerLayout = binding.cameraContainerLayout
         surfaceView = binding.surfaceView
         arOverlayView = AROverlayView(this)

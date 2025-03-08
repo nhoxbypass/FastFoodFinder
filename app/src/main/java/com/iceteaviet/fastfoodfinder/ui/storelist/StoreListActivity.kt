@@ -31,9 +31,11 @@ class StoreListActivity : BaseActivity(), StoreListContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        binding = ActivityStoreListBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         presenter = StoreListPresenter(App.getDataManager(), App.getSchedulerProvider(), this)
 
-        binding = ActivityStoreListBinding.inflate(layoutInflater)
         setupUI()
     }
 

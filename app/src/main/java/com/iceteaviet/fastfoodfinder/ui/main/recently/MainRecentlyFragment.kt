@@ -38,7 +38,7 @@ class MainRecentlyFragment : Fragment(), MainRecentlyContract.View, OnStartDragL
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentMainRecentlyBinding.inflate(inflater, container, false)
-        return inflater.inflate(R.layout.fragment_main_recently, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
