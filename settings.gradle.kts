@@ -11,3 +11,14 @@ gradleEnterprise {
 }
 
 include(":app")
+include(":core:network")
+include(":core:worker")
+include(":core:analytics")
+include(":core:logger")
+include(":core:common")
+include(":core:location")
+include(":core:notifications")
+include(":data:model")
+include(":data:database")
+include(":data:datastore")
+include(":data:stores")
