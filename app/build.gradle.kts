@@ -120,6 +120,7 @@ dependencies {
     implementation(project(":core:logger"))
     implementation(project(":core:common"))
     implementation(project(":core:location"))
+    implementation(project(":core:notifications"))
 
     // Dependencies for local unit tests
     testImplementation("junit:junit:4.13.2")
