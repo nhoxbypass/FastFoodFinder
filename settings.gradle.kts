@@ -13,3 +13,4 @@ gradleEnterprise {
 include(":app")
 include(":core:network")
 include(":core:worker")
+include(":core:analytics")
