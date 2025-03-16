@@ -122,6 +122,7 @@ dependencies {
     implementation(project(":core:location"))
     implementation(project(":core:notifications"))
     implementation(project(":data:model"))
+    implementation(project(":data:database"))
 
     // Dependencies for local unit tests
     testImplementation("junit:junit:4.13.2")
