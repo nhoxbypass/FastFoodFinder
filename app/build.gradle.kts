@@ -113,6 +113,9 @@ tasks.withType<Test> {
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 
+    // Project modules
+    implementation(project(":core:network"))
+
     // Dependencies for local unit tests
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.robolectric:robolectric:4.11.1")

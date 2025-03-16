@@ -11,3 +11,4 @@ gradleEnterprise {
 }
 
 include(":app")
+include(":core:network")
