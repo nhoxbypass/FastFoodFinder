@@ -12,3 +12,4 @@ gradleEnterprise {
 
 include(":app")
 include(":core:network")
+include(":core:worker")
