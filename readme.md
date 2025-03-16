@@ -4,43 +4,13 @@
 [![codecov](https://codecov.io/gh/nhoxbypass/FastFoodFinder/branch/develop/graph/badge.svg)](https://codecov.io/gh/nhoxbypass/FastFoodFinder)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/99a3b923cc514d11b81fcc374c796fab)](https://www.codacy.com/manual/nhoxbypass/FastFoodFinder)
 
-**Fastfood Finder** is an awesome Android app that allows users to find fast food or convenience stores near where they're standing. In addition, this app allows users to do other fantastic things.
+**Fastfood Finder** is an awesome Android app that allows users to find fast food or convenience stores near where they're standing.
 
 The source code is well-programmed with **MVP architecture, SOLID principle & lots of design patterns**.
 
 Well-unit-tested with **JUnit, Mockito, PowerMock**.
 
 Time spent: **180** hours spent in total
-
-## User Stories
-
-The basic **required** functionality:
-
-* [x] Show the splash screen and do the robust check for Internet connection.
-* [x] Locate the current user's position using GPS or 3g Wi-Fi. If it cannot detect the user's location, it will get the user's past location.
-* [x] Show the top 10 nearest stores by marking on the maps in the first tab. 
-* [x] Show list of 10 nearest stores in bottom sheet below the map, sort ascending by the distance from user to this store. Users can click on each item to show the way to this store (routing). 
-* [x] Swipe to "recent" tab. Show the recently tab that searched or selected by user.
-* [ ] Have a button to quickly show the nearest store base on user settings
-* [x] If the user has logged in, the user can swipe to the "Favourite" tab to show a list of stores that the user visited and favourite.
-* [ ] User can filter stores that display in map by pressing the filter icon in Toolbar, and fulfill the Filter dialog.
-* [x] User can click on a store in the map to show the basic detail, overview of this store to determine to go or choose another store.
-* [ ] User can navigate to other activity to see the list of district, and some advanced filter. Users can select and see the list of stores that  fit their needs.
-
-
-The **extended** features are implemented:
-
-* [x] User can toggle navigation drawer to see their profile. If the user is not logged in. They can log in by email, Gmail.
-* [x] User can toggle the navigation drawer to select "Last visit", "Profile Detail", "Favourite list", "Settings", etc.
-* [ ] Update to newest stores data, user can routing event dont have Internet
-* [x] User can search for store name, addresses,... in the search view in toolbar
-
-The **advance** features are implemented:
-
-* [ ] User can add new place that they liked
-* [x] Sort stores based on location. Type of store.
-* [x] User can sit at home and choose a specified location (use pin of google maps or lat/long) to list the store nearest.
-* [ ] User can place orders and wait for their food to be shipped to their home. (If stores provided this service)
 
 ## Video Walkthrough
 
@@ -63,7 +33,7 @@ Describe any challenges encountered while building the app.
 
 ## License
 
-    Copyright 2016 4TripleF
+    Copyright 2016 Gen Studio
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
