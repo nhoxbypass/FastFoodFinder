@@ -1,0 +1,78 @@
+[versions]
+## Android
+agp-version = "8.3.2"
+## Testing
+junit-version = "4.13.2"
+assertj-version = "3.11.1"
+truth = "1.1.5"
+mockito-version = "5.10.0"
+mockito-kotlin-version = "2.2.0"
+powermock-version = "2.0.9"
+robolectric-version = "4.11.1"
+espresso-version = "3.6.1"
+androidx-test-version = "1.6.2"
+androidx-rules-version = "1.6.1"
+## Kotlin
+kotlin-version = "1.9.22"
+ksp-version = "2.0.21-1.0.27"
+kotlinx-coroutines-version = "1.8.0"
+kotlinx-serialization-json-version = "1.5.1"
+## Google
+google-services-version = "4.4.0"
+google-firebase-crashlytics-version = "2.9.9"
+google-firebase-perf-version = "1.4.2"
+## DB
+realm-android-version = "1.12.1"
+
+
+
+[libraries]
+## Testing
+junit = { group = "junit", name = "junit", version.ref = "junit-version" }
+assertj-core = { group = "org.assertj", name = "assertj-core", version.ref = "assertj-version" }
+truth = { group = "com.google.truth", name = "truth", version.ref = "truth" }
+mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockito-version" }
+mockito-kotlin = { group = "com.nhaarman.mockitokotlin2", name = "mockito-kotlin", version.ref = "mockito-kotlin-version" }
+robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric-version" }
+espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-version" }
+espresso-contrib = { group = "androidx.test.espresso", name = "espresso-contrib", version.ref = "espresso-version" }
+espresso-intents = { group = "androidx.test.espresso", name = "espresso-intents", version.ref = "espresso-version" }
+espresso-idling-resource = { group = "androidx.test.espresso", name = "espresso-idling-resource", version.ref = "espresso-version" }
+androidx-test-runner = { group = "androidx.test", name = "runner", version.ref = "androidx-test-version" }
+androidx-test-rules = { group = "androidx.test", name = "rules", version.ref = "androidx-rules-version" }
+## Kotlin
+kotlin-stdlibjdk = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin-version" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines-version" }
+kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines-version" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization-json-version" }
+
+
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp-version" }
+jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin-version" }
+jetbrains-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinx-serialization-json-version" }
+google-services = { id = "com.google.gms.google-services", version.ref = "google-services-version" }
+google-firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "google-firebase-crashlytics-version" }
+google-firebase-perf = { id = "com.google.firebase.firebase-perf", version.ref = "google-firebase-perf-version" }
+realm-android = { id = "realm-android", version.ref = "realm-android-version" }
+
+
+
+[bundles]
+local-unit-test = [
+    "junit",
+    "assertj-core",
+    "truth",
+    "mockito-core",
+    "mockito-kotlin",
+    "robolectric"
+]
+android-ui-test = [
+    "espresso-core",
+    "espresso-contrib",
+    "espresso-intents",
+    "androidx-test-runner",
+    "androidx-test-rules",
+    "espresso-idling-resource"
+]

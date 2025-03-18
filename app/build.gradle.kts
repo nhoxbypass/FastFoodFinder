@@ -1,6 +1,6 @@
 plugins {
     id("com.android.application")
-    id("org.jetbrains.kotlin.android")
+    alias(libs.plugins.jetbrains.kotlin.android)
     id("kotlin-kapt")
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
@@ -148,28 +148,15 @@ dependencies {
     implementation(project(":data:datastore"))
     implementation(project(":data:stores"))
 
-    // Dependencies for local unit tests
-    testImplementation("junit:junit:4.13.2")
-    testImplementation("org.robolectric:robolectric:4.11.1")
-    testImplementation("org.mockito:mockito-core:5.10.0")
-    testImplementation("org.assertj:assertj-core:3.11.1")
-    testImplementation("com.google.truth:truth:1.1.5")
-    testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
+    // Local unit tests
+    testImplementation(libs.bundles.local.unit.test)
 
-    // Espresso UI Testing dependencies.
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
-    androidTestImplementation("androidx.test.espresso:espresso-contrib:3.6.1")
-    androidTestImplementation("androidx.test.espresso:espresso-intents:3.6.1")
-
-    // Android Testing Library's runner and rules
-    androidTestImplementation("androidx.test:runner:1.6.2")
-    androidTestImplementation("androidx.test:rules:1.5.0")
-
-    implementation("androidx.test.espresso:espresso-idling-resource:3.6.1")
+    // Android UI tests
+    androidTestImplementation(libs.bundles.android.ui.test)
 
     // Kotlin
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.22")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0")
+    implementation(libs.kotlin.stdlibjdk)
+    implementation(libs.kotlinx.coroutines.core)
 
     //// App dependencies
     // AndroidX
