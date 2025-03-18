@@ -23,7 +23,6 @@ private const val BLUR_RADIUS = 7.5f
 /**
  * Blur image
  */
-@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
 fun blur(context: Context, image: Bitmap): Bitmap {
     val width = Math.round(image.width * BITMAP_SCALE)
     val height = Math.round(image.height * BITMAP_SCALE)

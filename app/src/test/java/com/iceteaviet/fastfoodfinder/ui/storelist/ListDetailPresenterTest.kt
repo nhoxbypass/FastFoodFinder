@@ -10,6 +10,7 @@ import com.iceteaviet.fastfoodfinder.utils.rx.TrampolineSchedulerProvider
 import com.nhaarman.mockitokotlin2.verify
 import io.reactivex.Single
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
@@ -20,6 +21,8 @@ import org.mockito.MockitoAnnotations
  * Created by tom on 2019-06-17.
  */
 class ListDetailPresenterTest {
+    private lateinit var mockAnnotations: AutoCloseable
+    
     @Mock
     private lateinit var listDetailView: ListDetailContract.View
 
@@ -32,10 +35,15 @@ class ListDetailPresenterTest {
     fun setupPresenter() {
         // Mockito has a very convenient way to inject mocks by using the @Mock annotation. To
         // inject the mocks in the test the initMocks method needs to be called.
-        MockitoAnnotations.initMocks(this)
+        mockAnnotations = MockitoAnnotations.openMocks(this)
 
         // Get a reference to the class under test
         listDetailPresenter = ListDetailPresenter(dataManager, TrampolineSchedulerProvider(), listDetailView)
+    }
+
+    @After
+    fun tearDown() {
+        mockAnnotations.close()
     }
 
     @Test

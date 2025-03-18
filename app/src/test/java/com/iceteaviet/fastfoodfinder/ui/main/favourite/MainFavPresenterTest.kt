@@ -12,6 +12,7 @@ import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
 import com.iceteaviet.fastfoodfinder.utils.rx.TrampolineSchedulerProvider
 import io.reactivex.Observable
 import io.reactivex.Single
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.mockito.ArgumentMatchers
@@ -20,6 +21,8 @@ import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
 
 class MainFavPresenterTest {
+    private lateinit var mockAnnotations: AutoCloseable
+    
     @Mock
     private lateinit var mainFavView: MainFavContract.View
 
@@ -32,10 +35,15 @@ class MainFavPresenterTest {
 
     @Before
     fun setupPresenter() {
-        MockitoAnnotations.initMocks(this)
+        mockAnnotations = MockitoAnnotations.openMocks(this)
         schedulerProvider = TrampolineSchedulerProvider()
 
         mainFavPresenter = MainFavPresenter(dataManager, schedulerProvider, mainFavView)
+    }
+
+    @After
+    fun tearDown() {
+        mockAnnotations.close()
     }
 
     @Test
@@ -45,7 +53,7 @@ class MainFavPresenterTest {
 
         mainFavPresenter.subscribe()
 
-        verifyZeroInteractions(mainFavView)
+        verifyNoInteractions(mainFavView)
     }
 
     @Test
@@ -58,7 +66,7 @@ class MainFavPresenterTest {
 
         mainFavPresenter.subscribe()
 
-        verifyZeroInteractions(mainFavView)
+        verifyNoInteractions(mainFavView)
     }
 
     @Test

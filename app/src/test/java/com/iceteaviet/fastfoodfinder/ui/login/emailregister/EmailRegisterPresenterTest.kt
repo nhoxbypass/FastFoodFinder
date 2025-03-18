@@ -8,6 +8,7 @@ import com.iceteaviet.fastfoodfinder.utils.rx.TrampolineSchedulerProvider
 import com.nhaarman.mockitokotlin2.atLeastOnce
 import com.nhaarman.mockitokotlin2.verify
 import io.reactivex.Single
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
@@ -18,6 +19,8 @@ import org.mockito.MockitoAnnotations
  * Created by tom on 2019-06-12.
  */
 class EmailRegisterPresenterTest {
+    private lateinit var mockAnnotations: AutoCloseable
+    
     @Mock
     private lateinit var emailRegisterView: EmailRegisterContract.View
 
@@ -30,10 +33,15 @@ class EmailRegisterPresenterTest {
 
     @Before
     fun setupPresenter() {
-        MockitoAnnotations.initMocks(this)
+        mockAnnotations = MockitoAnnotations.openMocks(this)
         schedulerProvider = TrampolineSchedulerProvider()
 
         emailRegisterPresenter = EmailRegisterPresenter(dataManager, schedulerProvider, emailRegisterView)
+    }
+
+    @After
+    fun tearDown() {
+        mockAnnotations.close()
     }
 
     @Test

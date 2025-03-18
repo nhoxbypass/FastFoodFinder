@@ -5,13 +5,15 @@ import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
 import com.iceteaviet.fastfoodfinder.utils.rx.TrampolineSchedulerProvider
 import com.nhaarman.mockitokotlin2.verify
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 
 class CreateListPresenterTest {
-
+    private lateinit var mockAnnotations: AutoCloseable
+    
     @Mock
     private lateinit var createListView : CreateListContract.View
 
@@ -24,11 +26,16 @@ class CreateListPresenterTest {
 
     @Before
     fun setupCreateListPresenter() {
-        MockitoAnnotations.initMocks(this)
+        mockAnnotations = MockitoAnnotations.openMocks(this)
 
         schedulerProvider = TrampolineSchedulerProvider()
 
         createListPresenter = CreateListPresenter(dataManager, schedulerProvider, createListView)
+    }
+
+    @After
+    fun tearDown() {
+        mockAnnotations.close()
     }
 
     @Test

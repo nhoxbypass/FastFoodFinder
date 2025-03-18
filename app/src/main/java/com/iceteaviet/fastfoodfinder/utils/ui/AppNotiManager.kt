@@ -50,17 +50,15 @@ class AppNotiManager(private val context: Context) : NotiManager {
                                        iconId: Int = R.drawable.ic_all_store24h_red): Notification {
 
         // Make a channel if necessary
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            // Create the NotificationChannel, but only on API 26+ because
-            // the NotificationChannel class is new and not in the support library
-            val importance = NotificationManager.IMPORTANCE_HIGH
-            val channel = NotificationChannel(notificationChannelId, notificationChannelName, importance)
-            channel.description = notificationChannelDes
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        val importance = NotificationManager.IMPORTANCE_HIGH
+        val channel = NotificationChannel(notificationChannelId, notificationChannelName, importance)
+        channel.description = notificationChannelDes
 
-            // Add the channel
-            val notificationManager = context.getNotificationManager()
-            notificationManager?.createNotificationChannel(channel)
-        }
+        // Add the channel
+        val notificationManager = context.getNotificationManager()
+        notificationManager?.createNotificationChannel(channel)
 
         // Create the notification
         val builder = NotificationCompat.Builder(context, notificationChannelId)
@@ -88,17 +86,15 @@ class AppNotiManager(private val context: Context) : NotiManager {
                                                notificationChannelDes: String, iconId: Int = R.drawable.ic_all_store24h_red): Notification {
 
         // Make a channel if necessary
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            // Create the NotificationChannel, but only on API 26+ because
-            // the NotificationChannel class is new and not in the support library
-            val importance = NotificationManager.IMPORTANCE_DEFAULT
-            val channel = NotificationChannel(notificationChannelId, notificationChannelName, importance)
-            channel.description = notificationChannelDes
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        val importance = NotificationManager.IMPORTANCE_DEFAULT
+        val channel = NotificationChannel(notificationChannelId, notificationChannelName, importance)
+        channel.description = notificationChannelDes
 
-            // Add the channel
-            val notificationManager = context.getNotificationManager()
-            notificationManager?.createNotificationChannel(channel)
-        }
+        // Add the channel
+        val notificationManager = context.getNotificationManager()
+        notificationManager?.createNotificationChannel(channel)
 
         // Create the notification
         val builder = NotificationCompat.Builder(context, notificationChannelId)

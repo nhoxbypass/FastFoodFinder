@@ -1,6 +1,5 @@
 package com.iceteaviet.fastfoodfinder.ui.store
 
-import android.os.Build
 import com.google.android.gms.maps.model.LatLng
 import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
@@ -10,9 +9,13 @@ import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList
 import com.iceteaviet.fastfoodfinder.location.GoogleLocationManager
 import com.iceteaviet.fastfoodfinder.location.LatLngAlt
 import com.iceteaviet.fastfoodfinder.location.LocationListener
-import com.iceteaviet.fastfoodfinder.utils.*
+import com.iceteaviet.fastfoodfinder.utils.StoreType
 import com.iceteaviet.fastfoodfinder.utils.exception.EmptyDataException
 import com.iceteaviet.fastfoodfinder.utils.exception.NotFoundException
+import com.iceteaviet.fastfoodfinder.utils.getFakeComment
+import com.iceteaviet.fastfoodfinder.utils.getFakeComments
+import com.iceteaviet.fastfoodfinder.utils.getFakeMapsDirection
+import com.iceteaviet.fastfoodfinder.utils.getFakeUserStoreLists
 import com.iceteaviet.fastfoodfinder.utils.rx.TrampolineSchedulerProvider
 import com.nhaarman.mockitokotlin2.capture
 import com.nhaarman.mockitokotlin2.eq
@@ -21,14 +24,21 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import org.mockito.*
-import org.mockito.Mockito.*
+import org.mockito.ArgumentCaptor
+import org.mockito.ArgumentMatchers
+import org.mockito.Captor
+import org.mockito.Mock
+import org.mockito.Mockito.never
+import org.mockito.Mockito.verify
+import org.mockito.Mockito.`when`
+import org.mockito.MockitoAnnotations
 
 
 /**
  * Created by tom on 2019-05-29.
  */
 class StoreDetailPresenterTest {
+    private lateinit var mockAnnotations: AutoCloseable
 
     @Mock
     private lateinit var storeDetailView: StoreDetailContract.View
@@ -48,7 +58,7 @@ class StoreDetailPresenterTest {
     fun setupPresenter() {
         // Mockito has a very convenient way to inject mocks by using the @Mock annotation. To
         // inject the mocks in the test the initMocks method needs to be called.
-        MockitoAnnotations.initMocks(this)
+        mockAnnotations = MockitoAnnotations.openMocks(this)
 
         // Get a reference to the class under test
         storeDetailPresenter = StoreDetailPresenter(dataManager, TrampolineSchedulerProvider(), locationManager, storeDetailView)
@@ -56,7 +66,7 @@ class StoreDetailPresenterTest {
 
     @After
     fun tearDown() {
-        setFinalStatic(Build.VERSION::class.java.getField("SDK_INT"), 0)
+        mockAnnotations.close()
     }
 
     @Test
@@ -77,31 +87,8 @@ class StoreDetailPresenterTest {
     }
 
     @Test
-    fun subscribeTest_devicePreLolipop() {
-        // Preconditions
-        setFinalStatic(Build.VERSION::class.java.getField("SDK_INT"), 19)
-
-        // Mocks
-        `when`(dataManager.getComments(eq(STORE_ID.toString()))).thenReturn(
-                Single.just(comments)
-        )
-
-        val store = Store(STORE_ID, STORE_TITLE, STORE_ADDRESS, STORE_LAT, STORE_LNG, STORE_TEL, STORE_TYPE)
-        storeDetailPresenter.handleExtras(store)
-
-        storeDetailPresenter.subscribe()
-
-        verify(storeDetailView).setToolbarTitle(STORE_TITLE)
-        verify(storeDetailView).setStoreComments(comments.toMutableList().asReversed())
-        verify(storeDetailView, never()).requestLocationPermission()
-        verify(locationManager).requestLocationUpdates()
-        verify(locationManager).subscribeLocationUpdate(storeDetailPresenter)
-    }
-
-    @Test
     fun subscribeTest_locationPermissionNotGranted() {
         // Preconditions
-        setFinalStatic(Build.VERSION::class.java.getField("SDK_INT"), 23)
         `when`(storeDetailView.isLocationPermissionGranted()).thenReturn(false)
 
         // Mocks
@@ -125,7 +112,6 @@ class StoreDetailPresenterTest {
     fun subscribeTest_locationPermissionGranted_nullCurrentUser() {
         // Preconditions
         `when`(dataManager.getCurrentUser()).thenReturn(null)
-        setFinalStatic(Build.VERSION::class.java.getField("SDK_INT"), 23)
         `when`(storeDetailView.isLocationPermissionGranted()).thenReturn(true)
 
         // Mocks
@@ -150,7 +136,6 @@ class StoreDetailPresenterTest {
     fun subscribeTest_locationPermissionGranted_haveCurrentUser() {
         // Preconditions
         `when`(dataManager.getCurrentUser()).thenReturn(user)
-        setFinalStatic(Build.VERSION::class.java.getField("SDK_INT"), 23)
         `when`(storeDetailView.isLocationPermissionGranted()).thenReturn(true)
 
         // Mocks

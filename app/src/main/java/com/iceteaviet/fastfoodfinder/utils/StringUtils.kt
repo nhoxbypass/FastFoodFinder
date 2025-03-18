@@ -27,11 +27,7 @@ fun isEmpty(str: String?): Boolean {
 
 
 fun fromHtml(source: String): Spanned {
-    return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-        Html.fromHtml(source, Html.FROM_HTML_MODE_COMPACT)
-    } else {
-        Html.fromHtml(source)
-    }
+    return Html.fromHtml(source, Html.FROM_HTML_MODE_COMPACT)
 }
 
 

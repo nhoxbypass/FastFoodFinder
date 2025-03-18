@@ -7,6 +7,7 @@ import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
 import com.iceteaviet.fastfoodfinder.utils.rx.TrampolineSchedulerProvider
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
@@ -14,6 +15,7 @@ import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
 
 class UpdateCoverPresenterTest {
+    private lateinit var mockAnnotations: AutoCloseable
 
     @Mock
     private lateinit var updateCoverView : UpdateCoverContract.View
@@ -27,11 +29,16 @@ class UpdateCoverPresenterTest {
 
     @Before
     fun setupPresenter() {
-        MockitoAnnotations.initMocks(this)
+        mockAnnotations = MockitoAnnotations.openMocks(this)
 
         schedulerProvider = TrampolineSchedulerProvider()
 
         updateCoverPresenter = UpdateCoverPresenter(dataManager, schedulerProvider, updateCoverView)
+    }
+
+    @After
+    fun tearDown() {
+        mockAnnotations.close()
     }
 
     @Test
