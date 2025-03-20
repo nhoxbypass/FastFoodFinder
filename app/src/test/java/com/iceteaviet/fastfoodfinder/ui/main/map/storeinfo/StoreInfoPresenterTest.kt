@@ -7,6 +7,7 @@ import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
 import com.iceteaviet.fastfoodfinder.utils.rx.TrampolineSchedulerProvider
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.verify
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
@@ -17,6 +18,8 @@ import org.mockito.MockitoAnnotations
  * Created by tom on 2019-06-15.
  */
 class StoreInfoPresenterTest {
+    private lateinit var mockAnnotations: AutoCloseable
+    
     @Mock
     private lateinit var storeInfoView: StoreInfoContract.View
 
@@ -29,10 +32,15 @@ class StoreInfoPresenterTest {
 
     @Before
     fun setupPresenter() {
-        MockitoAnnotations.initMocks(this)
+        mockAnnotations = MockitoAnnotations.openMocks(this)
         schedulerProvider = TrampolineSchedulerProvider()
 
         storeInfoPresenter = StoreInfoPresenter(dataManager, schedulerProvider, storeInfoView)
+    }
+
+    @After
+    fun tearDown() {
+        mockAnnotations.close()
     }
 
     @Test

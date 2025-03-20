@@ -4,6 +4,7 @@ import android.content.SharedPreferences
 import com.nhaarman.mockitokotlin2.eq
 import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.mockito.ArgumentMatchers.*
@@ -17,6 +18,8 @@ import org.mockito.MockitoAnnotations
  * Created by tom on 2019-06-24.
  */
 class AppPreferencesWrapperTest {
+    private lateinit var mockAnnotations: AutoCloseable
+    
     private lateinit var mockPreferencesWrapper: PreferencesWrapper
 
     private lateinit var mockBrokenPreferencesWrapper: PreferencesWrapper
@@ -35,13 +38,18 @@ class AppPreferencesWrapperTest {
 
     @Before
     fun initMocks() {
-        MockitoAnnotations.initMocks(this)
+        mockAnnotations = MockitoAnnotations.openMocks(this)
 
         // Create a mocked SharedPreferences.
         mockPreferencesWrapper = createMockPreference()
 
         // Create a mocked SharedPreferences that fails at saving data.
         mockBrokenPreferencesWrapper = createBrokenMockPreference()
+    }
+
+    @After
+    fun tearDown() {
+        mockAnnotations.close()
     }
 
     @Test

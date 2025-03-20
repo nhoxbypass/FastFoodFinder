@@ -16,19 +16,22 @@ import com.nhaarman.mockitokotlin2.anyOrNull
 import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.never
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.mockito.ArgumentMatchers
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.Mockito.verify
-import org.mockito.Mockito.verifyZeroInteractions
+import org.mockito.Mockito.verifyNoInteractions
 import org.mockito.MockitoAnnotations
 
 /**
  * Created by tom on 2019-06-15.
  */
 class MapRoutingPresenterTest {
+    private lateinit var mockAnnotations: AutoCloseable
+    
     @Mock
     private lateinit var mapRoutingView: MapRoutingContract.View
 
@@ -41,10 +44,15 @@ class MapRoutingPresenterTest {
 
     @Before
     fun setupPresenter() {
-        MockitoAnnotations.initMocks(this)
+        mockAnnotations = MockitoAnnotations.openMocks(this)
         schedulerProvider = TrampolineSchedulerProvider()
 
         mapRoutingPresenter = MapRoutingPresenter(dataManager, schedulerProvider, mapRoutingView)
+    }
+
+    @After
+    fun tearDown() {
+        mockAnnotations.close()
     }
 
     @Test
@@ -184,7 +192,7 @@ class MapRoutingPresenterTest {
         mapRoutingPresenter.stepList = stepList
         mapRoutingPresenter.onTopRoutingBannerPositionChange(-1)
 
-        verifyZeroInteractions(mapRoutingView)
+        verifyNoInteractions(mapRoutingView)
     }
 
     @Test
@@ -193,7 +201,7 @@ class MapRoutingPresenterTest {
         mapRoutingPresenter.stepList = stepList
         mapRoutingPresenter.onTopRoutingBannerPositionChange(stepList.size)
 
-        verifyZeroInteractions(mapRoutingView)
+        verifyNoInteractions(mapRoutingView)
     }
 
     @Test
@@ -332,7 +340,7 @@ class MapRoutingPresenterTest {
 
     // Workaround solution
     private fun <T> anyObject(): T {
-        return Mockito.anyObject<T>()
+        return Mockito.any<T>()
     }
 
     companion object {

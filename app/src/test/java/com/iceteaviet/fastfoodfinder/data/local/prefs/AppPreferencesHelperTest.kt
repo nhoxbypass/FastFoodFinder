@@ -3,6 +3,7 @@ package com.iceteaviet.fastfoodfinder.data.local.prefs
 import com.nhaarman.mockitokotlin2.eq
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.mockito.ArgumentMatchers
@@ -15,6 +16,8 @@ import org.mockito.MockitoAnnotations
  * Created by tom on 2019-05-29.
  */
 class AppPreferencesHelperTest {
+    private lateinit var mockAnnotations: AutoCloseable
+    
     private lateinit var mockPreferencesHelper: PreferencesHelper
 
     private lateinit var mockBrokenPreferencesHelper: PreferencesHelper
@@ -27,13 +30,18 @@ class AppPreferencesHelperTest {
 
     @Before
     fun initMocks() {
-        MockitoAnnotations.initMocks(this)
+        mockAnnotations = MockitoAnnotations.openMocks(this)
 
         // Create a mocked SharedPreferences.
         mockPreferencesHelper = createMockPreferenceHelper()
 
         // Create a mocked SharedPreferences that fails at saving data.
         mockBrokenPreferencesHelper = createBrokenMockPreferenceHelper()
+    }
+
+    @After
+    fun tearDown() {
+        mockAnnotations.close()
     }
 
     @Test

@@ -130,8 +130,6 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.robolectric:robolectric:4.11.1")
     testImplementation("org.mockito:mockito-core:5.10.0")
-    testImplementation("org.powermock:powermock-module-junit4:2.0.9")
-    testImplementation("org.powermock:powermock-api-mockito2:2.0.9")
     testImplementation("org.assertj:assertj-core:3.11.1")
     //testImplementation("com.google.truth:truth:0.44") // Does not stable
     testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")

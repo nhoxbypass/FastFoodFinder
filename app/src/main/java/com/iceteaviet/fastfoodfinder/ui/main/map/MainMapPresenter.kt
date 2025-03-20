@@ -243,7 +243,7 @@ open class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapC
         }
     }
 
-    @AddTrace(name = "getVisibleStore")
+    //@AddTrace(name = "getVisibleStore")
     private fun getVisibleStore(storeList: List<Store>, bounds: LatLngBounds): List<Store> {
         val stores = ArrayList<Store>()
 

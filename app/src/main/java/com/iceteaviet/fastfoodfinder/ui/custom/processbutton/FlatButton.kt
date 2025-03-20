@@ -132,11 +132,7 @@ open class FlatButton : AppCompatButton {
         val pR = paddingRight
         val pB = paddingBottom
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            background = drawable
-        } else {
-            setBackgroundDrawable(drawable)
-        }
+        background = drawable
         setPadding(pL, pT, pR, pB)
     }
 }

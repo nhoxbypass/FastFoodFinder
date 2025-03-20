@@ -12,6 +12,7 @@ import com.iceteaviet.fastfoodfinder.utils.rx.TrampolineSchedulerProvider
 import com.nhaarman.mockitokotlin2.anyOrNull
 import io.reactivex.Single
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.mockito.ArgumentMatchers
@@ -21,6 +22,8 @@ import org.mockito.MockitoAnnotations
 
 
 class ProfilePresenterTest {
+    private lateinit var mockAnnotations: AutoCloseable
+    
     @Mock
     private lateinit var profileView: ProfileContract.View
 
@@ -33,9 +36,14 @@ class ProfilePresenterTest {
 
     @Before
     fun setupPresenter(){
-        MockitoAnnotations.initMocks(this)
+        mockAnnotations = MockitoAnnotations.openMocks(this)
         schedulerProvider = TrampolineSchedulerProvider()
         profilePresenter = ProfilePresenter(dataManager, schedulerProvider, profileView)
+    }
+
+    @After
+    fun tearDown() {
+        mockAnnotations.close()
     }
 
     @Test
@@ -187,7 +195,7 @@ class ProfilePresenterTest {
 
         profilePresenter.onSavedListClick()
 
-        verifyZeroInteractions(profileView)
+        verifyNoInteractions(profileView)
     }
 
     @Test
@@ -218,7 +226,7 @@ class ProfilePresenterTest {
 
         profilePresenter.onFavouriteListClick()
 
-        verifyZeroInteractions(profileView)
+        verifyNoInteractions(profileView)
     }
 
     @Test

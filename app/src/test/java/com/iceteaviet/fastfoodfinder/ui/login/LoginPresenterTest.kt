@@ -9,6 +9,7 @@ import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
 import com.iceteaviet.fastfoodfinder.utils.rx.TrampolineSchedulerProvider
 import com.nhaarman.mockitokotlin2.any
 import io.reactivex.Single
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
@@ -16,6 +17,8 @@ import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
 
 class LoginPresenterTest {
+    private lateinit var mockAnnotations: AutoCloseable
+    
     @Mock
     private lateinit var loginView: LoginContract.View
 
@@ -28,10 +31,15 @@ class LoginPresenterTest {
 
     @Before
     fun setupPresenter() {
-        MockitoAnnotations.initMocks(this)
+        mockAnnotations = MockitoAnnotations.openMocks(this)
         schedulerProvider = TrampolineSchedulerProvider()
 
         loginPresenter = LoginPresenter(dataManager, schedulerProvider, loginView)
+    }
+
+    @After
+    fun tearDown() {
+        mockAnnotations.close()
     }
 
     @Test
@@ -51,7 +59,7 @@ class LoginPresenterTest {
 
         loginPresenter.subscribe()
 
-        verifyZeroInteractions(loginView)
+        verifyNoInteractions(loginView)
     }
 
     @Test

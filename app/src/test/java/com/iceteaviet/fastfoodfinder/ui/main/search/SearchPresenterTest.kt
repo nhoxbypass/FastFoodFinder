@@ -12,14 +12,15 @@ import com.iceteaviet.fastfoodfinder.utils.getFakeSearchStoreItems
 import com.iceteaviet.fastfoodfinder.utils.getFakeStoreList
 import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
 import com.iceteaviet.fastfoodfinder.utils.rx.TrampolineSchedulerProvider
-import com.nhaarman.mockitokotlin2.verifyZeroInteractions
 import io.reactivex.Single
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.mockito.ArgumentMatchers
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.verify
+import org.mockito.Mockito.verifyNoInteractions
 import org.mockito.MockitoAnnotations
 import java.util.*
 import kotlin.collections.ArrayList
@@ -28,6 +29,8 @@ import kotlin.collections.ArrayList
  * Created by tom on 2019-06-15.
  */
 class SearchPresenterTest {
+    private lateinit var mockAnnotations: AutoCloseable
+    
     @Mock
     private lateinit var searchView: SearchContract.View
 
@@ -43,10 +46,15 @@ class SearchPresenterTest {
 
     @Before
     fun setupPresenter() {
-        MockitoAnnotations.initMocks(this)
+        mockAnnotations = MockitoAnnotations.openMocks(this)
         schedulerProvider = TrampolineSchedulerProvider()
 
         searchPresenter = SearchPresenter(dataManager, schedulerProvider, bus, searchView)
+    }
+
+    @After
+    fun tearDown() {
+        mockAnnotations.close()
     }
 
     @Test
@@ -56,7 +64,7 @@ class SearchPresenterTest {
 
         searchPresenter.subscribe()
 
-        verifyZeroInteractions(searchView)
+        verifyNoInteractions(searchView)
     }
 
     @Test

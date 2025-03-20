@@ -4,6 +4,7 @@ import android.app.Activity
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.nhaarman.mockitokotlin2.verify
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.mockito.ArgumentMatchers
@@ -15,12 +16,19 @@ import org.mockito.MockitoAnnotations
  */
 
 class IntentUtilsTest {
+    private lateinit var mockAnnotations: AutoCloseable
+    
     @Mock
     private lateinit var activity: Activity
 
     @Before
     fun setup() {
-        MockitoAnnotations.initMocks(this)
+        mockAnnotations = MockitoAnnotations.openMocks(this)
+    }
+
+    @After
+    fun tearDown() {
+        mockAnnotations.close()
     }
 
     @Test

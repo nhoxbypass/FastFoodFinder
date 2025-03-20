@@ -10,6 +10,7 @@ import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
 import com.iceteaviet.fastfoodfinder.utils.rx.TrampolineSchedulerProvider
 import com.nhaarman.mockitokotlin2.verify
 import io.reactivex.Single
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.mockito.ArgumentMatchers
@@ -22,6 +23,7 @@ import org.mockito.MockitoAnnotations
  * Created by tom on 2019-05-29.
  */
 class SplashPresenterTest {
+    private lateinit var mockAnnotations: AutoCloseable
 
     @Mock
     private lateinit var splashView: SplashContract.View
@@ -37,12 +39,17 @@ class SplashPresenterTest {
     fun setupPresenter() {
         // Mockito has a very convenient way to inject mocks by using the @Mock annotation. To
         // inject the mocks in the test the initMocks method needs to be called.
-        MockitoAnnotations.initMocks(this)
+        mockAnnotations = MockitoAnnotations.openMocks(this)
 
         schedulerProvider = TrampolineSchedulerProvider()
 
         // Get a reference to the class under test
         splashPresenter = SplashPresenter(dataManager, schedulerProvider, splashView)
+    }
+
+    @After
+    fun tearDown() {
+        mockAnnotations.close()
     }
 
     @Test

@@ -4,10 +4,9 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Location
 import android.os.Bundle
+import com.iceteaviet.fastfoodfinder.core.common.ext.getLocationManager
 import com.iceteaviet.fastfoodfinder.location.base.AbsLocationManager
 import com.iceteaviet.fastfoodfinder.location.base.ILocationManager
-import com.iceteaviet.fastfoodfinder.utils.extension.getLocationManager
-
 
 /**
  * Created by tom on 2019-05-01.

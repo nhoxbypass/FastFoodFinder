@@ -16,6 +16,7 @@ import android.widget.FrameLayout
 import android.widget.Toast
 import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
+import com.iceteaviet.fastfoodfinder.core.common.ext.getSensorManager
 import com.iceteaviet.fastfoodfinder.databinding.ActivityArCameraBinding
 import com.iceteaviet.fastfoodfinder.location.LatLngAlt
 import com.iceteaviet.fastfoodfinder.location.SystemLocationManager
@@ -25,7 +26,6 @@ import com.iceteaviet.fastfoodfinder.ui.custom.ar.ARCamera
 import com.iceteaviet.fastfoodfinder.ui.custom.ar.AROverlayView
 import com.iceteaviet.fastfoodfinder.utils.REQUEST_CAMERA
 import com.iceteaviet.fastfoodfinder.utils.REQUEST_LOCATION
-import com.iceteaviet.fastfoodfinder.utils.extension.getSensorManager
 import com.iceteaviet.fastfoodfinder.utils.formatDecimal
 import com.iceteaviet.fastfoodfinder.utils.isCameraPermissionGranted
 import com.iceteaviet.fastfoodfinder.utils.isLocationPermissionGranted

@@ -83,11 +83,7 @@ class SettingActivity : BaseActivity(), SettingContract.View {
         Locale.setDefault(locale)
         val configuration = Configuration()
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            setSystemLocale(configuration, locale)
-        } else {
-            setSystemLocaleLegacy(configuration, locale)
-        }
+        setSystemLocale(configuration, locale)
 
         baseContext.resources.updateConfiguration(configuration,
             baseContext.resources.displayMetrics)
@@ -121,7 +117,6 @@ class SettingActivity : BaseActivity(), SettingContract.View {
         config.locale = locale
     }
 
-    @TargetApi(Build.VERSION_CODES.N)
     private fun setSystemLocale(config: Configuration, locale: Locale) {
         config.setLocale(locale)
     }

@@ -1,6 +1,5 @@
 package com.iceteaviet.fastfoodfinder.ui.main.map
 
-import android.os.Build
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.iceteaviet.fastfoodfinder.Injection
@@ -14,9 +13,12 @@ import com.iceteaviet.fastfoodfinder.service.eventbus.SearchEventResult
 import com.iceteaviet.fastfoodfinder.service.eventbus.core.IBus
 import com.iceteaviet.fastfoodfinder.ui.main.map.model.MapCameraPosition
 import com.iceteaviet.fastfoodfinder.ui.main.map.model.NearByStore
-import com.iceteaviet.fastfoodfinder.utils.*
+import com.iceteaviet.fastfoodfinder.utils.StoreType
 import com.iceteaviet.fastfoodfinder.utils.exception.NotFoundException
 import com.iceteaviet.fastfoodfinder.utils.exception.UnknownException
+import com.iceteaviet.fastfoodfinder.utils.getFakeCircleKStoreList
+import com.iceteaviet.fastfoodfinder.utils.getFakeMapsDirection
+import com.iceteaviet.fastfoodfinder.utils.getFakeStoreList
 import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
 import com.iceteaviet.fastfoodfinder.utils.rx.TrampolineSchedulerProvider
 import com.nhaarman.mockitokotlin2.capture
@@ -27,13 +29,25 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import org.mockito.*
-import org.mockito.Mockito.*
+import org.mockito.ArgumentCaptor
+import org.mockito.ArgumentMatchers
+import org.mockito.Captor
+import org.mockito.Mock
+import org.mockito.Mockito.any
+import org.mockito.Mockito.atLeastOnce
+import org.mockito.Mockito.never
+import org.mockito.Mockito.spy
+import org.mockito.Mockito.verify
+import org.mockito.Mockito.verifyNoInteractions
+import org.mockito.Mockito.`when`
+import org.mockito.MockitoAnnotations
 
 /**
  * Created by tom on 2019-06-15.
  */
 class MainMapPresenterTest {
+    private lateinit var mockAnnotations: AutoCloseable
+    
     @Mock
     private lateinit var mainMapView: MainMapContract.View
 
@@ -62,7 +76,7 @@ class MainMapPresenterTest {
 
     @Before
     fun setupPresenter() {
-        MockitoAnnotations.initMocks(this)
+        mockAnnotations = MockitoAnnotations.openMocks(this)
         schedulerProvider = TrampolineSchedulerProvider()
         storePublisher = Injection.providePublishSubject()
         mapCamPublisher = Injection.providePublishSubject()
@@ -72,32 +86,13 @@ class MainMapPresenterTest {
 
     @After
     fun tearDown() {
-        setFinalStatic(Build.VERSION::class.java.getField("SDK_INT"), 0)
-    }
-
-    @Test
-    fun subscribeTest_devicePreLolipop() {
-        // Preconditions
-        setFinalStatic(Build.VERSION::class.java.getField("SDK_INT"), 19)
-        Mockito.`when`(mainMapView.isLocationPermissionGranted()).thenReturn(false)
-
-        // Mocks
-        `when`(dataManager.getAllStores()).thenReturn(Single.never())
-
-        mainMapPresenter.subscribe()
-
-        verify(bus).register(mainMapPresenter)
-        verify(mainMapView).setupMap()
-        verify(mainMapView, never()).requestLocationPermission()
-        verify(locationManager).requestLocationUpdates()
-        verify(locationManager).subscribeLocationUpdate(mainMapPresenter)
+        mockAnnotations.close()
     }
 
     @Test
     fun subscribeTest_locationPermissionNotGranted() {
         // Preconditions
-        setFinalStatic(Build.VERSION::class.java.getField("SDK_INT"), 23)
-        Mockito.`when`(mainMapView.isLocationPermissionGranted()).thenReturn(false)
+        `when`(mainMapView.isLocationPermissionGranted()).thenReturn(false)
 
         // Mocks
         `when`(dataManager.getAllStores()).thenReturn(Single.never())
@@ -114,8 +109,7 @@ class MainMapPresenterTest {
     @Test
     fun subscribeTest_locationPermissionGranted() {
         // Preconditions
-        setFinalStatic(Build.VERSION::class.java.getField("SDK_INT"), 23)
-        Mockito.`when`(mainMapView.isLocationPermissionGranted()).thenReturn(true)
+        `when`(mainMapView.isLocationPermissionGranted()).thenReturn(true)
 
         // Mocks
         `when`(dataManager.getAllStores()).thenReturn(Single.never())
@@ -408,7 +402,7 @@ class MainMapPresenterTest {
 
         mainMapPresenter.onSearchResult(searchEventResult)
 
-        verifyZeroInteractions(mainMapView)
+        verifyNoInteractions(mainMapView)
     }
 
     @Test
@@ -508,7 +502,7 @@ class MainMapPresenterTest {
 
         mainMapPresenter.onSearchResult(searchEventResult)
 
-        verifyZeroInteractions(mainMapView)
+        verifyNoInteractions(mainMapView)
     }
 
     @Test
@@ -596,7 +590,7 @@ class MainMapPresenterTest {
 
     // Workaround solution
     private fun <T> anyObject(): T {
-        return Mockito.anyObject<T>()
+        return any<T>()
     }
 
     companion object {

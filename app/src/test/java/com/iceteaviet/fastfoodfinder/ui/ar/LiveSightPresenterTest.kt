@@ -1,6 +1,5 @@
 package com.iceteaviet.fastfoodfinder.ui.ar
 
-import android.os.Build
 import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.location.LatLngAlt
 import com.iceteaviet.fastfoodfinder.location.SystemLocationListener
@@ -10,21 +9,26 @@ import com.iceteaviet.fastfoodfinder.utils.getFakeArPoints
 import com.iceteaviet.fastfoodfinder.utils.getFakeStoreList
 import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
 import com.iceteaviet.fastfoodfinder.utils.rx.TrampolineSchedulerProvider
-import com.iceteaviet.fastfoodfinder.utils.setFinalStatic
 import com.nhaarman.mockitokotlin2.capture
 import com.nhaarman.mockitokotlin2.never
 import io.reactivex.Single
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import org.mockito.*
-import org.mockito.Mockito.`when`
+import org.mockito.ArgumentCaptor
+import org.mockito.Captor
+import org.mockito.Mock
+import org.mockito.Mockito
 import org.mockito.Mockito.verify
+import org.mockito.Mockito.`when`
+import org.mockito.MockitoAnnotations
 
 /**
  * Created by tom on 2019-06-09.
  */
 class LiveSightPresenterTest {
+    private lateinit var mockAnnotations: AutoCloseable
+    
     @Mock
     private lateinit var liveSightView: LiveSightContract.View
 
@@ -45,7 +49,7 @@ class LiveSightPresenterTest {
     fun setupPresenter() {
         // Mockito has a very convenient way to inject mocks by using the @Mock annotation. To
         // inject the mocks in the test the initMocks method needs to be called.
-        MockitoAnnotations.initMocks(this)
+        mockAnnotations = MockitoAnnotations.openMocks(this)
 
         schedulerProvider = TrampolineSchedulerProvider()
 
@@ -55,24 +59,12 @@ class LiveSightPresenterTest {
 
     @After
     fun tearDown() {
-        setFinalStatic(Build.VERSION::class.java.getField("SDK_INT"), 0)
-    }
-
-    @Test
-    fun subscribeTest_locationPermissionNotGranted_preLolipop() {
-        setFinalStatic(Build.VERSION::class.java.getField("SDK_INT"), 19)
-        Mockito.`when`(liveSightView.isLocationPermissionGranted()).thenReturn(false)
-
-        liveSightPresenter.subscribe()
-
-        verify(liveSightView, never()).requestCameraPermission()
-        verify(liveSightView).initARCameraView()
+        mockAnnotations.close()
     }
 
     @Test
     fun subscribeTest_locationPermissionNotGranted() {
-        setFinalStatic(Build.VERSION::class.java.getField("SDK_INT"), 23)
-        Mockito.`when`(liveSightView.isLocationPermissionGranted()).thenReturn(false)
+        `when`(liveSightView.isLocationPermissionGranted()).thenReturn(false)
 
         liveSightPresenter.subscribe()
 
@@ -84,8 +76,7 @@ class LiveSightPresenterTest {
     @Test
     fun subscribeTest_locationPermissionGranted() {
         // Preconditions
-        setFinalStatic(Build.VERSION::class.java.getField("SDK_INT"), 23)
-        Mockito.`when`(liveSightView.isLocationPermissionGranted()).thenReturn(true)
+        `when`(liveSightView.isLocationPermissionGranted()).thenReturn(true)
 
         liveSightPresenter.subscribe()
 
@@ -95,22 +86,9 @@ class LiveSightPresenterTest {
     }
 
     @Test
-    fun subscribeTest_cameraPermissionNotGranted_preLolipop() {
-        // Preconditions
-        setFinalStatic(Build.VERSION::class.java.getField("SDK_INT"), 19)
-        Mockito.`when`(liveSightView.isCameraPermissionGranted()).thenReturn(false)
-
-        liveSightPresenter.subscribe()
-
-        verify(liveSightView, never()).requestCameraPermission()
-        verify(liveSightView).initARCameraView()
-    }
-
-    @Test
     fun subscribeTest_cameraPermissionNotGranted() {
         // Preconditions
-        setFinalStatic(Build.VERSION::class.java.getField("SDK_INT"), 23)
-        Mockito.`when`(liveSightView.isCameraPermissionGranted()).thenReturn(false)
+        `when`(liveSightView.isCameraPermissionGranted()).thenReturn(false)
 
         liveSightPresenter.subscribe()
 
@@ -121,28 +99,11 @@ class LiveSightPresenterTest {
     @Test
     fun subscribeTest_cameraPermissionGranted() {
         // Preconditions
-        setFinalStatic(Build.VERSION::class.java.getField("SDK_INT"), 23)
-        Mockito.`when`(liveSightView.isCameraPermissionGranted()).thenReturn(true)
+        `when`(liveSightView.isCameraPermissionGranted()).thenReturn(true)
 
         liveSightPresenter.subscribe()
 
         verify(liveSightView, never()).requestCameraPermission()
-        verify(liveSightView).initARCameraView()
-    }
-
-    @Test
-    fun subscribeTest_devicePreLolipop() {
-        // Preconditions
-        setFinalStatic(Build.VERSION::class.java.getField("SDK_INT"), 19)
-        Mockito.`when`(liveSightView.isCameraPermissionGranted()).thenReturn(false)
-        Mockito.`when`(liveSightView.isLocationPermissionGranted()).thenReturn(false)
-
-        liveSightPresenter.subscribe()
-
-        verify(liveSightView, Mockito.never()).requestLocationPermission()
-        verify(liveSightView, Mockito.never()).requestCameraPermission()
-        verify(locationManager).requestLocationUpdates()
-        verify(locationManager).subscribeLocationUpdate(liveSightPresenter)
         verify(liveSightView).initARCameraView()
     }
 

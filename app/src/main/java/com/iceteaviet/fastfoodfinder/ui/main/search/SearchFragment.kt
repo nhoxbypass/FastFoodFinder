@@ -182,11 +182,9 @@ class SearchFragment : Fragment(), SearchContract.View {
         }
 
         quickSearchLoadMore.setOnClickListener {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                TransitionManager.beginDelayedTransition(cardViewQuickSearch)
-                isLoadMoreVisible = !isLoadMoreVisible
-                searchMoreLayout.visibility = if (isLoadMoreVisible) View.VISIBLE else View.GONE
-            }
+            TransitionManager.beginDelayedTransition(cardViewQuickSearch)
+            isLoadMoreVisible = !isLoadMoreVisible
+            searchMoreLayout.visibility = if (isLoadMoreVisible) View.VISIBLE else View.GONE
         }
 
         binding.tvTop.setOnClickListener {
