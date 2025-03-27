@@ -52,11 +52,11 @@ android {
             enableAndroidTestCoverage = true
         }
         getByName("release") {
-            isMinifyEnabled = true
-            proguardFiles(
+            //isMinifyEnabled = true
+            /*proguardFiles(
                 getDefaultProguardFile("proguard-android.txt"),
                 "proguard-rules.pro"
-            )
+            )*/
         }
     }
 
