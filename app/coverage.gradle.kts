@@ -3,7 +3,7 @@
 apply(plugin = "jacoco")
 
 configure<JacocoPluginExtension> {
-    toolVersion = "0.8.5"
+    toolVersion = "0.8.12"
 }
 
 tasks.withType<Test> {
