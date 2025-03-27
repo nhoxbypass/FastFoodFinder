@@ -98,11 +98,11 @@ android {
     }
 }
 
-// Always show the result of every unit test, even if it passes.
 tasks.withType<Test> {
     testLogging {
-        events("passed", "skipped", "failed", "started", "standardOut", "standardError")
-        showStandardStreams = true
+        // always show the result of every unit test, even if it passes.
+        events("passed", "skipped", "failed", /*"started", "standardOut", "standardError"*/)
+        //showStandardStreams = true
         exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
         showExceptions = true
         showCauses = true
