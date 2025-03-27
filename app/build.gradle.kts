@@ -71,31 +71,6 @@ android {
             // No specific configuration needed for prod
         }
     }
-
-    val buildParam = providers.gradleProperty("build").getOrElse("")
-    androidComponents {
-        beforeVariants(selector().all()) { variant ->
-            when (buildParam) {
-                "devCI" -> {
-                    if (variant.flavorName != "mock" || variant.buildType != "debug") {
-                        variant.enable = false
-                    }
-                }
-
-                "releaseCI" -> {
-                    if (variant.flavorName != "prod" || variant.buildType != "release") {
-                        variant.enable = false
-                    }
-                }
-
-                else -> {
-                    if (variant.buildType == "release" && variant.flavorName == "mock") {
-                        variant.enable = false
-                    }
-                }
-            }
-        }
-    }
 }
 
 tasks.withType<Test> {
