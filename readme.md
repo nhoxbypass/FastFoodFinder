@@ -1,6 +1,6 @@
 # CoderSchool Final Project - *Fastfood Finder*
 
-[![Build Status](https://travis-ci.org/nhoxbypass/FastFoodFinder.svg?branch=develop)](https://travis-ci.org/nhoxbypass/FastFoodFinder) 
+[![Build Status](https://github.com/nhoxbypass/FastFoodFinder/actions/workflows/ci.yml/badge.svg)](https://github.com/nhoxbypass/FastFoodFinder/actions)
 [![codecov](https://codecov.io/gh/nhoxbypass/FastFoodFinder/branch/develop/graph/badge.svg)](https://codecov.io/gh/nhoxbypass/FastFoodFinder)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/99a3b923cc514d11b81fcc374c796fab)](https://www.codacy.com/manual/nhoxbypass/FastFoodFinder)
 
