@@ -52,11 +52,11 @@ android {
             enableAndroidTestCoverage = true
         }
         getByName("release") {
-            isMinifyEnabled = true
-            proguardFiles(
+            //isMinifyEnabled = true
+            /*proguardFiles(
                 getDefaultProguardFile("proguard-android.txt"),
                 "proguard-rules.pro"
-            )
+            )*/
         }
     }
 
@@ -71,38 +71,13 @@ android {
             // No specific configuration needed for prod
         }
     }
-
-    val buildParam = providers.gradleProperty("build").getOrElse("")
-    androidComponents {
-        beforeVariants(selector().all()) { variant ->
-            when (buildParam) {
-                "devCI" -> {
-                    if (variant.flavorName != "mock" || variant.buildType != "debug") {
-                        variant.enable = false
-                    }
-                }
-
-                "releaseCI" -> {
-                    if (variant.flavorName != "prod" || variant.buildType != "release") {
-                        variant.enable = false
-                    }
-                }
-
-                else -> {
-                    if (variant.buildType == "release" && variant.flavorName == "mock") {
-                        variant.enable = false
-                    }
-                }
-            }
-        }
-    }
 }
 
-// Always show the result of every unit test, even if it passes.
 tasks.withType<Test> {
     testLogging {
-        events("passed", "skipped", "failed", "started", "standardOut", "standardError")
-        showStandardStreams = true
+        // always show the result of every unit test, even if it passes.
+        events("passed", "skipped", "failed", /*"started", "standardOut", "standardError"*/)
+        //showStandardStreams = true
         exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
         showExceptions = true
         showCauses = true
@@ -192,8 +167,4 @@ dependencies {
 
     // Logging
     implementation("com.jakewharton.timber:timber:5.0.1")
-}
-
-kapt {
-    generateStubs = true
 }
