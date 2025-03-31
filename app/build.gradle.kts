@@ -6,6 +6,7 @@ plugins {
     id("com.google.firebase.crashlytics")
     id("com.google.firebase.firebase-perf")
     id("realm-android")
+    id("org.sonarqube") version "5.1.0.4882"
 }
 
 apply(from = "../app/coverage.gradle.kts")
@@ -82,6 +83,47 @@ tasks.withType<Test> {
         showExceptions = true
         showCauses = true
         showStackTraces = true
+    }
+}
+
+sonarqube {
+    // /build folder
+    val buildFolder = layout.buildDirectory.get()
+
+    properties {
+        // SonarCloud authentication
+        property("sonar.host.url", "https://sonarcloud.io")
+        property("sonar.projectKey", "nhoxbypass_FastFoodFinder")
+        property("sonar.organization", "nhoxbypass")
+        property("sonar.token", System.getenv("SONAR_TOKEN"))
+
+        // Github branch
+        property("sonar.branch.name", System.getenv("GITHUB_HEAD_REF") ?: System.getenv("GITHUB_REF_NAME") ?: "main")
+
+        // default build variant
+        property("sonar.androidVariant", "prodRelease")
+
+        // point to sources folders
+        property("sonar.sources", "src/main/java")
+        // point to test folders
+        property("sonar.tests", "src/test/java")
+        // exclusions for non-source files
+        property(
+            "sonar.exclusions",
+            """
+            **/build/**,
+            src/androidTest/**,
+            src/main/res/**,
+            src/main/AndroidManifest.xml,
+            src/main/assets/**,
+            src/prod/java/**
+            """.trimIndent()
+        )
+        // point to compiled classes
+        property("sonar.java.binaries", "$buildFolder/intermediates/runtime_app_classes_jar/prodRelease/bundleProdReleaseClassesToRuntimeJar/classes.jar")
+
+        // include JaCoCo test report (if available)
+        property("sonar.coverage.jacoco.xmlReportPaths", "$buildFolder/reports/jacoco/jacocoTestReport/jacocoTestReport.xml")
     }
 }
 
