@@ -148,7 +148,7 @@ dependencies {
     testImplementation("org.robolectric:robolectric:4.11.1")
     testImplementation("org.mockito:mockito-core:5.10.0")
     testImplementation("org.assertj:assertj-core:3.11.1")
-    //testImplementation("com.google.truth:truth:0.44") // Does not stable
+    testImplementation("com.google.truth:truth:1.1.5")
     testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
 
     // Espresso UI Testing dependencies.
