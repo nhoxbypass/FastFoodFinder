@@ -97,8 +97,9 @@ sonarqube {
     properties {
         // SonarCloud authentication
         property("sonar.host.url", "https://sonarcloud.io")
-        property("sonar.projectKey", "nhoxbypass_FastFoodFinder")
         property("sonar.organization", "nhoxbypass")
+        property("sonar.projectKey", "nhoxbypass_FastFoodFinder")
+        property("sonar.projectName", "FastFoodFinder")
         property("sonar.token", System.getenv("SONAR_TOKEN"))
 
         // Github branch
