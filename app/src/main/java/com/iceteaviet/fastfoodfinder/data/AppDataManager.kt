@@ -3,6 +3,7 @@ package com.iceteaviet.fastfoodfinder.data
 import android.content.Context
 import androidx.core.util.Pair
 import com.google.firebase.auth.AuthCredential
+import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.auth.ClientAuth
 import com.iceteaviet.fastfoodfinder.data.domain.prefs.PreferencesRepository
 import com.iceteaviet.fastfoodfinder.data.domain.routing.MapsRoutingRepository
@@ -13,7 +14,7 @@ import com.iceteaviet.fastfoodfinder.data.remote.store.model.Comment
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList
-import com.iceteaviet.fastfoodfinder.utils.Constant
+import com.iceteaviet.fastfoodfinder.utils.getString
 import com.iceteaviet.fastfoodfinder.utils.isEmpty
 import com.iceteaviet.fastfoodfinder.utils.isValidUserUid
 import io.reactivex.Observable
@@ -47,7 +48,7 @@ class AppDataManager(context: Context, private val storeRepository: StoreReposit
         } else {
             return Single.create { emitter ->
                 // Not signed in
-                clientAuth.signInWithEmailAndPassword(Constant.DOWNLOADER_BOT_EMAIL, Constant.DOWNLOADER_BOT_PWD)
+                clientAuth.signInWithEmailAndPassword(getString(R.string.downloader_bot_email), getString(R.string.downloader_bot_pwd))
                     .toCompletable()
                     .andThen(storeRepository.getAllStores())
                     .subscribe(object : SingleObserver<List<Store>> {
