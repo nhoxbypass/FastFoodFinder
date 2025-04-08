@@ -14,6 +14,7 @@ import com.iceteaviet.fastfoodfinder.data.remote.store.model.Comment
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList
+import com.iceteaviet.fastfoodfinder.utils.base64ToBytes
 import com.iceteaviet.fastfoodfinder.utils.getString
 import com.iceteaviet.fastfoodfinder.utils.isEmpty
 import com.iceteaviet.fastfoodfinder.utils.isValidUserUid
@@ -35,8 +36,13 @@ class AppDataManager(context: Context, private val storeRepository: StoreReposit
     private var currentUser: User? = null
 
     init {
+        // init Realm DB
         Realm.init(context)
+
+        // set Realm config
+        val key = base64ToBytes(getString(R.string.realm_db_encryption_key))
         val config = RealmConfiguration.Builder()
+            .encryptionKey(key)
             .deleteRealmIfMigrationNeeded()
             .build()
         Realm.setDefaultConfiguration(config)
