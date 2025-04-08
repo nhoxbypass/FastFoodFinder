@@ -74,6 +74,10 @@ android {
     }
 }
 
+kotlin {
+    jvmToolchain(17)
+}
+
 tasks.withType<Test> {
     testLogging {
         // always show the result of every unit test, even if it passes.
