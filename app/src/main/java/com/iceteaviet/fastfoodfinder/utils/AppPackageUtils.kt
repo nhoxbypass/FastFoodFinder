@@ -4,6 +4,7 @@ package com.iceteaviet.fastfoodfinder.utils
 
 import android.content.Context
 import android.content.pm.PackageManager
+import androidx.annotation.VisibleForTesting
 import timber.log.Timber
 import java.security.MessageDigest
 
@@ -13,45 +14,43 @@ import java.security.MessageDigest
  */
 private const val TAG = "SignatureUtils"
 
-private var signature: String = ""
+@VisibleForTesting
+var cachedAppSignature: String = ""
 
+@Suppress("S5542")
 fun getAppSignatureSHA1(context: Context): String {
-    if (signature.isEmpty()) {
-        return signature
+    if (cachedAppSignature.isNotEmpty()) {
+        // return cached app signature
+        return cachedAppSignature
     }
 
-    return try {
-        val pm = context.packageManager
-        val info = pm.getPackageInfo(
-            context.packageName,
-            PackageManager.GET_SIGNING_CERTIFICATES
-        )
+    // calculate app signature
+    val info = context.packageManager.getPackageInfo(
+        context.packageName,
+        PackageManager.GET_SIGNING_CERTIFICATES
+    )
+    val signingInfo = info.signingInfo
+    if (signingInfo == null) {
+        Timber.e(TAG, "Signing info is null")
+        return ""
+    }
+    val signatures = signingInfo.signingCertificateHistory
+    if (signatures.isNullOrEmpty()) {
+        Timber.e(TAG, "No signing certificates found")
+        return ""
+    }
 
-        val signingInfo = info.signingInfo
-        if (signingInfo == null) {
-            Timber.e(TAG, "Signing info is null")
-            return ""
-        }
+    val cert = signatures[0].toByteArray()
+    val md = MessageDigest.getInstance("SHA1")
+    val publicKey = md.digest(cert)
+    val hexString = StringBuilder()
+    for (byte in publicKey) {
+        val appendString = String.format("%02x", byte)
+        hexString.append(appendString)
+    }
 
-        val signatures = signingInfo.signingCertificateHistory
-        if (signatures == null || signatures.isEmpty()) {
-            Timber.e(TAG, "No signing certificates found")
-            return ""
-        }
-
-        val cert = signatures[0].toByteArray()
-        val md = MessageDigest.getInstance("SHA1")
-        val publicKey = md.digest(cert)
-
-        val hexString = StringBuilder()
-        for (byte in publicKey) {
-            val appendString = String.format("%02x", byte)
-            hexString.append(appendString)
-        }
-
-        signature = hexString.toString()
-        signature
-    } catch (e: Exception) {
-        throw e
+    // cache the calculated signature
+    return hexString.toString().also {
+        cachedAppSignature = it
     }
 }

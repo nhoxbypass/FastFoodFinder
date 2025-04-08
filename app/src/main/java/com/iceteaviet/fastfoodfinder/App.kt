@@ -83,6 +83,8 @@ class App : Application() {
         bus = Injection.provideEventBus()
         notiManager = AppNotiManager(getContext())
 
+        dataManager.initialize(getContext())
+
         GoogleLocationManager.init(getContext())
         SystemLocationManager.init(getContext())
 

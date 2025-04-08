@@ -1,5 +1,6 @@
 package com.iceteaviet.fastfoodfinder.data
 
+import android.content.Context
 import com.iceteaviet.fastfoodfinder.data.auth.ClientAuth
 import com.iceteaviet.fastfoodfinder.data.domain.prefs.PreferencesRepository
 import com.iceteaviet.fastfoodfinder.data.domain.routing.MapsRoutingRepository
@@ -16,6 +17,8 @@ import io.reactivex.Single
  * We may not need this if we use few repository. But it's important when we have many repositories
  */
 interface DataManager : ClientAuth, StoreRepository, UserRepository, MapsRoutingRepository, PreferencesRepository {
+    fun initialize(context: Context)
+
     fun loadStoresFromServer(): Single<List<Store>>
 
     fun getCurrentUser(): User?

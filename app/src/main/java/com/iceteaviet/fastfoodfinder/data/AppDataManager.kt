@@ -29,13 +29,13 @@ import io.realm.RealmConfiguration
  * Created by tom on 7/9/18.
  */
 
-class AppDataManager(context: Context, private val storeRepository: StoreRepository, private val userRepository: UserRepository,
+class AppDataManager(private val storeRepository: StoreRepository, private val userRepository: UserRepository,
                      private val clientAuth: ClientAuth,
                      private val mapsRoutingRepository: MapsRoutingRepository, private val preferencesRepository: PreferencesRepository) : DataManager {
 
     private var currentUser: User? = null
 
-    init {
+    override fun initialize(context: Context) {
         // init Realm DB
         Realm.init(context)
 
@@ -128,7 +128,7 @@ class AppDataManager(context: Context, private val storeRepository: StoreReposit
 
     override fun updateCurrentUser(user: User?) {
         currentUser = user
-        if (user != null && !user.getUid().isEmpty()) {
+        if (user != null && user.getUid().isNotEmpty()) {
             userRepository.insertOrUpdateUser(user)
         }
     }
@@ -246,6 +246,9 @@ class AppDataManager(context: Context, private val storeRepository: StoreReposit
     }
 
     companion object {
-        private val TAG = AppDataManager::class.java.simpleName
+        /**
+         * Tags
+         */
+        private val TAG = "AppDataManager"
     }
 }
