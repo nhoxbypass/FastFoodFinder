@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory
 import android.graphics.drawable.Drawable
 import android.view.animation.BounceInterpolator
 import androidx.annotation.DrawableRes
+import androidx.annotation.VisibleForTesting
 import androidx.collection.LruCache
 import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.model.BitmapDescriptor
@@ -17,8 +18,8 @@ import com.google.android.gms.maps.model.Marker
 import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.utils.StoreType
+import java.security.SecureRandom
 import java.util.Arrays
-import java.util.Random
 
 /**
  * Created by tom on 7/10/18.
@@ -129,22 +130,29 @@ fun resizeMarkerBitmap(imageBitmap: Bitmap, width: Int, height: Int): Bitmap {
     return Bitmap.createScaledBitmap(imageBitmap, newWidth, newHeight, false) // Disable filter for faster Bitmap scaling
 }
 
-val STORE_IMAGES = arrayListOf(R.drawable.detail_sample_food_1, R.drawable.detail_sample_food_2,
-    R.drawable.detail_sample_food_3, R.drawable.detail_sample_food_4)
+@VisibleForTesting
+val STORE_IMAGES = arrayListOf(
+    R.drawable.detail_sample_food_1,
+    R.drawable.detail_sample_food_2,
+    R.drawable.detail_sample_food_3,
+    R.drawable.detail_sample_food_4
+)
 
-fun getRandomStoreImages(numb: Int): List<Int> {
+/**
+ * @return a list of random images with size of [requestedSize]
+ */
+fun getRandomStoreImages(requestedSize: Int): List<Int> {
     val res = ArrayList<Int>()
-
-    val r = Random()
-    for (i in 0..numb) {
+    // add random unique images from STORE_IMAGES
+    val r = SecureRandom()
+    for (i in 0..<requestedSize) {
         val id = STORE_IMAGES[r.nextInt(4)]
         if (!res.contains(id))
             res.add(id)
     }
-    if (res.size < numb) {
-        for (i in res.size..numb) {
-            res.add(R.drawable.all_placeholder)
-        }
+    // fill the rest with placeholder if needed
+    repeat(requestedSize - res.size) {
+        res.add(R.drawable.all_placeholder)
     }
     return res
 }

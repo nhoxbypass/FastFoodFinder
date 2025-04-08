@@ -11,10 +11,10 @@ import com.iceteaviet.fastfoodfinder.ui.ar.model.AugmentedPOI
 import com.iceteaviet.fastfoodfinder.ui.main.search.model.SearchStoreItem
 import com.iceteaviet.fastfoodfinder.ui.settings.discountnotify.DiscountNotifyPresenter
 import com.iceteaviet.fastfoodfinder.utils.ui.getStoreLogoDrawableRes
+import java.security.SecureRandom
 import java.text.SimpleDateFormat
 import java.util.GregorianCalendar
 import java.util.Locale
-import java.util.Random
 import java.util.regex.Pattern
 
 /**
@@ -303,7 +303,7 @@ fun getFakeEmptyStepMapsDirection(): MapsDirection {
  * Get random Integer
  */
 fun getRandomInt(min: Int, max: Int): Int {
-    val rand = Random()
+    val rand = SecureRandom()
     return rand.nextInt(max - min + 1) + min
 }
 
@@ -311,7 +311,7 @@ fun getRandomInt(min: Int, max: Int): Int {
  * Get random Long
  */
 fun getRandomLong(): Long {
-    val rand = Random()
+    val rand = SecureRandom()
     return rand.nextLong()
 }
 

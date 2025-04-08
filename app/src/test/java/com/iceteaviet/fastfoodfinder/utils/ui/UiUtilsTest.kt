@@ -38,4 +38,12 @@ class UiUtilsTest {
         assertThat(getDirectionImage(" ")).isEqualTo(R.drawable.ic_routing_up)
         assertThat(getDirectionImage("null")).isEqualTo(R.drawable.ic_routing_up)
     }
+
+    @Test
+    fun `getRandomStoreImages() size`() {
+        assertThat(getRandomStoreImages(1).size).isEqualTo(1)
+        assertThat(getRandomStoreImages(2).size).isEqualTo(2)
+        assertThat(getRandomStoreImages(3).size).isEqualTo(3)
+        assertThat(getRandomStoreImages(4).size).isEqualTo(4)
+    }
 }

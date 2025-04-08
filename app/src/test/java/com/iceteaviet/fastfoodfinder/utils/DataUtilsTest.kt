@@ -1,8 +1,8 @@
 package com.iceteaviet.fastfoodfinder.utils
 
 
+import com.google.common.truth.Truth.assertThat
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
-import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
 class DataUtilsTest {
@@ -140,6 +140,39 @@ class DataUtilsTest {
         assertThat(getStoreNameByKey("-1")).isEmpty()
     }
 
+    @Test
+    fun `getRandomInt returns value within range`() {
+        val min = 10
+        val max = 20
+        repeat(100) {
+            val result = getRandomInt(min, max)
+            assertThat(result).isAtLeast(min)
+            assertThat(result).isAtMost(max)
+        }
+    }
+
+    @Test
+    fun `getRandomLong returns different values`() {
+        val result1 = getRandomLong()
+        val result2 = getRandomLong()
+        val result3 = getRandomLong()
+
+        // Not guaranteed but very likely
+        assertThat(result1).isNotEqualTo(result2)
+        assertThat(result2).isNotEqualTo(result3)
+    }
+
+    @Test
+    fun `getRandomInt returns min when min equals max`() {
+        val minMax = 42
+        val result = getRandomInt(minMax, minMax)
+        assertThat(result).isEqualTo(minMax)
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun `getRandomInt throws if min greater than max`() {
+        getRandomInt(5, 3)
+    }
 
     companion object {
         private const val STORE_ID = 123
