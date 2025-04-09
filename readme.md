@@ -3,6 +3,10 @@
 [![Build Status](https://github.com/nhoxbypass/FastFoodFinder/actions/workflows/android.yml/badge.svg)](https://github.com/nhoxbypass/FastFoodFinder/actions)
 [![codecov](https://codecov.io/gh/nhoxbypass/FastFoodFinder/branch/develop/graph/badge.svg)](https://codecov.io/gh/nhoxbypass/FastFoodFinder)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=nhoxbypass_FastFoodFinder&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=nhoxbypass_FastFoodFinder)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=nhoxbypass_FastFoodFinder&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=nhoxbypass_FastFoodFinder)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=nhoxbypass_FastFoodFinder&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=nhoxbypass_FastFoodFinder)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=nhoxbypass_FastFoodFinder&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=nhoxbypass_FastFoodFinder)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=nhoxbypass_FastFoodFinder&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=nhoxbypass_FastFoodFinder)
 
 **Fastfood Finder** is an awesome Android app that allows users to find fast food or convenience stores near where they're standing.
 
