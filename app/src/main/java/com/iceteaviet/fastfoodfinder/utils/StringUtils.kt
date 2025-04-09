@@ -8,6 +8,7 @@ import android.text.SpannableStringBuilder
 import android.text.Spanned
 import androidx.annotation.StringRes
 import com.iceteaviet.fastfoodfinder.App
+import java.util.Base64
 
 /**
  * Created by tom on 7/19/18.
@@ -60,4 +61,12 @@ fun trimWhitespace(source: CharSequence?): CharSequence {
 
 fun getNameFromEmail(email: String): String {
     return email.substringBefore("@")
+}
+
+fun base64ToBytes(base64: String): ByteArray {
+    return Base64.getDecoder().decode(base64)
+}
+
+fun bytesToBase64(bytes: ByteArray): String {
+    return Base64.getEncoder().encodeToString(bytes)
 }

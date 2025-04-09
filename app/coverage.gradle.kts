@@ -37,6 +37,7 @@ val jacocoTestReport = tasks.register<JacocoReport>("jacocoTestReport") {
 
     // class directories
     val fileFilter = listOf(
+        "**/App.kt",
         "**/R.class",
         "**/R$*.class",
         "**/R\$*.class",

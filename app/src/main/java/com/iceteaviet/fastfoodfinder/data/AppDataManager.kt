@@ -3,6 +3,7 @@ package com.iceteaviet.fastfoodfinder.data
 import android.content.Context
 import androidx.core.util.Pair
 import com.google.firebase.auth.AuthCredential
+import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.auth.ClientAuth
 import com.iceteaviet.fastfoodfinder.data.domain.prefs.PreferencesRepository
 import com.iceteaviet.fastfoodfinder.data.domain.routing.MapsRoutingRepository
@@ -13,7 +14,8 @@ import com.iceteaviet.fastfoodfinder.data.remote.store.model.Comment
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList
-import com.iceteaviet.fastfoodfinder.utils.Constant
+import com.iceteaviet.fastfoodfinder.utils.base64ToBytes
+import com.iceteaviet.fastfoodfinder.utils.getString
 import com.iceteaviet.fastfoodfinder.utils.isEmpty
 import com.iceteaviet.fastfoodfinder.utils.isValidUserUid
 import io.reactivex.Observable
@@ -27,15 +29,20 @@ import io.realm.RealmConfiguration
  * Created by tom on 7/9/18.
  */
 
-class AppDataManager(context: Context, private val storeRepository: StoreRepository, private val userRepository: UserRepository,
+class AppDataManager(private val storeRepository: StoreRepository, private val userRepository: UserRepository,
                      private val clientAuth: ClientAuth,
                      private val mapsRoutingRepository: MapsRoutingRepository, private val preferencesRepository: PreferencesRepository) : DataManager {
 
     private var currentUser: User? = null
 
-    init {
+    override fun initialize(context: Context) {
+        // init Realm DB
         Realm.init(context)
+
+        // set Realm config
+        val key = base64ToBytes(getString(R.string.realm_db_encryption_key))
         val config = RealmConfiguration.Builder()
+            .encryptionKey(key)
             .deleteRealmIfMigrationNeeded()
             .build()
         Realm.setDefaultConfiguration(config)
@@ -47,7 +54,7 @@ class AppDataManager(context: Context, private val storeRepository: StoreReposit
         } else {
             return Single.create { emitter ->
                 // Not signed in
-                clientAuth.signInWithEmailAndPassword(Constant.DOWNLOADER_BOT_EMAIL, Constant.DOWNLOADER_BOT_PWD)
+                clientAuth.signInWithEmailAndPassword(getString(R.string.downloader_bot_email), getString(R.string.downloader_bot_pwd))
                     .toCompletable()
                     .andThen(storeRepository.getAllStores())
                     .subscribe(object : SingleObserver<List<Store>> {
@@ -121,7 +128,7 @@ class AppDataManager(context: Context, private val storeRepository: StoreReposit
 
     override fun updateCurrentUser(user: User?) {
         currentUser = user
-        if (user != null && !user.getUid().isEmpty()) {
+        if (user != null && user.getUid().isNotEmpty()) {
             userRepository.insertOrUpdateUser(user)
         }
     }
@@ -239,6 +246,9 @@ class AppDataManager(context: Context, private val storeRepository: StoreReposit
     }
 
     companion object {
-        private val TAG = AppDataManager::class.java.simpleName
+        /**
+         * Tags
+         */
+        private val TAG = "AppDataManager"
     }
 }

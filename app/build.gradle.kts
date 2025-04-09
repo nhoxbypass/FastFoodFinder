@@ -74,6 +74,10 @@ android {
     }
 }
 
+kotlin {
+    jvmToolchain(17)
+}
+
 tasks.withType<Test> {
     testLogging {
         // always show the result of every unit test, even if it passes.
@@ -93,8 +97,9 @@ sonarqube {
     properties {
         // SonarCloud authentication
         property("sonar.host.url", "https://sonarcloud.io")
-        property("sonar.projectKey", "nhoxbypass_FastFoodFinder")
         property("sonar.organization", "nhoxbypass")
+        property("sonar.projectKey", "nhoxbypass_FastFoodFinder")
+        property("sonar.projectName", "FastFoodFinder")
         property("sonar.token", System.getenv("SONAR_TOKEN"))
 
         // Github branch
@@ -148,7 +153,7 @@ dependencies {
     testImplementation("org.robolectric:robolectric:4.11.1")
     testImplementation("org.mockito:mockito-core:5.10.0")
     testImplementation("org.assertj:assertj-core:3.11.1")
-    //testImplementation("com.google.truth:truth:0.44") // Does not stable
+    testImplementation("com.google.truth:truth:1.1.5")
     testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
 
     // Espresso UI Testing dependencies.

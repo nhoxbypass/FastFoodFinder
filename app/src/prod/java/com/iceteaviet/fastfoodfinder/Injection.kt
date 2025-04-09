@@ -41,9 +41,13 @@ import org.greenrobot.eventbus.EventBus
  */
 object Injection {
     fun provideDataManager(): DataManager {
-        return AppDataManager(provideContext(), provideStoreRepository(), provideUserRepository(),
-                provideAuthClient(),
-                provideRoutingRepository(), providePreferenceRepository())
+        return AppDataManager(
+            provideStoreRepository(),
+            provideUserRepository(),
+            provideAuthClient(),
+            provideRoutingRepository(),
+            providePreferenceRepository()
+        )
     }
 
     fun provideSchedulerProvider(): SchedulerProvider {
