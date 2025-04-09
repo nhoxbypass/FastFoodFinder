@@ -12,9 +12,6 @@ import com.google.android.gms.maps.model.LatLng
  */
 
 object Constant {
-    const val DOWNLOADER_BOT_EMAIL = "store_downloader@fastfoodfinder.com"
-    const val DOWNLOADER_BOT_PWD = "123456789"
-
     const val DEFAULT_ZOOM_LEVEL = 16f
     const val DETAILED_ZOOM_LEVEL = 18f
 
