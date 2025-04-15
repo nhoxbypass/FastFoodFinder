@@ -119,13 +119,13 @@ class RecentlyStoreAdapter internal constructor(private val mDragStartListener: 
                 AlertDialog.Builder(itemView.context)
                     .setTitle(R.string.delete_favourite_location)
                     .setMessage(R.string.are_you_sure)
-                    .setPositiveButton(android.R.string.yes) { dialog, _ ->
+                    .setPositiveButton(android.R.string.ok) { dialog, _ ->
                         mStoreList.removeAt(position)
                         notifyDataSetChanged()
                         Snackbar.make(itemView, R.string.undo, Snackbar.LENGTH_INDEFINITE).show()
                         dialog.dismiss()
                     }
-                    .setNegativeButton(android.R.string.no) { dialog, _ ->
+                    .setNegativeButton(android.R.string.cancel) { dialog, _ ->
                         //do nothing
                         dialog.dismiss()
                     }

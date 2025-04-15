@@ -286,7 +286,7 @@ class MainActivity : BaseActivity(), MainContract.View, View.OnClickListener {
 
         val searchManager = getSearchManager()
 
-        searchView = MenuItemCompat.getActionView(searchItem) as SearchView
+        searchView = searchItem!!.actionView as SearchView
 
         searchView.setSearchableInfo(searchManager?.getSearchableInfo(componentName))
 
@@ -324,7 +324,7 @@ class MainActivity : BaseActivity(), MainContract.View, View.OnClickListener {
         //searchView.findViewById<View>(R.id.search_close_btn).setOnClickListener(this)
 
         //Set event expand search view
-        MenuItemCompat.setOnActionExpandListener(searchItem, object : MenuItemCompat.OnActionExpandListener {
+        searchItem!!.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
             override fun onMenuItemActionExpand(menuItem: MenuItem): Boolean {
                 presenter.onSearchMenuItemExpand()
                 return true

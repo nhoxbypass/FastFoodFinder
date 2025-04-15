@@ -265,10 +265,7 @@ class MapRoutingActivity : BaseActivity(), MapRoutingContract.View, View.OnClick
 
             mapFragment?.getMapAsync { map ->
                 googleMap = map
-                if (map != null) {
-                    // The map is verified. It is now safe to manipulate the map.
-                    presenter.onGetMapAsync()
-                }
+                presenter.onGetMapAsync()
             }
         }
     }

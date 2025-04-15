@@ -27,8 +27,7 @@ class Route(`in`: Parcel) : Parcelable {
     init {
         legList = `in`.createTypedArrayList(Leg.CREATOR) ?: ArrayList()
         summary = `in`.readString() ?: ""
-        val parser = JsonParser()
-        encodedPolyline = parser.parse(`in`.readString()).asJsonObject
+        encodedPolyline = JsonParser.parseString(`in`.readString()).asJsonObject
     }
 
     override fun describeContents(): Int {

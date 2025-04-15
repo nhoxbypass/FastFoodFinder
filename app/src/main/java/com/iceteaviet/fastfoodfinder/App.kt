@@ -93,7 +93,7 @@ class App : Application() {
 
     private fun scheduleSyncDBWorker() {
         val work = SyncDatabaseWorker.prepareSyncDBWorker()
-        WorkManager.getInstance()
+        WorkManager.getInstance(context)
             .enqueueUniquePeriodicWork(SYNC_DB_JOB_TAG, ExistingPeriodicWorkPolicy.KEEP, work)
     }
 

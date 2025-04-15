@@ -55,7 +55,7 @@ class AppDataManager(private val storeRepository: StoreRepository, private val u
             return Single.create { emitter ->
                 // Not signed in
                 clientAuth.signInWithEmailAndPassword(getString(R.string.downloader_bot_email), getString(R.string.downloader_bot_pwd))
-                    .toCompletable()
+                    .ignoreElement()
                     .andThen(storeRepository.getAllStores())
                     .subscribe(object : SingleObserver<List<Store>> {
                         override fun onSubscribe(d: Disposable) {

@@ -87,7 +87,7 @@ class ProfileFragment : Fragment(), ProfileContract.View, View.OnClickListener {
             }
 
             R.id.btnUpdateCoverImage -> {
-                mDialog?.show(requireFragmentManager(), "")
+                mDialog?.show(parentFragmentManager, "")
                 binding.btnUpdateCoverImage.visibility = View.GONE
                 return
             }
@@ -190,7 +190,7 @@ class ProfileFragment : Fragment(), ProfileContract.View, View.OnClickListener {
 
     override fun showCreateNewListDialog() {
         mDialogCreate = CreateListDialog.newInstance()
-        mDialogCreate?.show(requireFragmentManager(), "")
+        mDialogCreate?.show(parentFragmentManager, "")
         mDialogCreate?.setOnButtonClickListener(object : CreateListDialog.OnCreateListListener {
             override fun onCreateButtonClick(name: String, iconId: Int, dialog: CreateListDialog) {
                 presenter.onCreateNewList(name, iconId)

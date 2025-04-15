@@ -188,7 +188,7 @@ class ActionProcessButton : ProcessButton {
                     // Radius of the circle is half of the screen.
                     val clearRadius = width / 2 * INTERPOLATOR.getInterpolation(pct)
                     mClipRect.set(cx - clearRadius, 0f, cx + clearRadius, height.toFloat())
-                    canvas.saveLayerAlpha(mClipRect, 0, 0)
+                    canvas.saveLayerAlpha(mClipRect, 0)
                     // Only draw the trigger if there is a space in the center of
                     // this refreshing view that needs to be filled in by the
                     // trigger. If the progress view is just still animating, let it
@@ -248,7 +248,7 @@ class ActionProcessButton : ProcessButton {
                     drawTrigger(canvas, cx, cy)
                 }
                 // Keep running until we finish out the last cycle.
-                ViewCompat.postInvalidateOnAnimation(mParent)
+                mParent.postInvalidateOnAnimation()
             } else {
                 // Otherwise if we're in the middle of a trigger, draw that.
                 if (mTriggerPercentage > 0 && mTriggerPercentage <= 1.0) {

@@ -113,10 +113,6 @@ class SettingActivity : BaseActivity(), SettingContract.View {
         progressBarUpdateDb.visibility = if (showProgress) View.VISIBLE else View.GONE
     }
 
-    private fun setSystemLocaleLegacy(config: Configuration, locale: Locale) {
-        config.locale = locale
-    }
-
     private fun setSystemLocale(config: Configuration, locale: Locale) {
         config.setLocale(locale)
     }

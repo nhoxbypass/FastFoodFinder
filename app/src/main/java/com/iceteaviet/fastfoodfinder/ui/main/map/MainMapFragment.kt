@@ -169,17 +169,17 @@ class MainMapFragment : Fragment(), MainMapContract.View {
         mMapFragment?.getMapAsync { googleMap ->
             this.googleMap = googleMap
 
-            if (googleMap != null) {
-                googleMap.isBuildingsEnabled = true
+            googleMap.isBuildingsEnabled = true
 
-                //Animate marker icons when camera move
-                googleMap.setOnCameraMoveListener {
-                    presenter.onMapCameraMove(googleMap.cameraPosition.target,
-                        googleMap.projection.visibleRegion.latLngBounds)
-                }
-
-                presenter.onGetMapAsync()
+            //Animate marker icons when camera move
+            googleMap.setOnCameraMoveListener {
+                presenter.onMapCameraMove(
+                    googleMap.cameraPosition.target,
+                    googleMap.projection.visibleRegion.latLngBounds
+                )
             }
+
+            presenter.onGetMapAsync()
         }
     }
 

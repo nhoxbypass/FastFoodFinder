@@ -33,9 +33,8 @@ class Leg(`in`: Parcel) : Parcelable {
         get() = duration.getAsJsonPrimitive("value").asLong
 
     init {
-        val parser = JsonParser()
-        distance = parser.parse(`in`.readString()).asJsonObject
-        duration = parser.parse(`in`.readString()).asJsonObject
+        distance = JsonParser.parseString(`in`.readString()).asJsonObject
+        duration = JsonParser.parseString(`in`.readString()).asJsonObject
         startAddress = `in`.readString() ?: ""
         endAddress = `in`.readString() ?: ""
         stepList = `in`.createTypedArrayList(Step.CREATOR) ?: ArrayList()
