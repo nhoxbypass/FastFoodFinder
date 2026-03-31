@@ -65,7 +65,7 @@ class MainActivity : BaseActivity(), MainContract.View, View.OnClickListener {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        presenter = MainPresenter(App.getDataManager(), App.getSchedulerProvider(), App.getBus(), this)
+        presenter = MainPresenter(App.getClientAuth(), App.getUserRepository(), App.getPreferencesRepository(), App.getSchedulerProvider(), App.getBus(), this)
 
         setupUI()
         setupEventHandlers()

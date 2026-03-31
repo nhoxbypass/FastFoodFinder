@@ -1,6 +1,8 @@
 package com.iceteaviet.fastfoodfinder.ui.storelist
 
-import com.iceteaviet.fastfoodfinder.data.DataManager
+import com.iceteaviet.fastfoodfinder.data.domain.user.UserRepository
+import com.iceteaviet.fastfoodfinder.data.domain.store.StoreRepository
+import com.iceteaviet.fastfoodfinder.data.auth.ClientAuth
 import com.iceteaviet.fastfoodfinder.utils.getFakeStoreList
 import com.iceteaviet.fastfoodfinder.utils.rx.TrampolineSchedulerProvider
 import com.nhaarman.mockitokotlin2.verify
@@ -22,7 +24,11 @@ class StoreListPresenterTest {
     private lateinit var storeListPresenter: StoreListPresenter
 
     @Mock
-    private lateinit var dataManager: DataManager
+    private lateinit var userRepository: UserRepository
+    @Mock
+    private lateinit var storeRepository: StoreRepository
+    @Mock
+    private lateinit var clientAuth: ClientAuth
 
     @Before
     fun setupPresenter() {
@@ -31,7 +37,7 @@ class StoreListPresenterTest {
         mockAnnotations = MockitoAnnotations.openMocks(this)
 
         // Get a reference to the class under test
-        storeListPresenter = StoreListPresenter(dataManager, TrampolineSchedulerProvider(), storeListView)
+        storeListPresenter = StoreListPresenter(clientAuth, userRepository, storeRepository, TrampolineSchedulerProvider(), storeListView)
     }
 
     @After

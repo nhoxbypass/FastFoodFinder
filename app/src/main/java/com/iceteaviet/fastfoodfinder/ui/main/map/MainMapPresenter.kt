@@ -8,7 +8,6 @@ import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.Marker
 import com.google.firebase.perf.metrics.AddTrace
 import com.iceteaviet.fastfoodfinder.R
-import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.routing.GoogleMapsRoutingApiHelper
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
@@ -37,11 +36,18 @@ import kotlin.collections.set
 /**
  * Created by tom on 2019-04-18.
  */
-open class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapContract.Presenter, LocationListener {
+open class MainMapPresenter(
+    private val storeRepository: com.iceteaviet.fastfoodfinder.data.domain.store.StoreRepository,
+    private val mapsRoutingRepository: com.iceteaviet.fastfoodfinder.data.domain.routing.MapsRoutingRepository,
+    schedulerProvider: SchedulerProvider,
+    private val locationManager: com.iceteaviet.fastfoodfinder.core.location.base.ILocationManager,
+    private val bus: com.iceteaviet.fastfoodfinder.service.eventbus.core.IBus,
+    private val newVisibleStorePublisher: io.reactivex.subjects.PublishSubject<com.iceteaviet.fastfoodfinder.data.remote.store.model.Store>,
+    private val cameraPositionPublisher: io.reactivex.subjects.PublishSubject<com.iceteaviet.fastfoodfinder.ui.main.map.model.MapCameraPosition>,
+        private val mainMapView: MainMapContract.View
+) : BasePresenter<MainMapContract.Presenter>(schedulerProvider), MainMapContract.Presenter, com.iceteaviet.fastfoodfinder.core.location.LocationListener {
 
-    private val mainMapView: MainMapContract.View
-    private val bus: IBus
-
+        
     @VisibleForTesting
     var currLocation: LatLng? = null
 
@@ -60,19 +66,9 @@ open class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapC
     @VisibleForTesting
     var markerSparseArray: SparseArrayCompat<Marker> = SparseArrayCompat()
 
-    private var newVisibleStorePublisher: PublishSubject<Store>
-    private var cameraPositionPublisher: PublishSubject<MapCameraPosition>
+        
+    
 
-    private var locationManager: ILocationManager
-
-    constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider,
-                locationManager: ILocationManager, bus: IBus, storePublisher: PublishSubject<Store>, mapCamPublisher: PublishSubject<MapCameraPosition>, mainMapView: MainMapContract.View) : super(dataManager, schedulerProvider) {
-        this.mainMapView = mainMapView
-        this.locationManager = locationManager
-        this.bus = bus
-        this.newVisibleStorePublisher = storePublisher
-        this.cameraPositionPublisher = mapCamPublisher
-    }
 
     override fun subscribe() {
         resetState()
@@ -159,7 +155,7 @@ open class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapC
         queries[GoogleMapsRoutingApiHelper.PARAM_ORIGIN] = origin
         queries[GoogleMapsRoutingApiHelper.PARAM_DESTINATION] = destination
 
-        dataManager.getMapsDirection(queries, store)
+        mapsRoutingRepository.getMapsDirection(queries, store)
             .subscribeOn(schedulerProvider.io())
             .observeOn(schedulerProvider.ui())
             .subscribe(object : SingleObserver<MapsDirection> {
@@ -352,7 +348,7 @@ open class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapC
     }
 
     private fun handleSearchQuickAction(storeType: Int) {
-        dataManager.findStoresByType(storeType)
+        storeRepository.findStoresByType(storeType)
             .subscribeOn(schedulerProvider.io())
             .observeOn(schedulerProvider.ui())
             .subscribe(object : SingleObserver<List<Store>> {
@@ -378,7 +374,7 @@ open class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapC
     }
 
     private fun handleSearchQuerySubmitAction(searchString: String) {
-        dataManager.findStores(searchString)
+        storeRepository.findStores(searchString)
             .subscribeOn(schedulerProvider.io())
             .observeOn(schedulerProvider.ui())
             .subscribe(object : SingleObserver<List<Store>> {
@@ -412,7 +408,7 @@ open class MainMapPresenter : BasePresenter<MainMapContract.Presenter>, MainMapC
     }
 
     private fun loadAllStoresToMap() {
-        dataManager.getAllStores()
+        storeRepository.getAllStores()
             .subscribeOn(schedulerProvider.io())
             .observeOn(schedulerProvider.ui())
             .subscribe(object : SingleObserver<List<Store>> {

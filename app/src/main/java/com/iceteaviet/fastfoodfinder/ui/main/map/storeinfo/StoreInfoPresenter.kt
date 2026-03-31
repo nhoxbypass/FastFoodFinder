@@ -1,20 +1,18 @@
 package com.iceteaviet.fastfoodfinder.ui.main.map.storeinfo
 
 import androidx.annotation.VisibleForTesting
-import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.ui.base.BasePresenter
 import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
 
-class StoreInfoPresenter : BasePresenter<StoreInfoContract.Presenter>, StoreInfoContract.Presenter {
+class StoreInfoPresenter(
+    schedulerProvider: SchedulerProvider,
+    private val storeInfoView: StoreInfoContract.View
+) : BasePresenter<StoreInfoContract.Presenter>(schedulerProvider), StoreInfoContract.Presenter {
     @VisibleForTesting
     var store: Store? = null
 
-    private val storeInfoView: StoreInfoContract.View
 
-    constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider, view: StoreInfoContract.View) : super(dataManager, schedulerProvider) {
-        storeInfoView = view
-    }
 
     override fun subscribe() {
     }

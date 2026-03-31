@@ -1,6 +1,7 @@
 package com.iceteaviet.fastfoodfinder.ui.main.search
 
-import com.iceteaviet.fastfoodfinder.data.DataManager
+import com.iceteaviet.fastfoodfinder.data.domain.store.StoreRepository
+import com.iceteaviet.fastfoodfinder.data.domain.prefs.PreferencesRepository
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.service.eventbus.SearchEventResult
 import com.iceteaviet.fastfoodfinder.service.eventbus.core.IBus
@@ -33,9 +34,11 @@ class SearchPresenterTest {
     
     @Mock
     private lateinit var searchView: SearchContract.View
-
     @Mock
-    private lateinit var dataManager: DataManager
+    private lateinit var storeRepository: StoreRepository
+    @Mock
+    private lateinit var preferencesRepository: PreferencesRepository
+
 
     @Mock
     private lateinit var bus: IBus
@@ -49,7 +52,7 @@ class SearchPresenterTest {
         mockAnnotations = MockitoAnnotations.openMocks(this)
         schedulerProvider = TrampolineSchedulerProvider()
 
-        searchPresenter = SearchPresenter(dataManager, schedulerProvider, bus, searchView)
+        searchPresenter = SearchPresenter(storeRepository, preferencesRepository, schedulerProvider, bus, searchView)
     }
 
     @After
@@ -60,7 +63,7 @@ class SearchPresenterTest {
     @Test
     fun subscribeTest_emptySearchHistory() {
         // Preconditions
-        `when`(dataManager.getSearchHistories()).thenReturn(TreeSet())
+        `when`(preferencesRepository.getSearchHistories()).thenReturn(TreeSet())
 
         searchPresenter.subscribe()
 
@@ -70,10 +73,10 @@ class SearchPresenterTest {
     @Test
     fun subscribeTest_haveSearchHistory_findStoreError() {
         // Preconditions
-        `when`(dataManager.getSearchHistories()).thenReturn(searchHistory)
+        `when`(preferencesRepository.getSearchHistories()).thenReturn(searchHistory)
 
         // Mocks
-        `when`(dataManager.findStoreById(STORE_ID)).thenReturn(Single.error(NotFoundException()))
+        `when`(storeRepository.findStoreById(STORE_ID)).thenReturn(Single.error(NotFoundException()))
 
         searchPresenter.subscribe()
 
@@ -83,10 +86,10 @@ class SearchPresenterTest {
     @Test
     fun subscribeTest_haveSearchHistory_findStoreAllError() {
         // Preconditions
-        `when`(dataManager.getSearchHistories()).thenReturn(searchHistory)
+        `when`(preferencesRepository.getSearchHistories()).thenReturn(searchHistory)
 
         // Mocks
-        `when`(dataManager.findStoreById(ArgumentMatchers.anyInt())).thenReturn(Single.error(NotFoundException()))
+        `when`(storeRepository.findStoreById(ArgumentMatchers.anyInt())).thenReturn(Single.error(NotFoundException()))
 
         searchPresenter.subscribe()
 
@@ -96,10 +99,10 @@ class SearchPresenterTest {
     @Test
     fun subscribeTest_haveSearchHistory() {
         // Preconditions
-        `when`(dataManager.getSearchHistories()).thenReturn(searchHistory)
+        `when`(preferencesRepository.getSearchHistories()).thenReturn(searchHistory)
 
         // Mocks
-        `when`(dataManager.findStoreById(STORE_ID)).thenReturn(Single.just(store))
+        `when`(storeRepository.findStoreById(STORE_ID)).thenReturn(Single.just(store))
 
         searchPresenter.subscribe()
 
@@ -109,7 +112,7 @@ class SearchPresenterTest {
     @Test
     fun onUpdateSearchListTest_error() {
         // Mocks
-        `when`(dataManager.findStores(ArgumentMatchers.anyString())).thenReturn(Single.error(UnknownException()))
+        `when`(storeRepository.findStores(ArgumentMatchers.anyString())).thenReturn(Single.error(UnknownException()))
 
         searchPresenter.onUpdateSearchList("search text")
 
@@ -119,7 +122,7 @@ class SearchPresenterTest {
     @Test
     fun onUpdateSearchListTest_emptyData() {
         // Mocks
-        `when`(dataManager.findStores(ArgumentMatchers.anyString())).thenReturn(Single.just(ArrayList()))
+        `when`(storeRepository.findStores(ArgumentMatchers.anyString())).thenReturn(Single.just(ArrayList()))
 
         searchPresenter.onUpdateSearchList("search text")
 
@@ -129,7 +132,7 @@ class SearchPresenterTest {
     @Test
     fun onUpdateSearchListTest() {
         // Mocks
-        `when`(dataManager.findStores(ArgumentMatchers.anyString())).thenReturn(Single.just(stores))
+        `when`(storeRepository.findStores(ArgumentMatchers.anyString())).thenReturn(Single.just(stores))
 
         searchPresenter.onUpdateSearchList("search text")
 

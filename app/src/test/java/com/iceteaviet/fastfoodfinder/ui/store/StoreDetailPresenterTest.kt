@@ -2,7 +2,10 @@ package com.iceteaviet.fastfoodfinder.ui.store
 
 import com.google.android.gms.maps.model.LatLng
 import com.iceteaviet.fastfoodfinder.core.location.GoogleLocationManager
-import com.iceteaviet.fastfoodfinder.data.DataManager
+import com.iceteaviet.fastfoodfinder.data.domain.user.UserRepository
+import com.iceteaviet.fastfoodfinder.data.domain.store.StoreRepository
+import com.iceteaviet.fastfoodfinder.data.auth.ClientAuth
+import com.iceteaviet.fastfoodfinder.data.domain.routing.MapsRoutingRepository
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
@@ -46,7 +49,16 @@ class StoreDetailPresenterTest {
     private lateinit var storeDetailPresenter: StoreDetailPresenter
 
     @Mock
-    private lateinit var dataManager: DataManager
+    private lateinit var mMockClientAuth: com.iceteaviet.fastfoodfinder.data.auth.ClientAuth
+
+    @Mock
+    private lateinit var mMockUserRepository: com.iceteaviet.fastfoodfinder.data.domain.user.UserRepository
+
+    @Mock
+    private lateinit var mMockStoreRepository: com.iceteaviet.fastfoodfinder.data.domain.store.StoreRepository
+
+    @Mock
+    private lateinit var mMockMapsRoutingRepository: com.iceteaviet.fastfoodfinder.data.domain.routing.MapsRoutingRepository
 
     @Mock
     private lateinit var locationManager: GoogleLocationManager
@@ -61,7 +73,7 @@ class StoreDetailPresenterTest {
         mockAnnotations = MockitoAnnotations.openMocks(this)
 
         // Get a reference to the class under test
-        storeDetailPresenter = StoreDetailPresenter(dataManager, TrampolineSchedulerProvider(), locationManager, storeDetailView)
+        storeDetailPresenter = StoreDetailPresenter(mMockClientAuth, mMockUserRepository, mMockStoreRepository, mMockMapsRoutingRepository, TrampolineSchedulerProvider(), locationManager, storeDetailView)
     }
 
     @After
@@ -72,13 +84,13 @@ class StoreDetailPresenterTest {
     @Test
     fun subscribeTest_User_null() {
         // Preconditions
-        `when`(dataManager.getCurrentUser()).thenReturn(null)
+        `when`(mMockClientAuth.getCurrentUserUid()).thenReturn("")
 
         val store = Store(STORE_ID, STORE_TITLE, STORE_ADDRESS, STORE_LAT, STORE_LNG, STORE_TEL, STORE_TYPE)
         storeDetailPresenter.handleExtras(store)
 
         // Mocks
-        `when`(dataManager.getComments(eq(STORE_ID.toString()))).thenReturn(Single.never())
+        `when`(mMockStoreRepository.getComments(eq(STORE_ID.toString()))).thenReturn(Single.never())
 
         storeDetailPresenter.subscribe()
 
@@ -92,7 +104,8 @@ class StoreDetailPresenterTest {
         `when`(storeDetailView.isLocationPermissionGranted()).thenReturn(false)
 
         // Mocks
-        `when`(dataManager.getComments(eq(STORE_ID.toString()))).thenReturn(
+        `when`(mMockClientAuth.getCurrentUserUid()).thenReturn("")
+        `when`(mMockStoreRepository.getComments(eq(STORE_ID.toString()))).thenReturn(
                 Single.just(comments)
         )
 
@@ -111,11 +124,11 @@ class StoreDetailPresenterTest {
     @Test
     fun subscribeTest_locationPermissionGranted_nullCurrentUser() {
         // Preconditions
-        `when`(dataManager.getCurrentUser()).thenReturn(null)
+        `when`(mMockClientAuth.getCurrentUserUid()).thenReturn("")
         `when`(storeDetailView.isLocationPermissionGranted()).thenReturn(true)
 
         // Mocks
-        `when`(dataManager.getComments(eq(STORE_ID.toString()))).thenReturn(
+        `when`(mMockStoreRepository.getComments(eq(STORE_ID.toString()))).thenReturn(
                 Single.just(comments)
         )
 
@@ -135,11 +148,12 @@ class StoreDetailPresenterTest {
     @Test
     fun subscribeTest_locationPermissionGranted_haveCurrentUser() {
         // Preconditions
-        `when`(dataManager.getCurrentUser()).thenReturn(user)
+        `when`(mMockClientAuth.getCurrentUserUid()).thenReturn(USER_UID)
+        `when`(mMockUserRepository.getUser(USER_UID)).thenReturn(io.reactivex.Single.just(user))
         `when`(storeDetailView.isLocationPermissionGranted()).thenReturn(true)
 
         // Mocks
-        `when`(dataManager.getComments(eq(STORE_ID.toString()))).thenReturn(
+        `when`(mMockStoreRepository.getComments(eq(STORE_ID.toString()))).thenReturn(
                 Single.just(comments)
         )
 
@@ -159,7 +173,8 @@ class StoreDetailPresenterTest {
     @Test
     fun subscribeTest_getCommentsError() {
         // Mocks
-        `when`(dataManager.getComments(eq(STORE_ID.toString()))).thenReturn(Single.error(EmptyDataException()))
+        `when`(mMockClientAuth.getCurrentUserUid()).thenReturn("")
+        `when`(mMockStoreRepository.getComments(eq(STORE_ID.toString()))).thenReturn(Single.error(EmptyDataException()))
 
         val store = Store(STORE_ID, STORE_TITLE, STORE_ADDRESS, STORE_LAT, STORE_LNG, STORE_TEL, STORE_TYPE)
         storeDetailPresenter.handleExtras(store)
@@ -252,7 +267,7 @@ class StoreDetailPresenterTest {
         verify(storeDetailView, never()).setAppBarExpanded(false)
         verify(storeDetailView, never()).scrollToCommentList()
 
-        verify(dataManager, never()).insertOrUpdateComment(store.id.toString(), comment)
+        verify(mMockStoreRepository, never()).insertOrUpdateComment(store.id.toString(), comment)
     }
 
     @Test
@@ -266,7 +281,7 @@ class StoreDetailPresenterTest {
         verify(storeDetailView).setAppBarExpanded(false)
         verify(storeDetailView).scrollToCommentList()
 
-        verify(dataManager).insertOrUpdateComment(store.id.toString(), comment)
+        verify(mMockStoreRepository).insertOrUpdateComment(store.id.toString(), comment)
     }
 
     @Test
@@ -297,7 +312,7 @@ class StoreDetailPresenterTest {
         storeDetailPresenter.handleExtras(store)
 
         // Mocks
-        `when`(dataManager.getMapsDirection(ArgumentMatchers.anyMap(), eq(store))).thenReturn(Single.just(invalidMapsDirection))
+        `when`(mMockMapsRoutingRepository.getMapsDirection(ArgumentMatchers.anyMap(), eq(store))).thenReturn(Single.just(invalidMapsDirection))
 
         storeDetailPresenter.onNavigationButtonClick()
 
@@ -312,7 +327,7 @@ class StoreDetailPresenterTest {
         storeDetailPresenter.handleExtras(store)
 
         // Mocks
-        `when`(dataManager.getMapsDirection(ArgumentMatchers.anyMap(), eq(store))).thenReturn(Single.just(mapsDirection))
+        `when`(mMockMapsRoutingRepository.getMapsDirection(ArgumentMatchers.anyMap(), eq(store))).thenReturn(Single.just(mapsDirection))
 
         storeDetailPresenter.onNavigationButtonClick()
 
@@ -327,7 +342,7 @@ class StoreDetailPresenterTest {
         storeDetailPresenter.handleExtras(store)
 
         // Mocks
-        `when`(dataManager.getMapsDirection(ArgumentMatchers.anyMap(), eq(store))).thenReturn(Single.error(NotFoundException()))
+        `when`(mMockMapsRoutingRepository.getMapsDirection(ArgumentMatchers.anyMap(), eq(store))).thenReturn(Single.error(NotFoundException()))
 
         storeDetailPresenter.onNavigationButtonClick()
 
@@ -360,7 +375,7 @@ class StoreDetailPresenterTest {
 
     @Test
     fun clickOnCommentButton_not_signined() {
-        `when`(dataManager.getCurrentUser()).thenReturn(null)
+        `when`(mMockClientAuth.getCurrentUserUid()).thenReturn("")
 
         storeDetailPresenter.onCommentButtonClick()
 
@@ -371,7 +386,8 @@ class StoreDetailPresenterTest {
     @Test
     fun clickOnCommentButton_signined() {
         val user = User(USER_UID, USER_NAME, USER_EMAIL, USER_PHOTO_URL, getFakeUserStoreLists())
-        `when`(dataManager.getCurrentUser()).thenReturn(user)
+        `when`(mMockClientAuth.getCurrentUserUid()).thenReturn(USER_UID)
+        `when`(mMockUserRepository.getUser(USER_UID)).thenReturn(io.reactivex.Single.just(user))
 
         storeDetailPresenter.onCommentButtonClick()
 
@@ -381,7 +397,7 @@ class StoreDetailPresenterTest {
 
     @Test
     fun onAddToFavButtonClick_not_signined() {
-        `when`(dataManager.getCurrentUser()).thenReturn(null)
+        `when`(mMockClientAuth.getCurrentUserUid()).thenReturn("")
 
         storeDetailPresenter.onCommentButtonClick()
 
@@ -391,7 +407,8 @@ class StoreDetailPresenterTest {
     @Test
     fun onAddToFavButtonClick_signined() {
         val user = User(USER_UID, USER_NAME, USER_EMAIL, USER_PHOTO_URL, getFakeUserStoreLists())
-        `when`(dataManager.getCurrentUser()).thenReturn(user)
+        `when`(mMockClientAuth.getCurrentUserUid()).thenReturn(USER_UID)
+        `when`(mMockUserRepository.getUser(USER_UID)).thenReturn(io.reactivex.Single.just(user))
 
         storeDetailPresenter.onCommentButtonClick()
 
@@ -400,7 +417,7 @@ class StoreDetailPresenterTest {
 
     @Test
     fun onSaveButtonClick_not_signined() {
-        `when`(dataManager.getCurrentUser()).thenReturn(null)
+        `when`(mMockClientAuth.getCurrentUserUid()).thenReturn("")
 
         storeDetailPresenter.onCommentButtonClick()
 
@@ -410,7 +427,8 @@ class StoreDetailPresenterTest {
     @Test
     fun onSaveButtonClick_signined() {
         val user = User(USER_UID, USER_NAME, USER_EMAIL, USER_PHOTO_URL, getFakeUserStoreLists())
-        `when`(dataManager.getCurrentUser()).thenReturn(user)
+        `when`(mMockClientAuth.getCurrentUserUid()).thenReturn(USER_UID)
+        `when`(mMockUserRepository.getUser(USER_UID)).thenReturn(io.reactivex.Single.just(user))
 
         storeDetailPresenter.onCommentButtonClick()
 

@@ -1,7 +1,6 @@
 package com.iceteaviet.fastfoodfinder.ui.storelist
 
 import androidx.annotation.VisibleForTesting
-import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList
 import com.iceteaviet.fastfoodfinder.ui.base.BasePresenter
@@ -13,26 +12,29 @@ import io.reactivex.disposables.Disposable
 /**
  * Created by tom on 2019-04-18.
  */
-class ListDetailPresenter : BasePresenter<ListDetailContract.Presenter>, ListDetailContract.Presenter {
+class ListDetailPresenter(
+    private val clientAuth: com.iceteaviet.fastfoodfinder.data.auth.ClientAuth,
+    private val userRepository: com.iceteaviet.fastfoodfinder.data.domain.user.UserRepository,
+    private val storeRepository: com.iceteaviet.fastfoodfinder.data.domain.store.StoreRepository,
+    schedulerProvider: SchedulerProvider,
+        private val listDetailView: ListDetailContract.View
+) : BasePresenter<ListDetailContract.Presenter>(schedulerProvider), ListDetailContract.Presenter {
 
-    private val listDetailView: ListDetailContract.View
-
+    
     @VisibleForTesting
     lateinit var userStoreList: UserStoreList
 
     @VisibleForTesting
     var photoUrl: String = ""
 
-    constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider, listDetailView: ListDetailContract.View) : super(dataManager, schedulerProvider) {
-        this.listDetailView = listDetailView
-    }
+    
 
     override fun subscribe() {
         listDetailView.setListNameText(userStoreList.listName)
         listDetailView.loadStoreIcon(getStoreListIconDrawableRes(userStoreList.iconId))
 
         //add list store to mAdapter here
-        dataManager.findStoresByIds(userStoreList.getStoreIdList())
+        storeRepository.findStoresByIds(userStoreList.getStoreIdList())
             .subscribeOn(schedulerProvider.io())
             .observeOn(schedulerProvider.ui())
             .subscribe(object : SingleObserver<List<Store>> {

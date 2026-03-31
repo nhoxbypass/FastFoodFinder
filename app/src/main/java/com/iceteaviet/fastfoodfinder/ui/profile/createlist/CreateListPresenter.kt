@@ -2,23 +2,24 @@ package com.iceteaviet.fastfoodfinder.ui.profile.createlist
 
 import androidx.annotation.VisibleForTesting
 import com.iceteaviet.fastfoodfinder.R
-import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.ui.base.BasePresenter
 import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
 
 /**
  * Created by tom on 2019-04-18.
  */
-class CreateListPresenter : BasePresenter<CreateListContract.Presenter>, CreateListContract.Presenter {
+class CreateListPresenter(
+    private val clientAuth: com.iceteaviet.fastfoodfinder.data.auth.ClientAuth,
+    private val userRepository: com.iceteaviet.fastfoodfinder.data.domain.user.UserRepository,
+    schedulerProvider: SchedulerProvider,
+        private val createListView: CreateListContract.View
+) : BasePresenter<CreateListContract.Presenter>(schedulerProvider), CreateListContract.Presenter {
 
-    private val createListView: CreateListContract.View
 
     @VisibleForTesting
     var iconId = R.drawable.ic_profile_list_1
 
-    constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider, createListView: CreateListContract.View) : super(dataManager, schedulerProvider) {
-        this.createListView = createListView
-    }
+    
 
     override fun subscribe() {
     }

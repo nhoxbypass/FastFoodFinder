@@ -169,7 +169,7 @@ class UpdateCoverImageDialog : DialogFragment(), UpdateCoverContract.View, View.
             val frag = UpdateCoverImageDialog()
             val args = Bundle()
             frag.arguments = args
-            frag.presenter = UpdateCoverPresenter(App.getDataManager(), App.getSchedulerProvider(), frag)
+            frag.presenter = UpdateCoverPresenter(App.getClientAuth(), App.getUserRepository(), App.getSchedulerProvider(), frag)
             return frag
         }
     }

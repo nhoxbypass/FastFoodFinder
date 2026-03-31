@@ -69,7 +69,7 @@ class MapRoutingActivity : BaseActivity(), MapRoutingContract.View, View.OnClick
         binding = ActivityMapRoutingBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        presenter = MapRoutingPresenter(App.getDataManager(), App.getSchedulerProvider(), this)
+        presenter = MapRoutingPresenter(App.getSchedulerProvider(), this)
 
         setupUI()
         setUpMapIfNeeded()

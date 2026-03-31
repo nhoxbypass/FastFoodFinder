@@ -1,7 +1,7 @@
 package com.iceteaviet.fastfoodfinder.ui.settings
 
 import androidx.annotation.VisibleForTesting
-import com.iceteaviet.fastfoodfinder.data.DataManager
+
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.ui.base.BasePresenter
 import com.iceteaviet.fastfoodfinder.utils.filterInvalidData
@@ -12,27 +12,26 @@ import io.reactivex.disposables.Disposable
 /**
  * Created by tom on 2019-04-18.
  */
-class SettingPresenter : BasePresenter<SettingContract.Presenter>, SettingContract.Presenter {
-
+class SettingPresenter(
+    private val clientAuth: com.iceteaviet.fastfoodfinder.data.auth.ClientAuth,
+    private val preferencesRepository: com.iceteaviet.fastfoodfinder.data.domain.prefs.PreferencesRepository,
+    private val storeRepository: com.iceteaviet.fastfoodfinder.data.domain.store.StoreRepository,
+    schedulerProvider: SchedulerProvider,
     val settingView: SettingContract.View
+) : BasePresenter<SettingContract.Presenter>(schedulerProvider), SettingContract.Presenter {
 
     @VisibleForTesting
     var isVietnamese = true
-
-
-    constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider, settingView: SettingContract.View) : super(dataManager, schedulerProvider) {
-        this.settingView = settingView
-    }
 
     override fun subscribe() {
     }
 
     override fun onInitSignOutTextView() {
-        settingView.initSignOutTextView(dataManager.isSignedIn())
+        settingView.initSignOutTextView(clientAuth.isSignedIn())
     }
 
     override fun signOut() {
-        dataManager.signOut()
+        clientAuth.signOut()
     }
 
     override fun onLanguageChanged() {
@@ -49,16 +48,16 @@ class SettingPresenter : BasePresenter<SettingContract.Presenter>, SettingContra
     }
 
     override fun onSetupLanguage() {
-        isVietnamese = dataManager.getIfLanguageIsVietnamese()
+        isVietnamese = preferencesRepository.getIfLanguageIsVietnamese()
         this.settingView.updateLangUI(isVietnamese)
     }
 
     override fun saveLanguagePref() {
-        dataManager.setIfLanguageIsVietnamese(isVietnamese)
+        preferencesRepository.setIfLanguageIsVietnamese(isVietnamese)
     }
 
     override fun onLoadStoreFromServer() {
-        dataManager.loadStoresFromServer()
+        com.iceteaviet.fastfoodfinder.utils.loadStoresFromServerHelper(com.iceteaviet.fastfoodfinder.App.getContext(), clientAuth, storeRepository)
             .subscribeOn(schedulerProvider.io())
             .observeOn(schedulerProvider.ui())
             .subscribe(object : SingleObserver<List<Store>> {
@@ -69,7 +68,7 @@ class SettingPresenter : BasePresenter<SettingContract.Presenter>, SettingContra
 
                 override fun onSuccess(storeList: List<Store>) {
                     val filteredStoreList = filterInvalidData(storeList.toMutableList())
-                    dataManager.setStores(filteredStoreList)
+                    storeRepository.setStores(filteredStoreList)
 
                     settingView.showSuccessLoadingToast("")
                     settingView.updateLoadingProgressView(false)

@@ -57,7 +57,7 @@ class LiveSightActivity : BaseActivity(), LiveSightContract.View, SensorEventLis
         binding = ActivityArCameraBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        presenter = LiveSightPresenter(App.getDataManager(), App.getSchedulerProvider(), SystemLocationManager.getInstance(), this)
+        presenter = LiveSightPresenter(App.getStoreRepository(), App.getSchedulerProvider(), SystemLocationManager.getInstance(), this)
 
         cameraContainerLayout = binding.cameraContainerLayout
         surfaceView = binding.surfaceView

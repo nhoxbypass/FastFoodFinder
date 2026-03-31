@@ -39,7 +39,7 @@ class ListDetailActivity : BaseActivity(), ListDetailContract.View {
         binding = ActivityListDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        presenter = ListDetailPresenter(App.getDataManager(), App.getSchedulerProvider(), this)
+        presenter = ListDetailPresenter(App.getClientAuth(), App.getUserRepository(), App.getStoreRepository(), App.getSchedulerProvider(), this)
 
         if (intent != null) {
             presenter.handleExtras(intent.getParcelableExtra(KEY_USER_STORE_LIST), intent.getStringExtra(KEY_USER_PHOTO_URL))

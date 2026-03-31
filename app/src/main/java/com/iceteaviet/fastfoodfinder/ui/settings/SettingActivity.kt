@@ -52,7 +52,7 @@ class SettingActivity : BaseActivity(), SettingContract.View {
         binding = ActivitySettingBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        presenter = SettingPresenter(App.getDataManager(), App.getSchedulerProvider(), this)
+        presenter = SettingPresenter(App.getClientAuth(), App.getPreferencesRepository(), App.getStoreRepository(), App.getSchedulerProvider(), this)
 
         setupUI()
 

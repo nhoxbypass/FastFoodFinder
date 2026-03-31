@@ -296,7 +296,7 @@ class MainMapFragment : Fragment(), MainMapContract.View {
 
             val fragment = MainMapFragment()
             fragment.arguments = args
-            fragment.presenter = MainMapPresenter(App.getDataManager(), App.getSchedulerProvider(),
+            fragment.presenter = MainMapPresenter(App.getStoreRepository(), App.getMapsRoutingRepository(), App.getSchedulerProvider(),
                 GoogleLocationManager.getInstance(), App.getBus(), Injection.providePublishSubject(),
                 Injection.providePublishSubject(), fragment)
             return fragment

@@ -100,7 +100,7 @@ class MainRecentlyFragment : Fragment(), MainRecentlyContract.View, OnStartDragL
             val args = Bundle()
             val fragment = MainRecentlyFragment()
             fragment.arguments = args
-            fragment.presenter = MainRecentlyPresenter(App.getDataManager(), App.getSchedulerProvider(), fragment)
+            fragment.presenter = MainRecentlyPresenter(App.getSchedulerProvider(), fragment)
             return fragment
         }
     }

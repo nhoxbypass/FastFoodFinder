@@ -1,6 +1,7 @@
 package com.iceteaviet.fastfoodfinder.ui.profile.createlist
 
-import com.iceteaviet.fastfoodfinder.data.DataManager
+import com.iceteaviet.fastfoodfinder.data.auth.ClientAuth
+import com.iceteaviet.fastfoodfinder.data.domain.user.UserRepository
 import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
 import com.iceteaviet.fastfoodfinder.utils.rx.TrampolineSchedulerProvider
 import com.nhaarman.mockitokotlin2.verify
@@ -16,9 +17,11 @@ class CreateListPresenterTest {
     
     @Mock
     private lateinit var createListView : CreateListContract.View
-
     @Mock
-    private lateinit var dataManager: DataManager
+    private lateinit var clientAuth: ClientAuth
+    @Mock
+    private lateinit var userRepository: UserRepository
+
 
     private lateinit var schedulerProvider: SchedulerProvider
 
@@ -30,7 +33,7 @@ class CreateListPresenterTest {
 
         schedulerProvider = TrampolineSchedulerProvider()
 
-        createListPresenter = CreateListPresenter(dataManager, schedulerProvider, createListView)
+        createListPresenter = CreateListPresenter(clientAuth, userRepository, schedulerProvider, createListView)
     }
 
     @After

@@ -1,6 +1,6 @@
 package com.iceteaviet.fastfoodfinder.ui.ar
 
-import com.iceteaviet.fastfoodfinder.data.DataManager
+import com.iceteaviet.fastfoodfinder.data.domain.store.StoreRepository
 import com.iceteaviet.fastfoodfinder.core.location.LatLngAlt
 import com.iceteaviet.fastfoodfinder.core.location.LocationListener
 import com.iceteaviet.fastfoodfinder.core.location.SystemLocationManager
@@ -31,9 +31,9 @@ class LiveSightPresenterTest {
     
     @Mock
     private lateinit var liveSightView: LiveSightContract.View
-
     @Mock
-    private lateinit var dataManager: DataManager
+    private lateinit var storeRepository: StoreRepository
+
 
     @Mock
     private lateinit var locationManager: SystemLocationManager
@@ -54,7 +54,7 @@ class LiveSightPresenterTest {
         schedulerProvider = TrampolineSchedulerProvider()
 
         // Get a reference to the class under test
-        liveSightPresenter = LiveSightPresenter(dataManager, schedulerProvider, locationManager, liveSightView)
+        liveSightPresenter = LiveSightPresenter(storeRepository, schedulerProvider, locationManager, liveSightView)
     }
 
     @After
@@ -135,7 +135,7 @@ class LiveSightPresenterTest {
     fun requestCurrentLocationTest_haveLastLocation_getStoreInBoundsError() {
         // Preconditions
         `when`(locationManager.getCurrentLocation()).thenReturn(location)
-        `when`(dataManager.getStoreInBounds(location.latitude, location.longitude, LiveSightPresenter.RADIUS))
+        `when`(storeRepository.getStoreInBounds(location.latitude, location.longitude, LiveSightPresenter.RADIUS))
                 .thenReturn(Single.error(UnknownException()))
 
         liveSightPresenter.requestCurrentLocation()
@@ -148,7 +148,7 @@ class LiveSightPresenterTest {
     fun requestCurrentLocationTest_haveLastLocation_getStoreInBoundsEmpty() {
         // Preconditions
         `when`(locationManager.getCurrentLocation()).thenReturn(location)
-        `when`(dataManager.getStoreInBounds(location.latitude, location.longitude, LiveSightPresenter.RADIUS))
+        `when`(storeRepository.getStoreInBounds(location.latitude, location.longitude, LiveSightPresenter.RADIUS))
                 .thenReturn(Single.just(ArrayList()))
 
         liveSightPresenter.requestCurrentLocation()
@@ -161,7 +161,7 @@ class LiveSightPresenterTest {
     fun requestCurrentLocationTest_haveLastLocation_getStoreInBoundsSuccess() {
         // Preconditions
         `when`(locationManager.getCurrentLocation()).thenReturn(location)
-        `when`(dataManager.getStoreInBounds(location.latitude, location.longitude, LiveSightPresenter.RADIUS))
+        `when`(storeRepository.getStoreInBounds(location.latitude, location.longitude, LiveSightPresenter.RADIUS))
                 .thenReturn(Single.just(stores))
 
         liveSightPresenter.requestCurrentLocation()
@@ -181,7 +181,7 @@ class LiveSightPresenterTest {
     fun onLocationChangeTest_getStoreInBoundsError() {
         // Preconditions
         liveSightPresenter.onLocationPermissionGranted()
-        `when`(dataManager.getStoreInBounds(location.latitude, location.longitude, LiveSightPresenter.RADIUS))
+        `when`(storeRepository.getStoreInBounds(location.latitude, location.longitude, LiveSightPresenter.RADIUS))
                 .thenReturn(Single.error(UnknownException()))
 
         verify(locationManager).getCurrentLocation()
@@ -198,7 +198,7 @@ class LiveSightPresenterTest {
     fun onLocationChangeTest_getStoreInBoundsEmpty() {
         // Preconditions
         liveSightPresenter.onLocationPermissionGranted()
-        `when`(dataManager.getStoreInBounds(location.latitude, location.longitude, LiveSightPresenter.RADIUS))
+        `when`(storeRepository.getStoreInBounds(location.latitude, location.longitude, LiveSightPresenter.RADIUS))
                 .thenReturn(Single.just(ArrayList()))
 
         verify(locationManager).getCurrentLocation()
@@ -215,7 +215,7 @@ class LiveSightPresenterTest {
     fun onLocationChangeTest_getStoreInBoundsSuccess() {
         // Preconditions
         liveSightPresenter.onLocationPermissionGranted()
-        `when`(dataManager.getStoreInBounds(location.latitude, location.longitude, LiveSightPresenter.RADIUS))
+        `when`(storeRepository.getStoreInBounds(location.latitude, location.longitude, LiveSightPresenter.RADIUS))
                 .thenReturn(Single.just(stores))
 
         verify(locationManager).getCurrentLocation()

@@ -1,6 +1,5 @@
 package com.iceteaviet.fastfoodfinder.ui.main.search
 
-import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.service.eventbus.SearchEventResult
 import com.iceteaviet.fastfoodfinder.service.eventbus.core.IBus
@@ -15,20 +14,20 @@ import io.reactivex.disposables.Disposable
 /**
  * Created by tom on 2019-04-18.
  */
-class SearchPresenter : BasePresenter<SearchContract.Presenter>, SearchContract.Presenter {
-
+class SearchPresenter(
+    private val storeRepository: com.iceteaviet.fastfoodfinder.data.domain.store.StoreRepository,
+    private val preferencesRepository: com.iceteaviet.fastfoodfinder.data.domain.prefs.PreferencesRepository,
+    schedulerProvider: SchedulerProvider,
+    private val bus: com.iceteaviet.fastfoodfinder.service.eventbus.core.IBus,
     private val searchView: SearchContract.View
-    private val bus: IBus
+) : BasePresenter<SearchContract.Presenter>(schedulerProvider), SearchContract.Presenter {
 
     private var searchString: String = ""
 
-    constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider, bus: IBus, searchView: SearchContract.View) : super(dataManager, schedulerProvider) {
-        this.searchView = searchView
-        this.bus = bus
-    }
+
 
     override fun subscribe() {
-        val searchHistories = dataManager.getSearchHistories().toList().asReversed()
+        val searchHistories = preferencesRepository.getSearchHistories().toList().asReversed()
         if (searchHistories.isNotEmpty())
             searchView.setSearchHistory(searchHistories, getStoresFromIds(searchHistories))
     }
@@ -46,7 +45,7 @@ class SearchPresenter : BasePresenter<SearchContract.Presenter>, SearchContract.
     }
 
     override fun onUpdateSearchList(searchText: String) {
-        dataManager.findStores(searchText)
+        storeRepository.findStores(searchText)
             .subscribeOn(schedulerProvider.io())
             .observeOn(schedulerProvider.ui())
             .subscribe(object : SingleObserver<List<Store>> {
@@ -82,7 +81,7 @@ class SearchPresenter : BasePresenter<SearchContract.Presenter>, SearchContract.
         for (history in searchHistories) {
             if (history.contains(Constant.SEARCH_STORE_PREFIX)) {
                 try {
-                    val store = dataManager.findStoreById(history.substring(Constant.SEARCH_STORE_PREFIX_LEN).toInt())
+                    val store = storeRepository.findStoreById(history.substring(Constant.SEARCH_STORE_PREFIX_LEN).toInt())
                         .blockingGet()
                     searchItems.add(SearchStoreItem(store, ""))
                 } catch (ex: Exception) {

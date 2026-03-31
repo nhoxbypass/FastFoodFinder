@@ -1,6 +1,5 @@
 package com.iceteaviet.fastfoodfinder.ui.main.favourite
 
-import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreEvent
 import com.iceteaviet.fastfoodfinder.ui.base.BasePresenter
@@ -13,16 +12,18 @@ import io.reactivex.disposables.Disposable
 /**
  * Created by tom on 2019-04-18.
  */
-class MainFavPresenter : BasePresenter<MainFavContract.Presenter>, MainFavContract.Presenter {
-
+class MainFavPresenter(
+    private val clientAuth: com.iceteaviet.fastfoodfinder.data.auth.ClientAuth,
+    private val userRepository: com.iceteaviet.fastfoodfinder.data.domain.user.UserRepository,
+    private val storeRepository: com.iceteaviet.fastfoodfinder.data.domain.store.StoreRepository,
+    schedulerProvider: SchedulerProvider,
     private val mainFavView: MainFavContract.View
+) : BasePresenter<MainFavContract.Presenter>(schedulerProvider), MainFavContract.Presenter {
 
-    constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider, mainFavView: MainFavContract.View) : super(dataManager, schedulerProvider) {
-        this.mainFavView = mainFavView
-    }
+
 
     override fun subscribe() {
-        val currUser = dataManager.getCurrentUser()
+        val currUser = com.iceteaviet.fastfoodfinder.utils.getCurrentUserHelper(clientAuth, userRepository)
         if (currUser != null) {
             loadStoreListsFromIds(currUser.getFavouriteStoreList().getStoreIdList())
             listenFavStoresOfUser(currUser.getUid())
@@ -30,9 +31,9 @@ class MainFavPresenter : BasePresenter<MainFavContract.Presenter>, MainFavContra
     }
 
     override fun unsubscribe() {
-        val currUser = dataManager.getCurrentUser()
+        val currUser = com.iceteaviet.fastfoodfinder.utils.getCurrentUserHelper(clientAuth, userRepository)
         if (currUser != null) {
-            dataManager.unsubscribeFavouriteStoresOfUser(currUser.getUid())
+            userRepository.unsubscribeFavouriteStoresOfUser(currUser.getUid())
         }
         super.unsubscribe()
     }
@@ -45,7 +46,7 @@ class MainFavPresenter : BasePresenter<MainFavContract.Presenter>, MainFavContra
         if (storeIdList.isEmpty())
             return
 
-        dataManager.findStoresByIds(storeIdList)
+        storeRepository.findStoresByIds(storeIdList)
             .subscribeOn(schedulerProvider.io())
             .observeOn(schedulerProvider.ui())
             .subscribe(object : SingleObserver<List<Store>> {
@@ -65,7 +66,7 @@ class MainFavPresenter : BasePresenter<MainFavContract.Presenter>, MainFavContra
     }
 
     private fun listenFavStoresOfUser(userUid: String) {
-        dataManager.subscribeFavouriteStoresOfUser(userUid)
+        userRepository.subscribeFavouriteStoresOfUser(userUid)
             .subscribeOn(schedulerProvider.io())
             .map { storeIdPair ->
                 val id = storeIdPair.first
@@ -74,7 +75,7 @@ class MainFavPresenter : BasePresenter<MainFavContract.Presenter>, MainFavContra
                 if (id == null || eventAC == null || eventAC < 0)
                     throw EmptyParamsException()
 
-                val store = dataManager.findStoreById(id).blockingGet()
+                val store = storeRepository.findStoreById(id).blockingGet()
 
                 return@map UserStoreEvent(store, eventAC)
             }

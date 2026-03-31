@@ -186,7 +186,7 @@ class StoreInfoDialog : DialogFragment(), StoreInfoContract.View {
             args.putParcelable(KEY_STORE, store)
             val fragment = StoreInfoDialog()
             fragment.arguments = args
-            fragment.presenter = StoreInfoPresenter(App.getDataManager(), App.getSchedulerProvider(), fragment)
+            fragment.presenter = StoreInfoPresenter(App.getSchedulerProvider(), fragment)
             return fragment
         }
     }

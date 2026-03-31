@@ -1,7 +1,9 @@
 package com.iceteaviet.fastfoodfinder.ui.storelist
 
 import com.iceteaviet.fastfoodfinder.R
-import com.iceteaviet.fastfoodfinder.data.DataManager
+import com.iceteaviet.fastfoodfinder.data.domain.user.UserRepository
+import com.iceteaviet.fastfoodfinder.data.domain.store.StoreRepository
+import com.iceteaviet.fastfoodfinder.data.auth.ClientAuth
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList
 import com.iceteaviet.fastfoodfinder.utils.exception.NotFoundException
 import com.iceteaviet.fastfoodfinder.utils.getFakeStoreIds
@@ -29,7 +31,11 @@ class ListDetailPresenterTest {
     private lateinit var listDetailPresenter: ListDetailPresenter
 
     @Mock
-    private lateinit var dataManager: DataManager
+    private lateinit var userRepository: UserRepository
+    @Mock
+    private lateinit var storeRepository: StoreRepository
+    @Mock
+    private lateinit var clientAuth: ClientAuth
 
     @Before
     fun setupPresenter() {
@@ -38,7 +44,7 @@ class ListDetailPresenterTest {
         mockAnnotations = MockitoAnnotations.openMocks(this)
 
         // Get a reference to the class under test
-        listDetailPresenter = ListDetailPresenter(dataManager, TrampolineSchedulerProvider(), listDetailView)
+        listDetailPresenter = ListDetailPresenter(clientAuth, userRepository, storeRepository, TrampolineSchedulerProvider(), listDetailView)
     }
 
     @After
@@ -82,7 +88,7 @@ class ListDetailPresenterTest {
         // Preconditions
         listDetailPresenter.userStoreList = userStoreList
         listDetailPresenter.photoUrl = USER_PHOTO_URL
-        `when`(dataManager.findStoresByIds(userStoreList.getStoreIdList())).thenReturn(Single.error(NotFoundException()))
+        `when`(storeRepository.findStoresByIds(userStoreList.getStoreIdList())).thenReturn(Single.error(NotFoundException()))
 
         listDetailPresenter.subscribe()
 
@@ -96,7 +102,7 @@ class ListDetailPresenterTest {
         // Preconditions
         listDetailPresenter.userStoreList = userStoreList
         listDetailPresenter.photoUrl = USER_PHOTO_URL
-        `when`(dataManager.findStoresByIds(userStoreList.getStoreIdList())).thenReturn(Single.just(stores))
+        `when`(storeRepository.findStoresByIds(userStoreList.getStoreIdList())).thenReturn(Single.just(stores))
 
         listDetailPresenter.subscribe()
 

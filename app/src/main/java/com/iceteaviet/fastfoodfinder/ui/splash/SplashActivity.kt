@@ -23,7 +23,7 @@ class SplashActivity : BaseActivity(), SplashContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        presenter = SplashPresenter(App.getDataManager(), App.getSchedulerProvider(), this)
+        presenter = SplashPresenter(App.getClientAuth(), App.getUserRepository(), App.getStoreRepository(), App.getPreferencesRepository(), App.getSchedulerProvider(), this)
     }
 
     override fun onResume() {

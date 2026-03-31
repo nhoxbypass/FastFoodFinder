@@ -1,6 +1,7 @@
 package com.iceteaviet.fastfoodfinder.ui.login.emaillogin
 
-import com.iceteaviet.fastfoodfinder.data.DataManager
+import com.iceteaviet.fastfoodfinder.data.auth.ClientAuth
+import com.iceteaviet.fastfoodfinder.data.domain.user.UserRepository
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
 import com.iceteaviet.fastfoodfinder.utils.exception.UnknownException
 import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
@@ -23,9 +24,11 @@ class EmailLoginPresenterTest {
     
     @Mock
     private lateinit var emailLoginView: EmailLoginContract.View
-
     @Mock
-    private lateinit var dataManager: DataManager
+    private lateinit var clientAuth: ClientAuth
+    @Mock
+    private lateinit var userRepository: UserRepository
+
 
     private lateinit var emailLoginPresenter: EmailLoginPresenter
 
@@ -36,7 +39,7 @@ class EmailLoginPresenterTest {
         mockAnnotations = MockitoAnnotations.openMocks(this)
         schedulerProvider = TrampolineSchedulerProvider()
 
-        emailLoginPresenter = EmailLoginPresenter(dataManager, schedulerProvider, emailLoginView)
+        emailLoginPresenter = EmailLoginPresenter(clientAuth, userRepository, schedulerProvider, emailLoginView)
     }
 
     @After
@@ -79,7 +82,7 @@ class EmailLoginPresenterTest {
     fun onSignUpButtonClickedTest_validData_signInError() {
         // Mocks
         val exception = UnknownException()
-        `when`(dataManager.signInWithEmailAndPassword(EMAIL, PWD)).thenReturn(Single.error(exception))
+        `when`(clientAuth.signInWithEmailAndPassword(EMAIL, PWD)).thenReturn(Single.error(exception))
 
         emailLoginPresenter.onSignInButtonClicked(EMAIL, PWD)
 
@@ -95,7 +98,7 @@ class EmailLoginPresenterTest {
     @Test
     fun onSignUpButtonClickedTest_validData_signInSuccess() {
         // Mocks
-        `when`(dataManager.signInWithEmailAndPassword(EMAIL, PWD)).thenReturn(Single.just(user))
+        `when`(clientAuth.signInWithEmailAndPassword(EMAIL, PWD)).thenReturn(Single.just(user))
 
         emailLoginPresenter.onSignInButtonClicked(EMAIL, PWD)
 

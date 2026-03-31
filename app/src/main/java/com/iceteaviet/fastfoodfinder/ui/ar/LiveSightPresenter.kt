@@ -1,7 +1,6 @@
 package com.iceteaviet.fastfoodfinder.ui.ar
 
 import androidx.annotation.VisibleForTesting
-import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.core.location.LatLngAlt
 import com.iceteaviet.fastfoodfinder.core.location.LocationListener
@@ -17,17 +16,14 @@ import io.reactivex.disposables.Disposable
 /**
  * Created by tom on 2019-04-16.
  */
-class LiveSightPresenter : BasePresenter<LiveSightContract.Presenter>, LiveSightContract.Presenter, LocationListener {
-
+class LiveSightPresenter(
+    private val storeRepository: com.iceteaviet.fastfoodfinder.data.domain.store.StoreRepository,
+    schedulerProvider: SchedulerProvider,
+    private val locationManager: com.iceteaviet.fastfoodfinder.core.location.base.ILocationManager,
     private val liveSightView: LiveSightContract.View
+) : BasePresenter<LiveSightContract.Presenter>(schedulerProvider), LiveSightContract.Presenter, com.iceteaviet.fastfoodfinder.core.location.LocationListener {
 
-    private val locationManager: ILocationManager
 
-    constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider,
-                locationManager: ILocationManager, liveSightView: LiveSightContract.View) : super(dataManager, schedulerProvider) {
-        this.liveSightView = liveSightView
-        this.locationManager = locationManager
-    }
 
     override fun subscribe() {
         if (isLolipopOrHigher() && !liveSightView.isLocationPermissionGranted()) {
@@ -75,7 +71,7 @@ class LiveSightPresenter : BasePresenter<LiveSightContract.Presenter>, LiveSight
 
     override fun onLocationChanged(location: LatLngAlt) {
         liveSightView.updateLatestLocation(location)
-        dataManager.getStoreInBounds(location.latitude, location.longitude, RADIUS)
+        storeRepository.getStoreInBounds(location.latitude, location.longitude, RADIUS)
             .subscribeOn(schedulerProvider.io())
             .observeOn(schedulerProvider.ui())
             .subscribe(object : SingleObserver<List<Store>> {

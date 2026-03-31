@@ -3,7 +3,6 @@ package com.iceteaviet.fastfoodfinder.ui.store
 import android.os.Parcelable
 import androidx.annotation.VisibleForTesting
 import com.google.android.gms.maps.model.LatLng
-import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.routing.GoogleMapsRoutingApiHelper
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Comment
@@ -22,32 +21,34 @@ import io.reactivex.disposables.Disposable
 /**
  * Created by tom on 2019-04-18.
  */
-open class StoreDetailPresenter : BasePresenter<StoreDetailContract.Presenter>, StoreDetailContract.Presenter, LocationListener {
-
+open class StoreDetailPresenter(
+    private val clientAuth: com.iceteaviet.fastfoodfinder.data.auth.ClientAuth,
+    private val userRepository: com.iceteaviet.fastfoodfinder.data.domain.user.UserRepository,
+    private val storeRepository: com.iceteaviet.fastfoodfinder.data.domain.store.StoreRepository,
+    private val mapsRoutingRepository: com.iceteaviet.fastfoodfinder.data.domain.routing.MapsRoutingRepository,
+    schedulerProvider: SchedulerProvider,
+    private var locationManager: com.iceteaviet.fastfoodfinder.core.location.base.ILocationManager,
     private val storeDetailView: StoreDetailContract.View
+) : BasePresenter<StoreDetailContract.Presenter>(schedulerProvider), StoreDetailContract.Presenter, LocationListener {
 
+    
     @VisibleForTesting
     var currLocation: LatLng? = null
 
     @VisibleForTesting
     lateinit var currStore: Store
 
-    private var locationManager: ILocationManager
-
-    constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider,
-                locationManager: ILocationManager, storeDetailView: StoreDetailContract.View) : super(dataManager, schedulerProvider) {
-        this.storeDetailView = storeDetailView
-        this.locationManager = locationManager
-    }
+    
+    
 
     override fun subscribe() {
         storeDetailView.setToolbarTitle(currStore.title)
 
-        val currUser = dataManager.getCurrentUser()
+        val currUser = com.iceteaviet.fastfoodfinder.utils.getCurrentUserHelper(clientAuth, userRepository)
 
         storeDetailView.updateSignInState(currUser != null)
 
-        dataManager.getComments(currStore.id.toString())
+        storeRepository.getComments(currStore.id.toString())
             .subscribeOn(schedulerProvider.io())
             .observeOn(schedulerProvider.ui())
             .subscribe(object : SingleObserver<List<Comment>> {
@@ -112,12 +113,12 @@ open class StoreDetailPresenter : BasePresenter<StoreDetailContract.Presenter>, 
             storeDetailView.scrollToCommentList()
 
             // Update comment data
-            dataManager.insertOrUpdateComment(currStore.id.toString(), comment)
+            storeRepository.insertOrUpdateComment(currStore.id.toString(), comment)
         }
     }
 
     override fun onCommentButtonClick() {
-        val currUser = dataManager.getCurrentUser()
+        val currUser = com.iceteaviet.fastfoodfinder.utils.getCurrentUserHelper(clientAuth, userRepository)
         if (currUser != null) {
             storeDetailView.showCommentEditorView()
         } else {
@@ -153,7 +154,7 @@ open class StoreDetailPresenter : BasePresenter<StoreDetailContract.Presenter>, 
         queries[GoogleMapsRoutingApiHelper.PARAM_ORIGIN] = origin
         queries[GoogleMapsRoutingApiHelper.PARAM_DESTINATION] = destination
 
-        dataManager.getMapsDirection(queries, currStore)
+        mapsRoutingRepository.getMapsDirection(queries, currStore)
             .subscribeOn(schedulerProvider.io())
             .observeOn(schedulerProvider.ui())
             .subscribe(object : SingleObserver<MapsDirection> {
@@ -175,14 +176,14 @@ open class StoreDetailPresenter : BasePresenter<StoreDetailContract.Presenter>, 
     }
 
     override fun onAddToFavButtonClick() {
-        val currUser = dataManager.getCurrentUser()
+        val currUser = com.iceteaviet.fastfoodfinder.utils.getCurrentUserHelper(clientAuth, userRepository)
         if (currUser == null) {
             storeDetailView.showLoginRequestToast()
         }
     }
 
     override fun onSaveButtonClick() {
-        val currUser = dataManager.getCurrentUser()
+        val currUser = com.iceteaviet.fastfoodfinder.utils.getCurrentUserHelper(clientAuth, userRepository)
         if (currUser == null) {
             storeDetailView.showLoginRequestToast()
         }

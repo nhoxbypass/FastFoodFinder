@@ -7,8 +7,7 @@ import io.reactivex.disposables.CompositeDisposable
 /**
  * Created by tom on 2019-04-18.
  */
-abstract class BasePresenter<T>(protected val dataManager: DataManager,
-                                protected var schedulerProvider: SchedulerProvider) : Presenter {
+abstract class BasePresenter<T>(protected var schedulerProvider: SchedulerProvider) : Presenter {
 
     protected val compositeDisposable: CompositeDisposable = CompositeDisposable()
 

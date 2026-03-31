@@ -31,6 +31,12 @@ class App : Application() {
         private lateinit var bus: IBus
         private lateinit var notiManager: NotiManager
 
+        private lateinit var storeRepository: com.iceteaviet.fastfoodfinder.data.domain.store.StoreRepository
+        private lateinit var userRepository: com.iceteaviet.fastfoodfinder.data.domain.user.UserRepository
+        private lateinit var mapsRoutingRepository: com.iceteaviet.fastfoodfinder.data.domain.routing.MapsRoutingRepository
+        private lateinit var preferencesRepository: com.iceteaviet.fastfoodfinder.data.domain.prefs.PreferencesRepository
+        private lateinit var clientAuth: com.iceteaviet.fastfoodfinder.data.auth.ClientAuth
+
         @SuppressLint("StaticFieldLeak")
         private lateinit var context: Context
 
@@ -50,6 +56,26 @@ class App : Application() {
 
         fun getDataManager(): DataManager {
             return dataManager
+        }
+
+        fun getStoreRepository(): com.iceteaviet.fastfoodfinder.data.domain.store.StoreRepository {
+            return storeRepository
+        }
+
+        fun getUserRepository(): com.iceteaviet.fastfoodfinder.data.domain.user.UserRepository {
+            return userRepository
+        }
+
+        fun getMapsRoutingRepository(): com.iceteaviet.fastfoodfinder.data.domain.routing.MapsRoutingRepository {
+            return mapsRoutingRepository
+        }
+
+        fun getPreferencesRepository(): com.iceteaviet.fastfoodfinder.data.domain.prefs.PreferencesRepository {
+            return preferencesRepository
+        }
+        
+        fun getClientAuth(): com.iceteaviet.fastfoodfinder.data.auth.ClientAuth {
+            return clientAuth
         }
 
         fun getSchedulerProvider(): SchedulerProvider {
@@ -79,6 +105,13 @@ class App : Application() {
         initLogger()
 
         dataManager = Injection.provideDataManager()
+        
+        storeRepository = Injection.provideStoreRepository()
+        userRepository = Injection.provideUserRepository()
+        mapsRoutingRepository = Injection.provideRoutingRepository()
+        preferencesRepository = Injection.providePreferenceRepository()
+        clientAuth = Injection.provideAuthClient()
+
         schedulerProvider = Injection.provideSchedulerProvider()
         bus = Injection.provideEventBus()
         notiManager = AppNotiManager(getContext())

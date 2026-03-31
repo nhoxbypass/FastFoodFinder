@@ -1,6 +1,5 @@
 package com.iceteaviet.fastfoodfinder.ui.store.comment
 
-import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Comment
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
 import com.iceteaviet.fastfoodfinder.utils.getFakeUserStoreLists
@@ -26,7 +25,13 @@ class CommentPresenterTest {
     private lateinit var commentPresenter: CommentPresenter
 
     @Mock
-    private lateinit var dataManager: DataManager
+    private lateinit var mMockClientAuth: com.iceteaviet.fastfoodfinder.data.auth.ClientAuth
+
+    @Mock
+    private lateinit var mMockUserRepository: com.iceteaviet.fastfoodfinder.data.domain.user.UserRepository
+
+    @Mock
+    private lateinit var mMockStoreRepository: com.iceteaviet.fastfoodfinder.data.domain.store.StoreRepository
 
     @Before
     fun setupPresenter() {
@@ -35,7 +40,7 @@ class CommentPresenterTest {
         mockAnnotations = MockitoAnnotations.openMocks(this)
 
         // Get a reference to the class under test
-        commentPresenter = CommentPresenter(dataManager, TrampolineSchedulerProvider(), commentView)
+        commentPresenter = CommentPresenter(mMockClientAuth, mMockUserRepository, TrampolineSchedulerProvider(), commentView)
     }
 
     @After
@@ -94,7 +99,7 @@ class CommentPresenterTest {
     @Test
     fun onPostButtonClickTest_validText_nullUser() {
         // Preconditions
-        `when`(dataManager.getCurrentUser()).thenReturn(null)
+        `when`(mMockClientAuth.getCurrentUserUid()).thenReturn("")
 
         commentPresenter.onPostButtonClick("this is my comment")
 
@@ -105,7 +110,8 @@ class CommentPresenterTest {
     @Test
     fun onPostButtonClickTest_validText_validUser() {
         // Preconditions
-        `when`(dataManager.getCurrentUser()).thenReturn(user)
+        `when`(mMockClientAuth.getCurrentUserUid()).thenReturn(USER_UID)
+        `when`(mMockUserRepository.getUser(USER_UID)).thenReturn(io.reactivex.Single.just(user))
 
         val comment = Comment(USER_NAME, USER_PHOTO_URL, "this is my comment", "", System.currentTimeMillis())
         commentPresenter.onPostButtonClick("this is my comment")

@@ -1,6 +1,5 @@
 package com.iceteaviet.fastfoodfinder.ui.login.emaillogin
 
-import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
 import com.iceteaviet.fastfoodfinder.ui.base.BasePresenter
 import com.iceteaviet.fastfoodfinder.utils.isValidEmail
@@ -12,13 +11,14 @@ import io.reactivex.disposables.Disposable
 /**
  * Created by tom on 2019-04-18.
  */
-class EmailLoginPresenter : BasePresenter<EmailLoginContract.Presenter>, EmailLoginContract.Presenter {
-
+class EmailLoginPresenter(
+    private val clientAuth: com.iceteaviet.fastfoodfinder.data.auth.ClientAuth,
+    private val userRepository: com.iceteaviet.fastfoodfinder.data.domain.user.UserRepository,
+    schedulerProvider: SchedulerProvider,
     private val emailLoginView: EmailLoginContract.View
+) : BasePresenter<EmailLoginContract.Presenter>(schedulerProvider), EmailLoginContract.Presenter {
 
-    constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider, emailLoginView: EmailLoginContract.View) : super(dataManager, schedulerProvider) {
-        this.emailLoginView = emailLoginView
-    }
+
 
     override fun subscribe() {
     }
@@ -29,7 +29,7 @@ class EmailLoginPresenter : BasePresenter<EmailLoginContract.Presenter>, EmailLo
 
         if (isValidEmail(email)) {
             if (isValidPassword(password)) {
-                dataManager.signInWithEmailAndPassword(email, password)
+                clientAuth.signInWithEmailAndPassword(email, password)
                     .subscribeOn(schedulerProvider.io())
                     .observeOn(schedulerProvider.ui())
                     .subscribe(object : SingleObserver<User> {

@@ -1,6 +1,5 @@
 package com.iceteaviet.fastfoodfinder.ui.store.comment
 
-import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Comment
 import com.iceteaviet.fastfoodfinder.ui.base.BasePresenter
 import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
@@ -8,13 +7,15 @@ import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
 /**
  * Created by tom on 2019-04-18.
  */
-class CommentPresenter : BasePresenter<CommentContract.Presenter>, CommentContract.Presenter {
+class CommentPresenter(
+    private val clientAuth: com.iceteaviet.fastfoodfinder.data.auth.ClientAuth,
+    private val userRepository: com.iceteaviet.fastfoodfinder.data.domain.user.UserRepository,
+    schedulerProvider: SchedulerProvider,
+        private val commentView: CommentContract.View
+) : BasePresenter<CommentContract.Presenter>(schedulerProvider), CommentContract.Presenter {
 
-    private val commentView: CommentContract.View
-
-    constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider, profileView: CommentContract.View) : super(dataManager, schedulerProvider) {
-        this.commentView = profileView
-    }
+    
+    
 
     override fun subscribe() {
     }
@@ -38,7 +39,7 @@ class CommentPresenter : BasePresenter<CommentContract.Presenter>, CommentContra
             return
         }
 
-        val currUser = dataManager.getCurrentUser()
+        val currUser = com.iceteaviet.fastfoodfinder.utils.getCurrentUserHelper(clientAuth, userRepository)
         if (currUser == null) {
             commentView.showGeneralErrorMessage()
             return

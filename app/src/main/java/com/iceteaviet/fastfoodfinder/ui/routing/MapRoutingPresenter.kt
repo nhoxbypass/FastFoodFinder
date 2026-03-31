@@ -4,7 +4,6 @@ import androidx.annotation.VisibleForTesting
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.PolyUtil
 import com.iceteaviet.fastfoodfinder.R
-import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.Step
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
@@ -41,7 +40,7 @@ class MapRoutingPresenter : BasePresenter<MapRoutingContract.Presenter>, MapRout
     @VisibleForTesting
     lateinit var mapsDirection: MapsDirection
 
-    constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider, mapRoutingView: MapRoutingContract.View) : super(dataManager, schedulerProvider) {
+    constructor(schedulerProvider: SchedulerProvider, mapRoutingView: MapRoutingContract.View) : super(schedulerProvider) {
         this.mapRoutingView = mapRoutingView
     }
 

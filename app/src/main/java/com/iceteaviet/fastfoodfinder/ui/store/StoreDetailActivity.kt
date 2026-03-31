@@ -54,7 +54,7 @@ class StoreDetailActivity : BaseActivity(), StoreDetailContract.View {
         binding = ActivityStoreDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        presenter = StoreDetailPresenter(App.getDataManager(), App.getSchedulerProvider(), GoogleLocationManager.getInstance(), this)
+        presenter = StoreDetailPresenter(App.getClientAuth(), App.getUserRepository(), App.getStoreRepository(), App.getMapsRoutingRepository(), App.getSchedulerProvider(), GoogleLocationManager.getInstance(), this)
 
         setupUI()
         setupEventHandlers()

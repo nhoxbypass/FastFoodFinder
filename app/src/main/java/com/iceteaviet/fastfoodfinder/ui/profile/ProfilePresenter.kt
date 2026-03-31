@@ -1,7 +1,6 @@
 package com.iceteaviet.fastfoodfinder.ui.profile
 
 import androidx.annotation.VisibleForTesting
-import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList
 import com.iceteaviet.fastfoodfinder.ui.base.BasePresenter
@@ -13,20 +12,22 @@ import io.reactivex.disposables.Disposable
 /**
  * Created by tom on 2019-04-18.
  */
-class ProfilePresenter : BasePresenter<ProfileContract.Presenter>, ProfileContract.Presenter {
+class ProfilePresenter(
+    private val clientAuth: com.iceteaviet.fastfoodfinder.data.auth.ClientAuth,
+    private val userRepository: com.iceteaviet.fastfoodfinder.data.domain.user.UserRepository,
+    schedulerProvider: SchedulerProvider,
+        private val profileView: ProfileContract.View
+) : BasePresenter<ProfileContract.Presenter>(schedulerProvider), ProfileContract.Presenter {
 
-    private val profileView: ProfileContract.View
-
+    
     @VisibleForTesting
     var defaultList: MutableList<UserStoreList> = ArrayList() // Default store list (saved, favourite) that every user have
 
-    constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider, profileView: ProfileContract.View) : super(dataManager, schedulerProvider) {
-        this.profileView = profileView
-    }
+    
 
     override fun subscribe() {
         // Invalid auth token -> go to login screen
-        if (!dataManager.isSignedIn())
+        if (!clientAuth.isSignedIn())
             profileView.openLoginActivity()
         else
             loadCurrentUserData()
@@ -38,13 +39,13 @@ class ProfilePresenter : BasePresenter<ProfileContract.Presenter>, ProfileContra
 
     // TODO: Check valid list name using FormatUtils
     override fun onCreateNewList(listName: String, iconId: Int) {
-        val currentUser = dataManager.getCurrentUser() ?: return
+        val currentUser = com.iceteaviet.fastfoodfinder.utils.getCurrentUserHelper(clientAuth, userRepository) ?: return
 
         if (!isListNameExisted(listName, currentUser)) {
             val id = currentUser.getUserStoreLists().size // New id = current size
             val list = UserStoreList(id, ArrayList(), iconId, listName)
             currentUser.addStoreList(list)
-            dataManager.updateStoreListForUser(currentUser.getUid(), currentUser.getUserStoreLists())
+            userRepository.updateStoreListForUser(currentUser.getUid(), currentUser.getUserStoreLists())
 
             profileView.addUserStoreList(list)
             profileView.setStoreListCount(String.format("(%d)", currentUser.getUserStoreLists().size))
@@ -67,30 +68,30 @@ class ProfilePresenter : BasePresenter<ProfileContract.Presenter>, ProfileContra
     }
 
     override fun onStoreListClick(listPacket: UserStoreList) {
-        val user = dataManager.getCurrentUser()
+        val user = com.iceteaviet.fastfoodfinder.utils.getCurrentUserHelper(clientAuth, userRepository)
         if (user != null)
             profileView.openListDetail(listPacket, user.photoUrl)
     }
 
     // TODO: Support dialog asking user want to delete or not
     override fun onStoreListLongClick(position: Int) {
-        val currentUser = dataManager.getCurrentUser()
+        val currentUser = com.iceteaviet.fastfoodfinder.utils.getCurrentUserHelper(clientAuth, userRepository)
 
         if (currentUser == null)
             return
 
         currentUser.removeStoreList(position)
-        dataManager.updateStoreListForUser(currentUser.getUid(), currentUser.getUserStoreLists())
+        userRepository.updateStoreListForUser(currentUser.getUid(), currentUser.getUserStoreLists())
 
         profileView.setStoreListCount(String.format("(%d)", currentUser.getUserStoreLists().size))
     }
 
     private fun loadCurrentUserData() {
-        val uid = dataManager.getCurrentUserUid()
+        val uid = clientAuth.getCurrentUserUid()
         if (!isValidUserUid(uid))
             return
 
-        dataManager.getUser(uid)
+        userRepository.getUser(uid)
             .subscribeOn(schedulerProvider.io())
             .observeOn(schedulerProvider.ui())
             .subscribe(object : SingleObserver<User> {
@@ -99,7 +100,7 @@ class ProfilePresenter : BasePresenter<ProfileContract.Presenter>, ProfileContra
                 }
 
                 override fun onSuccess(user: User) {
-                    dataManager.updateCurrentUser(user)
+                    userRepository.insertOrUpdateUser(user)
                     if (!user.photoUrl.isBlank())
                         profileView.loadAvatarPhoto(user.photoUrl)
                     profileView.setName(user.name)

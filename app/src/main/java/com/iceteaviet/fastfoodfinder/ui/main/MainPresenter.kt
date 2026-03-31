@@ -13,22 +13,23 @@ import org.greenrobot.eventbus.ThreadMode
 /**
  * Created by tom on 2019-04-18.
  */
-class MainPresenter : BasePresenter<MainContract.Presenter>, MainContract.Presenter {
-
+class MainPresenter(
+    private val clientAuth: com.iceteaviet.fastfoodfinder.data.auth.ClientAuth,
+    private val userRepository: com.iceteaviet.fastfoodfinder.data.domain.user.UserRepository,
+    private val preferencesRepository: com.iceteaviet.fastfoodfinder.data.domain.prefs.PreferencesRepository,
+    schedulerProvider: SchedulerProvider,
+    private val bus: com.iceteaviet.fastfoodfinder.service.eventbus.core.IBus,
     private val mainView: MainContract.View
-    private val bus: IBus
+) : BasePresenter<MainContract.Presenter>(schedulerProvider), MainContract.Presenter {
 
-    constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider, bus: IBus, mainView: MainContract.View) : super(dataManager, schedulerProvider) {
-        this.mainView = mainView
-        this.bus = bus
-    }
+
 
     override fun subscribe() {
         bus.register(this)
 
         // Initialize auth info
-        val currUser = dataManager.getCurrentUser()
-        if (!dataManager.isSignedIn() || currUser == null) {
+        val currUser = com.iceteaviet.fastfoodfinder.utils.getCurrentUserHelper(clientAuth, userRepository)
+        if (!clientAuth.isSignedIn() || currUser == null) {
             mainView.updateProfileHeader(true)
         } else {
             mainView.updateProfileHeader(false)
@@ -47,7 +48,7 @@ class MainPresenter : BasePresenter<MainContract.Presenter>, MainContract.Presen
     }
 
     override fun onProfileMenuItemClick() {
-        if (dataManager.isSignedIn())
+        if (clientAuth.isSignedIn())
             mainView.showProfileView()
         else
             mainView.showLoginView()
@@ -113,7 +114,7 @@ class MainPresenter : BasePresenter<MainContract.Presenter>, MainContract.Presen
     }
 
     private fun handleSearchQuerySubmitAction(searchString: String) {
-        dataManager.addSearchHistories(searchString)
+        preferencesRepository.addSearchHistories(searchString)
         mainView.setSearchQueryText(searchString)
     }
 
@@ -124,6 +125,6 @@ class MainPresenter : BasePresenter<MainContract.Presenter>, MainContract.Presen
     private fun handleSearchStoreClickAction(store: Store) {
         mainView.setSearchQueryText(store.title)
 
-        dataManager.addSearchHistories(Constant.SEARCH_STORE_PREFIX + store.id)
+        preferencesRepository.addSearchHistories(Constant.SEARCH_STORE_PREFIX + store.id)
     }
 }

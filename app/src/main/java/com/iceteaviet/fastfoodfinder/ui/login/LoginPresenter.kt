@@ -13,17 +13,16 @@ import io.reactivex.disposables.Disposable
 /**
  * Created by tom on 2019-04-18.
  */
-class LoginPresenter : BasePresenter<LoginContract.Presenter>, LoginContract.Presenter {
-
+class LoginPresenter(
+    private val clientAuth: com.iceteaviet.fastfoodfinder.data.auth.ClientAuth,
+    private val userRepository: com.iceteaviet.fastfoodfinder.data.domain.user.UserRepository,
+    schedulerProvider: SchedulerProvider,
     private val loginView: LoginContract.View
-
-    constructor(dataManager: DataManager, schedulerProvider: SchedulerProvider, loginView: LoginContract.View) : super(dataManager, schedulerProvider) {
-        this.loginView = loginView
-    }
+) : BasePresenter<LoginContract.Presenter>(schedulerProvider), LoginContract.Presenter {
 
     override fun subscribe() {
         // Initialize Firebase Auth
-        if (dataManager.isSignedIn()) {
+        if (clientAuth.isSignedIn()) {
             // User is signed in
             loginView.exit()
             return
@@ -36,12 +35,12 @@ class LoginPresenter : BasePresenter<LoginContract.Presenter>, LoginContract.Pre
 
     override fun onRegisterSuccess(user: User) {
         ensureBasicUserData(user)
-        dataManager.updateCurrentUser(user)
+        userRepository.insertOrUpdateUser(user)
         loginView.showMainView()
     }
 
     override fun onLoginSuccess(baseUser: User) {
-        dataManager.getUser(baseUser.getUid())
+        userRepository.getUser(baseUser.getUid())
             .subscribeOn(schedulerProvider.io())
             .observeOn(schedulerProvider.ui())
             .subscribe(object : SingleObserver<User> {
@@ -50,7 +49,7 @@ class LoginPresenter : BasePresenter<LoginContract.Presenter>, LoginContract.Pre
                 }
 
                 override fun onSuccess(user: User) {
-                    dataManager.updateCurrentUser(user)
+                    userRepository.insertOrUpdateUser(user)
                     loginView.showMainView()
                 }
 
@@ -63,7 +62,7 @@ class LoginPresenter : BasePresenter<LoginContract.Presenter>, LoginContract.Pre
     }
 
     override fun onRequestGoogleAccountSuccess(authCredential: AuthCredential, fromLastSignIn: Boolean) {
-        dataManager.signInWithCredential(authCredential)
+        clientAuth.signInWithCredential(authCredential)
             .subscribeOn(schedulerProvider.io())
             .observeOn(schedulerProvider.ui())
             .subscribe(object : SingleObserver<User> {
@@ -76,7 +75,7 @@ class LoginPresenter : BasePresenter<LoginContract.Presenter>, LoginContract.Pre
                         // New user registering
                         onRegisterSuccess(user)
                     } else {
-                        dataManager.updateCurrentUser(user)
+                        userRepository.insertOrUpdateUser(user)
                         onLoginSuccess(user)
                     }
                 }

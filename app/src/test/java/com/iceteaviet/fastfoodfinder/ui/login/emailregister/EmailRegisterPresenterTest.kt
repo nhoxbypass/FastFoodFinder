@@ -1,6 +1,7 @@
 package com.iceteaviet.fastfoodfinder.ui.login.emailregister
 
-import com.iceteaviet.fastfoodfinder.data.DataManager
+import com.iceteaviet.fastfoodfinder.data.auth.ClientAuth
+import com.iceteaviet.fastfoodfinder.data.domain.user.UserRepository
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
 import com.iceteaviet.fastfoodfinder.utils.exception.UnknownException
 import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
@@ -23,9 +24,11 @@ class EmailRegisterPresenterTest {
     
     @Mock
     private lateinit var emailRegisterView: EmailRegisterContract.View
-
     @Mock
-    private lateinit var dataManager: DataManager
+    private lateinit var clientAuth: ClientAuth
+    @Mock
+    private lateinit var userRepository: UserRepository
+
 
     private lateinit var emailRegisterPresenter: EmailRegisterPresenter
 
@@ -36,7 +39,7 @@ class EmailRegisterPresenterTest {
         mockAnnotations = MockitoAnnotations.openMocks(this)
         schedulerProvider = TrampolineSchedulerProvider()
 
-        emailRegisterPresenter = EmailRegisterPresenter(dataManager, schedulerProvider, emailRegisterView)
+        emailRegisterPresenter = EmailRegisterPresenter(clientAuth, userRepository, schedulerProvider, emailRegisterView)
     }
 
     @After
@@ -92,7 +95,7 @@ class EmailRegisterPresenterTest {
     fun onSignUpButtonClickedTest_validData_signUpError() {
         // Mocks
         val exception = UnknownException()
-        `when`(dataManager.signUpWithEmailAndPassword(EMAIL, PWD)).thenReturn(Single.error(exception))
+        `when`(clientAuth.signUpWithEmailAndPassword(EMAIL, PWD)).thenReturn(Single.error(exception))
 
         emailRegisterPresenter.onSignUpButtonClicked(EMAIL, PWD, RE_PWD)
 
@@ -108,7 +111,7 @@ class EmailRegisterPresenterTest {
     @Test
     fun onSignUpButtonClickedTest_validData_signUpSuccess() {
         // Mocks
-        `when`(dataManager.signUpWithEmailAndPassword(EMAIL, PWD)).thenReturn(Single.just(user))
+        `when`(clientAuth.signUpWithEmailAndPassword(EMAIL, PWD)).thenReturn(Single.just(user))
 
         emailRegisterPresenter.onSignUpButtonClicked(EMAIL, PWD, RE_PWD)
 

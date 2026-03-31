@@ -45,7 +45,7 @@ class CommentActivity : BaseActivity(), CommentContract.View {
         binding = ActivityCommentBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        presenter = CommentPresenter(App.getDataManager(), App.getSchedulerProvider(), this)
+        presenter = CommentPresenter(App.getClientAuth(), App.getUserRepository(), App.getSchedulerProvider(), this)
 
         etComment = binding.etComment
         tvRemainChar = binding.tvRemainChar
