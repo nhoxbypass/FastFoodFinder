@@ -1,5 +1,7 @@
 package com.iceteaviet.fastfoodfinder.ui.main
 
+import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Bundle
@@ -34,7 +36,24 @@ import com.iceteaviet.fastfoodfinder.utils.openLoginActivity
 import com.iceteaviet.fastfoodfinder.utils.openSettingsActivity
 import de.hdodenhof.circleimageview.CircleImageView
 
+@AndroidEntryPoint
 class MainActivity : BaseActivity(), MainContract.View, View.OnClickListener {
+    @Inject
+    lateinit var userRepository: com.iceteaviet.fastfoodfinder.data.domain.user.UserRepository
+
+    @Inject
+    lateinit var preferencesRepository: com.iceteaviet.fastfoodfinder.data.domain.prefs.PreferencesRepository
+
+    @Inject
+    lateinit var clientAuth: com.iceteaviet.fastfoodfinder.data.auth.ClientAuth
+
+    @Inject
+    lateinit var schedulerProvider: com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
+
+    @Inject
+    lateinit var bus: com.iceteaviet.fastfoodfinder.service.eventbus.core.IBus
+
+
     override lateinit var presenter: MainContract.Presenter
 
     /**
@@ -65,7 +84,7 @@ class MainActivity : BaseActivity(), MainContract.View, View.OnClickListener {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        presenter = MainPresenter(App.getClientAuth(), App.getUserRepository(), App.getPreferencesRepository(), App.getSchedulerProvider(), App.getBus(), this)
+        presenter = MainPresenter(clientAuth, userRepository, preferencesRepository, schedulerProvider, bus, this)
 
         setupUI()
         setupEventHandlers()

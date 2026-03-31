@@ -1,5 +1,7 @@
 package com.iceteaviet.fastfoodfinder.ui.main.map.storeinfo
 
+import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 import android.app.Dialog
 import android.content.pm.PackageManager
 import android.graphics.Point
@@ -29,7 +31,17 @@ import com.iceteaviet.fastfoodfinder.utils.requestCallPhonePermission
  * Created by taq on 26/11/2016.
  */
 
+@AndroidEntryPoint
 class StoreInfoDialog : DialogFragment(), StoreInfoContract.View {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        presenter = StoreInfoPresenter(schedulerProvider, this)
+    }
+
+    @Inject
+    lateinit var schedulerProvider: com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
+
+
 
     override lateinit var presenter: StoreInfoContract.Presenter
 
@@ -186,8 +198,7 @@ class StoreInfoDialog : DialogFragment(), StoreInfoContract.View {
             args.putParcelable(KEY_STORE, store)
             val fragment = StoreInfoDialog()
             fragment.arguments = args
-            fragment.presenter = StoreInfoPresenter(App.getSchedulerProvider(), fragment)
-            return fragment
+                        return fragment
         }
     }
 }

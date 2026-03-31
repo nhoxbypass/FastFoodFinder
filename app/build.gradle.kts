@@ -7,6 +7,7 @@ plugins {
     id("com.google.firebase.firebase-perf")
     id("realm-android")
     id("org.sonarqube") version "5.1.0.4882"
+    id("dagger.hilt.android.plugin")
 }
 
 apply(from = "../app/coverage.gradle.kts")
@@ -200,4 +201,8 @@ dependencies {
 
     // Logging
     implementation("com.jakewharton.timber:timber:5.0.1")
+
+    // DI
+    implementation("com.google.dagger:hilt-android:2.55")
+    kapt("com.google.dagger:hilt-compiler:2.55")
 }

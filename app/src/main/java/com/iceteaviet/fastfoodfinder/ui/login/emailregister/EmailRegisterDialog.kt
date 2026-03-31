@@ -1,5 +1,7 @@
 package com.iceteaviet.fastfoodfinder.ui.login.emailregister
 
+import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,7 +18,23 @@ import com.iceteaviet.fastfoodfinder.ui.custom.processbutton.ActionProcessButton
 /**
  * Created by nhoxbypass on 03/29/2018.
  */
+@AndroidEntryPoint
 class EmailRegisterDialog : DialogFragment(), EmailRegisterContract.View, View.OnClickListener, View.OnTouchListener {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        presenter = EmailRegisterPresenter(clientAuth, userRepository, schedulerProvider, this)
+    }
+
+    @Inject
+    lateinit var userRepository: com.iceteaviet.fastfoodfinder.data.domain.user.UserRepository
+
+    @Inject
+    lateinit var clientAuth: com.iceteaviet.fastfoodfinder.data.auth.ClientAuth
+
+    @Inject
+    lateinit var schedulerProvider: com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
+
+
     override lateinit var presenter: EmailRegisterContract.Presenter
 
     /**
@@ -144,8 +162,7 @@ class EmailRegisterDialog : DialogFragment(), EmailRegisterContract.View, View.O
             val frag = EmailRegisterDialog()
             val args = Bundle()
             frag.arguments = args
-            frag.presenter = EmailRegisterPresenter(App.getClientAuth(), App.getUserRepository(), App.getSchedulerProvider(), frag)
-            return frag
+                        return frag
         }
     }
 }

@@ -1,7 +1,6 @@
 package com.iceteaviet.fastfoodfinder.ui.login
 
 import com.google.firebase.auth.AuthCredential
-import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
 import com.iceteaviet.fastfoodfinder.ui.base.BasePresenter
 import com.iceteaviet.fastfoodfinder.utils.getDefaultUserStoreLists

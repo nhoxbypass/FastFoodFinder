@@ -1,5 +1,7 @@
 package com.iceteaviet.fastfoodfinder.ui.login
 
+import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -18,7 +20,18 @@ import com.iceteaviet.fastfoodfinder.ui.login.emailregister.EmailRegisterDialog
 import com.iceteaviet.fastfoodfinder.utils.openMainActivity
 
 
+@AndroidEntryPoint
 class LoginActivity : BaseActivity(), LoginContract.View, View.OnClickListener {
+    @Inject
+    lateinit var userRepository: com.iceteaviet.fastfoodfinder.data.domain.user.UserRepository
+
+    @Inject
+    lateinit var clientAuth: com.iceteaviet.fastfoodfinder.data.auth.ClientAuth
+
+    @Inject
+    lateinit var schedulerProvider: com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
+
+
     override lateinit var presenter: LoginContract.Presenter
 
     /**
@@ -40,7 +53,7 @@ class LoginActivity : BaseActivity(), LoginContract.View, View.OnClickListener {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        presenter = LoginPresenter(App.getClientAuth(), App.getUserRepository(), App.getSchedulerProvider(), this)
+        presenter = LoginPresenter(clientAuth, userRepository, schedulerProvider, this)
         googleAuthHelper = GoogleAuthHelper(this, getString(R.string.default_web_client_id))
 
         setupUI()

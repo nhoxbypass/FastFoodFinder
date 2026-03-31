@@ -1,5 +1,7 @@
 package com.iceteaviet.fastfoodfinder.ui.main.recently
 
+import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -21,7 +23,17 @@ import com.iceteaviet.fastfoodfinder.utils.openStoreDetailActivity
 /**
  * Created by MyPC on 11/20/2016.
  */
+@AndroidEntryPoint
 class MainRecentlyFragment : Fragment(), MainRecentlyContract.View, OnStartDragListener {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        presenter = MainRecentlyPresenter(schedulerProvider, this)
+    }
+
+    @Inject
+    lateinit var schedulerProvider: com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
+
+
     override lateinit var presenter: MainRecentlyContract.Presenter
 
     /**
@@ -100,8 +112,7 @@ class MainRecentlyFragment : Fragment(), MainRecentlyContract.View, OnStartDragL
             val args = Bundle()
             val fragment = MainRecentlyFragment()
             fragment.arguments = args
-            fragment.presenter = MainRecentlyPresenter(App.getSchedulerProvider(), fragment)
-            return fragment
+                        return fragment
         }
     }
 }

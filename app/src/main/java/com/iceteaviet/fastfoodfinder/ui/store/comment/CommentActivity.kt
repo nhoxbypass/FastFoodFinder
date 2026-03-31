@@ -1,5 +1,7 @@
 package com.iceteaviet.fastfoodfinder.ui.store.comment
 
+import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 import android.app.Activity
 import android.content.DialogInterface
 import android.content.Intent
@@ -24,7 +26,18 @@ import com.iceteaviet.fastfoodfinder.ui.custom.dialog.CloseConfirmDialog
 /**
  * Created by binhlt on 29/11/2016.
  */
+@AndroidEntryPoint
 class CommentActivity : BaseActivity(), CommentContract.View {
+    @Inject
+    lateinit var userRepository: com.iceteaviet.fastfoodfinder.data.domain.user.UserRepository
+
+    @Inject
+    lateinit var clientAuth: com.iceteaviet.fastfoodfinder.data.auth.ClientAuth
+
+    @Inject
+    lateinit var schedulerProvider: com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
+
+
     override lateinit var presenter: CommentContract.Presenter
 
     /**
@@ -45,7 +58,7 @@ class CommentActivity : BaseActivity(), CommentContract.View {
         binding = ActivityCommentBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        presenter = CommentPresenter(App.getClientAuth(), App.getUserRepository(), App.getSchedulerProvider(), this)
+        presenter = CommentPresenter(clientAuth, userRepository, schedulerProvider, this)
 
         etComment = binding.etComment
         tvRemainChar = binding.tvRemainChar

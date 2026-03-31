@@ -1,5 +1,7 @@
 package com.iceteaviet.fastfoodfinder.ui.profile.cover
 
+import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 import android.app.Activity
 import android.app.Dialog
 import android.content.Intent
@@ -23,7 +25,23 @@ import com.iceteaviet.fastfoodfinder.utils.ui.getDrawable
 /**
  * Created by MyPC on 11/29/2016.
  */
+@AndroidEntryPoint
 class UpdateCoverImageDialog : DialogFragment(), UpdateCoverContract.View, View.OnClickListener {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        presenter = UpdateCoverPresenter(clientAuth, userRepository, schedulerProvider, this)
+    }
+
+    @Inject
+    lateinit var userRepository: com.iceteaviet.fastfoodfinder.data.domain.user.UserRepository
+
+    @Inject
+    lateinit var clientAuth: com.iceteaviet.fastfoodfinder.data.auth.ClientAuth
+
+    @Inject
+    lateinit var schedulerProvider: com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
+
+
     override lateinit var presenter: UpdateCoverContract.Presenter
 
     /**
@@ -169,8 +187,7 @@ class UpdateCoverImageDialog : DialogFragment(), UpdateCoverContract.View, View.
             val frag = UpdateCoverImageDialog()
             val args = Bundle()
             frag.arguments = args
-            frag.presenter = UpdateCoverPresenter(App.getClientAuth(), App.getUserRepository(), App.getSchedulerProvider(), frag)
-            return frag
+                        return frag
         }
     }
 }

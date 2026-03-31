@@ -1,5 +1,7 @@
 package com.iceteaviet.fastfoodfinder.ui.storelist
 
+import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 import android.os.Bundle
 import android.widget.Toast
 import androidx.annotation.DrawableRes
@@ -17,7 +19,21 @@ import de.hdodenhof.circleimageview.CircleImageView
 /**
  * Created by MyPC on 12/6/2016.
  */
+@AndroidEntryPoint
 class ListDetailActivity : BaseActivity(), ListDetailContract.View {
+    @Inject
+    lateinit var storeRepository: com.iceteaviet.fastfoodfinder.data.domain.store.StoreRepository
+
+    @Inject
+    lateinit var userRepository: com.iceteaviet.fastfoodfinder.data.domain.user.UserRepository
+
+    @Inject
+    lateinit var clientAuth: com.iceteaviet.fastfoodfinder.data.auth.ClientAuth
+
+    @Inject
+    lateinit var schedulerProvider: com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
+
+
     override lateinit var presenter: ListDetailContract.Presenter
 
     /**
@@ -39,7 +55,7 @@ class ListDetailActivity : BaseActivity(), ListDetailContract.View {
         binding = ActivityListDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        presenter = ListDetailPresenter(App.getClientAuth(), App.getUserRepository(), App.getStoreRepository(), App.getSchedulerProvider(), this)
+        presenter = ListDetailPresenter(clientAuth, userRepository, storeRepository, schedulerProvider, this)
 
         if (intent != null) {
             presenter.handleExtras(intent.getParcelableExtra(KEY_USER_STORE_LIST), intent.getStringExtra(KEY_USER_PHOTO_URL))

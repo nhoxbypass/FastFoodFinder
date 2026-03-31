@@ -1,5 +1,7 @@
 package com.iceteaviet.fastfoodfinder.ui.profile
 
+import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -24,7 +26,18 @@ import com.iceteaviet.fastfoodfinder.utils.openLoginActivity
 import de.hdodenhof.circleimageview.CircleImageView
 
 // TODO: Check fragment lifecycle to support go to login screen when auth token invalid
+@AndroidEntryPoint
 class ProfileFragment : Fragment(), ProfileContract.View, View.OnClickListener {
+    @Inject
+    lateinit var userRepository: com.iceteaviet.fastfoodfinder.data.domain.user.UserRepository
+
+    @Inject
+    lateinit var clientAuth: com.iceteaviet.fastfoodfinder.data.auth.ClientAuth
+
+    @Inject
+    lateinit var schedulerProvider: com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
+
+
     override lateinit var presenter: ProfileContract.Presenter
 
     /**
@@ -43,6 +56,7 @@ class ProfileFragment : Fragment(), ProfileContract.View, View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        presenter = ProfilePresenter(clientAuth, userRepository, schedulerProvider, this)
         setHasOptionsMenu(true)
     }
 
@@ -222,8 +236,7 @@ class ProfileFragment : Fragment(), ProfileContract.View, View.OnClickListener {
         fun newInstance(): ProfileFragment {
             val extras = Bundle()
             val fragment = ProfileFragment()
-            fragment.presenter = ProfilePresenter(App.getClientAuth(), App.getUserRepository(), App.getSchedulerProvider(), fragment)
-            fragment.arguments = extras
+                        fragment.arguments = extras
             return fragment
         }
     }

@@ -1,5 +1,7 @@
 package com.iceteaviet.fastfoodfinder.ui.login.emaillogin
 
+import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,7 +17,23 @@ import com.iceteaviet.fastfoodfinder.databinding.DialogLoginBinding
 /**
  * Created by nhoxbypass on 03/29/2018.
  */
+@AndroidEntryPoint
 class EmailLoginDialog : DialogFragment(), EmailLoginContract.View, View.OnClickListener, View.OnTouchListener {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        presenter = EmailLoginPresenter(clientAuth, userRepository, schedulerProvider, this)
+    }
+
+    @Inject
+    lateinit var userRepository: com.iceteaviet.fastfoodfinder.data.domain.user.UserRepository
+
+    @Inject
+    lateinit var clientAuth: com.iceteaviet.fastfoodfinder.data.auth.ClientAuth
+
+    @Inject
+    lateinit var schedulerProvider: com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
+
+
     override lateinit var presenter: EmailLoginContract.Presenter
 
     /**
@@ -127,8 +145,7 @@ class EmailLoginDialog : DialogFragment(), EmailLoginContract.View, View.OnClick
             val frag = EmailLoginDialog()
             val args = Bundle()
             frag.arguments = args
-            frag.presenter = EmailLoginPresenter(App.getClientAuth(), App.getUserRepository(), App.getSchedulerProvider(), frag)
-            return frag
+                        return frag
         }
     }
 }

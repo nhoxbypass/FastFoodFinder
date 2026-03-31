@@ -1,5 +1,7 @@
 package com.iceteaviet.fastfoodfinder.ui.routing
 
+import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -34,7 +36,12 @@ import com.iceteaviet.fastfoodfinder.utils.convertDpToPx
 import com.iceteaviet.fastfoodfinder.utils.extension.attachSnapHelperToListener
 
 
+@AndroidEntryPoint
 class MapRoutingActivity : BaseActivity(), MapRoutingContract.View, View.OnClickListener {
+    @Inject
+    lateinit var schedulerProvider: com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
+
+
     override lateinit var presenter: MapRoutingContract.Presenter
 
     /**
@@ -69,7 +76,7 @@ class MapRoutingActivity : BaseActivity(), MapRoutingContract.View, View.OnClick
         binding = ActivityMapRoutingBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        presenter = MapRoutingPresenter(App.getSchedulerProvider(), this)
+        presenter = MapRoutingPresenter(schedulerProvider, this)
 
         setupUI()
         setUpMapIfNeeded()

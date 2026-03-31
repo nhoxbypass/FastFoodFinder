@@ -1,5 +1,7 @@
 package com.iceteaviet.fastfoodfinder.ui.profile.createlist
 
+import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,7 +17,23 @@ import com.iceteaviet.fastfoodfinder.databinding.DialogCreateNewlistBinding
 /**
  * Created by MyPC on 11/30/2016.
  */
+@AndroidEntryPoint
 class CreateListDialog : DialogFragment(), CreateListContract.View, View.OnClickListener {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        presenter = CreateListPresenter(clientAuth, userRepository, schedulerProvider, this)
+    }
+
+    @Inject
+    lateinit var userRepository: com.iceteaviet.fastfoodfinder.data.domain.user.UserRepository
+
+    @Inject
+    lateinit var clientAuth: com.iceteaviet.fastfoodfinder.data.auth.ClientAuth
+
+    @Inject
+    lateinit var schedulerProvider: com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
+
+
     override lateinit var presenter: CreateListContract.Presenter
 
     /**
@@ -218,8 +236,7 @@ class CreateListDialog : DialogFragment(), CreateListContract.View, View.OnClick
             val frag = CreateListDialog()
             val args = Bundle()
             frag.arguments = args
-            frag.presenter = CreateListPresenter(App.getClientAuth(), App.getUserRepository(), App.getSchedulerProvider(), frag)
-            return frag
+                        return frag
         }
     }
 }

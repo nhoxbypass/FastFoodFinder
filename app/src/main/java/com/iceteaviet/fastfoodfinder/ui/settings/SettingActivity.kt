@@ -1,5 +1,7 @@
 package com.iceteaviet.fastfoodfinder.ui.settings
 
+import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 import android.annotation.TargetApi
 import android.content.res.Configuration
 import android.os.Build
@@ -19,7 +21,21 @@ import com.iceteaviet.fastfoodfinder.ui.settings.discountnotify.DiscountNotifyDi
 import com.iceteaviet.fastfoodfinder.utils.openLoginActivity
 import java.util.Locale
 
+@AndroidEntryPoint
 class SettingActivity : BaseActivity(), SettingContract.View {
+    @Inject
+    lateinit var storeRepository: com.iceteaviet.fastfoodfinder.data.domain.store.StoreRepository
+
+    @Inject
+    lateinit var preferencesRepository: com.iceteaviet.fastfoodfinder.data.domain.prefs.PreferencesRepository
+
+    @Inject
+    lateinit var clientAuth: com.iceteaviet.fastfoodfinder.data.auth.ClientAuth
+
+    @Inject
+    lateinit var schedulerProvider: com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
+
+
     override lateinit var presenter: SettingContract.Presenter
 
     /**
@@ -52,7 +68,7 @@ class SettingActivity : BaseActivity(), SettingContract.View {
         binding = ActivitySettingBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        presenter = SettingPresenter(App.getClientAuth(), App.getPreferencesRepository(), App.getStoreRepository(), App.getSchedulerProvider(), this)
+        presenter = SettingPresenter(clientAuth, preferencesRepository, storeRepository, schedulerProvider, this)
 
         setupUI()
 

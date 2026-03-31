@@ -1,5 +1,7 @@
 package com.iceteaviet.fastfoodfinder.ui.splash
 
+import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 import android.app.AlertDialog
 import android.os.Bundle
 import android.os.Handler
@@ -13,7 +15,24 @@ import com.iceteaviet.fastfoodfinder.utils.openMainActivity
 import com.iceteaviet.fastfoodfinder.utils.openSplashActivity
 
 
+@AndroidEntryPoint
 class SplashActivity : BaseActivity(), SplashContract.View {
+    @Inject
+    lateinit var storeRepository: com.iceteaviet.fastfoodfinder.data.domain.store.StoreRepository
+
+    @Inject
+    lateinit var userRepository: com.iceteaviet.fastfoodfinder.data.domain.user.UserRepository
+
+    @Inject
+    lateinit var preferencesRepository: com.iceteaviet.fastfoodfinder.data.domain.prefs.PreferencesRepository
+
+    @Inject
+    lateinit var clientAuth: com.iceteaviet.fastfoodfinder.data.auth.ClientAuth
+
+    @Inject
+    lateinit var schedulerProvider: com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
+
+
     override lateinit var presenter: SplashContract.Presenter
 
     companion object {
@@ -23,7 +42,7 @@ class SplashActivity : BaseActivity(), SplashContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        presenter = SplashPresenter(App.getClientAuth(), App.getUserRepository(), App.getStoreRepository(), App.getPreferencesRepository(), App.getSchedulerProvider(), this)
+        presenter = SplashPresenter(clientAuth, userRepository, storeRepository, preferencesRepository, schedulerProvider, this)
     }
 
     override fun onResume() {

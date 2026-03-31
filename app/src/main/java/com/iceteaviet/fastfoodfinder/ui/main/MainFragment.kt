@@ -1,6 +1,8 @@
 package com.iceteaviet.fastfoodfinder.ui.main
 
 
+import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 import android.graphics.BlendMode
 import android.graphics.BlendModeColorFilter
 import android.graphics.Color
@@ -21,6 +23,7 @@ import com.iceteaviet.fastfoodfinder.utils.d
 /**
  * A simple [Fragment] subclass.
  */
+@AndroidEntryPoint
 class MainFragment : Fragment() {
     /**
      * Views Ref

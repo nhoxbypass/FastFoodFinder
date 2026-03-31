@@ -1,6 +1,5 @@
 package com.iceteaviet.fastfoodfinder.ui.base
 
-import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
 import io.reactivex.disposables.CompositeDisposable
 

@@ -1,6 +1,8 @@
 package com.iceteaviet.fastfoodfinder.ui.main.map
 
 
+import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -22,7 +24,6 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.iceteaviet.fastfoodfinder.App
-import com.iceteaviet.fastfoodfinder.Injection
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.core.location.GoogleLocationManager
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
@@ -43,7 +44,29 @@ import com.iceteaviet.fastfoodfinder.utils.ui.getStoreIcon
 /**
  * Main fragment that display a map with near by stores
  */
+@AndroidEntryPoint
 class MainMapFragment : Fragment(), MainMapContract.View {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val publishSubject1 = io.reactivex.subjects.PublishSubject.create<com.iceteaviet.fastfoodfinder.data.remote.store.model.Store>()
+        val publishSubject2 = io.reactivex.subjects.PublishSubject.create<com.iceteaviet.fastfoodfinder.ui.main.map.model.MapCameraPosition>()
+        val googleLocationManager = com.iceteaviet.fastfoodfinder.core.location.GoogleLocationManager.getInstance()
+        presenter = MainMapPresenter(storeRepository, mapsRoutingRepository, schedulerProvider, googleLocationManager, bus, publishSubject1, publishSubject2, this)
+    }
+
+    @Inject
+    lateinit var storeRepository: com.iceteaviet.fastfoodfinder.data.domain.store.StoreRepository
+
+    @Inject
+    lateinit var mapsRoutingRepository: com.iceteaviet.fastfoodfinder.data.domain.routing.MapsRoutingRepository
+
+    @Inject
+    lateinit var schedulerProvider: com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
+
+    @Inject
+    lateinit var bus: com.iceteaviet.fastfoodfinder.service.eventbus.core.IBus
+
+
     override lateinit var presenter: MainMapContract.Presenter
 
     /**
@@ -296,9 +319,6 @@ class MainMapFragment : Fragment(), MainMapContract.View {
 
             val fragment = MainMapFragment()
             fragment.arguments = args
-            fragment.presenter = MainMapPresenter(App.getStoreRepository(), App.getMapsRoutingRepository(), App.getSchedulerProvider(),
-                GoogleLocationManager.getInstance(), App.getBus(), Injection.providePublishSubject(),
-                Injection.providePublishSubject(), fragment)
             return fragment
         }
     }

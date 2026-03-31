@@ -1,5 +1,7 @@
 package com.iceteaviet.fastfoodfinder.ui.store
 
+import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -31,7 +33,24 @@ import com.iceteaviet.fastfoodfinder.utils.requestLocationPermission
  * Created by taq on 18/11/2016.
  */
 
+@AndroidEntryPoint
 class StoreDetailActivity : BaseActivity(), StoreDetailContract.View {
+    @Inject
+    lateinit var storeRepository: com.iceteaviet.fastfoodfinder.data.domain.store.StoreRepository
+
+    @Inject
+    lateinit var userRepository: com.iceteaviet.fastfoodfinder.data.domain.user.UserRepository
+
+    @Inject
+    lateinit var mapsRoutingRepository: com.iceteaviet.fastfoodfinder.data.domain.routing.MapsRoutingRepository
+
+    @Inject
+    lateinit var clientAuth: com.iceteaviet.fastfoodfinder.data.auth.ClientAuth
+
+    @Inject
+    lateinit var schedulerProvider: com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
+
+
     override lateinit var presenter: StoreDetailContract.Presenter
 
     /**
@@ -54,7 +73,7 @@ class StoreDetailActivity : BaseActivity(), StoreDetailContract.View {
         binding = ActivityStoreDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        presenter = StoreDetailPresenter(App.getClientAuth(), App.getUserRepository(), App.getStoreRepository(), App.getMapsRoutingRepository(), App.getSchedulerProvider(), GoogleLocationManager.getInstance(), this)
+        presenter = StoreDetailPresenter(clientAuth, userRepository, storeRepository, mapsRoutingRepository, schedulerProvider, GoogleLocationManager.getInstance(), this)
 
         setupUI()
         setupEventHandlers()

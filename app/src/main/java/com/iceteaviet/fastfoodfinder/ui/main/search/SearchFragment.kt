@@ -1,6 +1,8 @@
 package com.iceteaviet.fastfoodfinder.ui.main.search
 
 
+import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 import android.os.Build
 import android.os.Bundle
 import android.transition.TransitionManager
@@ -28,7 +30,26 @@ import de.hdodenhof.circleimageview.CircleImageView
  *
  * TODO: Research & apply https://developer.android.com/guide/topics/search/
  */
+@AndroidEntryPoint
 class SearchFragment : Fragment(), SearchContract.View {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        presenter = SearchPresenter(storeRepository, preferencesRepository, schedulerProvider, bus, this)
+    }
+
+    @Inject
+    lateinit var storeRepository: com.iceteaviet.fastfoodfinder.data.domain.store.StoreRepository
+
+    @Inject
+    lateinit var preferencesRepository: com.iceteaviet.fastfoodfinder.data.domain.prefs.PreferencesRepository
+
+    @Inject
+    lateinit var schedulerProvider: com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
+
+    @Inject
+    lateinit var bus: com.iceteaviet.fastfoodfinder.service.eventbus.core.IBus
+
+
     override lateinit var presenter: SearchContract.Presenter
 
     /**
@@ -239,8 +260,7 @@ class SearchFragment : Fragment(), SearchContract.View {
 
             val fragment = SearchFragment()
             fragment.arguments = args
-            fragment.presenter = SearchPresenter(App.getStoreRepository(), App.getPreferencesRepository(), App.getSchedulerProvider(), App.getBus(), fragment)
-            return fragment
+                        return fragment
         }
     }
 }

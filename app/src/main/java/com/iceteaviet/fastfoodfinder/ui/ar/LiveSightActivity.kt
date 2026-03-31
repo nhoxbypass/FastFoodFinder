@@ -1,6 +1,8 @@
 package com.iceteaviet.fastfoodfinder.ui.ar
 
 
+import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 import android.content.pm.PackageManager
 import android.hardware.Camera
 import android.hardware.Sensor
@@ -32,7 +34,15 @@ import com.iceteaviet.fastfoodfinder.utils.isLocationPermissionGranted
 import com.iceteaviet.fastfoodfinder.utils.requestCameraPermission
 import com.iceteaviet.fastfoodfinder.utils.requestLocationPermission
 
+@AndroidEntryPoint
 class LiveSightActivity : BaseActivity(), LiveSightContract.View, SensorEventListener {
+    @Inject
+    lateinit var storeRepository: com.iceteaviet.fastfoodfinder.data.domain.store.StoreRepository
+
+    @Inject
+    lateinit var schedulerProvider: com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
+
+
 
     override lateinit var presenter: LiveSightContract.Presenter
 
@@ -57,7 +67,7 @@ class LiveSightActivity : BaseActivity(), LiveSightContract.View, SensorEventLis
         binding = ActivityArCameraBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        presenter = LiveSightPresenter(App.getStoreRepository(), App.getSchedulerProvider(), SystemLocationManager.getInstance(), this)
+        presenter = LiveSightPresenter(storeRepository, schedulerProvider, SystemLocationManager.getInstance(), this)
 
         cameraContainerLayout = binding.cameraContainerLayout
         surfaceView = binding.surfaceView

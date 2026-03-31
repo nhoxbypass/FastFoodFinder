@@ -1,5 +1,7 @@
 package com.iceteaviet.fastfoodfinder.ui.main.favourite
 
+import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -23,7 +25,26 @@ import com.iceteaviet.fastfoodfinder.utils.openStoreDetailActivity
 /**
  * Created by MyPC on 11/16/2016.
  */
+@AndroidEntryPoint
 class MainFavouriteFragment : Fragment(), MainFavContract.View, OnStartDragListener {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        presenter = MainFavPresenter(clientAuth, userRepository, storeRepository, schedulerProvider, this)
+    }
+
+    @Inject
+    lateinit var storeRepository: com.iceteaviet.fastfoodfinder.data.domain.store.StoreRepository
+
+    @Inject
+    lateinit var userRepository: com.iceteaviet.fastfoodfinder.data.domain.user.UserRepository
+
+    @Inject
+    lateinit var clientAuth: com.iceteaviet.fastfoodfinder.data.auth.ClientAuth
+
+    @Inject
+    lateinit var schedulerProvider: com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
+
+
     override lateinit var presenter: MainFavContract.Presenter
 
     /**
@@ -139,8 +160,7 @@ class MainFavouriteFragment : Fragment(), MainFavContract.View, OnStartDragListe
             val args = Bundle()
             val fragment = MainFavouriteFragment()
             fragment.arguments = args
-            fragment.presenter = MainFavPresenter(App.getClientAuth(), App.getUserRepository(), App.getStoreRepository(), App.getSchedulerProvider(), fragment)
-            return fragment
+                        return fragment
         }
     }
 }

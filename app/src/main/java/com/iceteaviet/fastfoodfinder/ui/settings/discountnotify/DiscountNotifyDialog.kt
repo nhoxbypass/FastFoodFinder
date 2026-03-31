@@ -19,6 +19,11 @@ import com.iceteaviet.fastfoodfinder.databinding.DialogStoreFilterBinding
  */
 
 class DiscountNotifyDialog : DialogFragment(), DiscountNotifyContract.View {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        presenter = DiscountNotifyPresenter(this)
+    }
+
     private lateinit var tagContainer: RelativeLayout
     override lateinit var presenter: DiscountNotifyContract.Presenter
 
@@ -115,8 +120,7 @@ class DiscountNotifyDialog : DialogFragment(), DiscountNotifyContract.View {
 
             val fragment = DiscountNotifyDialog()
             fragment.arguments = args
-            fragment.presenter = DiscountNotifyPresenter(fragment)
-            return fragment
+                        return fragment
         }
     }
 }

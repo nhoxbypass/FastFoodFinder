@@ -7,7 +7,6 @@ import androidx.annotation.VisibleForTesting
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.WorkManager
 import com.iceteaviet.fastfoodfinder.core.location.GoogleLocationManager
-import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.core.location.SystemLocationManager
 import com.iceteaviet.fastfoodfinder.service.eventbus.core.IBus
 import com.iceteaviet.fastfoodfinder.service.workers.SyncDatabaseWorker
@@ -16,26 +15,16 @@ import com.iceteaviet.fastfoodfinder.utils.initLogger
 import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
 import com.iceteaviet.fastfoodfinder.utils.ui.AppNotiManager
 import com.iceteaviet.fastfoodfinder.utils.ui.NotiManager
-
+import dagger.hilt.android.HiltAndroidApp
 
 /**
  * Created by tom on 7/15/18.
  */
+@HiltAndroidApp
 class App : Application() {
 
     companion object {
-        private const val SYNC_DB_JOB_TAG = "SYNC_DB_JOB_TAG"
-
-        private lateinit var dataManager: DataManager
-        private lateinit var schedulerProvider: SchedulerProvider
-        private lateinit var bus: IBus
-        private lateinit var notiManager: NotiManager
-
-        private lateinit var storeRepository: com.iceteaviet.fastfoodfinder.data.domain.store.StoreRepository
-        private lateinit var userRepository: com.iceteaviet.fastfoodfinder.data.domain.user.UserRepository
-        private lateinit var mapsRoutingRepository: com.iceteaviet.fastfoodfinder.data.domain.routing.MapsRoutingRepository
-        private lateinit var preferencesRepository: com.iceteaviet.fastfoodfinder.data.domain.prefs.PreferencesRepository
-        private lateinit var clientAuth: com.iceteaviet.fastfoodfinder.data.auth.ClientAuth
+        const val SYNC_DB_JOB_TAG = "SYNC_DB_JOB_TAG"
 
         @SuppressLint("StaticFieldLeak")
         private lateinit var context: Context
@@ -54,44 +43,8 @@ class App : Application() {
             return SHA1
         }
 
-        fun getDataManager(): DataManager {
-            return dataManager
-        }
-
-        fun getStoreRepository(): com.iceteaviet.fastfoodfinder.data.domain.store.StoreRepository {
-            return storeRepository
-        }
-
-        fun getUserRepository(): com.iceteaviet.fastfoodfinder.data.domain.user.UserRepository {
-            return userRepository
-        }
-
-        fun getMapsRoutingRepository(): com.iceteaviet.fastfoodfinder.data.domain.routing.MapsRoutingRepository {
-            return mapsRoutingRepository
-        }
-
-        fun getPreferencesRepository(): com.iceteaviet.fastfoodfinder.data.domain.prefs.PreferencesRepository {
-            return preferencesRepository
-        }
-        
-        fun getClientAuth(): com.iceteaviet.fastfoodfinder.data.auth.ClientAuth {
-            return clientAuth
-        }
-
-        fun getSchedulerProvider(): SchedulerProvider {
-            return schedulerProvider
-        }
-
         fun getContext(): Context {
             return context
-        }
-
-        fun getBus(): IBus {
-            return bus
-        }
-
-        fun getNotiManager(): NotiManager {
-            return notiManager
         }
     }
 
@@ -104,19 +57,7 @@ class App : Application() {
 
         initLogger()
 
-        dataManager = Injection.provideDataManager()
-        
-        storeRepository = Injection.provideStoreRepository()
-        userRepository = Injection.provideUserRepository()
-        mapsRoutingRepository = Injection.provideRoutingRepository()
-        preferencesRepository = Injection.providePreferenceRepository()
-        clientAuth = Injection.provideAuthClient()
-
-        schedulerProvider = Injection.provideSchedulerProvider()
-        bus = Injection.provideEventBus()
-        notiManager = AppNotiManager(getContext())
-
-        dataManager.initialize(getContext())
+        com.iceteaviet.fastfoodfinder.utils.DatabaseInitializer.init(getContext())
 
         GoogleLocationManager.init(getContext())
         SystemLocationManager.init(getContext())

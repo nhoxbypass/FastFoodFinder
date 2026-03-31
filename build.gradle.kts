@@ -21,6 +21,7 @@ buildscript {
         classpath("io.realm:realm-gradle-plugin:10.17.0")
 
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:2.1.10")
+        classpath("com.google.dagger:hilt-android-gradle-plugin:2.55")
     }
 }
 
