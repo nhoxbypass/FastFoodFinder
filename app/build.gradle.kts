@@ -166,6 +166,12 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.2.1")
     implementation("androidx.work:work-runtime-ktx:2.10.0")
     implementation("androidx.work:work-rxjava2:2.10.0")
+    
+    // MVVM & Lifecycles
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.2")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.2")
+    implementation("androidx.activity:activity-ktx:1.9.0")
+    implementation("androidx.fragment:fragment-ktx:1.8.0")
 
     // Google Play Services
     implementation("com.google.android.gms:play-services-maps:19.1.0")
@@ -195,6 +201,8 @@ dependencies {
     implementation("io.reactivex.rxjava3:rxandroid:3.0.2")
     implementation("io.reactivex.rxjava3:rxjava:3.1.5")
     implementation("io.reactivex.rxjava3:rxkotlin:3.0.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-rx3:1.8.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-rx2:1.8.1") // Interoperability for RxWorker which uses rxjava2
 
     // DB
     implementation("io.realm:realm-android-library:10.17.0")
