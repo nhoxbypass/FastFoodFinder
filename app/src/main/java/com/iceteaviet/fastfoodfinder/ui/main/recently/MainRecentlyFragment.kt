@@ -1,44 +1,34 @@
 package com.iceteaviet.fastfoodfinder.ui.main.recently
 
-import javax.inject.Inject
-import dagger.hilt.android.AndroidEntryPoint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.iceteaviet.fastfoodfinder.App
+import dagger.hilt.android.AndroidEntryPoint
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.databinding.FragmentMainRecentlyBinding
 import com.iceteaviet.fastfoodfinder.ui.custom.itemtouchhelper.OnStartDragListener
 import com.iceteaviet.fastfoodfinder.ui.custom.itemtouchhelper.SimpleItemTouchHelperCallback
 import com.iceteaviet.fastfoodfinder.utils.openStoreDetailActivity
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
-/**
- * Created by MyPC on 11/20/2016.
- */
 @AndroidEntryPoint
-class MainRecentlyFragment : Fragment(), MainRecentlyContract.View, OnStartDragListener {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        presenter = MainRecentlyPresenter(schedulerProvider, this)
-    }
+class MainRecentlyFragment : Fragment(), OnStartDragListener {
 
-    @Inject
-    lateinit var schedulerProvider: com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
+    private val viewModel: MainRecentlyViewModel by viewModels()
 
-
-    override lateinit var presenter: MainRecentlyContract.Presenter
-
-    /**
-     * Views Ref
-     */
     private lateinit var binding: FragmentMainRecentlyBinding
 
     lateinit var recyclerView: RecyclerView
@@ -46,7 +36,7 @@ class MainRecentlyFragment : Fragment(), MainRecentlyContract.View, OnStartDragL
 
     private var mRecentlyAdapter: RecentlyStoreAdapter? = null
     private var mItemTouchHelper: ItemTouchHelper? = null
-    private val isFABChangeClicked = false // TODO: Check usage of this
+    private val isFABChangeClicked = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentMainRecentlyBinding.inflate(inflater, container, false)
@@ -54,29 +44,38 @@ class MainRecentlyFragment : Fragment(), MainRecentlyContract.View, OnStartDragL
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         recyclerView = binding.rvRecentlyStores
         containerLayout = binding.flContainer
 
         setupUI()
         setupEventHandlers()
+        setupObservers()
     }
 
     override fun onResume() {
         super.onResume()
-        presenter.subscribe()
+        viewModel.start()
     }
 
-    override fun onPause() {
-        super.onPause()
-        presenter.unsubscribe()
-    }
-
-    override fun setStores(stores: ArrayList<Store>) {
-        mRecentlyAdapter?.setStores(stores)
-    }
-
-    override fun showStoreDetailView(store: Store) {
-        openStoreDetailActivity(requireActivity(), store)
+    private fun setupObservers() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collectLatest { state ->
+                    when (state) {
+                        is MainRecentlyEvent.Idle -> {}
+                        is MainRecentlyEvent.SetStores -> {
+                            mRecentlyAdapter?.setStores(state.stores)
+                            viewModel.markEventConsumed()
+                        }
+                        is MainRecentlyEvent.ShowStoreDetailView -> {
+                            openStoreDetailActivity(requireActivity(), state.store)
+                            viewModel.markEventConsumed()
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private fun setupUI() {
@@ -97,14 +96,15 @@ class MainRecentlyFragment : Fragment(), MainRecentlyContract.View, OnStartDragL
     private fun setupEventHandlers() {
         mRecentlyAdapter?.setOnItemClickListener(object : RecentlyStoreAdapter.OnItemClickListener {
             override fun onClick(store: Store) {
-                presenter.onStoreItemClick(store)
+                viewModel.onStoreItemClick(store)
             }
         })
     }
 
     override fun onStartDrag(viewHolder: RecyclerView.ViewHolder) {
-        if (isFABChangeClicked)
+        if (isFABChangeClicked) {
             mItemTouchHelper?.startDrag(viewHolder)
+        }
     }
 
     companion object {
@@ -112,7 +112,7 @@ class MainRecentlyFragment : Fragment(), MainRecentlyContract.View, OnStartDragL
             val args = Bundle()
             val fragment = MainRecentlyFragment()
             fragment.arguments = args
-                        return fragment
+            return fragment
         }
     }
 }

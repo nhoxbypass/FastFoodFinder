@@ -1,7 +1,5 @@
 package com.iceteaviet.fastfoodfinder.ui.main.favourite
 
-import javax.inject.Inject
-import dagger.hilt.android.AndroidEntryPoint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,47 +7,30 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.iceteaviet.fastfoodfinder.App
+import dagger.hilt.android.AndroidEntryPoint
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.databinding.FragmentMainFavouritedBinding
 import com.iceteaviet.fastfoodfinder.ui.custom.itemtouchhelper.OnStartDragListener
 import com.iceteaviet.fastfoodfinder.ui.custom.itemtouchhelper.SimpleItemTouchHelperCallback
 import com.iceteaviet.fastfoodfinder.utils.openStoreDetailActivity
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
-/**
- * Created by MyPC on 11/16/2016.
- */
 @AndroidEntryPoint
-class MainFavouriteFragment : Fragment(), MainFavContract.View, OnStartDragListener {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        presenter = MainFavPresenter(clientAuth, userRepository, storeRepository, schedulerProvider, this)
-    }
+class MainFavouriteFragment : Fragment(), OnStartDragListener {
 
-    @Inject
-    lateinit var storeRepository: com.iceteaviet.fastfoodfinder.data.domain.store.StoreRepository
+    private val viewModel: MainFavViewModel by viewModels()
 
-    @Inject
-    lateinit var userRepository: com.iceteaviet.fastfoodfinder.data.domain.user.UserRepository
-
-    @Inject
-    lateinit var clientAuth: com.iceteaviet.fastfoodfinder.data.auth.ClientAuth
-
-    @Inject
-    lateinit var schedulerProvider: com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
-
-
-    override lateinit var presenter: MainFavContract.Presenter
-
-    /**
-     * Views Ref
-     */
     private lateinit var binding: FragmentMainFavouritedBinding
 
     lateinit var recyclerView: RecyclerView
@@ -69,44 +50,52 @@ class MainFavouriteFragment : Fragment(), MainFavContract.View, OnStartDragListe
         super.onViewCreated(view, savedInstanceState)
         setupUI()
         setupEventHandlers()
+        setupObservers()
     }
 
     override fun onResume() {
         super.onResume()
-        presenter.subscribe()
+        viewModel.start()
     }
 
-    override fun onPause() {
-        super.onPause()
-        presenter.unsubscribe()
-    }
-
-    override fun setStores(storeList: List<Store>) {
-        mFavouriteAdapter?.setStores(storeList)
-    }
-
-    override fun addStore(store: Store) {
-        mFavouriteAdapter?.addStore(store)
-    }
-
-    override fun updateStore(store: Store) {
-        mFavouriteAdapter?.updateStore(store)
-    }
-
-    override fun removeStore(store: Store) {
-        mFavouriteAdapter?.removeStore(store)
-    }
-
-    override fun showWarningMessage(message: String?) {
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-    }
-
-    override fun showStoreDetailView(store: Store) {
-        openStoreDetailActivity(requireActivity(), store)
-    }
-
-    override fun showGeneralErrorMessage() {
-        Toast.makeText(requireActivity(), R.string.error_general_error_code, Toast.LENGTH_LONG).show()
+    private fun setupObservers() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collectLatest { state ->
+                    when (state) {
+                        is MainFavEvent.Idle -> {}
+                        is MainFavEvent.SetStores -> {
+                            mFavouriteAdapter?.setStores(state.stores)
+                            viewModel.markEventConsumed()
+                        }
+                        is MainFavEvent.AddStore -> {
+                            mFavouriteAdapter?.addStore(state.store)
+                            viewModel.markEventConsumed()
+                        }
+                        is MainFavEvent.UpdateStore -> {
+                            mFavouriteAdapter?.updateStore(state.store)
+                            viewModel.markEventConsumed()
+                        }
+                        is MainFavEvent.RemoveStore -> {
+                            mFavouriteAdapter?.removeStore(state.store)
+                            viewModel.markEventConsumed()
+                        }
+                        is MainFavEvent.ShowWarningMessage -> {
+                            Toast.makeText(context, state.message, Toast.LENGTH_SHORT).show()
+                            viewModel.markEventConsumed()
+                        }
+                        is MainFavEvent.ShowStoreDetailView -> {
+                            openStoreDetailActivity(requireActivity(), state.store)
+                            viewModel.markEventConsumed()
+                        }
+                        is MainFavEvent.ShowGeneralErrorMessage -> {
+                            Toast.makeText(requireActivity(), R.string.error_general_error_code, Toast.LENGTH_LONG).show()
+                            viewModel.markEventConsumed()
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private fun setupUI() {
@@ -129,11 +118,10 @@ class MainFavouriteFragment : Fragment(), MainFavContract.View, OnStartDragListe
         }
     }
 
-
     private fun setupEventHandlers() {
         mFavouriteAdapter?.setOnItemClickListener(object : FavouriteStoreAdapter.OnItemClickListener {
             override fun onClick(des: Store) {
-                presenter.onStoreItemClick(des)
+                viewModel.onStoreItemClick(des)
             }
         })
 
@@ -149,18 +137,17 @@ class MainFavouriteFragment : Fragment(), MainFavContract.View, OnStartDragListe
     }
 
     override fun onStartDrag(viewHolder: RecyclerView.ViewHolder) {
-        if (isFABChangeClicked)
+        if (isFABChangeClicked) {
             mItemTouchHelper?.startDrag(viewHolder)
-
+        }
     }
 
     companion object {
-
         fun newInstance(): MainFavouriteFragment {
             val args = Bundle()
             val fragment = MainFavouriteFragment()
             fragment.arguments = args
-                        return fragment
+            return fragment
         }
     }
 }
