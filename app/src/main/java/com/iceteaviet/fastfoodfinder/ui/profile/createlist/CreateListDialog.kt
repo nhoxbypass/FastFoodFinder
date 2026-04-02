@@ -1,7 +1,5 @@
 package com.iceteaviet.fastfoodfinder.ui.profile.createlist
 
-import javax.inject.Inject
-import dagger.hilt.android.AndroidEntryPoint
 import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,35 +8,21 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
-import com.iceteaviet.fastfoodfinder.App
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import dagger.hilt.android.AndroidEntryPoint
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.databinding.DialogCreateNewlistBinding
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
-/**
- * Created by MyPC on 11/30/2016.
- */
 @AndroidEntryPoint
-class CreateListDialog : DialogFragment(), CreateListContract.View, View.OnClickListener {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        presenter = CreateListPresenter(clientAuth, userRepository, schedulerProvider, this)
-    }
+class CreateListDialog : DialogFragment(), View.OnClickListener {
 
-    @Inject
-    lateinit var userRepository: com.iceteaviet.fastfoodfinder.data.domain.user.UserRepository
+    private val viewModel: CreateListViewModel by viewModels()
 
-    @Inject
-    lateinit var clientAuth: com.iceteaviet.fastfoodfinder.data.auth.ClientAuth
-
-    @Inject
-    lateinit var schedulerProvider: com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
-
-
-    override lateinit var presenter: CreateListContract.Presenter
-
-    /**
-     * Views Ref
-     */
     private lateinit var binding: DialogCreateNewlistBinding
 
     private var listener: OnCreateListListener? = null
@@ -55,16 +39,33 @@ class CreateListDialog : DialogFragment(), CreateListContract.View, View.OnClick
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupEventListeners()
+        setupObservers()
     }
 
-    override fun onResume() {
-        super.onResume()
-        presenter.subscribe()
-    }
+    private fun setupObservers() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collectLatest { state ->
+                    updateSelectedIconUI(state.selectedIconId)
 
-    override fun onPause() {
-        super.onPause()
-        presenter.unsubscribe()
+                    when (val event = state.event) {
+                        is CreateListEvent.Idle -> {}
+                        is CreateListEvent.ShowEmptyNameWarning -> {
+                            Toast.makeText(context, R.string.list_name_cannot_empty, Toast.LENGTH_SHORT).show()
+                            viewModel.markEventConsumed()
+                        }
+                        is CreateListEvent.NotifyWithResult -> {
+                            listener?.onCreateButtonClick(event.storeName, event.iconId, this@CreateListDialog)
+                            viewModel.markEventConsumed()
+                        }
+                        is CreateListEvent.Cancel -> {
+                            listener?.onCancel(this@CreateListDialog)
+                            viewModel.markEventConsumed()
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private fun setupEventListeners() {
@@ -86,69 +87,27 @@ class CreateListDialog : DialogFragment(), CreateListContract.View, View.OnClick
     override fun onClick(v: View) {
         when (v.id) {
             R.id.ivQuit -> {
-                presenter.onCancelButtonClick()
+                viewModel.onCancelButtonClick()
             }
 
             R.id.btnDone -> {
-                presenter.onDoneButtonClick(binding.edtName.text.toString())
+                viewModel.onDoneButtonClick(binding.edtName.text.toString())
             }
 
-            R.id.icon1 -> {
-                presenter.onListIconSelect(1)
-            }
-
-            R.id.icon2 -> {
-                presenter.onListIconSelect(2)
-            }
-
-            R.id.icon3 -> {
-                presenter.onListIconSelect(3)
-            }
-
-            R.id.icon4 -> {
-                presenter.onListIconSelect(4)
-            }
-
-            R.id.icon5 -> {
-                presenter.onListIconSelect(5)
-            }
-
-            R.id.icon6 -> {
-                presenter.onListIconSelect(6)
-            }
-
-            R.id.icon7 -> {
-                presenter.onListIconSelect(7)
-            }
-
-            R.id.icon8 -> {
-                presenter.onListIconSelect(8)
-            }
-
-            R.id.icon9 -> {
-                presenter.onListIconSelect(9)
-            }
-
-            R.id.icon10 -> {
-                presenter.onListIconSelect(10)
-            }
+            R.id.icon1 -> { viewModel.onListIconSelect(1) }
+            R.id.icon2 -> { viewModel.onListIconSelect(2) }
+            R.id.icon3 -> { viewModel.onListIconSelect(3) }
+            R.id.icon4 -> { viewModel.onListIconSelect(4) }
+            R.id.icon5 -> { viewModel.onListIconSelect(5) }
+            R.id.icon6 -> { viewModel.onListIconSelect(6) }
+            R.id.icon7 -> { viewModel.onListIconSelect(7) }
+            R.id.icon8 -> { viewModel.onListIconSelect(8) }
+            R.id.icon9 -> { viewModel.onListIconSelect(9) }
+            R.id.icon10 -> { viewModel.onListIconSelect(10) }
         }
     }
 
-    override fun showEmptyNameWarning() {
-        Toast.makeText(context, R.string.list_name_cannot_empty, Toast.LENGTH_SHORT).show()
-    }
-
-    override fun notifyWithResult(storeName: String, iconId: Int) {
-        listener?.onCreateButtonClick(storeName, iconId, this)
-    }
-
-    override fun cancel() {
-        listener?.onCancel(this)
-    }
-
-    override fun updateSelectedIconUI(iconId: Int) {
-        // Clear old selected icons
+    private fun updateSelectedIconUI(iconId: Int) {
         showAsNotSelectedIcon(binding.icon1)
         showAsNotSelectedIcon(binding.icon2)
         showAsNotSelectedIcon(binding.icon3)
@@ -161,45 +120,16 @@ class CreateListDialog : DialogFragment(), CreateListContract.View, View.OnClick
         showAsNotSelectedIcon(binding.icon10)
 
         when (iconId) {
-            1 -> {
-                showAsSelectedIcon(binding.icon1)
-            }
-
-            2 -> {
-                showAsSelectedIcon(binding.icon2)
-            }
-
-            3 -> {
-                showAsSelectedIcon(binding.icon3)
-            }
-
-            4 -> {
-                showAsSelectedIcon(binding.icon4)
-            }
-
-            5 -> {
-                showAsSelectedIcon(binding.icon5)
-            }
-
-            6 -> {
-                showAsSelectedIcon(binding.icon6)
-            }
-
-            7 -> {
-                showAsSelectedIcon(binding.icon7)
-            }
-
-            8 -> {
-                showAsSelectedIcon(binding.icon8)
-            }
-
-            9 -> {
-                showAsSelectedIcon(binding.icon9)
-            }
-
-            10 -> {
-                showAsSelectedIcon(binding.icon10)
-            }
+            1 -> showAsSelectedIcon(binding.icon1)
+            2 -> showAsSelectedIcon(binding.icon2)
+            3 -> showAsSelectedIcon(binding.icon3)
+            4 -> showAsSelectedIcon(binding.icon4)
+            5 -> showAsSelectedIcon(binding.icon5)
+            6 -> showAsSelectedIcon(binding.icon6)
+            7 -> showAsSelectedIcon(binding.icon7)
+            8 -> showAsSelectedIcon(binding.icon8)
+            9 -> showAsSelectedIcon(binding.icon9)
+            10 -> showAsSelectedIcon(binding.icon10)
         }
     }
 
@@ -236,7 +166,7 @@ class CreateListDialog : DialogFragment(), CreateListContract.View, View.OnClick
             val frag = CreateListDialog()
             val args = Bundle()
             frag.arguments = args
-                        return frag
+            return frag
         }
     }
 }

@@ -1,7 +1,5 @@
 package com.iceteaviet.fastfoodfinder.ui.profile.cover
 
-import javax.inject.Inject
-import dagger.hilt.android.AndroidEntryPoint
 import android.app.Activity
 import android.app.Dialog
 import android.content.Intent
@@ -15,38 +13,24 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
-import com.iceteaviet.fastfoodfinder.App
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import dagger.hilt.android.AndroidEntryPoint
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.databinding.DialogChooseImageBinding
 import com.iceteaviet.fastfoodfinder.utils.getBitmapFromUri
 import com.iceteaviet.fastfoodfinder.utils.getImagePickerIntent
 import com.iceteaviet.fastfoodfinder.utils.ui.getDrawable
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
-/**
- * Created by MyPC on 11/29/2016.
- */
 @AndroidEntryPoint
-class UpdateCoverImageDialog : DialogFragment(), UpdateCoverContract.View, View.OnClickListener {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        presenter = UpdateCoverPresenter(clientAuth, userRepository, schedulerProvider, this)
-    }
+class UpdateCoverImageDialog : DialogFragment(), View.OnClickListener {
 
-    @Inject
-    lateinit var userRepository: com.iceteaviet.fastfoodfinder.data.domain.user.UserRepository
+    private val viewModel: UpdateCoverViewModel by viewModels()
 
-    @Inject
-    lateinit var clientAuth: com.iceteaviet.fastfoodfinder.data.auth.ClientAuth
-
-    @Inject
-    lateinit var schedulerProvider: com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
-
-
-    override lateinit var presenter: UpdateCoverContract.Presenter
-
-    /**
-     * Views Ref
-     */
     private lateinit var binding: DialogChooseImageBinding
 
     private var listener: OnButtonClickListener? = null
@@ -75,16 +59,37 @@ class UpdateCoverImageDialog : DialogFragment(), UpdateCoverContract.View, View.
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupEventListeners()
+        setupObservers()
     }
 
-    override fun onResume() {
-        super.onResume()
-        presenter.subscribe()
-    }
+    private fun setupObservers() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collectLatest { state ->
+                    if (state.selectedImage != null) {
+                        binding.ivChosenImage.setImageDrawable(state.selectedImage)
+                    }
 
-    override fun onPause() {
-        super.onPause()
-        presenter.unsubscribe()
+                    when (val event = state.event) {
+                        is UpdateCoverEvent.Idle -> {}
+                        is UpdateCoverEvent.OpenImageFilePicker -> {
+                            startActivityForResult(getImagePickerIntent(), RESULT_LOAD_IMAGE)
+                            viewModel.markEventConsumed()
+                        }
+                        is UpdateCoverEvent.DismissWithResult -> {
+                            listener?.onOkClick(event.selectedImage)
+                            dismiss()
+                            viewModel.markEventConsumed()
+                        }
+                        is UpdateCoverEvent.Cancel -> {
+                            listener?.onCancelClick()
+                            dismiss()
+                            viewModel.markEventConsumed()
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private fun setupEventListeners() {
@@ -104,39 +109,39 @@ class UpdateCoverImageDialog : DialogFragment(), UpdateCoverContract.View, View.
     override fun onClick(v: View) {
         when (v.id) {
             R.id.btnBrowser -> {
-                presenter.onImageBrowserButtonClick()
+                viewModel.onImageBrowserButtonClick()
             }
 
             R.id.ivOne -> {
-                presenter.onCoverImageSelect(getDrawable(R.drawable.profile_sample_background)!!)
+                getDrawable(R.drawable.profile_sample_background)?.let { viewModel.onCoverImageSelect(it) }
             }
 
             R.id.ivTwo -> {
-                presenter.onCoverImageSelect(getDrawable(R.drawable.all_sample_avatar)!!)
+                getDrawable(R.drawable.all_sample_avatar)?.let { viewModel.onCoverImageSelect(it) }
             }
 
             R.id.ivThree -> {
-                presenter.onCoverImageSelect(getDrawable(R.drawable.profile_sample_background_3)!!)
+                getDrawable(R.drawable.profile_sample_background_3)?.let { viewModel.onCoverImageSelect(it) }
             }
 
             R.id.ivFour -> {
-                presenter.onCoverImageSelect(getDrawable(R.drawable.profile_sample_background_4)!!)
+                getDrawable(R.drawable.profile_sample_background_4)?.let { viewModel.onCoverImageSelect(it) }
             }
 
             R.id.ivFive -> {
-                presenter.onCoverImageSelect(getDrawable(R.drawable.profile_sample_background_5)!!)
+                getDrawable(R.drawable.profile_sample_background_5)?.let { viewModel.onCoverImageSelect(it) }
             }
 
             R.id.ivSix -> {
-                presenter.onCoverImageSelect(getDrawable(R.drawable.profile_sample_background_6)!!)
+                getDrawable(R.drawable.profile_sample_background_6)?.let { viewModel.onCoverImageSelect(it) }
             }
 
             R.id.btnDone -> {
-                presenter.onDoneButtonClick()
+                viewModel.onDoneButtonClick()
             }
 
             R.id.btnCancel -> {
-                cancel()
+                viewModel.onCancelButtonClick()
             }
         }
     }
@@ -149,30 +154,12 @@ class UpdateCoverImageDialog : DialogFragment(), UpdateCoverContract.View, View.
                 if (resultCode == Activity.RESULT_OK && data != null && data.data != null) {
                     val bmp: Bitmap? = getBitmapFromUri(requireActivity(), data.data!!)
                     if (bmp != null)
-                        presenter.onCoverImageSelect(BitmapDrawable(resources, bmp))
+                        viewModel.onCoverImageSelect(BitmapDrawable(resources, bmp))
                     else
                         Toast.makeText(requireActivity(), getString(R.string.get_image_from_picker_failed), Toast.LENGTH_SHORT).show()
                 }
             }
         }
-    }
-
-    override fun openImageFilePicker() {
-        startActivityForResult(getImagePickerIntent(), RESULT_LOAD_IMAGE)
-    }
-
-    override fun setSelectedImage(selectedImage: Drawable) {
-        binding.ivChosenImage.setImageDrawable(selectedImage)
-    }
-
-    override fun dismissWithResult(selectedImage: Drawable?) {
-        listener?.onOkClick(selectedImage)
-        dismiss()
-    }
-
-    override fun cancel() {
-        listener?.onCancelClick()
-        dismiss()
     }
 
     interface OnButtonClickListener {
@@ -187,7 +174,7 @@ class UpdateCoverImageDialog : DialogFragment(), UpdateCoverContract.View, View.
             val frag = UpdateCoverImageDialog()
             val args = Bundle()
             frag.arguments = args
-                        return frag
+            return frag
         }
     }
 }
