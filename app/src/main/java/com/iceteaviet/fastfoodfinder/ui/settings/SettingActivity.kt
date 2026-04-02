@@ -1,10 +1,6 @@
 package com.iceteaviet.fastfoodfinder.ui.settings
 
-import javax.inject.Inject
-import dagger.hilt.android.AndroidEntryPoint
-import android.annotation.TargetApi
 import android.content.res.Configuration
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
@@ -12,35 +8,26 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.widget.SwitchCompat
-import com.iceteaviet.fastfoodfinder.App
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import dagger.hilt.android.AndroidEntryPoint
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.databinding.ActivitySettingBinding
 import com.iceteaviet.fastfoodfinder.ui.base.BaseActivity
 import com.iceteaviet.fastfoodfinder.ui.settings.discountnotify.DiscountNotifyDialog
 import com.iceteaviet.fastfoodfinder.utils.openLoginActivity
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import java.util.Locale
 
 @AndroidEntryPoint
-class SettingActivity : BaseActivity(), SettingContract.View {
-    @Inject
-    lateinit var storeRepository: com.iceteaviet.fastfoodfinder.data.domain.store.StoreRepository
+class SettingActivity : BaseActivity() {
 
-    @Inject
-    lateinit var preferencesRepository: com.iceteaviet.fastfoodfinder.data.domain.prefs.PreferencesRepository
+    private val viewModel: SettingViewModel by viewModels()
 
-    @Inject
-    lateinit var clientAuth: com.iceteaviet.fastfoodfinder.data.auth.ClientAuth
-
-    @Inject
-    lateinit var schedulerProvider: com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
-
-
-    override lateinit var presenter: SettingContract.Presenter
-
-    /**
-     * Views Ref
-     */
     private lateinit var binding: ActivitySettingBinding
 
     private lateinit var txtShareApp: TextView
@@ -62,75 +49,72 @@ class SettingActivity : BaseActivity(), SettingContract.View {
     private lateinit var swChangeLanguage: SwitchCompat
     private lateinit var tvSettingLanguage: TextView
 
+    override val layoutId: Int
+        get() = R.layout.activity_setting
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivitySettingBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        presenter = SettingPresenter(clientAuth, preferencesRepository, storeRepository, schedulerProvider, this)
-
         setupUI()
-
-        presenter.onSetupLanguage()
-        presenter.onInitSignOutTextView()
-
-        // Initialize Firebase Auth
         setupEventListeners()
-    }
-
-    override fun updateLangUI(isVietnamese: Boolean) {
-        swChangeLanguage.isChecked = !isVietnamese
-    }
-
-    override fun initSignOutTextView(enabled: Boolean) {
-        if (enabled) {
-            txtSignOut.visibility = View.VISIBLE
-        } else {
-            txtSignOut.visibility = View.INVISIBLE
-        }
-    }
-
-    override val layoutId: Int
-        get() = R.layout.activity_setting
-
-    override fun loadLanguage(languageToLoad: String) {
-        val locale = Locale(languageToLoad)
-        Locale.setDefault(locale)
-        val configuration = Configuration()
-
-        setSystemLocale(configuration, locale)
-
-        baseContext.resources.updateConfiguration(configuration,
-            baseContext.resources.displayMetrics)
-        refreshUI()
+        setupObservers()
     }
 
     override fun onResume() {
         super.onResume()
-        presenter.subscribe()
+        viewModel.start()
     }
 
-    override fun onPause() {
-        super.onPause()
-        presenter.unsubscribe()
+    private fun setupObservers() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collectLatest { state ->
+                    swChangeLanguage.isChecked = !state.isVietnamese
+
+                    if (state.showSignOutButton) {
+                        txtSignOut.visibility = View.VISIBLE
+                    } else {
+                        txtSignOut.visibility = View.INVISIBLE
+                    }
+
+                    imageUpdateDb.visibility = if (state.showLoadingProgressIndicator) View.GONE else View.VISIBLE
+                    progressBarUpdateDb.visibility = if (state.showLoadingProgressIndicator) View.VISIBLE else View.GONE
+
+                    when (state.event) {
+                        is SettingEvent.Idle -> {}
+                        is SettingEvent.LoadLanguage -> {
+                            loadLanguage(state.event.languageCode)
+                            viewModel.markEventConsumed()
+                        }
+                        is SettingEvent.OpenLogin -> {
+                            openLoginActivity(this@SettingActivity)
+                            finish()
+                            viewModel.markEventConsumed()
+                        }
+                        is SettingEvent.ShowSuccessLoadingToast -> {
+                            Toast.makeText(this@SettingActivity, getString(R.string.update_database_successfull) + state.event.message, Toast.LENGTH_SHORT).show()
+                            viewModel.markEventConsumed()
+                        }
+                        is SettingEvent.ShowFailedLoadingToast -> {
+                            Toast.makeText(this@SettingActivity, getString(R.string.update_database_failed) + state.event.message, Toast.LENGTH_SHORT).show()
+                            viewModel.markEventConsumed()
+                        }
+                    }
+                }
+            }
+        }
     }
 
-    override fun showSuccessLoadingToast(successMessage: String?) {
-        Toast.makeText(this, getString(R.string.update_database_successfull) + successMessage, Toast.LENGTH_SHORT).show()
-    }
-
-    override fun showFailedLoadingToast(failedMessage: String?) {
-        Toast.makeText(this, getString(R.string.update_database_failed) + failedMessage, Toast.LENGTH_SHORT).show()
-    }
-
-    override fun updateLoadingProgressView(showProgress: Boolean) {
-        imageUpdateDb.visibility = if (showProgress) View.GONE else View.VISIBLE
-        progressBarUpdateDb.visibility = if (showProgress) View.VISIBLE else View.GONE
-    }
-
-    private fun setSystemLocale(config: Configuration, locale: Locale) {
-        config.setLocale(locale)
+    private fun loadLanguage(languageToLoad: String) {
+        val locale = Locale(languageToLoad)
+        Locale.setDefault(locale)
+        val configuration = Configuration()
+        configuration.setLocale(locale)
+        baseContext.resources.updateConfiguration(configuration, baseContext.resources.displayMetrics)
+        refreshUI()
     }
 
     private fun setupUI() {
@@ -172,24 +156,19 @@ class SettingActivity : BaseActivity(), SettingContract.View {
         txtPrivacyPolicy.setText(R.string.privacy_policy)
         txtTermOfUse.setText(R.string.terms_of_use)
         txtSignOut.setText(R.string.sign_out)
-
     }
 
     private fun setupEventListeners() {
         txtSignOut.setOnClickListener {
-            presenter.signOut()
-            openLoginActivity(this)
-            finish()
+            viewModel.onSignOutClicked()
         }
 
         swChangeLanguage.setOnClickListener {
-            presenter.onLanguageChanged()
-            presenter.saveLanguagePref()
+            viewModel.onLanguageChanged()
         }
 
         tvSettingLanguage.setOnClickListener {
-            presenter.onLanguageChanged()
-            presenter.saveLanguagePref()
+            viewModel.onLanguageChanged()
         }
 
         txtSetNotification.setOnClickListener {
@@ -198,7 +177,7 @@ class SettingActivity : BaseActivity(), SettingContract.View {
         }
 
         layoutUpdateDb.setOnClickListener {
-            presenter.onLoadStoreFromServer()
+            viewModel.onLoadStoreFromServer()
         }
     }
 }

@@ -9,7 +9,7 @@ import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList
 import com.iceteaviet.fastfoodfinder.ui.ar.model.AugmentedPOI
 import com.iceteaviet.fastfoodfinder.ui.main.search.model.SearchStoreItem
-import com.iceteaviet.fastfoodfinder.ui.settings.discountnotify.DiscountNotifyPresenter
+import com.iceteaviet.fastfoodfinder.ui.settings.discountnotify.DiscountNotifyViewModel
 import com.iceteaviet.fastfoodfinder.utils.ui.getStoreLogoDrawableRes
 import java.security.SecureRandom
 import java.text.SimpleDateFormat
@@ -393,11 +393,11 @@ fun storesToArPoints(stores: List<Store>): List<AugmentedPOI> {
 
 fun getStoreNameByKey(key: String?): String {
     when (key) {
-        DiscountNotifyPresenter.KEY_CIRCLE_K -> return "Cirle K"
-        DiscountNotifyPresenter.KEY_BSMART -> return "B’s mart"
-        DiscountNotifyPresenter.KEY_FAMILY_MART -> return "Family mart"
-        DiscountNotifyPresenter.KEY_MINI_STOP -> return "Ministop"
-        DiscountNotifyPresenter.KEY_SHOP_N_GO -> return "Shop & Go"
+        DiscountNotifyViewModel.KEY_CIRCLE_K -> return "Cirle K"
+        DiscountNotifyViewModel.KEY_BSMART -> return "B\u2019s mart"
+        DiscountNotifyViewModel.KEY_FAMILY_MART -> return "Family mart"
+        DiscountNotifyViewModel.KEY_MINI_STOP -> return "Ministop"
+        DiscountNotifyViewModel.KEY_SHOP_N_GO -> return "Shop & Go"
         else -> return ""
     }
 }
