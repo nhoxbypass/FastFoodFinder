@@ -1,24 +1,24 @@
 package com.iceteaviet.fastfoodfinder.ui.store
 
-import javax.inject.Inject
-import dagger.hilt.android.AndroidEntryPoint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.activity.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.appbar.CollapsingToolbarLayout
-import com.iceteaviet.fastfoodfinder.App
+import dagger.hilt.android.AndroidEntryPoint
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.core.location.GoogleLocationManager
-import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Comment
-import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.databinding.ActivityStoreDetailBinding
 import com.iceteaviet.fastfoodfinder.ui.base.BaseActivity
 import com.iceteaviet.fastfoodfinder.ui.store.comment.CommentActivity
@@ -28,34 +28,14 @@ import com.iceteaviet.fastfoodfinder.utils.isLocationPermissionGranted
 import com.iceteaviet.fastfoodfinder.utils.makeNativeCall
 import com.iceteaviet.fastfoodfinder.utils.openRoutingActivity
 import com.iceteaviet.fastfoodfinder.utils.requestLocationPermission
-
-/**
- * Created by taq on 18/11/2016.
- */
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class StoreDetailActivity : BaseActivity(), StoreDetailContract.View {
-    @Inject
-    lateinit var storeRepository: com.iceteaviet.fastfoodfinder.data.domain.store.StoreRepository
+class StoreDetailActivity : BaseActivity() {
 
-    @Inject
-    lateinit var userRepository: com.iceteaviet.fastfoodfinder.data.domain.user.UserRepository
+    private val viewModel: StoreDetailViewModel by viewModels()
 
-    @Inject
-    lateinit var mapsRoutingRepository: com.iceteaviet.fastfoodfinder.data.domain.routing.MapsRoutingRepository
-
-    @Inject
-    lateinit var clientAuth: com.iceteaviet.fastfoodfinder.data.auth.ClientAuth
-
-    @Inject
-    lateinit var schedulerProvider: com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
-
-
-    override lateinit var presenter: StoreDetailContract.Presenter
-
-    /**
-     * Views Ref
-     */
     private lateinit var binding: ActivityStoreDetailBinding
 
     private lateinit var collapsingToolbar: CollapsingToolbarLayout
@@ -73,21 +53,88 @@ class StoreDetailActivity : BaseActivity(), StoreDetailContract.View {
         binding = ActivityStoreDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        presenter = StoreDetailPresenter(clientAuth, userRepository, storeRepository, mapsRoutingRepository, schedulerProvider, GoogleLocationManager.getInstance(), this)
+        viewModel.injectLocationManager(GoogleLocationManager.getInstance())
 
         setupUI()
         setupEventHandlers()
+        setupObservers()
     }
 
     override fun onResume() {
         super.onResume()
-        presenter.handleExtras(intent.getParcelableExtra(KEY_STORE))
-        presenter.subscribe()
+        viewModel.start(isLocationPermissionGranted(this))
     }
 
-    override fun onPause() {
-        super.onPause()
-        presenter.unsubscribe()
+    private fun setupObservers() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collectLatest { state ->
+                    collapsingToolbar.title = state.title
+                    adapter?.setIsSignedIn(state.isSignedIn)
+
+                    if (state.comments.isNotEmpty()) {
+                        adapter?.setComments(state.comments.toMutableList())
+                    }
+
+                    when (state.event) {
+                        is StoreDetailEvent.Idle -> {}
+                        is StoreDetailEvent.RequestLocationPermission -> {
+                            requestLocationPermission(this@StoreDetailActivity)
+                            viewModel.markEventConsumed()
+                        }
+                        is StoreDetailEvent.ShowCannotGetLocationMessage -> {
+                            Toast.makeText(this@StoreDetailActivity, R.string.cannot_get_curr_location, Toast.LENGTH_SHORT).show()
+                            viewModel.markEventConsumed()
+                        }
+                        is StoreDetailEvent.AddStoreComment -> {
+                            adapter?.addComment(state.event.comment)
+                            binding.appbar.setExpanded(false)
+                            viewModel.clearAddCommentEventConsumed()
+                        }
+                        is StoreDetailEvent.ScrollToCommentList -> {
+                            rvContent.scrollToPosition(3)
+                            viewModel.markEventConsumed()
+                        }
+                        is StoreDetailEvent.ShowCommentEditorView -> {
+                            startActivityForResult(Intent(this@StoreDetailActivity, CommentActivity::class.java), RC_ADD_COMMENT)
+                            viewModel.markEventConsumed()
+                        }
+                        is StoreDetailEvent.StartCallIntent -> {
+                            makeNativeCall(this@StoreDetailActivity, state.event.tel)
+                            viewModel.markEventConsumed()
+                        }
+                        is StoreDetailEvent.ShowInvalidPhoneNumbWarning -> {
+                            Toast.makeText(this@StoreDetailActivity, R.string.store_no_phone_numb, Toast.LENGTH_SHORT).show()
+                            viewModel.markEventConsumed()
+                        }
+                        is StoreDetailEvent.ShowMapRoutingView -> {
+                            openRoutingActivity(this@StoreDetailActivity, state.event.store, state.event.mapsDirection)
+                            viewModel.markEventConsumed()
+                        }
+                        is StoreDetailEvent.Exit -> {
+                            finish()
+                            viewModel.markEventConsumed()
+                        }
+                        is StoreDetailEvent.ShowStoreAddedToFavMessage -> {
+                            Toast.makeText(this@StoreDetailActivity, R.string.fav_stores_added, Toast.LENGTH_SHORT).show()
+                            viewModel.markEventConsumed()
+                        }
+                        is StoreDetailEvent.ShowGeneralErrorMessage -> {
+                            Toast.makeText(this@StoreDetailActivity, R.string.error_general_error_code, Toast.LENGTH_LONG).show()
+                            viewModel.markEventConsumed()
+                        }
+                        is StoreDetailEvent.ShowInvalidStoreLocationWarning -> {
+                            Toast.makeText(this@StoreDetailActivity, R.string.error_invalid_store_location, Toast.LENGTH_LONG).show()
+                            viewModel.markEventConsumed()
+                        }
+                        is StoreDetailEvent.ShowLoginRequestToast -> {
+                            Toast.makeText(applicationContext, getString(R.string.str_login_request), Toast.LENGTH_SHORT).show()
+                            viewModel.markEventConsumed()
+                        }
+                    }
+                }
+            }
+        }
     }
 
     @Deprecated("Deprecated in Java")
@@ -95,7 +142,7 @@ class StoreDetailActivity : BaseActivity(), StoreDetailContract.View {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == RESULT_OK && requestCode == RC_ADD_COMMENT && data != null) {
             val comment = data.getParcelableExtra(KEY_COMMENT) as Comment?
-            presenter.onAddNewComment(comment)
+            viewModel.onAddNewComment(comment)
         }
     }
 
@@ -104,15 +151,13 @@ class StoreDetailActivity : BaseActivity(), StoreDetailContract.View {
 
         when (requestCode) {
             REQUEST_LOCATION -> {
-                // If request is cancelled, the result arrays are empty.
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    presenter.onLocationPermissionGranted()
+                    viewModel.onLocationPermissionGranted()
                 } else {
                     Toast.makeText(this, R.string.permission_denied, Toast.LENGTH_SHORT).show()
                 }
                 return
             }
-
             else -> {
             }
         }
@@ -120,77 +165,9 @@ class StoreDetailActivity : BaseActivity(), StoreDetailContract.View {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            android.R.id.home -> presenter.onBackButtonClick()
+            android.R.id.home -> viewModel.onBackButtonClick()
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    override fun requestLocationPermission() {
-        requestLocationPermission(this)
-    }
-
-    override fun isLocationPermissionGranted(): Boolean {
-        return isLocationPermissionGranted(this)
-    }
-
-    override fun setToolbarTitle(title: String) {
-        collapsingToolbar.title = title
-    }
-
-    override fun showCannotGetLocationMessage() {
-        Toast.makeText(this, R.string.cannot_get_curr_location, Toast.LENGTH_SHORT).show()
-    }
-
-    override fun setStoreComments(listComments: MutableList<Comment>) {
-        adapter?.setComments(listComments)
-    }
-
-    override fun addStoreComment(comment: Comment) {
-        adapter?.addComment(comment)
-    }
-
-    override fun setAppBarExpanded(expanded: Boolean) {
-        binding.appbar.setExpanded(expanded)
-    }
-
-    override fun scrollToCommentList() {
-        rvContent.scrollToPosition(3)
-    }
-
-    override fun showCommentEditorView() {
-        startActivityForResult(Intent(this, CommentActivity::class.java), RC_ADD_COMMENT)
-    }
-
-    override fun startCallIntent(tel: String) {
-        makeNativeCall(this, tel)
-    }
-
-    override fun showInvalidPhoneNumbWarning() {
-        Toast.makeText(this, R.string.store_no_phone_numb, Toast.LENGTH_SHORT).show()
-    }
-
-    override fun showMapRoutingView(currStore: Store, mapsDirection: MapsDirection) {
-        openRoutingActivity(this, currStore, mapsDirection)
-    }
-
-    override fun exit() {
-        finish()
-    }
-
-    override fun showStoreAddedToFavMessage() {
-        Toast.makeText(this@StoreDetailActivity, R.string.fav_stores_added, Toast.LENGTH_SHORT).show()
-    }
-
-    override fun showGeneralErrorMessage() {
-        Toast.makeText(this, R.string.error_general_error_code, Toast.LENGTH_LONG).show()
-    }
-
-    override fun showInvalidStoreLocationWarning() {
-        Toast.makeText(this, R.string.error_invalid_store_location, Toast.LENGTH_LONG).show()
-    }
-
-    override fun updateSignInState(isSignedIn: Boolean) {
-        adapter?.setIsSignedIn(isSignedIn)
     }
 
     private fun setupUI() {
@@ -214,36 +191,30 @@ class StoreDetailActivity : BaseActivity(), StoreDetailContract.View {
     private fun setupEventHandlers() {
         adapter?.setListener(object : StoreDetailAdapter.StoreActionListener {
             override fun onCommentButtonClick() {
-                presenter.onCommentButtonClick()
+                viewModel.onCommentButtonClick()
             }
 
             override fun onCallButtonClick() {
-                presenter.onCallButtonClick()
+                viewModel.onCallButtonClick()
             }
 
             override fun onNavigationButtonClick() {
-                presenter.onNavigationButtonClick()
+                viewModel.onNavigationButtonClick()
             }
 
             override fun onAddToFavButtonClick() {
-                presenter.onAddToFavButtonClick()
+                viewModel.onAddToFavButtonClick()
             }
 
             override fun onSaveButtonClick() {
-                presenter.onSaveButtonClick()
+                viewModel.onSaveButtonClick()
             }
 
         })
     }
 
-    override fun showLoginRequestToast() {
-        Toast.makeText(applicationContext, getString(R.string.str_login_request), Toast.LENGTH_SHORT).show()
-    }
-
     companion object {
         const val KEY_STORE = "key_store"
         const val RC_ADD_COMMENT = 113
-
-        private val TAG = StoreDetailActivity::class.java.simpleName
     }
 }

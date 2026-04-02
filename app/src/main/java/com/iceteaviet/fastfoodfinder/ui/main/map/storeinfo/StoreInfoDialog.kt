@@ -1,7 +1,5 @@
 package com.iceteaviet.fastfoodfinder.ui.main.map.storeinfo
 
-import javax.inject.Inject
-import dagger.hilt.android.AndroidEntryPoint
 import android.app.Dialog
 import android.content.pm.PackageManager
 import android.graphics.Point
@@ -16,7 +14,11 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
-import com.iceteaviet.fastfoodfinder.App
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import dagger.hilt.android.AndroidEntryPoint
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.databinding.FragmentStoreInfoBinding
@@ -26,28 +28,14 @@ import com.iceteaviet.fastfoodfinder.utils.REQUEST_CALL_PHONE
 import com.iceteaviet.fastfoodfinder.utils.isCallPhonePermissionGranted
 import com.iceteaviet.fastfoodfinder.utils.makeNativeCall
 import com.iceteaviet.fastfoodfinder.utils.requestCallPhonePermission
-
-/**
- * Created by taq on 26/11/2016.
- */
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class StoreInfoDialog : DialogFragment(), StoreInfoContract.View {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        presenter = StoreInfoPresenter(schedulerProvider, this)
-    }
+class StoreInfoDialog : DialogFragment() {
 
-    @Inject
-    lateinit var schedulerProvider: com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
+    private val viewModel: StoreInfoViewModel by viewModels()
 
-
-
-    override lateinit var presenter: StoreInfoContract.Presenter
-
-    /**
-     * Views Ref
-     */
     private lateinit var binding: FragmentStoreInfoBinding
 
     lateinit var cdvh: StoreDetailAdapter.CallDirectionViewHolder
@@ -79,54 +67,68 @@ class StoreInfoDialog : DialogFragment(), StoreInfoContract.View {
 
         cdvh = StoreDetailAdapter.CallDirectionViewHolder(vCallDirection)
 
-        arguments?.let {
-            presenter.handleExtras(it.getParcelable(KEY_STORE))
-        }
+        updateNewStoreUI(viewModel.store)
 
         tvViewDetail.setOnClickListener {
-            presenter.setOnDetailTextViewClick()
+            viewModel.setOnDetailTextViewClick()
         }
 
         cdvh.btnCall.setOnClickListener {
             if (isCallPhonePermissionGranted(requireContext()))
-                presenter.onMakeCallWithPermission()
+                viewModel.onMakeCallWithPermission()
             else
                 requestCallPhonePermission(this)
         }
         cdvh.btnDirection.setOnClickListener {
-            presenter.onDirectionButtonClick()
+            viewModel.onDirectionButtonClick()
         }
 
         btnAddToFavorite.setOnClickListener {
-            presenter.onAddToFavoriteButtonClick()
+            viewModel.onAddToFavoriteButtonClick()
+        }
+
+        setupObservers()
+    }
+
+    private fun setupObservers() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collectLatest { state ->
+                    when (state) {
+                        is StoreInfoEvent.Idle -> {}
+                        is StoreInfoEvent.Exit -> {
+                            dismiss()
+                            viewModel.markEventConsumed()
+                        }
+                        is StoreInfoEvent.OpenStoreDetail -> {
+                            com.iceteaviet.fastfoodfinder.utils.openStoreDetailActivity(requireActivity(), state.store)
+                            viewModel.markEventConsumed()
+                        }
+                        is StoreInfoEvent.MakeNativeCall -> {
+                            makeNativeCall(requireActivity(), state.tel)
+                            viewModel.markEventConsumed()
+                        }
+                        is StoreInfoEvent.ShowEmptyTelToast -> {
+                            Toast.makeText(activity, R.string.store_no_phone_numb, Toast.LENGTH_SHORT).show()
+                            viewModel.markEventConsumed()
+                        }
+                        is StoreInfoEvent.AddStoreToFavorite -> {
+                            mListener?.onAddToFavorite(state.store.id)
+                            dismiss()
+                            viewModel.markEventConsumed()
+                        }
+                        is StoreInfoEvent.DirectionChange -> {
+                            mListener?.onDirection(state.store)
+                            viewModel.markEventConsumed()
+                        }
+                    }
+                }
+            }
         }
     }
 
-    override fun onDirectionChange(store: Store) {
-        mListener?.onDirection(store)
-    }
-
-    override fun addStoreToFavorite(store: Store) {
-        mListener?.onAddToFavorite(store.id)
-        dismiss()
-    }
-
-    override fun makeNativeCall(tel: String) {
-        makeNativeCall(requireActivity(), tel)
-    }
-
-    override fun showEmptyTelToast() {
-        Toast.makeText(activity, R.string.store_no_phone_numb, Toast.LENGTH_SHORT).show()
-    }
-
-    override fun openStoreDetailActivity(store: Store?) {
-        com.iceteaviet.fastfoodfinder.utils.openStoreDetailActivity(requireActivity(), store!!)
-    }
-
-    override fun updateNewStoreUI(store: Store?) {
-        if (store == null)
-            return
-
+    private fun updateNewStoreUI(store: Store?) {
+        if (store == null) return
         tvStoreName.text = store.title
         tvStoreAddress.text = store.address
     }
@@ -144,6 +146,7 @@ class StoreInfoDialog : DialogFragment(), StoreInfoContract.View {
     }
 
     override fun onResume() {
+        super.onResume()
         val window = dialog?.window
         val size = Point()
         window?.let {
@@ -152,8 +155,6 @@ class StoreInfoDialog : DialogFragment(), StoreInfoContract.View {
             it.setLayout((0.8 * size.x).toInt(), WindowManager.LayoutParams.WRAP_CONTENT)
             it.setGravity(Gravity.CENTER)
         }
-        super.onResume()
-        presenter.subscribe()
     }
 
     @Deprecated("Deprecated in Java")
@@ -162,34 +163,20 @@ class StoreInfoDialog : DialogFragment(), StoreInfoContract.View {
 
         when (requestCode) {
             REQUEST_CALL_PHONE -> {
-                // If request is cancelled, the result arrays are empty.
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    presenter.onMakeCallWithPermission()
+                    viewModel.onMakeCallWithPermission()
                 } else {
                     Toast.makeText(activity, R.string.permission_denied, Toast.LENGTH_SHORT).show()
                 }
             }
-
             else -> {
             }
         }
     }
 
-    override fun exit() {
-        this.dismiss()
-    }
-
-    // tên chuối thiệt
     interface StoreDialogActionListener {
         fun onDirection(store: Store?)
-
         fun onAddToFavorite(storeId: Int)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        presenter.unsubscribe()
-
     }
 
     companion object {
@@ -198,7 +185,7 @@ class StoreInfoDialog : DialogFragment(), StoreInfoContract.View {
             args.putParcelable(KEY_STORE, store)
             val fragment = StoreInfoDialog()
             fragment.arguments = args
-                        return fragment
+            return fragment
         }
     }
 }

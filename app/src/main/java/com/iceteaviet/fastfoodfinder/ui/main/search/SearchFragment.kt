@@ -1,9 +1,5 @@
 package com.iceteaviet.fastfoodfinder.ui.main.search
 
-
-import javax.inject.Inject
-import dagger.hilt.android.AndroidEntryPoint
-import android.os.Build
 import android.os.Bundle
 import android.transition.TransitionManager
 import android.view.LayoutInflater
@@ -14,47 +10,27 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.iceteaviet.fastfoodfinder.App
+import dagger.hilt.android.AndroidEntryPoint
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.databinding.FragmentSearchBinding
-import com.iceteaviet.fastfoodfinder.ui.main.search.model.SearchStoreItem
 import com.iceteaviet.fastfoodfinder.utils.StoreType
 import com.iceteaviet.fastfoodfinder.utils.openStoreListActivity
 import de.hdodenhof.circleimageview.CircleImageView
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
-/**
- * Search fragment
- *
- * TODO: Research & apply https://developer.android.com/guide/topics/search/
- */
 @AndroidEntryPoint
-class SearchFragment : Fragment(), SearchContract.View {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        presenter = SearchPresenter(storeRepository, preferencesRepository, schedulerProvider, bus, this)
-    }
+class SearchFragment : Fragment() {
 
-    @Inject
-    lateinit var storeRepository: com.iceteaviet.fastfoodfinder.data.domain.store.StoreRepository
+    private val viewModel: SearchViewModel by viewModels()
 
-    @Inject
-    lateinit var preferencesRepository: com.iceteaviet.fastfoodfinder.data.domain.prefs.PreferencesRepository
-
-    @Inject
-    lateinit var schedulerProvider: com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
-
-    @Inject
-    lateinit var bus: com.iceteaviet.fastfoodfinder.service.eventbus.core.IBus
-
-
-    override lateinit var presenter: SearchContract.Presenter
-
-    /**
-     * Views Ref
-     */
     private lateinit var binding: FragmentSearchBinding
 
     private lateinit var quickSearchCircleK: CircleImageView
@@ -87,9 +63,10 @@ class SearchFragment : Fragment(), SearchContract.View {
 
     private var isLoadMoreVisible: Boolean = false
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View {
-        // Inflate the layout for this fragment
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -99,33 +76,41 @@ class SearchFragment : Fragment(), SearchContract.View {
 
         setupUI()
         setupEventHandlers()
+        setupObservers()
     }
 
     override fun onResume() {
         super.onResume()
-        presenter.subscribe()
+        viewModel.start()
     }
 
-    override fun onPause() {
-        super.onPause()
-        presenter.unsubscribe()
-    }
+    private fun setupObservers() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collectLatest { state ->
+                    if (state.searchHistoryStrings.isNotEmpty() || state.searchHistoryItems.isNotEmpty()) {
+                        searchAdapter?.setRecentlySearch(state.searchHistoryStrings)
+                        recentlySearchAdapter?.setSearchItems(state.searchHistoryItems)
+                    }
 
-    override fun setSearchHistory(searchHistory: List<String>, searchItems: List<SearchStoreItem>) {
-        searchAdapter?.setRecentlySearch(searchHistory)
-        recentlySearchAdapter?.setSearchItems(searchItems)
-    }
+                    if (state.searchStores.isNotEmpty()) {
+                        searchAdapter?.setSearchItems(state.searchStores)
+                    }
 
-    override fun setSearchStores(searchItems: List<SearchStoreItem>) {
-        searchAdapter?.setSearchItems(searchItems)
-    }
-
-    override fun showStoreListView() {
-        openStoreListActivity(requireActivity())
-    }
-
-    override fun showGeneralErrorMessage() {
-        Toast.makeText(requireActivity(), R.string.error_general_error_code, Toast.LENGTH_LONG).show()
+                    when (state.event) {
+                        is SearchEvent.Idle -> {}
+                        is SearchEvent.ShowStoreListView -> {
+                            openStoreListActivity(requireActivity())
+                            viewModel.markEventConsumed()
+                        }
+                        is SearchEvent.ShowGeneralErrorMessage -> {
+                            Toast.makeText(requireActivity(), R.string.error_general_error_code, Toast.LENGTH_LONG).show()
+                            viewModel.markEventConsumed()
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private fun setupUI() {
@@ -170,36 +155,34 @@ class SearchFragment : Fragment(), SearchContract.View {
     private fun setupEventHandlers() {
         recentlySearchAdapter?.setOnItemClickListener(object : BaseSearchAdapter.OnItemClickListener {
             override fun onClick(store: Store) {
-                presenter.onStoreSearchClick(store)
+                viewModel.onStoreSearchClick(store)
             }
-
         })
 
         searchAdapter?.setOnItemClickListener(object : BaseSearchAdapter.OnItemClickListener {
             override fun onClick(store: Store) {
-                presenter.onStoreSearchClick(store)
+                viewModel.onStoreSearchClick(store)
             }
         })
 
-        // Quick search bars
         quickSearchCircleK.setOnClickListener {
-            presenter.onQuickSearchItemClick(StoreType.TYPE_CIRCLE_K)
+            viewModel.onQuickSearchItemClick(StoreType.TYPE_CIRCLE_K)
         }
 
         quickSearchFamilyMart.setOnClickListener {
-            presenter.onQuickSearchItemClick(StoreType.TYPE_FAMILY_MART)
+            viewModel.onQuickSearchItemClick(StoreType.TYPE_FAMILY_MART)
         }
 
         quickSearchMiniStop.setOnClickListener {
-            presenter.onQuickSearchItemClick(StoreType.TYPE_MINI_STOP)
+            viewModel.onQuickSearchItemClick(StoreType.TYPE_MINI_STOP)
         }
 
         quickSearchBsMart.setOnClickListener {
-            presenter.onQuickSearchItemClick(StoreType.TYPE_BSMART)
+            viewModel.onQuickSearchItemClick(StoreType.TYPE_BSMART)
         }
 
         quickSearchShopNGo.setOnClickListener {
-            presenter.onQuickSearchItemClick(StoreType.TYPE_SHOP_N_GO)
+            viewModel.onQuickSearchItemClick(StoreType.TYPE_SHOP_N_GO)
         }
 
         quickSearchLoadMore.setOnClickListener {
@@ -209,16 +192,16 @@ class SearchFragment : Fragment(), SearchContract.View {
         }
 
         binding.tvTop.setOnClickListener {
-            presenter.onTopStoreButtonClick()
+            viewModel.onTopStoreButtonClick()
         }
         binding.tvNearest.setOnClickListener {
-            presenter.onNearestStoreButtonClick()
+            viewModel.onNearestStoreButtonClick()
         }
         binding.tvTrending.setOnClickListener {
-            presenter.onTrendingStoreButtonClick()
+            viewModel.onTrendingStoreButtonClick()
         }
         binding.tvConvenienceStore.setOnClickListener {
-            presenter.onConvenienceStoreButtonClick()
+            viewModel.onConvenienceStoreButtonClick()
         }
     }
 
@@ -251,16 +234,15 @@ class SearchFragment : Fragment(), SearchContract.View {
     }
 
     fun updateSearchList(searchText: String) {
-        presenter.onUpdateSearchList(searchText)
+        viewModel.onUpdateSearchList(searchText)
     }
 
     companion object {
         fun newInstance(): SearchFragment {
             val args = Bundle()
-
             val fragment = SearchFragment()
             fragment.arguments = args
-                        return fragment
+            return fragment
         }
     }
 }
