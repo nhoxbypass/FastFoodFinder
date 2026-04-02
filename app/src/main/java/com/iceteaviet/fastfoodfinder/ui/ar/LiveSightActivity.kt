@@ -1,8 +1,5 @@
 package com.iceteaviet.fastfoodfinder.ui.ar
 
-
-import javax.inject.Inject
-import dagger.hilt.android.AndroidEntryPoint
 import android.content.pm.PackageManager
 import android.hardware.Camera
 import android.hardware.Sensor
@@ -16,13 +13,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.Toast
-import com.iceteaviet.fastfoodfinder.App
+import androidx.activity.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import dagger.hilt.android.AndroidEntryPoint
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.core.common.ext.getSensorManager
-import com.iceteaviet.fastfoodfinder.databinding.ActivityArCameraBinding
 import com.iceteaviet.fastfoodfinder.core.location.LatLngAlt
-import com.iceteaviet.fastfoodfinder.core.location.SystemLocationManager
-import com.iceteaviet.fastfoodfinder.ui.ar.model.AugmentedPOI
+import com.iceteaviet.fastfoodfinder.databinding.ActivityArCameraBinding
 import com.iceteaviet.fastfoodfinder.ui.base.BaseActivity
 import com.iceteaviet.fastfoodfinder.ui.custom.ar.ARCamera
 import com.iceteaviet.fastfoodfinder.ui.custom.ar.AROverlayView
@@ -33,22 +32,14 @@ import com.iceteaviet.fastfoodfinder.utils.isCameraPermissionGranted
 import com.iceteaviet.fastfoodfinder.utils.isLocationPermissionGranted
 import com.iceteaviet.fastfoodfinder.utils.requestCameraPermission
 import com.iceteaviet.fastfoodfinder.utils.requestLocationPermission
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class LiveSightActivity : BaseActivity(), LiveSightContract.View, SensorEventListener {
-    @Inject
-    lateinit var storeRepository: com.iceteaviet.fastfoodfinder.data.domain.store.StoreRepository
+class LiveSightActivity : BaseActivity(), SensorEventListener {
 
-    @Inject
-    lateinit var schedulerProvider: com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
+    private val viewModel: LiveSightViewModel by viewModels()
 
-
-
-    override lateinit var presenter: LiveSightContract.Presenter
-
-    /**
-     * Views Ref
-     */
     private lateinit var binding: ActivityArCameraBinding
 
     private var surfaceView: SurfaceView? = null
@@ -67,22 +58,72 @@ class LiveSightActivity : BaseActivity(), LiveSightContract.View, SensorEventLis
         binding = ActivityArCameraBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        presenter = LiveSightPresenter(storeRepository, schedulerProvider, SystemLocationManager.getInstance(), this)
-
         cameraContainerLayout = binding.cameraContainerLayout
         surfaceView = binding.surfaceView
         arOverlayView = AROverlayView(this)
+
+        setupObservers()
+    }
+
+    private fun setupObservers() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collectLatest { state ->
+                    if (state.latestLocation != null) {
+                        updateLatestLocation(state.latestLocation)
+                    }
+
+                    if (state.arPoints.isNotEmpty()) {
+                        arOverlayView?.setArPoints(state.arPoints)
+                    }
+
+                    when (state.event) {
+                        is LiveSightEvent.Idle -> {}
+                        is LiveSightEvent.CheckPermissionsAndInit -> {
+                            viewModel.handlePermissions(
+                                isLocationPermissionGranted(),
+                                isCameraPermissionGranted()
+                            )
+                            initAROverlayView()
+                            initSensorService()
+                            viewModel.markEventConsumed()
+                        }
+                        is LiveSightEvent.RequestLocationPermission -> {
+                            requestLocationPermission()
+                            viewModel.markEventConsumed()
+                        }
+                        is LiveSightEvent.RequestCameraPermission -> {
+                            requestCameraPermission()
+                            viewModel.markEventConsumed()
+                        }
+                        is LiveSightEvent.InitARCameraView -> {
+                            initARCameraView()
+                            viewModel.markEventConsumed()
+                        }
+                        is LiveSightEvent.ShowCannotGetLocationMessage -> {
+                            Toast.makeText(this@LiveSightActivity, R.string.cannot_get_curr_location, Toast.LENGTH_SHORT).show()
+                            viewModel.markEventConsumed()
+                        }
+                        is LiveSightEvent.ShowGeneralErrorMessage -> {
+                            Toast.makeText(this@LiveSightActivity, R.string.error_general_error_code, Toast.LENGTH_LONG).show()
+                            viewModel.markEventConsumed()
+                        }
+                    }
+                }
+            }
+        }
     }
 
     override fun onResume() {
         super.onResume()
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
-        presenter.subscribe()
+        viewModel.start()
     }
 
     override fun onPause() {
         super.onPause()
-        presenter.unsubscribe()
+        viewModel.unsubscribeLocationUpdate()
+        releaseARCamera()
     }
 
     override fun onDestroy() {
@@ -95,9 +136,8 @@ class LiveSightActivity : BaseActivity(), LiveSightContract.View, SensorEventLis
 
         when (requestCode) {
             REQUEST_LOCATION -> {
-                // If request is cancelled, the result arrays are empty.
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    presenter.onLocationPermissionGranted()
+                    viewModel.onLocationPermissionGranted()
                 } else {
                     Toast.makeText(this, R.string.permission_denied, Toast.LENGTH_SHORT).show()
                 }
@@ -105,13 +145,10 @@ class LiveSightActivity : BaseActivity(), LiveSightContract.View, SensorEventLis
 
             REQUEST_CAMERA -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    presenter.onCameraPermissionGranted()
+                    viewModel.onCameraPermissionGranted()
                 } else {
                     Toast.makeText(this, R.string.permission_denied, Toast.LENGTH_SHORT).show()
                 }
-            }
-
-            else -> {
             }
         }
     }
@@ -137,38 +174,30 @@ class LiveSightActivity : BaseActivity(), LiveSightContract.View, SensorEventLis
         //do nothing
     }
 
-    override fun requestLocationPermission() {
+    private fun requestLocationPermission() {
         requestLocationPermission(this)
     }
 
-    override fun requestCameraPermission() {
+    private fun requestCameraPermission() {
         requestCameraPermission(this)
     }
 
-    override fun isLocationPermissionGranted(): Boolean {
-        return isLocationPermissionGranted(this)
+    private fun isLocationPermissionGranted(): Boolean {
+        return com.iceteaviet.fastfoodfinder.utils.isLocationPermissionGranted(this)
     }
 
-    override fun isCameraPermissionGranted(): Boolean {
-        return isCameraPermissionGranted(this)
+    private fun isCameraPermissionGranted(): Boolean {
+        return com.iceteaviet.fastfoodfinder.utils.isCameraPermissionGranted(this)
     }
 
-    override fun showCannotGetLocationMessage() {
-        Toast.makeText(this, R.string.cannot_get_curr_location, Toast.LENGTH_SHORT).show()
-    }
-
-    override fun showGeneralErrorMessage() {
-        Toast.makeText(this, R.string.error_general_error_code, Toast.LENGTH_LONG).show()
-    }
-
-    override fun initAROverlayView() {
+    private fun initAROverlayView() {
         if (arOverlayView?.parent != null) {
             (arOverlayView?.parent as ViewGroup).removeView(arOverlayView)
         }
         cameraContainerLayout?.addView(arOverlayView)
     }
 
-    override fun initARCameraView() {
+    private fun initARCameraView() {
         reloadSurfaceView()
 
         if (arCamera == null) {
@@ -180,14 +209,6 @@ class LiveSightActivity : BaseActivity(), LiveSightContract.View, SensorEventLis
         cameraContainerLayout?.addView(arCamera)
         arCamera?.keepScreenOn = true
         initCamera()
-    }
-
-    override fun addARPoint(arPoi: AugmentedPOI) {
-        arOverlayView?.addArPoint(arPoi)
-    }
-
-    override fun setARPoints(arPoints: List<AugmentedPOI>) {
-        arOverlayView?.setArPoints(arPoints)
     }
 
     private fun initCamera() {
@@ -202,7 +223,6 @@ class LiveSightActivity : BaseActivity(), LiveSightContract.View, SensorEventLis
             } catch (ex: RuntimeException) {
                 Toast.makeText(this, R.string.camera_not_found, Toast.LENGTH_LONG).show()
             }
-
         }
     }
 
@@ -210,11 +230,10 @@ class LiveSightActivity : BaseActivity(), LiveSightContract.View, SensorEventLis
         if (surfaceView?.parent != null) {
             (surfaceView?.parent as ViewGroup).removeView(surfaceView)
         }
-
         cameraContainerLayout?.addView(surfaceView)
     }
 
-    override fun releaseARCamera() {
+    private fun releaseARCamera() {
         arCamera?.setCamera(null)
         camera?.let {
             it.setPreviewCallback(null)
@@ -224,7 +243,7 @@ class LiveSightActivity : BaseActivity(), LiveSightContract.View, SensorEventLis
         camera = null
     }
 
-    override fun initSensorService() {
+    private fun initSensorService() {
         if (sensorManager == null)
             sensorManager = this.getSensorManager()
 
@@ -237,7 +256,7 @@ class LiveSightActivity : BaseActivity(), LiveSightContract.View, SensorEventLis
             SensorManager.SENSOR_DELAY_FASTEST)
     }
 
-    override fun updateLatestLocation(latestLocation: LatLngAlt) {
+    private fun updateLatestLocation(latestLocation: LatLngAlt) {
         arOverlayView?.let {
             it.updateCurrentLocation(latestLocation)
             binding.tvCurrentLocation.text = String.format("lat: %s \nlon: %s \nalt: %s \n",
