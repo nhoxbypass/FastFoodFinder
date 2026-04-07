@@ -4,6 +4,7 @@ import com.iceteaviet.fastfoodfinder.data.remote.routing.MapsRoutingApiHelper
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import io.reactivex.Single
+import io.reactivex.schedulers.Schedulers
 
 /**
  * Created by tom on 7/18/18.
@@ -21,7 +22,7 @@ class AppMapsRoutingRepository(private val mapsRoutingApiHelper: MapsRoutingApiH
                     emitter.onError(throwable)
                 }
             })
-        }
+        }.observeOn(Schedulers.io())
     }
 
     companion object {

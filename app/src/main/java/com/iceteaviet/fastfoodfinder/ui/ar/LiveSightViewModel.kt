@@ -42,6 +42,10 @@ class LiveSightViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(LiveSightUiState())
     val uiState: StateFlow<LiveSightUiState> = _uiState.asStateFlow()
 
+    // Guard against stacking simultaneous DB queries when location fires rapidly
+    @Volatile
+    private var isLoadingArPoints = false
+
     // ILocationManager is a singleton managed outside Hilt - access directly
     private val locationManager: ILocationManager
         get() = SystemLocationManager.getInstance()
@@ -90,12 +94,22 @@ class LiveSightViewModel @Inject constructor(
     override fun onLocationChanged(location: LatLngAlt) {
         _uiState.value = _uiState.value.copy(latestLocation = location)
 
-        viewModelScope.launch {
+        // Drop update if a query is already in-flight to prevent stacked Realm queries
+        if (isLoadingArPoints) return
+
+        viewModelScope.launch(kotlinx.coroutines.Dispatchers.IO) {
+            isLoadingArPoints = true
             try {
                 val storeList = storeRepository.getStoreInBounds(location.latitude, location.longitude, RADIUS).await()
-                _uiState.value = _uiState.value.copy(arPoints = storesToArPoints(storeList))
+                launch(kotlinx.coroutines.Dispatchers.Main) {
+                    _uiState.value = _uiState.value.copy(arPoints = storesToArPoints(storeList))
+                }
             } catch (e: Exception) {
-                _uiState.value = _uiState.value.copy(event = LiveSightEvent.ShowGeneralErrorMessage)
+                launch(kotlinx.coroutines.Dispatchers.Main) {
+                    _uiState.value = _uiState.value.copy(event = LiveSightEvent.ShowGeneralErrorMessage)
+                }
+            } finally {
+                isLoadingArPoints = false
             }
         }
     }
@@ -104,6 +118,8 @@ class LiveSightViewModel @Inject constructor(
     }
 
     private fun subscribeLocationUpdate() {
+        // Always unsubscribe first to prevent duplicate registrations across onResume cycles
+        locationManager.unsubscribeLocationUpdate(this)
         locationManager.requestLocationUpdates()
         locationManager.subscribeLocationUpdate(this)
     }

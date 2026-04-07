@@ -15,9 +15,6 @@ abstract class AbsLocationManager protected constructor(context: Context) : ILoc
     protected var connected = false
     protected var requestingLocationUpdate = false
 
-    init {
-        this.initLocationProvider(context)
-    }
 
     protected abstract fun initLocationProvider(context: Context)
 
@@ -39,7 +36,9 @@ abstract class AbsLocationManager protected constructor(context: Context) : ILoc
     }
 
     override fun subscribeLocationUpdate(listener: LocationListener) {
-        listeners.add(listener)
+        if (!listeners.contains(listener)) {
+            listeners.add(listener)
+        }
     }
 
     override fun unsubscribeLocationUpdate(listener: LocationListener) {

@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.rx2.await
 import javax.inject.Inject
 
@@ -60,7 +61,7 @@ class ProfileViewModel @Inject constructor(
         val uid = clientAuth.getCurrentUserUid()
         if (!isValidUserUid(uid)) return
 
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 val user = userRepository.getUser(uid).await()
                 userRepository.insertOrUpdateUser(user)
@@ -101,23 +102,25 @@ class ProfileViewModel @Inject constructor(
     }
 
     fun onCreateNewList(listName: String, iconId: Int) {
-        val currentUser = getCurrentUserHelper(clientAuth, userRepository) ?: return
-
-        if (!isListNameExisted(listName, currentUser)) {
-            val id = currentUser.getUserStoreLists().size
-            val list = UserStoreList(id, ArrayList(), iconId, listName)
-            currentUser.addStoreList(list)
-            userRepository.updateStoreListForUser(currentUser.getUid(), currentUser.getUserStoreLists())
-
-            val updatedLists = currentUser.getUserStoreLists().toList()
-            
-            _uiState.value = _uiState.value.copy(
-                userStoreLists = updatedLists,
-                storeListCount = String.format("(%d)", updatedLists.size),
-                event = ProfileEvent.DismissCreateNewListDialog
-            )
-        } else {
-            _uiState.value = _uiState.value.copy(event = ProfileEvent.WarningListNameExisted)
+        viewModelScope.launch(Dispatchers.IO) {
+            val currentUser = getCurrentUserHelper(clientAuth, userRepository) ?: return@launch
+    
+            if (!isListNameExisted(listName, currentUser)) {
+                val id = currentUser.getUserStoreLists().size
+                val list = UserStoreList(id, ArrayList(), iconId, listName)
+                currentUser.addStoreList(list)
+                userRepository.updateStoreListForUser(currentUser.getUid(), currentUser.getUserStoreLists())
+    
+                val updatedLists = currentUser.getUserStoreLists().toList()
+                
+                _uiState.value = _uiState.value.copy(
+                    userStoreLists = updatedLists,
+                    storeListCount = String.format("(%d)", updatedLists.size),
+                    event = ProfileEvent.DismissCreateNewListDialog
+                )
+            } else {
+                _uiState.value = _uiState.value.copy(event = ProfileEvent.WarningListNameExisted)
+            }
         }
     }
 
@@ -143,26 +146,32 @@ class ProfileViewModel @Inject constructor(
     }
 
     fun onStoreListClick(listPacket: UserStoreList) {
-        val user = getCurrentUserHelper(clientAuth, userRepository)
-        if (user != null) {
-            _uiState.value = _uiState.value.copy(
-                event = ProfileEvent.OpenListDetail(listPacket, user.photoUrl)
-            )
+        viewModelScope.launch(Dispatchers.IO) {
+            val user = getCurrentUserHelper(clientAuth, userRepository)
+            if (user != null) {
+                launch(Dispatchers.Main) {
+                    _uiState.value = _uiState.value.copy(
+                        event = ProfileEvent.OpenListDetail(listPacket, user.photoUrl)
+                    )
+                }
+            }
         }
     }
 
     fun onStoreListLongClick(position: Int) {
-        val currentUser = getCurrentUserHelper(clientAuth, userRepository) ?: return
-
-        currentUser.removeStoreList(position)
-        userRepository.updateStoreListForUser(currentUser.getUid(), currentUser.getUserStoreLists())
-
-        val updatedLists = currentUser.getUserStoreLists().toList()
-        
-        _uiState.value = _uiState.value.copy(
-            userStoreLists = updatedLists,
-            storeListCount = String.format("(%d)", updatedLists.size)
-        )
+        viewModelScope.launch(Dispatchers.IO) {
+            val currentUser = getCurrentUserHelper(clientAuth, userRepository) ?: return@launch
+    
+            currentUser.removeStoreList(position)
+            userRepository.updateStoreListForUser(currentUser.getUid(), currentUser.getUserStoreLists())
+    
+            val updatedLists = currentUser.getUserStoreLists().toList()
+            
+            _uiState.value = _uiState.value.copy(
+                userStoreLists = updatedLists,
+                storeListCount = String.format("(%d)", updatedLists.size)
+            )
+        }
     }
 
     fun markEventConsumed() {

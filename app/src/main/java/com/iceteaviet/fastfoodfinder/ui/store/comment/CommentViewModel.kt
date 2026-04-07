@@ -10,6 +10,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 data class CommentUiState(
     val remainCharCount: String = CommentViewModel.MAX_CHAR.toString(),
@@ -53,20 +56,24 @@ class CommentViewModel @Inject constructor(
             return
         }
 
-        val currUser = getCurrentUserHelper(clientAuth, userRepository)
-        if (currUser == null) {
-            _uiState.value = _uiState.value.copy(event = CommentEvent.ShowGeneralErrorMessage)
-            return
-        }
+        viewModelScope.launch(Dispatchers.IO) {
+            val currUser = getCurrentUserHelper(clientAuth, userRepository)
+            launch(Dispatchers.Main) {
+                if (currUser == null) {
+                    _uiState.value = _uiState.value.copy(event = CommentEvent.ShowGeneralErrorMessage)
+                    return@launch
+                }
 
-        val comment = Comment(
-            currUser.name, 
-            currUser.photoUrl,
-            commentText.toString(), 
-            "", 
-            System.currentTimeMillis()
-        )
-        _uiState.value = _uiState.value.copy(event = CommentEvent.ExitWithResult(comment))
+                val comment = Comment(
+                    currUser.name, 
+                    currUser.photoUrl,
+                    commentText.toString(), 
+                    "", 
+                    System.currentTimeMillis()
+                )
+                _uiState.value = _uiState.value.copy(event = CommentEvent.ExitWithResult(comment))
+            }
+        }
     }
 
     fun onBackButtonClick(commentText: CharSequence) {

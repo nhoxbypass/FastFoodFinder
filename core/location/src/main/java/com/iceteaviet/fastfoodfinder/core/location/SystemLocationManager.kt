@@ -39,6 +39,7 @@ open class SystemLocationManager private constructor(context: Context) : AbsLoca
     }
 
     init {
+        initLocationProvider(context)
         currLocation = getLastLocation()
         connected = true
         requestLocationUpdates()

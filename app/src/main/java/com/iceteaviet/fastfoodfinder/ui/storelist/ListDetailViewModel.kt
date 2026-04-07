@@ -54,12 +54,16 @@ class ListDetailViewModel @Inject constructor(
             storeIconResId = getStoreListIconDrawableRes(userStoreList.iconId)
         )
 
-        viewModelScope.launch {
+        viewModelScope.launch(kotlinx.coroutines.Dispatchers.IO) {
             try {
                 val storeList = storeRepository.findStoresByIds(userStoreList.getStoreIdList()).await()
-                _uiState.value = _uiState.value.copy(stores = storeList)
+                launch(kotlinx.coroutines.Dispatchers.Main) {
+                    _uiState.value = _uiState.value.copy(stores = storeList)
+                }
             } catch (e: Exception) {
-                _uiState.value = _uiState.value.copy(event = ListDetailEvent.ShowGeneralErrorMessage)
+                launch(kotlinx.coroutines.Dispatchers.Main) {
+                    _uiState.value = _uiState.value.copy(event = ListDetailEvent.ShowGeneralErrorMessage)
+                }
             }
         }
     }

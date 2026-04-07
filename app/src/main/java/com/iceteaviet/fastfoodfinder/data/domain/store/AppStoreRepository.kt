@@ -8,6 +8,7 @@ import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.utils.exception.NotFoundException
 import io.reactivex.Single
 import io.reactivex.SingleOnSubscribe
+import io.reactivex.schedulers.Schedulers
 
 /**
  * Created by tom on 2019-06-01.
@@ -49,7 +50,7 @@ class AppStoreRepository(private val storeApiHelper: StoreApiHelper, private val
             } else {
                 emitter.onSuccess(ArrayList(cachedStores))
             }
-        })
+        }).observeOn(Schedulers.io())
     }
 
     override fun setStores(storeList: List<Store>) {
@@ -126,7 +127,7 @@ class AppStoreRepository(private val storeApiHelper: StoreApiHelper, private val
                 }
 
             })
-        }
+        }.observeOn(Schedulers.io())
     }
 
     override fun insertOrUpdateComment(storeId: String, comment: Comment) {

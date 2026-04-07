@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.rx2.await
 import javax.inject.Inject
 
@@ -44,13 +45,15 @@ class LoginViewModel @Inject constructor(
     }
 
     fun onRegisterSuccess(user: User) {
-        ensureBasicUserData(user)
-        userRepository.insertOrUpdateUser(user)
-        _uiState.value = LoginUiState.NavigateToMain
+        viewModelScope.launch(Dispatchers.IO) {
+            ensureBasicUserData(user)
+            userRepository.insertOrUpdateUser(user)
+            _uiState.value = LoginUiState.NavigateToMain
+        }
     }
 
     fun onLoginSuccess(baseUser: User) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 val user = userRepository.getUser(baseUser.getUid()).await()
                 userRepository.insertOrUpdateUser(user)
@@ -64,7 +67,7 @@ class LoginViewModel @Inject constructor(
     }
 
     fun onRequestGoogleAccountSuccess(authCredential: AuthCredential, fromLastSignIn: Boolean) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 val user = clientAuth.signInWithCredential(authCredential).await()
                 if (!fromLastSignIn) {

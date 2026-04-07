@@ -6,16 +6,14 @@ import android.content.Context
 import androidx.annotation.VisibleForTesting
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.WorkManager
+import com.google.android.gms.maps.MapsInitializer
 import com.iceteaviet.fastfoodfinder.core.location.GoogleLocationManager
 import com.iceteaviet.fastfoodfinder.core.location.SystemLocationManager
-import com.iceteaviet.fastfoodfinder.service.eventbus.core.IBus
 import com.iceteaviet.fastfoodfinder.service.workers.SyncDatabaseWorker
 import com.iceteaviet.fastfoodfinder.utils.getAppSignatureSHA1
 import com.iceteaviet.fastfoodfinder.utils.initLogger
-import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
-import com.iceteaviet.fastfoodfinder.utils.ui.AppNotiManager
-import com.iceteaviet.fastfoodfinder.utils.ui.NotiManager
 import dagger.hilt.android.HiltAndroidApp
+import timber.log.Timber
 
 /**
  * Created by tom on 7/15/18.
@@ -56,6 +54,13 @@ class App : Application() {
         context = applicationContext
 
         initLogger()
+
+        MapsInitializer.initialize(applicationContext, MapsInitializer.Renderer.LATEST) {
+            when (it) {
+                MapsInitializer.Renderer.LATEST -> Timber.d("The latest version of the renderer is used.")
+                MapsInitializer.Renderer.LEGACY -> Timber.d("The legacy version of the renderer is used.")
+            }
+        }
 
         com.iceteaviet.fastfoodfinder.utils.DatabaseInitializer.init(getContext())
 

@@ -7,6 +7,7 @@ import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList
 import io.reactivex.Observable
 import io.reactivex.Single
+import io.reactivex.schedulers.Schedulers
 
 /**
  * Created by tom on 2019-06-01.
@@ -29,7 +30,7 @@ class AppUserRepository(private val userApiHelper: UserApiHelper, private val us
     }
 
     override fun getUser(uid: String): Single<User> {
-        return Single.create { emitter ->
+        return Single.create<User> { emitter ->
             userApiHelper.getUser(uid, object : UserApiHelper.UserLoadCallback<User> {
                 override fun onSuccess(data: User) {
                     emitter.onSuccess(data)
@@ -40,11 +41,11 @@ class AppUserRepository(private val userApiHelper: UserApiHelper, private val us
                 }
 
             })
-        }
+        }.observeOn(Schedulers.io())
     }
 
     override fun isUserExists(uid: String): Single<Boolean> {
-        return Single.create { emitter ->
+        return Single.create<Boolean> { emitter ->
             userApiHelper.isUserExists(uid, object : UserApiHelper.UserLoadCallback<Boolean> {
                 override fun onSuccess(data: Boolean) {
                     emitter.onSuccess(data)
@@ -55,7 +56,7 @@ class AppUserRepository(private val userApiHelper: UserApiHelper, private val us
                 }
 
             })
-        }
+        }.observeOn(Schedulers.io())
     }
 
     override fun subscribeFavouriteStoresOfUser(uid: String): Observable<Pair<Int, Int>> {

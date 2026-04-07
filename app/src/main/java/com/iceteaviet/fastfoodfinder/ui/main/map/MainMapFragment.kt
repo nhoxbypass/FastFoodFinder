@@ -219,16 +219,25 @@ class MainMapFragment : Fragment() {
 
         viewModel.onClearOldMapData()
 
-        for (i in storeList.indices) {
-            val store = storeList[i]
-            val marker = googleMap!!.addMarker(
-                MarkerOptions().position(store.getPosition())
-                    .title(store.title)
-                    .snippet(store.address)
-                    .icon(getStoreIcon(resources, store.type, -1, -1))
-            )
-            marker!!.tag = store
-            markerSparseArray.put(store.id, marker)
+        viewLifecycleOwner.lifecycleScope.launch(kotlinx.coroutines.Dispatchers.Main) {
+            for (i in storeList.indices) {
+                val store = storeList[i]
+                val marker = googleMap!!.addMarker(
+                    MarkerOptions().position(store.getPosition())
+                        .title(store.title)
+                        .snippet(store.address)
+                        .icon(getStoreIcon(resources, store.type, -1, -1))
+                )
+                if (marker != null) {
+                    marker.tag = store
+                    markerSparseArray.put(store.id, marker)
+                }
+                
+                // Prevent `addMarker` IPC bottlenecking on massive datasets by yielding the main thread
+                if (i > 0 && i % 20 == 0) {
+                    kotlinx.coroutines.yield()
+                }
+            }
         }
     }
 

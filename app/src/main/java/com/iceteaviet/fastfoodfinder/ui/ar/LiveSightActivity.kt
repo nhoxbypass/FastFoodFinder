@@ -123,6 +123,7 @@ class LiveSightActivity : BaseActivity(), SensorEventListener {
     override fun onPause() {
         super.onPause()
         viewModel.unsubscribeLocationUpdate()
+        sensorManager?.unregisterListener(this)
         releaseARCamera()
     }
 
@@ -214,15 +215,20 @@ class LiveSightActivity : BaseActivity(), SensorEventListener {
     private fun initCamera() {
         val numCams = Camera.getNumberOfCameras()
         if (numCams > 0) {
-            try {
-                camera = Camera.open()
-                camera?.let {
-                    it.startPreview()
-                    arCamera?.setCamera(it)
+            Thread {
+                try {
+                    val cam = Camera.open()
+                    cam.startPreview()
+                    runOnUiThread {
+                        camera = cam
+                        arCamera?.setCamera(cam)
+                    }
+                } catch (ex: RuntimeException) {
+                    runOnUiThread {
+                        Toast.makeText(this, R.string.camera_not_found, Toast.LENGTH_LONG).show()
+                    }
                 }
-            } catch (ex: RuntimeException) {
-                Toast.makeText(this, R.string.camera_not_found, Toast.LENGTH_LONG).show()
-            }
+            }.start()
         }
     }
 
@@ -235,12 +241,19 @@ class LiveSightActivity : BaseActivity(), SensorEventListener {
 
     private fun releaseARCamera() {
         arCamera?.setCamera(null)
-        camera?.let {
-            it.setPreviewCallback(null)
-            it.stopPreview()
-            it.release()
-        }
+        val cameraToRelease = camera
         camera = null
+        if (cameraToRelease != null) {
+            cameraToRelease.setPreviewCallback(null)
+            Thread {
+                try {
+                    cameraToRelease.stopPreview()
+                    cameraToRelease.release()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }.start()
+        }
     }
 
     private fun initSensorService() {

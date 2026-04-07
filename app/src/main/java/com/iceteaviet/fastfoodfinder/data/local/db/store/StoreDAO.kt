@@ -34,7 +34,7 @@ class StoreDAO : StoreDataSource {
         if (!storeList.isEmpty()) {
             // Write to persistence
             val realm = Realm.getDefaultInstance()
-            realm.executeTransactionAsync {
+            realm.executeTransaction {
                 it.where(StoreEntity::class.java)
                     .findAll()
                     .deleteAllFromRealm()
@@ -190,9 +190,11 @@ class StoreDAO : StoreDataSource {
 
     override fun deleteAllStores() {
         val realm = Realm.getDefaultInstance()
-        realm.where(StoreEntity::class.java)
-            .findAll()
-            .deleteAllFromRealm()
+        realm.executeTransaction {
+            it.where(StoreEntity::class.java)
+                .findAll()
+                .deleteAllFromRealm()
+        }
 
         realm.close()
     }

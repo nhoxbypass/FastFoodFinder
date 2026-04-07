@@ -8,11 +8,15 @@ import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.service.eventbus.SearchEventResult
 import com.iceteaviet.fastfoodfinder.service.eventbus.core.IBus
 import com.iceteaviet.fastfoodfinder.utils.Constant
-import com.iceteaviet.fastfoodfinder.utils.getCurrentUserHelper
+import com.iceteaviet.fastfoodfinder.utils.isValidUserUid
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.rx2.await
+import kotlinx.coroutines.Dispatchers
+import androidx.lifecycle.viewModelScope
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import javax.inject.Inject
@@ -58,16 +62,31 @@ class MainViewModel @Inject constructor(
             isBusRegistered = true
         }
 
-        val currUser = getCurrentUserHelper(clientAuth, userRepository)
-        if (!clientAuth.isSignedIn() || currUser == null) {
+        if (!clientAuth.isSignedIn()) {
             _uiState.value = _uiState.value.copy(showSignInButton = true)
         } else {
-            _uiState.value = _uiState.value.copy(
-                showSignInButton = false,
-                userName = currUser.name,
-                userEmail = currUser.email,
-                userAvatarUrl = if (currUser.photoUrl.isNotBlank()) currUser.photoUrl else null
-            )
+            val uid = clientAuth.getCurrentUserUid()
+            if (isValidUserUid(uid)) {
+                viewModelScope.launch(Dispatchers.IO) {
+                    try {
+                        val currUser = userRepository.getUser(uid).await()
+                        launch(Dispatchers.Main) {
+                            _uiState.value = _uiState.value.copy(
+                                showSignInButton = false,
+                                userName = currUser.name,
+                                userEmail = currUser.email,
+                                userAvatarUrl = if (currUser.photoUrl.isNotBlank()) currUser.photoUrl else null
+                            )
+                        }
+                    } catch (e: Exception) {
+                        launch(Dispatchers.Main) {
+                            _uiState.value = _uiState.value.copy(showSignInButton = true)
+                        }
+                    }
+                }
+            } else {
+                _uiState.value = _uiState.value.copy(showSignInButton = true)
+            }
         }
     }
 

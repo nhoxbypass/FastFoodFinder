@@ -7,20 +7,19 @@ import com.iceteaviet.fastfoodfinder.data.auth.ClientAuth
 import com.iceteaviet.fastfoodfinder.data.domain.prefs.PreferencesRepository
 import com.iceteaviet.fastfoodfinder.data.domain.store.StoreRepository
 import com.iceteaviet.fastfoodfinder.data.domain.user.UserRepository
-import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
-import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
 import com.iceteaviet.fastfoodfinder.utils.exception.EmptyDataException
 import com.iceteaviet.fastfoodfinder.utils.filterInvalidData
 import com.iceteaviet.fastfoodfinder.utils.isValidUserUid
 import com.iceteaviet.fastfoodfinder.utils.loadStoresFromServerHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.Completable
-import io.reactivex.Single
+import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.rx2.await
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.rx2.await
 import javax.inject.Inject
 
 sealed class SplashUiState {
@@ -63,7 +62,7 @@ class SplashViewModel @Inject constructor(
     }
 
     fun loadStoresFromServer() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 loadStoresFromServerInternal().await()
                 if (clientAuth.isSignedIn() && isValidUserUid(clientAuth.getCurrentUserUid())) {
@@ -85,7 +84,7 @@ class SplashViewModel @Inject constructor(
 
     private fun onAppOpenFirstTime() {
         preferencesRepository.setAppLaunchFirstTime(false)
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 loadStoresFromServerInternal().await()
                 _uiState.value = SplashUiState.NavigateToLogin
@@ -100,6 +99,7 @@ class SplashViewModel @Inject constructor(
     private fun loadStoresFromServerInternal(): Completable {
         return Completable.create { emitter ->
             loadStoresFromServerHelper(App.getContext(), clientAuth, storeRepository)
+                .observeOn(Schedulers.io())
                 .subscribe({ storeList ->
                     if (storeList.isNotEmpty()) {
                         val filteredStoreList = filterInvalidData(storeList.toMutableList())
@@ -117,7 +117,7 @@ class SplashViewModel @Inject constructor(
     }
 
     private fun loadDataAndOpenLoginScreen() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 val storeList = storeRepository.getAllStores().await()
                 if (storeList.isEmpty()) {
@@ -134,7 +134,7 @@ class SplashViewModel @Inject constructor(
     }
 
     private fun loadDataAndOpenMainScreen(userUid: String) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 val user = userRepository.getUser(userUid).await()
                 val storeList = storeRepository.getAllStores().await()

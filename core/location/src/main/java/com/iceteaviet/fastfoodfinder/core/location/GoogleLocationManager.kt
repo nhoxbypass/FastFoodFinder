@@ -44,6 +44,10 @@ open class GoogleLocationManager private constructor(context: Context) : AbsLoca
         }
     }
 
+    init {
+        initLocationProvider(context)
+    }
+
     override fun initLocationProvider(context: Context) {
         locationRequest = createLocationRequest()
         googleApiClient = createGoogleApiClient(context)

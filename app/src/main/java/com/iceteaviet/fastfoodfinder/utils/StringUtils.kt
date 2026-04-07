@@ -64,7 +64,7 @@ fun getNameFromEmail(email: String): String {
 }
 
 fun base64ToBytes(base64: String): ByteArray {
-    return Base64.getDecoder().decode(base64)
+    return Base64.getDecoder().decode(base64.trim())
 }
 
 fun bytesToBase64(bytes: ByteArray): String {

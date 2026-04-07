@@ -84,10 +84,12 @@ class StoreDetailViewModel @Inject constructor(
     fun start(hasLocationPermission: Boolean) {
         if (currStore == null) return
 
-        val currUser = getCurrentUserHelper(clientAuth, userRepository)
-        _uiState.value = _uiState.value.copy(isSignedIn = currUser != null)
-
         viewModelScope.launch(Dispatchers.IO) {
+            val currUser = getCurrentUserHelper(clientAuth, userRepository)
+            launch(Dispatchers.Main) {
+                _uiState.value = _uiState.value.copy(isSignedIn = currUser != null)
+            }
+            
             try {
                 val commentList = storeRepository.getComments(currStore.id.toString()).await()
                 launch(Dispatchers.Main) {
@@ -142,11 +144,15 @@ class StoreDetailViewModel @Inject constructor(
     }
 
     fun onCommentButtonClick() {
-        val currUser = getCurrentUserHelper(clientAuth, userRepository)
-        if (currUser != null) {
-            _uiState.value = _uiState.value.copy(event = StoreDetailEvent.ShowCommentEditorView)
-        } else {
-            _uiState.value = _uiState.value.copy(event = StoreDetailEvent.ShowLoginRequestToast)
+        viewModelScope.launch(Dispatchers.IO) {
+            val currUser = getCurrentUserHelper(clientAuth, userRepository)
+            launch(Dispatchers.Main) {
+                if (currUser != null) {
+                    _uiState.value = _uiState.value.copy(event = StoreDetailEvent.ShowCommentEditorView)
+                } else {
+                    _uiState.value = _uiState.value.copy(event = StoreDetailEvent.ShowLoginRequestToast)
+                }
+            }
         }
     }
 
@@ -201,16 +207,24 @@ class StoreDetailViewModel @Inject constructor(
     }
 
     fun onAddToFavButtonClick() {
-        val currUser = getCurrentUserHelper(clientAuth, userRepository)
-        if (currUser == null) {
-            _uiState.value = _uiState.value.copy(event = StoreDetailEvent.ShowLoginRequestToast)
+        viewModelScope.launch(Dispatchers.IO) {
+            val currUser = getCurrentUserHelper(clientAuth, userRepository)
+            if (currUser == null) {
+                launch(Dispatchers.Main) {
+                    _uiState.value = _uiState.value.copy(event = StoreDetailEvent.ShowLoginRequestToast)
+                }
+            }
         }
     }
 
     fun onSaveButtonClick() {
-        val currUser = getCurrentUserHelper(clientAuth, userRepository)
-        if (currUser == null) {
-            _uiState.value = _uiState.value.copy(event = StoreDetailEvent.ShowLoginRequestToast)
+        viewModelScope.launch(Dispatchers.IO) {
+            val currUser = getCurrentUserHelper(clientAuth, userRepository)
+            if (currUser == null) {
+                launch(Dispatchers.Main) {
+                    _uiState.value = _uiState.value.copy(event = StoreDetailEvent.ShowLoginRequestToast)
+                }
+            }
         }
     }
 

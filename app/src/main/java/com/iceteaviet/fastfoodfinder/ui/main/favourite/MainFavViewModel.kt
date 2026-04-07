@@ -8,7 +8,7 @@ import com.iceteaviet.fastfoodfinder.data.domain.user.UserRepository
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreEvent
 import com.iceteaviet.fastfoodfinder.utils.exception.EmptyParamsException
-import com.iceteaviet.fastfoodfinder.utils.getCurrentUserHelper
+import com.iceteaviet.fastfoodfinder.utils.isValidUserUid
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -41,17 +41,26 @@ class MainFavViewModel @Inject constructor(
     val uiState: StateFlow<MainFavEvent> = _uiState.asStateFlow()
 
     fun start() {
-        val currUser = getCurrentUserHelper(clientAuth, userRepository)
-        if (currUser != null) {
-            loadStoreListsFromIds(currUser.getFavouriteStoreList().getStoreIdList())
-            listenFavStoresOfUser(currUser.getUid())
+        val uid = clientAuth.getCurrentUserUid()
+        if (isValidUserUid(uid)) {
+            viewModelScope.launch(Dispatchers.IO) {
+                try {
+                    val currUser = userRepository.getUser(uid).await()
+                    launch(Dispatchers.Main) {
+                        loadStoreListsFromIds(currUser.getFavouriteStoreList().getStoreIdList())
+                        listenFavStoresOfUser(currUser.getUid())
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
         }
     }
 
     override fun onCleared() {
-        val currUser = getCurrentUserHelper(clientAuth, userRepository)
-        if (currUser != null) {
-            userRepository.unsubscribeFavouriteStoresOfUser(currUser.getUid())
+        val uid = clientAuth.getCurrentUserUid()
+        if (isValidUserUid(uid)) {
+            userRepository.unsubscribeFavouriteStoresOfUser(uid)
         }
         super.onCleared()
     }

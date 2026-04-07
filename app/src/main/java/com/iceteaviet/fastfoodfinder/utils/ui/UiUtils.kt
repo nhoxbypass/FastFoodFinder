@@ -66,25 +66,29 @@ fun animateMarker(resources: Resources, marker: Marker?, storeType: Int) {
     if (marker == null)
         return
 
-    // Prepare animation
-    val animator = ValueAnimator.ofFloat(0.1f, 1f)
-    animator.duration = 1000
-    animator.startDelay = 500
-    animator.interpolator = BounceInterpolator()
-
-    animator.addUpdateListener { animation ->
-        val scale = animation.animatedValue as Float
-        try {
-            marker.setIcon(getStoreIcon(resources, storeType, Math.round(scale * 75), Math.round(scale * 75)))
-        } catch (ex: IllegalArgumentException) {
-            ex.printStackTrace()
-        }
+    // Disable computationally expensive scaling animation that causes map freezing
+    // Instead, immediately set the icon to its final full size (75x75)
+    try {
+        marker.setIcon(getStoreIcon(resources, storeType, 75, 75))
+    } catch (ex: IllegalArgumentException) {
+        ex.printStackTrace()
     }
-    animator.start()
 }
 
 
 private var cache: LruCache<String, BitmapDescriptor> = LruCache(((Runtime.getRuntime().maxMemory() / 1024 / 8).toInt()))
+
+private var originalBitmapCache = HashMap<Int, Bitmap>()
+
+private fun getOriginalBitmap(resources: Resources, type: Int): Bitmap {
+    var bm = originalBitmapCache[type]
+    if (bm == null) {
+        val id = getStoreLogoDrawableRes(type)
+        bm = BitmapFactory.decodeResource(resources, id)
+        originalBitmapCache[type] = bm
+    }
+    return bm!!
+}
 
 // -1 is default width & height
 fun getStoreIcon(resources: Resources, type: Int, width: Int, height: Int): BitmapDescriptor {
@@ -95,12 +99,12 @@ fun getStoreIcon(resources: Resources, type: Int, width: Int, height: Int): Bitm
     synchronized(cache) {
         var result: BitmapDescriptor? = cache.get(key)
         if (result == null) {
-            val id = getStoreLogoDrawableRes(type)
+            val original = getOriginalBitmap(resources, type)
             val bitmap: Bitmap
             if (width != -1 && height != -1)
-                bitmap = resizeMarkerBitmap(BitmapFactory.decodeResource(resources, id), width, height)
+                bitmap = resizeMarkerBitmap(original, width, height)
             else
-                bitmap = BitmapFactory.decodeResource(resources, id)
+                bitmap = original
 
             result = BitmapDescriptorFactory.fromBitmap(bitmap)
             cache.put(key, result)
