@@ -4,7 +4,7 @@ package com.iceteaviet.fastfoodfinder.utils
 
 import android.location.Location
 import com.google.android.gms.maps.model.LatLng
-import com.iceteaviet.fastfoodfinder.location.LatLngAlt
+import com.iceteaviet.fastfoodfinder.core.location.LatLngAlt
 
 /**
  * Created by Genius Doan on 20/07/2017.

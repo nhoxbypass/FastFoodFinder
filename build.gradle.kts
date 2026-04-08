@@ -21,6 +21,7 @@ buildscript {
         classpath("io.realm:realm-gradle-plugin:10.17.0")
 
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:2.1.10")
+        classpath("com.google.dagger:hilt-android-gradle-plugin:2.55")
     }
 }
 
@@ -30,6 +31,10 @@ allprojects {
         mavenCentral()
         maven { url = uri("https://plugins.gradle.org/m2/") }
     }
+}
+
+plugins {
+    alias(libs.plugins.jetbrains.kotlin.android) apply false
 }
 
 tasks.register("clean", Delete::class) {

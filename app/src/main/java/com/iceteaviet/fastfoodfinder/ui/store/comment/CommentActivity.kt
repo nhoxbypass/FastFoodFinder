@@ -5,7 +5,6 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.os.Parcelable
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.MenuItem
@@ -14,22 +13,24 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.annotation.ColorInt
-import com.iceteaviet.fastfoodfinder.App
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import dagger.hilt.android.AndroidEntryPoint
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.databinding.ActivityCommentBinding
 import com.iceteaviet.fastfoodfinder.ui.base.BaseActivity
 import com.iceteaviet.fastfoodfinder.ui.custom.dialog.CloseConfirmDialog
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
-/**
- * Created by binhlt on 29/11/2016.
- */
-class CommentActivity : BaseActivity(), CommentContract.View {
-    override lateinit var presenter: CommentContract.Presenter
+@AndroidEntryPoint
+class CommentActivity : BaseActivity() {
 
-    /**
-     * Views Ref
-     */
+    private val viewModel: CommentViewModel by viewModels()
+
     private lateinit var binding: ActivityCommentBinding
 
     lateinit var etComment: EditText
@@ -45,75 +46,74 @@ class CommentActivity : BaseActivity(), CommentContract.View {
         binding = ActivityCommentBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        presenter = CommentPresenter(App.getDataManager(), App.getSchedulerProvider(), this)
-
         etComment = binding.etComment
         tvRemainChar = binding.tvRemainChar
         btnPost = binding.btnPost
 
         setupToolbar()
         setupEventHandlers()
+        setupObservers()
     }
 
     override fun onResume() {
         super.onResume()
-        presenter.subscribe()
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
     }
 
-    override fun onPause() {
-        super.onPause()
-        presenter.unsubscribe()
+    private fun setupObservers() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collectLatest { state ->
+                    tvRemainChar.text = state.remainCharCount
+                    
+                    @ColorInt val color = if (state.isOverLimit) Color.RED else Color.BLACK
+                    tvRemainChar.setTextColor(color)
+                    etComment.setTextColor(color)
+
+                    btnPost.isEnabled = state.isPostButtonEnabled
+
+                    when (state.event) {
+                        is CommentEvent.Idle -> {}
+                        is CommentEvent.ExitWithResult -> {
+                            val data = Intent()
+                            val extras = Bundle()
+                            extras.putParcelable(KEY_COMMENT, state.event.comment)
+                            data.putExtras(extras)
+                            setResult(Activity.RESULT_OK, data)
+                            finish()
+                            viewModel.markEventConsumed()
+                        }
+                        is CommentEvent.Exit -> {
+                            finish()
+                            viewModel.markEventConsumed()
+                        }
+                        is CommentEvent.ShowCloseConfirmDialog -> {
+                            showCloseConfirmDialog()
+                            viewModel.markEventConsumed()
+                        }
+                        is CommentEvent.ShowCommentPostFailedWarning -> {
+                            Toast.makeText(this@CommentActivity, getString(R.string.cannot_post_comment, CommentViewModel.MAX_CHAR), Toast.LENGTH_SHORT).show()
+                            viewModel.markEventConsumed()
+                        }
+                        is CommentEvent.ShowGeneralErrorMessage -> {
+                            Toast.makeText(this@CommentActivity, R.string.error_general_error_code, Toast.LENGTH_LONG).show()
+                            viewModel.markEventConsumed()
+                        }
+                    }
+                }
+            }
+        }
     }
 
-    override fun setRemainCharCountText(remainCharCount: String) {
-        tvRemainChar.text = remainCharCount
-    }
-
-    override fun updateTextColor(overLimit: Boolean) {
-        @ColorInt val color = if (overLimit) Color.RED else Color.BLACK
-        tvRemainChar.setTextColor(color)
-        etComment.setTextColor(color)
-    }
-
-    override fun setPostButtonEnabled(enabled: Boolean) {
-        btnPost.isEnabled = enabled
-    }
-
-    override fun showCommentPostFailedWarning() {
-        Toast.makeText(this,
-            getString(R.string.cannot_post_comment, CommentPresenter.MAX_CHAR),
-            Toast.LENGTH_SHORT).show()
-    }
-
-    override fun showGeneralErrorMessage() {
-        Toast.makeText(this, R.string.error_general_error_code, Toast.LENGTH_LONG).show()
-    }
-
-    override fun exitWithResult(comment: Parcelable) {
-        val data = Intent()
-        val extras = Bundle()
-        extras.putParcelable(KEY_COMMENT, comment)
-        data.putExtras(extras)
-        setResult(Activity.RESULT_OK, data)
-        finish()
-    }
-
-    override fun exit() {
-        finish()
-    }
-
-    override fun showCloseConfirmDialog() {
+    private fun showCloseConfirmDialog() {
         val noticeDialog = CloseConfirmDialog.newInstance(getString(R.string.close_comment_editor))
         noticeDialog.setOnClickListener(object : CloseConfirmDialog.OnClickListener {
             override fun onOkClick(dialog: DialogInterface) {
                 finish()
             }
-
             override fun onCancelClick(dialog: DialogInterface) {
                 dialog.dismiss()
             }
-
         })
         noticeDialog.show(supportFragmentManager, "notice_dialog")
     }
@@ -127,38 +127,31 @@ class CommentActivity : BaseActivity(), CommentContract.View {
 
     private fun setupEventHandlers() {
         etComment.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-
-            }
-
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-
-            }
-
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable) {
-                presenter.afterCommentTextChanged(s.toString())
+                viewModel.afterCommentTextChanged(s.toString())
             }
         })
 
         btnPost.setOnClickListener {
-            presenter.onPostButtonClick(etComment.text)
+            viewModel.onPostButtonClick(etComment.text)
         }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
-                presenter.onBackButtonClick(etComment.text)
+                viewModel.onBackButtonClick(etComment.text)
                 return true
             }
         }
         return super.onOptionsItemSelected(item)
     }
 
-    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         super.onBackPressed()
-        presenter.onBackButtonClick(etComment.text)
+        viewModel.onBackButtonClick(etComment.text)
     }
 
     companion object {

@@ -11,20 +11,22 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import dagger.hilt.android.AndroidEntryPoint
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.databinding.DialogStoreFilterBinding
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
-/**
- * Created by taq on 8/12/2016.
- */
+@AndroidEntryPoint
+class DiscountNotifyDialog : DialogFragment() {
 
-class DiscountNotifyDialog : DialogFragment(), DiscountNotifyContract.View {
+    private val viewModel: DiscountNotifyViewModel by viewModels()
+
     private lateinit var tagContainer: RelativeLayout
-    override lateinit var presenter: DiscountNotifyContract.Presenter
-
-    /**
-     * Views Ref
-     */
     private lateinit var binding: DialogStoreFilterBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -38,31 +40,34 @@ class DiscountNotifyDialog : DialogFragment(), DiscountNotifyContract.View {
         tagContainer = binding.tagContainer
 
         dialog?.setTitle(R.string.subscription)
-        presenter.onSetupTagContainer()
+        setupTagContainer(viewModel.getStoreList())
         setUpViewListener()
+        setupObservers()
     }
 
-    fun setUpViewListener() {
-        binding.btnCancel.setOnClickListener { presenter.onCancelButtonClick() }
-        binding.btnDone.setOnClickListener { presenter.onDoneButtonClick() }
+    private fun setupObservers() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collectLatest { state ->
+                    when (state.event) {
+                        is DiscountNotifyEvent.Idle -> {}
+                        is DiscountNotifyEvent.CancelDialog -> {
+                            dismiss()
+                            viewModel.markEventConsumed()
+                        }
+                        is DiscountNotifyEvent.DoneDialog -> {
+                            dismiss()
+                            viewModel.markEventConsumed()
+                        }
+                    }
+                }
+            }
+        }
     }
 
-    override fun cancelDialog() {
-        dismiss()
-    }
-
-    override fun doneDialog() {
-        dismiss()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        presenter.subscribe()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        presenter.unsubscribe()
+    private fun setUpViewListener() {
+        binding.btnCancel.setOnClickListener { viewModel.onCancelButtonClick() }
+        binding.btnDone.setOnClickListener { viewModel.onDoneButtonClick() }
     }
 
     @Deprecated("Deprecated in Java")
@@ -71,12 +76,12 @@ class DiscountNotifyDialog : DialogFragment(), DiscountNotifyContract.View {
         dialog?.window?.attributes?.windowAnimations = R.style.DialogAnimationUpDown
     }
 
-    override fun setupTagContainer(storeList: Array<String>) {
+    private fun setupTagContainer(storeList: Array<String>) {
         val inflater = LayoutInflater.from(context)
         for (key in storeList) {
             val view = inflater.inflate(R.layout.view_store_tag, tagContainer, false)
             val holder = TagViewHolder(view)
-            holder.setName(presenter.getStoreName(key))
+            holder.setName(viewModel.getStoreName(key))
             tagContainer.addView(view)
         }
     }
@@ -101,7 +106,6 @@ class DiscountNotifyDialog : DialogFragment(), DiscountNotifyContract.View {
                 }
             })
             animator.start()
-
         }
 
         fun setName(name: String) {
@@ -112,10 +116,8 @@ class DiscountNotifyDialog : DialogFragment(), DiscountNotifyContract.View {
     companion object {
         fun newInstance(): DiscountNotifyDialog {
             val args = Bundle()
-
             val fragment = DiscountNotifyDialog()
             fragment.arguments = args
-            fragment.presenter = DiscountNotifyPresenter(fragment)
             return fragment
         }
     }

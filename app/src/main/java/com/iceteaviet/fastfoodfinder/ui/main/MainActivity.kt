@@ -10,17 +10,20 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
-import androidx.core.view.MenuItemCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.bumptech.glide.Glide
 import com.google.android.material.navigation.NavigationView
-import com.iceteaviet.fastfoodfinder.App
+import dagger.hilt.android.AndroidEntryPoint
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.core.common.ext.getInputMethodManager
 import com.iceteaviet.fastfoodfinder.core.common.ext.getSearchManager
@@ -33,13 +36,14 @@ import com.iceteaviet.fastfoodfinder.utils.openARLiveSightActivity
 import com.iceteaviet.fastfoodfinder.utils.openLoginActivity
 import com.iceteaviet.fastfoodfinder.utils.openSettingsActivity
 import de.hdodenhof.circleimageview.CircleImageView
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
-class MainActivity : BaseActivity(), MainContract.View, View.OnClickListener {
-    override lateinit var presenter: MainContract.Presenter
+@AndroidEntryPoint
+class MainActivity : BaseActivity(), View.OnClickListener {
 
-    /**
-     * Views Ref
-     */
+    private val viewModel: MainViewModel by viewModels()
+
     private lateinit var binding: ActivityMainBinding
 
     lateinit var mNavigationView: NavigationView
@@ -65,10 +69,9 @@ class MainActivity : BaseActivity(), MainContract.View, View.OnClickListener {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        presenter = MainPresenter(App.getDataManager(), App.getSchedulerProvider(), App.getBus(), this)
-
         setupUI()
         setupEventHandlers()
+        setupObservers()
 
         //Inflate Map fragment
         mNavigationView.menu.getItem(0).isChecked = true
@@ -84,21 +87,73 @@ class MainActivity : BaseActivity(), MainContract.View, View.OnClickListener {
 
     override fun onResume() {
         super.onResume()
-        presenter.subscribe()
+        viewModel.start()
     }
 
-    override fun onPause() {
-        super.onPause()
-        presenter.unsubscribe()
-    }
+    private fun setupObservers() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collectLatest { state ->
+                    updateProfileHeader(state.showSignInButton)
+                    
+                    if (!state.showSignInButton) {
+                        state.userName?.let { setProfileHeaderNameText(it) }
+                        state.userEmail?.let { setProfileHeaderEmailText(it) }
+                        state.userAvatarUrl?.let { loadProfileHeaderAvatar(it) }
+                    }
 
+                    when (val event = state.event) {
+                        is MainEvent.Idle -> {}
+                        is MainEvent.NavigateToProfile -> {
+                            showProfileView()
+                            viewModel.markEventConsumed()
+                        }
+                        is MainEvent.NavigateToLogin -> {
+                            showLoginView()
+                            viewModel.markEventConsumed()
+                        }
+                        is MainEvent.NavigateToAR -> {
+                            showARLiveSightView()
+                            viewModel.markEventConsumed()
+                        }
+                        is MainEvent.NavigateToSettings -> {
+                            showSettingsView()
+                            viewModel.markEventConsumed()
+                        }
+                        is MainEvent.ShowSearchView -> {
+                            showSearchView()
+                            viewModel.markEventConsumed()
+                        }
+                        is MainEvent.HideSearchView -> {
+                            hideSearchView()
+                            viewModel.markEventConsumed()
+                        }
+                        is MainEvent.HideKeyboard -> {
+                            hideKeyboard()
+                            viewModel.markEventConsumed()
+                        }
+                        is MainEvent.ClearFocus -> {
+                            clearFocus()
+                            viewModel.markEventConsumed()
+                        }
+                        is MainEvent.ShowSearchWarning -> {
+                            showSearchWarningMessage()
+                            viewModel.markEventConsumed()
+                        }
+                        is MainEvent.UpdateSearchQueryText -> {
+                            setSearchQueryText(event.query)
+                            viewModel.markEventConsumed()
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        //Inflate SearchView
         mSearchView = initSearchView(menu)
         return super.onCreateOptionsMenu(menu)
     }
-
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
@@ -106,11 +161,7 @@ class MainActivity : BaseActivity(), MainContract.View, View.OnClickListener {
                 drawerLayout.openDrawer(GravityCompat.START)
                 return true
             }
-
-            else -> {
-            }
         }
-
         return if (mDrawerToggle!!.onOptionsItemSelected(item)) {
             true
         } else super.onOptionsItemSelected(item)
@@ -118,34 +169,31 @@ class MainActivity : BaseActivity(), MainContract.View, View.OnClickListener {
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-
-        // Pass any configuration change to the drawer toggles
         mDrawerToggle?.onConfigurationChanged(newConfig)
     }
 
-    override fun showProfileView() {
+    private fun showProfileView() {
         replaceFragment(ProfileFragment.newInstance(), getString(R.string.profile))
     }
 
-    override fun showLoginView() {
+    private fun showLoginView() {
         openLoginActivity(this)
         finish()
     }
 
-    override fun showARLiveSightView() {
+    private fun showARLiveSightView() {
         openARLiveSightActivity(this)
     }
 
-    override fun showSettingsView() {
+    private fun showSettingsView() {
         openSettingsActivity(this)
     }
 
-    override fun setSearchQueryText(searchString: String) {
+    private fun setSearchQueryText(searchString: String) {
         mSearchView?.setQuery(searchString, false)
     }
 
-    override fun hideKeyboard() {
-        // Check if no view has focus:
+    private fun hideKeyboard() {
         val view = this.currentFocus
         if (view != null) {
             val imm = getInputMethodManager()
@@ -153,7 +201,7 @@ class MainActivity : BaseActivity(), MainContract.View, View.OnClickListener {
         }
     }
 
-    override fun clearFocus() {
+    private fun clearFocus() {
         val view = this.currentFocus
         if (view != null) {
             view.clearFocus()
@@ -162,11 +210,11 @@ class MainActivity : BaseActivity(), MainContract.View, View.OnClickListener {
         mSearchView?.clearFocus()
     }
 
-    override fun showSearchWarningMessage() {
+    private fun showSearchWarningMessage() {
         Toast.makeText(this, R.string.search_error, Toast.LENGTH_SHORT).show()
     }
 
-    override fun showSearchView() {
+    private fun showSearchView() {
         val ft = supportFragmentManager.beginTransaction()
         ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
 
@@ -176,12 +224,10 @@ class MainActivity : BaseActivity(), MainContract.View, View.OnClickListener {
         val fragmentPlaceHolder = findViewById<View>(R.id.fragment_search_placeholder)
         fragmentPlaceHolder.visibility = View.VISIBLE
         ft.replace(R.id.fragment_search_placeholder, searchFragment!!, "search-fragment")
-
-        // Start the animated transition.
         ft.commit()
     }
 
-    override fun hideSearchView() {
+    private fun hideSearchView() {
         val ft = supportFragmentManager.beginTransaction()
         ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
 
@@ -190,11 +236,10 @@ class MainActivity : BaseActivity(), MainContract.View, View.OnClickListener {
         if (fragment != null) {
             ft.remove(fragment)
         }
-
         ft.commit()
     }
 
-    override fun updateProfileHeader(showSignIn: Boolean) {
+    private fun updateProfileHeader(showSignIn: Boolean) {
         if (showSignIn) {
             navHeaderName?.visibility = View.GONE
             navHeaderEmail?.visibility = View.GONE
@@ -206,7 +251,7 @@ class MainActivity : BaseActivity(), MainContract.View, View.OnClickListener {
         }
     }
 
-    override fun loadProfileHeaderAvatar(photoUrl: String) {
+    private fun loadProfileHeaderAvatar(photoUrl: String) {
         navHeaderAvatar?.let {
             Glide.with(this)
                 .load(photoUrl)
@@ -214,30 +259,22 @@ class MainActivity : BaseActivity(), MainContract.View, View.OnClickListener {
         }
     }
 
-    override fun setProfileHeaderNameText(name: String) {
+    private fun setProfileHeaderNameText(name: String) {
         navHeaderName?.text = name
     }
 
-    override fun setProfileHeaderEmailText(email: String) {
+    private fun setProfileHeaderEmailText(email: String) {
         navHeaderEmail?.text = email
     }
 
     override fun onClick(view: View) {
         when (view.id) {
-            /*R.id.search_close_btn -> {
-                if (!searchFragment!!.isVisible) {
-                    MenuItemCompat.collapseActionView(searchItem)
-                }
-            }*/
-
             R.id.btn_nav_header_signin -> {
-                presenter.onSignInMenuItemClick()
+                viewModel.onSignInMenuItemClick()
             }
-
             R.id.iv_nav_header_avatar, R.id.tv_nav_header_name, R.id.tv_nav_header_screenname -> {
-                // Close the navigation drawer
                 drawerLayout.closeDrawers()
-                presenter.onProfileMenuItemClick()
+                viewModel.onProfileMenuItemClick()
             }
         }
     }
@@ -273,10 +310,8 @@ class MainActivity : BaseActivity(), MainContract.View, View.OnClickListener {
             true
         }
 
-        // Tie DrawerLayout events to the ActionBarToggle
         mDrawerToggle?.let { drawerLayout.addDrawerListener(it) }
     }
-
 
     private fun initSearchView(menu: Menu): SearchView? {
         val searchView: SearchView?
@@ -286,8 +321,7 @@ class MainActivity : BaseActivity(), MainContract.View, View.OnClickListener {
 
         val searchManager = getSearchManager()
 
-        searchView = MenuItemCompat.getActionView(searchItem) as SearchView
-
+        searchView = searchItem!!.actionView as SearchView
         searchView.setSearchableInfo(searchManager?.getSearchableInfo(componentName))
 
         searchView.queryHint = getString(R.string.type_name_store)
@@ -296,17 +330,15 @@ class MainActivity : BaseActivity(), MainContract.View, View.OnClickListener {
         mSearchInput?.setHintTextColor(ContextCompat.getColor(this, R.color.colorHintText))
         mSearchInput?.setTextColor(Color.WHITE)
 
-        // Set on search query submit
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
-                presenter.onSearchQuerySubmit(query)
+                viewModel.onSearchQuerySubmit(query)
                 return false
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
                 searchFragment?.let {
-                    if (!it.isVisible)
-                        return false
+                    if (!it.isVisible) return false
 
                     if (newText.isNotBlank()) {
                         it.hideOptionsContainer()
@@ -321,17 +353,14 @@ class MainActivity : BaseActivity(), MainContract.View, View.OnClickListener {
             }
         })
 
-        //searchView.findViewById<View>(R.id.search_close_btn).setOnClickListener(this)
-
-        //Set event expand search view
-        MenuItemCompat.setOnActionExpandListener(searchItem, object : MenuItemCompat.OnActionExpandListener {
+        searchItem!!.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
             override fun onMenuItemActionExpand(menuItem: MenuItem): Boolean {
-                presenter.onSearchMenuItemExpand()
+                viewModel.onSearchMenuItemExpand()
                 return true
             }
 
             override fun onMenuItemActionCollapse(menuItem: MenuItem): Boolean {
-                presenter.onSearchMenuItemCollapse()
+                viewModel.onSearchMenuItemCollapse()
                 return true
             }
         })
@@ -339,35 +368,25 @@ class MainActivity : BaseActivity(), MainContract.View, View.OnClickListener {
         return searchView
     }
 
-
     private fun selectDrawerItem(menuItem: MenuItem) {
-        // set item as selected to persist highlight
         mNavigationView.setCheckedItem(menuItem)
         menuItem.isChecked = true
 
         when (menuItem.itemId) {
             R.id.menu_action_profile -> {
-                presenter.onProfileMenuItemClick()
-                return
+                viewModel.onProfileMenuItemClick()
             }
-
             R.id.menu_action_map -> {
                 if (supportFragmentManager.backStackEntryCount > 0) {
                     supportFragmentManager.popBackStack()
                 }
-                return
             }
-
             R.id.menu_action_ar -> {
-                presenter.onARLiveSightMenuItemClick()
-                return
+                viewModel.onARLiveSightMenuItemClick()
             }
-
             R.id.menu_action_setting -> {
-                presenter.onSettingsMenuItemClick()
-                return
+                viewModel.onSettingsMenuItemClick()
             }
-
             else -> {
                 e(TAG, "Wrong menu item id")
             }
@@ -375,7 +394,6 @@ class MainActivity : BaseActivity(), MainContract.View, View.OnClickListener {
     }
 
     private fun replaceFragment(fragment: Fragment, actionBarTitle: String) {
-        // Insert the fragment by replacing any existing fragment
         val fragmentManager = supportFragmentManager
         val oldFragment = supportFragmentManager.findFragmentByTag("profile_screen")
 
@@ -383,14 +401,11 @@ class MainActivity : BaseActivity(), MainContract.View, View.OnClickListener {
             fragmentManager
                 .beginTransaction()
                 .replace(R.id.fl_fragment_placeholder, fragment, "profile_screen")
-                .addToBackStack(null) // Add this transaction to the back stack
+                .addToBackStack(null)
                 .commit()
             fragmentManager.executePendingTransactions()
-        } else {
-            // fragment already added
         }
 
-        // Set action bar title
         title = actionBarTitle
     }
 

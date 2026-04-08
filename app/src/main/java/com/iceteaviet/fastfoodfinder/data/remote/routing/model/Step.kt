@@ -40,9 +40,8 @@ class Step(`in`: Parcel) : Parcelable {
         get() = duration.getAsJsonPrimitive("value").asLong
 
     init {
-        val parser = JsonParser()
-        distance = parser.parse(`in`.readString()).asJsonObject
-        duration = parser.parse(`in`.readString()).asJsonObject
+        distance = JsonParser.parseString(`in`.readString()).asJsonObject
+        duration = JsonParser.parseString(`in`.readString()).asJsonObject
         startMapCoordination = `in`.readParcelable(MapCoordination::class.java.classLoader)
             ?: MapCoordination()
         endMapCoordination = `in`.readParcelable(MapCoordination::class.java.classLoader)

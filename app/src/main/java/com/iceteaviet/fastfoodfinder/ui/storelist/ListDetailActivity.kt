@@ -2,32 +2,31 @@ package com.iceteaviet.fastfoodfinder.ui.storelist
 
 import android.os.Bundle
 import android.widget.Toast
-import androidx.annotation.DrawableRes
+import androidx.activity.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import dagger.hilt.android.AndroidEntryPoint
 import com.bumptech.glide.Glide
-import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
-import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
+import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList
 import com.iceteaviet.fastfoodfinder.databinding.ActivityListDetailBinding
 import com.iceteaviet.fastfoodfinder.ui.base.BaseActivity
 import de.hdodenhof.circleimageview.CircleImageView
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
-/**
- * Created by MyPC on 12/6/2016.
- */
-class ListDetailActivity : BaseActivity(), ListDetailContract.View {
-    override lateinit var presenter: ListDetailContract.Presenter
+@AndroidEntryPoint
+class ListDetailActivity : BaseActivity() {
 
-    /**
-     * Views Ref
-     */
+    private val viewModel: ListDetailViewModel by viewModels()
+
     private lateinit var binding: ActivityListDetailBinding
-
     lateinit var rvStoreList: RecyclerView
     lateinit var cvIconList: CircleImageView
-
     private var mAdapter: StoreListAdapter? = null
 
     override val layoutId: Int
@@ -39,46 +38,51 @@ class ListDetailActivity : BaseActivity(), ListDetailContract.View {
         binding = ActivityListDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        presenter = ListDetailPresenter(App.getDataManager(), App.getSchedulerProvider(), this)
-
         if (intent != null) {
-            presenter.handleExtras(intent.getParcelableExtra(KEY_USER_STORE_LIST), intent.getStringExtra(KEY_USER_PHOTO_URL))
+            viewModel.handleExtras(
+                intent.getParcelableExtra<UserStoreList>(KEY_USER_STORE_LIST), 
+                intent.getStringExtra(KEY_USER_PHOTO_URL)
+            )
             setupUI()
+            setupObservers()
         } else {
-            exit()
+            finish()
+        }
+    }
+
+    private fun setupObservers() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collectLatest { state ->
+                    binding.tvListName.text = state.listName
+                    
+                    if (state.storeIconResId != 0) {
+                        Glide.with(applicationContext)
+                            .load(state.storeIconResId)
+                            .into(cvIconList)
+                    }
+
+                    mAdapter?.setStores(state.stores)
+
+                    when (state.event) {
+                        is ListDetailEvent.Idle -> {}
+                        is ListDetailEvent.Exit -> {
+                            finish()
+                            viewModel.markEventConsumed()
+                        }
+                        is ListDetailEvent.ShowGeneralErrorMessage -> {
+                            Toast.makeText(this@ListDetailActivity, R.string.error_general_error_code, Toast.LENGTH_LONG).show()
+                            viewModel.markEventConsumed()
+                        }
+                    }
+                }
+            }
         }
     }
 
     override fun onResume() {
         super.onResume()
-        presenter.subscribe()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        presenter.unsubscribe()
-    }
-
-    override fun setStores(storeList: List<Store>) {
-        mAdapter?.setStores(storeList)
-    }
-
-    override fun setListNameText(listName: String) {
-        binding.tvListName.text = listName
-    }
-
-    override fun loadStoreIcon(@DrawableRes storeIcon: Int) {
-        Glide.with(applicationContext)
-            .load(storeIcon)
-            .into(cvIconList)
-    }
-
-    override fun exit() {
-        finish()
-    }
-
-    override fun showGeneralErrorMessage() {
-        Toast.makeText(this, R.string.error_general_error_code, Toast.LENGTH_LONG).show()
+        viewModel.start()
     }
 
     private fun setupUI() {

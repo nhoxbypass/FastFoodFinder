@@ -1,12 +1,17 @@
 package com.iceteaviet.fastfoodfinder.ui.main
 
 
+import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
+import android.graphics.BlendMode
+import android.graphics.BlendModeColorFilter
 import android.graphics.Color
-import android.graphics.PorterDuff
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
@@ -18,6 +23,7 @@ import com.iceteaviet.fastfoodfinder.utils.d
 /**
  * A simple [Fragment] subclass.
  */
+@AndroidEntryPoint
 class MainFragment : Fragment() {
     /**
      * Views Ref
@@ -34,6 +40,7 @@ class MainFragment : Fragment() {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mTabLayout = binding.tabLayout
@@ -50,18 +57,18 @@ class MainFragment : Fragment() {
             mTabLayout.getTabAt(i)?.setIcon(mPagerAdapter.getIcon(i))
         }
 
-        mTabLayout.getTabAt(0)?.icon?.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN)
+        mTabLayout.getTabAt(0)?.icon?.colorFilter = BlendModeColorFilter(Color.WHITE, BlendMode.SRC_IN)
 
 
         mTabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 val tabItemColor = Color.WHITE
-                tab.icon?.setColorFilter(tabItemColor, PorterDuff.Mode.SRC_IN)
+                tab.icon?.colorFilter = BlendModeColorFilter(tabItemColor, BlendMode.SRC_IN)
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {
                 val tabItemColor = ContextCompat.getColor(context!!, R.color.colorYouTubeDark)
-                tab.icon?.setColorFilter(tabItemColor, PorterDuff.Mode.SRC_IN)
+                tab.icon?.colorFilter = BlendModeColorFilter(tabItemColor, BlendMode.SRC_IN)
             }
 
             override fun onTabReselected(tab: TabLayout.Tab) {

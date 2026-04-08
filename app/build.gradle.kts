@@ -1,12 +1,13 @@
 plugins {
     id("com.android.application")
-    id("org.jetbrains.kotlin.android")
+    alias(libs.plugins.jetbrains.kotlin.android)
     id("kotlin-kapt")
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
     id("com.google.firebase.firebase-perf")
     id("realm-android")
     id("org.sonarqube") version "5.1.0.4882"
+    id("dagger.hilt.android.plugin")
 }
 
 apply(from = "../app/coverage.gradle.kts")
@@ -148,28 +149,15 @@ dependencies {
     implementation(project(":data:datastore"))
     implementation(project(":data:stores"))
 
-    // Dependencies for local unit tests
-    testImplementation("junit:junit:4.13.2")
-    testImplementation("org.robolectric:robolectric:4.11.1")
-    testImplementation("org.mockito:mockito-core:5.10.0")
-    testImplementation("org.assertj:assertj-core:3.11.1")
-    testImplementation("com.google.truth:truth:1.1.5")
-    testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
+    // Local unit tests
+    testImplementation(libs.bundles.local.unit.test)
 
-    // Espresso UI Testing dependencies.
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
-    androidTestImplementation("androidx.test.espresso:espresso-contrib:3.6.1")
-    androidTestImplementation("androidx.test.espresso:espresso-intents:3.6.1")
-
-    // Android Testing Library's runner and rules
-    androidTestImplementation("androidx.test:runner:1.6.2")
-    androidTestImplementation("androidx.test:rules:1.5.0")
-
-    implementation("androidx.test.espresso:espresso-idling-resource:3.6.1")
+    // Android UI tests
+    androidTestImplementation(libs.bundles.android.ui.test)
 
     // Kotlin
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.22")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0")
+    implementation(libs.kotlin.stdlibjdk)
+    implementation(libs.kotlinx.coroutines.core)
 
     //// App dependencies
     // AndroidX
@@ -178,10 +166,15 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.2.1")
     implementation("androidx.work:work-runtime-ktx:2.10.0")
     implementation("androidx.work:work-rxjava2:2.10.0")
+    
+    // MVVM & Lifecycles
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.2")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.2")
+    implementation("androidx.activity:activity-ktx:1.9.0")
+    implementation("androidx.fragment:fragment-ktx:1.8.0")
 
     // Google Play Services
     implementation("com.google.android.gms:play-services-maps:19.1.0")
-    implementation("com.google.android.gms:play-services-location:21.3.0")
     implementation("com.google.android.gms:play-services-auth:21.3.0")
     implementation("com.google.maps.android:android-maps-utils:0.5")
 
@@ -208,10 +201,16 @@ dependencies {
     implementation("io.reactivex.rxjava3:rxandroid:3.0.2")
     implementation("io.reactivex.rxjava3:rxjava:3.1.5")
     implementation("io.reactivex.rxjava3:rxkotlin:3.0.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-rx3:1.8.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-rx2:1.8.1") // Interoperability for RxWorker which uses rxjava2
 
     // DB
     implementation("io.realm:realm-android-library:10.17.0")
 
     // Logging
     implementation("com.jakewharton.timber:timber:5.0.1")
+
+    // DI
+    implementation("com.google.dagger:hilt-android:2.55")
+    kapt("com.google.dagger:hilt-compiler:2.55")
 }

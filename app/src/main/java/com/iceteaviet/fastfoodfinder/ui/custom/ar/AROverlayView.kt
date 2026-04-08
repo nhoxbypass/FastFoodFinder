@@ -9,7 +9,7 @@ import android.graphics.Paint
 import android.graphics.Typeface
 import android.opengl.Matrix
 import android.view.View
-import com.iceteaviet.fastfoodfinder.location.LatLngAlt
+import com.iceteaviet.fastfoodfinder.core.location.LatLngAlt
 import com.iceteaviet.fastfoodfinder.ui.ar.model.AugmentedPOI
 import com.iceteaviet.fastfoodfinder.utils.convertECEFtoENU
 import com.iceteaviet.fastfoodfinder.utils.convertWSG84toECEF
@@ -25,6 +25,7 @@ class AROverlayView(context: Context) : View(context) {
     private var currentLocation: LatLngAlt? = null
     private val arPoints: MutableList<AugmentedPOI>
     private val arBitmaps: MutableList<Bitmap>
+    private val iconBitmapCache = java.util.concurrent.ConcurrentHashMap<Int, Bitmap>()
 
     init {
         arPoints = ArrayList()
@@ -44,13 +45,34 @@ class AROverlayView(context: Context) : View(context) {
 
         this.arPoints.addAll(list)
         for (i in list.indices) {
-            arBitmaps.add(BitmapFactory.decodeResource(resources, list[i].icon))
+            val iconResId = list[i].icon
+            var bitmap = iconBitmapCache[iconResId]
+            if (bitmap == null) {
+                bitmap = BitmapFactory.decodeResource(resources, iconResId)
+                if (bitmap != null) {
+                    iconBitmapCache[iconResId] = bitmap
+                }
+            }
+            if (bitmap != null) {
+                arBitmaps.add(bitmap)
+            }
         }
     }
 
     fun addArPoint(poi: AugmentedPOI) {
         this.arPoints.add(poi)
-        arBitmaps.add(BitmapFactory.decodeResource(resources, poi.icon))
+        
+        val iconResId = poi.icon
+        var bitmap = iconBitmapCache[iconResId]
+        if (bitmap == null) {
+            bitmap = BitmapFactory.decodeResource(resources, iconResId)
+            if (bitmap != null) {
+                iconBitmapCache[iconResId] = bitmap
+            }
+        }
+        if (bitmap != null) {
+            arBitmaps.add(bitmap)
+        }
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -84,10 +106,14 @@ class AROverlayView(context: Context) : View(context) {
 
 
     fun destroy() {
-        for (i in arBitmaps.indices) {
-            if (!arBitmaps[i].isRecycled)
-                arBitmaps[i].recycle()
+        for ((_, bitmap) in iconBitmapCache) {
+            if (!bitmap.isRecycled) {
+                bitmap.recycle()
+            }
         }
+        iconBitmapCache.clear()
+        arBitmaps.clear()
+        arPoints.clear()
     }
 
 

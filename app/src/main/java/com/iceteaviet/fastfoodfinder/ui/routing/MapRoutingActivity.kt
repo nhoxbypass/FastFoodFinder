@@ -7,7 +7,11 @@ import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -21,9 +25,10 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.Polyline
 import com.google.android.gms.maps.model.PolylineOptions
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.iceteaviet.fastfoodfinder.App
+import dagger.hilt.android.AndroidEntryPoint
 import com.iceteaviet.fastfoodfinder.R
-import com.iceteaviet.fastfoodfinder.data.remote.routing.model.Step
+import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
+import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.databinding.ActivityMapRoutingBinding
 import com.iceteaviet.fastfoodfinder.ui.base.BaseActivity
 import com.iceteaviet.fastfoodfinder.ui.custom.snaphelper.OnSnapListener
@@ -32,14 +37,15 @@ import com.iceteaviet.fastfoodfinder.utils.Constant.DEFAULT_ZOOM_LEVEL
 import com.iceteaviet.fastfoodfinder.utils.Constant.DETAILED_ZOOM_LEVEL
 import com.iceteaviet.fastfoodfinder.utils.convertDpToPx
 import com.iceteaviet.fastfoodfinder.utils.extension.attachSnapHelperToListener
+import com.iceteaviet.fastfoodfinder.utils.ui.getStoreLogoDrawableRes
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
+class MapRoutingActivity : BaseActivity(), View.OnClickListener {
 
-class MapRoutingActivity : BaseActivity(), MapRoutingContract.View, View.OnClickListener {
-    override lateinit var presenter: MapRoutingContract.Presenter
+    private val viewModel: MapRoutingViewModel by viewModels()
 
-    /**
-     * Views Ref
-     */
     private lateinit var binding: ActivityMapRoutingBinding
 
     private lateinit var txtTravelTime: TextView
@@ -52,7 +58,7 @@ class MapRoutingActivity : BaseActivity(), MapRoutingContract.View, View.OnClick
     private lateinit var nextInstruction: ImageButton
     private lateinit var routingButtonContainer: LinearLayout
 
-    private val snapHelper = LinearSnapHelper() // The item is fullscreen, may be using PagerSnapHelper is better?
+    private val snapHelper = LinearSnapHelper()
     private var bottomSheetBehavior: BottomSheetBehavior<*>? = null
     private var googleMap: GoogleMap? = null
     private var mapFragment: SupportMapFragment? = null
@@ -69,105 +75,128 @@ class MapRoutingActivity : BaseActivity(), MapRoutingContract.View, View.OnClick
         binding = ActivityMapRoutingBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        presenter = MapRoutingPresenter(App.getDataManager(), App.getSchedulerProvider(), this)
-
         setupUI()
         setUpMapIfNeeded()
         setupEventListeners()
 
         intent.extras?.let {
-            presenter.handleExtras(it.getParcelable(KEY_ROUTE_LIST), it.getParcelable(KEY_DES_STORE))
+            viewModel.handleExtras(
+                it.getParcelable<MapsDirection>(KEY_ROUTE_LIST), 
+                it.getParcelable<Store>(KEY_DES_STORE)
+            )
         }
+        
+        setupObservers()
     }
 
-    override fun onResume() {
-        super.onResume()
-        presenter.subscribe()
-    }
+    private fun setupObservers() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collectLatest { state ->
+                    supportActionBar?.title = state.title
+                    
+                    bottomRoutingAdapter.setStepList(state.stepList)
+                    topRoutingAdapter.setStepList(state.stepList)
 
-    override fun onPause() {
-        super.onPause()
-        presenter.unsubscribe()
+                    if (state.inPreviewMode) {
+                        enterPreviewMode()
+                    } else {
+                        exitPreviewMode()
+                    }
+
+                    txtTravelTime.text = state.durationText
+                    txtTravelDistance.text = state.distanceText
+                    txtTravelOverview.text = state.summaryText
+
+                    when (val event = state.event) {
+                        is MapRoutingEvent.Idle -> {}
+                        is MapRoutingEvent.Exit -> {
+                            finish()
+                            viewModel.markEventConsumed()
+                        }
+                        is MapRoutingEvent.ShowGetDirectionFailedMessage -> {
+                            Toast.makeText(this@MapRoutingActivity, R.string.get_map_direction_failed, Toast.LENGTH_SHORT).show()
+                            finish() // Exit automatically on fail
+                            viewModel.markEventConsumed()
+                        }
+                        is MapRoutingEvent.ShowGeneralErrorMessage -> {
+                            Toast.makeText(this@MapRoutingActivity, R.string.error_general_error_code, Toast.LENGTH_LONG).show()
+                            viewModel.markEventConsumed()
+                        }
+                        is MapRoutingEvent.AnimateMapCamera -> {
+                            animateMapCamera(event.location, event.zoomToDetail)
+                            viewModel.markEventConsumed()
+                        }
+                        is MapRoutingEvent.AddMapMarker -> {
+                            addMapMarker(event.location, event.title, event.description, event.icon)
+                            viewModel.markEventConsumed()
+                        }
+                        is MapRoutingEvent.DrawRoutingPath -> {
+                            drawRoutingPath(event.currLocation, event.routingGeoPoint)
+                            viewModel.markEventConsumed()
+                        }
+                        is MapRoutingEvent.ScrollTopBannerToPosition -> {
+                            scrollTopBannerToPosition(event.index)
+                            // manually animate map here to fix conflation limits:
+                            if(state.stepList.isNotEmpty()) {
+                                animateMapCamera(state.stepList[event.index].endMapCoordination.location, true)
+                            }
+                            viewModel.markEventConsumed()
+                        }
+                    }
+                }
+            }
+        }
     }
 
     override fun onClick(v: View) {
         when (v.id) {
-            R.id.btn_prev_instruction -> {
-                presenter.onPrevInstructionClick()
-            }
-
-            R.id.btn_next_instruction -> {
-                presenter.onNextInstructionClick()
-            }
+            R.id.btn_prev_instruction -> viewModel.onPrevInstructionClick()
+            R.id.btn_next_instruction -> viewModel.onNextInstructionClick()
         }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // handle arrow click here
         if (item.itemId == android.R.id.home) {
-            presenter.onBackArrowButtonPress()
+            viewModel.onBackArrowButtonPress()
         }
-
         return super.onOptionsItemSelected(item)
     }
 
-    override fun setStoreTitle(title: String) {
-        supportActionBar!!.title = title
-    }
-
-    override fun setRoutingStepList(stepList: List<Step>) {
-        bottomRoutingAdapter.setStepList(stepList)
-        topRoutingAdapter.setStepList(stepList)
-    }
-
-    override fun enterPreviewMode() {
+    private fun enterPreviewMode() {
         routingButtonContainer.visibility = View.VISIBLE
         topRecyclerView.visibility = View.VISIBLE
         bottomSheetBehavior?.isHideable = true
         bottomSheetBehavior?.state = BottomSheetBehavior.STATE_HIDDEN
     }
 
-    override fun exitPreviewMode() {
+    private fun exitPreviewMode() {
         routingButtonContainer.visibility = View.GONE
         topRecyclerView.visibility = View.GONE
         bottomSheetBehavior?.isHideable = false
         bottomSheetBehavior?.state = BottomSheetBehavior.STATE_COLLAPSED
     }
 
-    override fun scrollTopBannerToPosition(directionIndex: Int) {
+    private fun scrollTopBannerToPosition(directionIndex: Int) {
         topRecyclerView.smoothScrollToPosition(directionIndex)
     }
 
-    override fun exit() {
-        finish()
-    }
-
-    override fun showGetDirectionFailedMessage() {
-        Toast.makeText(this, R.string.get_map_direction_failed, Toast.LENGTH_SHORT).show()
-    }
-
-    override fun showGeneralErrorMessage() {
-        Toast.makeText(this, R.string.error_general_error_code, Toast.LENGTH_LONG).show()
-    }
-
-    override fun animateMapCamera(location: LatLng, zoomToDetail: Boolean) {
+    private fun animateMapCamera(location: LatLng, zoomToDetail: Boolean) {
         val zoomLevel = if (zoomToDetail) DETAILED_ZOOM_LEVEL else DEFAULT_ZOOM_LEVEL
         googleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(location, zoomLevel))
     }
 
-    override fun addMapMarker(location: LatLng, title: String, description: String, icon: Int) {
+    private fun addMapMarker(location: LatLng, title: String, description: String, icon: Int) {
         googleMap?.addMarker(MarkerOptions().position(location)
             .title(title)
             .snippet(description)
             .icon(BitmapDescriptorFactory.fromResource(icon)))
     }
 
-    override fun drawRoutingPath(currLocation: LatLng?, routingGeoPoint: List<LatLng>) {
+    private fun drawRoutingPath(currLocation: LatLng?, routingGeoPoint: List<LatLng>) {
         googleMap?.let {
-            //Add position to viewBounds
             val builder = LatLngBounds.Builder()
-            if (currLocation != null)
-                builder.include(currLocation)
+            if (currLocation != null) builder.include(currLocation)
 
             val options = PolylineOptions()
                 .clickable(true)
@@ -183,26 +212,12 @@ class MapRoutingActivity : BaseActivity(), MapRoutingContract.View, View.OnClick
             }
 
             currDirection?.remove()
-
             currDirection = it.addPolyline(options)
 
-            // Build the viewbounds contain all markers
             val bounds = builder.build()
-            val padding = 48 // offset from edges of the map in pixels
+            val padding = 48
             zoomToShowAllMarker(bounds, it, padding)
         }
-    }
-
-    override fun setTravelDurationText(duration: String) {
-        txtTravelTime.text = duration
-    }
-
-    override fun setTravelDistanceText(distance: String) {
-        txtTravelDistance.text = distance
-    }
-
-    override fun setTravelSummaryText(summary: String) {
-        txtTravelOverview.text = summary
     }
 
     private fun setupUI() {
@@ -210,7 +225,6 @@ class MapRoutingActivity : BaseActivity(), MapRoutingContract.View, View.OnClick
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetContainer)
 
         setSupportActionBar(binding.toolbar)
-        // add back arrow to mToolbar
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
@@ -244,7 +258,7 @@ class MapRoutingActivity : BaseActivity(), MapRoutingContract.View, View.OnClick
 
         val listener = object : RoutingAdapter.OnNavigationRowClickListener {
             override fun onClick(index: Int) {
-                presenter.onNavigationRowClick(index)
+                viewModel.onNavigationRowClick(index)
             }
         }
         bottomRoutingAdapter.setOnNavigationItemClickListener(listener)
@@ -252,22 +266,28 @@ class MapRoutingActivity : BaseActivity(), MapRoutingContract.View, View.OnClick
 
         topRecyclerView.attachSnapHelperToListener(snapHelper, object : OnSnapPositionChangeListener {
             override fun onSnapPositionChange(position: Int) {
-                presenter.onTopRoutingBannerPositionChange(position)
+                viewModel.onTopRoutingBannerPositionChange(position)
             }
         }, OnSnapListener.Behavior.NOTIFY_ON_SCROLL_STATE_IDLE_BY_DRAGGING)
     }
 
     private fun setUpMapIfNeeded() {
-        // Do a null check to confirm that we have not already instantiated the map.
         if (mapFragment === null) {
             mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
-            // Check if we were successful in obtaining the map.
 
             mapFragment?.getMapAsync { map ->
                 googleMap = map
-                if (map != null) {
-                    // The map is verified. It is now safe to manipulate the map.
-                    presenter.onGetMapAsync()
+                viewModel.onGetMapAsync()
+                
+                // Directly pull map init data here to render map correctly bypassing event limits
+                val mapData = viewModel.getInitMapData()
+                if (mapData != null) {
+                    addMapMarker(mapData.store.getPosition(), mapData.store.title, mapData.store.address, getStoreLogoDrawableRes(mapData.store.type))
+                    mapData.currLocation?.let { loc ->
+                        animateMapCamera(loc, false)
+                        addMapMarker(loc, "Your location", "Your current location, please follow the line", R.drawable.ic_map_bluedot)
+                    }
+                    drawRoutingPath(mapData.currLocation, mapData.geoPointList)
                 }
             }
         }

@@ -20,7 +20,7 @@ class UserDAO : UserDataSource {
     override fun insertOrUpdate(user: User) {
         val realm = Realm.getDefaultInstance()
 
-        realm.executeTransactionAsync {
+        realm.executeTransaction {
             it.where(UserEntity::class.java)
                 .findAll()
                 .deleteAllFromRealm()
@@ -35,7 +35,7 @@ class UserDAO : UserDataSource {
     override fun updateStoreListForUser(uid: String, storeLists: List<UserStoreList>) {
         val realm = Realm.getDefaultInstance()
 
-        realm.executeTransactionAsync {
+        realm.executeTransaction {
             val entity = it.where(UserEntity::class.java)
                 .equalTo(PARAM_UID, uid)
                 .findFirst()

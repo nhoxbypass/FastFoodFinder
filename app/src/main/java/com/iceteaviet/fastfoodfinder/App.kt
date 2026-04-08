@@ -6,30 +6,23 @@ import android.content.Context
 import androidx.annotation.VisibleForTesting
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.WorkManager
-import com.iceteaviet.fastfoodfinder.data.DataManager
-import com.iceteaviet.fastfoodfinder.location.GoogleLocationManager
-import com.iceteaviet.fastfoodfinder.location.SystemLocationManager
-import com.iceteaviet.fastfoodfinder.service.eventbus.core.IBus
+import com.google.android.gms.maps.MapsInitializer
+import com.iceteaviet.fastfoodfinder.core.location.GoogleLocationManager
+import com.iceteaviet.fastfoodfinder.core.location.SystemLocationManager
 import com.iceteaviet.fastfoodfinder.service.workers.SyncDatabaseWorker
 import com.iceteaviet.fastfoodfinder.utils.getAppSignatureSHA1
 import com.iceteaviet.fastfoodfinder.utils.initLogger
-import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
-import com.iceteaviet.fastfoodfinder.utils.ui.AppNotiManager
-import com.iceteaviet.fastfoodfinder.utils.ui.NotiManager
-
+import dagger.hilt.android.HiltAndroidApp
+import timber.log.Timber
 
 /**
  * Created by tom on 7/15/18.
  */
+@HiltAndroidApp
 class App : Application() {
 
     companion object {
-        private const val SYNC_DB_JOB_TAG = "SYNC_DB_JOB_TAG"
-
-        private lateinit var dataManager: DataManager
-        private lateinit var schedulerProvider: SchedulerProvider
-        private lateinit var bus: IBus
-        private lateinit var notiManager: NotiManager
+        const val SYNC_DB_JOB_TAG = "SYNC_DB_JOB_TAG"
 
         @SuppressLint("StaticFieldLeak")
         private lateinit var context: Context
@@ -48,24 +41,8 @@ class App : Application() {
             return SHA1
         }
 
-        fun getDataManager(): DataManager {
-            return dataManager
-        }
-
-        fun getSchedulerProvider(): SchedulerProvider {
-            return schedulerProvider
-        }
-
         fun getContext(): Context {
             return context
-        }
-
-        fun getBus(): IBus {
-            return bus
-        }
-
-        fun getNotiManager(): NotiManager {
-            return notiManager
         }
     }
 
@@ -78,12 +55,14 @@ class App : Application() {
 
         initLogger()
 
-        dataManager = Injection.provideDataManager()
-        schedulerProvider = Injection.provideSchedulerProvider()
-        bus = Injection.provideEventBus()
-        notiManager = AppNotiManager(getContext())
+        MapsInitializer.initialize(applicationContext, MapsInitializer.Renderer.LATEST) {
+            when (it) {
+                MapsInitializer.Renderer.LATEST -> Timber.d("The latest version of the renderer is used.")
+                MapsInitializer.Renderer.LEGACY -> Timber.d("The legacy version of the renderer is used.")
+            }
+        }
 
-        dataManager.initialize(getContext())
+        com.iceteaviet.fastfoodfinder.utils.DatabaseInitializer.init(getContext())
 
         GoogleLocationManager.init(getContext())
         SystemLocationManager.init(getContext())
@@ -93,7 +72,7 @@ class App : Application() {
 
     private fun scheduleSyncDBWorker() {
         val work = SyncDatabaseWorker.prepareSyncDBWorker()
-        WorkManager.getInstance()
+        WorkManager.getInstance(context)
             .enqueueUniquePeriodicWork(SYNC_DB_JOB_TAG, ExistingPeriodicWorkPolicy.KEEP, work)
     }
 

@@ -103,11 +103,8 @@ class ARCamera(context: Context, surfaceView: SurfaceView) : ViewGroup(context),
     }
 
     override fun surfaceDestroyed(holder: SurfaceHolder) {
-        camera?.let {
-            it.setPreviewCallback(null)
-            it.stopPreview()
-            it.release()
-        }
+        // Teardown is owned by LiveSightActivity.releaseARCamera() on a background thread.
+        // Touching the camera here races with that thread and deadlocks the SurfaceHolder lock.
         camera = null
     }
 

@@ -9,7 +9,6 @@ import androidx.work.RxWorker
 import androidx.work.WorkerParameters
 import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
-import com.iceteaviet.fastfoodfinder.data.DataManager
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.utils.filterInvalidData
 import com.iceteaviet.fastfoodfinder.utils.ui.NotiManager
@@ -19,6 +18,12 @@ import io.reactivex.disposables.Disposable
 import java.util.concurrent.TimeUnit
 
 
+import dagger.hilt.EntryPoint
+import dagger.hilt.InstallIn
+import dagger.hilt.android.EntryPointAccessors
+import dagger.hilt.components.SingletonComponent
+import com.iceteaviet.fastfoodfinder.utils.StoreSyncHelper
+
 /**
  * Created by tom on 2019-07-07.
  *
@@ -26,27 +31,32 @@ import java.util.concurrent.TimeUnit
  */
 class SyncDatabaseWorker(ctx: Context, params: WorkerParameters) : RxWorker(ctx, params) {
 
-    private val dataManager: DataManager
-    private val notiManager: NotiManager
-
-    init {
-        // TODO: Inject these dependencies
-        dataManager = App.getDataManager()
-        notiManager = App.getNotiManager()
+    @EntryPoint
+    @InstallIn(SingletonComponent::class)
+    interface SyncWorkerEntryPoint {
+        fun storeRepository(): com.iceteaviet.fastfoodfinder.data.domain.store.StoreRepository
+        fun notiManager(): NotiManager
+        fun clientAuth(): com.iceteaviet.fastfoodfinder.data.auth.ClientAuth
     }
+
+    private val entryPoint = EntryPointAccessors.fromApplication(ctx.applicationContext, SyncWorkerEntryPoint::class.java)
+    
+    private val storeRepository = entryPoint.storeRepository()
+    private val notiManager = entryPoint.notiManager()
+    private val clientAuth = entryPoint.clientAuth()
 
     override fun createWork(): Single<Result> {
         return Single.create { emitter ->
             notiManager.showStoreSyncProgressStatusNotification(applicationContext.getString(R.string.str_updating_store_db), applicationContext.getString(R.string.str_update_app_db))
 
-            dataManager.loadStoresFromServer()
+            StoreSyncHelper.loadStoresFromServer(applicationContext, clientAuth, storeRepository)
                 .subscribe(object : SingleObserver<List<Store>> {
                     override fun onSubscribe(d: Disposable) {
                     }
 
                     override fun onSuccess(storeList: List<Store>) {
                         val filteredStoreList = filterInvalidData(storeList.toMutableList())
-                        dataManager.setStores(filteredStoreList)
+                        storeRepository.setStores(filteredStoreList)
 
                         if (!filteredStoreList.isEmpty()) {
                             notiManager.showStoreSyncStatusNotification(

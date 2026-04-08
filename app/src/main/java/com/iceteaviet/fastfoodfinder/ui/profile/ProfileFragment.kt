@@ -10,9 +10,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.bumptech.glide.Glide
-import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList
 import com.iceteaviet.fastfoodfinder.databinding.FragmentProfileBinding
@@ -21,15 +24,16 @@ import com.iceteaviet.fastfoodfinder.ui.profile.cover.UpdateCoverImageDialog
 import com.iceteaviet.fastfoodfinder.ui.profile.createlist.CreateListDialog
 import com.iceteaviet.fastfoodfinder.utils.openListDetailActivity
 import com.iceteaviet.fastfoodfinder.utils.openLoginActivity
+import dagger.hilt.android.AndroidEntryPoint
 import de.hdodenhof.circleimageview.CircleImageView
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
-// TODO: Check fragment lifecycle to support go to login screen when auth token invalid
-class ProfileFragment : Fragment(), ProfileContract.View, View.OnClickListener {
-    override lateinit var presenter: ProfileContract.Presenter
+@AndroidEntryPoint
+class ProfileFragment : Fragment(), View.OnClickListener {
 
-    /**
-     * Views Ref
-     */
+    private val viewModel: ProfileViewModel by viewModels()
+
     private lateinit var binding: FragmentProfileBinding
 
     lateinit var ivAvatarProfile: CircleImageView
@@ -57,37 +61,99 @@ class ProfileFragment : Fragment(), ProfileContract.View, View.OnClickListener {
         storeListAdapter = UserStoreListAdapter()
         setupUI()
         setupEventListeners()
+        setupObservers()
     }
 
     override fun onResume() {
         super.onResume()
-        presenter.subscribe()
+        viewModel.start()
     }
 
-    override fun onPause() {
-        super.onPause()
-        presenter.unsubscribe()
+    private fun setupObservers() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collectLatest { state ->
+                    if (state.avatarPhotoUrl.isNotBlank()) {
+                        Glide.with(requireActivity())
+                            .load(state.avatarPhotoUrl)
+                            .into(ivAvatarProfile)
+                    }
+
+                    binding.tvName.text = state.name.ifBlank { getString(R.string.unregistered_user) }
+                    binding.tvEmail.text = state.email.ifBlank { getString(R.string.unregistered_email) }
+                    
+                    binding.tvNumberList.text = state.storeListCount
+                    cvSavePlace.setCount(state.savedStoreCount.toString())
+                    cvFavouritePlace.setCount(state.favouriteStoreCount.toString())
+
+                    storeListAdapter?.setListPackets(state.userStoreLists)
+
+                    when (val event = state.event) {
+                        is ProfileEvent.Idle -> {}
+                        is ProfileEvent.OpenLoginActivity -> {
+                            openLoginActivity(requireActivity())
+                            requireActivity().finish()
+                            viewModel.markEventConsumed()
+                        }
+                        is ProfileEvent.ShowCreateNewListDialog -> {
+                            showCreateNewListDialog()
+                            viewModel.markEventConsumed()
+                        }
+                        is ProfileEvent.DismissCreateNewListDialog -> {
+                            mDialogCreate?.dismiss()
+                            viewModel.markEventConsumed()
+                        }
+                        is ProfileEvent.WarningListNameExisted -> {
+                            Toast.makeText(context, R.string.list_name_already_exists, Toast.LENGTH_SHORT).show()
+                            viewModel.markEventConsumed()
+                        }
+                        is ProfileEvent.ShowGeneralErrorMessage -> {
+                            // Empty originally
+                            viewModel.markEventConsumed()
+                        }
+                        is ProfileEvent.OpenListDetail -> {
+                            openListDetailActivity(requireActivity(), event.userStoreList, event.photoUrl)
+                            viewModel.markEventConsumed()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun showCreateNewListDialog() {
+        mDialogCreate = CreateListDialog.newInstance()
+        mDialogCreate?.show(parentFragmentManager, "")
+        mDialogCreate?.setOnButtonClickListener(object : CreateListDialog.OnCreateListListener {
+            override fun onCreateButtonClick(name: String, iconId: Int, dialog: CreateListDialog) {
+                viewModel.onCreateNewList(name, iconId)
+            }
+
+            override fun onCancel(dialog: CreateListDialog) {
+                dialog.dismiss()
+            }
+        })
     }
 
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.cvCreateNew -> {
-                presenter.onCreateNewListButtonClick()
+                viewModel.onCreateNewListButtonClick()
                 return
             }
 
             R.id.cv_saved_places -> {
-                presenter.onSavedListClick()
+                viewModel.onSavedListClick()
                 return
             }
 
             R.id.cv_favourite_places -> {
-                presenter.onFavouriteListClick()
+                viewModel.onFavouriteListClick()
                 return
             }
 
             R.id.btnUpdateCoverImage -> {
-                mDialog?.show(requireFragmentManager(), "")
+                mDialog?.show(parentFragmentManager, "")
                 binding.btnUpdateCoverImage.visibility = View.GONE
                 return
             }
@@ -102,13 +168,13 @@ class ProfileFragment : Fragment(), ProfileContract.View, View.OnClickListener {
 
         storeListAdapter?.setOnItemLongClickListener(object : UserStoreListAdapter.OnItemLongClickListener {
             override fun onLongClick(position: Int) {
-                presenter.onStoreListLongClick(position)
+                viewModel.onStoreListLongClick(position)
             }
         })
 
         storeListAdapter?.setOnItemClickListener(object : UserStoreListAdapter.OnItemClickListener {
             override fun onClick(listPacket: UserStoreList) {
-                presenter.onStoreListClick(listPacket)
+                viewModel.onStoreListClick(listPacket)
             }
         })
 
@@ -149,80 +215,10 @@ class ProfileFragment : Fragment(), ProfileContract.View, View.OnClickListener {
         item.isVisible = false
     }
 
-    override fun openLoginActivity() {
-        openLoginActivity(requireActivity())
-        requireActivity().finish()
-    }
-
-    override fun loadAvatarPhoto(photoUrl: String) {
-        Glide.with(requireActivity())
-            .load(photoUrl)
-            .into(ivAvatarProfile)
-    }
-
-    override fun setName(name: String) {
-        binding.tvName.text = name
-    }
-
-    override fun setEmail(email: String) {
-        binding.tvEmail.text = email
-    }
-
-    override fun setStoreListCount(storeCount: String) {
-        binding.tvNumberList.text = storeCount
-    }
-
-    override fun setSavedStoreCount(size: Int) {
-        cvSavePlace.setCount(size.toString())
-    }
-
-    override fun setFavouriteStoreCount(size: Int) {
-        cvFavouritePlace.setCount(size.toString())
-    }
-
-    override fun setUserStoreLists(userStoreLists: List<UserStoreList>) {
-        storeListAdapter?.setListPackets(userStoreLists)
-    }
-
-    override fun addUserStoreList(list: UserStoreList) {
-        storeListAdapter?.addListPacket(list)
-    }
-
-    override fun showCreateNewListDialog() {
-        mDialogCreate = CreateListDialog.newInstance()
-        mDialogCreate?.show(requireFragmentManager(), "")
-        mDialogCreate?.setOnButtonClickListener(object : CreateListDialog.OnCreateListListener {
-            override fun onCreateButtonClick(name: String, iconId: Int, dialog: CreateListDialog) {
-                presenter.onCreateNewList(name, iconId)
-            }
-
-            override fun onCancel(dialog: CreateListDialog) {
-                dialog.dismiss()
-            }
-        })
-    }
-
-    override fun dismissCreateNewListDialog() {
-        mDialogCreate?.dismiss()
-    }
-
-    override fun warningListNameExisted() {
-        Toast.makeText(context, R.string.list_name_already_exists, Toast.LENGTH_SHORT).show()
-    }
-
-    override fun openListDetail(userStoreList: UserStoreList, photoUrl: String) {
-        openListDetailActivity(requireActivity(), userStoreList, photoUrl)
-    }
-
-    override fun showGeneralErrorMessage() {
-
-    }
-
     companion object {
         fun newInstance(): ProfileFragment {
             val extras = Bundle()
             val fragment = ProfileFragment()
-            fragment.presenter = ProfilePresenter(App.getDataManager(), App.getSchedulerProvider(), fragment)
             fragment.arguments = extras
             return fragment
         }
