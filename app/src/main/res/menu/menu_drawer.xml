@@ -14,12 +14,7 @@
                 <item
                     android:id="@+id/menu_action_profile"
                     android:title="@string/profile" />
-                <item
-                    android:id="@+id/menu_action_moment"
-                    android:title="@string/my_moment" />
-                <item
-                    android:id="@+id/menu_action_connect"
-                    android:title="@string/connection" />
+
             </menu>
         </item>
 
