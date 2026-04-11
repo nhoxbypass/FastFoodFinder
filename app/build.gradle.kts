@@ -7,7 +7,7 @@ plugins {
     id("com.google.firebase.firebase-perf")
     id("realm-android")
     id("org.sonarqube") version "5.1.0.4882"
-    id("dagger.hilt.android.plugin")
+    id("com.google.dagger.hilt.android")
 }
 
 apply(from = "../app/coverage.gradle.kts")
@@ -81,9 +81,7 @@ kotlin {
 
 tasks.withType<Test> {
     testLogging {
-        // always show the result of every unit test, even if it passes.
         events("passed", "skipped", "failed", /*"started", "standardOut", "standardError"*/)
-        //showStandardStreams = true
         exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
         showExceptions = true
         showCauses = true
@@ -92,28 +90,21 @@ tasks.withType<Test> {
 }
 
 sonarqube {
-    // /build folder
     val buildFolder = layout.buildDirectory.get()
 
     properties {
-        // SonarCloud authentication
         property("sonar.host.url", "https://sonarcloud.io")
         property("sonar.organization", "nhoxbypass")
         property("sonar.projectKey", "nhoxbypass_FastFoodFinder")
         property("sonar.projectName", "FastFoodFinder")
         property("sonar.token", System.getenv("SONAR_TOKEN"))
 
-        // Github branch
         property("sonar.branch.name", System.getenv("GITHUB_HEAD_REF") ?: System.getenv("GITHUB_REF_NAME") ?: "main")
 
-        // default build variant
         property("sonar.androidVariant", "prodRelease")
 
-        // point to sources folders
         property("sonar.sources", "src/main/java")
-        // point to test folders
         property("sonar.tests", "src/test/java")
-        // exclusions for non-source files
         property(
             "sonar.exclusions",
             """
@@ -125,10 +116,8 @@ sonarqube {
             src/prod/java/**
             """.trimIndent()
         )
-        // point to compiled classes
         property("sonar.java.binaries", "$buildFolder/intermediates/runtime_app_classes_jar/prodRelease/bundleProdReleaseClassesToRuntimeJar/classes.jar")
 
-        // include JaCoCo test report (if available)
         property("sonar.coverage.jacoco.xmlReportPaths", "$buildFolder/reports/jacoco/jacocoTestReport/jacocoTestReport.xml")
     }
 }
@@ -159,58 +148,58 @@ dependencies {
     implementation(libs.kotlin.stdlibjdk)
     implementation(libs.kotlinx.coroutines.core)
 
-    //// App dependencies
     // AndroidX
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("androidx.cardview:cardview:1.0.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.2.1")
-    implementation("androidx.work:work-runtime-ktx:2.10.0")
-    implementation("androidx.work:work-rxjava2:2.10.0")
-    
+    implementation(libs.appcompat)
+    implementation(libs.cardview)
+    implementation(libs.constraintlayout)
+    implementation(libs.work.runtime.ktx)
+    implementation(libs.work.rxjava2)
+
     // MVVM & Lifecycles
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.2")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.2")
-    implementation("androidx.activity:activity-ktx:1.9.0")
-    implementation("androidx.fragment:fragment-ktx:1.8.0")
+    implementation(libs.lifecycle.viewmodel.ktx)
+    implementation(libs.lifecycle.runtime.ktx)
+    implementation(libs.activity.ktx)
+    implementation(libs.fragment.ktx)
 
     // Google Play Services
-    implementation("com.google.android.gms:play-services-maps:19.1.0")
-    implementation("com.google.android.gms:play-services-auth:21.3.0")
-    implementation("com.google.maps.android:android-maps-utils:0.5")
+    implementation(libs.play.services.maps)
+    implementation(libs.play.services.auth)
+    implementation(libs.android.maps.utils)
 
     // Firebase
-    implementation("com.google.firebase:firebase-core:21.1.1")
-    implementation("com.google.firebase:firebase-database:21.0.0")
-    implementation("com.google.firebase:firebase-auth:23.2.0")
-    implementation("com.google.firebase:firebase-perf:21.0.4")
-    implementation("com.google.firebase:firebase-crashlytics:19.4.1")
+    implementation(libs.firebase.core)
+    implementation(libs.firebase.database)
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.perf)
+    implementation(libs.firebase.crashlytics)
 
     // UI
-    implementation("com.google.android.material:material:1.12.0")
-    implementation("com.github.bumptech.glide:glide:4.16.0")
-    implementation("de.hdodenhof:circleimageview:3.1.0")
+    implementation(libs.material)
+    implementation(libs.glide)
+    implementation(libs.circleimageview)
 
     // REST api
-    implementation("com.google.code.gson:gson:2.10.1")
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation(libs.gson)
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter.gson)
 
     // Code flow
-    implementation("org.greenrobot:eventbus:3.3.1")
+    implementation(libs.eventbus)
 
-    implementation("io.reactivex.rxjava3:rxandroid:3.0.2")
-    implementation("io.reactivex.rxjava3:rxjava:3.1.5")
-    implementation("io.reactivex.rxjava3:rxkotlin:3.0.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-rx3:1.8.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-rx2:1.8.1") // Interoperability for RxWorker which uses rxjava2
+    // Reactive
+    implementation(libs.rxjava3)
+    implementation(libs.rxandroid3)
+    implementation(libs.rxkotlin3)
+    implementation(libs.kotlinx.coroutines.rx3)
+    implementation(libs.kotlinx.coroutines.rx2)
 
     // DB
-    implementation("io.realm:realm-android-library:10.17.0")
+    implementation(libs.realm.android.library)
 
     // Logging
-    implementation("com.jakewharton.timber:timber:5.0.1")
+    implementation(libs.timber)
 
     // DI
-    implementation("com.google.dagger:hilt-android:2.55")
-    kapt("com.google.dagger:hilt-compiler:2.55")
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
 }
