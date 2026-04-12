@@ -5,20 +5,20 @@ import com.iceteaviet.fastfoodfinder.data.auth.ClientAuth
 import com.iceteaviet.fastfoodfinder.data.domain.prefs.PreferencesRepository
 import com.iceteaviet.fastfoodfinder.data.domain.user.UserRepository
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
-import com.iceteaviet.fastfoodfinder.service.eventbus.SearchEventResult
-import com.iceteaviet.fastfoodfinder.service.eventbus.core.IBus
+import com.iceteaviet.fastfoodfinder.ui.main.search.SearchEventBus
+import com.iceteaviet.fastfoodfinder.ui.main.search.SearchEventResult
 import com.iceteaviet.fastfoodfinder.utils.Constant
 import com.iceteaviet.fastfoodfinder.utils.isValidUserUid
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.rx2.await
 import kotlinx.coroutines.Dispatchers
 import androidx.lifecycle.viewModelScope
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 import javax.inject.Inject
 
 sealed class MainEvent {
@@ -48,7 +48,7 @@ class MainViewModel @Inject constructor(
     private val clientAuth: ClientAuth,
     private val userRepository: UserRepository,
     private val preferencesRepository: PreferencesRepository,
-    private val bus: IBus
+    private val searchEventBus: SearchEventBus
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(MainUiState())
@@ -58,7 +58,9 @@ class MainViewModel @Inject constructor(
 
     fun start() {
         if (!isBusRegistered) {
-            bus.register(this)
+            searchEventBus.events
+                .onEach { onSearchResult(it) }
+                .launchIn(viewModelScope)
             isBusRegistered = true
         }
 
@@ -91,10 +93,6 @@ class MainViewModel @Inject constructor(
     }
 
     override fun onCleared() {
-        if (isBusRegistered) {
-            bus.unregister(this)
-            isBusRegistered = false
-        }
         super.onCleared()
     }
 
@@ -123,15 +121,14 @@ class MainViewModel @Inject constructor(
     }
 
     fun onSearchMenuItemCollapse() {
-        bus.post(SearchEventResult(SearchEventResult.SEARCH_ACTION_COLLAPSE))
+        searchEventBus.emit(SearchEventResult(SearchEventResult.SEARCH_ACTION_COLLAPSE))
     }
 
     fun onSearchQuerySubmit(query: String) {
-        bus.post(SearchEventResult(SearchEventResult.SEARCH_ACTION_QUERY_SUBMIT, query))
+        searchEventBus.emit(SearchEventResult(SearchEventResult.SEARCH_ACTION_QUERY_SUBMIT, query))
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onSearchResult(searchEventResult: SearchEventResult) {
+    private fun onSearchResult(searchEventResult: SearchEventResult) {
         _uiState.value = _uiState.value.copy(event = MainEvent.HideSearchView)
         _uiState.value = _uiState.value.copy(event = MainEvent.ClearFocus)
 
