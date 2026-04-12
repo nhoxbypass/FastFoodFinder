@@ -1,7 +1,7 @@
 apply(plugin = "jacoco")
 
 configure<JacocoPluginExtension> {
-    toolVersion = "0.8.12"
+    toolVersion = "0.8.13"
 }
 
 tasks.withType<Test> {
@@ -17,7 +17,7 @@ val jacocoTestReport = tasks.register<JacocoReport>("jacocoTestReport") {
     description = "Generate JaCoCo coverage reports"
 
     // ensure tests run before report
-    dependsOn("testProdReleaseUnitTest")
+    dependsOn("testProdDebugUnitTest")
 
     // configure report output formats
     reports {
@@ -94,18 +94,18 @@ val jacocoTestReport = tasks.register<JacocoReport>("jacocoTestReport") {
     )
     val prodTree = fileTree(
         mapOf(
-            "dir" to "${buildFolder}/intermediates/javac/prodRelease/compileProdReleaseJavaWithJavac/classes",
+            "dir" to "${buildFolder}/intermediates/javac/prodDebug/compileProdDebugJavaWithJavac/classes",
             "excludes" to fileFilter
         )
     )
     val kotlinProdTree = fileTree(
         mapOf(
-            "dir" to "${buildFolder}/tmp/kotlin-classes/prodRelease",
+            "dir" to "${buildFolder}/tmp/kotlin-classes/prodDebug",
             "excludes" to fileFilter
         )
     )
     // use the main classes JAR from the test classpath
-    val mainClassesJar = file("${buildFolder}/intermediates/runtime_app_classes_jar/prodRelease/bundleProdReleaseClassesToRuntimeJar/classes.jar")
+    val mainClassesJar = file("${buildFolder}/intermediates/runtime_app_classes_jar/prodDebug/bundleProdDebugClassesToRuntimeJar/classes.jar")
     classDirectories.setFrom(
         project.zipTree(mainClassesJar).matching {
             exclude(*fileFilter.toTypedArray())
@@ -116,7 +116,7 @@ val jacocoTestReport = tasks.register<JacocoReport>("jacocoTestReport") {
     // from the test task
     val execDataTree = fileTree(
         mapOf(
-            "dir" to "$buildFolder/jacoco",
+            "dir" to "$buildFolder/outputs/unit_test_code_coverage/prodDebugUnitTest",
             "includes" to listOf("*.exec")
         )
     )
@@ -124,7 +124,7 @@ val jacocoTestReport = tasks.register<JacocoReport>("jacocoTestReport") {
 
     // logging
     doLast {
-        val execDataFolder = buildFolder.dir("jacoco").asFile
+        val execDataFolder = buildFolder.dir("outputs/unit_test_code_coverage/prodDebugUnitTest").asFile
         val execDataFiles = execDataFolder.listFiles()?.joinToString(", ") { it.name } ?: "No files found"
         val testReportFolder = buildFolder.dir("reports/jacoco/jacocoTestReport").asFile
         val testReportFiles = testReportFolder.listFiles()?.joinToString(", ") { it.name } ?: "No files found"
