@@ -1,6 +1,6 @@
 [versions]
 ## Android
-agp-version = "8.6.1"
+agp-version = "9.1.0"
 ## Testing
 junit-version = "4.13.2"
 assertj-version = "3.27.7"
