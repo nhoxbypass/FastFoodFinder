@@ -55,7 +55,6 @@ rxkotlin3-version = "3.0.1"
 glide-version = "5.0.5"
 circleimageview-version = "3.1.0"
 ## Misc
-eventbus-version = "3.3.1"
 timber-version = "5.0.1"
 ## DI
 hilt-version = "2.57.2"
@@ -121,7 +120,6 @@ rxkotlin3 = { module = "io.reactivex.rxjava3:rxkotlin", version.ref = "rxkotlin3
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide-version" }
 circleimageview = { module = "de.hdodenhof:circleimageview", version.ref = "circleimageview-version" }
 ## Misc
-eventbus = { module = "org.greenrobot:eventbus", version.ref = "eventbus-version" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber-version" }
 ## DI
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt-version" }

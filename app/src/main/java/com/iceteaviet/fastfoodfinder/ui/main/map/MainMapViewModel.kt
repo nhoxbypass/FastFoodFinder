@@ -14,8 +14,8 @@ import com.iceteaviet.fastfoodfinder.data.domain.store.StoreRepository
 import com.iceteaviet.fastfoodfinder.data.remote.routing.GoogleMapsRoutingApiHelper
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
-import com.iceteaviet.fastfoodfinder.service.eventbus.SearchEventResult
-import com.iceteaviet.fastfoodfinder.service.eventbus.core.IBus
+import com.iceteaviet.fastfoodfinder.ui.main.search.SearchEventBus
+import com.iceteaviet.fastfoodfinder.ui.main.search.SearchEventResult
 import com.iceteaviet.fastfoodfinder.ui.main.map.model.MapCameraPosition
 import com.iceteaviet.fastfoodfinder.ui.main.map.model.NearByStore
 import com.iceteaviet.fastfoodfinder.utils.Constant
@@ -35,8 +35,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.rx2.await
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 import javax.inject.Inject
 
 sealed class MainMapEvent {
@@ -64,7 +62,7 @@ sealed class MainMapEvent {
 class MainMapViewModel @Inject constructor(
     private val storeRepository: StoreRepository,
     private val mapsRoutingRepository: MapsRoutingRepository,
-    private val bus: IBus
+    private val searchEventBus: SearchEventBus
 ) : ViewModel(), LocationListener {
 
     private lateinit var locationManager: ILocationManager
@@ -127,7 +125,9 @@ class MainMapViewModel @Inject constructor(
         }
 
         if (!isBusRegistered) {
-            bus.register(this)
+            searchEventBus.events
+                .onEach { onSearchResult(it) }
+                .launchIn(viewModelScope)
             isBusRegistered = true
         }
 
@@ -137,10 +137,6 @@ class MainMapViewModel @Inject constructor(
     }
 
     override fun onCleared() {
-        if (isBusRegistered) {
-            bus.unregister(this)
-            isBusRegistered = false
-        }
         if (::locationManager.isInitialized) {
             unsubscribeLocationUpdate()
         }
@@ -230,8 +226,7 @@ class MainMapViewModel @Inject constructor(
         _uiState.value = MainMapEvent.ClearMapData
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onSearchResult(searchEventResult: SearchEventResult) {
+    private fun onSearchResult(searchEventResult: SearchEventResult) {
         when (searchEventResult.resultCode) {
             SearchEventResult.SEARCH_ACTION_QUICK -> {
                 handleSearchQuickAction(searchEventResult.storeType)

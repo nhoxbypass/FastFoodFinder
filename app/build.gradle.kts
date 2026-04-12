@@ -190,9 +190,6 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter.gson)
 
-    // Code flow
-    implementation(libs.eventbus)
-
     // Reactive
     implementation(libs.rxjava3)
     implementation(libs.rxandroid3)

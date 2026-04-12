@@ -5,8 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.iceteaviet.fastfoodfinder.data.domain.prefs.PreferencesRepository
 import com.iceteaviet.fastfoodfinder.data.domain.store.StoreRepository
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
-import com.iceteaviet.fastfoodfinder.service.eventbus.SearchEventResult
-import com.iceteaviet.fastfoodfinder.service.eventbus.core.IBus
 import com.iceteaviet.fastfoodfinder.ui.main.search.model.SearchStoreItem
 import com.iceteaviet.fastfoodfinder.utils.Constant
 import com.iceteaviet.fastfoodfinder.utils.getStoreSearchString
@@ -36,7 +34,7 @@ sealed class SearchEvent {
 class SearchViewModel @Inject constructor(
     private val storeRepository: StoreRepository,
     private val preferencesRepository: PreferencesRepository,
-    private val bus: IBus
+    private val searchEventBus: SearchEventBus
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SearchUiState())
@@ -59,15 +57,15 @@ class SearchViewModel @Inject constructor(
 
     fun onStoreSearchClick(store: Store) {
         if (store.id == -1) {
-            bus.post(SearchEventResult(SearchEventResult.SEARCH_ACTION_QUERY_SUBMIT, store.title, store))
+            searchEventBus.emit(SearchEventResult(SearchEventResult.SEARCH_ACTION_QUERY_SUBMIT, store.title, store))
         } else {
-            bus.post(SearchEventResult(SearchEventResult.SEARCH_ACTION_STORE_CLICK, store.title, store))
+            searchEventBus.emit(SearchEventResult(SearchEventResult.SEARCH_ACTION_STORE_CLICK, store.title, store))
         }
     }
 
     fun onQuickSearchItemClick(storeType: Int) {
         val searchString = getStoreSearchString(storeType)
-        bus.post(SearchEventResult(SearchEventResult.SEARCH_ACTION_QUICK, searchString, storeType))
+        searchEventBus.emit(SearchEventResult(SearchEventResult.SEARCH_ACTION_QUICK, searchString, storeType))
     }
 
     fun onUpdateSearchList(searchText: String) {
