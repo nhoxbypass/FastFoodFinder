@@ -3,7 +3,7 @@ package com.iceteaviet.fastfoodfinder.utils
 import android.app.Activity
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
-import com.nhaarman.mockitokotlin2.verify
+import org.mockito.kotlin.verify
 import org.junit.After
 import org.junit.Before
 import org.junit.Test

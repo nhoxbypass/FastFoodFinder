@@ -1,29 +1,66 @@
 [versions]
 ## Android
-agp-version = "8.3.2"
+agp-version = "8.13.2"
 ## Testing
 junit-version = "4.13.2"
-assertj-version = "3.11.1"
-truth = "1.1.5"
-mockito-version = "5.10.0"
-mockito-kotlin-version = "2.2.0"
+assertj-version = "3.27.7"
+truth = "1.4.5"
+mockito-version = "5.23.0"
+mockito-kotlin-version = "6.3.0"
 powermock-version = "2.0.9"
-robolectric-version = "4.11.1"
-espresso-version = "3.6.1"
-androidx-test-version = "1.6.2"
-androidx-rules-version = "1.6.1"
+robolectric-version = "4.16.1"
+espresso-version = "3.7.0"
+androidx-test-version = "1.7.0"
+androidx-rules-version = "1.7.0"
+sonarqube-version = "7.2.3.7755"
 ## Kotlin
-kotlin-version = "1.9.22"
-ksp-version = "2.0.21-1.0.27"
-kotlinx-coroutines-version = "1.8.0"
-kotlinx-serialization-json-version = "1.5.1"
+kotlin-version = "2.2.21"
+ksp-version = "2.2.21-2.0.4"
+kotlinx-coroutines-version = "1.10.2"
+kotlinx-serialization-json-version = "1.11.0"
+## AndroidX
+appcompat-version = "1.7.1"
+cardview-version = "1.0.0"
+constraintlayout-version = "2.2.1"
+work-version = "2.11.2"
+lifecycle-version = "2.10.0"
+activity-version = "1.13.0"
+fragment-version = "1.8.9"
 ## Google
-google-services-version = "4.4.0"
-google-firebase-crashlytics-version = "2.9.9"
-google-firebase-perf-version = "1.4.2"
+google-services-version = "4.4.4"
+google-firebase-crashlytics-version = "3.0.7"
+google-firebase-perf-version = "2.0.2"
 google-play-services-version = "21.3.0"
+play-services-maps-version = "20.0.0"
+play-services-auth-version = "21.5.1"
+android-maps-utils-version = "4.1.1"
+material-version = "1.13.0"
+## Firebase
+firebase-core-version = "21.1.1"
+firebase-database-version = "22.0.1"
+firebase-auth-version = "24.0.1"
+firebase-perf-version = "22.0.5"
+firebase-crashlytics-version = "20.0.5"
 ## DB
-realm-android-version = "1.12.1"
+realm-android-library-version = "10.19.0"
+realm-android-plugin-version = "10.19.0"
+## Network
+gson-version = "2.13.2"
+retrofit-version = "2.9.0"
+## Reactive
+rxjava3-version = "3.1.12"
+rxandroid3-version = "3.0.2"
+rxkotlin3-version = "3.0.1"
+## UI
+glide-version = "5.0.5"
+circleimageview-version = "3.1.0"
+## Misc
+eventbus-version = "3.3.1"
+timber-version = "5.0.1"
+## DI
+hilt-version = "2.57.2"
+## Code quality
+jacoco-version = "0.8.13"
 
 
 
@@ -33,7 +70,7 @@ junit = { group = "junit", name = "junit", version.ref = "junit-version" }
 assertj-core = { group = "org.assertj", name = "assertj-core", version.ref = "assertj-version" }
 truth = { group = "com.google.truth", name = "truth", version.ref = "truth" }
 mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockito-version" }
-mockito-kotlin = { group = "com.nhaarman.mockitokotlin2", name = "mockito-kotlin", version.ref = "mockito-kotlin-version" }
+mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version.ref = "mockito-kotlin-version" }
 robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric-version" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-version" }
 espresso-contrib = { group = "androidx.test.espresso", name = "espresso-contrib", version.ref = "espresso-version" }
@@ -46,8 +83,59 @@ kotlin-stdlibjdk = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines-version" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines-version" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization-json-version" }
+kotlinx-coroutines-rx3 = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-rx3", version.ref = "kotlinx-coroutines-version" }
+kotlinx-coroutines-rx2 = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-rx2", version.ref = "kotlinx-coroutines-version" }
+## AndroidX
+appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat-version" }
+cardview = { module = "androidx.cardview:cardview", version.ref = "cardview-version" }
+constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout-version" }
+work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "work-version" }
+work-rxjava2 = { module = "androidx.work:work-rxjava2", version.ref = "work-version" }
+lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle-version" }
+lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle-version" }
+activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activity-version" }
+fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "fragment-version" }
 ## Google
 google-play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "google-play-services-version" }
+play-services-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "play-services-maps-version" }
+play-services-auth = { module = "com.google.android.gms:play-services-auth", version.ref = "play-services-auth-version" }
+android-maps-utils = { module = "com.google.maps.android:android-maps-utils", version.ref = "android-maps-utils-version" }
+material = { module = "com.google.android.material:material", version.ref = "material-version" }
+## Firebase
+firebase-core = { module = "com.google.firebase:firebase-core", version.ref = "firebase-core-version" }
+firebase-database = { module = "com.google.firebase:firebase-database", version.ref = "firebase-database-version" }
+firebase-auth = { module = "com.google.firebase:firebase-auth", version.ref = "firebase-auth-version" }
+firebase-perf = { module = "com.google.firebase:firebase-perf", version.ref = "firebase-perf-version" }
+firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics", version.ref = "firebase-crashlytics-version" }
+## DB
+realm-android-library = { module = "io.realm:realm-android-library", version.ref = "realm-android-library-version" }
+## Network
+gson = { module = "com.google.code.gson:gson", version.ref = "gson-version" }
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit-version" }
+retrofit-converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit-version" }
+## Reactive
+rxjava3 = { module = "io.reactivex.rxjava3:rxjava", version.ref = "rxjava3-version" }
+rxandroid3 = { module = "io.reactivex.rxjava3:rxandroid", version.ref = "rxandroid3-version" }
+rxkotlin3 = { module = "io.reactivex.rxjava3:rxkotlin", version.ref = "rxkotlin3-version" }
+## UI
+glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide-version" }
+circleimageview = { module = "de.hdodenhof:circleimageview", version.ref = "circleimageview-version" }
+## Misc
+eventbus = { module = "org.greenrobot:eventbus", version.ref = "eventbus-version" }
+timber = { module = "com.jakewharton.timber:timber", version.ref = "timber-version" }
+## DI
+hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt-version" }
+hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt-version" }
+## Code quality
+jacoco-core = { module = "org.jacoco:org.jacoco.core", version.ref = "jacoco-version" }
+## Buildscript classpath libraries
+gradle = { module = "com.android.tools.build:gradle", version.ref = "agp-version" }
+kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin-version" }
+google-services-classpath = { module = "com.google.gms:google-services", version.ref = "google-services-version" }
+firebase-crashlytics-gradle = { module = "com.google.firebase:firebase-crashlytics-gradle", version.ref = "google-firebase-crashlytics-version" }
+firebase-perf-plugin = { module = "com.google.firebase:perf-plugin", version.ref = "google-firebase-perf-version" }
+realm-gradle-plugin = { module = "io.realm:realm-gradle-plugin", version.ref = "realm-android-library-version" }
+hilt-android-gradle-plugin = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hilt-version" }
 
 
 
@@ -58,7 +146,10 @@ jetbrains-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serializati
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services-version" }
 google-firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "google-firebase-crashlytics-version" }
 google-firebase-perf = { id = "com.google.firebase.firebase-perf", version.ref = "google-firebase-perf-version" }
-realm-android = { id = "realm-android", version.ref = "realm-android-version" }
+realm-android = { id = "realm-android", version.ref = "realm-android-plugin-version" }
+hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt-version" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp-version" }
+sonarqube = { id = "org.sonarqube", version.ref = "sonarqube-version" }
 
 
 

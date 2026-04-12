@@ -43,7 +43,7 @@ private fun getGoogleServicesInterceptor(apiKey: String, pkgName: String, cert: 
     return Interceptor { chain ->
         var request = chain.request()
 
-        val httpUrl = request.url()
+        val httpUrl = request.url
             .newBuilder()
             .addQueryParameter("key", apiKey)
             .build()

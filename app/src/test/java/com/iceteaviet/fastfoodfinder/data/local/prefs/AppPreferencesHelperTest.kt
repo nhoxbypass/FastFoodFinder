@@ -1,6 +1,6 @@
 package com.iceteaviet.fastfoodfinder.data.local.prefs
 
-import com.nhaarman.mockitokotlin2.eq
+import org.mockito.kotlin.eq
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.After

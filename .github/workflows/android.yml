@@ -54,7 +54,7 @@ jobs:
         run: ./gradlew assembleDebug --stacktrace
 
       - name: Run unit tests
-        run: ./gradlew testProdReleaseUnitTest jacocoTestReport --stacktrace
+        run: ./gradlew testProdDebugUnitTest jacocoTestReport --stacktrace
 
       - name: List test report files
         run: ls -R app/build/reports/jacoco || echo "No Jacoco test report found"
