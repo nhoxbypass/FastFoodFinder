@@ -1,7 +1,8 @@
 plugins {
     id("com.android.application")
     alias(libs.plugins.jetbrains.kotlin.android)
-    id("kotlin-kapt")
+    alias(libs.plugins.ksp)
+    id("kotlin-kapt") // Required by Realm plugin; remove after Realm → Room migration (Phase 3)
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
     id("com.google.firebase.firebase-perf")
@@ -15,13 +16,13 @@ apply(from = "../app/coverage.gradle.kts")
 android {
     namespace = "com.iceteaviet.fastfoodfinder"
 
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.iceteaviet.fastfoodfinder"
 
         minSdk = 28
-        targetSdk = 35
+        targetSdk = 36
 
         versionCode = 24
         versionName = "26.03.02"
@@ -77,6 +78,10 @@ android {
 
 kotlin {
     jvmToolchain(17)
+}
+
+kapt {
+    useBuildCache = false
 }
 
 tasks.withType<Test> {
@@ -201,5 +206,5 @@ dependencies {
 
     // DI
     implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
+    ksp(libs.hilt.compiler)
 }

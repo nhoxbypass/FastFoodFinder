@@ -35,6 +35,7 @@ allprojects {
 
 plugins {
     alias(libs.plugins.jetbrains.kotlin.android) apply false
+    alias(libs.plugins.ksp) apply false
 }
 
 tasks.register("clean", Delete::class) {

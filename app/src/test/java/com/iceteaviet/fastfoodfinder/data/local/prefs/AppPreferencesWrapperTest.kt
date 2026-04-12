@@ -1,7 +1,7 @@
 package com.iceteaviet.fastfoodfinder.data.local.prefs
 
 import android.content.SharedPreferences
-import com.nhaarman.mockitokotlin2.eq
+import org.mockito.kotlin.eq
 import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
