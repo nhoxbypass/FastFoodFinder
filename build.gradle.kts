@@ -22,6 +22,7 @@ buildscript {
 
         classpath(libs.kotlin.gradle.plugin)
         classpath(libs.hilt.android.gradle.plugin)
+        classpath("org.apache.commons:commons-compress:1.27.1")
     }
 }
 

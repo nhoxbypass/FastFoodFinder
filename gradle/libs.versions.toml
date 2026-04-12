@@ -1,6 +1,6 @@
 [versions]
 ## Android
-agp-version = "9.1.0"
+agp-version = "8.13.2"
 ## Testing
 junit-version = "4.13.2"
 assertj-version = "3.27.7"
@@ -12,10 +12,10 @@ robolectric-version = "4.16.1"
 espresso-version = "3.7.0"
 androidx-test-version = "1.7.0"
 androidx-rules-version = "1.7.0"
-sonarqube-version = "5.1.0.4882"
+sonarqube-version = "7.2.3.7755"
 ## Kotlin
 kotlin-version = "2.2.21"
-ksp-version = "2.3.2"
+ksp-version = "2.2.21-2.0.4"
 kotlinx-coroutines-version = "1.10.2"
 kotlinx-serialization-json-version = "1.11.0"
 ## AndroidX

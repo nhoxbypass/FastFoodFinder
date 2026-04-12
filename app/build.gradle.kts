@@ -7,7 +7,7 @@ plugins {
     id("com.google.firebase.crashlytics")
     id("com.google.firebase.firebase-perf")
     id("realm-android")
-    id("org.sonarqube") version "5.1.0.4882"
+    id("org.sonarqube") version "7.2.3.7755"
     id("com.google.dagger.hilt.android")
 }
 
@@ -96,17 +96,19 @@ tasks.withType<Test> {
 
 sonarqube {
     val buildFolder = layout.buildDirectory.get()
+    val sonarToken = System.getenv("SONAR_TOKEN")
+        ?: file("${rootProject.projectDir}/local.properties")
+            .let { if (it.exists()) it.readLines().find { l -> l.startsWith("SONAR_TOKEN=") }?.substringAfter("=") else null }
+        ?: ""
 
     properties {
         property("sonar.host.url", "https://sonarcloud.io")
         property("sonar.organization", "nhoxbypass")
         property("sonar.projectKey", "nhoxbypass_FastFoodFinder")
         property("sonar.projectName", "FastFoodFinder")
-        property("sonar.token", System.getenv("SONAR_TOKEN"))
+        property("sonar.token", sonarToken)
 
         property("sonar.branch.name", System.getenv("GITHUB_HEAD_REF") ?: System.getenv("GITHUB_REF_NAME") ?: "main")
-
-        property("sonar.androidVariant", "prodRelease")
 
         property("sonar.sources", "src/main/java")
         property("sonar.tests", "src/test/java")
@@ -121,7 +123,7 @@ sonarqube {
             src/prod/java/**
             """.trimIndent()
         )
-        property("sonar.java.binaries", "$buildFolder/intermediates/runtime_app_classes_jar/prodRelease/bundleProdReleaseClassesToRuntimeJar/classes.jar")
+        property("sonar.java.binaries", "$buildFolder/intermediates/runtime_app_classes_jar/prodDebug/bundleProdDebugClassesToRuntimeJar/classes.jar")
 
         property("sonar.coverage.jacoco.xmlReportPaths", "$buildFolder/reports/jacoco/jacocoTestReport/jacocoTestReport.xml")
     }
