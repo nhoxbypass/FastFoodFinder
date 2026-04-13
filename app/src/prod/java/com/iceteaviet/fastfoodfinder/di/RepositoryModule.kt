@@ -13,16 +13,14 @@ import com.iceteaviet.fastfoodfinder.data.domain.store.AppStoreRepository
 import com.iceteaviet.fastfoodfinder.data.domain.store.StoreRepository
 import com.iceteaviet.fastfoodfinder.data.domain.user.AppUserRepository
 import com.iceteaviet.fastfoodfinder.data.domain.user.UserRepository
-import com.iceteaviet.fastfoodfinder.data.local.db.store.StoreDAO
-import com.iceteaviet.fastfoodfinder.data.local.db.user.UserDAO
+import com.iceteaviet.fastfoodfinder.data.local.db.store.StoreDao
+import com.iceteaviet.fastfoodfinder.data.local.db.user.UserDao
 import com.iceteaviet.fastfoodfinder.data.local.prefs.AppPreferencesHelper
 import com.iceteaviet.fastfoodfinder.data.local.prefs.AppPreferencesWrapper
 import com.iceteaviet.fastfoodfinder.data.local.prefs.AppPreferencesWrapper.Companion.PREFS_NAME
 import com.iceteaviet.fastfoodfinder.data.remote.routing.GoogleMapsRoutingApiHelper
 import com.iceteaviet.fastfoodfinder.data.remote.store.FirebaseStoreApiHelper
 import com.iceteaviet.fastfoodfinder.data.remote.user.FirebaseUserApiHelper
-import com.iceteaviet.fastfoodfinder.utils.rx.AppSchedulerProvider
-import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -36,24 +34,16 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideSchedulerProvider(): SchedulerProvider {
-        return AppSchedulerProvider()
-    }
-
-    @Provides
-    @Singleton
-    fun provideStoreRepository(): StoreRepository {
+    fun provideStoreRepository(storeDao: StoreDao): StoreRepository {
         val remote = FirebaseStoreApiHelper(FirebaseDatabase.getInstance().reference)
-        val local = StoreDAO()
-        return AppStoreRepository(remote, local)
+        return AppStoreRepository(remote, storeDao)
     }
 
     @Provides
     @Singleton
-    fun provideUserRepository(): UserRepository {
+    fun provideUserRepository(userDao: UserDao): UserRepository {
         val remote = FirebaseUserApiHelper(FirebaseDatabase.getInstance().reference)
-        val local = UserDAO()
-        return AppUserRepository(remote, local)
+        return AppUserRepository(remote, userDao)
     }
 
     @Provides

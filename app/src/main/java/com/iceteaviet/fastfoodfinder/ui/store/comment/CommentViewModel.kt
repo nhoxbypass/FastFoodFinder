@@ -11,7 +11,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 data class CommentUiState(
@@ -56,23 +55,21 @@ class CommentViewModel @Inject constructor(
             return
         }
 
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             val currUser = getCurrentUserHelper(clientAuth, userRepository)
-            launch(Dispatchers.Main) {
-                if (currUser == null) {
-                    _uiState.value = _uiState.value.copy(event = CommentEvent.ShowGeneralErrorMessage)
-                    return@launch
-                }
-
-                val comment = Comment(
-                    currUser.name, 
-                    currUser.photoUrl,
-                    commentText.toString(), 
-                    "", 
-                    System.currentTimeMillis()
-                )
-                _uiState.value = _uiState.value.copy(event = CommentEvent.ExitWithResult(comment))
+            if (currUser == null) {
+                _uiState.value = _uiState.value.copy(event = CommentEvent.ShowGeneralErrorMessage)
+                return@launch
             }
+
+            val comment = Comment(
+                currUser.name, 
+                currUser.photoUrl,
+                commentText.toString(), 
+                "", 
+                System.currentTimeMillis()
+            )
+            _uiState.value = _uiState.value.copy(event = CommentEvent.ExitWithResult(comment))
         }
     }
 

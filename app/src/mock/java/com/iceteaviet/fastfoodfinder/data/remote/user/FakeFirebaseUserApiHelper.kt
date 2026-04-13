@@ -1,25 +1,20 @@
 package com.iceteaviet.fastfoodfinder.data.remote.user
 
-import androidx.core.util.Pair
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList
 import com.iceteaviet.fastfoodfinder.utils.exception.NotFoundException
-import io.reactivex.Observable
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 import java.util.*
 
-/**
- * Created by tom on 7/15/18.
- */
 class FakeFirebaseUserApiHelper : UserApiHelper {
 
     private var USER_SERVICE_DATA_MAP: MutableMap<String, User> = TreeMap()
-
 
     override fun insertOrUpdate(name: String, email: String, photoUrl: String, uid: String, storeLists: List<UserStoreList>) {
         val user = User(uid, name, email, photoUrl, storeLists)
         insertOrUpdate(user)
     }
-
 
     override fun insertOrUpdate(user: User) {
         USER_SERVICE_DATA_MAP.put(user.getUid(), user)
@@ -33,24 +28,20 @@ class FakeFirebaseUserApiHelper : UserApiHelper {
         }
     }
 
-    override fun getUser(uid: String, callback: UserApiHelper.UserLoadCallback<User>) {
+    override suspend fun getUser(uid: String): User {
         val entity = USER_SERVICE_DATA_MAP.get(uid)
         if (entity != null)
-            callback.onSuccess(entity)
+            return entity
         else
-            callback.onError(NotFoundException())
+            throw NotFoundException()
     }
 
-    override fun isUserExists(uid: String, callback: UserApiHelper.UserLoadCallback<Boolean>) {
-        if (USER_SERVICE_DATA_MAP.containsKey(uid))
-            callback.onSuccess(true)
-        else
-            callback.onSuccess(false)
+    override suspend fun isUserExists(uid: String): Boolean {
+        return USER_SERVICE_DATA_MAP.containsKey(uid)
     }
 
-    override fun subscribeFavouriteStoresOfUser(uid: String): Observable<Pair<Int, Int>> {
-        return Observable.create { emitter ->
-        }
+    override fun subscribeFavouriteStoresOfUser(uid: String): Flow<Pair<Int, Int>> {
+        return emptyFlow()
     }
 
     override fun unsubscribeFavouriteStoresOfUser(uid: String) {

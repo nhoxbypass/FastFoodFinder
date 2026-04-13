@@ -11,7 +11,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.rx2.await
 import javax.inject.Inject
 
 data class ListDetailUiState(
@@ -54,16 +53,12 @@ class ListDetailViewModel @Inject constructor(
             storeIconResId = getStoreListIconDrawableRes(userStoreList.iconId)
         )
 
-        viewModelScope.launch(kotlinx.coroutines.Dispatchers.IO) {
+        viewModelScope.launch {
             try {
-                val storeList = storeRepository.findStoresByIds(userStoreList.getStoreIdList()).await()
-                launch(kotlinx.coroutines.Dispatchers.Main) {
-                    _uiState.value = _uiState.value.copy(stores = storeList)
-                }
+                val storeList = storeRepository.findStoresByIds(userStoreList.getStoreIdList())
+                _uiState.value = _uiState.value.copy(stores = storeList)
             } catch (e: Exception) {
-                launch(kotlinx.coroutines.Dispatchers.Main) {
-                    _uiState.value = _uiState.value.copy(event = ListDetailEvent.ShowGeneralErrorMessage)
-                }
+                _uiState.value = _uiState.value.copy(event = ListDetailEvent.ShowGeneralErrorMessage)
             }
         }
     }

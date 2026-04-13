@@ -1,14 +1,8 @@
 package com.iceteaviet.fastfoodfinder.data.remote.user.model
 
 import com.google.firebase.database.Exclude
-import com.iceteaviet.fastfoodfinder.data.local.db.user.model.UserEntity
-import com.iceteaviet.fastfoodfinder.data.local.db.user.model.UserStoreListEntity
-import com.iceteaviet.fastfoodfinder.utils.realmListToList
 import com.iceteaviet.fastfoodfinder.utils.wtf
 
-/**
- * Created by Genius Doan on 11/24/2016.
- */
 class User {
     var name: String = ""
     var email: String = ""
@@ -26,19 +20,6 @@ class User {
         this.email = email
         this.photoUrl = photoUrl
         this.userStoreLists = storeLists.toMutableList()
-    }
-
-    constructor(entity: UserEntity) {
-        this.uid = entity.getUid()
-        this.name = entity.name
-        this.email = entity.email
-        this.photoUrl = entity.photoUrl
-
-        val userStoreListEntities: List<UserStoreListEntity> = realmListToList(entity.userStoreLists)
-        this.userStoreLists = ArrayList()
-        for (i in userStoreListEntities.indices) {
-            this.userStoreLists.add(UserStoreList(userStoreListEntities[i]))
-        }
     }
 
     fun getUid(): String {

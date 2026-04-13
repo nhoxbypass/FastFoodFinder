@@ -3,38 +3,31 @@ package com.iceteaviet.fastfoodfinder.data.domain.store
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Comment
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 
-import io.reactivex.Single
-
-/**
- * Created by tom on 7/15/18.
- *
- * Main entry point for accessing store data.
- */
 interface StoreRepository {
 
-    fun getAllStores(): Single<List<Store>>
+    suspend fun getAllStores(): List<Store>
 
-    fun setStores(storeList: List<Store>)
+    suspend fun setStores(storeList: List<Store>)
 
-    fun getStoreInBounds(lat: Double, lng: Double, radius: Double): Single<List<Store>>
+    suspend fun getStoreInBounds(lat: Double, lng: Double, radius: Double): List<Store>
 
-    fun findStores(queryString: String): Single<List<Store>>
+    suspend fun findStores(queryString: String): List<Store>
 
-    fun findStoresByCustomAddress(customQuerySearch: List<String>): Single<List<Store>>
+    suspend fun findStoresByCustomAddress(customQuerySearch: List<String>): List<Store>
 
-    fun findStoresBy(key: String, value: Int): Single<List<Store>>
+    suspend fun findStoresBy(key: String, value: Int): List<Store>
 
-    fun findStoresBy(key: String, values: List<Int>): Single<List<Store>>
+    suspend fun findStoresBy(key: String, values: List<Int>): List<Store>
 
-    fun findStoresByType(type: Int): Single<List<Store>>
+    suspend fun findStoresByType(type: Int): List<Store>
 
-    fun findStoreById(id: Int): Single<Store>
+    suspend fun findStoreById(id: Int): Store
 
-    fun findStoresByIds(ids: List<Int>): Single<List<Store>>
+    suspend fun findStoresByIds(ids: List<Int>): List<Store>
 
-    fun deleteAllStores()
+    suspend fun deleteAllStores()
 
-    fun getComments(storeId: String): Single<List<Comment>>
+    suspend fun getComments(storeId: String): List<Comment>
 
-    fun insertOrUpdateComment(storeId: String, comment: Comment)
+    suspend fun insertOrUpdateComment(storeId: String, comment: Comment)
 }

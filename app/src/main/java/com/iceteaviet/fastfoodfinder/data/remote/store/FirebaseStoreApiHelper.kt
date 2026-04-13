@@ -7,32 +7,32 @@ import com.google.firebase.database.ValueEventListener
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Comment
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.utils.getStoreType
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
 
-/**
- * Created by tom on 7/17/18.
- */
 class FirebaseStoreApiHelper(private val databaseRef: DatabaseReference) : StoreApiHelper {
 
-    override fun getAllStores(callback: StoreApiHelper.StoreLoadCallback<List<Store>>) {
+    override suspend fun getAllStores(): List<Store> = suspendCancellableCoroutine { cont ->
         databaseRef.child(CHILD_STORES_LOCATION).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                callback.onSuccess(parseStoresDataFromFirebase(dataSnapshot))
+                cont.resume(parseStoresDataFromFirebase(dataSnapshot))
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
-                callback.onError(databaseError.toException())
+                cont.resumeWithException(databaseError.toException())
             }
         })
     }
 
-    override fun getComments(storeId: String, callback: StoreApiHelper.StoreLoadCallback<List<Comment>>) {
+    override suspend fun getComments(storeId: String): List<Comment> = suspendCancellableCoroutine { cont ->
         databaseRef.child(CHILD_COMMENT_LIST).child(storeId).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(databaseError: DatabaseError) {
-                callback.onError(databaseError.toException())
+                cont.resumeWithException(databaseError.toException())
             }
 
             override fun onDataChange(snapshot: DataSnapshot) {
-                callback.onSuccess(parseCommentsDataFromFirebase(snapshot))
+                cont.resume(parseCommentsDataFromFirebase(snapshot))
             }
         })
     }
@@ -40,7 +40,6 @@ class FirebaseStoreApiHelper(private val databaseRef: DatabaseReference) : Store
     override fun insertOrUpdateComment(storeId: String, comment: Comment) {
         databaseRef.child(CHILD_COMMENT_LIST).child(storeId).push().setValue(comment)
     }
-
 
     private fun parseStoresDataFromFirebase(dataSnapshot: DataSnapshot): MutableList<Store> {
         val storeList = ArrayList<Store>()

@@ -5,11 +5,7 @@ import android.os.Parcelable
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.database.Exclude
 import com.google.firebase.database.PropertyName
-import com.iceteaviet.fastfoodfinder.data.local.db.store.model.StoreEntity
 
-/**
- * Created by Genius Doan on 11/10/2016.
- */
 class Store : Parcelable {
     @Exclude
     @get:Exclude
@@ -60,8 +56,6 @@ class Store : Parcelable {
         }
     }
 
-    constructor(entity: StoreEntity) : this(entity.id, entity.title, entity.address, entity.latitude.toString(), entity.longitude.toString(), entity.telephone, entity.type)
-
     protected constructor(`in`: Parcel) : this(`in`.readInt(), `in`.readString()
         ?: "", `in`.readString() ?: "", `in`.readString() ?: "0", `in`.readString()
         ?: "0", `in`.readString() ?: "", `in`.readInt())
@@ -108,13 +102,6 @@ class Store : Parcelable {
     }
 
     companion object CREATOR : Parcelable.Creator<Store> {
-        // Type
-        // 0: circle_k
-        // 1: ministop
-        // 2: family mart
-        // 3: bsmart
-        // 4: shop n go
-
         override fun createFromParcel(parcel: Parcel): Store {
             return Store(parcel)
         }

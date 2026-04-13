@@ -10,13 +10,10 @@ import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreEvent
 import com.iceteaviet.fastfoodfinder.utils.exception.EmptyParamsException
 import com.iceteaviet.fastfoodfinder.utils.isValidUserUid
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.rx2.asFlow
-import kotlinx.coroutines.rx2.await
 import javax.inject.Inject
 
 sealed class MainFavEvent {
@@ -43,13 +40,11 @@ class MainFavViewModel @Inject constructor(
     fun start() {
         val uid = clientAuth.getCurrentUserUid()
         if (isValidUserUid(uid)) {
-            viewModelScope.launch(Dispatchers.IO) {
+            viewModelScope.launch {
                 try {
-                    val currUser = userRepository.getUser(uid).await()
-                    launch(Dispatchers.Main) {
-                        loadStoreListsFromIds(currUser.getFavouriteStoreList().getStoreIdList())
-                        listenFavStoresOfUser(currUser.getUid())
-                    }
+                    val currUser = userRepository.getUser(uid)
+                    loadStoreListsFromIds(currUser.getFavouriteStoreList().getStoreIdList())
+                    listenFavStoresOfUser(currUser.getUid())
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
@@ -72,45 +67,39 @@ class MainFavViewModel @Inject constructor(
     private fun loadStoreListsFromIds(storeIdList: List<Int>) {
         if (storeIdList.isEmpty()) return
 
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             try {
-                val storeList = storeRepository.findStoresByIds(storeIdList).await()
-                launch(Dispatchers.Main) {
-                    _uiState.value = MainFavEvent.SetStores(storeList)
-                }
+                val storeList = storeRepository.findStoresByIds(storeIdList)
+                _uiState.value = MainFavEvent.SetStores(storeList)
             } catch (e: Exception) {
                 e.printStackTrace()
-                launch(Dispatchers.Main) {
-                    _uiState.value = MainFavEvent.ShowGeneralErrorMessage
-                }
+                _uiState.value = MainFavEvent.ShowGeneralErrorMessage
             }
         }
     }
 
     private fun listenFavStoresOfUser(userUid: String) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             try {
                 userRepository.subscribeFavouriteStoresOfUser(userUid)
-                    .asFlow()
                     .collect { storeIdPair ->
                         val id = storeIdPair.first
                         val eventAC = storeIdPair.second
 
-                        if (id == null || eventAC == null || eventAC < 0) {
+                        if (eventAC < 0) {
                             throw EmptyParamsException()
                         }
 
-                        val store = storeRepository.findStoreById(id).blockingGet()
-                        val userStoreEvent = UserStoreEvent(store, eventAC)
-                        
-                        launch(Dispatchers.Main) {
+                        try {
+                            val store = storeRepository.findStoreById(id)
+                            val userStoreEvent = UserStoreEvent(store, eventAC)
                             handleUserStoreEvent(userStoreEvent)
+                        } catch (e: Exception) {
+                            e.printStackTrace()
                         }
                     }
             } catch (e: Exception) {
-                launch(Dispatchers.Main) {
-                    _uiState.value = MainFavEvent.ShowWarningMessage(e.message)
-                }
+                _uiState.value = MainFavEvent.ShowWarningMessage(e.message)
             }
         }
     }

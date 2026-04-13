@@ -2,12 +2,9 @@ plugins {
     id("com.android.application")
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.ksp)
-    id("kotlin-kapt") // Required by Realm plugin; remove after Realm → Room migration (Phase 3)
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
     id("com.google.firebase.firebase-perf")
-    id("realm-android")
-    id("org.sonarqube") version "7.2.3.7755"
     id("com.google.dagger.hilt.android")
 }
 
@@ -63,25 +60,21 @@ android {
         }
     }
 
-    flavorDimensions += "prod"
+    flavorDimensions += "environment"
 
     productFlavors {
         create("mock") {
-            dimension = "mock"
+            dimension = "environment"
             applicationIdSuffix = ".mock"
         }
         create("prod") {
-            // No specific configuration needed for prod
+            dimension = "environment"
         }
     }
 }
 
 kotlin {
     jvmToolchain(17)
-}
-
-kapt {
-    useBuildCache = false
 }
 
 tasks.withType<Test> {
@@ -91,41 +84,6 @@ tasks.withType<Test> {
         showExceptions = true
         showCauses = true
         showStackTraces = true
-    }
-}
-
-sonarqube {
-    val buildFolder = layout.buildDirectory.get()
-    val sonarToken = System.getenv("SONAR_TOKEN")
-        ?: file("${rootProject.projectDir}/local.properties")
-            .let { if (it.exists()) it.readLines().find { l -> l.startsWith("SONAR_TOKEN=") }?.substringAfter("=") else null }
-        ?: ""
-
-    properties {
-        property("sonar.host.url", "https://sonarcloud.io")
-        property("sonar.organization", "nhoxbypass")
-        property("sonar.projectKey", "nhoxbypass_FastFoodFinder")
-        property("sonar.projectName", "FastFoodFinder")
-        property("sonar.token", sonarToken)
-
-        property("sonar.branch.name", System.getenv("GITHUB_HEAD_REF") ?: System.getenv("GITHUB_REF_NAME") ?: "main")
-
-        property("sonar.sources", "src/main/java")
-        property("sonar.tests", "src/test/java")
-        property(
-            "sonar.exclusions",
-            """
-            **/build/**,
-            src/androidTest/**,
-            src/main/res/**,
-            src/main/AndroidManifest.xml,
-            src/main/assets/**,
-            src/prod/java/**
-            """.trimIndent()
-        )
-        property("sonar.java.binaries", "$buildFolder/intermediates/runtime_app_classes_jar/prodDebug/bundleProdDebugClassesToRuntimeJar/classes.jar")
-
-        property("sonar.coverage.jacoco.xmlReportPaths", "$buildFolder/reports/jacoco/jacocoTestReport/jacocoTestReport.xml")
     }
 }
 
@@ -154,13 +112,14 @@ dependencies {
     // Kotlin
     implementation(libs.kotlin.stdlibjdk)
     implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.kotlinx.coroutines.play.services)
 
     // AndroidX
     implementation(libs.appcompat)
     implementation(libs.cardview)
     implementation(libs.constraintlayout)
     implementation(libs.work.runtime.ktx)
-    implementation(libs.work.rxjava2)
 
     // MVVM & Lifecycles
     implementation(libs.lifecycle.viewmodel.ktx)
@@ -190,18 +149,13 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter.gson)
 
-    // Reactive
-    implementation(libs.rxjava3)
-    implementation(libs.rxandroid3)
-    implementation(libs.rxkotlin3)
-    implementation(libs.kotlinx.coroutines.rx3)
-    implementation(libs.kotlinx.coroutines.rx2)
-
-    // DB
-    implementation(libs.realm.android.library)
-
     // Logging
     implementation(libs.timber)
+
+    // DB
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    ksp(libs.room.compiler)
 
     // DI
     implementation(libs.hilt.android)

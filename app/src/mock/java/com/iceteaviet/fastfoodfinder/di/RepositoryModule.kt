@@ -1,6 +1,5 @@
 package com.iceteaviet.fastfoodfinder.di
 
-import android.content.Context
 import com.iceteaviet.fastfoodfinder.data.auth.ClientAuth
 import com.iceteaviet.fastfoodfinder.data.auth.FakeFirebaseClientAuth
 import com.iceteaviet.fastfoodfinder.data.domain.prefs.AppPreferencesRepository
@@ -18,24 +17,15 @@ import com.iceteaviet.fastfoodfinder.data.local.prefs.FakePreferencesHelper
 import com.iceteaviet.fastfoodfinder.data.remote.routing.FakeGoogleMapsRoutingApiHelper
 import com.iceteaviet.fastfoodfinder.data.remote.store.FakeFirebaseStoreApiHelper
 import com.iceteaviet.fastfoodfinder.data.remote.user.FakeFirebaseUserApiHelper
-import com.iceteaviet.fastfoodfinder.utils.rx.SchedulerProvider
-import com.iceteaviet.fastfoodfinder.utils.rx.TrampolineSchedulerProvider
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object RepositoryModule {
-
-    @Provides
-    @Singleton
-    fun provideSchedulerProvider(): SchedulerProvider {
-        return TrampolineSchedulerProvider()
-    }
 
     @Provides
     @Singleton

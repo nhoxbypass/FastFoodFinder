@@ -1,91 +1,39 @@
 package com.iceteaviet.fastfoodfinder.data.local.db.user
 
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import androidx.room.Transaction
+import com.iceteaviet.fastfoodfinder.data.local.db.user.model.StoreIdEntity
 import com.iceteaviet.fastfoodfinder.data.local.db.user.model.UserEntity
 import com.iceteaviet.fastfoodfinder.data.local.db.user.model.UserStoreListEntity
-import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
-import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList
-import com.iceteaviet.fastfoodfinder.utils.exception.NotFoundException
-import io.realm.Realm
-import io.realm.RealmList
+import com.iceteaviet.fastfoodfinder.data.local.db.user.model.UserStoreListWithIds
 
-/**
- * Created by tom on 7/25/18.
- */
-class UserDAO : UserDataSource {
+@Dao
+interface UserDao {
+    @Query("SELECT * FROM users WHERE uid = :uid")
+    suspend fun getUser(uid: String): UserEntity?
 
-    override fun insertOrUpdate(name: String, email: String, photoUrl: String, uid: String, storeLists: List<UserStoreList>) {
-        insertOrUpdate(User(uid, name, email, photoUrl, storeLists))
-    }
+    @Query("SELECT COUNT(*) FROM users WHERE uid = :uid")
+    suspend fun isUserExists(uid: String): Int
 
-    override fun insertOrUpdate(user: User) {
-        val realm = Realm.getDefaultInstance()
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertOrUpdate(user: UserEntity)
 
-        realm.executeTransaction {
-            it.where(UserEntity::class.java)
-                .findAll()
-                .deleteAllFromRealm()
+    @Transaction
+    @Query("SELECT * FROM user_store_lists WHERE userUid = :uid")
+    suspend fun getStoreListsForUser(uid: String): List<UserStoreListWithIds>
 
-            val userEntity = it.createObject(UserEntity::class.java)
-            userEntity.map(user)
-        }
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertStoreLists(storeLists: List<UserStoreListEntity>)
 
-        realm.close()
-    }
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertStoreIds(items: List<StoreIdEntity>)
 
-    override fun updateStoreListForUser(uid: String, storeLists: List<UserStoreList>) {
-        val realm = Realm.getDefaultInstance()
+    @Query("DELETE FROM user_store_lists WHERE userUid = :uid")
+    suspend fun deleteStoreListsForUser(uid: String)
 
-        realm.executeTransaction {
-            val entity = it.where(UserEntity::class.java)
-                .equalTo(PARAM_UID, uid)
-                .findFirst()
-            if (entity != null) {
-                /*val userStoreListEntities = RealmList<UserStoreListEntity>()
-                for (i in storeLists.indices) {
-                    userStoreListEntities.add(UserStoreListEntity(storeLists[i]))
-                }
-                val managedList = it.copyToRealm(userStoreListEntities)
-                entity.userStoreLists.addAll(managedList)*/
-
-                entity.userStoreLists = RealmList()
-                for (i in storeLists.indices) {
-                    entity.userStoreLists.add(UserStoreListEntity(storeLists[i]))
-                }
-            }
-        }
-
-        realm.close()
-    }
-
-    override fun getUser(uid: String): User {
-        val realm = Realm.getDefaultInstance()
-
-        val entity = realm.where(UserEntity::class.java)
-            .equalTo(PARAM_UID, uid)
-            .findFirst()
-
-        realm.close()
-
-        if (entity != null)
-            return User(entity)
-        else
-            throw NotFoundException()
-
-    }
-
-    override fun isUserExists(uid: String): Boolean {
-        val realm = Realm.getDefaultInstance()
-
-        val count = realm.where(UserEntity::class.java)
-            .equalTo(PARAM_UID, uid)
-            .count()
-
-        realm.close()
-
-        return count > 0
-    }
-
-    companion object {
-        private const val PARAM_UID = "uid"
-    }
+    @Query("DELETE FROM user_store_list_items WHERE listRowId IN (SELECT rowId FROM user_store_lists WHERE userUid = :uid)")
+    suspend fun deleteStoreIdsForUser(uid: String)
 }
