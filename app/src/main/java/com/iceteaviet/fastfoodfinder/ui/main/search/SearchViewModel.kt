@@ -9,12 +9,10 @@ import com.iceteaviet.fastfoodfinder.ui.main.search.model.SearchStoreItem
 import com.iceteaviet.fastfoodfinder.utils.Constant
 import com.iceteaviet.fastfoodfinder.utils.getStoreSearchString
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.rx2.await
 import javax.inject.Inject
 
 data class SearchUiState(
@@ -43,14 +41,12 @@ class SearchViewModel @Inject constructor(
     fun start() {
         val searchHistories = preferencesRepository.getSearchHistories().toList().asReversed()
         if (searchHistories.isNotEmpty()) {
-            viewModelScope.launch(Dispatchers.IO) {
+            viewModelScope.launch {
                 val items = getStoresFromIds(searchHistories)
-                launch(Dispatchers.Main) {
-                    _uiState.value = _uiState.value.copy(
-                        searchHistoryStrings = searchHistories,
-                        searchHistoryItems = items
-                    )
-                }
+                _uiState.value = _uiState.value.copy(
+                    searchHistoryStrings = searchHistories,
+                    searchHistoryItems = items
+                )
             }
         }
     }
@@ -69,19 +65,15 @@ class SearchViewModel @Inject constructor(
     }
 
     fun onUpdateSearchList(searchText: String) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             try {
-                val storeList = storeRepository.findStores(searchText).await()
-                launch(Dispatchers.Main) {
-                    _uiState.value = _uiState.value.copy(
-                        searchStores = storeListToSearchItems(storeList)
-                    )
-                }
+                val storeList = storeRepository.findStores(searchText)
+                _uiState.value = _uiState.value.copy(
+                    searchStores = storeListToSearchItems(storeList)
+                )
             } catch (e: Exception) {
                 e.printStackTrace()
-                launch(Dispatchers.Main) {
-                    _uiState.value = _uiState.value.copy(event = SearchEvent.ShowGeneralErrorMessage)
-                }
+                _uiState.value = _uiState.value.copy(event = SearchEvent.ShowGeneralErrorMessage)
             }
         }
     }
@@ -91,13 +83,13 @@ class SearchViewModel @Inject constructor(
     fun onTrendingStoreButtonClick() {}
     fun onConvenienceStoreButtonClick() {}
 
-    private fun getStoresFromIds(searchHistories: List<String>): List<SearchStoreItem> {
+    private suspend fun getStoresFromIds(searchHistories: List<String>): List<SearchStoreItem> {
         val searchItems: MutableList<SearchStoreItem> = ArrayList()
         for (history in searchHistories) {
             if (history.contains(Constant.SEARCH_STORE_PREFIX)) {
                 try {
                     val storeId = history.substring(Constant.SEARCH_STORE_PREFIX_LEN).toInt()
-                    val store = storeRepository.findStoreById(storeId).blockingGet()
+                    val store = storeRepository.findStoreById(storeId)
                     searchItems.add(SearchStoreItem(store, ""))
                 } catch (ex: Exception) {
                     ex.printStackTrace()

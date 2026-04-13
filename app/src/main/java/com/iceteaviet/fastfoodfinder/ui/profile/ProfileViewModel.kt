@@ -13,8 +13,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.rx2.await
 import javax.inject.Inject
 
 data class ProfileUiState(
@@ -61,9 +59,9 @@ class ProfileViewModel @Inject constructor(
         val uid = clientAuth.getCurrentUserUid()
         if (!isValidUserUid(uid)) return
 
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             try {
-                val user = userRepository.getUser(uid).await()
+                val user = userRepository.getUser(uid)
                 userRepository.insertOrUpdateUser(user)
 
                 loadStoreLists(user)
@@ -102,7 +100,7 @@ class ProfileViewModel @Inject constructor(
     }
 
     fun onCreateNewList(listName: String, iconId: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             val currentUser = getCurrentUserHelper(clientAuth, userRepository) ?: return@launch
     
             if (!isListNameExisted(listName, currentUser)) {
@@ -146,20 +144,18 @@ class ProfileViewModel @Inject constructor(
     }
 
     fun onStoreListClick(listPacket: UserStoreList) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             val user = getCurrentUserHelper(clientAuth, userRepository)
             if (user != null) {
-                launch(Dispatchers.Main) {
-                    _uiState.value = _uiState.value.copy(
-                        event = ProfileEvent.OpenListDetail(listPacket, user.photoUrl)
-                    )
-                }
+                _uiState.value = _uiState.value.copy(
+                    event = ProfileEvent.OpenListDetail(listPacket, user.photoUrl)
+                )
             }
         }
     }
 
     fun onStoreListLongClick(position: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             val currentUser = getCurrentUserHelper(clientAuth, userRepository) ?: return@launch
     
             currentUser.removeStoreList(position)

@@ -11,7 +11,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.rx2.await
 import javax.inject.Inject
 
 data class EmailRegisterUiState(
@@ -56,7 +55,7 @@ class EmailRegisterViewModel @Inject constructor(
     private fun startRegister(email: String, password: String) {
         viewModelScope.launch {
             try {
-                val user = clientAuth.signUpWithEmailAndPassword(email, password).await()
+                val user = clientAuth.signUpWithEmailAndPassword(email, password)
                 setRegisterProgressState(2)
                 _uiState.value = _uiState.value.copy(successUser = user)
             } catch (e: Exception) {

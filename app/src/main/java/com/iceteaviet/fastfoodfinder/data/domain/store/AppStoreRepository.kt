@@ -1,137 +1,101 @@
 package com.iceteaviet.fastfoodfinder.data.domain.store
 
 import androidx.annotation.VisibleForTesting
-import com.iceteaviet.fastfoodfinder.data.local.db.store.StoreDataSource
+import com.iceteaviet.fastfoodfinder.data.local.db.store.StoreDao
+import com.iceteaviet.fastfoodfinder.data.local.db.store.model.toEntity
+import com.iceteaviet.fastfoodfinder.data.local.db.store.model.toDomain
 import com.iceteaviet.fastfoodfinder.data.remote.store.StoreApiHelper
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Comment
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.utils.exception.NotFoundException
-import io.reactivex.Single
-import io.reactivex.SingleOnSubscribe
-import io.reactivex.schedulers.Schedulers
+import com.iceteaviet.fastfoodfinder.utils.getStoreTypeFromQuery
+import com.iceteaviet.fastfoodfinder.utils.standardizeDistrictQuery
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
-/**
- * Created by tom on 2019-06-01.
- */
-class AppStoreRepository(private val storeApiHelper: StoreApiHelper, private val storeDataSource: StoreDataSource) : StoreRepository {
+class AppStoreRepository(private val storeApiHelper: StoreApiHelper, private val storeDao: StoreDao) : StoreRepository {
 
-    /**
-     * This method has reduced visibility for testing and is only visible to tests in the same
-     * package.
-     */
     @VisibleForTesting
-    private var cachedStores: List<Store>
+    private var cachedStores: List<Store> = ArrayList()
 
-    init {
-        cachedStores = ArrayList()
+    override suspend fun getAllStores(): List<Store> = withContext(Dispatchers.IO) {
+        if (cachedStores.isNotEmpty()) {
+            return@withContext ArrayList(cachedStores)
+        }
+
+        val localStores = storeDao.getAllStores().map { it.toDomain() }
+        if (localStores.isNotEmpty()) {
+            cachedStores = localStores
+            return@withContext ArrayList(localStores)
+        }
+
+        val remoteStores = storeApiHelper.getAllStores()
+        cachedStores = remoteStores
+        ArrayList(remoteStores)
     }
 
-    override fun getAllStores(): Single<List<Store>> {
-        return Single.create(SingleOnSubscribe { emitter ->
-            if (cachedStores.isNotEmpty()) {
-                emitter.onSuccess(cachedStores)
-                return@SingleOnSubscribe
-            }
-
-            cachedStores = storeDataSource.getAllStores()
-
-            if (cachedStores.isEmpty()) {
-                storeApiHelper.getAllStores(object : StoreApiHelper.StoreLoadCallback<List<Store>> {
-                    override fun onSuccess(data: List<Store>) {
-                        cachedStores = data
-                        emitter.onSuccess(ArrayList(data))
-                    }
-
-                    override fun onError(exception: Exception) {
-                        emitter.onError(exception)
-                    }
-
-                })
-            } else {
-                emitter.onSuccess(ArrayList(cachedStores))
-            }
-        }).observeOn(Schedulers.io())
-    }
-
-    override fun setStores(storeList: List<Store>) {
+    override suspend fun setStores(storeList: List<Store>) = withContext(Dispatchers.IO) {
         cachedStores = storeList
-        storeDataSource.setStores(storeList)
+        storeDao.insertAll(storeList.map { it.toEntity() })
     }
 
-    override fun getStoreInBounds(lat: Double, lng: Double, radius: Double): Single<List<Store>> {
-        return Single.create { emitter ->
-            emitter.onSuccess(storeDataSource.getStoreInBounds(lat, lng, radius))
+    override suspend fun getStoreInBounds(lat: Double, lng: Double, radius: Double): List<Store> = withContext(Dispatchers.IO) {
+        storeDao.getStoreInBounds(lat - radius, lat + radius, lng - radius, lng + radius).map { it.toDomain() }
+    }
+
+    override suspend fun findStores(queryString: String): List<Store> = withContext(Dispatchers.IO) {
+        val storeType = getStoreTypeFromQuery(queryString)
+        if (storeType != -1) {
+            storeDao.findStoresByType(storeType).map { it.toDomain() }
+        } else {
+            val queries = standardizeDistrictQuery(queryString)
+            queries.flatMap { storeDao.findStoresByCustomAddress(it).map { e -> e.toDomain() } }.distinctBy { it.id }
         }
     }
 
-    override fun findStores(queryString: String): Single<List<Store>> {
-        return Single.create { emitter ->
-            emitter.onSuccess(storeDataSource.findStores(queryString))
+    override suspend fun findStoresByCustomAddress(customQuerySearch: List<String>): List<Store> = withContext(Dispatchers.IO) {
+        customQuerySearch.flatMap { storeDao.findStoresByCustomAddress(it).map { e -> e.toDomain() } }.distinctBy { it.id }
+    }
+
+    override suspend fun findStoresBy(key: String, value: Int): List<Store> = withContext(Dispatchers.IO) {
+        when (key) {
+            "type" -> storeDao.findStoresByType(value).map { it.toDomain() }
+            "id" -> storeDao.findStoreById(value)?.let { listOf(it.toDomain()) } ?: emptyList()
+            else -> emptyList()
         }
     }
 
-    override fun findStoresByCustomAddress(customQuerySearch: List<String>): Single<List<Store>> {
-        return Single.create { emitter ->
-            emitter.onSuccess(storeDataSource.findStoresByCustomAddress(customQuerySearch))
+    override suspend fun findStoresBy(key: String, values: List<Int>): List<Store> = withContext(Dispatchers.IO) {
+        when (key) {
+            "id" -> storeDao.findStoresByIds(values).map { it.toDomain() }
+            "type" -> values.flatMap { storeDao.findStoresByType(it).map { e -> e.toDomain() } }.distinctBy { it.id }
+            else -> emptyList()
         }
     }
 
-    override fun findStoresBy(key: String, value: Int): Single<List<Store>> {
-        return Single.create { emitter ->
-            emitter.onSuccess(storeDataSource.findStoresBy(key, value))
-        }
+    override suspend fun findStoresByType(type: Int): List<Store> = withContext(Dispatchers.IO) {
+        storeDao.findStoresByType(type).map { it.toDomain() }
     }
 
-    override fun findStoresBy(key: String, values: List<Int>): Single<List<Store>> {
-        return Single.create { emitter ->
-            emitter.onSuccess(storeDataSource.findStoresBy(key, values))
-        }
+    override suspend fun findStoreById(id: Int): Store = withContext(Dispatchers.IO) {
+        storeDao.findStoreById(id)?.toDomain() ?: throw NotFoundException()
     }
 
-    override fun findStoresByType(type: Int): Single<List<Store>> {
-        return Single.create { emitter ->
-            emitter.onSuccess(storeDataSource.findStoresByType(type))
-        }
+    override suspend fun findStoresByIds(ids: List<Int>): List<Store> = withContext(Dispatchers.IO) {
+        storeDao.findStoresByIds(ids).map { it.toDomain() }
     }
 
-    override fun findStoreById(id: Int): Single<Store> {
-        return Single.create { emitter ->
-            val store = storeDataSource.findStoreById(id)
-            if (store != null)
-                emitter.onSuccess(store)
-            else
-                emitter.onError(NotFoundException())
-        }
-    }
-
-    override fun findStoresByIds(ids: List<Int>): Single<List<Store>> {
-        return Single.create { emitter ->
-            emitter.onSuccess(storeDataSource.findStoresByIds(ids))
-        }
-    }
-
-    override fun deleteAllStores() {
+    override suspend fun deleteAllStores() = withContext(Dispatchers.IO) {
         cachedStores = ArrayList()
-        storeDataSource.deleteAllStores()
+        storeDao.deleteAll()
     }
 
-    override fun getComments(storeId: String): Single<List<Comment>> {
-        return Single.create { emitter ->
-            storeApiHelper.getComments(storeId, object : StoreApiHelper.StoreLoadCallback<List<Comment>> {
-                override fun onSuccess(data: List<Comment>) {
-                    emitter.onSuccess(data)
-                }
-
-                override fun onError(exception: Exception) {
-                    emitter.onError(exception)
-                }
-
-            })
-        }.observeOn(Schedulers.io())
+    override suspend fun getComments(storeId: String): List<Comment> = withContext(Dispatchers.IO) {
+        storeApiHelper.getComments(storeId)
     }
 
-    override fun insertOrUpdateComment(storeId: String, comment: Comment) {
-        return storeApiHelper.insertOrUpdateComment(storeId, comment)
+    override suspend fun insertOrUpdateComment(storeId: String, comment: Comment) {
+        storeApiHelper.insertOrUpdateComment(storeId, comment)
     }
 
     fun clearCache() {

@@ -3,75 +3,51 @@ package com.iceteaviet.fastfoodfinder.service.workers
 import android.content.Context
 import androidx.work.BackoffPolicy
 import androidx.work.Constraints
+import androidx.work.CoroutineWorker
 import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequest
-import androidx.work.RxWorker
 import androidx.work.WorkerParameters
-import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
-import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
+import com.iceteaviet.fastfoodfinder.data.auth.ClientAuth
+import com.iceteaviet.fastfoodfinder.data.domain.store.StoreRepository
+import com.iceteaviet.fastfoodfinder.utils.StoreSyncHelper
 import com.iceteaviet.fastfoodfinder.utils.filterInvalidData
 import com.iceteaviet.fastfoodfinder.utils.ui.NotiManager
-import io.reactivex.Single
-import io.reactivex.SingleObserver
-import io.reactivex.disposables.Disposable
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.concurrent.TimeUnit
 
+class SyncDatabaseWorker @AssistedInject constructor(
+    @Assisted val ctx: Context,
+    @Assisted val params: WorkerParameters,
+    private val storeRepository: StoreRepository,
+    private val notiManager: NotiManager,
+    private val clientAuth: ClientAuth,
+) : CoroutineWorker(ctx, params) {
 
-import dagger.hilt.EntryPoint
-import dagger.hilt.InstallIn
-import dagger.hilt.android.EntryPointAccessors
-import dagger.hilt.components.SingletonComponent
-import com.iceteaviet.fastfoodfinder.utils.StoreSyncHelper
+    override suspend fun doWork(): Result {
+        notiManager.showStoreSyncProgressStatusNotification(
+            applicationContext.getString(R.string.str_updating_store_db),
+            applicationContext.getString(R.string.str_update_app_db)
+        )
 
-/**
- * Created by tom on 2019-07-07.
- *
- * Note that RxWorker.createWork() is called on the main thread, but the return value is subscribed on a background thread by default
- */
-class SyncDatabaseWorker(ctx: Context, params: WorkerParameters) : RxWorker(ctx, params) {
+        return try {
+            val storeList = StoreSyncHelper.loadStoresFromServer(applicationContext, clientAuth, storeRepository)
+            val filteredStoreList = filterInvalidData(storeList.toMutableList())
+            storeRepository.setStores(filteredStoreList)
 
-    @EntryPoint
-    @InstallIn(SingletonComponent::class)
-    interface SyncWorkerEntryPoint {
-        fun storeRepository(): com.iceteaviet.fastfoodfinder.data.domain.store.StoreRepository
-        fun notiManager(): NotiManager
-        fun clientAuth(): com.iceteaviet.fastfoodfinder.data.auth.ClientAuth
-    }
-
-    private val entryPoint = EntryPointAccessors.fromApplication(ctx.applicationContext, SyncWorkerEntryPoint::class.java)
-    
-    private val storeRepository = entryPoint.storeRepository()
-    private val notiManager = entryPoint.notiManager()
-    private val clientAuth = entryPoint.clientAuth()
-
-    override fun createWork(): Single<Result> {
-        return Single.create { emitter ->
-            notiManager.showStoreSyncProgressStatusNotification(applicationContext.getString(R.string.str_updating_store_db), applicationContext.getString(R.string.str_update_app_db))
-
-            StoreSyncHelper.loadStoresFromServer(applicationContext, clientAuth, storeRepository)
-                .subscribe(object : SingleObserver<List<Store>> {
-                    override fun onSubscribe(d: Disposable) {
-                    }
-
-                    override fun onSuccess(storeList: List<Store>) {
-                        val filteredStoreList = filterInvalidData(storeList.toMutableList())
-                        storeRepository.setStores(filteredStoreList)
-
-                        if (!filteredStoreList.isEmpty()) {
-                            notiManager.showStoreSyncStatusNotification(
-                                String.format(applicationContext.getString(R.string.update_database_successfull_with_count), filteredStoreList.size),
-                                applicationContext.getString(R.string.str_update_app_db))
-                            emitter.onSuccess(Result.success())
-                        } else {
-                            emitter.onSuccess(Result.retry())
-                        }
-                    }
-
-                    override fun onError(e: Throwable) {
-                        emitter.onSuccess(Result.failure())
-                    }
-                })
+            if (filteredStoreList.isNotEmpty()) {
+                notiManager.showStoreSyncStatusNotification(
+                    String.format(applicationContext.getString(R.string.update_database_successfull_with_count), filteredStoreList.size),
+                    applicationContext.getString(R.string.str_update_app_db)
+                )
+                Result.success()
+            } else {
+                Result.retry()
+            }
+        } catch (e: Exception) {
+            Result.failure()
         }
     }
 
@@ -81,11 +57,10 @@ class SyncDatabaseWorker(ctx: Context, params: WorkerParameters) : RxWorker(ctx,
                 .setRequiredNetworkType(NetworkType.CONNECTED)
                 .build()
 
-            val myWorkBuilder = PeriodicWorkRequest.Builder(SyncDatabaseWorker::class.java, 7, TimeUnit.DAYS)
-                .setBackoffCriteria(BackoffPolicy.EXPONENTIAL, 1, TimeUnit.DAYS) // Backoff retry after 1 day
+            return PeriodicWorkRequest.Builder(SyncDatabaseWorker::class.java, 7, TimeUnit.DAYS)
+                .setBackoffCriteria(BackoffPolicy.EXPONENTIAL, 1, TimeUnit.DAYS)
                 .setConstraints(constraints)
-
-            return myWorkBuilder.build()
+                .build()
         }
     }
 }

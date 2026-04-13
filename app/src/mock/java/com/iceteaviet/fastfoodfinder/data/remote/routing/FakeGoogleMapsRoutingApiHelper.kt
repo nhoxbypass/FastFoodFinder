@@ -5,9 +5,6 @@ import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.utils.exception.NotFoundException
 import java.util.*
 
-/**
- * Created by tom on 7/18/18.
- */
 class FakeGoogleMapsRoutingApiHelper : MapsRoutingApiHelper {
 
     private val DIRECTION_SERVICE_DATA: Map<String, MapsDirection>
@@ -16,11 +13,11 @@ class FakeGoogleMapsRoutingApiHelper : MapsRoutingApiHelper {
         DIRECTION_SERVICE_DATA = TreeMap()
     }
 
-    override fun getMapsDirection(queries: Map<String, String>, store: Store, callback: MapsRoutingApiHelper.RoutingLoadCallback<MapsDirection>) {
+    override suspend fun getMapsDirection(queries: Map<String, String>, store: Store): MapsDirection {
         val response = DIRECTION_SERVICE_DATA.get(queries.toString())
         if (response != null)
-            callback.onSuccess(response)
+            return response
         else
-            callback.onError(NotFoundException())
+            throw NotFoundException()
     }
 }

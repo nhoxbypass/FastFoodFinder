@@ -11,7 +11,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.rx2.await
 import javax.inject.Inject
 
 data class EmailLoginUiState(
@@ -38,7 +37,7 @@ class EmailLoginViewModel @Inject constructor(
             if (isValidPassword(password)) {
                 viewModelScope.launch {
                     try {
-                        val user = clientAuth.signInWithEmailAndPassword(email, password).await()
+                        val user = clientAuth.signInWithEmailAndPassword(email, password)
                         setLoginProgressState(2)
                         _uiState.value = _uiState.value.copy(successUser = user)
                     } catch (e: Exception) {

@@ -18,7 +18,6 @@ buildscript {
 
         classpath(libs.jacoco.core)
 
-        classpath(libs.realm.gradle.plugin)
 
         classpath(libs.kotlin.gradle.plugin)
         classpath(libs.hilt.android.gradle.plugin)

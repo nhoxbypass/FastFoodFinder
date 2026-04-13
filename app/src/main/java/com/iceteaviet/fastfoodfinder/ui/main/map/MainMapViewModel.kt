@@ -23,7 +23,6 @@ import com.iceteaviet.fastfoodfinder.utils.distanceBetween
 import com.iceteaviet.fastfoodfinder.utils.getLatLngString
 import com.iceteaviet.fastfoodfinder.utils.isValidLocation
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -34,7 +33,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.rx2.await
 import javax.inject.Inject
 
 sealed class MainMapEvent {
@@ -204,20 +202,16 @@ class MainMapViewModel @Inject constructor(
         queries[GoogleMapsRoutingApiHelper.PARAM_ORIGIN] = origin
         queries[GoogleMapsRoutingApiHelper.PARAM_DESTINATION] = destination
 
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             try {
-                val mapsDirection = mapsRoutingRepository.getMapsDirection(queries, store).await()
-                launch(Dispatchers.Main) {
-                    if (mapsDirection.routeList.isNotEmpty()) {
-                        _uiState.value = MainMapEvent.ShowMapRoutingView(store, mapsDirection)
-                    } else {
-                        _uiState.value = MainMapEvent.ShowGeneralErrorMessage
-                    }
-                }
-            } catch (e: Exception) {
-                launch(Dispatchers.Main) {
+                val mapsDirection = mapsRoutingRepository.getMapsDirection(queries, store)
+                if (mapsDirection.routeList.isNotEmpty()) {
+                    _uiState.value = MainMapEvent.ShowMapRoutingView(store, mapsDirection)
+                } else {
                     _uiState.value = MainMapEvent.ShowGeneralErrorMessage
                 }
+            } catch (e: Exception) {
+                _uiState.value = MainMapEvent.ShowGeneralErrorMessage
             }
         }
     }
@@ -290,43 +284,35 @@ class MainMapViewModel @Inject constructor(
     }
 
     private fun handleSearchQuickAction(storeType: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             try {
-                val foundStores = storeRepository.findStoresByType(storeType).await()
-                launch(Dispatchers.Main) {
-                    if (foundStores.isEmpty()) {
-                        _uiState.value = MainMapEvent.ShowWarningMessage(R.string.store_not_found)
-                    } else {
-                        storeList = foundStores
-                        _uiState.value = MainMapEvent.AddMarkersToMap(storeList)
-                        _uiState.value = MainMapEvent.AnimateMapCamera(storeList[0].getPosition(), false)
-                    }
+                val foundStores = storeRepository.findStoresByType(storeType)
+                if (foundStores.isEmpty()) {
+                    _uiState.value = MainMapEvent.ShowWarningMessage(R.string.store_not_found)
+                } else {
+                    storeList = foundStores
+                    _uiState.value = MainMapEvent.AddMarkersToMap(storeList)
+                    _uiState.value = MainMapEvent.AnimateMapCamera(storeList[0].getPosition(), false)
                 }
             } catch (e: Exception) {
-                launch(Dispatchers.Main) {
-                    _uiState.value = MainMapEvent.ShowWarningMessage(R.string.get_store_data_failed)
-                }
+                _uiState.value = MainMapEvent.ShowWarningMessage(R.string.get_store_data_failed)
             }
         }
     }
 
     private fun handleSearchQuerySubmitAction(searchString: String) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             try {
-                val foundStores = storeRepository.findStores(searchString).await()
-                launch(Dispatchers.Main) {
-                    if (foundStores.isEmpty()) {
-                        _uiState.value = MainMapEvent.ShowWarningMessage(R.string.store_not_found)
-                    } else {
-                        storeList = foundStores
-                        _uiState.value = MainMapEvent.AddMarkersToMap(storeList)
-                        _uiState.value = MainMapEvent.AnimateMapCamera(storeList[0].getPosition(), false)
-                    }
+                val foundStores = storeRepository.findStores(searchString)
+                if (foundStores.isEmpty()) {
+                    _uiState.value = MainMapEvent.ShowWarningMessage(R.string.store_not_found)
+                } else {
+                    storeList = foundStores
+                    _uiState.value = MainMapEvent.AddMarkersToMap(storeList)
+                    _uiState.value = MainMapEvent.AnimateMapCamera(storeList[0].getPosition(), false)
                 }
             } catch (e: Exception) {
-                launch(Dispatchers.Main) {
-                    _uiState.value = MainMapEvent.ShowWarningMessage(R.string.get_store_data_failed)
-                }
+                _uiState.value = MainMapEvent.ShowWarningMessage(R.string.get_store_data_failed)
             }
         }
     }
@@ -339,21 +325,17 @@ class MainMapViewModel @Inject constructor(
     }
 
     private fun loadAllStoresToMap() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             try {
-                val allStores = storeRepository.getAllStores().await()
-                launch(Dispatchers.Main) {
-                    storeList = allStores
-                    if (storeList.isEmpty()) {
-                        _uiState.value = MainMapEvent.ShowWarningMessage(R.string.get_store_data_failed)
-                    } else {
-                        _uiState.value = MainMapEvent.AddMarkersToMap(storeList)
-                    }
+                val allStores = storeRepository.getAllStores()
+                storeList = allStores
+                if (storeList.isEmpty()) {
+                    _uiState.value = MainMapEvent.ShowWarningMessage(R.string.get_store_data_failed)
+                } else {
+                    _uiState.value = MainMapEvent.AddMarkersToMap(storeList)
                 }
             } catch (e: Exception) {
-                launch(Dispatchers.Main) {
-                    _uiState.value = MainMapEvent.ShowWarningMessage(R.string.get_store_data_failed)
-                }
+                _uiState.value = MainMapEvent.ShowWarningMessage(R.string.get_store_data_failed)
             }
         }
     }

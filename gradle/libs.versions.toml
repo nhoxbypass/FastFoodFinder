@@ -1,6 +1,6 @@
 [versions]
 ## Android
-agp-version = "8.13.2"
+agp-version = "9.1.0-rc01"
 ## Testing
 junit-version = "4.13.2"
 assertj-version = "3.27.7"
@@ -14,8 +14,8 @@ androidx-test-version = "1.7.0"
 androidx-rules-version = "1.7.0"
 sonarqube-version = "7.2.3.7755"
 ## Kotlin
-kotlin-version = "2.2.21"
-ksp-version = "2.2.21-2.0.4"
+kotlin-version = "2.3.20"
+ksp-version = "2.3.6"
 kotlinx-coroutines-version = "1.10.2"
 kotlinx-serialization-json-version = "1.11.0"
 ## AndroidX
@@ -42,22 +42,17 @@ firebase-auth-version = "24.0.1"
 firebase-perf-version = "22.0.5"
 firebase-crashlytics-version = "20.0.5"
 ## DB
-realm-android-library-version = "10.19.0"
-realm-android-plugin-version = "10.19.0"
+room-version = "2.8.4"
 ## Network
 gson-version = "2.13.2"
 retrofit-version = "2.9.0"
-## Reactive
-rxjava3-version = "3.1.12"
-rxandroid3-version = "3.0.2"
-rxkotlin3-version = "3.0.1"
 ## UI
 glide-version = "5.0.5"
 circleimageview-version = "3.1.0"
 ## Misc
 timber-version = "5.0.1"
 ## DI
-hilt-version = "2.57.2"
+hilt-version = "2.59.2"
 ## Code quality
 jacoco-version = "0.8.13"
 
@@ -82,14 +77,12 @@ kotlin-stdlibjdk = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines-version" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines-version" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization-json-version" }
-kotlinx-coroutines-rx3 = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-rx3", version.ref = "kotlinx-coroutines-version" }
-kotlinx-coroutines-rx2 = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-rx2", version.ref = "kotlinx-coroutines-version" }
+kotlinx-coroutines-play-services = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "kotlinx-coroutines-version" }
 ## AndroidX
 appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat-version" }
 cardview = { module = "androidx.cardview:cardview", version.ref = "cardview-version" }
 constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout-version" }
 work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "work-version" }
-work-rxjava2 = { module = "androidx.work:work-rxjava2", version.ref = "work-version" }
 lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle-version" }
 lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle-version" }
 activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activity-version" }
@@ -107,15 +100,13 @@ firebase-auth = { module = "com.google.firebase:firebase-auth", version.ref = "f
 firebase-perf = { module = "com.google.firebase:firebase-perf", version.ref = "firebase-perf-version" }
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics", version.ref = "firebase-crashlytics-version" }
 ## DB
-realm-android-library = { module = "io.realm:realm-android-library", version.ref = "realm-android-library-version" }
+room-runtime = { module = "androidx.room:room-runtime", version.ref = "room-version" }
+room-ktx = { module = "androidx.room:room-ktx", version.ref = "room-version" }
+room-compiler = { module = "androidx.room:room-compiler", version.ref = "room-version" }
 ## Network
 gson = { module = "com.google.code.gson:gson", version.ref = "gson-version" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit-version" }
 retrofit-converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit-version" }
-## Reactive
-rxjava3 = { module = "io.reactivex.rxjava3:rxjava", version.ref = "rxjava3-version" }
-rxandroid3 = { module = "io.reactivex.rxjava3:rxandroid", version.ref = "rxandroid3-version" }
-rxkotlin3 = { module = "io.reactivex.rxjava3:rxkotlin", version.ref = "rxkotlin3-version" }
 ## UI
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide-version" }
 circleimageview = { module = "de.hdodenhof:circleimageview", version.ref = "circleimageview-version" }
@@ -132,7 +123,6 @@ kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", v
 google-services-classpath = { module = "com.google.gms:google-services", version.ref = "google-services-version" }
 firebase-crashlytics-gradle = { module = "com.google.firebase:firebase-crashlytics-gradle", version.ref = "google-firebase-crashlytics-version" }
 firebase-perf-plugin = { module = "com.google.firebase:perf-plugin", version.ref = "google-firebase-perf-version" }
-realm-gradle-plugin = { module = "io.realm:realm-gradle-plugin", version.ref = "realm-android-library-version" }
 hilt-android-gradle-plugin = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hilt-version" }
 
 
@@ -144,7 +134,6 @@ jetbrains-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serializati
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services-version" }
 google-firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "google-firebase-crashlytics-version" }
 google-firebase-perf = { id = "com.google.firebase.firebase-perf", version.ref = "google-firebase-perf-version" }
-realm-android = { id = "realm-android", version.ref = "realm-android-plugin-version" }
 hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt-version" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp-version" }
 sonarqube = { id = "org.sonarqube", version.ref = "sonarqube-version" }

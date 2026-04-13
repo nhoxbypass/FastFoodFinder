@@ -62,8 +62,6 @@ class App : Application() {
             }
         }
 
-        com.iceteaviet.fastfoodfinder.utils.DatabaseInitializer.init(getContext())
-
         GoogleLocationManager.init(getContext())
         SystemLocationManager.init(getContext())
 

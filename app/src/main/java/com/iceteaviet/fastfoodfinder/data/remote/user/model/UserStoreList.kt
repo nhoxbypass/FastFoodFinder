@@ -3,13 +3,8 @@ package com.iceteaviet.fastfoodfinder.data.remote.user.model
 import android.os.Parcel
 import android.os.Parcelable
 import com.google.firebase.database.PropertyName
-import com.iceteaviet.fastfoodfinder.data.local.db.user.model.UserStoreListEntity
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
-import com.iceteaviet.fastfoodfinder.utils.realmListToList
 
-/**
- * Created by Genius Doan on 12/6/2016.
- */
 class UserStoreList : Parcelable {
     var id: Int = -1
     var listName: String = ""
@@ -36,13 +31,6 @@ class UserStoreList : Parcelable {
             this.storeIdList = ArrayList()
         else
             this.storeIdList = storeIdList.toMutableList()
-    }
-
-    constructor(userStoreListEntity: UserStoreListEntity) {
-        this.id = userStoreListEntity.id
-        this.iconId = userStoreListEntity.iconId
-        this.listName = userStoreListEntity.listName
-        this.storeIdList = realmListToList(userStoreListEntity.storeIdList)
     }
 
     fun getStoreIdList(): MutableList<Int> {

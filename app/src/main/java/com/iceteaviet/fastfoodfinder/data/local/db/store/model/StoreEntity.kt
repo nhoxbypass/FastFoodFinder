@@ -1,37 +1,32 @@
 package com.iceteaviet.fastfoodfinder.data.local.db.store.model
 
-import com.google.android.gms.maps.model.LatLng
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 
-import io.realm.RealmObject
+@Entity(tableName = "stores")
+data class StoreEntity(
+    @PrimaryKey val id: Int = 0,
+    val type: Int = 0,
+    val title: String = "",
+    val address: String = "",
+    val latitude: Double = 0.0,
+    val longitude: Double = 0.0,
+    val telephone: String = "",
+)
 
-/**
- * Created by Genius Doan on 11/20/2016.
- */
-open class StoreEntity : RealmObject() {
+fun StoreEntity.toDomain(): Store {
+    return Store(id, title, address, latitude.toString(), longitude.toString(), telephone, type)
+}
 
-    var type: Int = 0
-        private set
-    var id: Int = 0
-    var title: String = ""
-        private set
-    var address: String = ""
-    var latitude: Double = 0.toDouble()
-        private set
-    var longitude: Double = 0.toDouble()
-        private set
-    var telephone: String = ""
-
-    val position: LatLng
-        get() = LatLng(latitude, longitude)
-
-    fun map(store: Store) {
-        id = store.id
-        title = store.title
-        address = store.address
-        latitude = java.lang.Double.parseDouble(store.lat)
-        longitude = java.lang.Double.parseDouble(store.lng)
-        telephone = store.tel
-        type = store.type
-    }
+fun Store.toEntity(): StoreEntity {
+    return StoreEntity(
+        id = id,
+        type = type,
+        title = title,
+        address = address,
+        latitude = lat.toDoubleOrNull() ?: 0.0,
+        longitude = lng.toDoubleOrNull() ?: 0.0,
+        telephone = tel,
+    )
 }

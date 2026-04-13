@@ -3,11 +3,6 @@ package com.iceteaviet.fastfoodfinder.data.auth
 import com.google.firebase.auth.AuthCredential
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
 import com.iceteaviet.fastfoodfinder.utils.exception.NotFoundException
-import io.reactivex.Single
-
-/**
- * Created by Genius Doan on 14/07/2017.
- */
 
 class FakeFirebaseClientAuth : ClientAuth {
     private var user: User?
@@ -21,14 +16,11 @@ class FakeFirebaseClientAuth : ClientAuth {
         return if (currUser != null) currUser.getUid() else ""
     }
 
-    // TODO: Support fake user map to check user exist
-    override fun signUpWithEmailAndPassword(email: String, password: String): Single<User> {
-        return Single.create { emitter ->
-            if (user != null)
-                emitter.onSuccess(user!!)
-            else
-                emitter.onError(NotFoundException())
-        }
+    override suspend fun signUpWithEmailAndPassword(email: String, password: String): User {
+        if (user != null)
+            return user!!
+        else
+            throw NotFoundException()
     }
 
     override fun isSignedIn(): Boolean {
@@ -39,21 +31,17 @@ class FakeFirebaseClientAuth : ClientAuth {
         user = null
     }
 
-    override fun signInWithEmailAndPassword(email: String, password: String): Single<User> {
-        return Single.create { emitter ->
-            if (user != null)
-                emitter.onSuccess(user!!)
-            else
-                emitter.onError(NotFoundException())
-        }
+    override suspend fun signInWithEmailAndPassword(email: String, password: String): User {
+        if (user != null)
+            return user!!
+        else
+            throw NotFoundException()
     }
 
-    override fun signInWithCredential(authCredential: AuthCredential): Single<User> {
-        return Single.create { emitter ->
-            if (user != null)
-                emitter.onSuccess(user!!)
-            else
-                emitter.onError(NotFoundException())
-        }
+    override suspend fun signInWithCredential(authCredential: AuthCredential): User {
+        if (user != null)
+            return user!!
+        else
+            throw NotFoundException()
     }
 }

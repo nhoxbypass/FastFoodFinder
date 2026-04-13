@@ -13,8 +13,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.rx2.await
 import javax.inject.Inject
 
 data class SettingUiState(
@@ -72,9 +70,9 @@ class SettingViewModel @Inject constructor(
     fun onLoadStoreFromServer() {
         _uiState.value = _uiState.value.copy(showLoadingProgressIndicator = true)
         
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             try {
-                val storeList = loadStoresFromServerHelper(App.getContext(), clientAuth, storeRepository).await()
+                val storeList = loadStoresFromServerHelper(App.getContext(), clientAuth, storeRepository)
                 val filteredStoreList = filterInvalidData(storeList.toMutableList())
                 storeRepository.setStores(filteredStoreList)
                 

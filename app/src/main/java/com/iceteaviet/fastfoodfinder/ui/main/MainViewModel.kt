@@ -1,6 +1,7 @@
 package com.iceteaviet.fastfoodfinder.ui.main
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.iceteaviet.fastfoodfinder.data.auth.ClientAuth
 import com.iceteaviet.fastfoodfinder.data.domain.prefs.PreferencesRepository
 import com.iceteaviet.fastfoodfinder.data.domain.user.UserRepository
@@ -16,9 +17,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.rx2.await
-import kotlinx.coroutines.Dispatchers
-import androidx.lifecycle.viewModelScope
 import javax.inject.Inject
 
 sealed class MainEvent {
@@ -69,21 +67,17 @@ class MainViewModel @Inject constructor(
         } else {
             val uid = clientAuth.getCurrentUserUid()
             if (isValidUserUid(uid)) {
-                viewModelScope.launch(Dispatchers.IO) {
+                viewModelScope.launch {
                     try {
-                        val currUser = userRepository.getUser(uid).await()
-                        launch(Dispatchers.Main) {
-                            _uiState.value = _uiState.value.copy(
-                                showSignInButton = false,
-                                userName = currUser.name,
-                                userEmail = currUser.email,
-                                userAvatarUrl = if (currUser.photoUrl.isNotBlank()) currUser.photoUrl else null
-                            )
-                        }
+                        val currUser = userRepository.getUser(uid)
+                        _uiState.value = _uiState.value.copy(
+                            showSignInButton = false,
+                            userName = currUser.name,
+                            userEmail = currUser.email,
+                            userAvatarUrl = if (currUser.photoUrl.isNotBlank()) currUser.photoUrl else null
+                        )
                     } catch (e: Exception) {
-                        launch(Dispatchers.Main) {
-                            _uiState.value = _uiState.value.copy(showSignInButton = true)
-                        }
+                        _uiState.value = _uiState.value.copy(showSignInButton = true)
                     }
                 }
             } else {

@@ -4,11 +4,7 @@ import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
-import io.reactivex.Single
-
-/**
- * Created by Genius Doan on 14/07/2017.
- */
+import kotlinx.coroutines.tasks.await
 
 class FirebaseClientAuth : ClientAuth {
     private val mAuth: FirebaseAuth
@@ -22,17 +18,9 @@ class FirebaseClientAuth : ClientAuth {
         return if (currUser != null) currUser.uid else ""
     }
 
-    override fun signUpWithEmailAndPassword(email: String, password: String): Single<User> {
-        return Single.create { emitter ->
-            mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnSuccessListener {
-                    it.user?.let { user ->
-                        emitter.onSuccess(convertFirebaseUserToUser(user))
-                    }
-                }
-                .addOnFailureListener { e -> emitter.onError(e) }
-                .addOnCanceledListener { emitter.onError(Exception("Cancel")) }
-        }
+    override suspend fun signUpWithEmailAndPassword(email: String, password: String): User {
+        val result = mAuth.createUserWithEmailAndPassword(email, password).await()
+        return convertFirebaseUserToUser(result.user!!)
     }
 
     override fun isSignedIn(): Boolean {
@@ -44,30 +32,14 @@ class FirebaseClientAuth : ClientAuth {
         mAuth.signOut()
     }
 
-    override fun signInWithEmailAndPassword(email: String, password: String): Single<User> {
-        return Single.create { emitter ->
-            mAuth.signInWithEmailAndPassword(email, password)
-                .addOnSuccessListener { authResult ->
-                    authResult.user?.let {
-                        emitter.onSuccess(convertFirebaseUserToUser(it))
-                    }
-                }
-                .addOnFailureListener { e -> emitter.onError(e) }
-                .addOnCanceledListener { emitter.onError(Exception("Cancel")) }
-        }
+    override suspend fun signInWithEmailAndPassword(email: String, password: String): User {
+        val result = mAuth.signInWithEmailAndPassword(email, password).await()
+        return convertFirebaseUserToUser(result.user!!)
     }
 
-    override fun signInWithCredential(authCredential: AuthCredential): Single<User> {
-        return Single.create { emitter ->
-            mAuth.signInWithCredential(authCredential)
-                .addOnSuccessListener { authResult ->
-                    authResult.user?.let {
-                        emitter.onSuccess(convertFirebaseUserToUser(it))
-                    }
-                }
-                .addOnFailureListener { e -> emitter.onError(e) }
-                .addOnCanceledListener { emitter.onError(Exception("Cancel")) }
-        }
+    override suspend fun signInWithCredential(authCredential: AuthCredential): User {
+        val result = mAuth.signInWithCredential(authCredential).await()
+        return convertFirebaseUserToUser(result.user!!)
     }
 
     private fun convertFirebaseUserToUser(firebaseUser: FirebaseUser): User {

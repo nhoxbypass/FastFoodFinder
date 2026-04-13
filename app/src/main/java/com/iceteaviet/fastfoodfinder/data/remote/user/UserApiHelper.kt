@@ -1,31 +1,21 @@
 package com.iceteaviet.fastfoodfinder.data.remote.user
 
-import androidx.core.util.Pair
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.User
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList
-import io.reactivex.Observable
+import kotlinx.coroutines.flow.Flow
 
-/**
- * Created by tom on 7/15/18.
- */
 interface UserApiHelper {
-    interface UserLoadCallback<T> {
-        fun onSuccess(data: T)
-
-        fun onError(exception: Exception)
-    }
-
     fun insertOrUpdate(name: String, email: String, photoUrl: String, uid: String, storeLists: List<UserStoreList>)
 
     fun insertOrUpdate(user: User)
 
     fun updateStoreListForUser(uid: String, storeLists: List<UserStoreList>)
 
-    fun getUser(uid: String, callback: UserLoadCallback<User>)
+    suspend fun getUser(uid: String): User
 
-    fun isUserExists(uid: String, callback: UserLoadCallback<Boolean>)
+    suspend fun isUserExists(uid: String): Boolean
 
-    fun subscribeFavouriteStoresOfUser(uid: String): Observable<Pair<Int, Int>>  // Pair <StoreId, Event code>
+    fun subscribeFavouriteStoresOfUser(uid: String): Flow<Pair<Int, Int>>
 
     fun unsubscribeFavouriteStoresOfUser(uid: String)
 }

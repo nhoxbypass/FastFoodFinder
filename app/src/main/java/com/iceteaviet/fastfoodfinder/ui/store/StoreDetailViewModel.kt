@@ -20,12 +20,10 @@ import com.iceteaviet.fastfoodfinder.utils.getCurrentUserHelper
 import com.iceteaviet.fastfoodfinder.utils.getLatLngString
 import com.iceteaviet.fastfoodfinder.utils.isValidLocation
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.rx2.await
 import javax.inject.Inject
 
 data class StoreDetailUiState(
@@ -84,17 +82,13 @@ class StoreDetailViewModel @Inject constructor(
     fun start(hasLocationPermission: Boolean) {
         if (currStore == null) return
 
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             val currUser = getCurrentUserHelper(clientAuth, userRepository)
-            launch(Dispatchers.Main) {
-                _uiState.value = _uiState.value.copy(isSignedIn = currUser != null)
-            }
+            _uiState.value = _uiState.value.copy(isSignedIn = currUser != null)
             
             try {
-                val commentList = storeRepository.getComments(currStore.id.toString()).await()
-                launch(Dispatchers.Main) {
-                    _uiState.value = _uiState.value.copy(comments = commentList.reversed())
-                }
+                val commentList = storeRepository.getComments(currStore.id.toString())
+                _uiState.value = _uiState.value.copy(comments = commentList.reversed())
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -136,22 +130,21 @@ class StoreDetailViewModel @Inject constructor(
     fun onAddNewComment(comment: Comment?) {
         comment?.let {
             _uiState.value = _uiState.value.copy(event = StoreDetailEvent.AddStoreComment(it))
-            // Update remote data
             if (currStore != null) {
-                storeRepository.insertOrUpdateComment(currStore.id.toString(), it)
+                viewModelScope.launch {
+                    storeRepository.insertOrUpdateComment(currStore.id.toString(), it)
+                }
             }
         }
     }
 
     fun onCommentButtonClick() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             val currUser = getCurrentUserHelper(clientAuth, userRepository)
-            launch(Dispatchers.Main) {
-                if (currUser != null) {
-                    _uiState.value = _uiState.value.copy(event = StoreDetailEvent.ShowCommentEditorView)
-                } else {
-                    _uiState.value = _uiState.value.copy(event = StoreDetailEvent.ShowLoginRequestToast)
-                }
+            if (currUser != null) {
+                _uiState.value = _uiState.value.copy(event = StoreDetailEvent.ShowCommentEditorView)
+            } else {
+                _uiState.value = _uiState.value.copy(event = StoreDetailEvent.ShowLoginRequestToast)
             }
         }
     }
@@ -188,42 +181,34 @@ class StoreDetailViewModel @Inject constructor(
         queries[GoogleMapsRoutingApiHelper.PARAM_ORIGIN] = origin
         queries[GoogleMapsRoutingApiHelper.PARAM_DESTINATION] = destination
 
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             try {
-                val mapsDirection = mapsRoutingRepository.getMapsDirection(queries, currStore).await()
-                launch(Dispatchers.Main) {
-                    if (mapsDirection.routeList.isNotEmpty()) {
-                        _uiState.value = _uiState.value.copy(event = StoreDetailEvent.ShowMapRoutingView(currStore, mapsDirection))
-                    } else {
-                        _uiState.value = _uiState.value.copy(event = StoreDetailEvent.ShowGeneralErrorMessage)
-                    }
-                }
-            } catch (e: Exception) {
-                launch(Dispatchers.Main) {
+                val mapsDirection = mapsRoutingRepository.getMapsDirection(queries, currStore)
+                if (mapsDirection.routeList.isNotEmpty()) {
+                    _uiState.value = _uiState.value.copy(event = StoreDetailEvent.ShowMapRoutingView(currStore, mapsDirection))
+                } else {
                     _uiState.value = _uiState.value.copy(event = StoreDetailEvent.ShowGeneralErrorMessage)
                 }
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(event = StoreDetailEvent.ShowGeneralErrorMessage)
             }
         }
     }
 
     fun onAddToFavButtonClick() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             val currUser = getCurrentUserHelper(clientAuth, userRepository)
             if (currUser == null) {
-                launch(Dispatchers.Main) {
-                    _uiState.value = _uiState.value.copy(event = StoreDetailEvent.ShowLoginRequestToast)
-                }
+                _uiState.value = _uiState.value.copy(event = StoreDetailEvent.ShowLoginRequestToast)
             }
         }
     }
 
     fun onSaveButtonClick() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             val currUser = getCurrentUserHelper(clientAuth, userRepository)
             if (currUser == null) {
-                launch(Dispatchers.Main) {
-                    _uiState.value = _uiState.value.copy(event = StoreDetailEvent.ShowLoginRequestToast)
-                }
+                _uiState.value = _uiState.value.copy(event = StoreDetailEvent.ShowLoginRequestToast)
             }
         }
     }

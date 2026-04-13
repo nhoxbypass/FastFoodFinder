@@ -6,23 +6,20 @@ import com.iceteaviet.fastfoodfinder.utils.exception.NotFoundException
 import java.util.*
 import kotlin.collections.ArrayList
 
-/**
- * Created by tom on 7/17/18.
- */
 class FakeFirebaseStoreApiHelper : StoreApiHelper {
 
     private var STORE_SERVICE_DATA: MutableList<Store> = ArrayList()
     private var STORE_COMMENT_SERVICE_DATA: MutableMap<String, MutableList<Comment>> = TreeMap()
 
-    override fun getAllStores(callback: StoreApiHelper.StoreLoadCallback<List<Store>>) {
+    override suspend fun getAllStores(): List<Store> {
         if (!STORE_SERVICE_DATA.isEmpty())
-            callback.onSuccess(STORE_SERVICE_DATA)
+            return STORE_SERVICE_DATA
         else
-            callback.onError(NotFoundException())
+            throw NotFoundException()
     }
 
-    override fun getComments(storeId: String, callback: StoreApiHelper.StoreLoadCallback<List<Comment>>) {
-        callback.onSuccess(STORE_COMMENT_SERVICE_DATA.get(storeId) ?: ArrayList())
+    override suspend fun getComments(storeId: String): List<Comment> {
+        return STORE_COMMENT_SERVICE_DATA.get(storeId) ?: ArrayList()
     }
 
     override fun insertOrUpdateComment(storeId: String, comment: Comment) {

@@ -12,14 +12,10 @@ import com.iceteaviet.fastfoodfinder.utils.filterInvalidData
 import com.iceteaviet.fastfoodfinder.utils.isValidUserUid
 import com.iceteaviet.fastfoodfinder.utils.loadStoresFromServerHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.reactivex.Completable
-import io.reactivex.schedulers.Schedulers
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.rx2.await
 import javax.inject.Inject
 
 sealed class SplashUiState {
@@ -62,9 +58,9 @@ class SplashViewModel @Inject constructor(
     }
 
     fun loadStoresFromServer() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             try {
-                loadStoresFromServerInternal().await()
+                loadStoresFromServerInternal()
                 if (clientAuth.isSignedIn() && isValidUserUid(clientAuth.getCurrentUserUid())) {
                     _uiState.value = SplashUiState.NavigateToMain(getSplashRemainingTime())
                 } else {
@@ -72,8 +68,6 @@ class SplashViewModel @Inject constructor(
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
-                // loadStoresFromServerInternal already triggers ShowRetryDialog internally if validation fails, 
-                // but if an unexpected error occurs here:
             }
         }
     }
@@ -84,9 +78,9 @@ class SplashViewModel @Inject constructor(
 
     private fun onAppOpenFirstTime() {
         preferencesRepository.setAppLaunchFirstTime(false)
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             try {
-                loadStoresFromServerInternal().await()
+                loadStoresFromServerInternal()
                 _uiState.value = SplashUiState.NavigateToLogin
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -96,30 +90,28 @@ class SplashViewModel @Inject constructor(
         }
     }
 
-    private fun loadStoresFromServerInternal(): Completable {
-        return Completable.create { emitter ->
-            loadStoresFromServerHelper(App.getContext(), clientAuth, storeRepository)
-                .observeOn(Schedulers.io())
-                .subscribe({ storeList ->
-                    if (storeList.isNotEmpty()) {
-                        val filteredStoreList = filterInvalidData(storeList.toMutableList())
-                        storeRepository.setStores(filteredStoreList)
-                        emitter.onComplete()
-                    } else {
-                        _uiState.value = SplashUiState.ShowRetryDialog
-                        emitter.onError(EmptyDataException())
-                    }
-                }, { error ->
-                    _uiState.value = SplashUiState.ShowRetryDialog
-                    emitter.onError(error)
-                })
+    private suspend fun loadStoresFromServerInternal() {
+        try {
+            val storeList = loadStoresFromServerHelper(App.getContext(), clientAuth, storeRepository)
+            if (storeList.isNotEmpty()) {
+                val filteredStoreList = filterInvalidData(storeList.toMutableList())
+                storeRepository.setStores(filteredStoreList)
+            } else {
+                _uiState.value = SplashUiState.ShowRetryDialog
+                throw EmptyDataException()
+            }
+        } catch (e: Exception) {
+            if (e !is EmptyDataException) {
+                _uiState.value = SplashUiState.ShowRetryDialog
+            }
+            throw e
         }
     }
 
     private fun loadDataAndOpenLoginScreen() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             try {
-                val storeList = storeRepository.getAllStores().await()
+                val storeList = storeRepository.getAllStores()
                 if (storeList.isEmpty()) {
                     loadStoresFromServer()
                 } else {
@@ -134,10 +126,10 @@ class SplashViewModel @Inject constructor(
     }
 
     private fun loadDataAndOpenMainScreen(userUid: String) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             try {
-                val user = userRepository.getUser(userUid).await()
-                val storeList = storeRepository.getAllStores().await()
+                val user = userRepository.getUser(userUid)
+                val storeList = storeRepository.getAllStores()
 
                 userRepository.insertOrUpdateUser(user)
 
