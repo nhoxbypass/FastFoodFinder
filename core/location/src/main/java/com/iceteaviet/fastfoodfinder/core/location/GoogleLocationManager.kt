@@ -29,21 +29,6 @@ open class GoogleLocationManager private constructor(context: Context) : AbsLoca
         }
     }
 
-    private val clientConnectionCallbacks = object : GoogleApiClient.ConnectionCallbacks {
-        override fun onConnected(extras: Bundle?) {
-            connected = true
-            currLocation = getLastLocation()
-            currLocation?.let {
-                googleLocationListener.onLocationChanged(it)
-            }
-        }
-
-        override fun onConnectionSuspended(i: Int) {
-            onFailed(FailType.GOOGLE_PLAY_SERVICES_CONNECTION_FAIL)
-            connected = false
-        }
-    }
-
     init {
         initLocationProvider(context)
     }
@@ -85,8 +70,22 @@ open class GoogleLocationManager private constructor(context: Context) : AbsLoca
     }
 
     private fun createGoogleApiClient(context: Context): GoogleApiClient {
+        val connectionCallbacks = object : GoogleApiClient.ConnectionCallbacks {
+            override fun onConnected(extras: Bundle?) {
+                connected = true
+                currLocation = getLastLocation()
+                currLocation?.let {
+                    googleLocationListener.onLocationChanged(it)
+                }
+            }
+
+            override fun onConnectionSuspended(i: Int) {
+                onFailed(FailType.GOOGLE_PLAY_SERVICES_CONNECTION_FAIL)
+                connected = false
+            }
+        }
         return GoogleApiClient.Builder(context)
-            .addConnectionCallbacks(clientConnectionCallbacks)
+            .addConnectionCallbacks(connectionCallbacks)
             .addOnConnectionFailedListener {
                 onFailed(FailType.GOOGLE_PLAY_SERVICES_CONNECTION_FAIL)
             }
