@@ -65,7 +65,7 @@ android {
     productFlavors {
         create("mock") {
             dimension = "environment"
-            applicationIdSuffix = ".mock"
+            // applicationIdSuffix = ".mock" // Firebase API key restricts package name
         }
         create("prod") {
             dimension = "environment"

@@ -12,14 +12,16 @@ import com.iceteaviet.fastfoodfinder.data.domain.user.AppUserRepository
 import com.iceteaviet.fastfoodfinder.data.domain.user.UserRepository
 import com.iceteaviet.fastfoodfinder.data.local.db.store.FakeStoreDAO
 import com.iceteaviet.fastfoodfinder.data.local.db.user.FakeUserDAO
+import android.content.Context
 import com.iceteaviet.fastfoodfinder.data.local.prefs.AppPreferencesHelper
-import com.iceteaviet.fastfoodfinder.data.local.prefs.FakePreferencesHelper
+import com.iceteaviet.fastfoodfinder.data.local.prefs.AppPreferencesWrapper
 import com.iceteaviet.fastfoodfinder.data.remote.routing.FakeGoogleMapsRoutingApiHelper
 import com.iceteaviet.fastfoodfinder.data.remote.store.FakeFirebaseStoreApiHelper
 import com.iceteaviet.fastfoodfinder.data.remote.user.FakeFirebaseUserApiHelper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -52,14 +54,15 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun providePreferenceRepository(): PreferencesRepository {
-        val helper = AppPreferencesHelper(FakePreferencesHelper())
+    fun providePreferenceRepository(@ApplicationContext context: Context): PreferencesRepository {
+        val wrapper = AppPreferencesWrapper(context.getSharedPreferences(AppPreferencesWrapper.PREFS_NAME, Context.MODE_PRIVATE))
+        val helper = AppPreferencesHelper(wrapper)
         return AppPreferencesRepository(helper)
     }
 
     @Provides
     @Singleton
-    fun provideAuthClient(): ClientAuth {
-        return FakeFirebaseClientAuth()
+    fun provideAuthClient(@ApplicationContext context: Context): ClientAuth {
+        return FakeFirebaseClientAuth(context)
     }
 }

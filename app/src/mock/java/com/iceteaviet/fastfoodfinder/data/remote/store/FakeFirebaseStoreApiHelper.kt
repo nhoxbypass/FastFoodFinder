@@ -12,10 +12,10 @@ class FakeFirebaseStoreApiHelper : StoreApiHelper {
     private var STORE_COMMENT_SERVICE_DATA: MutableMap<String, MutableList<Comment>> = TreeMap()
 
     override suspend fun getAllStores(): List<Store> {
-        if (!STORE_SERVICE_DATA.isEmpty())
-            return STORE_SERVICE_DATA
-        else
-            throw NotFoundException()
+        if (STORE_SERVICE_DATA.isEmpty()) {
+            STORE_SERVICE_DATA = com.iceteaviet.fastfoodfinder.utils.getFakeStoreList().toMutableList()
+        }
+        return STORE_SERVICE_DATA
     }
 
     override suspend fun getComments(storeId: String): List<Comment> {

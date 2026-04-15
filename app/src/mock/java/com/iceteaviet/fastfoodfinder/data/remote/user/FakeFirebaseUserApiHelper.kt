@@ -29,11 +29,12 @@ class FakeFirebaseUserApiHelper : UserApiHelper {
     }
 
     override suspend fun getUser(uid: String): User {
-        val entity = USER_SERVICE_DATA_MAP.get(uid)
-        if (entity != null)
-            return entity
-        else
-            throw NotFoundException()
+        var entity = USER_SERVICE_DATA_MAP.get(uid)
+        if (entity == null) {
+            entity = User(uid, "Fake User", "fake.user@gmail.com", "", com.iceteaviet.fastfoodfinder.utils.getDefaultUserStoreLists())
+            USER_SERVICE_DATA_MAP.put(uid, entity)
+        }
+        return entity
     }
 
     override suspend fun isUserExists(uid: String): Boolean {
