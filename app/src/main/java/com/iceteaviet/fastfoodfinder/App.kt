@@ -7,6 +7,9 @@ import androidx.annotation.VisibleForTesting
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.WorkManager
 import com.google.android.gms.maps.MapsInitializer
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import com.iceteaviet.fastfoodfinder.core.location.GoogleLocationManager
 import com.iceteaviet.fastfoodfinder.core.location.SystemLocationManager
 import com.iceteaviet.fastfoodfinder.service.workers.SyncDatabaseWorker
@@ -70,8 +73,10 @@ class App : Application() {
 
     private fun scheduleSyncDBWorker() {
         val work = SyncDatabaseWorker.prepareSyncDBWorker()
-        WorkManager.getInstance(context)
-            .enqueueUniquePeriodicWork(SYNC_DB_JOB_TAG, ExistingPeriodicWorkPolicy.KEEP, work)
+        CoroutineScope(Dispatchers.IO).launch {
+            WorkManager.getInstance(context)
+                .enqueueUniquePeriodicWork(SYNC_DB_JOB_TAG, ExistingPeriodicWorkPolicy.KEEP, work)
+        }
     }
 
 
