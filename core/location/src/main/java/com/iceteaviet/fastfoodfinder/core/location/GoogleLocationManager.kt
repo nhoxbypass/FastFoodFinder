@@ -3,44 +3,36 @@ package com.iceteaviet.fastfoodfinder.core.location
 import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Location
-import android.os.Bundle
-import com.google.android.gms.common.api.GoogleApiClient
+import android.os.Looper
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
 import com.iceteaviet.fastfoodfinder.core.location.base.AbsLocationManager
 import com.iceteaviet.fastfoodfinder.core.location.base.ILocationManager
 
 
 /**
  * Created by tom on 2019-05-01.
+ *
+ * Uses the modern FusedLocationProviderClient API (non-blocking).
+ * The deprecated GoogleApiClient + FusedLocationApi pattern caused ANRs because
+ * FusedLocationApi.getLastLocation() blocked the main thread internally via CountDownLatch.
  */
 open class GoogleLocationManager private constructor(context: Context) : AbsLocationManager(context), ILocationManager {
 
     private var locationRequest: LocationRequest? = null
-    private var googleApiClient: GoogleApiClient? = null
+    private var fusedLocationClient: FusedLocationProviderClient? = null
 
-    /**
-     * Will be trigger by Google Fused Location Api & manual when Location Api service connected
-     */
-    private val googleLocationListener = com.google.android.gms.location.LocationListener { location ->
-        currLocation = location
-        for (listener in listeners) {
-            listener.onLocationChanged(LatLngAlt(location.latitude, location.longitude, location.altitude))
-        }
-    }
-
-    private val clientConnectionCallbacks = object : GoogleApiClient.ConnectionCallbacks {
-        override fun onConnected(extras: Bundle?) {
-            connected = true
-            currLocation = getLastLocation()
-            currLocation?.let {
-                googleLocationListener.onLocationChanged(it)
+    private val locationCallback = object : LocationCallback() {
+        override fun onLocationResult(result: LocationResult) {
+            val location = result.lastLocation ?: return
+            currLocation = location
+            for (listener in listeners) {
+                listener.onLocationChanged(LatLngAlt(location.latitude, location.longitude, location.altitude))
             }
-        }
-
-        override fun onConnectionSuspended(i: Int) {
-            onFailed(FailType.GOOGLE_PLAY_SERVICES_CONNECTION_FAIL)
-            connected = false
         }
     }
 
@@ -50,54 +42,63 @@ open class GoogleLocationManager private constructor(context: Context) : AbsLoca
 
     override fun initLocationProvider(context: Context) {
         locationRequest = createLocationRequest()
-        googleApiClient = createGoogleApiClient(context)
-        googleApiClient?.connect()
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
+
+        // FusedLocationProviderClient is ready immediately — no connection step needed.
+        // Fetch last known location asynchronously via a Task callback (non-blocking).
+        connected = true
+        fetchLastLocationAsync()
     }
 
+    /**
+     * Fetches the last known location asynchronously without blocking the main thread.
+     * When the result is available, it notifies all registered listeners.
+     */
     @SuppressLint("MissingPermission")
+    private fun fetchLastLocationAsync() {
+        fusedLocationClient?.lastLocation?.addOnSuccessListener { location: Location? ->
+            if (location != null) {
+                currLocation = location
+                for (listener in listeners) {
+                    listener.onLocationChanged(LatLngAlt(location.latitude, location.longitude, location.altitude))
+                }
+            }
+        }
+    }
+
+    /**
+     * Returns the last cached location synchronously (no network call, no blocking).
+     * Returns null if no location has been received yet.
+     */
     override fun getLastLocation(): Location? {
-        return LocationServices.FusedLocationApi.getLastLocation(googleApiClient!!)
+        return currLocation
     }
 
     @SuppressLint("MissingPermission")
     override fun requestLocationUpdates() {
-        if (isConnected() && !isRequestingLocationUpdate())
-            LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient!!, locationRequest!!, googleLocationListener)
+        if (!isConnected() || isRequestingLocationUpdate()) return
+
+        fusedLocationClient?.requestLocationUpdates(
+            locationRequest!!,
+            locationCallback,
+            Looper.getMainLooper()
+        )
+        requestingLocationUpdate = true
     }
 
     override fun terminate() {
         super.terminate()
-        googleApiClient?.disconnect()
-        LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient!!, googleLocationListener)
+        fusedLocationClient?.removeLocationUpdates(locationCallback)
+        requestingLocationUpdate = false
     }
-
 
     /**
      * Create location request with high accuracy
      */
     private fun createLocationRequest(): LocationRequest {
-        val mLocationRequest = LocationRequest()
-        mLocationRequest.interval = INTERVAL
-        mLocationRequest.fastestInterval = FASTEST_INTERVAL
-        mLocationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-
-        return mLocationRequest
-    }
-
-    private fun createGoogleApiClient(context: Context): GoogleApiClient {
-        return GoogleApiClient.Builder(context)
-            .addConnectionCallbacks(clientConnectionCallbacks)
-            .addOnConnectionFailedListener {
-                onFailed(FailType.GOOGLE_PLAY_SERVICES_CONNECTION_FAIL)
-            }
-            .addApi(LocationServices.API)
+        return LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, INTERVAL)
+            .setMinUpdateIntervalMillis(FASTEST_INTERVAL)
             .build()
-    }
-
-    private fun onFailed(failType: Int) {
-        for (listener in listeners) {
-            listener.onLocationFailed(failType)
-        }
     }
 
     companion object {
@@ -128,4 +129,3 @@ open class GoogleLocationManager private constructor(context: Context) : AbsLoca
         }
     }
 }
-

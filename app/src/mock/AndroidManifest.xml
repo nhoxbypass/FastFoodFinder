@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <application>
+        <!-- Disable Firebase Performance Monitoring in the mock flavor.
+             The mock google-services.json uses fake credentials, so Firebase Installations
+             throws an IllegalArgumentException that kills the process on a background thread. -->
+        <meta-data
+            android:name="firebase_performance_collection_deactivated"
+            android:value="true" />
+
+        <!-- Disable Crashlytics data collection in the mock flavor for the same reason. -->
+        <meta-data
+            android:name="firebase_crashlytics_collection_enabled"
+            android:value="false" />
+    </application>
+
+</manifest>

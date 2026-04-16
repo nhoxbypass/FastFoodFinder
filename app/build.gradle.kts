@@ -43,6 +43,11 @@ android {
 
     lint {
         abortOnError = false
+        // Disable lint running as part of release builds.
+        // The lintVitalAnalyzeProdRelease task crashes due to a known bug in the
+        // Kotlin Analysis API (KaFirScriptSymbol) when analyzing .kts build scripts.
+        // See: https://issuetracker.google.com/issues/kotlin-lint-kts
+        checkReleaseBuilds = false
     }
 
     buildTypes {
@@ -65,7 +70,7 @@ android {
     productFlavors {
         create("mock") {
             dimension = "environment"
-            applicationIdSuffix = ".mock"
+            // applicationIdSuffix = ".mock" // Firebase API key restricts package name
         }
         create("prod") {
             dimension = "environment"

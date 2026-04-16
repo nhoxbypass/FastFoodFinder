@@ -74,13 +74,8 @@ class MainMapFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupUI()
-        setupObservers()
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
         mMapFragment = inflateSupportMapFragment()
+        setupObservers()
     }
 
     override fun onResume() {
@@ -220,8 +215,11 @@ class MainMapFragment : Fragment() {
         viewModel.onClearOldMapData()
 
         viewLifecycleOwner.lifecycleScope.launch(kotlinx.coroutines.Dispatchers.Main) {
+            val bounds = googleMap?.projection?.visibleRegion?.latLngBounds
             for (i in storeList.indices) {
                 val store = storeList[i]
+                if (bounds != null && !bounds.contains(store.getPosition())) continue
+
                 val marker = googleMap!!.addMarker(
                     MarkerOptions().position(store.getPosition())
                         .title(store.title)
@@ -285,12 +283,11 @@ class MainMapFragment : Fragment() {
         googleMap?.clear()
     }
 
-    private fun inflateSupportMapFragment(): SupportMapFragment {
+    private fun inflateSupportMapFragment(): SupportMapFragment? {
         val fragmentManager = childFragmentManager
-        var fragment = fragmentManager.findFragmentById(R.id.maps_container)
-        var mapFragment: SupportMapFragment?
+        val fragment = fragmentManager.findFragmentById(R.id.maps_container)
 
-        if (fragment === null) {
+        if (fragment == null) {
             val cameraPosition = CameraPosition.builder()
                 .target(Constant.DEFAULT_MAP_TARGET)
                 .zoom(16f)
@@ -302,14 +299,12 @@ class MainMapFragment : Fragment() {
                 .rotateGesturesEnabled(true)
                 .zoomGesturesEnabled(true)
                 .tiltGesturesEnabled(true)
-            mapFragment = SupportMapFragment.newInstance(options)
-            fragmentManager.beginTransaction().replace(R.id.map_placeholder, mapFragment as Fragment).commit()
-            fragmentManager.executePendingTransactions()
+            val mapFragment = SupportMapFragment.newInstance(options)
+            fragmentManager.beginTransaction().replace(R.id.map_placeholder, mapFragment).commitAllowingStateLoss()
+            return mapFragment
         } else {
-            mapFragment = fragment as SupportMapFragment
+            return fragment as SupportMapFragment
         }
-
-        return mapFragment
     }
 
     private fun setupUI() {
