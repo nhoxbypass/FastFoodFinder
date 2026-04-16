@@ -53,7 +53,15 @@ class LoginViewModel @Inject constructor(
     fun onLoginSuccess(baseUser: User) {
         viewModelScope.launch {
             try {
-                val user = userRepository.getUser(baseUser.getUid())
+                // Try to fetch the existing user profile from the repository (e.g. Firebase DB in prod).
+                // This preserves the real display name the user set at registration.
+                // Fall back to the auth-provided baseUser if no profile exists yet.
+                val user = try {
+                    userRepository.getUser(baseUser.getUid())
+                } catch (e: Exception) {
+                    baseUser
+                }
+                ensureBasicUserData(user)
                 userRepository.insertOrUpdateUser(user)
                 _uiState.value = LoginUiState.NavigateToMain
             } catch (e: Exception) {

@@ -39,8 +39,8 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideUserRepository(): UserRepository {
-        val remote = FakeFirebaseUserApiHelper()
+    fun provideUserRepository(@ApplicationContext context: Context): UserRepository {
+        val remote = FakeFirebaseUserApiHelper(context)
         val local = FakeUserDAO()
         return AppUserRepository(remote, local)
     }

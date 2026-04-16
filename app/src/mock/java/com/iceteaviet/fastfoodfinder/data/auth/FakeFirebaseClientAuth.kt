@@ -12,8 +12,9 @@ class FakeFirebaseClientAuth(context: Context) : ClientAuth {
 
     init {
         val savedEmail = prefs.getString("mock_user_email", null)
+        val savedName = prefs.getString("mock_user_name", "Mock User")
         if (savedEmail != null) {
-            user = User("mock_uid", "Mock User", savedEmail, "", com.iceteaviet.fastfoodfinder.utils.getDefaultUserStoreLists())
+            user = User("mock_uid", savedName ?: "Mock User", savedEmail, "", com.iceteaviet.fastfoodfinder.utils.getDefaultUserStoreLists())
         }
     }
 
@@ -37,7 +38,9 @@ class FakeFirebaseClientAuth(context: Context) : ClientAuth {
     }
 
     override suspend fun signInWithEmailAndPassword(email: String, password: String): User {
-        val newUser = User("mock_uid", "Mock User", email, "", com.iceteaviet.fastfoodfinder.utils.getDefaultUserStoreLists())
+        // Return empty name so LoginViewModel.ensureBasicUserData() can derive
+        // a proper display name from the email (e.g. "john" from "john@gmail.com").
+        val newUser = User("mock_uid", "", email, "", com.iceteaviet.fastfoodfinder.utils.getDefaultUserStoreLists())
         if (email != "anonymous@fastfoodfinder.com") {
             setUserState(newUser, email)
         }
@@ -53,6 +56,9 @@ class FakeFirebaseClientAuth(context: Context) : ClientAuth {
     
     private fun setUserState(newUser: User, email: String) {
         user = newUser
-        prefs.edit().putString("mock_user_email", email).apply()
+        prefs.edit()
+            .putString("mock_user_email", email)
+            .putString("mock_user_name", newUser.name)
+            .apply()
     }
 }
