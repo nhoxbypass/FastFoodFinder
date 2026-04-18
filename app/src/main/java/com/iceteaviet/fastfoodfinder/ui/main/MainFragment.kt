@@ -48,7 +48,7 @@ class MainFragment : Fragment() {
 
         val mPagerAdapter = MainPagerAdapter(childFragmentManager)
         mViewPager.adapter = mPagerAdapter
-        mViewPager.offscreenPageLimit = 2
+        mViewPager.offscreenPageLimit = 1
         mTabLayout.setupWithViewPager(mViewPager)
 
 
