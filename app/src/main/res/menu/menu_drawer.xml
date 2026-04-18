@@ -9,6 +9,9 @@
                     android:id="@+id/menu_action_map"
                     android:title="@string/map" />
                 <item
+                    android:id="@+id/menu_action_favourite"
+                    android:title="@string/favourite" />
+                <item
                     android:id="@+id/menu_action_ar"
                     android:title="@string/ar" />
                 <item

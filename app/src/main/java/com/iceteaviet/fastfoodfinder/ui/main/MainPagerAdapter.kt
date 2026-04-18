@@ -4,22 +4,17 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.iceteaviet.fastfoodfinder.R
-import com.iceteaviet.fastfoodfinder.ui.main.favourite.MainFavouriteFragment
 import com.iceteaviet.fastfoodfinder.ui.main.map.MainMapFragment
 
 /**
  * Created by Genius Doan on 11/8/2016.
  */
 class MainPagerAdapter internal constructor(fm: FragmentManager) : FragmentPagerAdapter(fm) {
-    private val pageTitles = arrayOf(R.string.map.toString(), R.string.favourite.toString())
-    private val imageResId = intArrayOf(R.drawable.ic_main_map, R.drawable.ic_main_star_red)
+    private val pageTitles = arrayOf(R.string.map.toString())
+    private val imageResId = intArrayOf(R.drawable.ic_main_map)
 
     override fun getItem(position: Int): Fragment {
-        return when (position) {
-            0 -> MainMapFragment.newInstance()
-            1 -> MainFavouriteFragment.newInstance()
-            else -> MainMapFragment.newInstance()
-        }
+        return MainMapFragment.newInstance()
     }
 
     override fun getPageTitle(position: Int): CharSequence {
@@ -35,6 +30,6 @@ class MainPagerAdapter internal constructor(fm: FragmentManager) : FragmentPager
     }
 
     companion object {
-        private const val PAGE_COUNT = 2
+        private const val PAGE_COUNT = 1
     }
 }
