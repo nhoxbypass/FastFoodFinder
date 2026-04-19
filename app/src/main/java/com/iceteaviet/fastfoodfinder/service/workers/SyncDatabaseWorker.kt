@@ -8,21 +8,17 @@ import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkerParameters
 import com.iceteaviet.fastfoodfinder.R
-import com.iceteaviet.fastfoodfinder.data.auth.ClientAuth
-import com.iceteaviet.fastfoodfinder.data.domain.store.StoreRepository
-import com.iceteaviet.fastfoodfinder.utils.StoreSyncHelper
+import com.iceteaviet.fastfoodfinder.data.domain.store.StoreRefreshService
 import com.iceteaviet.fastfoodfinder.utils.ui.NotiManager
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.concurrent.TimeUnit
 
 class SyncDatabaseWorker @AssistedInject constructor(
     @Assisted val ctx: Context,
     @Assisted val params: WorkerParameters,
-    private val storeRepository: StoreRepository,
+    private val storeRefreshService: StoreRefreshService,
     private val notiManager: NotiManager,
-    private val clientAuth: ClientAuth,
 ) : CoroutineWorker(ctx, params) {
 
     override suspend fun doWork(): Result {
@@ -32,7 +28,7 @@ class SyncDatabaseWorker @AssistedInject constructor(
         )
 
         return try {
-            val storeList = StoreSyncHelper.refreshStoresFromRemote(applicationContext, clientAuth, storeRepository)
+            val storeList = storeRefreshService.refreshStoresFromRemote()
 
             if (storeList.isNotEmpty()) {
                 notiManager.showStoreSyncStatusNotification(

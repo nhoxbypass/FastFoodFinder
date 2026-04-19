@@ -2,12 +2,11 @@ package com.iceteaviet.fastfoodfinder.ui.splash
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.data.auth.ClientAuth
 import com.iceteaviet.fastfoodfinder.data.domain.prefs.PreferencesRepository
+import com.iceteaviet.fastfoodfinder.data.domain.store.StoreRefreshService
 import com.iceteaviet.fastfoodfinder.data.domain.store.StoreRepository
 import com.iceteaviet.fastfoodfinder.data.domain.user.UserRepository
-import com.iceteaviet.fastfoodfinder.utils.StoreSyncHelper
 import com.iceteaviet.fastfoodfinder.utils.exception.EmptyDataException
 import com.iceteaviet.fastfoodfinder.utils.isValidUserUid
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -31,6 +30,7 @@ class SplashViewModel @Inject constructor(
     private val clientAuth: ClientAuth,
     private val userRepository: UserRepository,
     private val storeRepository: StoreRepository,
+    private val storeRefreshService: StoreRefreshService,
     private val preferencesRepository: PreferencesRepository
 ) : ViewModel() {
 
@@ -91,7 +91,7 @@ class SplashViewModel @Inject constructor(
 
     private suspend fun refreshStoresFromRemote() {
         try {
-            val storeList = StoreSyncHelper.refreshStoresFromRemote(App.getContext(), clientAuth, storeRepository)
+            val storeList = storeRefreshService.refreshStoresFromRemote()
             if (storeList.isEmpty()) {
                 _uiState.value = SplashUiState.ShowRetryDialog
                 throw EmptyDataException()

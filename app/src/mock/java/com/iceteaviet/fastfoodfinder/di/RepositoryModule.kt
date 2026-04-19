@@ -7,6 +7,7 @@ import com.iceteaviet.fastfoodfinder.data.domain.prefs.PreferencesRepository
 import com.iceteaviet.fastfoodfinder.data.domain.routing.AppMapsRoutingRepository
 import com.iceteaviet.fastfoodfinder.data.domain.routing.MapsRoutingRepository
 import com.iceteaviet.fastfoodfinder.data.domain.store.AppStoreRepository
+import com.iceteaviet.fastfoodfinder.data.domain.store.StoreRefreshService
 import com.iceteaviet.fastfoodfinder.data.domain.store.StoreRepository
 import com.iceteaviet.fastfoodfinder.data.domain.user.AppUserRepository
 import com.iceteaviet.fastfoodfinder.data.domain.user.UserRepository
@@ -64,6 +65,20 @@ object RepositoryModule {
         val wrapper = AppPreferencesWrapper(context.getSharedPreferences(AppPreferencesWrapper.PREFS_NAME, Context.MODE_PRIVATE))
         val helper = AppPreferencesHelper(wrapper)
         return AppPreferencesRepository(helper)
+    }
+
+    @Provides
+    @Singleton
+    fun provideStoreRefreshService(
+        storeRepository: StoreRepository,
+        clientAuth: ClientAuth,
+    ): StoreRefreshService {
+        return StoreRefreshService(
+            storeRepository,
+            clientAuth,
+            botEmail = "",
+            botPassword = "",
+        )
     }
 
     @Provides
