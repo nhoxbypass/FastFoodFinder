@@ -78,6 +78,7 @@ class MainMapViewModel @Inject constructor(
 
     private var isZoomToUser = false
     private var locationGranted = false
+    private var isStoresLoaded = false
 
     private val cameraPositionFlow = MutableSharedFlow<MapCameraPosition>(extraBufferCapacity = 64)
     private val newVisibleStoreFlow = MutableSharedFlow<Store>(extraBufferCapacity = 64)
@@ -131,7 +132,9 @@ class MainMapViewModel @Inject constructor(
 
         _uiState.value = MainMapEvent.SetupMap
 
-        loadAllStoresToMap()
+        if (!isStoresLoaded) {
+            loadAllStoresToMap()
+        }
     }
 
     override fun onCleared() {
@@ -329,6 +332,7 @@ class MainMapViewModel @Inject constructor(
             try {
                 val allStores = storeRepository.getAllStores()
                 storeList = allStores
+                isStoresLoaded = true
                 if (storeList.isEmpty()) {
                     _uiState.value = MainMapEvent.ShowWarningMessage(R.string.get_store_data_failed)
                 } else {

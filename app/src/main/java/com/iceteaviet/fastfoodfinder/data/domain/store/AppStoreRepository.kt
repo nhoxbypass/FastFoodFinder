@@ -9,6 +9,8 @@ import com.iceteaviet.fastfoodfinder.data.remote.store.model.Comment
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.utils.exception.NotFoundException
 import com.iceteaviet.fastfoodfinder.utils.getStoreTypeFromQuery
+import com.iceteaviet.fastfoodfinder.utils.isValidLat
+import com.iceteaviet.fastfoodfinder.utils.isValidLng
 import com.iceteaviet.fastfoodfinder.utils.standardizeDistrictQuery
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -16,7 +18,7 @@ import kotlinx.coroutines.withContext
 class AppStoreRepository(private val storeApiHelper: StoreApiHelper, private val storeDao: StoreDao) : StoreRepository {
 
     @VisibleForTesting
-    private var cachedStores: List<Store> = ArrayList()
+    internal var cachedStores: List<Store> = ArrayList()
 
     override suspend fun getAllStores(): List<Store> = withContext(Dispatchers.IO) {
         if (cachedStores.isNotEmpty()) {
@@ -30,13 +32,27 @@ class AppStoreRepository(private val storeApiHelper: StoreApiHelper, private val
         }
 
         val remoteStores = storeApiHelper.getAllStores()
-        cachedStores = remoteStores
-        ArrayList(remoteStores)
+        val filtered = filterInvalidData(remoteStores)
+        persistStores(filtered)
+        ArrayList(filtered)
+    }
+
+    override suspend fun refreshStores(): List<Store> = withContext(Dispatchers.IO) {
+        val remoteStores = storeApiHelper.getAllStores()
+        val filtered = filterInvalidData(remoteStores)
+        persistStores(filtered)
+        ArrayList(filtered)
     }
 
     override suspend fun setStores(storeList: List<Store>) = withContext(Dispatchers.IO) {
-        cachedStores = storeList
-        storeDao.insertAll(storeList.map { it.toEntity() })
+        persistStores(storeList)
+    }
+
+    private suspend fun persistStores(stores: List<Store>) {
+        cachedStores = stores
+        if (stores.isNotEmpty()) {
+            storeDao.insertAll(stores.map { it.toEntity() })
+        }
     }
 
     override suspend fun getStoreInBounds(lat: Double, lng: Double, radius: Double): List<Store> = withContext(Dispatchers.IO) {
@@ -55,22 +71,6 @@ class AppStoreRepository(private val storeApiHelper: StoreApiHelper, private val
 
     override suspend fun findStoresByCustomAddress(customQuerySearch: List<String>): List<Store> = withContext(Dispatchers.IO) {
         customQuerySearch.flatMap { storeDao.findStoresByCustomAddress(it).map { e -> e.toDomain() } }.distinctBy { it.id }
-    }
-
-    override suspend fun findStoresBy(key: String, value: Int): List<Store> = withContext(Dispatchers.IO) {
-        when (key) {
-            "type" -> storeDao.findStoresByType(value).map { it.toDomain() }
-            "id" -> storeDao.findStoreById(value)?.let { listOf(it.toDomain()) } ?: emptyList()
-            else -> emptyList()
-        }
-    }
-
-    override suspend fun findStoresBy(key: String, values: List<Int>): List<Store> = withContext(Dispatchers.IO) {
-        when (key) {
-            "id" -> storeDao.findStoresByIds(values).map { it.toDomain() }
-            "type" -> values.flatMap { storeDao.findStoresByType(it).map { e -> e.toDomain() } }.distinctBy { it.id }
-            else -> emptyList()
-        }
     }
 
     override suspend fun findStoresByType(type: Int): List<Store> = withContext(Dispatchers.IO) {
@@ -100,5 +100,12 @@ class AppStoreRepository(private val storeApiHelper: StoreApiHelper, private val
 
     fun clearCache() {
         cachedStores = ArrayList()
+    }
+
+    @VisibleForTesting
+    internal fun filterInvalidData(stores: List<Store>): List<Store> {
+        return stores.filter { store ->
+            store.id >= 0 && isValidLat(store.lat) && isValidLng(store.lng) && store.address.isNotBlank()
+        }
     }
 }

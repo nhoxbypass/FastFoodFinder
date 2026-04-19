@@ -10,8 +10,9 @@ import com.iceteaviet.fastfoodfinder.data.domain.store.AppStoreRepository
 import com.iceteaviet.fastfoodfinder.data.domain.store.StoreRepository
 import com.iceteaviet.fastfoodfinder.data.domain.user.AppUserRepository
 import com.iceteaviet.fastfoodfinder.data.domain.user.UserRepository
-import com.iceteaviet.fastfoodfinder.data.local.db.store.FakeStoreDAO
+import com.iceteaviet.fastfoodfinder.data.local.db.store.StoreDao
 import com.iceteaviet.fastfoodfinder.data.local.db.user.FakeUserDAO
+import com.iceteaviet.fastfoodfinder.data.local.db.user.UserDao
 import android.content.Context
 import com.iceteaviet.fastfoodfinder.data.local.prefs.AppPreferencesHelper
 import com.iceteaviet.fastfoodfinder.data.local.prefs.AppPreferencesWrapper
@@ -31,10 +32,9 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideStoreRepository(@ApplicationContext context: Context): StoreRepository {
+    fun provideStoreRepository(@ApplicationContext context: Context, storeDao: StoreDao): StoreRepository {
         val remote = FakeFirebaseStoreApiHelper(context)
-        val local = FakeStoreDAO()
-        return AppStoreRepository(remote, local)
+        return AppStoreRepository(remote, storeDao)
     }
 
     @Provides

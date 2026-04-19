@@ -7,13 +7,16 @@ import com.iceteaviet.fastfoodfinder.data.domain.store.StoreRepository
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 
 object StoreSyncHelper {
-    suspend fun loadStoresFromServer(context: Context, clientAuth: ClientAuth, storeRepository: StoreRepository): List<Store> {
+    suspend fun refreshStoresFromRemote(context: Context, clientAuth: ClientAuth, storeRepository: StoreRepository): List<Store> {
         if (clientAuth.isSignedIn()) {
-            return storeRepository.getAllStores()
+            return storeRepository.refreshStores()
         } else {
             try {
-                clientAuth.signInWithEmailAndPassword(context.getString(R.string.downloader_bot_email), context.getString(R.string.downloader_bot_pwd))
-                return storeRepository.getAllStores()
+                clientAuth.signInWithEmailAndPassword(
+                    context.getString(R.string.downloader_bot_email),
+                    context.getString(R.string.downloader_bot_pwd)
+                )
+                return storeRepository.refreshStores()
             } finally {
                 clientAuth.signOut()
             }
