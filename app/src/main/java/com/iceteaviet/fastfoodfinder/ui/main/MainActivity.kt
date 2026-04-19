@@ -29,6 +29,8 @@ import com.iceteaviet.fastfoodfinder.core.common.ext.getInputMethodManager
 import com.iceteaviet.fastfoodfinder.core.common.ext.getSearchManager
 import com.iceteaviet.fastfoodfinder.databinding.ActivityMainBinding
 import com.iceteaviet.fastfoodfinder.ui.base.BaseActivity
+import com.iceteaviet.fastfoodfinder.ui.main.favourite.MainFavouriteFragment
+import com.iceteaviet.fastfoodfinder.ui.main.map.MainMapFragment
 import com.iceteaviet.fastfoodfinder.ui.main.search.SearchFragment
 import com.iceteaviet.fastfoodfinder.ui.profile.ProfileFragment
 import com.iceteaviet.fastfoodfinder.utils.e
@@ -77,7 +79,7 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         mNavigationView.menu.getItem(0).isChecked = true
         mNavigationView.setCheckedItem(R.id.menu_action_map)
         val fragmentManager = supportFragmentManager
-        fragmentManager.beginTransaction().replace(R.id.fl_fragment_placeholder, MainFragment.newInstance()).commit()
+        fragmentManager.beginTransaction().replace(R.id.fl_fragment_placeholder, MainMapFragment.newInstance()).commit()
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
@@ -118,6 +120,10 @@ class MainActivity : BaseActivity(), View.OnClickListener {
                         }
                         is MainEvent.NavigateToSettings -> {
                             showSettingsView()
+                            viewModel.markEventConsumed()
+                        }
+                        is MainEvent.NavigateToFavourite -> {
+                            showFavouriteView()
                             viewModel.markEventConsumed()
                         }
                         is MainEvent.ShowSearchView -> {
@@ -183,6 +189,10 @@ class MainActivity : BaseActivity(), View.OnClickListener {
 
     private fun showARLiveSightView() {
         openARLiveSightActivity(this)
+    }
+
+    private fun showFavouriteView() {
+        replaceFragment(MainFavouriteFragment.newInstance(), getString(R.string.favourite))
     }
 
     private fun showSettingsView() {
@@ -380,6 +390,9 @@ class MainActivity : BaseActivity(), View.OnClickListener {
                 if (supportFragmentManager.backStackEntryCount > 0) {
                     supportFragmentManager.popBackStack()
                 }
+            }
+            R.id.menu_action_favourite -> {
+                viewModel.onFavouriteMenuItemClick()
             }
             R.id.menu_action_ar -> {
                 viewModel.onARLiveSightMenuItemClick()

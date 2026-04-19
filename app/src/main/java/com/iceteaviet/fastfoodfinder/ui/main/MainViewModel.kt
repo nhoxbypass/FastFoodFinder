@@ -25,6 +25,7 @@ sealed class MainEvent {
     object NavigateToLogin : MainEvent()
     object NavigateToAR : MainEvent()
     object NavigateToSettings : MainEvent()
+    object NavigateToFavourite : MainEvent()
     object ShowSearchView : MainEvent()
     object HideSearchView : MainEvent()
     object HideKeyboard : MainEvent()
@@ -104,6 +105,10 @@ class MainViewModel @Inject constructor(
 
     fun onSettingsMenuItemClick() {
         _uiState.value = _uiState.value.copy(event = MainEvent.NavigateToSettings)
+    }
+
+    fun onFavouriteMenuItemClick() {
+        _uiState.value = _uiState.value.copy(event = MainEvent.NavigateToFavourite)
     }
 
     fun onSignInMenuItemClick() {

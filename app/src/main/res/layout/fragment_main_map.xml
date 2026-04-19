@@ -13,8 +13,7 @@
         <FrameLayout
             android:id="@+id/map_placeholder"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="48dp" />
+            android:layout_height="wrap_content" />
 
         <ImageView
             android:layout_width="24dp"
