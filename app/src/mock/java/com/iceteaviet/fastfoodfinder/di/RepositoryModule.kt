@@ -31,8 +31,8 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideStoreRepository(): StoreRepository {
-        val remote = FakeFirebaseStoreApiHelper()
+    fun provideStoreRepository(@ApplicationContext context: Context): StoreRepository {
+        val remote = FakeFirebaseStoreApiHelper(context)
         val local = FakeStoreDAO()
         return AppStoreRepository(remote, local)
     }
