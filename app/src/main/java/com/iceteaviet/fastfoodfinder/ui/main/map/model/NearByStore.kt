@@ -1,6 +1,6 @@
 package com.iceteaviet.fastfoodfinder.ui.main.map.model
 
-import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
+import com.iceteaviet.fastfoodfinder.domain.model.Store
 
 /**
  * Created by tom on 2019-04-29.

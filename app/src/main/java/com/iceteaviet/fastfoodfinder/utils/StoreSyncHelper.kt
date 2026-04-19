@@ -4,7 +4,7 @@ import android.content.Context
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.auth.ClientAuth
 import com.iceteaviet.fastfoodfinder.data.domain.store.StoreRepository
-import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
+import com.iceteaviet.fastfoodfinder.domain.model.Store
 
 object StoreSyncHelper {
     suspend fun refreshStoresFromRemote(context: Context, clientAuth: ClientAuth, storeRepository: StoreRepository): List<Store> {

@@ -29,7 +29,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.core.location.GoogleLocationManager
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
-import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
+import com.iceteaviet.fastfoodfinder.domain.model.Store
+import com.iceteaviet.fastfoodfinder.domain.model.toLatLng
 import com.iceteaviet.fastfoodfinder.databinding.FragmentMainMapBinding
 import com.iceteaviet.fastfoodfinder.ui.main.map.model.NearByStore
 import com.iceteaviet.fastfoodfinder.ui.main.map.storeinfo.StoreInfoDialog
@@ -218,10 +219,10 @@ class MainMapFragment : Fragment() {
             val bounds = googleMap?.projection?.visibleRegion?.latLngBounds
             for (i in storeList.indices) {
                 val store = storeList[i]
-                if (bounds != null && !bounds.contains(store.getPosition())) continue
+                if (bounds != null && !bounds.contains(store.toLatLng())) continue
 
                 val marker = googleMap!!.addMarker(
-                    MarkerOptions().position(store.getPosition())
+                    MarkerOptions().position(store.toLatLng())
                         .title(store.title)
                         .snippet(store.address)
                         .icon(getStoreIcon(resources, store.type, -1, -1))

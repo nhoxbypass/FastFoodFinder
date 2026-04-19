@@ -5,7 +5,7 @@ package com.iceteaviet.fastfoodfinder.utils
 import com.google.gson.Gson
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Comment
-import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
+import com.iceteaviet.fastfoodfinder.domain.model.Store
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList
 import com.iceteaviet.fastfoodfinder.ui.ar.model.AugmentedPOI
 import com.iceteaviet.fastfoodfinder.ui.main.search.model.SearchStoreItem
@@ -81,39 +81,39 @@ private fun getRandomDate(): String {
 
 fun getFakeCircleKStoreList(): List<Store> {
     val stores = ArrayList<Store>()
-    stores.add(Store(1, "Circle K Le Thi Rieng", "148 Le Thi Rieng, Ben Thanh Ward, District 1, Ho Chi Minh, Vietnam", "10.770379", "106.68912279999995", "3925 6620", StoreType.TYPE_CIRCLE_K))
-    stores.add(Store(7, "Circle K Ly Tu Trong", "238 Ly Tu Trong, Ben Thanh Ward, District 1, Ho Chi Minh, Vietnam", "10.7721924", "106.69433409999999", "3822 7403", StoreType.TYPE_CIRCLE_K))
+    stores.add(Store(1, "Circle K Le Thi Rieng", "148 Le Thi Rieng, Ben Thanh Ward, District 1, Ho Chi Minh, Vietnam", 10.770379.toDouble(), 106.68912279999995.toDouble(), "3925 6620", StoreType.TYPE_CIRCLE_K))
+    stores.add(Store(7, "Circle K Ly Tu Trong", "238 Ly Tu Trong, Ben Thanh Ward, District 1, Ho Chi Minh, Vietnam", 10.7721924.toDouble(), 106.69433409999999.toDouble(), "3822 7403", StoreType.TYPE_CIRCLE_K))
     return stores
 }
 
 
 fun getFakeStoreList(): List<Store> {
     val stores = ArrayList<Store>()
-    stores.add(Store(1, "Circle K Le Thi Rieng", "148 Le Thi Rieng, Ben Thanh Ward, District 1, Ho Chi Minh, Vietnam", "10.770379", "106.68912279999995", "3925 6620", StoreType.TYPE_CIRCLE_K))
-    stores.add(Store(2, "FamilyMart - Hậu Giang", "973 Hậu Giang, P. 11, Quận 6, TP. HCM", "10.7457782220847", "106.6261117905378", "3755 0439", StoreType.TYPE_FAMILY_MART))
-    stores.add(Store(3, "FamilyMart - Nguyễn Lương Bằng", "180 Nguyễn Lương Bằng, P. Tân Phú, Quận 7, TP. HCM", "10.727042", "106.722703", "5417 3390", StoreType.TYPE_FAMILY_MART))
-    stores.add(Store(4, "Family Mart - Tạ Quang Bửu", "811 Tạ Quang Bửu, P. 5, Quận 8, TP. HCM", "10.736488", "106.670374", "3835 3193", StoreType.TYPE_FAMILY_MART))
-    stores.add(Store(5, "Family Mart - Nguyễn Văn Công", "534 Nguyễn Văn Công, Phường 3, Quận Gò Vấp, TP. HCM", "10.819417", "106.674821", "3835 3193", StoreType.TYPE_FAMILY_MART))
-    stores.add(Store(6, "Shop & Go - Phan Đình Phùng", "180 Phan Đình Phùng, P. 2, Quận Phú Nhuận, TP. HCM", "10.7955070000000", "106.6825610000000", "38 353 193", StoreType.TYPE_SHOP_N_GO))
-    stores.add(Store(7, "Circle K Ly Tu Trong", "238 Ly Tu Trong, Ben Thanh Ward, District 1, Ho Chi Minh, Vietnam", "10.7721924", "106.69433409999999", "3822 7403", StoreType.TYPE_CIRCLE_K))
-    stores.add(Store(8, "Familymart - Đường D2", "39 Đường D2, P. 25, Quận Bình Thạnh, TP. HCM", "10.80252", "106.715622", "35 126 283", StoreType.TYPE_FAMILY_MART))
-    stores.add(Store(9, "FamilyMart - 123 Nguyễn Đình Chiểu", "123 Nguyễn Đình Chiểu, Phường 6, Quận 3, TP. HCM", "10.7775462", "106.6892408999999", "3835 3193", StoreType.TYPE_FAMILY_MART))
-    stores.add(Store(10, "FamilyMart - Tôn Dật Tiến", "Tôn Dật Tiên, Quận 7, TP. HCM", "10.723322", "106.71498", "3835 3193", StoreType.TYPE_FAMILY_MART))
+    stores.add(Store(1, "Circle K Le Thi Rieng", "148 Le Thi Rieng, Ben Thanh Ward, District 1, Ho Chi Minh, Vietnam", 10.770379.toDouble(), 106.68912279999995.toDouble(), "3925 6620", StoreType.TYPE_CIRCLE_K))
+    stores.add(Store(2, "FamilyMart - Hậu Giang", "973 Hậu Giang, P. 11, Quận 6, TP. HCM", 10.7457782220847.toDouble(), 106.6261117905378.toDouble(), "3755 0439", StoreType.TYPE_FAMILY_MART))
+    stores.add(Store(3, "FamilyMart - Nguyễn Lương Bằng", "180 Nguyễn Lương Bằng, P. Tân Phú, Quận 7, TP. HCM", 10.727042.toDouble(), 106.722703.toDouble(), "5417 3390", StoreType.TYPE_FAMILY_MART))
+    stores.add(Store(4, "Family Mart - Tạ Quang Bửu", "811 Tạ Quang Bửu, P. 5, Quận 8, TP. HCM", 10.736488.toDouble(), 106.670374.toDouble(), "3835 3193", StoreType.TYPE_FAMILY_MART))
+    stores.add(Store(5, "Family Mart - Nguyễn Văn Công", "534 Nguyễn Văn Công, Phường 3, Quận Gò Vấp, TP. HCM", 10.819417.toDouble(), 106.674821.toDouble(), "3835 3193", StoreType.TYPE_FAMILY_MART))
+    stores.add(Store(6, "Shop & Go - Phan Đình Phùng", "180 Phan Đình Phùng, P. 2, Quận Phú Nhuận, TP. HCM", 10.7955070000000.toDouble(), 106.6825610000000.toDouble(), "38 353 193", StoreType.TYPE_SHOP_N_GO))
+    stores.add(Store(7, "Circle K Ly Tu Trong", "238 Ly Tu Trong, Ben Thanh Ward, District 1, Ho Chi Minh, Vietnam", 10.7721924.toDouble(), 106.69433409999999.toDouble(), "3822 7403", StoreType.TYPE_CIRCLE_K))
+    stores.add(Store(8, "Familymart - Đường D2", "39 Đường D2, P. 25, Quận Bình Thạnh, TP. HCM", 10.80252.toDouble(), 106.715622.toDouble(), "35 126 283", StoreType.TYPE_FAMILY_MART))
+    stores.add(Store(9, "FamilyMart - 123 Nguyễn Đình Chiểu", "123 Nguyễn Đình Chiểu, Phường 6, Quận 3, TP. HCM", 10.7775462.toDouble(), 106.6892408999999.toDouble(), "3835 3193", StoreType.TYPE_FAMILY_MART))
+    stores.add(Store(10, "FamilyMart - Tôn Dật Tiến", "Tôn Dật Tiên, Quận 7, TP. HCM", 10.723322.toDouble(), 106.71498.toDouble(), "3835 3193", StoreType.TYPE_FAMILY_MART))
     return stores
 }
 
 fun getFakeSearchStoreItems(): List<SearchStoreItem> {
     val stores = ArrayList<SearchStoreItem>()
-    stores.add(SearchStoreItem(Store(1, "Circle K Le Thi Rieng", "148 Le Thi Rieng, Ben Thanh Ward, District 1, Ho Chi Minh, Vietnam", "10.770379", "106.68912279999995", "3925 6620", StoreType.TYPE_CIRCLE_K), ""))
-    stores.add(SearchStoreItem(Store(2, "FamilyMart - Hậu Giang", "973 Hậu Giang, P. 11, Quận 6, TP. HCM", "10.7457782220847", "106.6261117905378", "3755 0439", StoreType.TYPE_FAMILY_MART), ""))
-    stores.add(SearchStoreItem(Store(3, "FamilyMart - Nguyễn Lương Bằng", "180 Nguyễn Lương Bằng, P. Tân Phú, Quận 7, TP. HCM", "10.727042", "106.722703", "5417 3390", StoreType.TYPE_FAMILY_MART), ""))
-    stores.add(SearchStoreItem(Store(4, "Family Mart - Tạ Quang Bửu", "811 Tạ Quang Bửu, P. 5, Quận 8, TP. HCM", "10.736488", "106.670374", "3835 3193", StoreType.TYPE_FAMILY_MART), ""))
-    stores.add(SearchStoreItem(Store(5, "Family Mart - Nguyễn Văn Công", "534 Nguyễn Văn Công, Phường 3, Quận Gò Vấp, TP. HCM", "10.819417", "106.674821", "3835 3193", StoreType.TYPE_FAMILY_MART), ""))
-    stores.add(SearchStoreItem(Store(6, "Shop & Go - Phan Đình Phùng", "180 Phan Đình Phùng, P. 2, Quận Phú Nhuận, TP. HCM", "10.7955070000000", "106.6825610000000", "38 353 193", StoreType.TYPE_SHOP_N_GO), ""))
-    stores.add(SearchStoreItem(Store(7, "Circle K Ly Tu Trong", "238 Ly Tu Trong, Ben Thanh Ward, District 1, Ho Chi Minh, Vietnam", "10.7721924", "106.69433409999999", "3822 7403", StoreType.TYPE_CIRCLE_K), ""))
-    stores.add(SearchStoreItem(Store(8, "Familymart - Đường D2", "39 Đường D2, P. 25, Quận Bình Thạnh, TP. HCM", "10.80252", "106.715622", "35 126 283", StoreType.TYPE_FAMILY_MART), ""))
-    stores.add(SearchStoreItem(Store(9, "FamilyMart - 123 Nguyễn Đình Chiểu", "123 Nguyễn Đình Chiểu, Phường 6, Quận 3, TP. HCM", "10.7775462", "106.6892408999999", "3835 3193", StoreType.TYPE_FAMILY_MART), ""))
-    stores.add(SearchStoreItem(Store(10, "FamilyMart - Tôn Dật Tiến", "Tôn Dật Tiên, Quận 7, TP. HCM", "10.723322", "106.71498", "3835 3193", StoreType.TYPE_FAMILY_MART), ""))
+    stores.add(SearchStoreItem(Store(1, "Circle K Le Thi Rieng", "148 Le Thi Rieng, Ben Thanh Ward, District 1, Ho Chi Minh, Vietnam", 10.770379.toDouble(), 106.68912279999995.toDouble(), "3925 6620", StoreType.TYPE_CIRCLE_K), ""))
+    stores.add(SearchStoreItem(Store(2, "FamilyMart - Hậu Giang", "973 Hậu Giang, P. 11, Quận 6, TP. HCM", 10.7457782220847.toDouble(), 106.6261117905378.toDouble(), "3755 0439", StoreType.TYPE_FAMILY_MART), ""))
+    stores.add(SearchStoreItem(Store(3, "FamilyMart - Nguyễn Lương Bằng", "180 Nguyễn Lương Bằng, P. Tân Phú, Quận 7, TP. HCM", 10.727042.toDouble(), 106.722703.toDouble(), "5417 3390", StoreType.TYPE_FAMILY_MART), ""))
+    stores.add(SearchStoreItem(Store(4, "Family Mart - Tạ Quang Bửu", "811 Tạ Quang Bửu, P. 5, Quận 8, TP. HCM", 10.736488.toDouble(), 106.670374.toDouble(), "3835 3193", StoreType.TYPE_FAMILY_MART), ""))
+    stores.add(SearchStoreItem(Store(5, "Family Mart - Nguyễn Văn Công", "534 Nguyễn Văn Công, Phường 3, Quận Gò Vấp, TP. HCM", 10.819417.toDouble(), 106.674821.toDouble(), "3835 3193", StoreType.TYPE_FAMILY_MART), ""))
+    stores.add(SearchStoreItem(Store(6, "Shop & Go - Phan Đình Phùng", "180 Phan Đình Phùng, P. 2, Quận Phú Nhuận, TP. HCM", 10.7955070000000.toDouble(), 106.6825610000000.toDouble(), "38 353 193", StoreType.TYPE_SHOP_N_GO), ""))
+    stores.add(SearchStoreItem(Store(7, "Circle K Ly Tu Trong", "238 Ly Tu Trong, Ben Thanh Ward, District 1, Ho Chi Minh, Vietnam", 10.7721924.toDouble(), 106.69433409999999.toDouble(), "3822 7403", StoreType.TYPE_CIRCLE_K), ""))
+    stores.add(SearchStoreItem(Store(8, "Familymart - Đường D2", "39 Đường D2, P. 25, Quận Bình Thạnh, TP. HCM", 10.80252.toDouble(), 106.715622.toDouble(), "35 126 283", StoreType.TYPE_FAMILY_MART), ""))
+    stores.add(SearchStoreItem(Store(9, "FamilyMart - 123 Nguyễn Đình Chiểu", "123 Nguyễn Đình Chiểu, Phường 6, Quận 3, TP. HCM", 10.7775462.toDouble(), 106.6892408999999.toDouble(), "3835 3193", StoreType.TYPE_FAMILY_MART), ""))
+    stores.add(SearchStoreItem(Store(10, "FamilyMart - Tôn Dật Tiến", "Tôn Dật Tiên, Quận 7, TP. HCM", 10.723322.toDouble(), 106.71498.toDouble(), "3835 3193", StoreType.TYPE_FAMILY_MART), ""))
     return stores
 }
 
@@ -364,8 +364,8 @@ fun storesToArPoints(stores: List<Store>): List<AugmentedPOI> {
     val arPoints = ArrayList<AugmentedPOI>()
     for (i in stores.indices) {
         arPoints.add(AugmentedPOI(stores[i].title,
-            stores[i].lat.toDouble(),
-            stores[i].lng.toDouble(),
+            stores[i].lat,
+            stores[i].lng,
             0.0,
             getStoreLogoDrawableRes(stores[i].type)))
     }

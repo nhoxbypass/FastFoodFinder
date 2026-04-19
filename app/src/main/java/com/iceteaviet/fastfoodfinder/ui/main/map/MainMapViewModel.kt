@@ -13,7 +13,8 @@ import com.iceteaviet.fastfoodfinder.data.domain.routing.MapsRoutingRepository
 import com.iceteaviet.fastfoodfinder.data.domain.store.StoreRepository
 import com.iceteaviet.fastfoodfinder.data.remote.routing.GoogleMapsRoutingApiHelper
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
-import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
+import com.iceteaviet.fastfoodfinder.domain.model.Store
+import com.iceteaviet.fastfoodfinder.domain.model.toLatLng
 import com.iceteaviet.fastfoodfinder.ui.main.search.SearchEventBus
 import com.iceteaviet.fastfoodfinder.ui.main.search.SearchEventResult
 import com.iceteaviet.fastfoodfinder.ui.main.map.model.MapCameraPosition
@@ -186,7 +187,7 @@ class MainMapViewModel @Inject constructor(
     }
 
     fun onNavigationButtonClick(store: Store) {
-        val storeLocation = store.getPosition()
+        val storeLocation = store.toLatLng()
         val queries = HashMap<String, String>()
 
         if (!isValidLocation(storeLocation)) {
@@ -271,7 +272,7 @@ class MainMapViewModel @Inject constructor(
         val stores = ArrayList<Store>()
         for (i in storeList.indices) {
             val store = storeList[i]
-            if (bounds.contains(store.getPosition())) {
+            if (bounds.contains(store.toLatLng())) {
                 stores.add(store)
             }
         }
@@ -281,7 +282,7 @@ class MainMapViewModel @Inject constructor(
     private fun generateNearByStoresWithDistance(currPos: LatLng, stores: List<Store>): List<NearByStore> {
         val res = ArrayList<NearByStore>()
         for (store in stores) {
-            res.add(NearByStore(store, distanceBetween(currPos, store.getPosition())))
+            res.add(NearByStore(store, distanceBetween(currPos, store.toLatLng())))
         }
         return res
     }
@@ -295,7 +296,7 @@ class MainMapViewModel @Inject constructor(
                 } else {
                     storeList = foundStores
                     _uiState.value = MainMapEvent.AddMarkersToMap(storeList)
-                    _uiState.value = MainMapEvent.AnimateMapCamera(storeList[0].getPosition(), false)
+                    _uiState.value = MainMapEvent.AnimateMapCamera(storeList[0].toLatLng(), false)
                 }
             } catch (e: Exception) {
                 _uiState.value = MainMapEvent.ShowWarningMessage(R.string.get_store_data_failed)
@@ -312,7 +313,7 @@ class MainMapViewModel @Inject constructor(
                 } else {
                     storeList = foundStores
                     _uiState.value = MainMapEvent.AddMarkersToMap(storeList)
-                    _uiState.value = MainMapEvent.AnimateMapCamera(storeList[0].getPosition(), false)
+                    _uiState.value = MainMapEvent.AnimateMapCamera(storeList[0].toLatLng(), false)
                 }
             } catch (e: Exception) {
                 _uiState.value = MainMapEvent.ShowWarningMessage(R.string.get_store_data_failed)
@@ -347,7 +348,7 @@ class MainMapViewModel @Inject constructor(
     private fun handleSearchStoreClickAction(store: Store) {
         storeList = arrayListOf(store)
         _uiState.value = MainMapEvent.AddMarkersToMap(storeList)
-        _uiState.value = MainMapEvent.AnimateMapCamera(store.getPosition(), false)
+        _uiState.value = MainMapEvent.AnimateMapCamera(store.toLatLng(), false)
         _uiState.value = MainMapEvent.ClearNearByStores
         _uiState.value = MainMapEvent.ShowDialogStoreInfo(store)
     }

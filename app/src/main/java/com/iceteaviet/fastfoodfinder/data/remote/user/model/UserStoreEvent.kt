@@ -1,6 +1,6 @@
 package com.iceteaviet.fastfoodfinder.data.remote.user.model
 
-import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
+import com.iceteaviet.fastfoodfinder.domain.model.Store
 
 /**
  * Created by tom on 7/17/18.

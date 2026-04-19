@@ -4,7 +4,7 @@ import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Comment
-import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
+import com.iceteaviet.fastfoodfinder.domain.model.Store
 import com.iceteaviet.fastfoodfinder.utils.StoreType
 import java.util.TreeMap
 import kotlin.collections.ArrayList
@@ -52,13 +52,13 @@ class FakeFirebaseStoreApiHelper(private val context: Context) : StoreApiHelper 
                 val markers = root["markers_add"] as? List<Map<String, String>> ?: continue
                 for (marker in markers) {
                     stores.add(Store(
-                        id++,
-                        marker["title"].orEmpty(),
-                        marker["address"].orEmpty(),
-                        marker["lat"] ?: "0",
-                        marker["lng"] ?: "0",
-                        marker["tel"].orEmpty(),
-                        type
+                        id = id++,
+                        title = marker["title"].orEmpty(),
+                        address = marker["address"].orEmpty(),
+                        lat = marker["lat"]?.toDoubleOrNull() ?: 0.0,
+                        lng = marker["lng"]?.toDoubleOrNull() ?: 0.0,
+                        tel = marker["tel"].orEmpty(),
+                        type = type,
                     ))
                 }
             } catch (e: Exception) {

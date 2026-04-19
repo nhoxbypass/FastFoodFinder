@@ -14,7 +14,8 @@ import com.iceteaviet.fastfoodfinder.data.domain.user.UserRepository
 import com.iceteaviet.fastfoodfinder.data.remote.routing.GoogleMapsRoutingApiHelper
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Comment
-import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
+import com.iceteaviet.fastfoodfinder.domain.model.Store
+import com.iceteaviet.fastfoodfinder.domain.model.toLatLng
 import com.iceteaviet.fastfoodfinder.ui.store.StoreDetailActivity.Companion.KEY_STORE
 import com.iceteaviet.fastfoodfinder.utils.getCurrentUserHelper
 import com.iceteaviet.fastfoodfinder.utils.getLatLngString
@@ -162,7 +163,7 @@ class StoreDetailViewModel @Inject constructor(
     fun onNavigationButtonClick() {
         if (currStore == null) return
 
-        val storeLocation = currStore.getPosition()
+        val storeLocation = currStore.toLatLng()
         val queries = HashMap<String, String>()
 
         if (!isValidLocation(storeLocation)) {

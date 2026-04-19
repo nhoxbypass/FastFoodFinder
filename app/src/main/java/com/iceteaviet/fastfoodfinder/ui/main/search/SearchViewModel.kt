@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.iceteaviet.fastfoodfinder.data.domain.prefs.PreferencesRepository
 import com.iceteaviet.fastfoodfinder.data.domain.store.StoreRepository
-import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
+import com.iceteaviet.fastfoodfinder.domain.model.Store
 import com.iceteaviet.fastfoodfinder.ui.main.search.model.SearchStoreItem
 import com.iceteaviet.fastfoodfinder.utils.Constant
 import com.iceteaviet.fastfoodfinder.utils.getStoreSearchString

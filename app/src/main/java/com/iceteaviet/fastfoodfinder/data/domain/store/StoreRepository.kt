@@ -1,7 +1,7 @@
 package com.iceteaviet.fastfoodfinder.data.domain.store
 
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Comment
-import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
+import com.iceteaviet.fastfoodfinder.domain.model.Store
 
 interface StoreRepository {
 

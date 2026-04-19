@@ -2,7 +2,7 @@ package com.iceteaviet.fastfoodfinder.utils
 
 import android.app.Activity
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
-import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
+import com.iceteaviet.fastfoodfinder.domain.model.Store
 import org.mockito.kotlin.verify
 import org.junit.After
 import org.junit.Before
@@ -120,8 +120,8 @@ class IntentUtilsTest {
         private const val STORE_ID = 123
         private const val STORE_TITLE = "store_title"
         private const val STORE_ADDRESS = "store_address"
-        private const val STORE_LAT = "10.773996"
-        private const val STORE_LNG = "106.6898035"
+        private const val STORE_LAT = 10.773996
+        private const val STORE_LNG = 106.6898035
         private const val STORE_TEL = "012345678965"
 
         val store = Store(STORE_ID, STORE_TITLE, STORE_ADDRESS, STORE_LAT, STORE_LNG, STORE_TEL, StoreType.TYPE_CIRCLE_K)

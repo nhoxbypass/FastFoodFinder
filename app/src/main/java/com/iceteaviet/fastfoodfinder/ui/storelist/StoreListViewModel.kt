@@ -3,7 +3,7 @@ package com.iceteaviet.fastfoodfinder.ui.storelist
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.iceteaviet.fastfoodfinder.data.domain.store.StoreRepository
-import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
+import com.iceteaviet.fastfoodfinder.domain.model.Store
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

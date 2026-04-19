@@ -2,7 +2,7 @@ package com.iceteaviet.fastfoodfinder.utils
 
 
 import com.google.common.truth.Truth.assertThat
-import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
+import com.iceteaviet.fastfoodfinder.domain.model.Store
 import org.junit.Test
 
 class DataUtilsTest {

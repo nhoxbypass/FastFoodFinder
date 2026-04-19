@@ -3,7 +3,7 @@ package com.iceteaviet.fastfoodfinder.data.remote.user.model
 import android.os.Parcel
 import android.os.Parcelable
 import com.google.firebase.database.PropertyName
-import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
+import com.iceteaviet.fastfoodfinder.domain.model.Store
 
 class UserStoreList : Parcelable {
     var id: Int = -1

@@ -2,7 +2,7 @@ package com.iceteaviet.fastfoodfinder.ui.main.search
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
+import com.iceteaviet.fastfoodfinder.domain.model.Store
 import com.iceteaviet.fastfoodfinder.ui.main.search.model.SearchStoreItem
 
 /**

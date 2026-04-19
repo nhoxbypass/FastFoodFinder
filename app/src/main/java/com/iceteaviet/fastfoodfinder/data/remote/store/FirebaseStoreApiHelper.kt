@@ -5,7 +5,8 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Comment
-import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
+import com.iceteaviet.fastfoodfinder.data.remote.store.model.StoreDto
+import com.iceteaviet.fastfoodfinder.domain.model.Store
 import com.iceteaviet.fastfoodfinder.utils.getStoreType
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
@@ -41,18 +42,17 @@ class FirebaseStoreApiHelper(private val databaseRef: DatabaseReference) : Store
         databaseRef.child(CHILD_COMMENT_LIST).child(storeId).push().setValue(comment)
     }
 
-    private fun parseStoresDataFromFirebase(dataSnapshot: DataSnapshot): MutableList<Store> {
+    private fun parseStoresDataFromFirebase(dataSnapshot: DataSnapshot): List<Store> {
         val storeList = ArrayList<Store>()
         for (child in dataSnapshot.children) {
             for (storeLocation in child.child(CHILD_MARKERS_ADD).children) {
-                val store = storeLocation.getValue(Store::class.java)
-                if (store != null) {
-                    store.type = getStoreType(child.key)
-                    storeList.add(store)
+                val dto = storeLocation.getValue(StoreDto::class.java)
+                if (dto != null) {
+                    dto.type = getStoreType(child.key)
+                    storeList.add(dto.toDomain())
                 }
             }
         }
-
         return storeList
     }
 

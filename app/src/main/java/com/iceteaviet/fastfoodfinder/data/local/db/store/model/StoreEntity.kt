@@ -2,7 +2,7 @@ package com.iceteaviet.fastfoodfinder.data.local.db.store.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
+import com.iceteaviet.fastfoodfinder.domain.model.Store
 
 @Entity(tableName = "stores")
 data class StoreEntity(
@@ -16,7 +16,7 @@ data class StoreEntity(
 )
 
 fun StoreEntity.toDomain(): Store {
-    return Store(id, title, address, latitude.toString(), longitude.toString(), telephone, type)
+    return Store(id, title, address, latitude, longitude, telephone, type)
 }
 
 fun Store.toEntity(): StoreEntity {
@@ -25,8 +25,8 @@ fun Store.toEntity(): StoreEntity {
         type = type,
         title = title,
         address = address,
-        latitude = lat.toDoubleOrNull() ?: 0.0,
-        longitude = lng.toDoubleOrNull() ?: 0.0,
+        latitude = lat,
+        longitude = lng,
         telephone = tel,
     )
 }

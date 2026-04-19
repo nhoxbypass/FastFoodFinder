@@ -6,7 +6,8 @@ import com.google.maps.android.PolyUtil
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.Step
-import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
+import com.iceteaviet.fastfoodfinder.domain.model.Store
+import com.iceteaviet.fastfoodfinder.domain.model.toLatLng
 import com.iceteaviet.fastfoodfinder.utils.isValidLocation
 import com.iceteaviet.fastfoodfinder.utils.ui.getStoreLogoDrawableRes
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -63,7 +64,7 @@ class MapRoutingViewModel @Inject constructor() : ViewModel() {
     }
 
     private fun isRoutingDataValid(mapsDirection: MapsDirection, store: Store): Boolean {
-        if (!isValidLocation(store.getPosition())) return false
+        if (!isValidLocation(store.toLatLng())) return false
         if (mapsDirection.routeList.isEmpty() || mapsDirection.routeList[0].legList.isEmpty()
             || mapsDirection.routeList[0].legList[0].stepList.isEmpty()) {
             return false
@@ -91,7 +92,7 @@ class MapRoutingViewModel @Inject constructor() : ViewModel() {
             distanceText = mapsDirection.routeList[0].legList[0].getDistance(),
             summaryText = String.format("Via %s", mapsDirection.routeList[0].summary),
             event = MapRoutingEvent.AddMapMarker(
-                currStore.getPosition(), 
+                currStore.toLatLng(), 
                 currStore.title, 
                 currStore.address, 
                 getStoreLogoDrawableRes(currStore.type)

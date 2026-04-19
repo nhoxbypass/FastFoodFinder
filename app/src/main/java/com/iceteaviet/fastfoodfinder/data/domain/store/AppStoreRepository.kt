@@ -6,11 +6,9 @@ import com.iceteaviet.fastfoodfinder.data.local.db.store.model.toEntity
 import com.iceteaviet.fastfoodfinder.data.local.db.store.model.toDomain
 import com.iceteaviet.fastfoodfinder.data.remote.store.StoreApiHelper
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Comment
-import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
+import com.iceteaviet.fastfoodfinder.domain.model.Store
 import com.iceteaviet.fastfoodfinder.utils.exception.NotFoundException
 import com.iceteaviet.fastfoodfinder.utils.getStoreTypeFromQuery
-import com.iceteaviet.fastfoodfinder.utils.isValidLat
-import com.iceteaviet.fastfoodfinder.utils.isValidLng
 import com.iceteaviet.fastfoodfinder.utils.standardizeDistrictQuery
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -105,7 +103,7 @@ class AppStoreRepository(private val storeApiHelper: StoreApiHelper, private val
     @VisibleForTesting
     internal fun filterInvalidData(stores: List<Store>): List<Store> {
         return stores.filter { store ->
-            store.id >= 0 && isValidLat(store.lat) && isValidLng(store.lng) && store.address.isNotBlank()
+            store.id >= 0 && store.lat in 0.0..90.0 && store.lng in 0.0..180.0 && store.address.isNotBlank()
         }
     }
 }

@@ -1,7 +1,7 @@
 package com.iceteaviet.fastfoodfinder.data.domain.store
 
 import com.google.common.truth.Truth.assertThat
-import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
+import com.iceteaviet.fastfoodfinder.domain.model.Store
 import com.iceteaviet.fastfoodfinder.utils.StoreType
 import org.junit.Test
 
@@ -46,8 +46,8 @@ class AppStoreRepositoryFilterTest {
     fun filterInvalidDataTest() {
         val stores = listOf(
             Store(STORE_ID, STORE_TITLE, STORE_ADDRESS, STORE_LAT, STORE_LNG, STORE_TEL, STORE_TYPE),
-            Store(STORE_ID, STORE_TITLE, STORE_ADDRESS, "0.0", STORE_LNG, STORE_TEL, STORE_TYPE),
-            Store(STORE_ID, STORE_TITLE, STORE_ADDRESS, STORE_LAT, "0.0", STORE_TEL, STORE_TYPE),
+            Store(STORE_ID, STORE_TITLE, STORE_ADDRESS, 0.0, STORE_LNG, STORE_TEL, STORE_TYPE),
+            Store(STORE_ID, STORE_TITLE, STORE_ADDRESS, STORE_LAT, 0.0, STORE_TEL, STORE_TYPE),
             Store(STORE_ID, STORE_TITLE, STORE_ADDRESS, STORE_LAT, STORE_LNG, STORE_INVALID_TEL, STORE_TYPE),
         )
 
@@ -58,8 +58,8 @@ class AppStoreRepositoryFilterTest {
         private const val STORE_ID = 123
         private const val STORE_TITLE = "store_title"
         private const val STORE_ADDRESS = "store_address"
-        private const val STORE_LAT = "10.773996"
-        private const val STORE_LNG = "106.6898035"
+        private const val STORE_LAT = 10.773996
+        private const val STORE_LNG = 106.6898035
         private const val STORE_TEL = "012345678965"
 
         private const val STORE_TYPE = StoreType.TYPE_CIRCLE_K
@@ -67,7 +67,7 @@ class AppStoreRepositoryFilterTest {
         private const val STORE_INVALID_ID = -1
         private const val STORE_INVALID_TEL = ""
         private const val STORE_INVALID_ADDRESS = ""
-        private const val STORE_INVALID_LAT = "-1"
-        private const val STORE_INVALID_LNG = "-1"
+        private const val STORE_INVALID_LAT = -1.0
+        private const val STORE_INVALID_LNG = -1.0
     }
 }
