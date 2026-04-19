@@ -18,6 +18,7 @@ import com.iceteaviet.fastfoodfinder.data.local.prefs.AppPreferencesHelper
 import com.iceteaviet.fastfoodfinder.data.local.prefs.AppPreferencesWrapper
 import com.iceteaviet.fastfoodfinder.data.remote.routing.FakeGoogleMapsRoutingApiHelper
 import com.iceteaviet.fastfoodfinder.data.remote.store.FakeFirebaseStoreApiHelper
+import com.iceteaviet.fastfoodfinder.data.remote.store.StoreApiHelper
 import com.iceteaviet.fastfoodfinder.data.remote.user.FakeFirebaseUserApiHelper
 import dagger.Module
 import dagger.Provides
@@ -32,9 +33,14 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideStoreRepository(@ApplicationContext context: Context, storeDao: StoreDao): StoreRepository {
-        val remote = FakeFirebaseStoreApiHelper(context)
-        return AppStoreRepository(remote, storeDao)
+    fun provideStoreApiHelper(@ApplicationContext context: Context): StoreApiHelper {
+        return FakeFirebaseStoreApiHelper(context)
+    }
+
+    @Provides
+    @Singleton
+    fun provideStoreRepository(storeApiHelper: StoreApiHelper, storeDao: StoreDao): StoreRepository {
+        return AppStoreRepository(storeApiHelper, storeDao)
     }
 
     @Provides

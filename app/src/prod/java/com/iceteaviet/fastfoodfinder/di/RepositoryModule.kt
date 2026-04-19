@@ -1,6 +1,7 @@
 package com.iceteaviet.fastfoodfinder.di
 
 import android.content.Context
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.auth.ClientAuth
@@ -20,6 +21,7 @@ import com.iceteaviet.fastfoodfinder.data.local.prefs.AppPreferencesWrapper
 import com.iceteaviet.fastfoodfinder.data.local.prefs.AppPreferencesWrapper.Companion.PREFS_NAME
 import com.iceteaviet.fastfoodfinder.data.remote.routing.GoogleMapsRoutingApiHelper
 import com.iceteaviet.fastfoodfinder.data.remote.store.FirebaseStoreApiHelper
+import com.iceteaviet.fastfoodfinder.data.remote.store.StoreApiHelper
 import com.iceteaviet.fastfoodfinder.data.remote.user.FirebaseUserApiHelper
 import dagger.Module
 import dagger.Provides
@@ -34,9 +36,20 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideStoreRepository(storeDao: StoreDao): StoreRepository {
-        val remote = FirebaseStoreApiHelper(FirebaseDatabase.getInstance().reference)
-        return AppStoreRepository(remote, storeDao)
+    fun provideDatabaseReference(): DatabaseReference {
+        return FirebaseDatabase.getInstance().reference
+    }
+
+    @Provides
+    @Singleton
+    fun provideStoreApiHelper(dbRef: DatabaseReference): StoreApiHelper {
+        return FirebaseStoreApiHelper(dbRef)
+    }
+
+    @Provides
+    @Singleton
+    fun provideStoreRepository(storeApiHelper: StoreApiHelper, storeDao: StoreDao): StoreRepository {
+        return AppStoreRepository(storeApiHelper, storeDao)
     }
 
     @Provides
