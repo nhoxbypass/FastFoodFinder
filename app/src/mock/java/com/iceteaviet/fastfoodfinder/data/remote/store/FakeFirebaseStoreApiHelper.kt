@@ -38,7 +38,6 @@ class FakeFirebaseStoreApiHelper(private val context: Context) : StoreApiHelper 
             "ministop.json" to StoreType.TYPE_MINI_STOP,
             "familymart.json" to StoreType.TYPE_FAMILY_MART,
             "bsmart.json" to StoreType.TYPE_BSMART,
-            "shopngo.json" to StoreType.TYPE_SHOP_N_GO,
             "711.json" to StoreType.TYPE_7_ELEVEN,
         )
 

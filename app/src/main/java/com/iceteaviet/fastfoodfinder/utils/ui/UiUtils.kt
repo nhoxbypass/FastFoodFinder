@@ -31,7 +31,6 @@ fun getStoreLogoDrawableRes(type: Int): Int {
         StoreType.TYPE_MINI_STOP -> R.drawable.logo_ministop_50
         StoreType.TYPE_FAMILY_MART -> R.drawable.logo_familymart_50
         StoreType.TYPE_BSMART -> R.drawable.logo_bsmart_50
-        StoreType.TYPE_SHOP_N_GO -> R.drawable.logo_shopngo_50
         StoreType.TYPE_7_ELEVEN -> R.drawable.logo_711_50
         else -> R.drawable.logo_circlek_50
     }

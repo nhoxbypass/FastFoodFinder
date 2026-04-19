@@ -15,7 +15,6 @@ class UiUtilsTest {
         assertThat(getStoreLogoDrawableRes(StoreType.TYPE_BSMART)).isEqualTo(R.drawable.logo_bsmart_50)
         assertThat(getStoreLogoDrawableRes(StoreType.TYPE_FAMILY_MART)).isEqualTo(R.drawable.logo_familymart_50)
         assertThat(getStoreLogoDrawableRes(StoreType.TYPE_MINI_STOP)).isEqualTo(R.drawable.logo_ministop_50)
-        assertThat(getStoreLogoDrawableRes(StoreType.TYPE_SHOP_N_GO)).isEqualTo(R.drawable.logo_shopngo_50)
     }
 
     @Test
