@@ -11,6 +11,8 @@ import com.iceteaviet.fastfoodfinder.utils.exception.NotFoundException
 import com.iceteaviet.fastfoodfinder.utils.getStoreTypeFromQuery
 import com.iceteaviet.fastfoodfinder.utils.standardizeDistrictQuery
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 
 class AppStoreRepository(private val storeApiHelper: StoreApiHelper, private val storeDao: StoreDao) : StoreRepository {
@@ -18,35 +20,43 @@ class AppStoreRepository(private val storeApiHelper: StoreApiHelper, private val
     @VisibleForTesting
     internal var cachedStores: List<Store> = ArrayList()
 
+    private val cacheMutex = Mutex()
+
     override suspend fun getAllStores(): List<Store> = withContext(Dispatchers.IO) {
-        if (cachedStores.isNotEmpty()) {
-            return@withContext ArrayList(cachedStores)
-        }
+        cacheMutex.withLock {
+            if (cachedStores.isNotEmpty()) {
+                return@withContext ArrayList(cachedStores)
+            }
 
-        val localStores = storeDao.getAllStores().map { it.toDomain() }
-        if (localStores.isNotEmpty()) {
-            cachedStores = localStores
-            return@withContext ArrayList(localStores)
-        }
+            val localStores = storeDao.getAllStores().map { it.toDomain() }
+            if (localStores.isNotEmpty()) {
+                cachedStores = localStores
+                return@withContext ArrayList(localStores)
+            }
 
-        val remoteStores = storeApiHelper.getAllStores()
-        val filtered = filterInvalidData(remoteStores)
-        persistStores(filtered)
-        ArrayList(filtered)
+            val remoteStores = storeApiHelper.getAllStores()
+            val filtered = filterInvalidData(remoteStores)
+            persistStoresLocked(filtered)
+            ArrayList(filtered)
+        }
     }
 
     override suspend fun refreshStores(): List<Store> = withContext(Dispatchers.IO) {
-        val remoteStores = storeApiHelper.getAllStores()
-        val filtered = filterInvalidData(remoteStores)
-        persistStores(filtered)
-        ArrayList(filtered)
+        cacheMutex.withLock {
+            val remoteStores = storeApiHelper.getAllStores()
+            val filtered = filterInvalidData(remoteStores)
+            persistStoresLocked(filtered)
+            ArrayList(filtered)
+        }
     }
 
     override suspend fun setStores(storeList: List<Store>) = withContext(Dispatchers.IO) {
-        persistStores(storeList)
+        cacheMutex.withLock {
+            persistStoresLocked(storeList)
+        }
     }
 
-    private suspend fun persistStores(stores: List<Store>) {
+    private suspend fun persistStoresLocked(stores: List<Store>) {
         cachedStores = stores
         if (stores.isNotEmpty()) {
             storeDao.insertAll(stores.map { it.toEntity() })
@@ -84,8 +94,10 @@ class AppStoreRepository(private val storeApiHelper: StoreApiHelper, private val
     }
 
     override suspend fun deleteAllStores() = withContext(Dispatchers.IO) {
-        cachedStores = ArrayList()
-        storeDao.deleteAll()
+        cacheMutex.withLock {
+            cachedStores = ArrayList()
+            storeDao.deleteAll()
+        }
     }
 
     override suspend fun getComments(storeId: String): List<Comment> = withContext(Dispatchers.IO) {
