@@ -1,0 +1,270 @@
+{
+  "markers_add": [
+    {
+      "title": "7-Eleven - 22 Bis Lê Thánh Tôn",
+      "address": "22 Bis Lê Thánh Tôn, P. Bến Nghé, Quận 1, TP. HCM",
+      "tel": "1900 272 711",
+      "lat": "10.7816130000000",
+      "lng": "106.7056100000000"
+    },
+    {
+      "title": "7-Eleven - 24 Hồ Huấn Nghiệp",
+      "address": "24 Hồ Huấn Nghiệp, P. Bến Nghé, Quận 1, TP. HCM",
+      "tel": "1900 272 711",
+      "lat": "10.7753200000000",
+      "lng": "106.7065000000000"
+    },
+    {
+      "title": "7-Eleven - 37 Bùi Viện",
+      "address": "37 Bùi Viện, P. Phạm Ngũ Lão, Quận 1, TP. HCM",
+      "tel": "1900 272 711",
+      "lat": "10.7675100000000",
+      "lng": "106.6934200000000"
+    },
+    {
+      "title": "7-Eleven - 68 Ngô Đức Kế",
+      "address": "68 Ngô Đức Kế, P. Bến Nghé, Quận 1, TP. HCM",
+      "tel": "1900 272 711",
+      "lat": "10.7734150000000",
+      "lng": "106.7053210000000"
+    },
+    {
+      "title": "7-Eleven - 89 Nguyễn Du",
+      "address": "89 Nguyễn Du, P. Bến Nghé, Quận 1, TP. HCM",
+      "tel": "1900 272 711",
+      "lat": "10.7778900000000",
+      "lng": "106.6987500000000"
+    },
+    {
+      "title": "7-Eleven - 158 Lê Thánh Tôn",
+      "address": "158 Lê Thánh Tôn, P. Bến Nghé, Quận 1, TP. HCM",
+      "tel": "1900 272 711",
+      "lat": "10.7723400000000",
+      "lng": "106.6978100000000"
+    },
+    {
+      "title": "7-Eleven - 35Bis Mạc Đĩnh Chi",
+      "address": "35Bis Mạc Đĩnh Chi, P. Đa Kao, Quận 1, TP. HCM",
+      "tel": "1900 272 711",
+      "lat": "10.7856400000000",
+      "lng": "106.6989900000000"
+    },
+    {
+      "title": "7-Eleven - Vinhomes Golden River",
+      "address": "02 Tôn Đức Thắng, P. Bến Nghé, Quận 1, TP. HCM",
+      "tel": "1900 272 711",
+      "lat": "10.7845300000000",
+      "lng": "106.7089100000000"
+    },
+    {
+      "title": "7-Eleven - Cantavil Premier",
+      "address": "Số 1 Song Hành, P. An Phú, TP. Thủ Đức, TP. HCM",
+      "tel": "1900 272 711",
+      "lat": "10.8012300000000",
+      "lng": "106.7445600000000"
+    },
+    {
+      "title": "7-Eleven - The Sun Avenue",
+      "address": "28 Mai Chí Thọ, P. An Phú, TP. Thủ Đức, TP. HCM",
+      "tel": "1900 272 711",
+      "lat": "10.7885400000000",
+      "lng": "106.7468100000000"
+    },
+    {
+      "title": "7-Eleven - Sarimi Sala",
+      "address": "74 Nguyễn Cơ Thạch, P. An Lợi Đông, TP. Thủ Đức, TP. HCM",
+      "tel": "1900 272 711",
+      "lat": "10.7712300000000",
+      "lng": "106.7214500000000"
+    },
+    {
+      "title": "7-Eleven - Sadora",
+      "address": "14 Nguyễn Cơ Thạch, P. An Lợi Đông, TP. Thủ Đức, TP. HCM",
+      "tel": "1900 272 711",
+      "lat": "10.7756100000000",
+      "lng": "106.7208900000000"
+    },
+    {
+      "title": "7-Eleven - 412 Nguyễn Thị Minh Khai",
+      "address": "412 Nguyễn Thị Minh Khai, P. 5, Quận 3, TP. HCM",
+      "tel": "039 715 1711",
+      "lat": "10.7698500000000",
+      "lng": "106.6853200000000"
+    },
+    {
+      "title": "7-Eleven - 321 Lê Văn Sỹ",
+      "address": "321 Lê Văn Sỹ, P. 13, Quận 3, TP. HCM",
+      "tel": "1900 272 711",
+      "lat": "10.7865200000000",
+      "lng": "106.6789100000000"
+    },
+    {
+      "title": "7-Eleven - 74 Võ Văn Tần",
+      "address": "74 Võ Văn Tần, P. Võ Thị Sáu, Quận 3, TP. HCM",
+      "tel": "1900 272 711",
+      "lat": "10.7781500000000",
+      "lng": "106.6912300000000"
+    },
+    {
+      "title": "7-Eleven - 10A Trần Quốc Toản",
+      "address": "10A Trần Quốc Toản, P. Võ Thị Sáu, Quận 3, TP. HCM",
+      "tel": "1900 272 711",
+      "lat": "10.7876100000000",
+      "lng": "106.6897200000000"
+    },
+    {
+      "title": "7-Eleven - Icon 56",
+      "address": "56 Bến Vân Đồn, P. 13, Quận 4, TP. HCM",
+      "tel": "1900 272 711",
+      "lat": "10.7634200000000",
+      "lng": "106.7025600000000"
+    },
+    {
+      "title": "7-Eleven - Millennium Masteri",
+      "address": "132 Bến Vân Đồn, P. 6, Quận 4, TP. HCM",
+      "tel": "1900 272 711",
+      "lat": "10.7612300000000",
+      "lng": "106.6985400000000"
+    },
+    {
+      "title": "7-Eleven - 479 An Dương Vương",
+      "address": "479 An Dương Vương, P. 8, Quận 5, TP. HCM",
+      "tel": "1900 272 711",
+      "lat": "10.7554300000000",
+      "lng": "106.6698700000000"
+    },
+    {
+      "title": "7-Eleven - 352 Nguyễn Văn Luông",
+      "address": "352 Nguyễn Văn Luông, P. 12, Quận 6, TP. HCM",
+      "tel": "1900 272 711",
+      "lat": "10.7485200000000",
+      "lng": "106.6345600000000"
+    },
+    {
+      "title": "7-Eleven - SECC",
+      "address": "799 Nguyễn Văn Linh, P. Tân Phú, Quận 7, TP. HCM",
+      "tel": "1900 272 711",
+      "lat": "10.7321500000000",
+      "lng": "106.7219800000000"
+    },
+    {
+      "title": "7-Eleven - ĐH Tôn Đức Thắng",
+      "address": "19 Nguyễn Hữu Thọ, P. Tân Phong, Quận 7, TP. HCM",
+      "tel": "1900 272 711",
+      "lat": "10.7325600000000",
+      "lng": "106.6998700000000"
+    },
+    {
+      "title": "7-Eleven - CC Nam Phúc Le Jardin",
+      "address": "Lô S6-3, CC Nam Phúc-Le Jadin, P. Tân Phú, Quận 7, TP. HCM",
+      "tel": "1900 272 711",
+      "lat": "10.7256100000000",
+      "lng": "106.7265400000000"
+    },
+    {
+      "title": "7-Eleven - Midtown Symphony",
+      "address": "Lô M6, Tòa Symphony, Phú Mỹ Hưng, P. Tân Phú, Quận 7, TP. HCM",
+      "tel": "1900 272 711",
+      "lat": "10.7275400000000",
+      "lng": "106.7289100000000"
+    },
+    {
+      "title": "7-Eleven - Cobi Tower II",
+      "address": "5-7 Đường số 8, P. Tân Phú, Quận 7, TP. HCM",
+      "tel": "1900 272 711",
+      "lat": "10.7301200000000",
+      "lng": "106.7223400000000"
+    },
+    {
+      "title": "7-Eleven - Saigon Riverside Complex",
+      "address": "04 Đào Trí, P. Phú Mỹ, Quận 7, TP. HCM",
+      "tel": "1900 272 711",
+      "lat": "10.7208900000000",
+      "lng": "106.7365200000000"
+    },
+    {
+      "title": "7-Eleven - 108 Hoàng Quốc Việt",
+      "address": "108 Hoàng Quốc Việt, P. Phú Mỹ, Quận 7, TP. HCM",
+      "tel": "1900 272 711",
+      "lat": "10.7245100000000",
+      "lng": "106.7312300000000"
+    },
+    {
+      "title": "7-Eleven - 57-59 Hà Huy Tập",
+      "address": "57-59 Hà Huy Tập, P. Tân Phong, Quận 7, TP. HCM",
+      "tel": "1900 272 711",
+      "lat": "10.7289100000000",
+      "lng": "106.7123400000000"
+    },
+    {
+      "title": "7-Eleven - Conic Riverside",
+      "address": "SH 05, Conic Riverside, Lô Ba, P. 7, Quận 8, TP. HCM",
+      "tel": "1900 272 711",
+      "lat": "10.7185400000000",
+      "lng": "106.6348900000000"
+    },
+    {
+      "title": "7-Eleven - The Art Gia Hòa",
+      "address": "523A Đỗ Xuân Hợp, P. Phước Long B, TP. Thủ Đức, TP. HCM",
+      "tel": "1900 272 711",
+      "lat": "10.8145200000000",
+      "lng": "106.7756100000000"
+    },
+    {
+      "title": "7-Eleven - Vinhomes Grand Park S2.03",
+      "address": "Nguyễn Xiển, P. Long Thạnh Mỹ, TP. Thủ Đức, TP. HCM",
+      "tel": "1900 272 711",
+      "lat": "10.8423100000000",
+      "lng": "106.8401200000000"
+    },
+    {
+      "title": "7-Eleven - Vinhomes Grand Park S6.03",
+      "address": "88 Phước Thiện, P. Long Bình, TP. Thủ Đức, TP. HCM",
+      "tel": "1900 272 711",
+      "lat": "10.8456100000000",
+      "lng": "106.8453200000000"
+    },
+    {
+      "title": "7-Eleven - 33 Thành Thái",
+      "address": "33 Thành Thái, P. 14, Quận 10, TP. HCM",
+      "tel": "1900 272 711",
+      "lat": "10.7715400000000",
+      "lng": "106.6645200000000"
+    },
+    {
+      "title": "7-Eleven - 138 Trịnh Đình Trọng",
+      "address": "138-138A Trịnh Đình Trọng, P. Phú Trung, Quận Tân Phú, TP. HCM",
+      "tel": "1900 272 711",
+      "lat": "10.7689100000000",
+      "lng": "106.6385400000000"
+    },
+    {
+      "title": "7-Eleven - 36 Nguyễn Văn Đậu",
+      "address": "36 Nguyễn Văn Đậu, P. 5, Quận Phú Nhuận, TP. HCM",
+      "tel": "1900 272 711",
+      "lat": "10.8032100000000",
+      "lng": "106.6854300000000"
+    },
+    {
+      "title": "7-Eleven - Vinhomes Central Park",
+      "address": "720A Điện Biên Phủ, P. 22, Quận Bình Thạnh, TP. HCM",
+      "tel": "096 711 3711",
+      "lat": "10.7945600000000",
+      "lng": "106.7213400000000"
+    },
+    {
+      "title": "7-Eleven - 28 Đường D5",
+      "address": "28 Đường D5, P. 25, Quận Bình Thạnh, TP. HCM",
+      "tel": "1900 272 711",
+      "lat": "10.8054300000000",
+      "lng": "106.7156200000000"
+    },
+    {
+      "title": "7-Eleven - 15 Võ Trần Chí",
+      "address": "15 Võ Trần Chí, X. Tân Kiên, Huyện Bình Chánh, TP. HCM",
+      "tel": "1900 272 711",
+      "lat": "10.7254300000000",
+      "lng": "106.5987100000000"
+    }
+  ]
+}

@@ -49,8 +49,8 @@ class DiscountNotifyViewModel @Inject constructor() : ViewModel() {
         const val KEY_MINI_STOP = "mini_stop"
         const val KEY_FAMILY_MART = "family_mark"
         const val KEY_BSMART = "bsmart"
-        const val KEY_SHOP_N_GO = "shop_n_go"
+        const val KEY_711 = "711"
 
-        val LIST_STORES = arrayOf(KEY_BSMART, KEY_CIRCLE_K, KEY_FAMILY_MART, KEY_MINI_STOP, KEY_SHOP_N_GO)
+        val LIST_STORES = arrayOf(KEY_BSMART, KEY_CIRCLE_K, KEY_FAMILY_MART, KEY_MINI_STOP, KEY_711)
     }
 }

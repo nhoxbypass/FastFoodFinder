@@ -165,9 +165,9 @@ fun getStoreTypeFromQuery(queryString: String): Int {
         return StoreType.TYPE_MINI_STOP
     else if (trimmedQuery == "family mart" || trimmedQuery == "familymart" || trimmedQuery == "famima")
         return StoreType.TYPE_FAMILY_MART
-    else if (trimmedQuery == "shop and go" || trimmedQuery == "shopandgo"
-        || trimmedQuery == "shop n go" || trimmedQuery == "shopngo")
-        return StoreType.TYPE_SHOP_N_GO
+    else if (trimmedQuery == "711" || trimmedQuery == "seven eleven"
+        || trimmedQuery == "7 eleven" || trimmedQuery == "7 11")
+        return StoreType.TYPE_7_ELEVEN
     else if (trimmedQuery == "bsmart" || trimmedQuery == "b smart" || trimmedQuery == "bs mart"
         || trimmedQuery == "bmart" || trimmedQuery == "b'smart" || trimmedQuery == "b's mart" || trimmedQuery == "bs'mart")
         return StoreType.TYPE_BSMART

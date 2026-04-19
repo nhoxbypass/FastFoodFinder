@@ -38,7 +38,7 @@ class SearchFragment : Fragment() {
     private lateinit var quickSearchMiniStop: CircleImageView
     private lateinit var quickSearchLoadMore: CircleImageView
     private lateinit var quickSearchBsMart: CircleImageView
-    private lateinit var quickSearchShopNGo: CircleImageView
+    private lateinit var quickSearch7Eleven: CircleImageView
 
     private lateinit var cvActionContainer: CardView
     private lateinit var cvRecentlyContainer: CardView
@@ -143,7 +143,7 @@ class SearchFragment : Fragment() {
         quickSearchMiniStop = binding.btnSearchMiniStop
         quickSearchLoadMore = binding.btnLoadMore
         quickSearchBsMart = binding.btnSearchBsmart
-        quickSearchShopNGo = binding.btnSearchShopNGo
+        quickSearch7Eleven = binding.btnSearch7Eleven
         cardViewQuickSearch = binding.cvActionContainer
         searchMoreLayout = binding.llLoadMoreContainer
         searchContainer = binding.svSearchContainer
@@ -181,8 +181,8 @@ class SearchFragment : Fragment() {
             viewModel.onQuickSearchItemClick(StoreType.TYPE_BSMART)
         }
 
-        quickSearchShopNGo.setOnClickListener {
-            viewModel.onQuickSearchItemClick(StoreType.TYPE_SHOP_N_GO)
+        quickSearch7Eleven.setOnClickListener {
+            viewModel.onQuickSearchItemClick(StoreType.TYPE_7_ELEVEN)
         }
 
         quickSearchLoadMore.setOnClickListener {
