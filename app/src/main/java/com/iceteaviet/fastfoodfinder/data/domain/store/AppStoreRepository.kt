@@ -60,6 +60,8 @@ class AppStoreRepository(private val storeApiHelper: StoreApiHelper, private val
         cachedStores = stores
         if (stores.isNotEmpty()) {
             storeDao.insertAll(stores.map { it.toEntity() })
+        } else {
+            storeDao.deleteAll()
         }
     }
 
@@ -108,8 +110,10 @@ class AppStoreRepository(private val storeApiHelper: StoreApiHelper, private val
         storeApiHelper.insertOrUpdateComment(storeId, comment)
     }
 
-    fun clearCache() {
-        cachedStores = ArrayList()
+    suspend fun clearCache() {
+        cacheMutex.withLock {
+            cachedStores = ArrayList()
+        }
     }
 
     @VisibleForTesting
