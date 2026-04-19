@@ -15,8 +15,8 @@ class StoreRefreshService @Inject constructor(
             return storeRepository.refreshStores()
         }
 
+        clientAuth.signInWithEmailAndPassword(botEmail, botPassword)
         try {
-            clientAuth.signInWithEmailAndPassword(botEmail, botPassword)
             return storeRepository.refreshStores()
         } finally {
             clientAuth.signOut()

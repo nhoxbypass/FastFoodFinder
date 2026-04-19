@@ -15,7 +15,8 @@ import kotlin.coroutines.resumeWithException
 class FirebaseStoreApiHelper(private val databaseRef: DatabaseReference) : StoreApiHelper {
 
     override suspend fun getAllStores(): List<Store> = suspendCancellableCoroutine { cont ->
-        databaseRef.child(CHILD_STORES_LOCATION).addListenerForSingleValueEvent(object : ValueEventListener {
+        val ref = databaseRef.child(CHILD_STORES_LOCATION)
+        val listener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 cont.resume(parseStoresDataFromFirebase(dataSnapshot))
             }
@@ -23,11 +24,14 @@ class FirebaseStoreApiHelper(private val databaseRef: DatabaseReference) : Store
             override fun onCancelled(databaseError: DatabaseError) {
                 cont.resumeWithException(databaseError.toException())
             }
-        })
+        }
+        ref.addListenerForSingleValueEvent(listener)
+        cont.invokeOnCancellation { ref.removeEventListener(listener) }
     }
 
     override suspend fun getComments(storeId: String): List<Comment> = suspendCancellableCoroutine { cont ->
-        databaseRef.child(CHILD_COMMENT_LIST).child(storeId).addListenerForSingleValueEvent(object : ValueEventListener {
+        val ref = databaseRef.child(CHILD_COMMENT_LIST).child(storeId)
+        val listener = object : ValueEventListener {
             override fun onCancelled(databaseError: DatabaseError) {
                 cont.resumeWithException(databaseError.toException())
             }
@@ -35,7 +39,9 @@ class FirebaseStoreApiHelper(private val databaseRef: DatabaseReference) : Store
             override fun onDataChange(snapshot: DataSnapshot) {
                 cont.resume(parseCommentsDataFromFirebase(snapshot))
             }
-        })
+        }
+        ref.addListenerForSingleValueEvent(listener)
+        cont.invokeOnCancellation { ref.removeEventListener(listener) }
     }
 
     override fun insertOrUpdateComment(storeId: String, comment: Comment) {
