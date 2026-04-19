@@ -122,10 +122,9 @@ class FormatUtilsTest {
         assertEquals(StoreType.TYPE_BSMART, getStoreTypeFromQuery("b smart"))
         assertEquals(StoreType.TYPE_BSMART, getStoreTypeFromQuery("bs mart"))
 
-        assertEquals(StoreType.TYPE_SHOP_N_GO, getStoreTypeFromQuery("shopngo"))
-        assertEquals(StoreType.TYPE_SHOP_N_GO, getStoreTypeFromQuery(" shop n go"))
-        assertEquals(StoreType.TYPE_SHOP_N_GO, getStoreTypeFromQuery("shopandgo"))
-        assertEquals(StoreType.TYPE_SHOP_N_GO, getStoreTypeFromQuery(" shop and go  "))
+        assertEquals(StoreType.TYPE_7_ELEVEN, getStoreTypeFromQuery("711"))
+        assertEquals(StoreType.TYPE_7_ELEVEN, getStoreTypeFromQuery(" seven eleven"))
+        assertEquals(StoreType.TYPE_7_ELEVEN, getStoreTypeFromQuery("7 eleven"))
 
         assertEquals(StoreType.TYPE_FAMILY_MART, getStoreTypeFromQuery("familymart"))
         assertEquals(StoreType.TYPE_FAMILY_MART, getStoreTypeFromQuery("famima"))

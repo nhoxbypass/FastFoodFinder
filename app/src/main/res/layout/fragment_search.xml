@@ -83,11 +83,11 @@
                     android:visibility="gone">
 
                     <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/btn_search_shop_n_go"
+                        android:id="@+id/btn_search_7_eleven"
                         android:layout_width="0dp"
                         android:layout_height="56dp"
                         android:layout_weight="1"
-                        android:src="@drawable/logo_shopngo_red"
+                        android:src="@drawable/logo_711_50"
                         app:civ_border_color="@color/googleRed"
                         app:civ_circle_background_color="@color/googleRed" />
 

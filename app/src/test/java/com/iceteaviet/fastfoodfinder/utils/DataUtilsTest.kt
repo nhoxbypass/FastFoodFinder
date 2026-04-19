@@ -78,7 +78,7 @@ class DataUtilsTest {
         assertThat(getStoreType("mini_stop")).isEqualTo(StoreType.TYPE_MINI_STOP)
         assertThat(getStoreType("family_mart")).isEqualTo(StoreType.TYPE_FAMILY_MART)
         assertThat(getStoreType("bsmart")).isEqualTo(StoreType.TYPE_BSMART)
-        assertThat(getStoreType("shop_n_go")).isEqualTo(StoreType.TYPE_SHOP_N_GO)
+        assertThat(getStoreType("711")).isEqualTo(StoreType.TYPE_7_ELEVEN)
     }
 
     @Test
@@ -91,7 +91,7 @@ class DataUtilsTest {
     fun getStoreSearchStringTest() {
         assertThat(getStoreSearchString(StoreType.TYPE_CIRCLE_K)).isEqualTo("Circle K")
         assertThat(getStoreSearchString(StoreType.TYPE_BSMART)).isEqualTo("B'smart")
-        assertThat(getStoreSearchString(StoreType.TYPE_SHOP_N_GO)).isEqualTo("Shop and Go")
+        assertThat(getStoreSearchString(StoreType.TYPE_7_ELEVEN)).isEqualTo("7-Eleven")
         assertThat(getStoreSearchString(StoreType.TYPE_FAMILY_MART)).isEqualTo("Family Mart")
         assertThat(getStoreSearchString(StoreType.TYPE_MINI_STOP)).isEqualTo("Mini Stop")
         assertThat(getStoreSearchString(-1)).isEqualTo("")
@@ -133,7 +133,7 @@ class DataUtilsTest {
         assertThat(getStoreNameByKey(KEY_BSMART)).isEqualTo("B’s mart")
         assertThat(getStoreNameByKey(KEY_FAMILY_MART)).isEqualTo("Family mart")
         assertThat(getStoreNameByKey(KEY_MINI_STOP)).isEqualTo("Ministop")
-        assertThat(getStoreNameByKey(KEY_SHOP_N_GO)).isEqualTo("Shop & Go")
+        assertThat(getStoreNameByKey(KEY_711)).isEqualTo("7-Eleven")
 
         assertThat(getStoreNameByKey(null)).isEmpty()
         assertThat(getStoreNameByKey("")).isEmpty()
@@ -194,7 +194,7 @@ class DataUtilsTest {
         const val KEY_MINI_STOP = "mini_stop"
         const val KEY_FAMILY_MART = "family_mark"
         const val KEY_BSMART = "bsmart"
-        const val KEY_SHOP_N_GO = "shop_n_go"
+        const val KEY_711 = "711"
 
     }
 }

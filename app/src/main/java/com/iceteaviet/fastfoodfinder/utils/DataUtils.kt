@@ -327,8 +327,8 @@ fun getStoreType(key: String?): Int {
         StoreType.TYPE_FAMILY_MART
     else if (key == "bsmart")
         StoreType.TYPE_BSMART
-    else if (key == "shop_n_go")
-        StoreType.TYPE_SHOP_N_GO
+    else if (key == "711")
+        StoreType.TYPE_7_ELEVEN
     else
         StoreType.TYPE_CIRCLE_K
 }
@@ -339,7 +339,7 @@ fun getStoreSearchString(storeType: Int): String {
         StoreType.TYPE_MINI_STOP -> "Mini Stop"
         StoreType.TYPE_FAMILY_MART -> "Family Mart"
         StoreType.TYPE_BSMART -> "B'smart"
-        StoreType.TYPE_SHOP_N_GO -> "Shop and Go"
+        StoreType.TYPE_7_ELEVEN -> "7-Eleven"
         else -> ""
     }
 }
@@ -397,7 +397,7 @@ fun getStoreNameByKey(key: String?): String {
         DiscountNotifyViewModel.KEY_BSMART -> return "B\u2019s mart"
         DiscountNotifyViewModel.KEY_FAMILY_MART -> return "Family mart"
         DiscountNotifyViewModel.KEY_MINI_STOP -> return "Ministop"
-        DiscountNotifyViewModel.KEY_SHOP_N_GO -> return "Shop & Go"
+        DiscountNotifyViewModel.KEY_711 -> return "7-Eleven"
         else -> return ""
     }
 }
