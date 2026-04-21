@@ -35,6 +35,22 @@ class AppPreferencesHelper(private val preferences: PreferencesWrapper) : Prefer
         preferences.putBoolean(KEY_LANGUAGE, isVietnamese)
     }
 
+    override fun getLastKnownLocation(): Pair<Double, Double>? {
+        val latStr = preferences.getString(KEY_LAST_KNOWN_LAT, "")
+        val lngStr = preferences.getString(KEY_LAST_KNOWN_LNG, "")
+        if (latStr.isEmpty() || lngStr.isEmpty()) return null
+        return try {
+            Pair(latStr.toDouble(), lngStr.toDouble())
+        } catch (e: NumberFormatException) {
+            null
+        }
+    }
+
+    override fun setLastKnownLocation(lat: Double, lng: Double) {
+        preferences.putString(KEY_LAST_KNOWN_LAT, lat.toString())
+        preferences.putString(KEY_LAST_KNOWN_LNG, lng.toString())
+    }
+
     companion object {
         @VisibleForTesting
         const val KEY_APP_LAUNCH_FIRST_TIME = "app_launch_first_time"
@@ -47,5 +63,11 @@ class AppPreferencesHelper(private val preferences: PreferencesWrapper) : Prefer
 
         @VisibleForTesting
         const val KEY_LANGUAGE = "lang"
+
+        @VisibleForTesting
+        const val KEY_LAST_KNOWN_LAT = "last_known_lat"
+
+        @VisibleForTesting
+        const val KEY_LAST_KNOWN_LNG = "last_known_lng"
     }
 }

@@ -15,4 +15,8 @@ interface PreferencesHelper {
     fun getIfLanguageIsVietnamese(): Boolean
 
     fun setIfLanguageIsVietnamese(isVietnamese: Boolean)
+
+    fun getLastKnownLocation(): Pair<Double, Double>?
+
+    fun setLastKnownLocation(lat: Double, lng: Double)
 }
