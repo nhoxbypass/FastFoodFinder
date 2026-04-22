@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.iceteaviet.fastfoodfinder.data.auth.ClientAuth
 import com.iceteaviet.fastfoodfinder.data.domain.prefs.PreferencesRepository
 import com.iceteaviet.fastfoodfinder.data.domain.user.UserRepository
-import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
+import com.iceteaviet.fastfoodfinder.domain.model.Store
 import com.iceteaviet.fastfoodfinder.ui.main.search.SearchEventBus
 import com.iceteaviet.fastfoodfinder.ui.main.search.SearchEventResult
 import com.iceteaviet.fastfoodfinder.utils.Constant

@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.Toast
-import androidx.collection.SparseArrayCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -22,15 +21,16 @@ import com.google.android.gms.maps.GoogleMapOptions
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.maps.android.clustering.ClusterManager
 import dagger.hilt.android.AndroidEntryPoint
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.core.location.GoogleLocationManager
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
-import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
+import com.iceteaviet.fastfoodfinder.domain.model.Store
 import com.iceteaviet.fastfoodfinder.databinding.FragmentMainMapBinding
+import com.iceteaviet.fastfoodfinder.ui.main.map.cluster.StoreClusterItem
+import com.iceteaviet.fastfoodfinder.ui.main.map.cluster.StoreClusterRenderer
 import com.iceteaviet.fastfoodfinder.ui.main.map.model.NearByStore
 import com.iceteaviet.fastfoodfinder.ui.main.map.storeinfo.StoreInfoDialog
 import com.iceteaviet.fastfoodfinder.utils.Constant
@@ -39,9 +39,7 @@ import com.iceteaviet.fastfoodfinder.utils.REQUEST_LOCATION
 import com.iceteaviet.fastfoodfinder.utils.isLocationPermissionGranted
 import com.iceteaviet.fastfoodfinder.utils.openRoutingActivity
 import com.iceteaviet.fastfoodfinder.utils.requestLocationPermission
-import com.iceteaviet.fastfoodfinder.utils.ui.animateMarker
-import com.iceteaviet.fastfoodfinder.utils.ui.getStoreIcon
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -57,8 +55,8 @@ class MainMapFragment : Fragment() {
     private var googleMap: GoogleMap? = null
     private var mMapFragment: SupportMapFragment? = null
     private var nearByStoreAdapter: NearByStoreAdapter? = null
-
-    private var markerSparseArray = SparseArrayCompat<Marker>()
+    private var clusterManager: ClusterManager<StoreClusterItem>? = null
+    private var mapRevealed = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,7 +71,7 @@ class MainMapFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupUI()
+        setupUI(savedInstanceState)
         mMapFragment = inflateSupportMapFragment()
         setupObservers()
     }
@@ -86,73 +84,46 @@ class MainMapFragment : Fragment() {
     private fun setupObservers() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiState.collectLatest { state ->
-                    when (state) {
-                        is MainMapEvent.Idle -> {}
+                viewModel.uiEvent.collect { event ->
+                    when (event) {
                         is MainMapEvent.RequestLocationPermission -> {
                             requestLocationPermission()
-                            viewModel.markEventConsumed()
                         }
                         is MainMapEvent.SetMyLocationEnabled -> {
-                            setMyLocationEnabled(state.enabled)
-                            viewModel.markEventConsumed()
+                            setMyLocationEnabled(event.enabled)
                         }
                         is MainMapEvent.AnimateMapCamera -> {
-                            animateMapCamera(state.location, state.zoomToDetail)
-                            viewModel.markEventConsumed()
+                            animateMapCamera(event.location, event.zoomToDetail)
                         }
                         is MainMapEvent.ShowWarningMessage -> {
-                            showWarningMessage(state.stringId)
-                            viewModel.markEventConsumed()
+                            showWarningMessage(event.stringId)
                         }
                         is MainMapEvent.ShowGeneralErrorMessage -> {
                             showGeneralErrorMessage()
-                            viewModel.markEventConsumed()
                         }
                         is MainMapEvent.ShowCannotGetLocationMessage -> {
                             showCannotGetLocationMessage()
-                            viewModel.markEventConsumed()
                         }
                         is MainMapEvent.ShowInvalidStoreLocationWarning -> {
                             showInvalidStoreLocationWarning()
-                            viewModel.markEventConsumed()
                         }
-                        is MainMapEvent.AddMarkersToMap -> {
-                            addMarkersToMap(state.stores)
-                            viewModel.markEventConsumed()
+                        is MainMapEvent.AddStoresToCluster -> {
+                            addStoresToCluster(event.stores)
                         }
                         is MainMapEvent.SetupMap -> {
                             setupMap()
-                            viewModel.markEventConsumed()
-                        }
-                        is MainMapEvent.SetupMapEventHandlers -> {
-                            setupMapEventHandlers()
-                            viewModel.markEventConsumed()
                         }
                         is MainMapEvent.ShowMapRoutingView -> {
-                            showMapRoutingView(state.store, state.mapsDirection)
-                            viewModel.markEventConsumed()
+                            showMapRoutingView(event.store, event.mapsDirection)
                         }
                         is MainMapEvent.ShowDialogStoreInfo -> {
-                            showDialogStoreInfo(state.store)
-                            viewModel.markEventConsumed()
-                        }
-                        is MainMapEvent.AnimateMapMarker -> {
-                            val targetMarker = markerSparseArray.get(state.storeId)
-                            animateMapMarker(targetMarker, state.storeType)
-                            viewModel.markEventConsumed()
+                            showDialogStoreInfo(event.store)
                         }
                         is MainMapEvent.SetNearByStores -> {
-                            setNearByStores(state.stores)
-                            viewModel.markEventConsumed()
+                            setNearByStores(event.stores)
                         }
                         is MainMapEvent.ClearNearByStores -> {
                             clearNearByStores()
-                            viewModel.markEventConsumed()
-                        }
-                        is MainMapEvent.ClearMapData -> {
-                            clearMapData()
-                            viewModel.markEventConsumed()
                         }
                     }
                 }
@@ -189,6 +160,10 @@ class MainMapFragment : Fragment() {
     }
 
     private fun animateMapCamera(location: LatLng, zoomToDetail: Boolean) {
+        if (!mapRevealed) {
+            binding.mapPlaceholder.visibility = View.VISIBLE
+            mapRevealed = true
+        }
         val zoomLevel = if (zoomToDetail) Constant.DETAILED_ZOOM_LEVEL else DEFAULT_ZOOM_LEVEL
         googleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(location, zoomLevel))
     }
@@ -209,65 +184,50 @@ class MainMapFragment : Fragment() {
         Toast.makeText(context, R.string.cannot_get_curr_location, Toast.LENGTH_SHORT).show()
     }
 
-    private fun addMarkersToMap(storeList: List<Store>) {
-        if (googleMap == null) return
-
-        viewModel.onClearOldMapData()
-
-        viewLifecycleOwner.lifecycleScope.launch(kotlinx.coroutines.Dispatchers.Main) {
-            val bounds = googleMap?.projection?.visibleRegion?.latLngBounds
-            for (i in storeList.indices) {
-                val store = storeList[i]
-                if (bounds != null && !bounds.contains(store.getPosition())) continue
-
-                val marker = googleMap!!.addMarker(
-                    MarkerOptions().position(store.getPosition())
-                        .title(store.title)
-                        .snippet(store.address)
-                        .icon(getStoreIcon(resources, store.type, -1, -1))
-                )
-                if (marker != null) {
-                    marker.tag = store
-                    markerSparseArray.put(store.id, marker)
-                }
-                
-                // Prevent `addMarker` IPC bottlenecking on massive datasets by yielding the main thread
-                if (i > 0 && i % 20 == 0) {
-                    kotlinx.coroutines.yield()
-                }
-            }
-        }
+    private fun addStoresToCluster(stores: List<Store>) {
+        val cm = clusterManager ?: return
+        cm.clearItems()
+        cm.addItems(stores.map { StoreClusterItem(it) })
+        cm.cluster()
     }
 
     @SuppressLint("MissingPermission")
     private fun setupMap() {
         if (googleMap != null) return
 
-        mMapFragment?.getMapAsync { googleMap ->
-            this.googleMap = googleMap
-            googleMap.isBuildingsEnabled = true
+        mMapFragment?.getMapAsync { map ->
+            this.googleMap = map
+            map.isBuildingsEnabled = true
 
-            googleMap.setOnCameraMoveListener {
+            val cm = ClusterManager<StoreClusterItem>(requireContext(), map)
+            cm.renderer = StoreClusterRenderer(requireContext(), map, cm)
+            this.clusterManager = cm
+
+            map.setOnCameraIdleListener(cm)
+            map.setOnMarkerClickListener(cm)
+
+            cm.setOnClusterItemClickListener { item ->
+                showDialogStoreInfo(item.getStore())
+                true
+            }
+
+            map.setOnCameraMoveListener {
                 viewModel.onMapCameraMove(
-                    googleMap.cameraPosition.target,
-                    googleMap.projection.visibleRegion.latLngBounds
+                    map.cameraPosition.target,
+                    map.projection.visibleRegion.latLngBounds
                 )
+            }
+
+            map.setOnCameraMoveStartedListener {
+                viewModel.onCameraMoveStarted()
             }
 
             viewModel.onGetMapAsync()
         }
     }
 
-    private fun setupMapEventHandlers() {
-        setMarkersListener(googleMap)
-    }
-
     private fun showMapRoutingView(currStore: Store, mapsDirection: MapsDirection) {
         openRoutingActivity(requireActivity(), currStore, mapsDirection)
-    }
-
-    private fun animateMapMarker(marker: Marker?, storeType: Int) {
-        animateMarker(resources, marker, storeType)
     }
 
     private fun setNearByStores(nearbyStores: List<NearByStore>) {
@@ -276,11 +236,6 @@ class MainMapFragment : Fragment() {
 
     private fun clearNearByStores() {
         nearByStoreAdapter?.clearData()
-    }
-
-    private fun clearMapData() {
-        markerSparseArray.clear()
-        googleMap?.clear()
     }
 
     private fun inflateSupportMapFragment(): SupportMapFragment? {
@@ -307,9 +262,15 @@ class MainMapFragment : Fragment() {
         }
     }
 
-    private fun setupUI() {
+    private fun setupUI(savedInstanceState: Bundle?) {
         mNearStoreRecyclerView = binding.rvBottomSheet
         mBottomSheetContainer = binding.llBottomSheet
+
+        if (savedInstanceState == null) {
+            binding.mapPlaceholder.visibility = View.INVISIBLE
+        } else {
+            mapRevealed = true
+        }
 
         nearByStoreAdapter = NearByStoreAdapter()
         initBottomSheet()
@@ -322,19 +283,9 @@ class MainMapFragment : Fragment() {
 
         nearByStoreAdapter?.setOnStoreListListener(object : NearByStoreAdapter.StoreListListener {
             override fun onItemClick(store: Store) {
-                viewModel.onNavigationButtonClick(store)
+                viewModel.onNearByStoreClicked(store)
             }
         })
-    }
-
-    private fun setMarkersListener(googleMap: GoogleMap?) {
-        googleMap?.setOnMarkerClickListener { marker ->
-            val store = marker.tag as Store?
-            if (store != null) {
-                showDialogStoreInfo(store)
-            }
-            false
-        }
     }
 
     private fun showDialogStoreInfo(store: Store) {

@@ -8,6 +8,6 @@ object StoreType {
     const val TYPE_MINI_STOP = 1
     const val TYPE_FAMILY_MART = 2
     const val TYPE_BSMART = 3
-    const val TYPE_SHOP_N_GO = 4
+    //const val TYPE_SHOP_N_GO = 4
     const val TYPE_7_ELEVEN = 5
 }

@@ -2,15 +2,13 @@ package com.iceteaviet.fastfoodfinder.ui.splash
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.data.auth.ClientAuth
 import com.iceteaviet.fastfoodfinder.data.domain.prefs.PreferencesRepository
+import com.iceteaviet.fastfoodfinder.data.domain.store.StoreRefreshService
 import com.iceteaviet.fastfoodfinder.data.domain.store.StoreRepository
 import com.iceteaviet.fastfoodfinder.data.domain.user.UserRepository
 import com.iceteaviet.fastfoodfinder.utils.exception.EmptyDataException
-import com.iceteaviet.fastfoodfinder.utils.filterInvalidData
 import com.iceteaviet.fastfoodfinder.utils.isValidUserUid
-import com.iceteaviet.fastfoodfinder.utils.loadStoresFromServerHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -32,6 +30,7 @@ class SplashViewModel @Inject constructor(
     private val clientAuth: ClientAuth,
     private val userRepository: UserRepository,
     private val storeRepository: StoreRepository,
+    private val storeRefreshService: StoreRefreshService,
     private val preferencesRepository: PreferencesRepository
 ) : ViewModel() {
 
@@ -60,7 +59,7 @@ class SplashViewModel @Inject constructor(
     fun loadStoresFromServer() {
         viewModelScope.launch {
             try {
-                loadStoresFromServerInternal()
+                refreshStoresFromRemote()
                 if (clientAuth.isSignedIn() && isValidUserUid(clientAuth.getCurrentUserUid())) {
                     _uiState.value = SplashUiState.NavigateToMain(getSplashRemainingTime())
                 } else {
@@ -80,7 +79,7 @@ class SplashViewModel @Inject constructor(
         preferencesRepository.setAppLaunchFirstTime(false)
         viewModelScope.launch {
             try {
-                loadStoresFromServerInternal()
+                refreshStoresFromRemote()
                 _uiState.value = SplashUiState.NavigateToLogin
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -90,13 +89,10 @@ class SplashViewModel @Inject constructor(
         }
     }
 
-    private suspend fun loadStoresFromServerInternal() {
+    private suspend fun refreshStoresFromRemote() {
         try {
-            val storeList = loadStoresFromServerHelper(App.getContext(), clientAuth, storeRepository)
-            if (storeList.isNotEmpty()) {
-                val filteredStoreList = filterInvalidData(storeList.toMutableList())
-                storeRepository.setStores(filteredStoreList)
-            } else {
+            val storeList = storeRefreshService.refreshStoresFromRemote()
+            if (storeList.isEmpty()) {
                 _uiState.value = SplashUiState.ShowRetryDialog
                 throw EmptyDataException()
             }

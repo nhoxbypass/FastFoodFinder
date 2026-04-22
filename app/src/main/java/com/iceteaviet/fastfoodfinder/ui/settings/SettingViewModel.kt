@@ -2,12 +2,9 @@ package com.iceteaviet.fastfoodfinder.ui.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.data.auth.ClientAuth
 import com.iceteaviet.fastfoodfinder.data.domain.prefs.PreferencesRepository
-import com.iceteaviet.fastfoodfinder.data.domain.store.StoreRepository
-import com.iceteaviet.fastfoodfinder.utils.filterInvalidData
-import com.iceteaviet.fastfoodfinder.utils.loadStoresFromServerHelper
+import com.iceteaviet.fastfoodfinder.data.domain.store.StoreRefreshService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -34,7 +31,7 @@ sealed class SettingEvent {
 class SettingViewModel @Inject constructor(
     private val clientAuth: ClientAuth,
     private val preferencesRepository: PreferencesRepository,
-    private val storeRepository: StoreRepository
+    private val storeRefreshService: StoreRefreshService,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SettingUiState())
@@ -56,26 +53,24 @@ class SettingViewModel @Inject constructor(
     fun onLanguageChanged() {
         val currentIsViet = _uiState.value.isVietnamese
         val nextIsViet = !currentIsViet
-        
+
         val langCode = if (nextIsViet) "vi" else "en"
-        
+
         _uiState.value = _uiState.value.copy(
             isVietnamese = nextIsViet,
             event = SettingEvent.LoadLanguage(langCode)
         )
-        
+
         preferencesRepository.setIfLanguageIsVietnamese(nextIsViet)
     }
 
     fun onLoadStoreFromServer() {
         _uiState.value = _uiState.value.copy(showLoadingProgressIndicator = true)
-        
+
         viewModelScope.launch {
             try {
-                val storeList = loadStoresFromServerHelper(App.getContext(), clientAuth, storeRepository)
-                val filteredStoreList = filterInvalidData(storeList.toMutableList())
-                storeRepository.setStores(filteredStoreList)
-                
+                storeRefreshService.refreshStoresFromRemote()
+
                 _uiState.value = _uiState.value.copy(
                     showLoadingProgressIndicator = false,
                     event = SettingEvent.ShowSuccessLoadingToast("")

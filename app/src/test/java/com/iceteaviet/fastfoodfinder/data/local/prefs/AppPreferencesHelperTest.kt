@@ -158,6 +158,70 @@ class AppPreferencesHelperTest {
         return AppPreferencesHelper(mockBrokenPreferencesWrapper)
     }
 
+    @Test
+    fun getLastKnownLocation_returnsNull_whenEmptyStrings() {
+        Mockito.`when`(mockPreferencesWrapper.getString(eq(AppPreferencesHelper.KEY_LAST_KNOWN_LAT), anyString()))
+            .thenReturn("")
+        Mockito.`when`(mockPreferencesWrapper.getString(eq(AppPreferencesHelper.KEY_LAST_KNOWN_LNG), anyString()))
+            .thenReturn("")
+
+        val result = mockPreferencesHelper.getLastKnownLocation()
+
+        assertThat(result).isNull()
+    }
+
+    @Test
+    fun getLastKnownLocation_returnsNull_whenNonNumeric() {
+        Mockito.`when`(mockPreferencesWrapper.getString(eq(AppPreferencesHelper.KEY_LAST_KNOWN_LAT), anyString()))
+            .thenReturn("not_a_number")
+        Mockito.`when`(mockPreferencesWrapper.getString(eq(AppPreferencesHelper.KEY_LAST_KNOWN_LNG), anyString()))
+            .thenReturn("106.689")
+
+        val result = mockPreferencesHelper.getLastKnownLocation()
+
+        assertThat(result).isNull()
+    }
+
+    @Test
+    fun getLastKnownLocation_returnsCoordinates_whenValid() {
+        Mockito.`when`(mockPreferencesWrapper.getString(eq(AppPreferencesHelper.KEY_LAST_KNOWN_LAT), anyString()))
+            .thenReturn("10.773996")
+        Mockito.`when`(mockPreferencesWrapper.getString(eq(AppPreferencesHelper.KEY_LAST_KNOWN_LNG), anyString()))
+            .thenReturn("106.6898035")
+
+        val result = mockPreferencesHelper.getLastKnownLocation()
+
+        assertThat(result).isNotNull()
+        assertThat(result!!.first).isCloseTo(10.773996, org.assertj.core.data.Offset.offset(0.0001))
+        assertThat(result.second).isCloseTo(106.6898035, org.assertj.core.data.Offset.offset(0.0001))
+    }
+
+    @Test
+    fun getLastKnownLocation_returnsNull_whenLatEmptyAndLngValid() {
+        Mockito.`when`(mockPreferencesWrapper.getString(eq(AppPreferencesHelper.KEY_LAST_KNOWN_LAT), anyString()))
+            .thenReturn("")
+        Mockito.`when`(mockPreferencesWrapper.getString(eq(AppPreferencesHelper.KEY_LAST_KNOWN_LNG), anyString()))
+            .thenReturn("106.689")
+
+        val result = mockPreferencesHelper.getLastKnownLocation()
+
+        assertThat(result).isNull()
+    }
+
+    @Test
+    fun setLastKnownLocation_storesAsString() {
+        mockPreferencesHelper.setLastKnownLocation(10.5, 107.0)
+
+        Mockito.verify(mockPreferencesWrapper).putString(
+            eq(AppPreferencesHelper.KEY_LAST_KNOWN_LAT), eq("10.5")
+        )
+        Mockito.verify(mockPreferencesWrapper).putString(
+            eq(AppPreferencesHelper.KEY_LAST_KNOWN_LNG), eq("107.0")
+        )
+    }
+
+    private fun anyString(): String = ArgumentMatchers.anyString()
+
     companion object {
         private val searchHistory = linkedSetOf("circle K", "bsmart quan 8")
     }

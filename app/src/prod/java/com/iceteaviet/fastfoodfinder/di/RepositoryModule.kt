@@ -1,6 +1,7 @@
 package com.iceteaviet.fastfoodfinder.di
 
 import android.content.Context
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.auth.ClientAuth
@@ -10,6 +11,7 @@ import com.iceteaviet.fastfoodfinder.data.domain.prefs.PreferencesRepository
 import com.iceteaviet.fastfoodfinder.data.domain.routing.AppMapsRoutingRepository
 import com.iceteaviet.fastfoodfinder.data.domain.routing.MapsRoutingRepository
 import com.iceteaviet.fastfoodfinder.data.domain.store.AppStoreRepository
+import com.iceteaviet.fastfoodfinder.data.domain.store.StoreRefreshService
 import com.iceteaviet.fastfoodfinder.data.domain.store.StoreRepository
 import com.iceteaviet.fastfoodfinder.data.domain.user.AppUserRepository
 import com.iceteaviet.fastfoodfinder.data.domain.user.UserRepository
@@ -20,6 +22,7 @@ import com.iceteaviet.fastfoodfinder.data.local.prefs.AppPreferencesWrapper
 import com.iceteaviet.fastfoodfinder.data.local.prefs.AppPreferencesWrapper.Companion.PREFS_NAME
 import com.iceteaviet.fastfoodfinder.data.remote.routing.GoogleMapsRoutingApiHelper
 import com.iceteaviet.fastfoodfinder.data.remote.store.FirebaseStoreApiHelper
+import com.iceteaviet.fastfoodfinder.data.remote.store.StoreApiHelper
 import com.iceteaviet.fastfoodfinder.data.remote.user.FirebaseUserApiHelper
 import dagger.Module
 import dagger.Provides
@@ -34,9 +37,20 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideStoreRepository(storeDao: StoreDao): StoreRepository {
-        val remote = FirebaseStoreApiHelper(FirebaseDatabase.getInstance().reference)
-        return AppStoreRepository(remote, storeDao)
+    fun provideDatabaseReference(): DatabaseReference {
+        return FirebaseDatabase.getInstance().reference
+    }
+
+    @Provides
+    @Singleton
+    fun provideStoreApiHelper(dbRef: DatabaseReference): StoreApiHelper {
+        return FirebaseStoreApiHelper(dbRef)
+    }
+
+    @Provides
+    @Singleton
+    fun provideStoreRepository(storeApiHelper: StoreApiHelper, storeDao: StoreDao): StoreRepository {
+        return AppStoreRepository(storeApiHelper, storeDao)
     }
 
     @Provides
@@ -59,6 +73,21 @@ object RepositoryModule {
         val wrapper = AppPreferencesWrapper(context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE))
         val helper = AppPreferencesHelper(wrapper)
         return AppPreferencesRepository(helper)
+    }
+
+    @Provides
+    @Singleton
+    fun provideStoreRefreshService(
+        storeRepository: StoreRepository,
+        clientAuth: ClientAuth,
+        @ApplicationContext context: Context,
+    ): StoreRefreshService {
+        return StoreRefreshService(
+            storeRepository,
+            clientAuth,
+            context.getString(R.string.downloader_bot_email),
+            context.getString(R.string.downloader_bot_pwd),
+        )
     }
 
     @Provides

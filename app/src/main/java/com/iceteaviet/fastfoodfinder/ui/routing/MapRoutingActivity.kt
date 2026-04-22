@@ -28,7 +28,8 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import dagger.hilt.android.AndroidEntryPoint
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
-import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
+import com.iceteaviet.fastfoodfinder.domain.model.Store
+import com.iceteaviet.fastfoodfinder.domain.model.toLatLng
 import com.iceteaviet.fastfoodfinder.databinding.ActivityMapRoutingBinding
 import com.iceteaviet.fastfoodfinder.ui.base.BaseActivity
 import com.iceteaviet.fastfoodfinder.ui.custom.snaphelper.OnSnapListener
@@ -282,7 +283,7 @@ class MapRoutingActivity : BaseActivity(), View.OnClickListener {
                 // Directly pull map init data here to render map correctly bypassing event limits
                 val mapData = viewModel.getInitMapData()
                 if (mapData != null) {
-                    addMapMarker(mapData.store.getPosition(), mapData.store.title, mapData.store.address, getStoreLogoDrawableRes(mapData.store.type))
+                    addMapMarker(mapData.store.toLatLng(), mapData.store.title, mapData.store.address, getStoreLogoDrawableRes(mapData.store.type))
                     mapData.currLocation?.let { loc ->
                         animateMapCamera(loc, false)
                         addMapMarker(loc, "Your location", "Your current location, please follow the line", R.drawable.ic_map_bluedot)

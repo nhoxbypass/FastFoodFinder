@@ -87,7 +87,7 @@
                         android:layout_width="0dp"
                         android:layout_height="56dp"
                         android:layout_weight="1"
-                        android:src="@drawable/logo_711_50"
+                        android:src="@drawable/logo_711_red"
                         app:civ_border_color="@color/googleRed"
                         app:civ_circle_background_color="@color/googleRed" />
 

@@ -1,6 +1,5 @@
 package com.iceteaviet.fastfoodfinder.ui.main.map
 
-import androidx.collection.SparseArrayCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.model.LatLng
@@ -9,11 +8,13 @@ import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.core.location.LatLngAlt
 import com.iceteaviet.fastfoodfinder.core.location.LocationListener
 import com.iceteaviet.fastfoodfinder.core.location.base.ILocationManager
+import com.iceteaviet.fastfoodfinder.data.domain.prefs.PreferencesRepository
 import com.iceteaviet.fastfoodfinder.data.domain.routing.MapsRoutingRepository
 import com.iceteaviet.fastfoodfinder.data.domain.store.StoreRepository
 import com.iceteaviet.fastfoodfinder.data.remote.routing.GoogleMapsRoutingApiHelper
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
-import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
+import com.iceteaviet.fastfoodfinder.domain.model.Store
+import com.iceteaviet.fastfoodfinder.domain.model.toLatLng
 import com.iceteaviet.fastfoodfinder.ui.main.search.SearchEventBus
 import com.iceteaviet.fastfoodfinder.ui.main.search.SearchEventResult
 import com.iceteaviet.fastfoodfinder.ui.main.map.model.MapCameraPosition
@@ -24,11 +25,13 @@ import com.iceteaviet.fastfoodfinder.utils.getLatLngString
 import com.iceteaviet.fastfoodfinder.utils.isValidLocation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
@@ -36,7 +39,6 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 sealed class MainMapEvent {
-    object Idle : MainMapEvent()
     object RequestLocationPermission : MainMapEvent()
     data class SetMyLocationEnabled(val enabled: Boolean) : MainMapEvent()
     data class AnimateMapCamera(val location: LatLng, val zoomToDetail: Boolean) : MainMapEvent()
@@ -44,15 +46,12 @@ sealed class MainMapEvent {
     object ShowGeneralErrorMessage : MainMapEvent()
     object ShowCannotGetLocationMessage : MainMapEvent()
     object ShowInvalidStoreLocationWarning : MainMapEvent()
-    data class AddMarkersToMap(val stores: List<Store>) : MainMapEvent()
+    data class AddStoresToCluster(val stores: List<Store>) : MainMapEvent()
     object SetupMap : MainMapEvent()
-    object SetupMapEventHandlers : MainMapEvent()
     data class ShowMapRoutingView(val store: Store, val mapsDirection: MapsDirection) : MainMapEvent()
     data class ShowDialogStoreInfo(val store: Store) : MainMapEvent()
-    data class AnimateMapMarker(val storeId: Int, val storeType: Int) : MainMapEvent()
     data class SetNearByStores(val stores: List<NearByStore>) : MainMapEvent()
     object ClearNearByStores : MainMapEvent()
-    object ClearMapData : MainMapEvent()
 }
 
 @OptIn(FlowPreview::class)
@@ -60,7 +59,8 @@ sealed class MainMapEvent {
 class MainMapViewModel @Inject constructor(
     private val storeRepository: StoreRepository,
     private val mapsRoutingRepository: MapsRoutingRepository,
-    private val searchEventBus: SearchEventBus
+    private val searchEventBus: SearchEventBus,
+    private val preferencesRepository: PreferencesRepository
 ) : ViewModel(), LocationListener {
 
     private lateinit var locationManager: ILocationManager
@@ -69,18 +69,19 @@ class MainMapViewModel @Inject constructor(
         this.locationManager = mgr
     }
 
-    private val _uiState = MutableStateFlow(MainMapEvent.Idle as MainMapEvent)
-    val uiState: StateFlow<MainMapEvent> = _uiState.asStateFlow()
+    private val _uiEvent = MutableSharedFlow<MainMapEvent>(extraBufferCapacity = 128)
+    val uiEvent: SharedFlow<MainMapEvent> = _uiEvent.asSharedFlow()
 
     private var currLocation: LatLng? = null
     private var storeList: List<Store> = ArrayList()
-    private var visibleStores: List<Store> = ArrayList()
 
     private var isZoomToUser = false
     private var locationGranted = false
+    private var isStoresLoaded = false
+
+    private var locationTimeoutJob: Job? = null
 
     private val cameraPositionFlow = MutableSharedFlow<MapCameraPosition>(extraBufferCapacity = 64)
-    private val newVisibleStoreFlow = MutableSharedFlow<Store>(extraBufferCapacity = 64)
 
     init {
         setupFlows()
@@ -90,23 +91,12 @@ class MainMapViewModel @Inject constructor(
         cameraPositionFlow
             .debounce(200)
             .map { position ->
-                val stores = getVisibleStore(storeList, position.cameraBounds)
-                stores.forEach { store ->
-                    if (!visibleStores.contains(store)) {
-                        newVisibleStoreFlow.tryEmit(store)
-                    }
-                }
-                visibleStores = stores
-                generateNearByStoresWithDistance(position.cameraPosition, stores)
+                val visible = getVisibleStore(storeList, position.cameraBounds)
+                generateNearByStoresWithDistance(position.cameraPosition, visible)
             }
+            .flowOn(kotlinx.coroutines.Dispatchers.Default)
             .onEach { nearbyStores ->
-                _uiState.value = MainMapEvent.SetNearByStores(nearbyStores)
-            }
-            .launchIn(viewModelScope)
-
-        newVisibleStoreFlow
-            .onEach { store ->
-                _uiState.value = MainMapEvent.AnimateMapMarker(store.id, store.type)
+                _uiEvent.tryEmit(MainMapEvent.SetNearByStores(nearbyStores))
             }
             .launchIn(viewModelScope)
     }
@@ -117,7 +107,7 @@ class MainMapViewModel @Inject constructor(
         resetState()
 
         if (!hasLocationPermission) {
-            _uiState.value = MainMapEvent.RequestLocationPermission
+            _uiEvent.tryEmit(MainMapEvent.RequestLocationPermission)
         } else {
             onLocationPermissionGranted()
         }
@@ -129,12 +119,19 @@ class MainMapViewModel @Inject constructor(
             isBusRegistered = true
         }
 
-        _uiState.value = MainMapEvent.SetupMap
+        _uiEvent.tryEmit(MainMapEvent.SetupMap)
 
-        loadAllStoresToMap()
+        if (!isStoresLoaded) {
+            loadAllStoresToMap()
+        }
+
+        if (!isZoomToUser) {
+            startLocationTimeout()
+        }
     }
 
     override fun onCleared() {
+        locationTimeoutJob?.cancel()
         if (::locationManager.isInitialized) {
             unsubscribeLocationUpdate()
         }
@@ -146,7 +143,7 @@ class MainMapViewModel @Inject constructor(
             subscribeLocationUpdate()
             requestCurrentLocation()
         }
-        _uiState.value = MainMapEvent.SetMyLocationEnabled(true)
+        _uiEvent.tryEmit(MainMapEvent.SetMyLocationEnabled(true))
         locationGranted = true
     }
 
@@ -163,36 +160,42 @@ class MainMapViewModel @Inject constructor(
     }
 
     override fun onLocationFailed(type: Int) {
+        locationTimeoutJob?.cancel()
+        if (!isZoomToUser) {
+            fallbackToLastKnownOrDefault()
+        }
     }
 
     fun onMapCameraMove(cameraPosition: LatLng, bounds: LatLngBounds) {
         cameraPositionFlow.tryEmit(MapCameraPosition(cameraPosition, bounds))
     }
 
+    fun onCameraMoveStarted() {
+        _uiEvent.tryEmit(MainMapEvent.ClearNearByStores)
+    }
+
     fun onGetMapAsync() {
         if (storeList.isNotEmpty()) {
-            _uiState.value = MainMapEvent.AddMarkersToMap(storeList)
+            _uiEvent.tryEmit(MainMapEvent.AddStoresToCluster(storeList))
         }
 
         if (locationGranted) {
-            _uiState.value = MainMapEvent.SetMyLocationEnabled(true)
+            _uiEvent.tryEmit(MainMapEvent.SetMyLocationEnabled(true))
             requestCurrentLocation()
         }
-
-        _uiState.value = MainMapEvent.SetupMapEventHandlers
     }
 
     fun onNavigationButtonClick(store: Store) {
-        val storeLocation = store.getPosition()
+        val storeLocation = store.toLatLng()
         val queries = HashMap<String, String>()
 
         if (!isValidLocation(storeLocation)) {
-            _uiState.value = MainMapEvent.ShowInvalidStoreLocationWarning
+            _uiEvent.tryEmit(MainMapEvent.ShowInvalidStoreLocationWarning)
             return
         }
 
         if (!isValidLocation(currLocation)) {
-            _uiState.value = MainMapEvent.ShowCannotGetLocationMessage
+            _uiEvent.tryEmit(MainMapEvent.ShowCannotGetLocationMessage)
             return
         }
 
@@ -206,18 +209,19 @@ class MainMapViewModel @Inject constructor(
             try {
                 val mapsDirection = mapsRoutingRepository.getMapsDirection(queries, store)
                 if (mapsDirection.routeList.isNotEmpty()) {
-                    _uiState.value = MainMapEvent.ShowMapRoutingView(store, mapsDirection)
+                    _uiEvent.tryEmit(MainMapEvent.ShowMapRoutingView(store, mapsDirection))
                 } else {
-                    _uiState.value = MainMapEvent.ShowGeneralErrorMessage
+                    _uiEvent.tryEmit(MainMapEvent.ShowGeneralErrorMessage)
                 }
             } catch (e: Exception) {
-                _uiState.value = MainMapEvent.ShowGeneralErrorMessage
+                _uiEvent.tryEmit(MainMapEvent.ShowGeneralErrorMessage)
             }
         }
     }
 
-    fun onClearOldMapData() {
-        _uiState.value = MainMapEvent.ClearMapData
+    fun onNearByStoreClicked(store: Store) {
+        _uiEvent.tryEmit(MainMapEvent.AnimateMapCamera(store.toLatLng(), true))
+        _uiEvent.tryEmit(MainMapEvent.ShowDialogStoreInfo(store))
     }
 
     private fun onSearchResult(searchEventResult: SearchEventResult) {
@@ -237,13 +241,12 @@ class MainMapViewModel @Inject constructor(
                     handleSearchStoreClickAction(it)
                 }
             }
-            else -> _uiState.value = MainMapEvent.ShowGeneralErrorMessage
+            else -> _uiEvent.tryEmit(MainMapEvent.ShowGeneralErrorMessage)
         }
     }
 
     private fun resetState() {
         locationGranted = false
-        isZoomToUser = false
     }
 
     private fun subscribeLocationUpdate() {
@@ -256,19 +259,42 @@ class MainMapViewModel @Inject constructor(
     }
 
     private fun onCurrLocationChanged(latitude: Double, longitude: Double) {
-        currLocation = LatLng(latitude, longitude).also {
+        currLocation = LatLng(latitude, longitude)
+        preferencesRepository.setLastKnownLocation(latitude, longitude)
+
+        if (!isZoomToUser) {
+            locationTimeoutJob?.cancel()
+            _uiEvent.tryEmit(MainMapEvent.AnimateMapCamera(currLocation!!, false))
+            isZoomToUser = true
+        }
+    }
+
+    private fun startLocationTimeout() {
+        locationTimeoutJob?.cancel()
+        locationTimeoutJob = viewModelScope.launch {
+            delay(LOCATION_TIMEOUT_MS)
             if (!isZoomToUser) {
-                _uiState.value = MainMapEvent.AnimateMapCamera(it, false)
-                isZoomToUser = true
+                fallbackToLastKnownOrDefault()
             }
         }
+    }
+
+    private fun fallbackToLastKnownOrDefault() {
+        isZoomToUser = true
+        val persisted = preferencesRepository.getLastKnownLocation()
+        val target = if (persisted != null) {
+            LatLng(persisted.first, persisted.second)
+        } else {
+            Constant.DEFAULT_MAP_TARGET
+        }
+        _uiEvent.tryEmit(MainMapEvent.AnimateMapCamera(target, false))
     }
 
     private fun getVisibleStore(storeList: List<Store>, bounds: LatLngBounds): List<Store> {
         val stores = ArrayList<Store>()
         for (i in storeList.indices) {
             val store = storeList[i]
-            if (bounds.contains(store.getPosition())) {
+            if (bounds.contains(store.toLatLng())) {
                 stores.add(store)
             }
         }
@@ -276,11 +302,9 @@ class MainMapViewModel @Inject constructor(
     }
 
     private fun generateNearByStoresWithDistance(currPos: LatLng, stores: List<Store>): List<NearByStore> {
-        val res = ArrayList<NearByStore>()
-        for (store in stores) {
-            res.add(NearByStore(store, distanceBetween(currPos, store.getPosition())))
-        }
-        return res
+        return stores.map { store ->
+            NearByStore(store, distanceBetween(currPos, store.toLatLng()))
+        }.sortedBy { it.distance }
     }
 
     private fun handleSearchQuickAction(storeType: Int) {
@@ -288,14 +312,14 @@ class MainMapViewModel @Inject constructor(
             try {
                 val foundStores = storeRepository.findStoresByType(storeType)
                 if (foundStores.isEmpty()) {
-                    _uiState.value = MainMapEvent.ShowWarningMessage(R.string.store_not_found)
+                    _uiEvent.tryEmit(MainMapEvent.ShowWarningMessage(R.string.store_not_found))
                 } else {
                     storeList = foundStores
-                    _uiState.value = MainMapEvent.AddMarkersToMap(storeList)
-                    _uiState.value = MainMapEvent.AnimateMapCamera(storeList[0].getPosition(), false)
+                    _uiEvent.tryEmit(MainMapEvent.AddStoresToCluster(storeList))
+                    _uiEvent.tryEmit(MainMapEvent.AnimateMapCamera(storeList[0].toLatLng(), false))
                 }
             } catch (e: Exception) {
-                _uiState.value = MainMapEvent.ShowWarningMessage(R.string.get_store_data_failed)
+                _uiEvent.tryEmit(MainMapEvent.ShowWarningMessage(R.string.get_store_data_failed))
             }
         }
     }
@@ -305,14 +329,14 @@ class MainMapViewModel @Inject constructor(
             try {
                 val foundStores = storeRepository.findStores(searchString)
                 if (foundStores.isEmpty()) {
-                    _uiState.value = MainMapEvent.ShowWarningMessage(R.string.store_not_found)
+                    _uiEvent.tryEmit(MainMapEvent.ShowWarningMessage(R.string.store_not_found))
                 } else {
                     storeList = foundStores
-                    _uiState.value = MainMapEvent.AddMarkersToMap(storeList)
-                    _uiState.value = MainMapEvent.AnimateMapCamera(storeList[0].getPosition(), false)
+                    _uiEvent.tryEmit(MainMapEvent.AddStoresToCluster(storeList))
+                    _uiEvent.tryEmit(MainMapEvent.AnimateMapCamera(storeList[0].toLatLng(), false))
                 }
             } catch (e: Exception) {
-                _uiState.value = MainMapEvent.ShowWarningMessage(R.string.get_store_data_failed)
+                _uiEvent.tryEmit(MainMapEvent.ShowWarningMessage(R.string.get_store_data_failed))
             }
         }
     }
@@ -320,7 +344,7 @@ class MainMapViewModel @Inject constructor(
     private fun handleSearchCollapseAction() {
         loadAllStoresToMap()
         currLocation?.let {
-            _uiState.value = MainMapEvent.AnimateMapCamera(it, false)
+            _uiEvent.tryEmit(MainMapEvent.AnimateMapCamera(it, false))
         }
     }
 
@@ -329,26 +353,27 @@ class MainMapViewModel @Inject constructor(
             try {
                 val allStores = storeRepository.getAllStores()
                 storeList = allStores
+                isStoresLoaded = true
                 if (storeList.isEmpty()) {
-                    _uiState.value = MainMapEvent.ShowWarningMessage(R.string.get_store_data_failed)
+                    _uiEvent.tryEmit(MainMapEvent.ShowWarningMessage(R.string.get_store_data_failed))
                 } else {
-                    _uiState.value = MainMapEvent.AddMarkersToMap(storeList)
+                    _uiEvent.tryEmit(MainMapEvent.AddStoresToCluster(storeList))
                 }
             } catch (e: Exception) {
-                _uiState.value = MainMapEvent.ShowWarningMessage(R.string.get_store_data_failed)
+                _uiEvent.tryEmit(MainMapEvent.ShowWarningMessage(R.string.get_store_data_failed))
             }
         }
     }
 
     private fun handleSearchStoreClickAction(store: Store) {
         storeList = arrayListOf(store)
-        _uiState.value = MainMapEvent.AddMarkersToMap(storeList)
-        _uiState.value = MainMapEvent.AnimateMapCamera(store.getPosition(), false)
-        _uiState.value = MainMapEvent.ClearNearByStores
-        _uiState.value = MainMapEvent.ShowDialogStoreInfo(store)
+        _uiEvent.tryEmit(MainMapEvent.AddStoresToCluster(storeList))
+        _uiEvent.tryEmit(MainMapEvent.AnimateMapCamera(store.toLatLng(), false))
+        _uiEvent.tryEmit(MainMapEvent.ClearNearByStores)
+        _uiEvent.tryEmit(MainMapEvent.ShowDialogStoreInfo(store))
     }
 
-    fun markEventConsumed() {
-        _uiState.value = MainMapEvent.Idle
+    companion object {
+        private const val LOCATION_TIMEOUT_MS = 4000L
     }
 }

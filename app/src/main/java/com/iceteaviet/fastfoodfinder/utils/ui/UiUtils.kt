@@ -2,19 +2,16 @@
 
 package com.iceteaviet.fastfoodfinder.utils.ui
 
-import android.animation.ValueAnimator
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.Drawable
-import android.view.animation.BounceInterpolator
 import androidx.annotation.DrawableRes
 import androidx.annotation.VisibleForTesting
 import androidx.collection.LruCache
 import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.Marker
 import com.iceteaviet.fastfoodfinder.App
 import com.iceteaviet.fastfoodfinder.R
 import com.iceteaviet.fastfoodfinder.utils.StoreType
@@ -34,7 +31,6 @@ fun getStoreLogoDrawableRes(type: Int): Int {
         StoreType.TYPE_MINI_STOP -> R.drawable.logo_ministop_50
         StoreType.TYPE_FAMILY_MART -> R.drawable.logo_familymart_50
         StoreType.TYPE_BSMART -> R.drawable.logo_bsmart_50
-        StoreType.TYPE_SHOP_N_GO -> R.drawable.logo_shopngo_50
         StoreType.TYPE_7_ELEVEN -> R.drawable.logo_711_50
         else -> R.drawable.logo_circlek_50
     }
@@ -59,23 +55,6 @@ fun getDirectionImage(direction: String?): Int {
         R.drawable.ic_routing_up
     }
 }
-
-/**
- * Animate marker icon
- */
-fun animateMarker(resources: Resources, marker: Marker?, storeType: Int) {
-    if (marker == null)
-        return
-
-    // Disable computationally expensive scaling animation that causes map freezing
-    // Instead, immediately set the icon to its final full size (75x75)
-    try {
-        marker.setIcon(getStoreIcon(resources, storeType, 75, 75))
-    } catch (ex: IllegalArgumentException) {
-        ex.printStackTrace()
-    }
-}
-
 
 private var cache: LruCache<String, BitmapDescriptor> = LruCache(((Runtime.getRuntime().maxMemory() / 1024 / 8).toInt()))
 

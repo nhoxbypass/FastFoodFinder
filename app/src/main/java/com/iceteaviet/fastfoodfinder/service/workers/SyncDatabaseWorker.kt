@@ -8,22 +8,17 @@ import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkerParameters
 import com.iceteaviet.fastfoodfinder.R
-import com.iceteaviet.fastfoodfinder.data.auth.ClientAuth
-import com.iceteaviet.fastfoodfinder.data.domain.store.StoreRepository
-import com.iceteaviet.fastfoodfinder.utils.StoreSyncHelper
-import com.iceteaviet.fastfoodfinder.utils.filterInvalidData
+import com.iceteaviet.fastfoodfinder.data.domain.store.StoreRefreshService
 import com.iceteaviet.fastfoodfinder.utils.ui.NotiManager
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.concurrent.TimeUnit
 
 class SyncDatabaseWorker @AssistedInject constructor(
     @Assisted val ctx: Context,
     @Assisted val params: WorkerParameters,
-    private val storeRepository: StoreRepository,
+    private val storeRefreshService: StoreRefreshService,
     private val notiManager: NotiManager,
-    private val clientAuth: ClientAuth,
 ) : CoroutineWorker(ctx, params) {
 
     override suspend fun doWork(): Result {
@@ -33,13 +28,11 @@ class SyncDatabaseWorker @AssistedInject constructor(
         )
 
         return try {
-            val storeList = StoreSyncHelper.loadStoresFromServer(applicationContext, clientAuth, storeRepository)
-            val filteredStoreList = filterInvalidData(storeList.toMutableList())
-            storeRepository.setStores(filteredStoreList)
+            val storeList = storeRefreshService.refreshStoresFromRemote()
 
-            if (filteredStoreList.isNotEmpty()) {
+            if (storeList.isNotEmpty()) {
                 notiManager.showStoreSyncStatusNotification(
-                    String.format(applicationContext.getString(R.string.update_database_successfull_with_count), filteredStoreList.size),
+                    String.format(applicationContext.getString(R.string.update_database_successfull_with_count), storeList.size),
                     applicationContext.getString(R.string.str_update_app_db)
                 )
                 Result.success()

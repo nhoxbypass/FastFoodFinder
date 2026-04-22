@@ -10,44 +10,27 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.iceteaviet.fastfoodfinder.R
-import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
+import com.iceteaviet.fastfoodfinder.domain.model.Store
 import com.iceteaviet.fastfoodfinder.databinding.ItemStoreBinding
 import com.iceteaviet.fastfoodfinder.ui.main.map.model.NearByStore
 import com.iceteaviet.fastfoodfinder.utils.formatDistance
 import com.iceteaviet.fastfoodfinder.utils.ui.getStoreLogoDrawableRes
 
-/**
- * Created by tom on 7/21/18.
- */
 class NearByStoreAdapter @JvmOverloads internal constructor(diffCallback: DiffUtil.ItemCallback<NearByStore> = DIFF_CALLBACK) : ListAdapter<NearByStore, NearByStoreAdapter.StoreViewHolder>(diffCallback) {
 
-    /**
-     * Views Ref
-     */
     private lateinit var binding: ItemStoreBinding
-
-    private val nearByStores: MutableList<NearByStore>
     private var listener: StoreListListener? = null
-
-    init {
-        nearByStores = ArrayList()
-    }
 
     fun setOnStoreListListener(listener: StoreListListener) {
         this.listener = listener
     }
 
-    // FIXME: Called too many times
     fun setStores(nearbyStores: List<NearByStore>) {
-        nearByStores.clear()
-        nearByStores.addAll(nearbyStores)
-
-        submitList(nearbyStores) // DiffUtil takes care of the check
+        submitList(nearbyStores)
     }
 
     fun clearData() {
-        nearByStores.clear()
-        submitList(nearByStores)
+        submitList(emptyList())
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StoreViewHolder {
@@ -72,8 +55,9 @@ class NearByStoreAdapter @JvmOverloads internal constructor(diffCallback: DiffUt
 
         init {
             itemView.setOnClickListener {
-                if (listener != null && adapterPosition >= 0)
-                    listener.onItemClick(nearByStores[adapterPosition].store)
+                val pos = adapterPosition
+                if (listener != null && pos >= 0)
+                    listener.onItemClick(getItem(pos).store)
             }
         }
 
@@ -90,11 +74,11 @@ class NearByStoreAdapter @JvmOverloads internal constructor(diffCallback: DiffUt
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<NearByStore>() {
             override fun areItemsTheSame(oldItem: NearByStore, newItem: NearByStore): Boolean {
-                return oldItem.store.id == newItem.store.id && oldItem.distance == newItem.distance
+                return oldItem.store.id == newItem.store.id
             }
 
             override fun areContentsTheSame(oldItem: NearByStore, newItem: NearByStore): Boolean {
-                return oldItem.store.address == newItem.store.address && oldItem.distance == newItem.distance
+                return oldItem == newItem
             }
         }
     }

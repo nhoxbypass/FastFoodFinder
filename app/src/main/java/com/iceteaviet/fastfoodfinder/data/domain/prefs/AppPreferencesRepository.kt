@@ -52,4 +52,12 @@ class AppPreferencesRepository(private val preferencesHelper: PreferencesHelper)
     override fun setIfLanguageIsVietnamese(isVietnamese: Boolean) {
         preferencesHelper.setIfLanguageIsVietnamese(isVietnamese)
     }
+
+    override fun getLastKnownLocation(): Pair<Double, Double>? {
+        return preferencesHelper.getLastKnownLocation()
+    }
+
+    override fun setLastKnownLocation(lat: Double, lng: Double) {
+        preferencesHelper.setLastKnownLocation(lat, lng)
+    }
 }

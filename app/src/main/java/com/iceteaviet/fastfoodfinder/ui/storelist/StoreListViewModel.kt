@@ -1,12 +1,14 @@
 package com.iceteaviet.fastfoodfinder.ui.storelist
 
 import androidx.lifecycle.ViewModel
-import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
-import com.iceteaviet.fastfoodfinder.utils.getFakeStoreList
+import androidx.lifecycle.viewModelScope
+import com.iceteaviet.fastfoodfinder.data.domain.store.StoreRepository
+import com.iceteaviet.fastfoodfinder.domain.model.Store
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class StoreListUiState(
@@ -14,12 +16,21 @@ data class StoreListUiState(
 )
 
 @HiltViewModel
-class StoreListViewModel @Inject constructor() : ViewModel() {
+class StoreListViewModel @Inject constructor(
+    private val storeRepository: StoreRepository
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(StoreListUiState())
     val uiState: StateFlow<StoreListUiState> = _uiState.asStateFlow()
 
     fun start() {
-        _uiState.value = StoreListUiState(stores = getFakeStoreList())
+        viewModelScope.launch {
+            try {
+                val stores = storeRepository.getAllStores()
+                _uiState.value = StoreListUiState(stores = stores)
+            } catch (e: Exception) {
+                _uiState.value = StoreListUiState(stores = emptyList())
+            }
+        }
     }
 }

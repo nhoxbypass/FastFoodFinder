@@ -1,11 +1,13 @@
 package com.iceteaviet.fastfoodfinder.data.domain.store
 
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Comment
-import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
+import com.iceteaviet.fastfoodfinder.domain.model.Store
 
 interface StoreRepository {
 
     suspend fun getAllStores(): List<Store>
+
+    suspend fun refreshStores(): List<Store>
 
     suspend fun setStores(storeList: List<Store>)
 
@@ -14,10 +16,6 @@ interface StoreRepository {
     suspend fun findStores(queryString: String): List<Store>
 
     suspend fun findStoresByCustomAddress(customQuerySearch: List<String>): List<Store>
-
-    suspend fun findStoresBy(key: String, value: Int): List<Store>
-
-    suspend fun findStoresBy(key: String, values: List<Int>): List<Store>
 
     suspend fun findStoresByType(type: Int): List<Store>
 

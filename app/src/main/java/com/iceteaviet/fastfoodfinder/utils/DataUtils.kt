@@ -5,10 +5,9 @@ package com.iceteaviet.fastfoodfinder.utils
 import com.google.gson.Gson
 import com.iceteaviet.fastfoodfinder.data.remote.routing.model.MapsDirection
 import com.iceteaviet.fastfoodfinder.data.remote.store.model.Comment
-import com.iceteaviet.fastfoodfinder.data.remote.store.model.Store
 import com.iceteaviet.fastfoodfinder.data.remote.user.model.UserStoreList
+import com.iceteaviet.fastfoodfinder.domain.model.Store
 import com.iceteaviet.fastfoodfinder.ui.ar.model.AugmentedPOI
-import com.iceteaviet.fastfoodfinder.ui.main.search.model.SearchStoreItem
 import com.iceteaviet.fastfoodfinder.ui.settings.discountnotify.DiscountNotifyViewModel
 import com.iceteaviet.fastfoodfinder.utils.ui.getStoreLogoDrawableRes
 import java.security.SecureRandom
@@ -40,7 +39,7 @@ fun getFakeComments(): List<Comment> {
     val mediaUrls = arrayOf("http://i.imgur.com/RHdsWRW.jpg", "http://i.imgur.com/IsfQQhd.jpg", "", "http://i.imgur.com/tNu5G5D.jpg", "http://i.imgur.com/QruogAF.jpg")
 
     val comments = ArrayList<Comment>()
-    for (i in 0 until getRandomInt(3, 5)) {
+    (0 until getRandomInt(3, 5)).forEach { _ ->
         val index = getRandomInt(0, 4)
         comments.add(Comment(names[index],
             avatars[index],
@@ -79,58 +78,18 @@ private fun getRandomDate(): String {
 }
 
 
-fun getFakeCircleKStoreList(): List<Store> {
-    val stores = ArrayList<Store>()
-    stores.add(Store(1, "Circle K Le Thi Rieng", "148 Le Thi Rieng, Ben Thanh Ward, District 1, Ho Chi Minh, Vietnam", "10.770379", "106.68912279999995", "3925 6620", StoreType.TYPE_CIRCLE_K))
-    stores.add(Store(7, "Circle K Ly Tu Trong", "238 Ly Tu Trong, Ben Thanh Ward, District 1, Ho Chi Minh, Vietnam", "10.7721924", "106.69433409999999", "3822 7403", StoreType.TYPE_CIRCLE_K))
-    return stores
-}
-
-
 fun getFakeStoreList(): List<Store> {
     val stores = ArrayList<Store>()
-    stores.add(Store(1, "Circle K Le Thi Rieng", "148 Le Thi Rieng, Ben Thanh Ward, District 1, Ho Chi Minh, Vietnam", "10.770379", "106.68912279999995", "3925 6620", StoreType.TYPE_CIRCLE_K))
-    stores.add(Store(2, "FamilyMart - Hậu Giang", "973 Hậu Giang, P. 11, Quận 6, TP. HCM", "10.7457782220847", "106.6261117905378", "3755 0439", StoreType.TYPE_FAMILY_MART))
-    stores.add(Store(3, "FamilyMart - Nguyễn Lương Bằng", "180 Nguyễn Lương Bằng, P. Tân Phú, Quận 7, TP. HCM", "10.727042", "106.722703", "5417 3390", StoreType.TYPE_FAMILY_MART))
-    stores.add(Store(4, "Family Mart - Tạ Quang Bửu", "811 Tạ Quang Bửu, P. 5, Quận 8, TP. HCM", "10.736488", "106.670374", "3835 3193", StoreType.TYPE_FAMILY_MART))
-    stores.add(Store(5, "Family Mart - Nguyễn Văn Công", "534 Nguyễn Văn Công, Phường 3, Quận Gò Vấp, TP. HCM", "10.819417", "106.674821", "3835 3193", StoreType.TYPE_FAMILY_MART))
-    stores.add(Store(6, "Shop & Go - Phan Đình Phùng", "180 Phan Đình Phùng, P. 2, Quận Phú Nhuận, TP. HCM", "10.7955070000000", "106.6825610000000", "38 353 193", StoreType.TYPE_SHOP_N_GO))
-    stores.add(Store(7, "Circle K Ly Tu Trong", "238 Ly Tu Trong, Ben Thanh Ward, District 1, Ho Chi Minh, Vietnam", "10.7721924", "106.69433409999999", "3822 7403", StoreType.TYPE_CIRCLE_K))
-    stores.add(Store(8, "Familymart - Đường D2", "39 Đường D2, P. 25, Quận Bình Thạnh, TP. HCM", "10.80252", "106.715622", "35 126 283", StoreType.TYPE_FAMILY_MART))
-    stores.add(Store(9, "FamilyMart - 123 Nguyễn Đình Chiểu", "123 Nguyễn Đình Chiểu, Phường 6, Quận 3, TP. HCM", "10.7775462", "106.6892408999999", "3835 3193", StoreType.TYPE_FAMILY_MART))
-    stores.add(Store(10, "FamilyMart - Tôn Dật Tiến", "Tôn Dật Tiên, Quận 7, TP. HCM", "10.723322", "106.71498", "3835 3193", StoreType.TYPE_FAMILY_MART))
+    stores.add(Store(1, "Circle K Le Thi Rieng", "148 Le Thi Rieng, Ben Thanh Ward, District 1, Ho Chi Minh, Vietnam", 10.770379, 106.68912279999995, "3925 6620", StoreType.TYPE_CIRCLE_K))
+    stores.add(Store(2, "FamilyMart - Hậu Giang", "973 Hậu Giang, P. 11, Quận 6, TP. HCM", 10.7457782220847, 106.6261117905378, "3755 0439", StoreType.TYPE_FAMILY_MART))
+    stores.add(Store(3, "FamilyMart - Nguyễn Lương Bằng", "180 Nguyễn Lương Bằng, P. Tân Phú, Quận 7, TP. HCM", 10.727042, 106.722703, "5417 3390", StoreType.TYPE_FAMILY_MART))
+    stores.add(Store(4, "Family Mart - Tạ Quang Bửu", "811 Tạ Quang Bửu, P. 5, Quận 8, TP. HCM", 10.736488, 106.670374, "3835 3193", StoreType.TYPE_FAMILY_MART))
+    stores.add(Store(5, "Family Mart - Nguyễn Văn Công", "534 Nguyễn Văn Công, Phường 3, Quận Gò Vấp, TP. HCM", 10.819417, 106.674821, "3835 3193", StoreType.TYPE_FAMILY_MART))
+    stores.add(Store(7, "Circle K Ly Tu Trong", "238 Ly Tu Trong, Ben Thanh Ward, District 1, Ho Chi Minh, Vietnam", 10.7721924, 106.69433409999999, "3822 7403", StoreType.TYPE_CIRCLE_K))
+    stores.add(Store(8, "Familymart - Đường D2", "39 Đường D2, P. 25, Quận Bình Thạnh, TP. HCM", 10.80252, 106.715622, "35 126 283", StoreType.TYPE_FAMILY_MART))
+    stores.add(Store(9, "FamilyMart - 123 Nguyễn Đình Chiểu", "123 Nguyễn Đình Chiểu, Phường 6, Quận 3, TP. HCM", 10.7775462, 106.6892408999999, "3835 3193", StoreType.TYPE_FAMILY_MART))
+    stores.add(Store(10, "FamilyMart - Tôn Dật Tiến", "Tôn Dật Tiên, Quận 7, TP. HCM", 10.723322, 106.71498, "3835 3193", StoreType.TYPE_FAMILY_MART))
     return stores
-}
-
-fun getFakeSearchStoreItems(): List<SearchStoreItem> {
-    val stores = ArrayList<SearchStoreItem>()
-    stores.add(SearchStoreItem(Store(1, "Circle K Le Thi Rieng", "148 Le Thi Rieng, Ben Thanh Ward, District 1, Ho Chi Minh, Vietnam", "10.770379", "106.68912279999995", "3925 6620", StoreType.TYPE_CIRCLE_K), ""))
-    stores.add(SearchStoreItem(Store(2, "FamilyMart - Hậu Giang", "973 Hậu Giang, P. 11, Quận 6, TP. HCM", "10.7457782220847", "106.6261117905378", "3755 0439", StoreType.TYPE_FAMILY_MART), ""))
-    stores.add(SearchStoreItem(Store(3, "FamilyMart - Nguyễn Lương Bằng", "180 Nguyễn Lương Bằng, P. Tân Phú, Quận 7, TP. HCM", "10.727042", "106.722703", "5417 3390", StoreType.TYPE_FAMILY_MART), ""))
-    stores.add(SearchStoreItem(Store(4, "Family Mart - Tạ Quang Bửu", "811 Tạ Quang Bửu, P. 5, Quận 8, TP. HCM", "10.736488", "106.670374", "3835 3193", StoreType.TYPE_FAMILY_MART), ""))
-    stores.add(SearchStoreItem(Store(5, "Family Mart - Nguyễn Văn Công", "534 Nguyễn Văn Công, Phường 3, Quận Gò Vấp, TP. HCM", "10.819417", "106.674821", "3835 3193", StoreType.TYPE_FAMILY_MART), ""))
-    stores.add(SearchStoreItem(Store(6, "Shop & Go - Phan Đình Phùng", "180 Phan Đình Phùng, P. 2, Quận Phú Nhuận, TP. HCM", "10.7955070000000", "106.6825610000000", "38 353 193", StoreType.TYPE_SHOP_N_GO), ""))
-    stores.add(SearchStoreItem(Store(7, "Circle K Ly Tu Trong", "238 Ly Tu Trong, Ben Thanh Ward, District 1, Ho Chi Minh, Vietnam", "10.7721924", "106.69433409999999", "3822 7403", StoreType.TYPE_CIRCLE_K), ""))
-    stores.add(SearchStoreItem(Store(8, "Familymart - Đường D2", "39 Đường D2, P. 25, Quận Bình Thạnh, TP. HCM", "10.80252", "106.715622", "35 126 283", StoreType.TYPE_FAMILY_MART), ""))
-    stores.add(SearchStoreItem(Store(9, "FamilyMart - 123 Nguyễn Đình Chiểu", "123 Nguyễn Đình Chiểu, Phường 6, Quận 3, TP. HCM", "10.7775462", "106.6892408999999", "3835 3193", StoreType.TYPE_FAMILY_MART), ""))
-    stores.add(SearchStoreItem(Store(10, "FamilyMart - Tôn Dật Tiến", "Tôn Dật Tiên, Quận 7, TP. HCM", "10.723322", "106.71498", "3835 3193", StoreType.TYPE_FAMILY_MART), ""))
-    return stores
-}
-
-fun getFakeArPoints(): List<AugmentedPOI> {
-    val arPoints = ArrayList<AugmentedPOI>()
-    arPoints.add(AugmentedPOI("Circle K Le Thi Rieng", 10.770379, 106.68912279999995, 0.0, getStoreLogoDrawableRes(StoreType.TYPE_CIRCLE_K)))
-    arPoints.add(AugmentedPOI("FamilyMart - Hậu Giang", 10.7457782220847, 106.6261117905378, 0.0, getStoreLogoDrawableRes(StoreType.TYPE_FAMILY_MART)))
-    arPoints.add(AugmentedPOI("FamilyMart - Nguyễn Lương Bằng", 10.727042, 106.722703, 0.0, getStoreLogoDrawableRes(StoreType.TYPE_FAMILY_MART)))
-    arPoints.add(AugmentedPOI("Family Mart - Tạ Quang Bửu", 10.736488, 106.670374, 0.0, getStoreLogoDrawableRes(StoreType.TYPE_FAMILY_MART)))
-    arPoints.add(AugmentedPOI("Family Mart - Nguyễn Văn Công", 10.819417, 106.674821, 0.0, getStoreLogoDrawableRes(StoreType.TYPE_FAMILY_MART)))
-    arPoints.add(AugmentedPOI("Shop & Go - Phan Đình Phùng", 10.7955070000000, 106.6825610000000, 0.0, getStoreLogoDrawableRes(StoreType.TYPE_SHOP_N_GO)))
-    arPoints.add(AugmentedPOI("Circle K Ly Tu Trong", 10.7721924, 106.69433409999999, 0.0, getStoreLogoDrawableRes(StoreType.TYPE_CIRCLE_K)))
-    arPoints.add(AugmentedPOI("Familymart - Đường D2", 10.80252, 106.715622, 0.0, getStoreLogoDrawableRes(StoreType.TYPE_FAMILY_MART)))
-    arPoints.add(AugmentedPOI("FamilyMart - 123 Nguyễn Đình Chiểu", 10.7775462, 106.6892408999999, 0.0, getStoreLogoDrawableRes(StoreType.TYPE_FAMILY_MART)))
-    arPoints.add(AugmentedPOI("FamilyMart - Tôn Dật Tiến", 10.723322, 106.71498, 0.0, getStoreLogoDrawableRes(StoreType.TYPE_FAMILY_MART)))
-
-    return arPoints
 }
 
 fun getFakeStoreIds(): List<Int> {
@@ -151,17 +110,7 @@ fun getFakeUserStoreLists(): List<UserStoreList> {
     return userStoreLists
 }
 
-fun getFakeUserMultiStoreLists(): List<UserStoreList> {
-    val userStoreLists = ArrayList<UserStoreList>()
-
-    userStoreLists.add(UserStoreList(0, getFakeStoreIds(), 1, "My Saved Places"))
-    userStoreLists.add(UserStoreList(1, getFakeStoreIds(), 2, "My Favourite Places"))
-    userStoreLists.add(UserStoreList(2, getFakeStoreIds(), 3, "My Third List"))
-    userStoreLists.add(UserStoreList(3, getFakeStoreIds(), 4, "My Forth List"))
-
-    return userStoreLists
-}
-
+@Suppress("unused")
 fun getFakeMapsDirection(): MapsDirection {
     val directionData = "{\n" +
         "  \"routes\": [\n" +
@@ -255,6 +204,7 @@ fun getFakeMapsDirection(): MapsDirection {
     return Gson().fromJson(directionData, MapsDirection::class.java)
 }
 
+@Suppress("unused")
 fun getFakeEmptyLegMapsDirection(): MapsDirection {
     val directionData = "{\n" +
         "  \"routes\": [\n" +
@@ -270,6 +220,7 @@ fun getFakeEmptyLegMapsDirection(): MapsDirection {
     return Gson().fromJson(directionData, MapsDirection::class.java)
 }
 
+@Suppress("unused")
 fun getFakeEmptyStepMapsDirection(): MapsDirection {
     val directionData = "{\n" +
         "  \"routes\": [\n" +
@@ -319,18 +270,14 @@ fun getRandomLong(): Long {
  * Get store type by keyword
  */
 fun getStoreType(key: String?): Int {
-    return if (key == "circle_k")
-        StoreType.TYPE_CIRCLE_K
-    else if (key == "mini_stop")
-        StoreType.TYPE_MINI_STOP
-    else if (key == "family_mart")
-        StoreType.TYPE_FAMILY_MART
-    else if (key == "bsmart")
-        StoreType.TYPE_BSMART
-    else if (key == "711")
-        StoreType.TYPE_7_ELEVEN
-    else
-        StoreType.TYPE_CIRCLE_K
+    return when (key) {
+        "circle_k" -> StoreType.TYPE_CIRCLE_K
+        "mini_stop" -> StoreType.TYPE_MINI_STOP
+        "family_mart" -> StoreType.TYPE_FAMILY_MART
+        "bsmart" -> StoreType.TYPE_BSMART
+        "711" -> StoreType.TYPE_7_ELEVEN
+        else -> StoreType.TYPE_CIRCLE_K
+    }
 }
 
 fun getStoreSearchString(storeType: Int): String {
@@ -345,25 +292,6 @@ fun getStoreSearchString(storeType: Int): String {
 }
 
 
-fun filterInvalidData(stores: MutableList<Store>): MutableList<Store> {
-    val result = ArrayList<Store>()
-
-    for (i in 0 until stores.size) {
-        val store = stores.elementAt(i)
-        if (store.id < 0) {
-            continue
-        }
-
-        if (!isValidLat(store.lat) || !isValidLng(store.lng) || store.address.isBlank()) {
-            continue
-        }
-
-        result.add(store)
-    }
-
-    return result
-}
-
 fun isValidUserUid(uid: String): Boolean {
     return !uid.isBlank() && uid != "null"
 }
@@ -374,7 +302,6 @@ fun isValidEmail(email: String): Boolean {
     return matcher.find()
 }
 
-val VALID_PWD_REGEX: Pattern = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#\$%^&+=])(?=\\S+\$).{8,}\$\n", Pattern.CASE_INSENSITIVE)
 fun isValidPassword(password: String): Boolean {
     return password.trim().length >= 8
 }
@@ -383,8 +310,8 @@ fun storesToArPoints(stores: List<Store>): List<AugmentedPOI> {
     val arPoints = ArrayList<AugmentedPOI>()
     for (i in stores.indices) {
         arPoints.add(AugmentedPOI(stores[i].title,
-            stores[i].lat.toDouble(),
-            stores[i].lng.toDouble(),
+            stores[i].lat,
+            stores[i].lng,
             0.0,
             getStoreLogoDrawableRes(stores[i].type)))
     }
@@ -392,12 +319,12 @@ fun storesToArPoints(stores: List<Store>): List<AugmentedPOI> {
 }
 
 fun getStoreNameByKey(key: String?): String {
-    when (key) {
-        DiscountNotifyViewModel.KEY_CIRCLE_K -> return "Cirle K"
-        DiscountNotifyViewModel.KEY_BSMART -> return "B\u2019s mart"
-        DiscountNotifyViewModel.KEY_FAMILY_MART -> return "Family mart"
-        DiscountNotifyViewModel.KEY_MINI_STOP -> return "Ministop"
-        DiscountNotifyViewModel.KEY_711 -> return "7-Eleven"
-        else -> return ""
+    return when (key) {
+        DiscountNotifyViewModel.KEY_CIRCLE_K -> "Cirle K"
+        DiscountNotifyViewModel.KEY_BSMART -> "B\u2019s mart"
+        DiscountNotifyViewModel.KEY_FAMILY_MART -> "Family mart"
+        DiscountNotifyViewModel.KEY_MINI_STOP -> "Ministop"
+        DiscountNotifyViewModel.KEY_711 -> "7-Eleven"
+        else -> ""
     }
 }
