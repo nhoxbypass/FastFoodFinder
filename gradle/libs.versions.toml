@@ -78,6 +78,7 @@ kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-c
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines-version" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization-json-version" }
 kotlinx-coroutines-play-services = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "kotlinx-coroutines-version" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines-version" }
 ## AndroidX
 appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat-version" }
 cardview = { module = "androidx.cardview:cardview", version.ref = "cardview-version" }
@@ -147,7 +148,8 @@ local-unit-test = [
     "truth",
     "mockito-core",
     "mockito-kotlin",
-    "robolectric"
+    "robolectric",
+    "kotlinx-coroutines-test"
 ]
 android-ui-test = [
     "espresso-core",
